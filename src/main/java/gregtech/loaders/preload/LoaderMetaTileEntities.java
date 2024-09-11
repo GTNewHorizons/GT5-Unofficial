@@ -1625,7 +1625,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEBlackHoleCompressor(
                 BLACKHOLE_COMPRESSOR_CONTROLLER.ID,
                 "multimachine.blackholecompressor",
-                "Semi-Stable Black Hole Containment Field").getStackForm(1));
+                "Pseudostable Black Hole Containment Field").getStackForm(1));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
