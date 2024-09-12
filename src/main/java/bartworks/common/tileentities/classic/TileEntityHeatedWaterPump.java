@@ -168,7 +168,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
             .ifPresent(e -> {
                 if (e.getTotalWorldTime() % 20 == 0) {
                     Optional.ofNullable(e.getChunkFromBlockCoords(this.xCoord, this.zCoord))
-                        .ifPresent(c -> Pollution.addPollution(c, ConfigHandler.pollutionHeatedWaterPumpSecond));
+                        .ifPresent(c -> Pollution.addPollution(c, Configuration.pollution.pollutionHeatedWaterPumpSecond));
                 }
             });
     }
@@ -334,7 +334,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
                 + GTUtility.formatNumbers(Configuration.singleBlocks.mbWaterperSec)
                 + String.format(
                     StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
-                    ConfigHandler.pollutionHeatedWaterPumpSecond),
+                Configuration.pollution.pollutionHeatedWaterPumpSecond),
             StatCollector.translateToLocal("tooltip.tile.waterpump.2.name") };
     }
 

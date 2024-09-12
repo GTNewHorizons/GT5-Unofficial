@@ -23,9 +23,6 @@ public class ConfigHandler {
 
     public static byte maxTierRoss;
 
-    public static int pollutionHeatedWaterPumpSecond = 5;
-    public static int basePollutionMBFSecond = 400;
-
     private static final int[][] METAFORTIERS_ENERGY = { { 100, 101, 102, 105 }, { 1110, 1115, 1120, 1127 },
         { 1111, 12726, 1116, 1121, 1128 }, { 1112, 12727, 1117, 1122, 1129 }, { 12728, 1190, 1130, 12685 },
         { 1191, 1174, 695, 12686 }, };
@@ -61,22 +58,6 @@ public class ConfigHandler {
 
     public ConfigHandler(Configuration C) {
         ConfigHandler.c = C;
-
-
-        ConfigHandler.pollutionHeatedWaterPumpSecond = ConfigHandler.c
-            .get(
-                "Pollution",
-                "Pollution produced per second by the water pump",
-                ConfigHandler.pollutionHeatedWaterPumpSecond,
-                "How much should the Simple Stirling Water Pump produce pollution per second")
-            .getInt(ConfigHandler.pollutionHeatedWaterPumpSecond);
-        ConfigHandler.basePollutionMBFSecond = ConfigHandler.c.get(
-            "Pollution",
-            "Pollution produced per tick by the MBF per ingot",
-            ConfigHandler.basePollutionMBFSecond,
-            "How much should the MBF produce pollution per tick per ingot. Then it'll be multiplied by the amount of ingots done in parallel")
-            .getInt(ConfigHandler.basePollutionMBFSecond);
-
 
         ConfigHandler.maxTierRoss = (byte) ConfigHandler.c
             .get("Ross Ruin Metas", "A_Ruin Machine Tiers", 6, "", 0, VOLTAGE_NAMES.length)

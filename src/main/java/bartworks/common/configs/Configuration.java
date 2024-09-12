@@ -15,6 +15,8 @@ public class Configuration {
 
     public static final SingleBlocks singleBlocks = new SingleBlocks();
 
+    public static final Pollution pollution = new Pollution();
+
     @Config.LangKey("GT5U.gui.config.mixins")
     @Config.RequiresMcRestart
     public static class Mixins{
@@ -127,5 +129,15 @@ public class Configuration {
         @Config.Comment("mL Water per Sec for the StirlingPump")
         @Config.DefaultInt(150)
         public int mbWaterperSec;
+    }
+
+    public static class Pollution{
+        @Config.Comment("How much should the Simple Stirling Water Pump produce pollution per second")
+        @Config.DefaultInt(5)
+        public int pollutionHeatedWaterPumpSecond;
+
+        @Config.Comment("How much should the MBF produce pollution per tick per ingot. Then it'll be multiplied by the amount of ingots done in parallel")
+        @Config.DefaultInt(400)
+        public int basePollutionMBFSecond;
     }
 }
