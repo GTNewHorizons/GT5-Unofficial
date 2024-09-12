@@ -1478,7 +1478,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTELargeTurbinePlasma(
                 LARGE_PLASMA_TURBINE_CONTROLLER.ID,
                 "multimachine.largeplasmaturbine",
-                "Large Plasma Generator").getStackForm(1L));
+                "Large Plasma Turbine").getStackForm(1L));
         ItemList.Machine_Multi_HeatExchanger.set(
             new MTEHeatExchanger(
                 LARGE_HEAT_EXCHANGER_CONTROLLER.ID,
