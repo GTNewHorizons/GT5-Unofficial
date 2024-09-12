@@ -74,8 +74,7 @@ public class Ross128SolarSystem {
         Ross128SolarSystem.Ross128ba.setBodyIcon(
             new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128ba.png"));
         Ross128SolarSystem.Ross128ba.setDimensionInfo(Configuration.crossModInteractions.ross128BAID, WorldProviderRoss128ba.class);
-        Ross128SolarSystem.Ross128ba
-            .setTierRequired(GalaxySpace.isModLoaded() ? Math.min(Configuration.crossModInteractions.ross128btier + 2, 8) : 3);
+        Ross128SolarSystem.Ross128ba.setTierRequired(Configuration.crossModInteractions.ross128batier);
 
         GalaxyRegistry.registerSolarSystem(Ross128SolarSystem.Ross128System);
         GalaxyRegistry.registerPlanet(Ross128SolarSystem.Ross128b);
