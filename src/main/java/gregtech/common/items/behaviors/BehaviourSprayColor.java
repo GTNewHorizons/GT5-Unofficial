@@ -25,7 +25,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.other.ConfigGeneral;
+import gregtech.common.config.Other;
 
 public class BehaviourSprayColor extends BehaviourNone {
 
@@ -91,7 +91,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         long tUses = getUses(aStack, tNBT);
 
         int painted = 0;
-        int maxPainted = ConfigGeneral.sprayCanChainRange;
+        int maxPainted = Other.sprayCanChainRange;
         ForgeDirection lookSide;
         Vec3 look = aPlayer.getLookVec();
         double absX = Math.abs(look.xCoord);
@@ -221,7 +221,7 @@ public class BehaviourSprayColor extends BehaviourNone {
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         aList.add(this.mTooltipChain);
-        aList.add(String.format(this.mTooltipChainAmount, ConfigGeneral.sprayCanChainRange));
+        aList.add(String.format(this.mTooltipChainAmount, Other.sprayCanChainRange));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
             : GTUtility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");

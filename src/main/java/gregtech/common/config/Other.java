@@ -1,11 +1,11 @@
-package gregtech.common.config.other;
+package gregtech.common.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.GREG_TECH, category = "general", configSubDirectory = "GregTech", filename = "Other")
-public class ConfigGeneral {
+@Config(modid = Mods.Names.GREG_TECH, category = "other", configSubDirectory = "GregTech", filename = "Other")
+public class Other {
 
     @Config.Comment("How much pipes you can chain wrench to disable their input.")
     @Config.DefaultInt(64)

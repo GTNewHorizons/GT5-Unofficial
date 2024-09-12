@@ -16,11 +16,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.recipe.GTPPRecipeCategories;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -136,7 +136,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                     .fluidOutputs(M.getFluidStack(fluidAmount))
                     .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1))
                     .eut(aVoltage)
-                    .recipeCategory(GTPPRecipeCategories.absNonAlloyRecipes)
+                    .recipeCategory(RecipeCategories.absNonAlloyRecipes)
                     .addTo(alloyBlastSmelterRecipes);
             } else {
                 Logger.WARNING("[BAS] Failed.");
