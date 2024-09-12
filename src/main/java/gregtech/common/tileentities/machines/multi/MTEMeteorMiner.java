@@ -169,7 +169,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                     'j',
                     buildHatchAdder(MTEMeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
                         .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(2))
-                        .dot(4)
+                        .dot(3)
                         .buildAndChain(
                             onElementPass(MTEMeteorMiner::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 2))))
                 .build();
@@ -292,19 +292,31 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             .addInfo("if it doesn't find any it will wait for a meteor to spawn, considering the block")
             .addInfo("right above the center of the meteor (like Warded Glass).")
             .addInfo("The reset button will restart the machine without optimizing the radius.")
+            .addInfo("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "TIER I")
             .addInfo("Default Fortune is 0, it can be increased by putting in the input bus special pickaxes:")
             .addInfo("Fortune I: Bound Pickaxe")
             .addInfo("Fortune II: Pickaxe of the Core")
             .addInfo("Fortune III: Terra Shatterer")
+            .addInfo("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "TIER II")
+            .addInfo("Always has Fortune III")
+            .addInfo("Mines 4 layers for every cycle")
             .addInfo("" + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Finally some good Meteors!")
             .addInfo(AuthorTotto)
             .addSeparator()
             .beginStructureBlock(19, 19, 19, false)
-            .addController("Second Layer Center")
+            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "TIER I")
+            .addController("Center of the second layer above the ritual")
             .addOutputBus("Any Structural Solar Casing around the controller", 1)
             .addEnergyHatch("Any Structural Solar Casing around the controller", 1)
             .addMaintenanceHatch("Any Structural Solar Casing around the controller", 1)
             .addInputBus("Below the controller", 2)
+            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("" + EnumChatFormatting.RED + EnumChatFormatting.BOLD + "TIER II")
+            .addController("Highest layer of the ritual")
+            .addOutputBus("Any Neutronium Casing below the controller", 3)
+            .addEnergyHatch("Any Neutronium Casing below the controller", 3)
+            .addMaintenanceHatch("Any Neutronium Casing below the controller", 3)
             .toolTipFinisher("GregTech");
         return tt;
     }
