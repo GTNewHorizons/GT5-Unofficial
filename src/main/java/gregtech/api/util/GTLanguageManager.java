@@ -512,6 +512,7 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_319", "Any player");
         addStringLocalization("Interaction_DESCRIPTION_Index_320", "Other players");
         addStringLocalization("Interaction_DESCRIPTION_Index_321", "Only owner");
+        addStringLocalization("Interaction_DESCRIPTION_Index_322", "Overflow point: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_322.0", "Overflow point (L):");
         addStringLocalization("Interaction_DESCRIPTION_Index_322.1", "Voiding rate (L/update):");
         addStringLocalization("Interaction_DESCRIPTION_Index_322.2", "Allow fluid Input");

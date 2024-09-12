@@ -176,7 +176,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            GTUtility.trans("322", "Overflow point :") + data.overflowPoint + GTUtility.trans("323", "L"));
+            GTUtility.trans("322", "Overflow point: ") + data.overflowPoint + GTUtility.trans("323", "L"));
         aTileEntity.setCoverDataAtSide(side, new ISerializableObject.LegacyCoverData(data.overflowPoint));
         return true;
     }
