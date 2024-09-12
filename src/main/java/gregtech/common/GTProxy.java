@@ -2291,27 +2291,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             return;
         }
 
-        if ((aEvent.player.ticksExisted % 200 == 0) && (aEvent.player.capabilities.allowEdit)
-            && (!aEvent.player.capabilities.isCreativeMode)
-            && (this.mSurvivalIntoAdventure)) {
-            aEvent.player.setGameType(GameType.ADVENTURE);
-            aEvent.player.capabilities.allowEdit = false;
-            if (this.mAxeWhenAdventure) {
-                GTUtility.sendChatToPlayer(
-                    aEvent.player,
-                    GTLanguageManager.addStringLocalization(
-                        "Interaction_DESCRIPTION_Index_097",
-                        "It's dangerous to go alone! Take this."));
-                aEvent.player.worldObj.spawnEntityInWorld(
-                    new EntityItem(
-                        aEvent.player.worldObj,
-                        aEvent.player.posX,
-                        aEvent.player.posY,
-                        aEvent.player.posZ,
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(IDMetaTool01.AXE.ID, 1, Materials.Flint, Materials.Wood, null)));
-            }
-        }
         final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
 
         if (aEvent.player.ticksExisted % 120 != 0) {
