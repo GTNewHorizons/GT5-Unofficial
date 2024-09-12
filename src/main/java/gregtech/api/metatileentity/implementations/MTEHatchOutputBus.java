@@ -117,13 +117,13 @@ public class MTEHatchOutputBus extends MTEHatch implements IAddUIWidgets, IItemL
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!acceptsItemLock() || !(aPlayer instanceof EntityPlayerMP)) {
             GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+            return true;
         }
 
         final ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
             GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer);
+            return true;
         }
 
         if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) {
