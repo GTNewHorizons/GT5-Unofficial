@@ -238,6 +238,7 @@ public class Godforge implements Runnable {
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t1_1step[i] != null) {
+
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t1_1step[i])
                         .fluidOutputs(solid_plasmas_t1_1step[i])
@@ -313,6 +314,7 @@ public class Godforge implements Runnable {
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t2_1step[i] != null) {
+
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t2_1step[i])
                         .fluidOutputs(solid_plasmas_t2_1step[i])
@@ -348,6 +350,7 @@ public class Godforge implements Runnable {
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t2_xstep[i] != null) {
+
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t2_xstep[i])
                         .fluidOutputs(solid_plasmas_t2_xstep[i])

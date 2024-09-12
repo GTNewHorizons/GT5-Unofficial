@@ -222,6 +222,9 @@ public class GTRecipeConstants {
 
     public static final RecipeMetadataKey<Boolean> NO_GAS = SimpleRecipeMetadataKey.create(Boolean.class, "no_gas");
 
+    public static final RecipeMetadataKey<Integer> EU_MULTIPLIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "eu_multiplier");
+
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
      * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
