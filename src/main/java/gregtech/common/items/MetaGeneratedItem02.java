@@ -267,7 +267,6 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             OrePrefixes.toolHeadDrill,
             OrePrefixes.toolHeadChainsaw,
             OrePrefixes.toolHeadWrench,
-            OrePrefixes.toolHeadPlow,
             OrePrefixes.___placeholder___,
             OrePrefixes.toolHeadBuzzSaw,
             OrePrefixes.turbineBlade,
