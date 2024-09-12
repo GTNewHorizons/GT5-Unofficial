@@ -6,6 +6,7 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FOG_EXOTIC_TIER;
+import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
 import static tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
@@ -17,7 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
@@ -47,6 +50,20 @@ public class Godforge implements Runnable {
     public static final List<ItemStack> magmatterTimeFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterSpaceFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterItemsForNEI = new ArrayList<>();
+
+    private FluidStack[] convertToFluid(ItemStack[] items) {
+        List<FluidStack> molten = new ArrayList<>();
+
+        for (ItemStack itemStack : items) {
+            String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
+            // substring 4 because dust is 4 characters long and there is no other possible oreDict
+            String strippedOreDict = dict.substring(4);
+            molten.add(FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), 144));
+
+        }
+
+        return molten.toArray(new FluidStack[0]);
+    }
 
     @Override
     public void run() {
@@ -85,6 +102,9 @@ public class Godforge implements Runnable {
                     MaterialsElements.getInstance().IODINE.getDust(1),
                     MaterialsElements.getInstance().HAFNIUM.getDust(1),
                     MaterialsElements.getInstance().CURIUM.getDust(1) };
+
+                FluidStack[] molten_t0_1step = convertToFluid(solids_t0_1step);
+
                 FluidStack[] solid_plasmas_t0_1step = { Materials.Aluminium.getPlasma(144),
                     Materials.Iron.getPlasma(144), Materials.Calcium.getPlasma(144), Materials.Sulfur.getPlasma(144),
                     Materials.Zinc.getPlasma(144), Materials.Niobium.getPlasma(144), Materials.Tin.getPlasma(144),
@@ -124,139 +144,216 @@ public class Godforge implements Runnable {
                     new FluidStack(MaterialsElements.getInstance().CURIUM.getPlasma(), 144) };
 
                 for (int i = 0; i < solids_t0_1step.length; i++) {
-                    boolean multistep = false;
                     GTValues.RA.stdBuilder()
                         .itemInputs(solids_t0_1step[i])
                         .fluidOutputs(solid_plasmas_t0_1step[i])
                         .duration(10 * TICKS)
                         .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
+                        .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .noOptimize()
                         .addTo(godforgePlasmaRecipes);
+
+                    if (molten_t0_1step[i] != null) {
+                        GTValues.RA.stdBuilder()
+                            .fluidInputs(molten_t0_1step[i])
+                            .fluidOutputs(solid_plasmas_t0_1step[i])
+                            .duration(10 * TICKS)
+                            .eut(TierEU.RECIPE_MAX)
+                            .metadata(FOG_PLASMA_MULTISTEP, false)
+                            .metadata(FOG_PLASMA_TIER, 0)
+                            .noOptimize()
+                            .addTo(godforgePlasmaRecipes);
+                    }
                 }
+            }
 
-                // Multi-step
-                ItemStack[] solids_t0_xstep = { Materials.Force.getDust(1), Materials.Bismuth.getDust(1),
-                    MaterialsElements.STANDALONE.ADVANCED_NITINOL.getDust(1), Materials.Boron.getDust(1),
-                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getDust(1),
-                    MaterialsElements.STANDALONE.RUNITE.getDust(1),
-                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getDust(1), Materials.Iridium.getDust(1),
-                    Materials.Naquadah.getDust(1), Materials.Osmium.getDust(1), Materials.Platinum.getDust(1),
-                    Materials.Plutonium.getDust(1), MaterialsElements.getInstance().CALIFORNIUM.getDust(1),
-                    Materials.Chrome.getDust(1) };
-                FluidStack[] solid_plasmas_t0_xstep = {
-                    new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 144),
-                    Materials.Bismuth.getPlasma(144),
-                    new FluidStack(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlasma(), 144),
-                    Materials.Boron.getPlasma(144),
-                    new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 144),
-                    Materials.Iridium.getPlasma(144), Materials.Naquadah.getPlasma(144),
-                    Materials.Osmium.getPlasma(144), Materials.Platinum.getPlasma(144),
-                    Materials.Plutonium.getPlasma(144),
-                    new FluidStack(MaterialsElements.getInstance().CALIFORNIUM.getPlasma(), 144),
-                    Materials.Chrome.getPlasma(144), };
+            // Multi-step
+            ItemStack[] solids_t0_xstep = { Materials.Force.getDust(1), Materials.Bismuth.getDust(1),
+                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getDust(1), Materials.Boron.getDust(1),
+                MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getDust(1), MaterialsElements.STANDALONE.RUNITE.getDust(1),
+                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getDust(1), Materials.Iridium.getDust(1),
+                Materials.Naquadah.getDust(1), Materials.Osmium.getDust(1), Materials.Platinum.getDust(1),
+                Materials.Plutonium.getDust(1), MaterialsElements.getInstance().CALIFORNIUM.getDust(1),
+                Materials.Chrome.getDust(1) };
 
-                for (int i = 0; i < solids_t0_xstep.length; i++) {
-                    boolean multistep = true;
+            FluidStack[] molten_t0_xstep = convertToFluid(solids_t0_xstep);
+
+            FluidStack[] solid_plasmas_t0_xstep = { new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 144),
+                Materials.Bismuth.getPlasma(144),
+                new FluidStack(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlasma(), 144),
+                Materials.Boron.getPlasma(144),
+                new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 144),
+                new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 144),
+                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 144),
+                Materials.Iridium.getPlasma(144), Materials.Naquadah.getPlasma(144), Materials.Osmium.getPlasma(144),
+                Materials.Platinum.getPlasma(144), Materials.Plutonium.getPlasma(144),
+                new FluidStack(MaterialsElements.getInstance().CALIFORNIUM.getPlasma(), 144),
+                Materials.Chrome.getPlasma(144), };
+
+            for (int i = 0; i < solids_t0_xstep.length; i++) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(solids_t0_xstep[i])
+                    .fluidOutputs(solid_plasmas_t0_xstep[i])
+                    .duration(2 * SECONDS)
+                    .eut(TierEU.RECIPE_MAX)
+                    .metadata(FOG_PLASMA_MULTISTEP, true)
+                    .metadata(FOG_PLASMA_TIER, 0)
+                    .noOptimize()
+                    .addTo(godforgePlasmaRecipes);
+
+                if (molten_t0_xstep[i] != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(solids_t0_xstep[i])
+                        .fluidInputs(molten_t0_xstep[i])
                         .fluidOutputs(solid_plasmas_t0_xstep[i])
                         .duration(2 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
+                        .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 0)
                         .noOptimize()
                         .addTo(godforgePlasmaRecipes);
                 }
             }
-            // Fusion tier 4-5
-            {
-                // Single step
-                ItemStack[] solids_t1_1step = { Materials.Lead.getDust(1), Materials.Plutonium241.getDust(1),
-                    Materials.Thorium.getDust(1) };
-                FluidStack[] solid_plasmas_t1_1step = { Materials.Lead.getPlasma(144),
-                    Materials.Plutonium241.getPlasma(144), Materials.Thorium.getPlasma(144) };
+        }
+        // Fusion tier 4-5
+        {
+            // Single step
+            ItemStack[] solids_t1_1step = { Materials.Lead.getDust(1), Materials.Plutonium241.getDust(1),
+                Materials.Thorium.getDust(1) };
 
-                for (int i = 0; i < solids_t1_1step.length; i++) {
-                    boolean multistep = false;
+            FluidStack[] molten_t1_1step = convertToFluid(solids_t1_1step);
+
+            FluidStack[] solid_plasmas_t1_1step = { Materials.Lead.getPlasma(144),
+                Materials.Plutonium241.getPlasma(144), Materials.Thorium.getPlasma(144) };
+
+            for (int i = 0; i < solids_t1_1step.length; i++) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(solids_t1_1step[i])
+                    .fluidOutputs(solid_plasmas_t1_1step[i])
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_MAX)
+                    .metadata(FOG_PLASMA_MULTISTEP, false)
+                    .metadata(FOG_PLASMA_TIER, 1)
+                    .noOptimize()
+                    .addTo(godforgePlasmaRecipes);
+
+                if (molten_t1_1step[i] != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(solids_t1_1step[i])
+                        .fluidInputs(molten_t1_1step[i])
                         .fluidOutputs(solid_plasmas_t1_1step[i])
                         .duration(5 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
-                        .metadata(FOG_PLASMA_TIER, 1)
-                        .noOptimize()
-                        .addTo(godforgePlasmaRecipes);
-                }
-
-                // Multi-step
-                ItemStack[] solids_t1_xstep = { MaterialsElements.getInstance().NEPTUNIUM.getDust(1),
-                    MaterialsElements.getInstance().FERMIUM.getDust(1) };
-                FluidStack[] solid_plasmas_t1_xstep = {
-                    new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 144) };
-
-                for (int i = 0; i < solids_t1_xstep.length; i++) {
-                    boolean multistep = true;
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(solids_t1_xstep[i])
-                        .fluidOutputs(solid_plasmas_t1_xstep[i])
-                        .duration(7 * SECONDS)
-                        .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
+                        .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 1)
                         .noOptimize()
                         .addTo(godforgePlasmaRecipes);
                 }
             }
-            // Exotic Plasmas
-            {
-                // Single step
-                ItemStack[] solids_t2_1step = { MaterialsElements.STANDALONE.RHUGNOR.getDust(1),
-                    MaterialsElements.STANDALONE.DRAGON_METAL.getDust(1),
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getDust(1), Materials.CosmicNeutronium.getDust(1),
-                    Materials.Draconium.getDust(1), Materials.DraconiumAwakened.getDust(1),
-                    Materials.Ichorium.getDust(1) };
-                FluidStack[] solid_plasmas_t2_1step = {
-                    new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.STANDALONE.DRAGON_METAL.getPlasma(), 144),
-                    new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 144),
-                    Materials.CosmicNeutronium.getPlasma(144), Materials.Draconium.getPlasma(144),
-                    Materials.DraconiumAwakened.getPlasma(144), Materials.Ichorium.getPlasma(144) };
 
-                for (int i = 0; i < solids_t2_1step.length; i++) {
-                    boolean multistep = false;
+            // Multi-step
+            ItemStack[] solids_t1_xstep = { MaterialsElements.getInstance().NEPTUNIUM.getDust(1),
+                MaterialsElements.getInstance().FERMIUM.getDust(1) };
+
+            FluidStack[] molten_t1_xstep = convertToFluid(solids_t1_xstep);
+
+            FluidStack[] solid_plasmas_t1_xstep = {
+                new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 144),
+                new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 144) };
+
+            for (int i = 0; i < solids_t1_xstep.length; i++) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(solids_t1_xstep[i])
+                    .fluidOutputs(solid_plasmas_t1_xstep[i])
+                    .duration(7 * SECONDS)
+                    .eut(TierEU.RECIPE_MAX)
+                    .metadata(FOG_PLASMA_MULTISTEP, true)
+                    .metadata(FOG_PLASMA_TIER, 1)
+                    .noOptimize()
+                    .addTo(godforgePlasmaRecipes);
+
+                if (molten_t1_xstep[i] != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(solids_t2_1step[i])
+                        .fluidInputs(molten_t1_xstep[i])
+                        .fluidOutputs(solid_plasmas_t1_xstep[i])
+                        .duration(7 * SECONDS)
+                        .eut(TierEU.RECIPE_MAX)
+                        .metadata(FOG_PLASMA_MULTISTEP, true)
+                        .metadata(FOG_PLASMA_TIER, 1)
+                        .noOptimize()
+                        .addTo(godforgePlasmaRecipes);
+                }
+            }
+        }
+        // Exotic Plasmas
+        {
+            // Single step
+            ItemStack[] solids_t2_1step = { MaterialsElements.STANDALONE.RHUGNOR.getDust(1),
+                MaterialsElements.STANDALONE.DRAGON_METAL.getDust(1),
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getDust(1), Materials.CosmicNeutronium.getDust(1),
+                Materials.Draconium.getDust(1), Materials.DraconiumAwakened.getDust(1), Materials.Ichorium.getDust(1) };
+
+            FluidStack[] molten_t2_1step = convertToFluid(solids_t2_1step);
+
+            FluidStack[] solid_plasmas_t2_1step = {
+                new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 144),
+                new FluidStack(MaterialsElements.STANDALONE.DRAGON_METAL.getPlasma(), 144),
+                new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 144),
+                Materials.CosmicNeutronium.getPlasma(144), Materials.Draconium.getPlasma(144),
+                Materials.DraconiumAwakened.getPlasma(144), Materials.Ichorium.getPlasma(144) };
+
+            for (int i = 0; i < solids_t2_1step.length; i++) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(solids_t2_1step[i])
+                    .fluidOutputs(solid_plasmas_t2_1step[i])
+                    .duration(15 * SECONDS)
+                    .eut(TierEU.RECIPE_MAX)
+                    .metadata(FOG_PLASMA_MULTISTEP, false)
+                    .metadata(FOG_PLASMA_TIER, 2)
+                    .noOptimize()
+                    .addTo(godforgePlasmaRecipes);
+
+                if (molten_t2_1step[i] != null) {
+                    GTValues.RA.stdBuilder()
+                        .fluidInputs(molten_t2_1step[i])
                         .fluidOutputs(solid_plasmas_t2_1step[i])
                         .duration(15 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
+                        .metadata(FOG_PLASMA_MULTISTEP, false)
                         .metadata(FOG_PLASMA_TIER, 2)
                         .noOptimize()
                         .addTo(godforgePlasmaRecipes);
                 }
+            }
 
-                // Multi-step
-                ItemStack[] solids_t2_xstep = { MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
-                    Materials.Tritanium.getDust(1), Materials.Flerovium.getDust(1), Materials.Neutronium.getDust(1), };
-                FluidStack[] solid_plasmas_t2_xstep = {
-                    new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 144),
-                    Materials.Tritanium.getPlasma(144), Materials.Flerovium.getPlasma(144),
-                    Materials.Neutronium.getPlasma(144), };
+            // Multi-step
+            ItemStack[] solids_t2_xstep = { MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
+                Materials.Tritanium.getDust(1), Materials.Flerovium.getDust(1), Materials.Neutronium.getDust(1) };
 
-                for (int i = 0; i < solids_t2_xstep.length; i++) {
-                    boolean multistep = true;
+            FluidStack[] molten_t2_xstep = convertToFluid(solids_t2_xstep);
+
+            FluidStack[] solid_plasmas_t2_xstep = {
+                new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 144),
+                Materials.Tritanium.getPlasma(144), Materials.Flerovium.getPlasma(144),
+                Materials.Neutronium.getPlasma(144), };
+
+            for (int i = 0; i < solids_t2_xstep.length; i++) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(solids_t2_xstep[i])
+                    .fluidOutputs(solid_plasmas_t2_xstep[i])
+                    .duration(25 * SECONDS)
+                    .eut(TierEU.RECIPE_MAX)
+                    .metadata(FOG_PLASMA_MULTISTEP, true)
+                    .metadata(FOG_PLASMA_TIER, 2)
+                    .noOptimize()
+                    .addTo(godforgePlasmaRecipes);
+
+                if (molten_t2_xstep[i] != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(solids_t2_xstep[i])
+                        .fluidInputs(molten_t2_xstep[i])
                         .fluidOutputs(solid_plasmas_t2_xstep[i])
                         .duration(25 * SECONDS)
                         .eut(TierEU.RECIPE_MAX)
-                        .special(multistep)
+                        .metadata(FOG_PLASMA_MULTISTEP, true)
                         .metadata(FOG_PLASMA_TIER, 2)
                         .noOptimize()
                         .addTo(godforgePlasmaRecipes);

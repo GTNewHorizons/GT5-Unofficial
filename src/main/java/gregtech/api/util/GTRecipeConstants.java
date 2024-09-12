@@ -125,6 +125,12 @@ public class GTRecipeConstants {
         .create(Integer.class, "fog_plasma_tier");
 
     /**
+     * FOG Plasma multistep requirement.
+     */
+    public static final RecipeMetadataKey<Boolean> FOG_PLASMA_MULTISTEP = SimpleRecipeMetadataKey
+        .create(Boolean.class, "fog_plasma_multistep");
+
+    /**
      * DEFC Casing tier.
      */
     public static final RecipeMetadataKey<Integer> DEFC_CASING_TIER = SimpleRecipeMetadataKey
