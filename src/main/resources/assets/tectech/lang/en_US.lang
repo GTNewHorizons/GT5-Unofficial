@@ -853,6 +853,10 @@ gt.blockcasingsBA0.10.desc.0=Resistant to temporal shearing from time dilation d
 gt.blockcasingsBA0.10.desc.1=This block can last an eternity without any decay.
 
 
+# Antimatter
+gt.blockmachines.antimatterForge.name=Semi-Stable Antimatter Stabilization Sequencer
+gt.blockmachines.antimatterGenerator.name=Shielded Lagrangian Annihilation Matrix
+
 achievement.gt.spacetime_compression_field_generator.0=Crude Spacetime Compression Field Generator
 achievement.gt.spacetime_compression_field_generator.1=Primitive Spacetime Compression Field Generator
 achievement.gt.spacetime_compression_field_generator.2=Stable Spacetime Compression Field Generator
