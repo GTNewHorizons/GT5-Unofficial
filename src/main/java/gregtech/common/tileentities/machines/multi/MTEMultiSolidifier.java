@@ -319,14 +319,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
             @NotNull
             @Override
-            public CheckRecipeResult process() {
-                CheckRecipeResult check = super.process();
-                if (check == CheckRecipeResultRegistry.NO_RECIPE) speedup = 1;
-                return check;
-            }
-
-            @NotNull
-            @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 setSpeedBonus(1F / speedup);
                 return super.validateRecipe(recipe);
