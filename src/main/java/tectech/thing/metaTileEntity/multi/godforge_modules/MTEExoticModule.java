@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -36,14 +37,23 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.fluids.FluidTanksHandler;
+import com.gtnewhorizons.modularui.api.fluids.IFluidTanksHandler;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.TierEU;
@@ -68,7 +78,6 @@ public class MTEExoticModule extends MTEBaseModule {
 
     private int numberOfFluids = 0;
     private int numberOfItems = 0;
-    private long wirelessEUt = 0;
     private long EUt = 0;
     private long actualParallel = 0;
     private boolean recipeInProgress = false;
@@ -77,15 +86,13 @@ public class MTEExoticModule extends MTEBaseModule {
     private ItemStack[] randomizedItemInput = new ItemStack[] {};
     List<FluidStack> inputPlasmas = new ArrayList<>();
     private GTRecipe plasmaRecipe = null;
-    private static RecipeMap<RecipeMapBackend> tempRecipeMap = RecipeMapBuilder.of("bye")
-        .maxIO(0, 0, 7, 2)
-        .disableRegisterNEI()
-        .build();
-    private static final RecipeMap<RecipeMapBackend> emptyRecipeMap = RecipeMapBuilder.of("hey")
+    private BigInteger powerForRecipe = BigInteger.ZERO;
+    private static RecipeMap<RecipeMapBackend> tempRecipeMap = RecipeMapBuilder.of("godforgeExoticTempRecipeMap")
         .maxIO(0, 0, 7, 2)
         .disableRegisterNEI()
         .build();
     private static final int NUMBER_OF_INPUTS = 7;
+    private static final int INPUT_LIST_WINDOW_ID = 10;
 
     public MTEExoticModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -110,7 +117,8 @@ public class MTEExoticModule extends MTEBaseModule {
                 if (!recipeInProgress) {
                     actualParallel = getMaxParallel();
                     FluidStack outputFluid = MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000 * actualParallel);
-                    tempRecipeMap = emptyRecipeMap;
+                    tempRecipeMap.getBackend()
+                        .clearRecipes();
                     if (magmatterMode) {
                         randomizedItemInput = getRandomItemInputs(exoticModuleMagmatterItemMap, 1);
                         numberOfItems = 1;
@@ -120,11 +128,10 @@ public class MTEExoticModule extends MTEBaseModule {
                         randomizedFluidInput = new FluidStack[] { MaterialsUEVplus.Time.getMolten(timeAmount * 1000L),
                             MaterialsUEVplus.Space.getMolten(spaceAmount * 1000L) };
                         inputPlasmas = new ArrayList<>(
-                            Arrays.asList(
-                                convertItemToPlasma(randomizedItemInput, (spaceAmount - timeAmount) * actualParallel)));
-                        inputPlasmas.add(MaterialsUEVplus.Time.getMolten(timeAmount * actualParallel));
-                        inputPlasmas.add(MaterialsUEVplus.Space.getMolten(spaceAmount * actualParallel));
-                        outputFluid = MaterialsUEVplus.MagMatter.getMolten(144 * actualParallel);
+                            Arrays.asList(convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount)));
+                        inputPlasmas.add(MaterialsUEVplus.Time.getMolten(timeAmount));
+                        inputPlasmas.add(MaterialsUEVplus.Space.getMolten(spaceAmount));
+                        outputFluid = MaterialsUEVplus.MagMatter.getMolten(576 * actualParallel);
                     } else {
                         numberOfFluids = GodforgeMath.getRandomIntInRange(0, NUMBER_OF_INPUTS);
                         numberOfItems = NUMBER_OF_INPUTS - numberOfFluids;
@@ -139,13 +146,12 @@ public class MTEExoticModule extends MTEBaseModule {
 
                         if (numberOfItems != 0) {
                             for (ItemStack itemStack : randomizedItemInput) {
-                                itemStack.stackSize = GodforgeMath.getRandomIntInRange(1, 64);
+                                itemStack.stackSize = 9 * GodforgeMath.getRandomIntInRange(1, 7);
                             }
                         }
 
-                        inputPlasmas = new ArrayList<>(
-                            Arrays.asList(convertItemToPlasma(randomizedItemInput, actualParallel)));
-                        inputPlasmas.addAll(Arrays.asList(convertFluidToPlasma(randomizedFluidInput, actualParallel)));
+                        inputPlasmas = new ArrayList<>(Arrays.asList(convertItemToPlasma(randomizedItemInput, 1)));
+                        inputPlasmas.addAll(Arrays.asList(convertFluidToPlasma(randomizedFluidInput, 1)));
                     }
                     plasmaRecipe = new GTRecipe(
                         false,
@@ -155,7 +161,7 @@ public class MTEExoticModule extends MTEBaseModule {
                         null,
                         inputPlasmas.toArray(new FluidStack[0]),
                         new FluidStack[] { outputFluid },
-                        10 * SECONDS * (int) actualParallel,
+                        10 * SECONDS,
                         (int) TierEU.RECIPE_MAX,
                         0);
 
@@ -169,41 +175,26 @@ public class MTEExoticModule extends MTEBaseModule {
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 if (!recipeInProgress) {
-                    maxParallel = 1;
-                    wirelessEUt = (long) recipe.mEUt * maxParallel;
-                    if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
-                        tempRecipeMap = emptyRecipeMap;
-                        return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                    powerForRecipe = BigInteger.valueOf(getProcessingVoltage())
+                        .multiply(BigInteger.valueOf(recipe.mDuration * actualParallel));
+                    if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
+                        tempRecipeMap.getBackend()
+                            .clearRecipes();
+                        return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                     }
 
                     if (numberOfFluids != 0) {
                         for (FluidStack fluidStack : randomizedFluidInput) {
                             dumpFluid(
                                 mOutputHatches,
-                                new FluidStack(
-                                    fluidStack.getFluid(),
-                                    (int) (fluidStack.amount / 1000 * actualParallel)),
+                                new FluidStack(fluidStack.getFluid(), fluidStack.amount / 1000),
                                 false);
                         }
                     }
 
                     if (numberOfItems != 0) {
-                        long multiplier = actualParallel;
-                        if (magmatterMode) {
-                            multiplier = 1;
-                        }
                         for (ItemStack itemStack : randomizedItemInput) {
-                            int stacksize = (int) (itemStack.stackSize * multiplier);
-                            ItemStack tmpItem = itemStack.copy();
-                            // split itemStacks > 64
-                            while (stacksize >= 64) {
-                                tmpItem.stackSize = 64;
-                                addOutput(tmpItem);
-                                stacksize -= 64;
-                            }
-                            tmpItem.stackSize = stacksize;
-                            addOutput(tmpItem);
-
+                            addOutput(itemStack);
                         }
                     }
 
@@ -218,17 +209,19 @@ public class MTEExoticModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * maxParallel;
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
-                }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
-                addToRecipeTally(calculatedParallels);
                 EUt = calculatedEut;
+                powerForRecipe = BigInteger.valueOf(EUt)
+                    .multiply(BigInteger.valueOf(duration * actualParallel));
+
+                if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
+                }
+
+                addToPowerTally(powerForRecipe);
+                addToRecipeTally(calculatedParallels);
                 setCalculatedEut(0);
-                tempRecipeMap = emptyRecipeMap;
+                tempRecipeMap.getBackend()
+                    .clearRecipes();
                 recipeInProgress = false;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -370,6 +363,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
         NBT.setBoolean("recipeInProgress", recipeInProgress);
         NBT.setBoolean("magmatterMode", magmatterMode);
+        NBT.setLong("maxParallel", actualParallel);
 
         // Store damage values/stack sizes of input plasmas
         NBTTagCompound fluidStackListNBTTag = new NBTTagCompound();
@@ -395,6 +389,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
         recipeInProgress = NBT.getBoolean("recipeInProgress");
         magmatterMode = NBT.getBoolean("magmatterMode");
+        actualParallel = NBT.getLong("maxParallel");
 
         // Load damage values/fluid amounts of input plasmas and convert back to fluids
         NBTTagCompound tempFluidTag = NBT.getCompoundTag("inputPlasmas");
@@ -410,10 +405,10 @@ public class MTEExoticModule extends MTEBaseModule {
 
             inputPlasmas.add(new FluidStack(fluidStack, fluidAmount));
         }
-        FluidStack outputFluid = MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000);
+        FluidStack outputFluid = MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000L * actualParallel);
 
         if (magmatterMode) {
-            outputFluid = MaterialsUEVplus.MagMatter.getMolten(144);
+            outputFluid = MaterialsUEVplus.MagMatter.getMolten(576L * actualParallel);
         }
 
         tempRecipeMap.add(
@@ -434,9 +429,74 @@ public class MTEExoticModule extends MTEBaseModule {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(
+            new DrawableWidget().setPos(8, 69)
+                .setSize(16, 16)
+                .addTooltip(translateToLocal("fog.button.exoticinputs.tooltip"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY));
         super.addUIWidgets(builder, buildContext);
+        buildContext.addSyncedWindow(INPUT_LIST_WINDOW_ID, this::createInputListWindow);
         builder.widget(magmatterSwitch(builder));
+        builder.widget(createExpectedInputsButton());
+        builder.widget(
+            new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
+                .setPos(8, 69)
+                .setSize(16, 16));
 
+    }
+
+    protected ModularWindow createInputListWindow(final EntityPlayer player) {
+        final int WIDTH = 100;
+        final int HEIGHT = 60;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        final Pos2d[] slotPositions = new Pos2d[] { new Pos2d(23, 35), new Pos2d(41, 35), new Pos2d(59, 35),
+            new Pos2d(14, 17), new Pos2d(32, 17), new Pos2d(50, 17), new Pos2d(68, 17) };
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(Alignment.TopLeft.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT)))
+                .subtract(100, -47));
+
+        IFluidTanksHandler tanksHandler = new FluidTanksHandler(7, 128000);
+        for (int i = 0; i < 7; i++) {
+            if (i < inputPlasmas.size()) {
+                FluidStack plasma = inputPlasmas.get(i);
+                tanksHandler.setFluidInTank(i, plasma.getFluid(), plasma.amount);
+            }
+            builder.widget(
+                new DrawableWidget().setDrawable(ModularUITextures.FLUID_SLOT)
+                    .setSize(18, 18)
+                    .setPos(slotPositions[i]))
+                .widget(
+                    new FluidSlotWidget(tanksHandler, i).setInteraction(false, false)
+                        .setSize(18, 18)
+                        .setPos(slotPositions[i]));
+        }
+
+        builder.widget(
+            new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.expectedinputs"))
+                .setDefaultColor(EnumChatFormatting.BLACK)
+                .setTextAlignment(Alignment.Center)
+                .setSize(100, 9)
+                .setPos(0, 6));
+
+        return builder.build();
+    }
+
+    private Widget createExpectedInputsButton() {
+        return new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                widget.getContext()
+                    .openSyncedWindow(INPUT_LIST_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setSize(16, 16)
+            .setPos(8, 69);
     }
 
     protected ButtonWidget magmatterSwitch(IWidgetBuilder<?> builder) {
@@ -519,6 +579,8 @@ public class MTEExoticModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Hatch")
+            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
             .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }
@@ -535,9 +597,16 @@ public class MTEExoticModule extends MTEBaseModule {
                 + formatNumbers(mMaxProgresstime / 20)
                 + RESET
                 + " s");
-        str.add("Currently using: " + RED + formatNumbers(EUt) + RESET + " EU/t");
+        str.add(
+            "Currently using: " + RED
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt * actualParallel) : "0")
+                + RESET
+                + " EU/t");
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
-        str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(getMaxParallel()));
+        str.add(
+            YELLOW + "Current Parallel: "
+                + RESET
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(getMaxParallel()) : "0"));
         str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));
         str.add(YELLOW + "Energy multiplier: " + RESET + formatNumbers(getEnergyDiscount()));
         str.add(YELLOW + "Recipe time divisor per non-perfect OC: " + RESET + formatNumbers(getOverclockTimeFactor()));

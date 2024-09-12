@@ -2,8 +2,6 @@ package tectech.loader;
 
 import java.io.File;
 
-import net.minecraft.launchwrapper.Launch;
-
 import eu.usrv.yamcore.config.ConfigManager;
 
 public class TecTechConfig extends ConfigManager {
@@ -15,11 +13,6 @@ public class TecTechConfig extends ConfigManager {
     // final static to allow compiler to remove the debug code when this is false
     public static boolean DEBUG_MODE = false;
     public static boolean POWERLESS_MODE = false;
-    /**
-     * Not complete; enabled by default only in dev env
-     */
-    public boolean ENABLE_GOD_FORGE;
-
     public boolean BOOM_ENABLE;
     public boolean DISABLE_BLOCK_HARDNESS_NERF;
     public boolean EASY_SCAN;
@@ -81,8 +74,6 @@ public class TecTechConfig extends ConfigManager {
         TESLA_SINGLE_LOSS_PER_BLOCK = 1;
         TESLA_SINGLE_RANGE = 20;
         TESLA_VISUAL_EFFECT = true;
-
-        ENABLE_GOD_FORGE = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
     }
 
     /**
@@ -94,12 +85,6 @@ public class TecTechConfig extends ConfigManager {
             .getBoolean("DebugMode", "debug", DEBUG_MODE, "Enables logging and other purely debug features");
         POWERLESS_MODE = _mainConfig
             .getBoolean("PowerlessMode", "debug", POWERLESS_MODE, "Enables 0EU/t multi block machinery");
-        ENABLE_GOD_FORGE = _mainConfig.getBoolean(
-            "EnableGodForge",
-            "debug",
-            ENABLE_GOD_FORGE,
-            "Enables the in progress God Forge; enabled automatically in dev env");
-
         BOOM_ENABLE = _mainConfig.getBoolean(
             "BoomEnable",
             "features",
