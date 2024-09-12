@@ -1288,6 +1288,7 @@ public class GTModHandler {
             false,
             false,
             false,
+            false,
             aRecipe);
     }
 
@@ -1313,6 +1314,7 @@ public class GTModHandler {
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
+            (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
             aRecipe);
     }
 
@@ -1321,7 +1323,7 @@ public class GTModHandler {
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable,
-        Object[] aRecipe) {
+        boolean overwriteNBT, Object[] aRecipe) {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -1366,18 +1368,18 @@ public class GTModHandler {
         if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
+                overwriteNBT,
                 aEnchantmentsAdded,
                 aEnchantmentLevelsAdded,
                 aRecipe));
         else GameRegistry.addRecipe(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
+                overwriteNBT,
                 aEnchantmentsAdded,
                 aEnchantmentLevelsAdded,
                 aRecipe));
@@ -2338,6 +2340,7 @@ public class GTModHandler {
         public static long BUFFERED = B[1];
         /**
          * This is a special Tag I used for crafting Coins up and down.
+         * If all the input items have the same NBT, keep it in the output item.
          */
         public static long KEEPNBT = B[2];
         /**
@@ -2385,5 +2388,10 @@ public class GTModHandler {
          * Don't remove shapeless recipes with this output
          */
         public static long DONT_REMOVE_SHAPELESS = B[13];
+        /**
+         * Keep input item's NBT if the input item is the same as output item, and try to overwrite input item's NBT
+         * tags with output item's NBT tags if exists
+         */
+        public static long OVERWRITE_NBT = B[14];
     }
 }
