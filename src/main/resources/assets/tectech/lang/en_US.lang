@@ -478,6 +478,7 @@ gt.blockmachines.hatch.dynamotunnel7.tier.13.name=UXV 1,048,576A/t Laser Source 
 gt.blockmachines.hatch.dynamotunnel.tier.14.name=Legendary Laser Source Hatch
 gt.blockmachines.hatch.dynamotunnel.desc.0=Energy extracting terminal for Multiblocks
 gt.blockmachines.hatch.dynamotunnel.desc.1=Throughput
+gt.blockmachines.hatch.screwdrivertooltip=Use screwdriver to adjust amperage
 
 gt.blockmachines.emin.tier.08.name=UV Elemental Input Hatch
 gt.blockmachines.emin.tier.09.name=UHV Elemental Input Hatch
@@ -851,6 +852,10 @@ achievement.gt.blockcasingsBA0.10=Reinforced Temporal Structure Casing
 gt.blockcasingsBA0.10.desc.0=Resistant to temporal shearing from time dilation differences.
 gt.blockcasingsBA0.10.desc.1=This block can last an eternity without any decay.
 
+
+# Antimatter
+gt.blockmachines.antimatterForge.name=Semi-Stable Antimatter Stabilization Sequencer
+gt.blockmachines.antimatterGenerator.name=Shielded Lagrangian Annihilation Matrix
 
 achievement.gt.spacetime_compression_field_generator.0=Crude Spacetime Compression Field Generator
 achievement.gt.spacetime_compression_field_generator.1=Primitive Spacetime Compression Field Generator

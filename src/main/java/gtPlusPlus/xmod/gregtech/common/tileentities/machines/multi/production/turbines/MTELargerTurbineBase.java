@@ -654,11 +654,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 + GTUtility.formatNumbers(mPollutionReduction)
                 + EnumChatFormatting.RESET
                 + " %" };
-        if (!aIsSteam) ret[4] = StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow))
-            + EnumChatFormatting.RESET
-            + " L/t";
         return ret;
     }
 
