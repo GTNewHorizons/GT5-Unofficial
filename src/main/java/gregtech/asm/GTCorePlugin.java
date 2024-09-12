@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import bartworks.common.configs.Configuration;
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 
 import cpw.mods.fml.relauncher.FMLInjectionData;
@@ -20,6 +23,15 @@ import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 @IFMLLoadingPlugin.TransformerExclusions({ "bartworks.ASM", "gtPlusPlus.preloader", "gregtech.asm" })
 @IFMLLoadingPlugin.Name("GregTech 5 Unofficial core plugin")
 public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
+
+    static {
+        try{
+            ConfigurationManager.registerConfig(Configuration.class);
+        }
+        catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static File minecraftDir;
     private static Boolean islwjgl3Present = null;
