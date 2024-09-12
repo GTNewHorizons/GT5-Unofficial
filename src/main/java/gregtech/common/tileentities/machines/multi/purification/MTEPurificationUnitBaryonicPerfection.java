@@ -276,6 +276,23 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.WHITE
                     + "Quark Releasing Catalysts")
             .addInfo("will correctly identify the lone quark and succeed the recipe.")
+            .addInfo(
+                "The order of catalysts in the combination does not matter, so " + EnumChatFormatting.BLUE
+                    + "Up"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Down"
+                    + EnumChatFormatting.GRAY
+                    + " can be identified by inserting "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Down"
+                    + EnumChatFormatting.GRAY
+                    + "/"
+                    + EnumChatFormatting.BLUE
+                    + "Up"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addSeparator()
             .addInfo(
                 "Every " + EnumChatFormatting.RED
