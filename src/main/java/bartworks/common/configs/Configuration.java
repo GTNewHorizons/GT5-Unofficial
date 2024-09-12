@@ -6,17 +6,25 @@ import gregtech.api.enums.Mods;
 @Config(modid = Mods.Names.BART_WORKS, filename = "bartworks")
 public class Configuration {
 
+    @Config.Comment("Mixins section.")
     public static final Mixins mixins = new Mixins();
+
+    @Config.Comment("Crossmod interactions section.")
     public static final CrossModInteractions crossModInteractions = new CrossModInteractions();
 
+    @Config.Comment("Multiblocks section.")
     public static final Multiblocks multiblocks = new Multiblocks();
 
+    @Config.Comment("System section.")
     public static final System system = new System();
 
+    @Config.Comment("Single blocks section.")
     public static final SingleBlocks singleBlocks = new SingleBlocks();
 
+    @Config.Comment("Pollution section.")
     public static final Pollution pollution = new Pollution();
 
+    @Config.Comment("Ross' ruins machine metaIDs section.")
     public static final RossRuinMetas rossRuinMetas = new RossRuinMetas();
 
     @Config.LangKey("GT5U.gui.config.mixins")
@@ -28,6 +36,8 @@ public class Configuration {
         public boolean enableCraftingManagerRecipeCaching=false;
     }
 
+    @Config.LangKey("GT5U.gui.config.crossmod")
+    @Config.RequiresMcRestart
     public static class CrossModInteractions{
         @Config.Comment("The Dim ID for Ross128b")
         @Config.DefaultInt(64)
@@ -62,6 +72,8 @@ public class Configuration {
         public boolean disableMagicalForest;
     }
 
+    @Config.LangKey("GT5U.gui.config.multiblocks")
+    @Config.RequiresMcRestart
     public static class Multiblocks{
         @Config.Comment("This will set Up the Energy per LESU Cell")
         @Config.DefaultInt(1_000_000)
@@ -92,7 +104,8 @@ public class Configuration {
         public boolean disablePistonInEIC;
     }
 
-
+    @Config.LangKey("GT5U.gui.config.system")
+    @Config.RequiresMcRestart
     public static class System{
         @Config.Comment("Enables the classic Mode (all recipes in normal machines are doable in MV")
         @Config.DefaultBoolean(false)
@@ -127,12 +140,16 @@ public class Configuration {
         public boolean debugLog;
     }
 
+    @Config.LangKey("GT5U.gui.config.singleblocks")
+    @Config.RequiresMcRestart
     public static class SingleBlocks{
         @Config.Comment("mL Water per Sec for the StirlingPump")
         @Config.DefaultInt(150)
         public int mbWaterperSec;
     }
 
+    @Config.LangKey("GT5U.gui.config.pollution")
+    @Config.RequiresMcRestart
     public static class Pollution{
         @Config.Comment("How much should the Simple Stirling Water Pump produce pollution per second")
         @Config.DefaultInt(5)
@@ -143,6 +160,9 @@ public class Configuration {
         public int basePollutionMBFSecond;
     }
 
+    @Config.LangKey("GT5U.gui.config.ross_ruin")
+    @Config.RequiresMcRestart
+    @Config.LangKeyPattern(pattern = "GT5U.gui.config.ross_ruin.%cat.%field")
     public static class RossRuinMetas{
 
         @Config.Ignore()
