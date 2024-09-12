@@ -1,6 +1,8 @@
 package tectech.thing.metaTileEntity.multi.godforge_modules;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
+import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
@@ -11,7 +13,6 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -79,8 +80,8 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
-                if (recipe.mSpecialValue > getPlasmaTier()
-                    || Objects.equals(recipe.mSpecialItems.toString(), "true") && !isMultiStepPlasmaCapable) {
+                if (recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0) > getPlasmaTier()
+                    || (recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) && !isMultiStepPlasmaCapable)) {
                     return SimpleCheckRecipeResult.ofFailure("missing_upgrades");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
