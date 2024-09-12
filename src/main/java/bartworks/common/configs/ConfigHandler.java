@@ -26,18 +26,14 @@ public class ConfigHandler {
 
     public static Configuration c;
 
-    public static int megaMachinesMax = 256;
     public static int mbWaterperSec = 150;
-    public static int bioVatMaxParallelBonus = 1000;
     public static int cutoffTier = 5;
     public static int[][][] metasForTiers;
 
-    public static long energyPerCell = 1000000L;
+
 
 
     public static boolean disableExtraGassesForEBF;
-    public static boolean disableMagicalForest;
-    public static boolean DEHPDirectSteam;
     public static boolean teslastaff;
     public static boolean classicMode;
 
@@ -52,10 +48,6 @@ public class ConfigHandler {
 
     public static int pollutionHeatedWaterPumpSecond = 5;
     public static int basePollutionMBFSecond = 400;
-
-    public static Set<String> voidMinerBlacklist = Collections.unmodifiableSet(new HashSet<>());
-
-    public static boolean disablePistonInEIC = false;
 
     private static final int[][] METAFORTIERS_ENERGY = { { 100, 101, 102, 105 }, { 1110, 1115, 1120, 1127 },
         { 1111, 12726, 1116, 1121, 1128 }, { 1112, 12727, 1117, 1122, 1129 }, { 12728, 1190, 1130, 12685 },
@@ -145,52 +137,6 @@ public class ConfigHandler {
 
         ConfigHandler.mbWaterperSec = ConfigHandler.c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150)
             .getInt(150);
-
-        ConfigHandler.energyPerCell = ConfigHandler.c
-            .get(
-                "Multiblocks",
-                "energyPerLESUCell",
-                1000000,
-                "This will set Up the Energy per LESU Cell",
-                1000000,
-                Integer.MAX_VALUE)
-            .getInt(1000000);
-        ConfigHandler.DEHPDirectSteam = ConfigHandler.c.get(
-            "Multiblocks",
-            "DEHP Direct Steam Mode",
-            false,
-            "This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant")
-            .getBoolean(false);
-        ConfigHandler.megaMachinesMax = ConfigHandler.c
-            .get(
-                "Multiblocks",
-                "Mega Machines Maximum Recipes per Operation",
-                256,
-                "This changes the Maximum Recipes per Operation to the specified Valure")
-            .getInt(256);
-        ConfigHandler.bioVatMaxParallelBonus = ConfigHandler.c
-            .get(
-                "Multiblocks",
-                "BioVat Maximum Bonus on Recipes",
-                1000,
-                "This are the maximum parallel Operations the BioVat can do, when the output is half full.")
-            .getInt(1000);
-        ConfigHandler.voidMinerBlacklist = Collections.unmodifiableSet(
-            new HashSet<>(
-                Arrays.asList(
-                    ConfigHandler.c.get(
-                        "Multiblocks",
-                        "Void Miner Blacklist",
-                        new String[0],
-                        "This is a blacklist for the Void Miner, blacklisted ores will not enter the drop prize pool. Please fill in the Unique Identifier of Ore and connect Damage with a colon, For example: gregtech:gt.blockores:32")
-                        .getStringList())));
-        ConfigHandler.disablePistonInEIC = ConfigHandler.c
-            .get(
-                "Multiblocks",
-                "Disable Electric Implosion Compressor piston",
-                false,
-                "This switch completely disables piston animation in Electric Implosion Compressor multiblock")
-            .getBoolean(false);
 
         ConfigHandler.pollutionHeatedWaterPumpSecond = ConfigHandler.c
             .get(

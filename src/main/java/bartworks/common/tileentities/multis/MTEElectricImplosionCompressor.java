@@ -39,6 +39,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -95,7 +96,7 @@ import gregtech.api.util.OverclockCalculator;
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
     implements ISurvivalConstructable {
 
-    private static final boolean pistonEnabled = !ConfigHandler.disablePistonInEIC;
+    private static final boolean pistonEnabled = !Configuration.multiblocks.disablePistonInEIC;
     private Boolean piston = true;
     private static final SoundResource sound = SoundResource.RANDOM_EXPLODE;
     private final ArrayList<ChunkCoordinates> chunkCoordinates = new ArrayList<>(5);

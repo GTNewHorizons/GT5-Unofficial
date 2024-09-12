@@ -2,9 +2,13 @@ package bwcrossmod.galacticgreg;
 
 import static galacticgreg.registry.GalacticGregRegistry.getModContainers;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import bartworks.common.configs.Configuration;
@@ -43,9 +47,14 @@ public class VoidMinerUtility {
         private float totalWeight;
         private final Map<GTUtility.ItemId, Float> internalMap;
 
+        private final Set<String> voidMinerBlacklistedDrops;
+
+
+
         public DropMap() {
             internalMap = new HashMap<>();
             totalWeight = 0;
+            voidMinerBlacklistedDrops = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
         }
 
         /**
@@ -68,7 +77,7 @@ public class VoidMinerUtility {
          * @param weight the non normalised weight
          */
         public void addDrop(Block block, int meta, float weight) {
-            if (ConfigHandler.voidMinerBlacklist.contains(
+            if (this.voidMinerBlacklistedDrops.contains(
                 String.format(
                     "%s:%d",
                     GameRegistry.findUniqueIdentifierFor(block)
@@ -87,7 +96,7 @@ public class VoidMinerUtility {
         public void addDrop(ItemStack itemStack, float weight) {
             Item item = itemStack.getItem();
             int meta = Items.feather.getDamage(itemStack);
-            if (ConfigHandler.voidMinerBlacklist.contains(
+            if (this.voidMinerBlacklistedDrops.contains(
                 String.format(
                     "%s:%d",
                     GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item))

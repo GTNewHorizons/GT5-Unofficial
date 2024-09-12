@@ -33,6 +33,7 @@ import java.util.HashSet;
 
 import javax.annotation.Nullable;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -232,10 +233,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
     }
 
     private int calcMod(double x) {
-        double y = this.getOutputCapacity() / 2D, z = ConfigHandler.bioVatMaxParallelBonus;
+        double y = this.getOutputCapacity() / 2D, z = Configuration.multiblocks.bioVatMaxParallelBonus;
 
         int ret = MathUtils.ceilInt((-1D / y * Math.pow(x - y, 2D) + y) / y * z);
-        return MathUtils.clamp(1, ret, ConfigHandler.bioVatMaxParallelBonus);
+        return MathUtils.clamp(1, ret, Configuration.multiblocks.bioVatMaxParallelBonus);
     }
 
     @Override

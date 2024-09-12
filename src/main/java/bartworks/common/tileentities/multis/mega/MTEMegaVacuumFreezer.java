@@ -32,6 +32,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -424,7 +425,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                     .setHeatOC(true)
                     .setHeatDiscount(false);
             }
-        }.setMaxParallel(ConfigHandler.megaMachinesMax);
+        }.setMaxParallel(Configuration.multiblocks.megaMachinesMax);
     }
 
     @Override

@@ -17,6 +17,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -43,7 +44,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.util.BWTooltipReference;
 import bartworks.util.ConnectedBlocksChecker;
@@ -85,7 +85,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     public MTELESU(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        this.mStorage = ConfigHandler.energyPerCell;
+        this.mStorage = Configuration.multiblocks.energyPerCell;
     }
 
     public MTELESU(String aName) {
@@ -136,7 +136,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public long maxEUOutput() {
-        return Math.min(Math.max(this.mStorage / ConfigHandler.energyPerCell, 1L), 32768L);
+        return Math.min(Math.max(this.mStorage / Configuration.multiblocks.energyPerCell, 1L), 32768L);
     }
 
     @Override
@@ -177,7 +177,7 @@ public class MTELESU extends MTEMultiBlockBase {
         Collections.addAll(e, dsc);
         e.add(
             StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
-                + GTUtility.formatNumbers(ConfigHandler.energyPerCell)
+                + GTUtility.formatNumbers(Configuration.multiblocks.energyPerCell)
                 + "EU");
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name")
             .split(";");
@@ -396,9 +396,9 @@ public class MTELESU extends MTEMultiBlockBase {
         }
 
         this.mEfficiency = this.getMaxEfficiency(null);
-        this.mStorage = ConfigHandler.energyPerCell * this.connectedcells.hashset.size() >= Long.MAX_VALUE - 1
-            || ConfigHandler.energyPerCell * this.connectedcells.hashset.size() < 0 ? Long.MAX_VALUE - 1
-                : ConfigHandler.energyPerCell * this.connectedcells.hashset.size();
+        this.mStorage = Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() >= Long.MAX_VALUE - 1
+            || Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() < 0 ? Long.MAX_VALUE - 1
+                : Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;
         this.mProgresstime = 0;
 
@@ -546,7 +546,7 @@ public class MTELESU extends MTEMultiBlockBase {
                     () -> this.getBaseMetaTileEntity()
                         .isActive()
                             ? this.getBaseMetaTileEntity()
-                                .getOutputVoltage() * ConfigHandler.energyPerCell
+                                .getOutputVoltage() * Configuration.multiblocks.energyPerCell
                             : 0,
                     val -> clientMaxEU = val))
             .widget(
