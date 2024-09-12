@@ -516,13 +516,8 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mForceFreeFace = MachineStats.machines.forceFreeFace;
 
         // ore_drop_behavior
-        try {
-            GTLog.out.println("Trying to set it to: " + Gregtech.oreDropBehavior.setting);
-            GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.valueOf(Gregtech.oreDropBehavior.setting);
-        } catch (IllegalArgumentException e) {
-            GTLog.err.println(e);
-            GTMod.gregtechproxy.oreDropSystem = GTProxy.OreDropSystem.FortuneItem;
-        }
+        GTMod.gregtechproxy.oreDropSystem = Gregtech.oreDropBehavior.setting;
+
 
         // features
         GTMod.gregtechproxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));

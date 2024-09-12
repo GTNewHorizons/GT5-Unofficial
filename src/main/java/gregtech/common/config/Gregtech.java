@@ -3,6 +3,7 @@ package gregtech.common.config;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
+import gregtech.common.GTProxy;
 
 @Config(modid = Mods.Names.GREG_TECH, category = "gregtech", configSubDirectory = "GregTech", filename = "GregTech")
 @Config.LangKey("GT5U.gui.config.gregtech")
@@ -553,9 +554,9 @@ public class Gregtech {
             " - 'FortuneItem': Sets the drop to the new ore item and makes it affected by fortune"
                 + " - 'Item': Sets the drop to the new ore item" })
 
-        @Config.DefaultString("FortuneItem")
+        @Config.DefaultEnum("FortuneItem")
         @Config.RequiresMcRestart
-        public String setting;
+        public GTProxy.OreDropSystem setting = GTProxy.OreDropSystem.FortuneItem;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.pollution")
