@@ -19,6 +19,9 @@ import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
 
+import bartworks.common.configs.Configuration;
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -101,6 +104,15 @@ public final class MainMod {
     public static MainMod instance;
 
     public static BWNetwork BW_Network_instance = new BWNetwork();
+
+    static {
+        try{
+            ConfigurationManager.registerConfig(Configuration.class);
+        }
+         catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public MainMod() {
 

@@ -11,7 +11,7 @@ GT5U.gui.text.no_imprint=Missing imprint
 GT5U.gui.text.not_enough_length=Multiblock Too Short
 GT5U.gui.text.wrong_sievert_exactly=§7Wrong sievert. Requires exactly: %s §7Sv
 GT5U.gui.text.wrong_sievert_min=§7Wrong sievert. Requires at least: %s §7Sv
-
+GT5U.gui.config.mixins=Mixins
 itemGroup.bartworks=BartWorks Inter Temporal
 BW_Machinery_Casings.0.name=Nickel-Zinc Ferrite Block
 BW_Machinery_Casings.1.name=Transformer-Winding Block

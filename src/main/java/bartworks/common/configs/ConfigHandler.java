@@ -51,7 +51,6 @@ public class ConfigHandler {
     public static boolean GTppLogDisabler;
     public static boolean tooltips = true;
     public static boolean sharedItemStackTooltip = true;
-    public static boolean[] enabledPatches;
 
     public static byte maxTierRoss;
 
@@ -97,14 +96,6 @@ public class ConfigHandler {
         "Ultimate High Voltage", "Ultimate Extreme Voltage", "Ultimate Insane Voltage", "Ultimate Mega Voltage",
         "Ultimate Extended Mega Voltage", "Overpowered Voltage", "Maximum Voltage" };
     private static final String[] names = { "Generators", "Buffers", "Cables", "Machines" };
-
-    public static final String[] ASM_TRANSFORMER_DESCRIPTIONS = { "REMOVING RAIN FROM LAST MILLENNIUM (EXU)",
-        "REMOVING CREATURES FROM LAST MILLENNIUM (EXU)", "PATCHING THAUMCRAFT WAND PEDESTAL TO PREVENT VIS DUPLICATION",
-        "PATCHING CRAFTING MANAGER FOR CACHING RECIPES" };
-    public static final String[] ASM_TRANSFORMER_CLASSES = {
-        "com.rwtema.extrautils.worldgen.endoftime.WorldProviderEndOfTime",
-        "com.rwtema.extrautils.worldgen.endoftime.ChunkProviderEndOfTime", "thaumcraft.common.tiles.TileWandPedestal",
-        "net.minecraft.item.crafting.CraftingManager" };
 
     public ConfigHandler(Configuration C) {
         ConfigHandler.c = C;
@@ -228,11 +219,6 @@ public class ConfigHandler {
         APIConfigValues.debugLog = ConfigHandler.c
             .get("System", "Enable Debug Log", false, "Enables or Disables the debug log.")
             .getBoolean(false);
-
-        ConfigHandler.enabledPatches = new boolean[ASM_TRANSFORMER_CLASSES.length];
-        for (int i = 0; i < ASM_TRANSFORMER_CLASSES.length; i++) ConfigHandler.enabledPatches[i] = ConfigHandler.c
-            .get("ASM fixes", ASM_TRANSFORMER_DESCRIPTIONS[i] + " in class: " + ASM_TRANSFORMER_CLASSES[i], true)
-            .getBoolean(true);
 
         ConfigHandler.ross128BID = ConfigHandler.c
             .get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b")

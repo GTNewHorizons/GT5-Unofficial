@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import bartworks.common.configs.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +44,7 @@ public enum Mixin {
     CacheCraftingManagerRecipes(
         new Builder("Cache CraftingManager recipes").addMixinClasses("minecraft.CraftingManagerMixin")
             .addTargetedMod(VANILLA)
-            .setApplyIf(() -> ConfigHandler.enabledPatches[3])
+            .setApplyIf(() -> Configuration.mixins.enableCraftingManagerRecipeCaching)
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
     VanillaAccessors(new Builder("Adds various accessors")
