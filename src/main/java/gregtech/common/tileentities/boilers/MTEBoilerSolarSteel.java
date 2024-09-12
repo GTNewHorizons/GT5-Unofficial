@@ -7,7 +7,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
+import gregtech.common.config.MachineStats;
 
 public class MTEBoilerSolarSteel extends MTEBoilerSolar {
 
@@ -27,10 +27,10 @@ public class MTEBoilerSolarSteel extends MTEBoilerSolar {
     }
 
     protected void initBoilerStats() {
-        calcificationTicks = ConfigSteelSolarBoiler.calcificationTicks;
-        cooldownTicks = ConfigSteelSolarBoiler.cooldownTicks;
-        maxOutputPerSecond = ConfigSteelSolarBoiler.maxOutputPerSecond;
-        minOutputPerSecond = ConfigSteelSolarBoiler.minOutputPerSecond;
+        calcificationTicks = MachineStats.steelSolarBoiler.calcificationTicks;
+        cooldownTicks = MachineStats.steelSolarBoiler.cooldownTicks;
+        maxOutputPerSecond = MachineStats.steelSolarBoiler.maxOutputPerSecond;
+        minOutputPerSecond = MachineStats.steelSolarBoiler.minOutputPerSecond;
     }
 
     @Override
