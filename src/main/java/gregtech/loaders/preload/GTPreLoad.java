@@ -539,6 +539,14 @@ public class GTPreLoad {
         GTRecipeBuilder.onConfigLoad();
     }
 
+    /**
+     * Clamp value between 0 and 255
+     * @param value the value to clamp
+     * @return the clamped value
+     */
+    private static int sanitizeConfigInt(int value){
+        return Math.min(255, Math.max(0,value));
+    }
     public static void loadClientConfig() {
         Arrays.stream(Dyes.values())
             .filter(dye -> (dye != Dyes._NULL) && (dye.mIndex < 0))
@@ -546,19 +554,19 @@ public class GTPreLoad {
                 switch (dye.toString()
                     .toLowerCase()) {
                     case "cable_insulation" -> {
-                        dye.mRGBa[0] = (short) Client.colorModulation.cableInsulation.red;
-                        dye.mRGBa[1] = (short) Client.colorModulation.cableInsulation.green;
-                        dye.mRGBa[2] = (short) Client.colorModulation.cableInsulation.blue;
+                        dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.red);
+                        dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.green);
+                        dye.mRGBa[2] = (short) sanitizeConfigInt(Client.colorModulation.cableInsulation.blue);
                     }
                     case "construction_foam" -> {
-                        dye.mRGBa[0] = (short) Client.colorModulation.constructionFoam.red;
-                        dye.mRGBa[1] = (short) Client.colorModulation.constructionFoam.green;
-                        dye.mRGBa[2] = (short) Client.colorModulation.constructionFoam.blue;
+                        dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.constructionFoam.red);
+                        dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.constructionFoam.green);
+                        dye.mRGBa[2] = (short) sanitizeConfigInt(Client.colorModulation.constructionFoam.blue);
                     }
                     case "machine_metal" -> {
-                        dye.mRGBa[0] = (short) Client.colorModulation.machineMetal.red;
-                        dye.mRGBa[1] = (short) Client.colorModulation.machineMetal.green;
-                        dye.mRGBa[2] = (short) Client.colorModulation.machineMetal.blue;
+                        dye.mRGBa[0] = (short) sanitizeConfigInt(Client.colorModulation.machineMetal.red);
+                        dye.mRGBa[1] = (short) sanitizeConfigInt(Client.colorModulation.machineMetal.green);
+                        dye.mRGBa[2] = (short) sanitizeConfigInt(Client.colorModulation.machineMetal.blue);
                     }
                     default -> {
                         GT_FML_LOGGER.warn(
