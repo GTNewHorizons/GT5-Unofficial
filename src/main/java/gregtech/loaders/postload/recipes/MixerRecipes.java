@@ -446,7 +446,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 1))
             .itemOutputs(ItemList.Food_Chum.get(4))
             .fluidInputs(getFluidStack("potion.purpledrink", 750))
-            .fluidOutputs(getFluidStack("Sludge", 1000))
+            .fluidOutputs(getFluidStack("sludge", 1000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(24)
             .addTo(mixerRecipes);
