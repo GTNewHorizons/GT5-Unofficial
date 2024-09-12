@@ -13,12 +13,12 @@
 
 package bartworks.common.net;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.MainMod;
+import bartworks.common.configs.Configuration;
 import gregtech.api.net.GTPacketNew;
 import io.netty.buffer.ByteBuf;
 

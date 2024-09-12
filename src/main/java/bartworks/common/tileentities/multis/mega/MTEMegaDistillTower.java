@@ -27,7 +27,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -43,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;

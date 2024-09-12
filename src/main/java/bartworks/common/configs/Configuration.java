@@ -1,6 +1,7 @@
 package bartworks.common.configs;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
 @Config(modid = Mods.Names.BART_WORKS, filename = "bartworks")
@@ -29,16 +30,17 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.mixins")
     @Config.RequiresMcRestart
-    public static class Mixins{
+    public static class Mixins {
 
         @Config.Comment("if true, patches the crafting manager to cache recipes in class: net.minecraft.item.crafting.CraftingManager")
         @Config.DefaultBoolean(false)
-        public boolean enableCraftingManagerRecipeCaching=false;
+        public boolean enableCraftingManagerRecipeCaching = false;
     }
 
     @Config.LangKey("GT5U.gui.config.crossmod")
     @Config.RequiresMcRestart
-    public static class CrossModInteractions{
+    public static class CrossModInteractions {
+
         @Config.Comment("The Dim ID for Ross128b")
         @Config.DefaultInt(64)
         public int ross128BID;
@@ -74,7 +76,8 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.multiblocks")
     @Config.RequiresMcRestart
-    public static class Multiblocks{
+    public static class Multiblocks {
+
         @Config.Comment("This will set Up the Energy per LESU Cell")
         @Config.DefaultInt(1_000_000)
         public int energyPerCell;
@@ -94,8 +97,7 @@ public class Configuration {
         @Config.Comment({
             "This is a blacklist for the Void Miner, blacklisted ores will not enter the drop prize pool.",
             "Please fill in the Unique Identifier of Ore and connect Damage with a colon,",
-            "For example: gregtech:gt.blockores:32"
-        })
+            "For example: gregtech:gt.blockores:32" })
         @Config.DefaultStringList({})
         public String[] voidMinerBlacklist;
 
@@ -106,7 +108,8 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.system")
     @Config.RequiresMcRestart
-    public static class System{
+    public static class System {
+
         @Config.Comment("Enables the classic Mode (all recipes in normal machines are doable in MV")
         @Config.DefaultBoolean(false)
         public boolean classicMode;
@@ -142,7 +145,8 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.singleblocks")
     @Config.RequiresMcRestart
-    public static class SingleBlocks{
+    public static class SingleBlocks {
+
         @Config.Comment("mL Water per Sec for the StirlingPump")
         @Config.DefaultInt(150)
         public int mbWaterperSec;
@@ -150,7 +154,8 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.pollution")
     @Config.RequiresMcRestart
-    public static class Pollution{
+    public static class Pollution {
+
         @Config.Comment("How much should the Simple Stirling Water Pump produce pollution per second")
         @Config.DefaultInt(5)
         public int pollutionHeatedWaterPumpSecond;
@@ -163,7 +168,7 @@ public class Configuration {
     @Config.LangKey("GT5U.gui.config.ross_ruin")
     @Config.RequiresMcRestart
     @Config.LangKeyPattern(pattern = "GT5U.gui.config.ross_ruin.%cat.%field")
-    public static class RossRuinMetas{
+    public static class RossRuinMetas {
 
         @Config.Ignore()
         public static final byte maxTierRoss = 5;
@@ -174,17 +179,18 @@ public class Configuration {
         public HV hv = new HV();
         public EV ev = new EV();
 
-        public static class HighPressureSteam{
+        public static class HighPressureSteam {
+
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
-            @Config.DefaultIntList({5133, 5123})
+            @Config.DefaultIntList({ 5133, 5123 })
             public int[] buffers;
 
             @Config.Comment("MetaIDs of the GT machines for the cable slots")
-            @Config.DefaultIntList({5133, 5123})
+            @Config.DefaultIntList({ 5133, 5123 })
             public int[] cables;
 
             @Config.Comment("MetaIDs of the GT machines for the generator slots")
-            @Config.DefaultIntList({100,101,102,105})
+            @Config.DefaultIntList({ 100, 101, 102, 105 })
             public int[] generators;
 
             @Config.Comment("MetaIDs of the GT machines for the machine slots")
@@ -192,7 +198,8 @@ public class Configuration {
             public int[] machines;
         }
 
-        public static class LV{
+        public static class LV {
+
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
             @Config.DefaultIntList({ 161, 171, 181, 191 })
             public int[] buffers;
@@ -206,13 +213,14 @@ public class Configuration {
             public int[] generators;
 
             @Config.Comment("MetaIDs of the GT machines for the machine slots")
-            @Config.DefaultIntList({ 201, 211, 221, 231, 241, 251, 261, 271, 281, 291, 301, 311, 321, 331, 341, 351, 361, 371, 381, 391, 401, 411,
-                421, 431, 441, 451, 461, 471, 481, 491, 501, 511, 521, 531, 541, 551, 561, 571, 581, 591, 601, 611, 621,
-                631, 641, 651, 661, 671 })
+            @Config.DefaultIntList({ 201, 211, 221, 231, 241, 251, 261, 271, 281, 291, 301, 311, 321, 331, 341, 351,
+                361, 371, 381, 391, 401, 411, 421, 431, 441, 451, 461, 471, 481, 491, 501, 511, 521, 531, 541, 551, 561,
+                571, 581, 591, 601, 611, 621, 631, 641, 651, 661, 671 })
             public int[] machines;
         }
 
-        public static class MV{
+        public static class MV {
+
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
             @Config.DefaultIntList({ 162, 172, 182, 192 })
             public int[] buffers;
@@ -226,13 +234,14 @@ public class Configuration {
             public int[] generators;
 
             @Config.Comment("MetaIDs of the GT machines for the machine slots")
-            @Config.DefaultIntList({ 202, 212, 222, 232, 242, 252, 262, 272, 282, 292, 302, 312, 322, 332, 342, 352, 362, 372, 382, 392, 402, 412,
-                422, 432, 442, 452, 462, 472, 482, 492, 502, 512, 522, 532, 542, 552, 562, 572, 582, 592, 602, 612, 622,
-                632, 642, 652, 662, 672 })
+            @Config.DefaultIntList({ 202, 212, 222, 232, 242, 252, 262, 272, 282, 292, 302, 312, 322, 332, 342, 352,
+                362, 372, 382, 392, 402, 412, 422, 432, 442, 452, 462, 472, 482, 492, 502, 512, 522, 532, 542, 552, 562,
+                572, 582, 592, 602, 612, 622, 632, 642, 652, 662, 672 })
             public int[] machines;
         }
 
-        public static class HV{
+        public static class HV {
+
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
             @Config.DefaultIntList({ 163, 173, 183, 193 })
             public int[] buffers;
@@ -246,13 +255,14 @@ public class Configuration {
             public int[] generators;
 
             @Config.Comment("MetaIDs of the GT machines for the machine slots")
-            @Config.DefaultIntList( { 203, 213, 223, 233, 243, 253, 263, 273, 283, 293, 303, 313, 323, 333, 343, 353, 363, 373, 383, 393, 403, 413,
-                423, 433, 443, 453, 463, 473, 483, 493, 503, 513, 523, 533, 543, 553, 563, 573, 583, 593, 603, 613, 623,
-                633, 643, 653, 663, 673 })
+            @Config.DefaultIntList({ 203, 213, 223, 233, 243, 253, 263, 273, 283, 293, 303, 313, 323, 333, 343, 353,
+                363, 373, 383, 393, 403, 413, 423, 433, 443, 453, 463, 473, 483, 493, 503, 513, 523, 533, 543, 553, 563,
+                573, 583, 593, 603, 613, 623, 633, 643, 653, 663, 673 })
             public int[] machines;
         }
 
-        public static class EV{
+        public static class EV {
+
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
             @Config.DefaultIntList({ 164, 174, 184, 194 })
             public int[] buffers;
@@ -266,9 +276,9 @@ public class Configuration {
             public int[] generators;
 
             @Config.Comment("MetaIDs of the GT machines for the machine slots")
-            @Config.DefaultIntList({ 204, 214, 224, 234, 244, 254, 264, 274, 284, 294, 304, 314, 324, 334, 344, 354, 364, 374, 384, 394, 404, 414,
-                424, 434, 444, 454, 464, 474, 484, 494, 504, 514, 524, 534, 544, 554, 564, 574, 584, 594, 604, 614, 624,
-                634, 644, 654, 664, 674 })
+            @Config.DefaultIntList({ 204, 214, 224, 234, 244, 254, 264, 274, 284, 294, 304, 314, 324, 334, 344, 354,
+                364, 374, 384, 394, 404, 414, 424, 434, 444, 454, 464, 474, 484, 494, 504, 514, 524, 534, 544, 554, 564,
+                574, 584, 594, 604, 614, 624, 634, 644, 654, 664, 674 })
             public int[] machines;
         }
     }

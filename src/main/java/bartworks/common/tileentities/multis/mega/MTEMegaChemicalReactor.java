@@ -25,7 +25,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -40,6 +39,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
+import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;

@@ -173,7 +173,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerI;
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerII;
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerIII;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -188,6 +187,7 @@ import bartworks.common.blocks.BWBlocksGlass;
 import bartworks.common.blocks.BWBlocksGlass2;
 import bartworks.common.blocks.BWMachineBlockContainer;
 import bartworks.common.blocks.BWTileEntityContainer;
+import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.items.ItemCircuitProgrammer;
 import bartworks.common.items.ItemRockCutter;

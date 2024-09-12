@@ -32,7 +32,6 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -47,6 +46,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;

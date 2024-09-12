@@ -39,7 +39,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,6 +67,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
 import bartworks.client.renderer.EICPistonVisualizer;
+import bartworks.common.configs.Configuration;
 import bartworks.common.net.EICPacket;
 import bartworks.util.Coords;
 import cpw.mods.fml.relauncher.Side;

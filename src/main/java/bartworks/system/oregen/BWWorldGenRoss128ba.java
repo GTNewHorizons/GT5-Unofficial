@@ -22,11 +22,11 @@ import static gregtech.api.enums.Materials.Scheelite;
 import static gregtech.api.enums.Materials.Sphalerite;
 import static gregtech.api.enums.Materials.Tetrahedrite;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import bartworks.common.configs.Configuration;
 import bartworks.system.material.WerkstoffLoader;
 import bwcrossmod.galacticraft.planets.ross128ba.WorldProviderRoss128ba;
 import gregtech.api.interfaces.ISubTagContainer;

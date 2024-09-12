@@ -17,7 +17,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -44,6 +43,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
+import bartworks.common.configs.Configuration;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.util.BWTooltipReference;
 import bartworks.util.ConnectedBlocksChecker;
@@ -396,8 +396,9 @@ public class MTELESU extends MTEMultiBlockBase {
         }
 
         this.mEfficiency = this.getMaxEfficiency(null);
-        this.mStorage = Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() >= Long.MAX_VALUE - 1
-            || Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() < 0 ? Long.MAX_VALUE - 1
+        this.mStorage = Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size()
+            >= Long.MAX_VALUE - 1 || Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() < 0
+                ? Long.MAX_VALUE - 1
                 : Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;
         this.mProgresstime = 0;

@@ -18,7 +18,6 @@ import static net.minecraftforge.common.ChestGenHooks.PYRAMID_JUNGLE_CHEST;
 import java.security.SecureRandom;
 import java.util.Random;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -29,6 +28,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import bartworks.common.configs.Configuration;
 import bartworks.util.Pair;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

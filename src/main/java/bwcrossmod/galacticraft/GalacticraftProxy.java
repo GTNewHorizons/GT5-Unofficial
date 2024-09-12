@@ -13,10 +13,10 @@
 
 package bwcrossmod.galacticraft;
 
-import bartworks.common.configs.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
 import bartworks.API.SideReference;
+import bartworks.common.configs.Configuration;
 import bartworks.system.oregen.BWWorldGenRoss128b;
 import bartworks.system.oregen.BWWorldGenRoss128ba;
 import bwcrossmod.galacticraft.atmosphere.BWAtmosphereManager;

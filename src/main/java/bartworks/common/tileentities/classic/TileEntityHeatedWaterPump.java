@@ -16,7 +16,6 @@ package bartworks.common.tileentities.classic;
 import java.util.Arrays;
 import java.util.Optional;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -48,6 +47,7 @@ import bartworks.API.ITileDropsContent;
 import bartworks.API.ITileHasDifferentTextureSides;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
+import bartworks.common.configs.Configuration;
 import gregtech.api.util.GTUtility;
 import gregtech.common.Pollution;
 
@@ -167,7 +167,8 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
             .ifPresent(e -> {
                 if (e.getTotalWorldTime() % 20 == 0) {
                     Optional.ofNullable(e.getChunkFromBlockCoords(this.xCoord, this.zCoord))
-                        .ifPresent(c -> Pollution.addPollution(c, Configuration.pollution.pollutionHeatedWaterPumpSecond));
+                        .ifPresent(
+                            c -> Pollution.addPollution(c, Configuration.pollution.pollutionHeatedWaterPumpSecond));
                 }
             });
     }
@@ -333,7 +334,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
                 + GTUtility.formatNumbers(Configuration.singleBlocks.mbWaterperSec)
                 + String.format(
                     StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
-                Configuration.pollution.pollutionHeatedWaterPumpSecond),
+                    Configuration.pollution.pollutionHeatedWaterPumpSecond),
             StatCollector.translateToLocal("tooltip.tile.waterpump.2.name") };
     }
 
