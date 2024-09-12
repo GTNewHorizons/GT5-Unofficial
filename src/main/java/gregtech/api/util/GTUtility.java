@@ -505,7 +505,7 @@ public class GTUtility {
         if(l <= V[0]) return 0;
 
         // numberOfLeadingZeros is implemented in hardware by x86 LZCNT
-        // this operation should take only a couple of hardware cycles
+        // and is extremely efficient (takes only a couple of hardware cycles)
         // (64 - numberOfLeadingZeros(l - 1)) = ceil(log_2(l))
         int log2L = 64 - Long.numberOfLeadingZeros(l - 1);
 
