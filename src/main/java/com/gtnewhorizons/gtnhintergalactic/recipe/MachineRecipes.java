@@ -63,8 +63,6 @@ public class MachineRecipes implements Runnable {
         ItemStack highComputationStationT4_32 = ItemRefer.HiC_T4.get(32);
         ItemStack highComputationStationT5_32 = ItemRefer.HiC_T5.get(32);
         ItemStack metaStableOgScrew_64 = GGMaterial.metastableOganesson.get(OrePrefixes.screw, 64);
-        ItemStack shirabonGear_8 = GGMaterial.shirabon.get(OrePrefixes.gearGt, 8);
-        ItemStack shirabonGearSmall_16 = GGMaterial.shirabon.get(OrePrefixes.gearGtSmall, 16);
         ItemStack titaniumBetaCScrew_64 = GGMaterial.titaniumBetaC.get(OrePrefixes.screw, 64);
 
         ItemStack voidMiner = ItemRegistry.voidminer[2];
@@ -422,12 +420,13 @@ public class MachineRecipes implements Runnable {
                                 OrePrefixes.gearGt,
                                 MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
                                 8),
-                        shirabonGear_8,
+                        GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.MagMatter, 8),
                         GTOreDictUnificator.get(
                                 OrePrefixes.gearGtSmall,
                                 MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
                                 16),
-                        shirabonGearSmall_16, ItemList.Robot_Arm_UXV.get(8), ItemList.Conveyor_Module_UXV.get(16),
+                        GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.MagMatter, 16),
+                        ItemList.Robot_Arm_UXV.get(8), ItemList.Conveyor_Module_UXV.get(16),
                         highComputationStationT5_32, new ItemStack(quantumCircuit, 16),
                         GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 8),
                         GTOreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.Universium, 32) },
@@ -689,6 +688,8 @@ public class MachineRecipes implements Runnable {
                 1 * MINUTE,
                 (int) TierEU.RECIPE_UHV);
 
+        ItemStack t9Plate = GTModHandler.getModItem("GalacticraftAmunRa", "item.baseItem", 1, 15);
+
         // UEV
         TTRecipeAdder.addResearchableAssemblylineRecipe(
                 new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UHV.ordinal()),
@@ -699,7 +700,7 @@ public class MachineRecipes implements Runnable {
                 new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.CosmicNeutronium, 8),
                         ItemList.Robot_Arm_UEV.get(8), ItemList.Field_Generator_UEV.get(2),
                         new Object[] { OrePrefixes.circuit.get(Materials.Optical), 4 },
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
+                        GTUtility.copyAmount(32, t9Plate),
                         GTModHandler.getModItem("dreamcraft", "item.HeavyDutyRocketEngineTier4", 8),
                         ItemList.Sensor_UEV.get(8) },
                 new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.Quantium.getMolten(1440),
@@ -717,9 +718,7 @@ public class MachineRecipes implements Runnable {
                 4,
                 new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.CosmicNeutronium, 8),
                         ItemList.Robot_Arm_UIV.get(8), ItemList.Field_Generator_UIV.get(2),
-                        new ItemStack(pikoCircuit, 4),
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
+                        new ItemStack(pikoCircuit, 4), GTUtility.copyAmount(64, t9Plate),
                         GTModHandler.getModItem("dreamcraft", "item.HeavyDutyRocketEngineTier4", 16),
                         ItemList.Sensor_UIV.get(8) },
                 new FluidStack[] { new FluidStack(solderUEV, 5760), Materials.Quantium.getMolten(2880),
@@ -737,10 +736,8 @@ public class MachineRecipes implements Runnable {
                 8,
                 new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, MaterialsUEVplus.SpaceTime, 8),
                         ItemList.Robot_Arm_UMV.get(8), ItemList.Field_Generator_UMV.get(2),
-                        new ItemStack(quantumCircuit, 4),
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
+                        new ItemStack(quantumCircuit, 4), GTUtility.copyAmount(64, t9Plate),
+                        GTUtility.copyAmount(64, t9Plate),
                         GTModHandler.getModItem("dreamcraft", "item.HeavyDutyRocketEngineTier4", 32),
                         ItemList.Sensor_UMV.get(8) },
                 new FluidStack[] { new FluidStack(hypogenFluid, 576), new FluidStack(celestialTungstenFluid, 576),
@@ -758,14 +755,12 @@ public class MachineRecipes implements Runnable {
                 4,
                 new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, MaterialsUEVplus.Eternity, 8),
                         ItemList.Robot_Arm_UXV.get(8), ItemList.Field_Generator_UXV.get(2),
-                        new ItemStack(quantumCircuit, 8),
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
-                        GTModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier8", 64),
+                        new ItemStack(quantumCircuit, 8), GTUtility.copyAmount(64, t9Plate),
+                        GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate),
+                        GTUtility.copyAmount(64, t9Plate),
                         GTModHandler.getModItem("dreamcraft", "item.HeavyDutyRocketEngineTier4", 64),
                         ItemList.Sensor_UXV.get(8) },
-                new FluidStack[] { MaterialsUEVplus.Space.getFluid(576), MaterialsUEVplus.Universium.getFluid(576),
+                new FluidStack[] { MaterialsUEVplus.Space.getMolten(576), MaterialsUEVplus.Universium.getMolten(576),
                         new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512000) },
                 new ItemStack(IGItems.MiningDrones, 1, ItemMiningDrones.DroneTiers.UXV.ordinal()),
                 1 * MINUTE,
