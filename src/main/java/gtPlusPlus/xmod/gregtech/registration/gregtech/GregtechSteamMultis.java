@@ -40,17 +40,17 @@ public class GregtechSteamMultis {
             new MTESteamCentrifuge(
                 Controller_SteamCentrifugeMulti.ID,
                 "gtpp.multimachine.steam.centrifuge",
-                "Steam Centrifuge").getStackForm(1));
+                "Steam Separator").getStackForm(1));
         GregtechItemList.Controller_SteamWasherMulti.set(
-            new MTESteamWasher(Controller_SteamWasherMulti.ID, "gtpp.multimachine.steam.washer", "Steam Washer")
+            new MTESteamWasher(Controller_SteamWasherMulti.ID, "gtpp.multimachine.steam.washer", "Steam Purifier")
                 .getStackForm(1));
         GregtechItemList.Controller_SteamForgeHammerMulti.set(
             new MTESteamForgeHammer(
                 Controller_SteamForgeHammer.ID,
                 "gtpp.multimachine.steam.forge.hammer",
-                "Steam Forge Hammer").getStackForm(1));
+                "Steam Presser").getStackForm(1));
         GregtechItemList.Controller_SteamMixerMulti.set(
-            new MTESteamMixer(Controller_SteamMixerMulti.ID, "gtpp.multimachine.steam.mixer", "Steam Mixer")
+            new MTESteamMixer(Controller_SteamMixerMulti.ID, "gtpp.multimachine.steam.mixer", "Steam Blender")
                 .getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(

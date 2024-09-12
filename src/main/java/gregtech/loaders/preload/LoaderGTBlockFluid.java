@@ -1297,6 +1297,24 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononCrystalSolution, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("antimatter")
+            .withLocalizedName(MaterialsUEVplus.Antimatter.mLocalizedName)
+            .withStateAndTemperature(LIQUID, -1)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.Antimatter)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Antimatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("protomatter")
+            .withLocalizedName(MaterialsUEVplus.Protomatter.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 1)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.Protomatter)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
@@ -1927,33 +1945,33 @@ public class LoaderGTBlockFluid implements Runnable {
             .buildAndRegister()
             .registerPContainers(ItemList.Bottle_Cave_Johnsons_Grenade_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
 
-        GTFluidFactory.builder("potion.darkcoffee")
-            .withLocalizedName("Dark Coffee")
-            .withStateAndTemperature(LIQUID, 295)
-            .buildAndRegister()
-            .registerPContainers(ItemList.ThermosCan_Dark_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
-        GTFluidFactory.builder("potion.darkcafeaulait")
-            .withLocalizedName("Dark Cafe au lait")
-            .withStateAndTemperature(LIQUID, 295)
-            .buildAndRegister()
-            .registerPContainers(ItemList.ThermosCan_Dark_Cafe_au_lait.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.coffee")
             .withLocalizedName("Coffee")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .registerPContainers(ItemList.ThermosCan_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
-        GTFluidFactory.builder("potion.cafeaulait")
-            .withLocalizedName("Cafe au lait")
+        GTFluidFactory.builder("potion.sweetcoffee")
+            .withLocalizedName("Sweet Coffee")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .registerPContainers(ItemList.ThermosCan_Cafe_au_lait.get(1L), ItemList.ThermosCan_Empty.get(1L));
-        GTFluidFactory.builder("potion.laitaucafe")
-            .withLocalizedName("Lait au cafe")
+            .registerPContainers(ItemList.ThermosCan_Sweet_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GTFluidFactory.builder("potion.Latte")
+            .withLocalizedName("Latte")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .registerPContainers(ItemList.ThermosCan_Lait_au_cafe.get(1L), ItemList.ThermosCan_Empty.get(1L));
+            .registerPContainers(ItemList.ThermosCan_Latte.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GTFluidFactory.builder("potion.sweetlatte")
+            .withLocalizedName("Sweet Latte")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .registerPContainers(ItemList.ThermosCan_Sweet_Latte.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GTFluidFactory.builder("potion.sweetjesuslatte")
+            .withLocalizedName("Sweet Jesus Latte")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .registerPContainers(ItemList.ThermosCan_Sweet_Jesus_Latte.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.darkchocolatemilk")
-            .withLocalizedName("Bitter Chocolate Milk")
+            .withLocalizedName("Dark Chocolate Milk")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .registerPContainers(ItemList.ThermosCan_Dark_Chocolate_Milk.get(1L), ItemList.ThermosCan_Empty.get(1L));
