@@ -17,6 +17,8 @@ public class Configuration {
 
     public static final Pollution pollution = new Pollution();
 
+    public static final RossRuinMetas rossRuinMetas = new RossRuinMetas();
+
     @Config.LangKey("GT5U.gui.config.mixins")
     @Config.RequiresMcRestart
     public static class Mixins{
@@ -139,5 +141,115 @@ public class Configuration {
         @Config.Comment("How much should the MBF produce pollution per tick per ingot. Then it'll be multiplied by the amount of ingots done in parallel")
         @Config.DefaultInt(400)
         public int basePollutionMBFSecond;
+    }
+
+    public static class RossRuinMetas{
+
+        @Config.Ignore()
+        public static final byte maxTierRoss = 5;
+
+        public HighPressureSteam highPressureSteam = new HighPressureSteam();
+        public LV lv = new LV();
+        public MV mv = new MV();
+        public HV hv = new HV();
+        public EV ev = new EV();
+
+        public static class HighPressureSteam{
+            @Config.Comment("MetaIDs of the GT machines for the buffer slots")
+            @Config.DefaultIntList({5133, 5123})
+            public int[] buffers;
+
+            @Config.Comment("MetaIDs of the GT machines for the cable slots")
+            @Config.DefaultIntList({5133, 5123})
+            public int[] cables;
+
+            @Config.Comment("MetaIDs of the GT machines for the generator slots")
+            @Config.DefaultIntList({100,101,102,105})
+            public int[] generators;
+
+            @Config.Comment("MetaIDs of the GT machines for the machine slots")
+            @Config.DefaultIntList({ 103, 104, 106, 107, 109, 110, 112, 113, 115, 116, 118, 119 })
+            public int[] machines;
+        }
+
+        public static class LV{
+            @Config.Comment("MetaIDs of the GT machines for the buffer slots")
+            @Config.DefaultIntList({ 161, 171, 181, 191 })
+            public int[] buffers;
+
+            @Config.Comment("MetaIDs of the GT machines for the cable slots")
+            @Config.DefaultIntList({ 1210, 1230, 1250, 1270, 1290 })
+            public int[] cables;
+
+            @Config.Comment("MetaIDs of the GT machines for the generator slots")
+            @Config.DefaultIntList({ 1110, 1115, 1120, 1127 })
+            public int[] generators;
+
+            @Config.Comment("MetaIDs of the GT machines for the machine slots")
+            @Config.DefaultIntList({ 201, 211, 221, 231, 241, 251, 261, 271, 281, 291, 301, 311, 321, 331, 341, 351, 361, 371, 381, 391, 401, 411,
+                421, 431, 441, 451, 461, 471, 481, 491, 501, 511, 521, 531, 541, 551, 561, 571, 581, 591, 601, 611, 621,
+                631, 641, 651, 661, 671 })
+            public int[] machines;
+        }
+
+        public static class MV{
+            @Config.Comment("MetaIDs of the GT machines for the buffer slots")
+            @Config.DefaultIntList({ 162, 172, 182, 192 })
+            public int[] buffers;
+
+            @Config.Comment("MetaIDs of the GT machines for the cable slots")
+            @Config.DefaultIntList({ 1310, 1330, 1350, 1370, 1390 })
+            public int[] cables;
+
+            @Config.Comment("MetaIDs of the GT machines for the generator slots")
+            @Config.DefaultIntList({ 1111, 12726, 1116, 1121, 1128 })
+            public int[] generators;
+
+            @Config.Comment("MetaIDs of the GT machines for the machine slots")
+            @Config.DefaultIntList({ 202, 212, 222, 232, 242, 252, 262, 272, 282, 292, 302, 312, 322, 332, 342, 352, 362, 372, 382, 392, 402, 412,
+                422, 432, 442, 452, 462, 472, 482, 492, 502, 512, 522, 532, 542, 552, 562, 572, 582, 592, 602, 612, 622,
+                632, 642, 652, 662, 672 })
+            public int[] machines;
+        }
+
+        public static class HV{
+            @Config.Comment("MetaIDs of the GT machines for the buffer slots")
+            @Config.DefaultIntList({ 163, 173, 183, 193 })
+            public int[] buffers;
+
+            @Config.Comment("MetaIDs of the GT machines for the cable slots")
+            @Config.DefaultIntList({ 1410, 1430, 1450, 1470, 1490 })
+            public int[] cables;
+
+            @Config.Comment("MetaIDs of the GT machines for the generator slots")
+            @Config.DefaultIntList({ 1112, 12727, 1117, 1122, 1129 })
+            public int[] generators;
+
+            @Config.Comment("MetaIDs of the GT machines for the machine slots")
+            @Config.DefaultIntList( { 203, 213, 223, 233, 243, 253, 263, 273, 283, 293, 303, 313, 323, 333, 343, 353, 363, 373, 383, 393, 403, 413,
+                423, 433, 443, 453, 463, 473, 483, 493, 503, 513, 523, 533, 543, 553, 563, 573, 583, 593, 603, 613, 623,
+                633, 643, 653, 663, 673 })
+            public int[] machines;
+        }
+
+        public static class EV{
+            @Config.Comment("MetaIDs of the GT machines for the buffer slots")
+            @Config.DefaultIntList({ 164, 174, 184, 194 })
+            public int[] buffers;
+
+            @Config.Comment("MetaIDs of the GT machines for the cable slots")
+            @Config.DefaultIntList({ 1510, 1530, 1550, 1570, 1590 })
+            public int[] cables;
+
+            @Config.Comment("MetaIDs of the GT machines for the generator slots")
+            @Config.DefaultIntList({ 12728, 1190, 1130, 12685 })
+            public int[] generators;
+
+            @Config.Comment("MetaIDs of the GT machines for the machine slots")
+            @Config.DefaultIntList({ 204, 214, 224, 234, 244, 254, 264, 274, 284, 294, 304, 314, 324, 334, 344, 354, 364, 374, 384, 394, 404, 414,
+                424, 434, 444, 454, 464, 474, 484, 494, 504, 514, 524, 534, 544, 554, 564, 574, 584, 594, 604, 614, 624,
+                634, 644, 654, 664, 674 })
+            public int[] machines;
+        }
     }
 }

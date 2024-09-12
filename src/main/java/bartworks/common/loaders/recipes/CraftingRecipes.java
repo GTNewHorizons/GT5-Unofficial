@@ -37,7 +37,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.common.configs.ConfigHandler;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.loaders.RecipeLoader;

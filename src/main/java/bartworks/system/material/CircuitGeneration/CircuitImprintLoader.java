@@ -36,7 +36,6 @@ import com.google.common.collect.HashBiMap;
 import bartworks.API.recipe.BWNBTDependantCraftingRecipe;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.ASM.BWCoreStaticReplacementMethodes;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import bartworks.util.Pair;

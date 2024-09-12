@@ -188,7 +188,6 @@ import bartworks.common.blocks.BWBlocksGlass;
 import bartworks.common.blocks.BWBlocksGlass2;
 import bartworks.common.blocks.BWMachineBlockContainer;
 import bartworks.common.blocks.BWTileEntityContainer;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.items.ItemCircuitProgrammer;
 import bartworks.common.items.ItemRockCutter;

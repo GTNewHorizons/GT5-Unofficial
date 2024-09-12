@@ -96,7 +96,6 @@ import bartworks.API.SideReference;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
 import bartworks.client.renderer.BWBlockOreRenderer;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.system.material.CircuitGeneration.BWCircuitsLoader;
 import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;

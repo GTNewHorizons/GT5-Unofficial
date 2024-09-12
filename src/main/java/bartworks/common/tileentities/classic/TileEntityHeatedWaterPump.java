@@ -48,7 +48,6 @@ import bartworks.API.ITileDropsContent;
 import bartworks.API.ITileHasDifferentTextureSides;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
-import bartworks.common.configs.ConfigHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.Pollution;
 

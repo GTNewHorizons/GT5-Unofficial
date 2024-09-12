@@ -20,7 +20,6 @@ import java.util.Arrays;
 import bartworks.common.configs.Configuration;
 import net.minecraft.util.ResourceLocation;
 
-import bartworks.common.configs.ConfigHandler;
 import bwcrossmod.BartWorksCrossmod;
 import bwcrossmod.galacticraft.UniversalTeleportType;
 import bwcrossmod.galacticraft.planets.ross128b.WorldProviderRoss128b;

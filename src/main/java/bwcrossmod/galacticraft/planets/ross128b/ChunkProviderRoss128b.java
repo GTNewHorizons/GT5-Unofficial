@@ -38,7 +38,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-import bartworks.common.configs.ConfigHandler;
 import bartworks.system.oregen.BWWordGenerator;
 import bartworks.system.worldgen.MapGenRuins;
 import bwcrossmod.thaumcraft.util.ThaumcraftHandler;

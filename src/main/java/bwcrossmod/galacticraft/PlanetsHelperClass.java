@@ -16,7 +16,6 @@ package bwcrossmod.galacticraft;
 import bartworks.common.configs.Configuration;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-import bartworks.common.configs.ConfigHandler;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;

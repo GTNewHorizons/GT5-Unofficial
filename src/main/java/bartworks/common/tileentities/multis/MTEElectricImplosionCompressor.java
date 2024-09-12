@@ -68,7 +68,6 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
 import bartworks.client.renderer.EICPistonVisualizer;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.common.net.EICPacket;
 import bartworks.util.Coords;
 import cpw.mods.fml.relauncher.Side;

@@ -36,7 +36,6 @@ import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
 import bartworks.client.textures.PrefixTextureLinker;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.loaders.ArtificialMicaLine;
 import bartworks.common.loaders.BioCultureLoader;

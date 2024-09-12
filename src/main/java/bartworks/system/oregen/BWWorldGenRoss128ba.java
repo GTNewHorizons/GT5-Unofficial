@@ -27,7 +27,6 @@ import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import bartworks.common.configs.ConfigHandler;
 import bartworks.system.material.WerkstoffLoader;
 import bwcrossmod.galacticraft.planets.ross128ba.WorldProviderRoss128ba;
 import gregtech.api.interfaces.ISubTagContainer;

@@ -43,7 +43,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.common.configs.ConfigHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;

@@ -47,7 +47,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.util.BWUtil;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;

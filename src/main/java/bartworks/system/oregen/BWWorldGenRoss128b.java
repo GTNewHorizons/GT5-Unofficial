@@ -30,7 +30,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import bartworks.common.configs.ConfigHandler;
 import bartworks.system.material.WerkstoffLoader;
 import bwcrossmod.galacticraft.planets.ross128b.WorldProviderRoss128b;
 import gregtech.api.interfaces.ISubTagContainer;

@@ -57,7 +57,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.API.SideReference;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.net.RendererPacket;
