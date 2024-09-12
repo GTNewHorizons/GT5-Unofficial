@@ -209,6 +209,8 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
+    private static double LOG4 = Math.log(4);
+
 
     static {
         GregTechAPI.sItemStackMappings.add(sFilledContainerToData);
@@ -500,9 +502,10 @@ public class GTUtility {
     }
 
     public static byte getTier(long l) {
-        byte i = -1;
-        while (++i < V.length) if (l <= V[i]) return i;
-        return (byte) (V.length - 1);
+        if(l > V[14]) {
+            return 15;
+        }
+        return (byte)Math.ceil(Math.log(Math.max(l,8) / 8.0) / LOG4);
     }
 
     public static long getAmperageForTier(long voltage, byte tier) {
