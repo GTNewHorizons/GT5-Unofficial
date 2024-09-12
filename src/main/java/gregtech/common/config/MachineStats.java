@@ -95,7 +95,7 @@ public class MachineStats {
         public boolean disableMaintenanceChecks;
 
         @Config.Comment("If true, allows for multiple eggs on the magical energy absorber.")
-        @Config.DefaultBoolean(false)
+        @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean allowMultipleEggs;
 
