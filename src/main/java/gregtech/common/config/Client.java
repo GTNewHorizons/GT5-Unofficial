@@ -4,8 +4,6 @@ import static gregtech.api.recipe.RecipeCategorySetting.ENABLE;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
 
-import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
 
@@ -44,7 +42,8 @@ public class Client {
         public MachineMetal machineMetal = new MachineMetal();
 
         @Config.LangKey("GT5U.gui.config.client.color_modulation.cable_insulation")
-        public static class CableInsulation{
+        public static class CableInsulation {
+
             @Config.DefaultInt(64)
             public int red;
 
@@ -56,7 +55,7 @@ public class Client {
         }
 
         @Config.LangKey("GT5U.gui.config.client.color_modulation.construction_foam")
-        public static class ConstructionFoam{
+        public static class ConstructionFoam {
 
             @Config.DefaultInt(64)
             public int red;
@@ -69,7 +68,7 @@ public class Client {
         }
 
         @Config.LangKey("GT5U.gui.config.client.color_modulation.machine_metal")
-        public static class MachineMetal{
+        public static class MachineMetal {
 
             @Config.DefaultInt(210)
             public int red;

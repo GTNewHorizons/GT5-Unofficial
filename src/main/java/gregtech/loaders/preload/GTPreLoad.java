@@ -40,7 +40,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTProxy;
 import gregtech.common.config.Client;
 import gregtech.common.config.Gregtech;
 import gregtech.common.config.MachineStats;
@@ -518,7 +517,6 @@ public class GTPreLoad {
         // ore_drop_behavior
         GTMod.gregtechproxy.oreDropSystem = Gregtech.oreDropBehavior.setting;
 
-
         // features
         GTMod.gregtechproxy.mUpgradeCount = Math.min(64, Math.max(1, Gregtech.features.upgradeStackSize));
         for (OrePrefixes tPrefix : OrePrefixes.values()) {
@@ -541,12 +539,14 @@ public class GTPreLoad {
 
     /**
      * Clamp value between 0 and 255
+     * 
      * @param value the value to clamp
      * @return the clamped value
      */
-    private static int sanitizeConfigInt(int value){
-        return Math.min(255, Math.max(0,value));
+    private static int sanitizeConfigInt(int value) {
+        return Math.min(255, Math.max(0, value));
     }
+
     public static void loadClientConfig() {
         Arrays.stream(Dyes.values())
             .filter(dye -> (dye != Dyes._NULL) && (dye.mIndex < 0))

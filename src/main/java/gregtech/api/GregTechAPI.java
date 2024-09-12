@@ -56,7 +56,6 @@ import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
-import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTCreativeTab;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
