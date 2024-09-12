@@ -40,6 +40,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -57,6 +58,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.render.TileEntityLaserBeacon;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -72,7 +74,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private int currentRadius = MAX_RADIUS;
     private int xDrill, yDrill, zDrill;
     private int xStart, yStart, zStart;
-    private int tier = 0;
+    private int fortuneTier = 0;
     private boolean isStartInitialized = false;
     private boolean hasFinished = true;
     private boolean isWaiting = false;
@@ -84,7 +86,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     public IStructureDefinition<MTEMeteorMiner> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEMeteorMiner>builder()
-            // spotless:off
+                // spotless:off
                 .addShape(STRUCTURE_PIECE_MAIN, (transpose(new String[][] {
                             {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         D         ","        D D        ","         D         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
                             {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","         D         ","        D D        ","       D   D       ","        D D        ","         D         ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
@@ -107,36 +109,36 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                             {"         E         ","        E E        ","       E   E       ","       E   E       ","       E   E       ","      E     E      ","     EE     EE     ","  EEE         EEE  "," E               E ","E                 E"," E               E ","  EEE         EEE  ","     EE     EE     ","      E     E      ","       E   E       ","       E   E       ","       E   E       ","        E E        ","         E         "}
                         })))
                 .addShape(STRUCTURE_PIECE_TIER2, (transpose(new String[][] {
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         I         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         b         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         b         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        ebe        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        ebe        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        ebe        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        ece        ","       ecbce       ","        ece        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        ece        ","       ecbce       ","        ece        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        ccc        ","       ecbce       ","        ccc        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","         e         ","         e         ","        c c        ","      ee b ee      ","        c c        ","         e         ","         e         ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        heh        ","       hc ch       ","      ee b ee      ","       hc ch       ","        heh        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","                   ","        heh        ","       h c h       ","      h c c h      ","      ec b ce      ","      h c c h      ","       h c h       ","        heh        ","                   ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","         e         ","        aea        ","       e c e       ","      a     a      ","     eec b cee     ","      a     a      ","       e c e       ","        aea        ","         e         ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","                   ","         e         ","        a a        ","       e c e       ","      a     a      ","     e c b c e     ","      a     a      ","       e c e       ","        a a        ","         e         ","                   ","                   ","                   ","                   ","                   "},
-                            {"                   ","                   ","                   ","                   ","         e         ","         e         ","       ea ae       ","      ee   ee      ","      a     a      ","    ee       ee    ","      a     a      ","      ee   ee      ","       ea ae       ","         e         ","         e         ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         G         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         B         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         B         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        eBe        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        eBe        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        eBe        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        ece        ","       ecBce       ","        ece        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        ece        ","       ecBce       ","        ece        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        ccc        ","       ecBce       ","        ccc        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","         e         ","         e         ","        c c        ","      ee B ee      ","        c c        ","         e         ","         e         ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","         e         ","        heh        ","       hc ch       ","      ee B ee      ","       hc ch       ","        heh        ","         e         ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","                   ","        heh        ","       h c h       ","      h c c h      ","      ec B ce      ","      h c c h      ","       h c h       ","        heh        ","                   ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","         e         ","        AeA        ","       e c e       ","      A     A      ","     eec B cee     ","      A     A      ","       e c e       ","        AeA        ","         e         ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","                   ","         e         ","        A A        ","       e c e       ","      A     A      ","     e c B c e     ","      A     A      ","       e c e       ","        A A        ","         e         ","                   ","                   ","                   ","                   ","                   "},
+                            {"                   ","                   ","                   ","                   ","         e         ","         e         ","       eA Ae       ","      ee   ee      ","      A     A      ","    ee       ee    ","      A     A      ","      ee   ee      ","       eA Ae       ","         e         ","         e         ","                   ","                   ","                   ","                   "},
                             {"                   ","                   ","                   ","         ~         ","       dd dd       ","      d     d      ","     d  fff  d     ","    d  f   f  d    ","    d f     f d    ","   e  f     f  e   ","    d f     f d    ","    d  f   f  d    ","     d  fff  d     ","      d     d      ","       dd dd       ","         e         ","                   ","                   ","                   "},
-                            {"                   ","                   ","         j         ","        e e        ","                   ","                   ","                   ","                   ","   e           e   ","  d             d  ","   e           e   ","                   ","                   ","                   ","                   ","        e e        ","         d         ","                   ","                   "},
+                            {"                   ","                   ","         d         ","        e e        ","                   ","                   ","                   ","                   ","   e           e   ","  d             d  ","   e           e   ","                   ","                   ","                   ","                   ","        e e        ","         d         ","                   ","                   "},
                             {"                   ","         d         ","        d d        ","      ggg ggg      ","     gg     gg     ","    gg       gg    ","   gg         gg   ","   g           g   ","  dg           gd  "," d               d ","  dg           gd  ","   g           g   ","   gg         gg   ","    gg       gg    ","     gg     gg     ","      ggg ggg      ","        d d        ","         d         ","                   "},
-                            {"         d         ","        i i        ","       d   d       ","                   ","                   ","                   ","                   ","  d             d  "," d               d ","d                 d"," d               d ","  d             d  ","                   ","                   ","                   ","                   ","       d   d       ","        d d        ","         d         "},
-                            {"         d         ","        i i        ","       d   d       ","                   ","                   ","                   ","                   ","  d             d  "," d               d ","d                 d"," d               d ","  d             d  ","                   ","                   ","                   ","                   ","       d   d       ","        d d        ","         d         "},
-                            {"         d         ","        i i        ","                   ","                   ","                   ","                   ","                   ","                   "," d               d ","d                 d"," d               d ","                   ","                   ","                   ","                   ","                   ","                   ","        d d        ","         d         "},
+                            {"         d         ","        j j        ","       d   d       ","                   ","                   ","                   ","                   ","  d             d  "," d               d ","d                 d"," d               d ","  d             d  ","                   ","                   ","                   ","                   ","       d   d       ","        d d        ","         d         "},
+                            {"         d         ","        j j        ","       d   d       ","                   ","                   ","                   ","                   ","  d             d  "," d               d ","d                 d"," d               d ","  d             d  ","                   ","                   ","                   ","                   ","       d   d       ","        d d        ","         d         "},
+                            {"         d         ","        j j        ","                   ","                   ","                   ","                   ","                   ","                   "," d               d ","d                 d"," d               d ","                   ","                   ","                   ","                   ","                   ","                   ","        d d        ","         d         "},
                             {"         d         ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","d                 d","                   ","                   ","                   ","                   ","                   ","                   ","                   ","                   ","         d         "}
                         })))
                 // spotless:on
                 .addElement('A', Glasses.chainAllGlasses())
-                .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 15))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 5))
+                .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 15)) // Superconducting Coil
+                .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 5)) // Naquadah Coil
                 .addElement('D', ofFrame(Materials.StainlessSteel))
-                .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
-                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
+                .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6)) // Structural Solar Casings
+                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8)) // Thermally Insulated Casing
                 .addElement('G', ofBlock(GregTechAPI.sLaserBeaconRender, 0))
                 .addElement(
                     'H',
@@ -152,11 +154,24 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                     buildHatchAdder(MTEMeteorMiner.class)
                         .atLeast(ImmutableMap.of(InputBus.withAdder(MTEMeteorMiner::addInjector), 1))
                         .casingIndex(TAE.getIndexFromPage(1, 10))
-                        .dot(1)
+                        .dot(2)
                         .buildAndChain(
                             onElementPass(
                                 MTEMeteorMiner::onCasingAdded,
                                 ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
+                .addElement('c', ofBlock(GregTechAPI.sBlockCasings4, 7)) // Fusion Coil Block
+                .addElement('d', ofBlock(GregTechAPI.sBlockCasings8, 2)) // Mining Neutronium Casing
+                .addElement('e', ofBlock(GregTechAPI.sBlockCasings8, 3)) // Mining Black Plutonium Casing
+                .addElement('f', ofBlock(GregTechAPI.sBlockCasings9, 11)) // Heat-Resistant Trinium Plated Casing
+                .addElement('g', ofFrame(Materials.Neutronium)) // Neutronium Frame
+                .addElement('h', ofFrame(Materials.BlackPlutonium)) // Black Plutonium Frame
+                .addElement(
+                    'j',
+                    buildHatchAdder(MTEMeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
+                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(2))
+                        .dot(4)
+                        .buildAndChain(
+                            onElementPass(MTEMeteorMiner::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 2))))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -212,13 +227,17 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 9, 13, 7);
+        if (stackSize.stackSize < 2) {
+            buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 9, 13, 7);
+        } else buildPiece(STRUCTURE_PIECE_TIER2, stackSize, hintsOnly, 9, 15, 3);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 9, 13, 7, elementBudget, env, false, true);
+        return stackSize.stackSize < 2
+            ? survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 9, 13, 7, elementBudget, env, false, true)
+            : survivialBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, 9, 15, 3, elementBudget, env, false, true);
     }
 
     @Override
@@ -294,7 +313,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         this.setStartCoords();
         if (w.getTileEntity(
             xStart,
-            getBaseMetaTileEntity().getYCoord() + 10,
+            getBaseMetaTileEntity().getYCoord() + (this.multiTier == 1 ? 10 : 15),
             zStart) instanceof TileEntityLaserBeacon laser) {
             renderer = laser;
             renderer.setRotationFields(getDirection(), getRotation(), getFlip());
@@ -323,13 +342,20 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         aCasingAmount = 0;
         this.multiTier = 0;
+        if (aStack != null) {
+            if (checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7)) this.multiTier = getMultiTier(aStack);
+            if (checkPiece(STRUCTURE_PIECE_TIER2, 9, 15, 3)) this.multiTier = getMultiTier(aStack);
+        }
+        if (mEnergyHatches.isEmpty() || (mInputBusses.isEmpty() && this.multiTier == 1)
+            || mMaintenanceHatches.size() != 1
+            || !findLaserRenderer(getBaseMetaTileEntity().getWorld())) return false;
+        return this.multiTier > 0;
+    }
 
-
-
-        return checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7) && !mEnergyHatches.isEmpty()
-            && !mInputBusses.isEmpty()
-            && mMaintenanceHatches.size() == 1
-            && findLaserRenderer(getBaseMetaTileEntity().getWorld());
+    private int getMultiTier(ItemStack inventory) {
+        if (!(inventory != null)) return 0;
+        return inventory.isItemEqual(ItemList.MeteorMinerSchematic2.get(1)) ? 2
+            : inventory.isItemEqual(ItemList.MeteorMinerSchematic1.get(1)) ? 1 : 0;
     }
 
     @Override
@@ -363,7 +389,11 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         return zDrill;
     }
 
-    private void setTier() {
+    private int getLaserToEndHeight() {
+        return (this.multiTier == 1 ? 3 : 0);
+    }
+
+    private void setFortuneTier() {
         if (!mInputBusses.isEmpty()) {
             Optional<ItemStack> input = Optional.ofNullable(
                 mInputBusses.get(0)
@@ -372,12 +402,12 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             if (input.isPresent()) {
                 String name = input.get()
                     .getDisplayName();
-                this.tier = name.equals("Terra Shatterer") ? 3
+                this.fortuneTier = name.equals("Terra Shatterer") ? 3
                     : name.equals("Pickaxe of the Core") ? 2 : name.equals("Bound Pickaxe") ? 1 : 0;
                 return;
             }
         }
-        this.tier = 0;
+        this.fortuneTier = 0;
     }
 
     @Override
@@ -394,6 +424,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         aNBT.setBoolean("hasFinished", hasFinished);
         aNBT.setBoolean("isWaiting", isWaiting);
         aNBT.setBoolean("stopAllRendering", stopAllRendering);
+        aNBT.setInteger("multiTier", multiTier);
     }
 
     @Override
@@ -410,6 +441,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         hasFinished = aNBT.getBoolean("hasFinished");
         isWaiting = aNBT.getBoolean("isWaiting");
         stopAllRendering = aNBT.getBoolean("stopAllRendering");
+        multiTier = aNBT.getInteger("multiTier");
     }
 
     private void reset() {
@@ -429,6 +461,10 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
+        if (this.multiTier != this.getMultiTier(mInventory[1])) {
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return SimpleCheckRecipeResult.ofFailure("missing_schematic");
+        }
         if (renderer != null) {
             renderer.setColors(1, 0, 0);
         }
@@ -451,8 +487,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
         if (!hasFinished) {
             renderer.setShouldRender(true);
-            renderer.setRange((double) this.currentRadius);
-            this.setTier();
+            renderer.setRange((double) (this.currentRadius + 32.5 + this.getLaserToEndHeight()));
+            this.setFortuneTier();
             this.startMining(this.xDrill, this.yDrill);
             mOutputItems = res.toArray(new ItemStack[0]);
             res.clear();
@@ -496,7 +532,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                             currentY,
                             currentZ,
                             blockMeta,
-                            this.tier));
+                            this.multiTier == 1 ? this.fortuneTier : 3));
                     getBaseMetaTileEntity().getWorld()
                         .setBlockToAir(currentX, currentY, currentZ);
                 }
@@ -522,13 +558,15 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private void setStartCoords() {
         ForgeDirection facing = getBaseMetaTileEntity().getBackFacing();
         if (facing == ForgeDirection.NORTH || facing == ForgeDirection.SOUTH) {
-            xStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
-            zStart = 2 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
+            xStart = getBaseMetaTileEntity().getXCoord();
+            zStart = (this.multiTier == 1 ? 2 : 6) * getExtendedFacing().getRelativeBackInWorld().offsetZ
+                + getBaseMetaTileEntity().getZCoord();
         } else {
-            xStart = 2 * getExtendedFacing().getRelativeBackInWorld().offsetX + getBaseMetaTileEntity().getXCoord();
-            zStart = 0 * getExtendedFacing().getRelativeBackInWorld().offsetZ + getBaseMetaTileEntity().getZCoord();
+            xStart = (this.multiTier == 1 ? 2 : 6) * getExtendedFacing().getRelativeBackInWorld().offsetX
+                + getBaseMetaTileEntity().getXCoord();
+            zStart = getBaseMetaTileEntity().getZCoord();
         }
-        yStart = 45 + getBaseMetaTileEntity().getYCoord();
+        yStart = (this.multiTier == 1 ? 45 : 47) + getBaseMetaTileEntity().getYCoord();
     }
 
     private void setReady() {
