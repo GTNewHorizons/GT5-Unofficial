@@ -34,17 +34,52 @@ public class Client {
     @Config.LangKey("GT5U.gui.config.client.color_modulation")
     public static class ColorModulation {
 
-        @Config.Comment("hex value for the cable insulation color modulation.")
-        @Config.DefaultString("#404040")
-        public String cableInsulation;
+        @Config.Comment("RGB values for the cable insulation color modulation.")
+        public CableInsulation cableInsulation = new CableInsulation();
 
-        @Config.Comment("hex value for the construction foam color modulation.")
-        @Config.DefaultString("#404040")
-        public String constructionFoam;
+        @Config.Comment("RGB values for the construction foam color modulation.")
+        public ConstructionFoam constructionFoam = new ConstructionFoam();
 
-        @Config.Comment("hex value for the machine metal color modulation.")
-        @Config.DefaultString("#D2DCFF")
-        public String machineMetal;
+        @Config.Comment("RGB values for the machine metal color modulation (default GUI color).")
+        public MachineMetal machineMetal = new MachineMetal();
+
+        @Config.LangKey("GT5U.gui.config.client.color_modulation.cable_insulation")
+        public static class CableInsulation{
+            @Config.DefaultInt(64)
+            public int red;
+
+            @Config.DefaultInt(64)
+            public int green;
+
+            @Config.DefaultInt(64)
+            public int blue;
+        }
+
+        @Config.LangKey("GT5U.gui.config.client.color_modulation.construction_foam")
+        public static class ConstructionFoam{
+
+            @Config.DefaultInt(64)
+            public int red;
+
+            @Config.DefaultInt(64)
+            public int green;
+
+            @Config.DefaultInt(64)
+            public int blue;
+        }
+
+        @Config.LangKey("GT5U.gui.config.client.color_modulation.machine_metal")
+        public static class MachineMetal{
+
+            @Config.DefaultInt(210)
+            public int red;
+
+            @Config.DefaultInt(220)
+            public int green;
+
+            @Config.DefaultInt(255)
+            public int blue;
+        }
     }
 
     @Config.LangKey("GT5U.gui.config.client.interface")

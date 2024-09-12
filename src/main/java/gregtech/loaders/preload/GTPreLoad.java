@@ -544,21 +544,27 @@ public class GTPreLoad {
         GTRecipeBuilder.onConfigLoad();
     }
 
-    public static void parseHex(Dyes dye, String hexString) {
-        dye.mRGBa[0] = Short.parseShort(hexString.substring(1, 3), 16);
-        dye.mRGBa[1] = Short.parseShort(hexString.substring(3, 5), 16);
-        dye.mRGBa[2] = Short.parseShort(hexString.substring(5), 16);
-    }
-
     public static void loadClientConfig() {
         Arrays.stream(Dyes.values())
             .filter(dye -> (dye != Dyes._NULL) && (dye.mIndex < 0))
             .forEach(dye -> {
                 switch (dye.toString()
                     .toLowerCase()) {
-                    case "cable_insulation" -> parseHex(dye, Client.colorModulation.cableInsulation);
-                    case "construction_foam" -> parseHex(dye, Client.colorModulation.constructionFoam);
-                    case "machine_metal" -> parseHex(dye, Client.colorModulation.machineMetal);
+                    case "cable_insulation" -> {
+                        dye.mRGBa[0] = (short) Client.colorModulation.cableInsulation.red;
+                        dye.mRGBa[1] = (short) Client.colorModulation.cableInsulation.green;
+                        dye.mRGBa[2] = (short) Client.colorModulation.cableInsulation.blue;
+                    }
+                    case "construction_foam" -> {
+                        dye.mRGBa[0] = (short) Client.colorModulation.constructionFoam.red;
+                        dye.mRGBa[1] = (short) Client.colorModulation.constructionFoam.green;
+                        dye.mRGBa[2] = (short) Client.colorModulation.constructionFoam.blue;
+                    }
+                    case "machine_metal" -> {
+                        dye.mRGBa[0] = (short) Client.colorModulation.machineMetal.red;
+                        dye.mRGBa[1] = (short) Client.colorModulation.machineMetal.green;
+                        dye.mRGBa[2] = (short) Client.colorModulation.machineMetal.blue;
+                    }
                     default -> {
                         GT_FML_LOGGER.warn(
                             "unknown color modulation entry: " + dye
