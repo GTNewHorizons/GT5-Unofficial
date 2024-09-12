@@ -476,20 +476,22 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 // Deactivation resets stability to 100 and catalyzing cost to 1
                 for (MTEHatchInputBus bus : mInputBusses) {
                     for (ItemStack inputItem : bus.mInventory) {
-                        if (inputItem.getItem() instanceof MetaGeneratedItem01) {
-                            if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
-                                inputItem.stackSize -= 1;
-                                blackHoleStatus = 2;
-                                createRenderBlock();
-                                break;
-                            } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
-                                inputItem.stackSize -= 1;
-                                blackHoleStatus = 1;
-                                blackHoleStability = 100;
-                                catalyzingCostModifier = 1;
-                                rendererTileEntity = null;
-                                destroyRenderBlock();
-                                break;
+                        if (inputItem != null) {
+                            if (inputItem.getItem() instanceof MetaGeneratedItem01) {
+                                if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
+                                    inputItem.stackSize -= 1;
+                                    blackHoleStatus = 2;
+                                    createRenderBlock();
+                                    break;
+                                } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
+                                    inputItem.stackSize -= 1;
+                                    blackHoleStatus = 1;
+                                    blackHoleStability = 100;
+                                    catalyzingCostModifier = 1;
+                                    rendererTileEntity = null;
+                                    destroyRenderBlock();
+                                    break;
+                                }
                             }
                         }
                     }
