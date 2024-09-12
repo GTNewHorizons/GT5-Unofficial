@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
+import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
@@ -1319,6 +1320,15 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(MaterialsUEVplus.Protomatter)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+ GTFluidFactory.builder("InfinityPlasma")
+            .withLocalizedName("Infinity Plasma")
+            .withStateAndTemperature(PLASMA, 10000)
+            .buildAndRegister()
+            .configureMaterials(Materials.Infinity)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Infinity, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("fieryblood")
