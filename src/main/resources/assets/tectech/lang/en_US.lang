@@ -478,6 +478,7 @@ gt.blockmachines.hatch.dynamotunnel7.tier.13.name=UXV 1,048,576A/t Laser Source 
 gt.blockmachines.hatch.dynamotunnel.tier.14.name=Legendary Laser Source Hatch
 gt.blockmachines.hatch.dynamotunnel.desc.0=Energy extracting terminal for Multiblocks
 gt.blockmachines.hatch.dynamotunnel.desc.1=Throughput
+gt.blockmachines.hatch.screwdrivertooltip=Use screwdriver to adjust amperage
 
 gt.blockmachines.emin.tier.08.name=UV Elemental Input Hatch
 gt.blockmachines.emin.tier.09.name=UHV Elemental Input Hatch

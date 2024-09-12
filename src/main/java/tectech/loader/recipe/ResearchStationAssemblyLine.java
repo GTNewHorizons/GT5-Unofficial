@@ -3529,7 +3529,10 @@ public class ResearchStationAssemblyLine implements Runnable {
         for (int i = 0; i < wirelessLasers.length; i++) {
 
             TTRecipeAdder.addResearchableAssemblylineRecipe(
-                laserTargets_UXV[i],
+                i != 8 ? laserTargets_UXV[i] : wirelessLasers[i - 1], // If current laser registered is UXV 4MA switch
+                                                                      // research item to avoid duplicate qc result from
+                                                                      // normal UXV 4MA laser, see this:
+                                                                      // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/17188
                 totalComputation * 64,
                 compPerSecond * 64,
                 researchEuPerTick * 4,
