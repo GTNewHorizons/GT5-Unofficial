@@ -100,6 +100,7 @@ import gregtech.common.render.GTCapeRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
+import gregtech.common.render.MeteorMinerRenderer;
 import gregtech.common.render.MultiTileRenderer;
 import gregtech.common.render.PollutionRenderer;
 import gregtech.common.render.WormholeRenderer;
@@ -632,6 +633,7 @@ public class GTClient extends GTProxy implements Runnable {
         new MultiTileRenderer();
         new DroneRender();
         new LaserRenderer();
+        new MeteorMinerRenderer();
         new WormholeRenderer();
         new BlackholeRenderer();
 
