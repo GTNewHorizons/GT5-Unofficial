@@ -202,14 +202,14 @@ import static gregtech.common.items.IDMetaItem02.Plank_Walnut;
 import static gregtech.common.items.IDMetaItem02.Plank_Wenge;
 import static gregtech.common.items.IDMetaItem02.Plank_Willow;
 import static gregtech.common.items.IDMetaItem02.SFMixture;
-import static gregtech.common.items.IDMetaItem02.ThermosCan_Cafe_au_lait;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Chocolate_Milk;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Coffee;
-import static gregtech.common.items.IDMetaItem02.ThermosCan_Dark_Cafe_au_lait;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Dark_Chocolate_Milk;
-import static gregtech.common.items.IDMetaItem02.ThermosCan_Dark_Coffee;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Ice_Tea;
-import static gregtech.common.items.IDMetaItem02.ThermosCan_Lait_au_cafe;
+import static gregtech.common.items.IDMetaItem02.ThermosCan_Latte;
+import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Coffee;
+import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Jesus_Latte;
+import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
 
@@ -295,10 +295,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             OrePrefixes.gearGt);
         INSTANCE = this;
 
-        ItemList.ThermosCan_Dark_Coffee.set(
+        ItemList.ThermosCan_Coffee.set(
             addItem(
-                ThermosCan_Dark_Coffee.ID,
-                "Dark Coffee",
+                ThermosCan_Coffee.ID,
+                "Coffee",
                 "Coffee, dark, without anything else",
                 new GTFoodStat(
                     2,
@@ -320,10 +320,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2L)));
-        ItemList.ThermosCan_Dark_Cafe_au_lait.set(
+        ItemList.ThermosCan_Sweet_Coffee.set(
             addItem(
-                ThermosCan_Dark_Cafe_au_lait.ID,
-                "Dark Coffee au lait",
+                ThermosCan_Sweet_Coffee.ID,
+                "Sweet coffee",
                 "Keeping you awake the whole night",
                 new GTFoodStat(
                     2,
@@ -345,11 +345,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 3L)));
-        ItemList.ThermosCan_Coffee.set(
+        ItemList.ThermosCan_Latte.set(
             addItem(
-                ThermosCan_Coffee.ID,
-                "Coffee",
-                "Just the regular morning Coffee",
+                ThermosCan_Latte.ID,
+                "Latte",
+                "Just the regular morning Coffee, with milk",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -370,11 +370,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
-        ItemList.ThermosCan_Cafe_au_lait.set(
+        ItemList.ThermosCan_Sweet_Latte.set(
             addItem(
-                ThermosCan_Cafe_au_lait.ID,
-                "Cafe au lait",
-                "Sweet Coffee",
+                ThermosCan_Sweet_Latte.ID,
+                "Sweet Latte",
+                "A little bit of sugar goes a long way",
                 new GTFoodStat(
                     3,
                     0.4F,
@@ -395,11 +395,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 2L)));
-        ItemList.ThermosCan_Lait_au_cafe.set(
+        ItemList.ThermosCan_Sweet_Jesus_Latte.set(
             addItem(
-                ThermosCan_Lait_au_cafe.ID,
-                "Lait au cafe",
-                "You want Coffee to your Sugar?",
+                ThermosCan_Sweet_Jesus_Latte.ID,
+                "Sweet Jesus Latte",
+                "You want some Coffee to your Sugar?",
                 new GTFoodStat(
                     3,
                     0.4F,
