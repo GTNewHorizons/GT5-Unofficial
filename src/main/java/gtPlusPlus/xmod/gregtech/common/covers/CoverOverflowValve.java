@@ -52,7 +52,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData data) {
         if (fluid != null && fluid.amount > data.overflowPoint)
-            fluid.amount -= Math.min(fluid.amount - data.voidingRate, data.voidingRate);
+            fluid.amount = Math.max(fluid.amount - data.voidingRate, data.overflowPoint);
         return fluid;
     }
 
@@ -65,7 +65,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         OverflowValveData data, ICoverable aTileEntity, long aTimer) {
         if (data == null) return new OverflowValveData(0, 0, false, false);
 
-        if (data.overflowPoint == 0) return data;
+        if (data.voidingRate == 0) return data;
 
         if (aTileEntity instanceof CommonMetaTileEntity common) {
             IMetaTileEntity tile = common.getMetaTileEntity();
@@ -176,7 +176,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            GTUtility.trans("322", "Overflow point: ") + data.overflowPoint + GTUtility.trans("323", "L"));
+            GTUtility.trans("322", "Overflow point :") + data.overflowPoint + GTUtility.trans("323", "L"));
         aTileEntity.setCoverDataAtSide(side, new ISerializableObject.LegacyCoverData(data.overflowPoint));
         return true;
     }
@@ -195,10 +195,6 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     private final class OverflowUIFactory extends UIFactory {
 
-        private static final int startX = 6;
-        private static final int startY = 23;
-
-        private static final int spaceY = 12;
         // width and height of text input for "Overflow Point" and "Voiding Rate"
         private static final int width = 73;
         private static final int height = 12;
@@ -207,13 +203,12 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
             super(buildContext);
         }
 
-        @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
-                    new TextWidget(GTUtility.trans("322", "Overflow point: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + 93 - 20 - 22, startY + spaceY * 0 + 12))
+                    new TextWidget(GTUtility.trans("322.0", "Overflow point (L):")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(57, 35))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
                         .addFollower(
@@ -226,24 +221,24 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                             widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)
-                                .setPos(startX + 92 - 20 - 21, startY + spaceY * 1 + 10)
+                                .setPos(57, 45)
                                 .setSize(width, height)))
                 .widget(
-                    new TextWidget(GTUtility.trans("322.1", "Voiding rate: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + 93 - 21 - 20 + 7 - 2, startY + spaceY * 2 + 13 + 20 - 3))
+                    new TextWidget(GTUtility.trans("322.1", "Voiding rate (L/update):")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(63, 77))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
                         .addFollower(
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.voidingRate,
                             (coverData, state) -> {
-                                coverData.voidingRate = state.intValue();
+                                coverData.voidingRate = Math.min(state.intValue(), coverData.overflowPoint);
                                 return coverData;
                             },
                             widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)
-                                .setPos(startX + 92 - 21 - 20, startY + spaceY * 3 + 10 + 21 - 3)
+                                .setPos(57, 87)
                                 .setSize(width, height)))
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
@@ -257,25 +252,25 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT)
                                     .addTooltip(GTUtility.trans("322.2", "Allow fluid Input"))
-                                    .setPos(118 - 97, spaceY * 3 + 3 - 16 + 45 + 1))
+                                    .setPos(21, 69))
                             .addToggleButton(
                                 1,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT)
                                     .addTooltip(GTUtility.trans("322.3", "Block fluid Input"))
-                                    .setPos(100 - 96, spaceY * 3 + 3 - 16 + 45 + 1))
+                                    .setPos(12, 69))
                             .addToggleButton(
                                 2,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
                                     .addTooltip(GTUtility.trans("322.4", "Allow fluid output"))
-                                    .setPos(118 - 97, spaceY * 4 + 9 - 16 + 44 + 1))
+                                    .setPos(21, 86))
                             .addToggleButton(
                                 3,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_OUTPUT)
                                     .addTooltip(GTUtility.trans("322.5", "Block fluid output"))
-                                    .setPos(100 - 96, spaceY * 4 + 9 - 16 + 44 + 1)));
+                                    .setPos(12, 86)));
         }
 
         private boolean getClickable(int id, OverflowValveData data) {
