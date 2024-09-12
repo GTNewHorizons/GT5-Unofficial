@@ -207,7 +207,8 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
-                    new TextWidget(GTUtility.trans("322.0", "Overflow point (L):")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    new TextWidget(GTUtility.trans("322.0", "Overflow point (L):"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(57, 35))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
@@ -224,7 +225,8 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 .setPos(57, 45)
                                 .setSize(width, height)))
                 .widget(
-                    new TextWidget(GTUtility.trans("322.1", "Voiding rate (L/update):")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    new TextWidget(GTUtility.trans("322.1", "Voiding rate (L/update):"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(63, 77))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
