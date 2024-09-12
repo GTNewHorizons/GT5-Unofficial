@@ -22,6 +22,7 @@ import static gregtech.api.enums.Materials.Scheelite;
 import static gregtech.api.enums.Materials.Sphalerite;
 import static gregtech.api.enums.Materials.Tetrahedrite;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -171,6 +172,6 @@ public class BWWorldGenRoss128ba extends BWOreLayer {
 
     @Override
     public boolean isGenerationAllowed(String aDimName, int aDimensionType, int aAllowedDimensionType) {
-        return aDimensionType == ConfigHandler.ross128BAID;
+        return aDimensionType == Configuration.crossModInteractions.ross128BAID;
     }
 }

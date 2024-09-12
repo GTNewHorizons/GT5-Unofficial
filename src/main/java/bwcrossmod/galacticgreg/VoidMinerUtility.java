@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -133,8 +134,8 @@ public class VoidMinerUtility {
         dropMapsByDimId.put(7, getDropMapVanilla(7));
 
         // ross dims
-        dropMapsByDimId.put(ConfigHandler.ross128BID, getDropMapRoss(ConfigHandler.ross128BID));
-        dropMapsByDimId.put(ConfigHandler.ross128BAID, getDropMapRoss(ConfigHandler.ross128BAID));
+        dropMapsByDimId.put(Configuration.crossModInteractions.ross128BID, getDropMapRoss(Configuration.crossModInteractions.ross128BID));
+        dropMapsByDimId.put(Configuration.crossModInteractions.ross128BAID, getDropMapRoss(Configuration.crossModInteractions.ross128BAID));
 
         // other space dims
         for (ModContainer modContainer : getModContainers()) {

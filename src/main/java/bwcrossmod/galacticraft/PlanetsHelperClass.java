@@ -13,6 +13,7 @@
 
 package bwcrossmod.galacticraft;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import bartworks.common.configs.ConfigHandler;
@@ -24,9 +25,9 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 public class PlanetsHelperClass {
 
     public static EntityLanderBase getLanderType(EntityPlayerMP player) {
-        return switch (ConfigHandler.landerType) {
-            case 1 -> new EntityLander(player);
-            case 2 -> new EntityLandingBalloons(player);
+        return switch (Configuration.crossModInteractions.landerType) {
+            case MoonLander -> new EntityLander(player);
+            case LandingBalloons -> new EntityLandingBalloons(player);
             default -> new EntityEntryPod(player);
         };
     }

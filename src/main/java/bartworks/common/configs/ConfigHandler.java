@@ -28,19 +28,12 @@ public class ConfigHandler {
 
     public static int megaMachinesMax = 256;
     public static int mbWaterperSec = 150;
-    public static int ross128BID = -64;
-    public static int ross128BAID = -63;
-    public static int ross128btier = 3;
-    public static int ross128batier = 3;
-    public static int landerType = 3;
-    public static int ross128bRuinChance = 512;
     public static int bioVatMaxParallelBonus = 1000;
     public static int cutoffTier = 5;
     public static int[][][] metasForTiers;
 
     public static long energyPerCell = 1000000L;
 
-    public static boolean Ross128Enabled = true;
 
     public static boolean disableExtraGassesForEBF;
     public static boolean disableMagicalForest;
@@ -220,39 +213,6 @@ public class ConfigHandler {
             .get("System", "Enable Debug Log", false, "Enables or Disables the debug log.")
             .getBoolean(false);
 
-        ConfigHandler.ross128BID = ConfigHandler.c
-            .get("CrossMod Interactions", "DimID - Ross128b", -64, "The Dim ID for Ross128b")
-            .getInt(-64);
-        ConfigHandler.ross128BAID = ConfigHandler.c
-            .get("CrossMod Interactions", "DimID - Ross128ba", -63, "The Dim ID for Ross128ba (Ross128b's Moon)")
-            .getInt(-63);
-        ConfigHandler.ross128btier = ConfigHandler.c
-            .get("CrossMod Interactions", "Rocket Tier - Ross128b", 3, "The Rocket Tier for Ross128b")
-            .getInt(3);
-        ConfigHandler.ross128batier = ConfigHandler.c
-            .get("CrossMod Interactions", "Rocket Tier - Ross128ba", 3, "The Rocket Tier for Ross128a")
-            .getInt(3);
-        ConfigHandler.ross128bRuinChance = ConfigHandler.c
-            .get("CrossMod Interactions", "Ruin Chance - Ross128b", 512, "Higher Values mean lesser Ruins.")
-            .getInt(512);
-        ConfigHandler.Ross128Enabled = ConfigHandler.c
-            .get(
-                "CrossMod Interactions",
-                "Galacticraft - Activate Ross128 System",
-                true,
-                "If the Ross128 System should be activated, DO NOT CHANGE AFTER WORLD GENERATION")
-            .getBoolean(true);
-        ConfigHandler.landerType = ConfigHandler.c
-            .get("CrossMod Interactions", "LanderType", 3, "1 = Moon Lander, 2 = Landing Balloons, 3 = Asteroid Lander")
-            .getInt(3);
-        ConfigHandler.disableMagicalForest = ConfigHandler.c
-            .get(
-                "CrossMod Interactions",
-                "Disable Magical Forest - Ross128b",
-                false,
-                "True disables the magical Forest Biome on Ross for more performance during World generation.")
-            .getBoolean(false);
-
         ConfigHandler.maxTierRoss = (byte) ConfigHandler.c
             .get("Ross Ruin Metas", "A_Ruin Machine Tiers", 6, "", 0, VOLTAGE_NAMES.length)
             .getInt(6);
@@ -275,13 +235,9 @@ public class ConfigHandler {
     }
 
     private static void setUpComments() {
-        ConfigHandler.c.addCustomCategoryComment("ASM fixes", "Disable ASM fixes here.");
         ConfigHandler.c.addCustomCategoryComment("Singleblocks", "Singleblock Options can be set here.");
         ConfigHandler.c.addCustomCategoryComment("Multiblocks", "Multiblock Options can be set here.");
         ConfigHandler.c.addCustomCategoryComment("System", "Different System Settings can be set here.");
-        ConfigHandler.c.addCustomCategoryComment(
-            "CrossMod Interactions",
-            "CrossMod Interaction Settings can be set here. For Underground Fluid settings change the Gregtech.cfg!");
         ConfigHandler.c.addCustomCategoryComment("Ross Ruin Metas", "Ruin Metas and Tiers can be set here.");
     }
 }
