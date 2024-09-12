@@ -16,6 +16,7 @@ package bartworks.common.tileentities.classic;
 import java.util.Arrays;
 import java.util.Optional;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -113,8 +114,8 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
             ++this.tick;
             --this.fuel;
             if (this.tick % 20 == 0) {
-                if (this.outputstack.amount <= 8000 - ConfigHandler.mbWaterperSec)
-                    this.outputstack.amount += ConfigHandler.mbWaterperSec;
+                if (this.outputstack.amount <= 8000 - Configuration.singleBlocks.mbWaterperSec)
+                    this.outputstack.amount += Configuration.singleBlocks.mbWaterperSec;
                 this.tick = 0;
             }
         }
@@ -330,7 +331,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
-                + GTUtility.formatNumbers(ConfigHandler.mbWaterperSec)
+                + GTUtility.formatNumbers(Configuration.singleBlocks.mbWaterperSec)
                 + String.format(
                     StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
                     ConfigHandler.pollutionHeatedWaterPumpSecond),

@@ -13,6 +13,8 @@ public class Configuration {
 
     public static final System system = new System();
 
+    public static final SingleBlocks singleBlocks = new SingleBlocks();
+
     @Config.LangKey("GT5U.gui.config.mixins")
     @Config.RequiresMcRestart
     public static class Mixins{
@@ -119,5 +121,11 @@ public class Configuration {
         @Config.Comment("Enables or Disables the debug log.")
         @Config.DefaultBoolean(false)
         public boolean debugLog;
+    }
+
+    public static class SingleBlocks{
+        @Config.Comment("mL Water per Sec for the StirlingPump")
+        @Config.DefaultInt(150)
+        public int mbWaterperSec;
     }
 }

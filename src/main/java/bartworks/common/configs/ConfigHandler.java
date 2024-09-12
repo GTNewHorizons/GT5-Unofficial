@@ -19,7 +19,6 @@ public class ConfigHandler {
 
     public static Configuration c;
 
-    public static int mbWaterperSec = 150;
     public static int[][][] metasForTiers;
 
     public static byte maxTierRoss;
@@ -63,8 +62,6 @@ public class ConfigHandler {
     public ConfigHandler(Configuration C) {
         ConfigHandler.c = C;
 
-        ConfigHandler.mbWaterperSec = ConfigHandler.c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150)
-            .getInt(150);
 
         ConfigHandler.pollutionHeatedWaterPumpSecond = ConfigHandler.c
             .get(
@@ -103,7 +100,6 @@ public class ConfigHandler {
     }
 
     private static void setUpComments() {
-        ConfigHandler.c.addCustomCategoryComment("Singleblocks", "Singleblock Options can be set here.");
         ConfigHandler.c.addCustomCategoryComment("Ross Ruin Metas", "Ruin Metas and Tiers can be set here.");
     }
 }
