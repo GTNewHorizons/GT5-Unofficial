@@ -99,7 +99,7 @@ public class MeteorMinerRenderer extends TileEntitySpecialRenderer {
             GL11.glTranslated(-x - 0.5, -y - 0.5, -z - 0.5);
 
             double range = ltile.getRange();
-            renderFakeLine(ltile, x + 0.5, y + 35.5 + range, z + 0.5, y + 0.5);
+            renderFakeLine(ltile, x + 0.5, y + range, z + 0.5, y + 0.5);
 
             GL11.glPopAttrib();
             GL11.glPopMatrix();
