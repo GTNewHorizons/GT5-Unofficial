@@ -1,5 +1,6 @@
 package gregtech.api.recipe.maps;
 
+import static gregtech.api.util.GTRecipeConstants.EU_MULTIPLIER;
 import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.List;
@@ -44,12 +45,13 @@ public class TranscendentPlasmaMixerFrontend extends RecipeMapFrontend {
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         // These look odd because recipeInfo.recipe.mEUt is actually the EU per litre of fluid processed, not
         // the EU/t.
+        long multiplier = recipeInfo.recipe.getMetadataOrDefault(EU_MULTIPLIER, 10);
         recipeInfo.drawText(
             GTUtility.trans("152", "Total: ")
-                + formatNumbers(1000L * recipeInfo.recipe.mDuration / 100L * recipeInfo.recipe.mEUt)
+                + formatNumbers(multiplier * recipeInfo.recipe.mDuration * recipeInfo.recipe.mEUt)
                 + " EU");
         // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
-        long averageUsage = 10L * recipeInfo.recipe.mEUt;
+        long averageUsage = multiplier * recipeInfo.recipe.mEUt;
         recipeInfo.drawText(
             "Average: " + formatNumbers(averageUsage) + " EU/t" + GTUtility.getTierNameWithParentheses(averageUsage));
     }
