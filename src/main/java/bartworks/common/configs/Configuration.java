@@ -3,10 +3,6 @@ package bartworks.common.configs;
 import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-
 @Config(modid = Mods.Names.BART_WORKS, filename = "bartworks")
 public class Configuration {
 
@@ -14,6 +10,8 @@ public class Configuration {
     public static final CrossModInteractions crossModInteractions = new CrossModInteractions();
 
     public static final Multiblocks multiblocks = new Multiblocks();
+
+    public static final System system = new System();
 
     @Config.LangKey("GT5U.gui.config.mixins")
     @Config.RequiresMcRestart
@@ -86,5 +84,40 @@ public class Configuration {
         @Config.Comment("This switch completely disables piston animation in Electric Implosion Compressor multiblock")
         @Config.DefaultBoolean(false)
         public boolean disablePistonInEIC;
+    }
+
+
+    public static class System{
+        @Config.Comment("Enables the classic Mode (all recipes in normal machines are doable in MV")
+        @Config.DefaultBoolean(false)
+        public boolean classicMode;
+
+        @Config.Comment("If you wish to enable extra tooltips")
+        @Config.DefaultBoolean(true)
+        public boolean tooltips;
+
+        @Config.Comment("Enables the Teslastaff, an Item used to destroy Electric Armors")
+        @Config.DefaultBoolean(false)
+        public boolean teslastaff;
+
+        @Config.Comment("This switch sets the lowest unnerfed Circuit Recipe Tier. -1 to disable it completely.")
+        @Config.DefaultInt(5)
+        public int cutoffTier;
+
+        @Config.Comment("This switch disables extra gas recipes for the EBF, i.e. Xenon instead of Nitrogen")
+        @Config.DefaultBoolean(false)
+        public boolean disableExtraGassesForEBF;
+
+        @Config.Comment("This switch disable the generation of bolted casings")
+        @Config.DefaultBoolean(false)
+        public boolean disableBoltedBlocksCasing;
+
+        @Config.Comment("This switch disable the generation of rebolted casings")
+        @Config.DefaultBoolean(false)
+        public boolean disableReboltedBlocksCasing;
+
+        @Config.Comment("Enables or Disables the debug log.")
+        @Config.DefaultBoolean(false)
+        public boolean debugLog;
     }
 }

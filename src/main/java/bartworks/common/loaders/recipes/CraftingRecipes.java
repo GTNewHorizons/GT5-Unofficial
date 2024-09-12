@@ -30,6 +30,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Windmill;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -125,7 +126,7 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L), 'C', "circuitAdvanced", 'B',
                 ItemList.IC2_EnergyCrystal.get(1L) });
 
-        if (ConfigHandler.teslastaff) {
+        if (Configuration.system.teslastaff) {
             GTModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.TESLASTAFF),
                 RecipeLoader.BITSD,

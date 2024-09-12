@@ -13,38 +13,16 @@
 
 package bartworks.common.configs;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraftforge.common.config.Configuration;
-
-import bartworks.API.APIConfigValues;
 
 public class ConfigHandler {
 
     public static Configuration c;
 
     public static int mbWaterperSec = 150;
-    public static int cutoffTier = 5;
     public static int[][][] metasForTiers;
 
-
-
-
-    public static boolean disableExtraGassesForEBF;
-    public static boolean teslastaff;
-    public static boolean classicMode;
-
-    public static boolean GTppLogDisabler;
-    public static boolean tooltips = true;
-    public static boolean sharedItemStackTooltip = true;
-
     public static byte maxTierRoss;
-
-    public static boolean disableBoltedBlocksCasing = false;
-    public static boolean disableReboltedBlocksCasing = false;
 
     public static int pollutionHeatedWaterPumpSecond = 5;
     public static int basePollutionMBFSecond = 400;
@@ -84,56 +62,6 @@ public class ConfigHandler {
 
     public ConfigHandler(Configuration C) {
         ConfigHandler.c = C;
-        ConfigHandler.classicMode = ConfigHandler.c
-            .get(
-                "System",
-                "Enable Classic Mode",
-                false,
-                "Enables the classic Mode (all recipes in normal machines are doable in MV")
-            .getBoolean(false);
-
-        ConfigHandler.tooltips = ConfigHandler.c
-            .get("System", "BartWorksToolTips", true, "If you wish to enable extra tooltips")
-            .getBoolean(true);
-        ConfigHandler.sharedItemStackTooltip = ConfigHandler.c
-            .get(
-                "System",
-                "BartWorksSharedItemStackToolTips",
-                true,
-                "If you wish to enable \"Shared Item Stack\" tooltips")
-            .getBoolean(true);
-
-        ConfigHandler.teslastaff = ConfigHandler.c
-            .get(
-                "System",
-                "Enable Teslastaff",
-                false,
-                "Enables the Teslastaff, an Item used to destroy Electric Armors")
-            .getBoolean(false);
-
-        ConfigHandler.cutoffTier = ConfigHandler.c
-            .get(
-                "System",
-                "Tier to nerf circuits",
-                5,
-                "This switch sets the lowest unnerfed Circuit Recipe Tier. -1 to disable it completely.",
-                -1,
-                VOLTAGE_NAMES.length)
-            .getInt(5);
-        ConfigHandler.cutoffTier = ConfigHandler.cutoffTier == -1 ? VOLTAGE_NAMES.length : ConfigHandler.cutoffTier;
-        ConfigHandler.disableExtraGassesForEBF = ConfigHandler.c
-            .get(
-                "System",
-                "Disable Extra Gases for EBF",
-                false,
-                "This switch disables extra gas recipes for the EBF, i.e. Xenon instead of Nitrogen")
-            .getBoolean(false);
-        ConfigHandler.disableBoltedBlocksCasing = ConfigHandler.c
-            .get("System", "Disable Bolted Casings", false, "This switch disable the generation of bolted casings")
-            .getBoolean(false);
-        ConfigHandler.disableReboltedBlocksCasing = ConfigHandler.c
-            .get("System", "Disable Rebolted Casings", false, "This switch disable the generation of rebolted casings")
-            .getBoolean(false);
 
         ConfigHandler.mbWaterperSec = ConfigHandler.c.get("Singleblocks", "mL Water per Sec for the StirlingPump", 150)
             .getInt(150);
@@ -152,12 +80,6 @@ public class ConfigHandler {
             "How much should the MBF produce pollution per tick per ingot. Then it'll be multiplied by the amount of ingots done in parallel")
             .getInt(ConfigHandler.basePollutionMBFSecond);
 
-        ConfigHandler.GTppLogDisabler = ConfigHandler.c
-            .get("System", "Disable GT++ Logging", false, "Enables or Disables GT++ Logging.")
-            .getBoolean(false);
-        APIConfigValues.debugLog = ConfigHandler.c
-            .get("System", "Enable Debug Log", false, "Enables or Disables the debug log.")
-            .getBoolean(false);
 
         ConfigHandler.maxTierRoss = (byte) ConfigHandler.c
             .get("Ross Ruin Metas", "A_Ruin Machine Tiers", 6, "", 0, VOLTAGE_NAMES.length)
@@ -182,8 +104,6 @@ public class ConfigHandler {
 
     private static void setUpComments() {
         ConfigHandler.c.addCustomCategoryComment("Singleblocks", "Singleblock Options can be set here.");
-        ConfigHandler.c.addCustomCategoryComment("Multiblocks", "Multiblock Options can be set here.");
-        ConfigHandler.c.addCustomCategoryComment("System", "Different System Settings can be set here.");
         ConfigHandler.c.addCustomCategoryComment("Ross Ruin Metas", "Ruin Metas and Tiers can be set here.");
     }
 }

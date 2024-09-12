@@ -28,7 +28,6 @@ import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import bartworks.API.APIConfigValues;
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
 import bartworks.API.SideReference;
@@ -123,7 +122,7 @@ public final class MainMod {
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_GlasBlocks");
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_GlasBlocks2");
 
-        if (APIConfigValues.debugLog) {
+        if (Configuration.system.debugLog) {
             try {
                 DebugLog.initDebugLog(preinit);
             } catch (IOException e) {
@@ -146,7 +145,7 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
-        if (SideReference.Side.Client && ConfigHandler.tooltips)
+        if (SideReference.Side.Client && Configuration.system.tooltips)
             MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
         ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (SideReference.Side.Server) {
@@ -187,7 +186,7 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
-        MainMod.runOnPlayerJoined(ConfigHandler.classicMode, ConfigHandler.disableExtraGassesForEBF);
+        MainMod.runOnPlayerJoined(Configuration.system.classicMode, Configuration.system.disableExtraGassesForEBF);
     }
 
     @Mod.EventHandler

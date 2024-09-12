@@ -13,6 +13,7 @@
 
 package bartworks.common.net;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -32,8 +33,8 @@ public class ServerJoinedPacket extends GTPacketNew {
 
     public ServerJoinedPacket(Object obj) {
         super(false);
-        this.config = (byte) (ConfigHandler.classicMode && ConfigHandler.disableExtraGassesForEBF ? 3
-            : ConfigHandler.classicMode ? 2 : ConfigHandler.disableExtraGassesForEBF ? 1 : 0);
+        this.config = (byte) (Configuration.system.classicMode && Configuration.system.disableExtraGassesForEBF ? 3
+            : Configuration.system.classicMode ? 2 : Configuration.system.disableExtraGassesForEBF ? 1 : 0);
     }
 
     @Override

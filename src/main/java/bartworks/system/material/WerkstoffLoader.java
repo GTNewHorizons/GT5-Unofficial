@@ -80,6 +80,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -1956,11 +1957,11 @@ public class WerkstoffLoader {
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BWItemMetaGeneratedBlock.class, "bw.blockores.01");
         GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BWItemMetaGeneratedBlock.class, "bw.blockores.02");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BWItemMetaGeneratedBlock.class, "bw.werkstoffblocks.01");
-        if (!ConfigHandler.disableBoltedBlocksCasing) GameRegistry.registerBlock(
+        if (!Configuration.system.disableBoltedBlocksCasing) GameRegistry.registerBlock(
             WerkstoffLoader.BWBlockCasings,
             BWItemMetaGeneratedBlock.class,
             "bw.werkstoffblockscasing.01");
-        if (!ConfigHandler.disableReboltedBlocksCasing) GameRegistry.registerBlock(
+        if (!Configuration.system.disableReboltedBlocksCasing) GameRegistry.registerBlock(
             WerkstoffLoader.BWBlockCasingsAdvanced,
             BWItemMetaGeneratedBlock.class,
             "bw.werkstoffblockscasingadvanced.01");

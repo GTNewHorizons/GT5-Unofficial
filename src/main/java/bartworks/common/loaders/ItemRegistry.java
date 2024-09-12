@@ -173,6 +173,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerI;
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerII;
 import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerIII;
 
+import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -410,7 +411,7 @@ public class ItemRegistry {
         // GT2 stuff
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BWItemBlocks.class, "BW_ItemBlocks");
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[1], BWItemBlocks.class, "GT_LESU_CASING");
-        if (ConfigHandler.teslastaff)
+        if (Configuration.system.teslastaff)
             GameRegistry.registerItem(ItemRegistry.TESLASTAFF, ItemRegistry.TESLASTAFF.getUnlocalizedName());
 
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_LV, ItemRegistry.ROCKCUTTER_LV.getUnlocalizedName());
