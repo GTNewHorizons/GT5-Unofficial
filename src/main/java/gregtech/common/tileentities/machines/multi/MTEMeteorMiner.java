@@ -497,8 +497,10 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         if (!hasFinished) {
             renderer.setShouldRender(true);
             renderer.setRange((double) (this.currentRadius + 32.5 + this.getLaserToEndHeight()));
-            this.setFortuneTier();
-            this.startMining(this.xDrill, this.yDrill);
+            if (this.multiTier == 1) this.setFortuneTier();
+            for (int i = 0; i < (this.multiTier == 1 ? 1 : 4); i++) {
+                this.startMining(this.xDrill, this.yDrill);
+            }
             mOutputItems = res.toArray(new ItemStack[0]);
             res.clear();
             this.moveToNextColumn();
