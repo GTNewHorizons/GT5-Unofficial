@@ -1315,7 +1315,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
                 ItemList.Cell_Empty.get(1L));
-      
+
         GTFluidFactory.builder("InfinityPlasma")
             .withLocalizedName("Infinity Plasma")
             .withStateAndTemperature(PLASMA, 10000)
@@ -1323,8 +1323,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.Infinity)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Infinity, 1L),
-                  ItemList.Cell_Empty.get(1L));
-  
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
