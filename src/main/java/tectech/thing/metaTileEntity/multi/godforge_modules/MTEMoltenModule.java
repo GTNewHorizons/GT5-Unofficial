@@ -198,9 +198,16 @@ public class MTEMoltenModule extends MTEBaseModule {
                 + formatNumbers(mMaxProgresstime / 20)
                 + RESET
                 + " s");
-        str.add("Currently using: " + RED + formatNumbers(EUt) + RESET + " EU/t");
+        str.add(
+            "Currently using: " + RED
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0")
+                + RESET
+                + " EU/t");
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
-        str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(currentParallel));
+        str.add(
+            YELLOW + "Current Parallel: "
+                + RESET
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0"));
         str.add(YELLOW + "Heat Capacity: " + RESET + formatNumbers(getHeat()));
         str.add(YELLOW + "Effective Heat Capacity: " + RESET + formatNumbers(getHeatForOC()));
         str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));
@@ -213,7 +220,7 @@ public class MTEMoltenModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Smelter")
-            .addInfo("Controller block for the Helioflux Meltig Core, a module of the Godforge.")
+            .addInfo("Controller block for the Helioflux Melting Core, a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for high temperature material liquefaction.")
             .addInfo(TOOLTIP_BAR)
