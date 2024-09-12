@@ -70,7 +70,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     private static IStructureDefinition<MTEMeteorMiner> STRUCTURE_DEFINITION = null;
     protected TileEntityLaserBeacon renderer;
     private static final int BASE_CASING_COUNT = 469;
-    private static final int MAX_RADIUS = 24;
+    private static final int MAX_RADIUS = 30;
     private int currentRadius = MAX_RADIUS;
     private int xDrill, yDrill, zDrill;
     private int xStart, yStart, zStart;
