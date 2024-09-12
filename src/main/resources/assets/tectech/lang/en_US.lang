@@ -1036,6 +1036,9 @@ fog.button.materialrequirements.tooltip.clickhere=Click to open material inserti
 fog.button.ejection.tooltip=Toggle Graviton Shard Ejection
 fog.button.formatting.tooltip=Toggle Number Formatting
 fog.button.exoticinputs.tooltip=Click to display expected inputs
+fog.button.reciperefresh.tooltip=Click to reset recipe
+fog.button.refreshtimer.tooltip=Reset ready in
+fog.button.seconds=Seconds
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods

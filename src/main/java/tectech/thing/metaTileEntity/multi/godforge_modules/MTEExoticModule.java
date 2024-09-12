@@ -37,6 +37,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -71,6 +72,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.recipe.TecTechRecipeMaps;
+import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
 import tectech.util.GodforgeMath;
 
@@ -78,9 +80,11 @@ public class MTEExoticModule extends MTEBaseModule {
 
     private int numberOfFluids = 0;
     private int numberOfItems = 0;
+    private long ticker = 0;
     private long EUt = 0;
     private long actualParallel = 0;
     private boolean recipeInProgress = false;
+    private boolean recipeRegenerated = false;
     private boolean magmatterMode = false;
     private FluidStack[] randomizedFluidInput = new FluidStack[] {};
     private ItemStack[] randomizedItemInput = new ItemStack[] {};
@@ -115,55 +119,12 @@ public class MTEExoticModule extends MTEBaseModule {
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 if (!recipeInProgress) {
-                    actualParallel = getMaxParallel();
-                    FluidStack outputFluid = MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000 * actualParallel);
-                    tempRecipeMap.getBackend()
-                        .clearRecipes();
+
                     if (magmatterMode) {
-                        randomizedItemInput = getRandomItemInputs(exoticModuleMagmatterItemMap, 1);
-                        numberOfItems = 1;
-                        numberOfFluids = 2;
-                        int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
-                        int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
-                        randomizedFluidInput = new FluidStack[] { MaterialsUEVplus.Time.getMolten(timeAmount * 1000L),
-                            MaterialsUEVplus.Space.getMolten(spaceAmount * 1000L) };
-                        inputPlasmas = new ArrayList<>(
-                            Arrays.asList(convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount)));
-                        inputPlasmas.add(MaterialsUEVplus.Time.getMolten(timeAmount));
-                        inputPlasmas.add(MaterialsUEVplus.Space.getMolten(spaceAmount));
-                        outputFluid = MaterialsUEVplus.MagMatter.getMolten(576 * actualParallel);
+                        plasmaRecipe = generateMagmatterRecipe();
                     } else {
-                        numberOfFluids = GodforgeMath.getRandomIntInRange(0, NUMBER_OF_INPUTS);
-                        numberOfItems = NUMBER_OF_INPUTS - numberOfFluids;
-                        randomizedFluidInput = getRandomFluidInputs(exoticModulePlasmaFluidMap, numberOfFluids);
-                        randomizedItemInput = getRandomItemInputs(exoticModulePlasmaItemMap, numberOfItems);
-
-                        if (numberOfFluids != 0) {
-                            for (FluidStack fluidStack : randomizedFluidInput) {
-                                fluidStack.amount = 1000 * GodforgeMath.getRandomIntInRange(1, 64);
-                            }
-                        }
-
-                        if (numberOfItems != 0) {
-                            for (ItemStack itemStack : randomizedItemInput) {
-                                itemStack.stackSize = 9 * GodforgeMath.getRandomIntInRange(1, 7);
-                            }
-                        }
-
-                        inputPlasmas = new ArrayList<>(Arrays.asList(convertItemToPlasma(randomizedItemInput, 1)));
-                        inputPlasmas.addAll(Arrays.asList(convertFluidToPlasma(randomizedFluidInput, 1)));
+                        plasmaRecipe = generateQuarkGluonRecipe();
                     }
-                    plasmaRecipe = new GTRecipe(
-                        false,
-                        null,
-                        null,
-                        null,
-                        null,
-                        inputPlasmas.toArray(new FluidStack[0]),
-                        new FluidStack[] { outputFluid },
-                        10 * SECONDS,
-                        (int) TierEU.RECIPE_MAX,
-                        0);
 
                     tempRecipeMap.add(plasmaRecipe);
                 }
@@ -174,7 +135,7 @@ public class MTEExoticModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (!recipeInProgress) {
+                if (!recipeInProgress || recipeRegenerated) {
                     powerForRecipe = BigInteger.valueOf(getProcessingVoltage())
                         .multiply(BigInteger.valueOf(recipe.mDuration * actualParallel));
                     if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
@@ -199,6 +160,7 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
 
                     recipeInProgress = true;
+                    recipeRegenerated = false;
                 }
                 if (new HashSet<>(Arrays.asList(inputFluids)).containsAll(inputPlasmas)) {
                     return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -248,6 +210,72 @@ public class MTEExoticModule extends MTEBaseModule {
     @Override
     public RecipeMap<?> getRecipeMap() {
         return TecTechRecipeMaps.godforgeExoticMatterRecipes;
+    }
+
+    private GTRecipe generateQuarkGluonRecipe() {
+        actualParallel = getMaxParallel();
+        tempRecipeMap.getBackend()
+            .clearRecipes();
+        numberOfFluids = GodforgeMath.getRandomIntInRange(0, NUMBER_OF_INPUTS);
+        numberOfItems = NUMBER_OF_INPUTS - numberOfFluids;
+        randomizedFluidInput = getRandomFluidInputs(exoticModulePlasmaFluidMap, numberOfFluids);
+        randomizedItemInput = getRandomItemInputs(exoticModulePlasmaItemMap, numberOfItems);
+
+        if (numberOfFluids != 0) {
+            for (FluidStack fluidStack : randomizedFluidInput) {
+                fluidStack.amount = 1000 * GodforgeMath.getRandomIntInRange(1, 64);
+            }
+        }
+
+        if (numberOfItems != 0) {
+            for (ItemStack itemStack : randomizedItemInput) {
+                itemStack.stackSize = 9 * GodforgeMath.getRandomIntInRange(1, 7);
+            }
+        }
+
+        inputPlasmas = new ArrayList<>(Arrays.asList(convertItemToPlasma(randomizedItemInput, 1)));
+        inputPlasmas.addAll(Arrays.asList(convertFluidToPlasma(randomizedFluidInput, 1)));
+
+        return new GTRecipe(
+            false,
+            null,
+            null,
+            null,
+            null,
+            inputPlasmas.toArray(new FluidStack[0]),
+            new FluidStack[] { MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000 * actualParallel) },
+            10 * SECONDS,
+            (int) TierEU.RECIPE_MAX,
+            0);
+    }
+
+    private GTRecipe generateMagmatterRecipe() {
+        actualParallel = getMaxParallel();
+        tempRecipeMap.getBackend()
+            .clearRecipes();
+        randomizedItemInput = getRandomItemInputs(exoticModuleMagmatterItemMap, 1);
+        numberOfItems = 1;
+        numberOfFluids = 2;
+        int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
+        int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
+        randomizedFluidInput = new FluidStack[] { MaterialsUEVplus.Time.getMolten(timeAmount * 1000L),
+            MaterialsUEVplus.Space.getMolten(spaceAmount * 1000L) };
+        inputPlasmas = new ArrayList<>(
+            Arrays.asList(convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount)));
+        inputPlasmas.add(MaterialsUEVplus.Time.getMolten(timeAmount));
+        inputPlasmas.add(MaterialsUEVplus.Space.getMolten(spaceAmount));
+
+        return new GTRecipe(
+            false,
+            null,
+            null,
+            null,
+            null,
+            inputPlasmas.toArray(new FluidStack[0]),
+            new FluidStack[] { MaterialsUEVplus.MagMatter.getMolten(576 * actualParallel) },
+            10 * SECONDS,
+            (int) TierEU.RECIPE_MAX,
+            0);
     }
 
     private FluidStack[] getRandomFluidInputs(HashMap<FluidStack, Integer> fluidMap, int numberOfFluids) {
@@ -428,6 +456,12 @@ public class MTEExoticModule extends MTEBaseModule {
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        ticker++;
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new DrawableWidget().setPos(8, 69)
@@ -474,7 +508,11 @@ public class MTEExoticModule extends MTEBaseModule {
                 .widget(
                     new FluidSlotWidget(tanksHandler, i).setInteraction(false, false)
                         .setSize(18, 18)
-                        .setPos(slotPositions[i]));
+                        .setPos(slotPositions[i])
+                        .attachSyncer(
+                            new FakeSyncWidget.BooleanSyncer(() -> recipeInProgress, val -> recipeInProgress = val),
+                            builder,
+                            (widget, val) -> widget.checkNeedsRebuild()));
         }
 
         builder.widget(
@@ -483,6 +521,41 @@ public class MTEExoticModule extends MTEBaseModule {
                 .setTextAlignment(Alignment.Center)
                 .setSize(100, 9)
                 .setPos(0, 6));
+
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient() && ticker > 1200) {
+
+                if (magmatterMode) {
+                    plasmaRecipe = generateMagmatterRecipe();
+                } else {
+                    plasmaRecipe = generateQuarkGluonRecipe();
+                }
+                recipeRegenerated = true;
+                tempRecipeMap.add(plasmaRecipe);
+
+                for (int i = 0; i < 7; i++) {
+                    if (i < inputPlasmas.size()) {
+                        FluidStack plasma = inputPlasmas.get(i);
+                        tanksHandler.setFluidInTank(i, plasma.getFluid(), plasma.amount);
+                    }
+                }
+                ticker = 0;
+                widget.getContext()
+                    .closeWindow(INPUT_LIST_WINDOW_ID);
+                widget.getContext()
+                    .openSyncedWindow(INPUT_LIST_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(TecTechUITextures.OVERLAY_CYCLIC_BLUE)
+            .dynamicTooltip(this::refreshTooltip)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(16, 16)
+            .setPos(5, 37)
+            .attachSyncer(
+                new FakeSyncWidget.LongSyncer(() -> ticker, val -> ticker = val),
+                builder,
+                (widget, val) -> widget.notifyTooltipChange()));
 
         return builder.build();
     }
@@ -540,6 +613,18 @@ public class MTEExoticModule extends MTEBaseModule {
             button.addTooltip(EnumChatFormatting.GRAY + translateToLocal("fog.button.magmattermode.tooltip.02"));
         }
         return (ButtonWidget) button;
+    }
+
+    private List<String> refreshTooltip() {
+        if (ticker > 1200) {
+            return ImmutableList.of(translateToLocal("fog.button.reciperefresh.tooltip"));
+        }
+
+        return ImmutableList.of(
+            translateToLocal("fog.button.refreshtimer.tooltip") + " "
+                + (int) Math.ceil((1200 - ticker) / 20d)
+                + " "
+                + translateToLocal("fog.button.seconds"));
     }
 
     public boolean isMagmatterModeOn() {
