@@ -1488,6 +1488,8 @@ public enum ItemList implements IItemContainer {
     Radiator_Fluid_Solidifier,
 
     MeteorMiner,
+    MeteorMinerSchematic1,
+    MeteorMinerSchematic2,
 
     Machine_Multi_IndustrialCompressor,
     Machine_Multi_HIPCompressor,
