@@ -2983,8 +2983,6 @@ public class ResearchStationAssemblyLine implements Runnable {
     }
 
     private void addGodforgeRecipes() {
-        if (!tectech.TecTech.configTecTech.ENABLE_GOD_FORGE) return;
-
         if (EternalSingularity.isModLoaded()) {
             // Controller
             TTRecipeAdder.addResearchableAssemblylineRecipe(
@@ -3682,7 +3680,7 @@ public class ResearchStationAssemblyLine implements Runnable {
     }
 
     public void runLateRecipes() {
-        if (tectech.TecTech.configTecTech.ENABLE_GOD_FORGE && EternalSingularity.isModLoaded()) {
+        if (EternalSingularity.isModLoaded()) {
             // Shielding Casing
             TTRecipeAdder.addResearchableAssemblylineRecipe(
                 GTOreDictUnificator.get(OrePrefixes.block, MaterialsUEVplus.TranscendentMetal, 1),
