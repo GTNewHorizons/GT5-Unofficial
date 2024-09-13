@@ -455,6 +455,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                // Limit ocs up to hatch tier
                 int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
                 if (ocs < 0) ocs = 0;
                 return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
@@ -527,6 +528,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
+        // Void contents of active recipe without crashing machine if it becomes unstable
         if (blackHoleStatus != 2) {
             mOutputItems = null;
             mOutputFluids = null;
