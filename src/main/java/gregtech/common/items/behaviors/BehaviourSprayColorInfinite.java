@@ -21,7 +21,8 @@ import gregtech.common.config.other.ConfigGeneral;
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     private static final byte REMOVE_COLOR = (byte) Dyes.VALUES.length;
-    private static final String COLOR_NBT_TAG = "current_color";
+    public static final String COLOR_NBT_TAG = "current_color";
+    public static final String LOCK_NBT_TAG = "is_locked";
 
     private final String tooltipInfinite = GTLanguageManager
         .addStringLocalization("gt.behaviour.paintspray.infinite.tooltip", "Infinite uses");
@@ -35,6 +36,18 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         super(sprayCan, sprayCan, sprayCan, ConfigGeneral.sprayCanChainRange, 0);
         this.mTooltip = "";
         mCurrentColor = 0;
+    }
+
+    public static Dyes getDye(ItemStack itemStack) {
+        if (itemStack.hasTagCompound()) {
+            final byte color = itemStack.getTagCompound()
+                .getByte(COLOR_NBT_TAG);
+            if (color != REMOVE_COLOR) {
+                return Dyes.getDyeFromIndex(color);
+            }
+        }
+
+        return Dyes.MACHINE_METAL;
     }
 
     @Override
@@ -119,19 +132,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     @Override
     public List<String> getAdditionalToolTips(final MetaBaseItem aItem, final List<String> aList,
         final ItemStack aStack) {
-        if (mCurrentColor == REMOVE_COLOR) {
-            aList.add(
-                GTLanguageManager.addStringLocalization(
-                    "gt.behavior.paintspray.infinite.remover.tooltip",
-                    "Current color: Solvent (clears color)"));
-        } else {
-            final Dyes currentDye = Dyes.get(mCurrentColor);
-            final String diamondSymbol = " " + currentDye.formatting + "♦" + EnumChatFormatting.RESET + " ";
-            aList.add(
-                GTLanguageManager.addStringLocalization(
-                    "gt.behaviour.paintspray.infinite." + mCurrentColor + ".tooltip",
-                    "Current color:" + diamondSymbol + currentDye.mName + diamondSymbol));
-        }
         aList.add(tooltipInfinite);
         aList.add(tooltipSwitchHint);
         aList.add(mTooltipChain);

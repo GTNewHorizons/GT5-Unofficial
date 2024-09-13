@@ -1,13 +1,14 @@
 package gregtech.common.render.items;
 
+import java.util.Optional;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -17,8 +18,6 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
 
     private final IItemRenderer mItemRenderer = new GeneratedItemRenderer();
     private final IItemRenderer mMaterialRenderer = new GeneratedMaterialRenderer();
-
-    private final IItemRenderer mDataStickRenderer = new DataStickRenderer();
 
     public MetaGeneratedItemRenderer() {}
 
@@ -63,9 +62,8 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
             if (aMaterialRenderer == null) {
                 ItemData itemData = GTOreDictUnificator.getAssociation(aStack);
                 if (itemData != null) {
-                    Materials material = itemData.mMaterial.mMaterial;
-                    if (material.renderer != null) {
-                        aMaterialRenderer = material.renderer;
+                    if (itemData.mMaterial != null && itemData.mMaterial.mMaterial.renderer != null) {
+                        aMaterialRenderer = itemData.mMaterial.mMaterial.renderer;
                     }
                 }
             }
@@ -73,11 +71,11 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
             return aMaterialRenderer != null ? aMaterialRenderer : mMaterialRenderer;
         }
 
-        // handle data stick
-        if (aStack.getItem() == ItemList.Tool_DataStick.getItem() && aStack.hasTagCompound()
-            && aStack.getTagCompound()
-                .hasKey("output")) {
-            return mDataStickRenderer;
+        if (aItem instanceof MetaBaseItem mbItem) {
+            Optional<IItemRenderer> renderer = mbItem.getSpecialRenderer(aMetaData);
+            if (renderer.isPresent()) {
+                return renderer.get();
+            }
         }
 
         return mItemRenderer;

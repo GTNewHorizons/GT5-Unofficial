@@ -465,6 +465,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -540,6 +541,7 @@ import gregtech.common.items.behaviors.BehaviourSprayColor;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
+import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 
 public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
@@ -1047,6 +1049,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Spray_Color_Infinite.ID,
                 "Infinite Spray Can",
                 "Contains all sixteen colors, as well as solvent!",
+                new InfiniteSprayCanRenderer(),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
@@ -2812,7 +2815,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Data Stick",
                 "A Low Capacity Data Storage",
                 SubTag.NO_UNIFICATION,
-                new BehaviourDataStick()));
+                new BehaviourDataStick(),
+                new DataStickRenderer()));
 
         ItemList.Tool_Cover_Copy_Paste.set(
             addItem(

@@ -20,7 +20,10 @@ public class DataStickRenderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         final boolean isShiftHeld = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-        return type == ItemRenderType.INVENTORY && isShiftHeld;
+        final boolean shouldSwitch = item.hasTagCompound() && item.getTagCompound()
+            .hasKey("output");
+
+        return type == ItemRenderType.INVENTORY && isShiftHeld && shouldSwitch;
     }
 
     @Override
