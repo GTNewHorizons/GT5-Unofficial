@@ -458,9 +458,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return antimatterStored;
     }
 
-    private void setModifiers(FluidStack inputFluid, float step, FluidStack[] upgradeFluids, int upgradeId) {
-        for (int tier = 1; tier <= upgradeFluids.length; tier++) {
-            if (inputFluid.isFluidEqual(upgradeFluids[tier - 1])) {
+    private void setModifiers(FluidStack inputFluid, float step, FluidStack[] fluidArray, int upgradeId) {
+        for (int tier = 1; tier <= fluidArray.length; tier++) {
+            if (inputFluid.isFluidEqual(fluidArray[tier - 1])) {
                 if (inputFluid.amount >= fluidConsumptions[upgradeId]) {
                     modifiers[upgradeId] = step * tier;
                     upgradeFluids[upgradeId] = inputFluid;
