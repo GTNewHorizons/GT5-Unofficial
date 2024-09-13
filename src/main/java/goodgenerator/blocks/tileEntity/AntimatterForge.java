@@ -142,7 +142,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             .anyOf(HatchElement.Energy.or(HatchElement.ExoticEnergy))
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex(2))
-                            .dot(4)
+                            .dot(2)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .build();
         }
@@ -298,8 +298,14 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "+0.10"
                     + EnumChatFormatting.GRAY)
             .addSeparator()
-            .addEnergyHatch("1-9, Hint block with dot 4", 4)
+            .addSeparator()
+            .addCasingInfoMin("Antimatter Containment Casing", 512, false)
+            .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
+            .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
+            .addCasingInfoMin("Protomatter Activation Coil", 126, false)
             .addInputHatch("1-6, Hint block with dot 1", 1)
+            .addEnergyHatch("1-9, Hint block with dot 2", 2)
+            .addOtherStructurePart("Antimatter Hatch", "16, Hint Block with dot 3", 3)
             .toolTipFinisher("Good Generator");
         return tt;
     }
