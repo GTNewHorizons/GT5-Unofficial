@@ -23,9 +23,7 @@ public class BlockForgeOfGods extends Block {
         this.setCreativeTab(TecTech.creativeTabTecTech);
         this.setBlockName("Forge of the Gods Renderer");
         this.setLightLevel(100.0f);
-
         registerOther(this);
-
     }
 
     @Override

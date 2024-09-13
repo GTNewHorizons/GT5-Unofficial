@@ -2986,7 +2986,6 @@ public class ResearchStationAssemblyLine implements Runnable {
     }
 
     private void addGodforgeRecipes() {
-
         if (EternalSingularity.isModLoaded()) {
             // Controller
             TTRecipeAdder.addResearchableAssemblylineRecipe(

@@ -85,6 +85,7 @@ public class TecTechConfig extends ConfigManager {
             .getBoolean("DebugMode", "debug", DEBUG_MODE, "Enables logging and other purely debug features");
         POWERLESS_MODE = _mainConfig
             .getBoolean("PowerlessMode", "debug", POWERLESS_MODE, "Enables 0EU/t multi block machinery");
+
         BOOM_ENABLE = _mainConfig.getBoolean(
             "BoomEnable",
             "features",

@@ -2228,6 +2228,7 @@ public class MachineLoader implements Runnable {
             .set(new MTEEnergyInfuser(EnergyInfuser.ID, "multimachine.em.infuser", "Energy Infuser").getStackForm(1));
         Machine_Multi_EyeOfHarmony.set(
             new MTEEyeOfHarmony(EyeofHarmony.ID, "multimachine.em.eye_of_harmony", "Eye of Harmony").getStackForm(1L));
+
         Machine_Multi_ForgeOfGods.set(
             new MTEForgeOfGods(ForgeoftheGods.ID, "multimachine.em.forge_of_gods", "Forge of the Gods")
                 .getStackForm(1L));

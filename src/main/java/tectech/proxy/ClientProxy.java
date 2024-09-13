@@ -50,7 +50,6 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient
             .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new ItemRenderForgeOfGods());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityForgeOfGods.class, new RenderForgeOfGods());
-
     }
 
     @Override
