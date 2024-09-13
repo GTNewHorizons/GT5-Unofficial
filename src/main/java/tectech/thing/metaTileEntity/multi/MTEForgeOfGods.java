@@ -67,6 +67,7 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidNameHolderWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
@@ -153,6 +154,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final int INDIVIDUAL_MILESTONE_WINDOW_ID = 14;
     private static final int MANUAL_INSERTION_WINDOW_ID = 15;
     private static final int GENERAL_INFO_WINDOW_ID = 16;
+    private static final int SPECIAL_THANKS_WINDOW_ID = 17;
     private static final int TEXTURE_INDEX = 960;
     private static final int[] FIRST_SPLIT_UPGRADES = new int[] { 12, 13, 14 };
     private static final Integer[] UPGRADE_MATERIAL_ID_CONVERSION = { 0, 5, 7, 11, 26, 29, 30 };
@@ -762,6 +764,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         buildContext.addSyncedWindow(INDIVIDUAL_MILESTONE_WINDOW_ID, this::createIndividualMilestoneWindow);
         buildContext.addSyncedWindow(MANUAL_INSERTION_WINDOW_ID, this::createManualInsertionWindow);
         buildContext.addSyncedWindow(GENERAL_INFO_WINDOW_ID, this::createGeneralInfoWindow);
+        buildContext.addSyncedWindow(SPECIAL_THANKS_WINDOW_ID, this::createSpecialThanksWindow);
         builder.widget(
             new ButtonWidget().setOnClick(
                 (clickData, widget) -> {
@@ -854,6 +857,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setSize(18, 18)
                     .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.clickhere"))
                     .setPos(172, 67)
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            .widget(
+                new ButtonWidget().setOnClick(
+                    (clickData, widget) -> {
+                        if (!widget.isClient()) widget.getContext()
+                            .openSyncedWindow(SPECIAL_THANKS_WINDOW_ID);
+                    })
+                    .setSize(16, 16)
+                    .addTooltip(translateToLocal("fog.button.thanks.tooltip"))
+                    .setBackground(TecTechUITextures.OVERLAY_BUTTON_HEART)
+                    .setPos(8, 69)
                     .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
@@ -2452,6 +2466,137 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(284, 4));
 
         return builder.build();
+    }
+
+    protected ModularWindow createSpecialThanksWindow(final EntityPlayer player) {
+        final int WIDTH = 200;
+        final int HEIGHT = 200;
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+
+        builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_RAINBOW);
+        builder.setDraggable(true);
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(184, 4))
+            .widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_THANKS)
+                    .setPos(50, 50)
+                    .setSize(100, 100))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.contributors"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.Center)
+                    .setScale(1f)
+                    .setPos(0, 5)
+                    .setSize(200, 15))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.lead"))
+                        .setScale(0.8f)
+                        .setDefaultColor(EnumChatFormatting.GOLD)
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(7, 30)
+                        .setSize(60, 10))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.cloud")).setScale(0.8f)
+                    .setDefaultColor(EnumChatFormatting.AQUA)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 40)
+                    .setSize(60, 10))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.programming"))
+                        .setScale(0.8f)
+                        .setDefaultColor(EnumChatFormatting.GOLD)
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(7, 55)
+                        .setSize(60, 10))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.DARK_AQUA + translateToLocal("gt.blockmachines.multimachine.FOG.teg")
+                        + " "
+                        + EnumChatFormatting.RESET
+                        + translateToLocal("gt.blockmachines.multimachine.FOG.serenybiss")).setScale(0.8f)
+                            .setTextAlignment(Alignment.CenterLeft)
+                            .setPos(7, 67)
+                            .setSize(60, 10))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.textures"))
+                        .setScale(0.8f)
+                        .setDefaultColor(EnumChatFormatting.GOLD)
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(7, 85)
+                        .setSize(100, 10))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.ant")).setScale(0.8f)
+                    .setDefaultColor(EnumChatFormatting.GREEN)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 95)
+                    .setSize(60, 10))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.rendering"))
+                        .setScale(0.8f)
+                        .setDefaultColor(EnumChatFormatting.GOLD)
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(7, 110)
+                        .setSize(100, 10))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.bucket")).setScale(0.8f)
+                    .setDefaultColor(EnumChatFormatting.WHITE)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 120)
+                    .setSize(60, 10))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.lore"))
+                        .setScale(0.8f)
+                        .setDefaultColor(EnumChatFormatting.GOLD)
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(7, 135)
+                        .setSize(100, 10))
+            .widget(
+                delenoName().setSpace(-1)
+                    .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
+                    .setPos(7, 145)
+                    .setSize(60, 10))
+            .widget(
+                new TextWidget(
+                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.playtesting"))
+                        .setScale(0.8f)
+                        .setDefaultColor(EnumChatFormatting.GOLD)
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(7, 160)
+                        .setSize(100, 10))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.misi")).setScale(0.8f)
+                    .setDefaultColor(0xffc26f)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(7, 170)
+                    .setSize(60, 10))
+            .widget(
+                new TextWidget(EnumChatFormatting.ITALIC + translateToLocal("gt.blockmachines.multimachine.FOG.thanks"))
+                    .setScale(0.8f)
+                    .setDefaultColor(0xbbbdbd)
+                    .setTextAlignment(Alignment.Center)
+                    .setPos(90, 140)
+                    .setSize(100, 60));
+        return builder.build();
+    }
+
+    private DynamicPositionedRow delenoName() {
+        DynamicPositionedRow nameRow = new DynamicPositionedRow();
+        String deleno = translateToLocal("gt.blockmachines.multimachine.FOG.deleno");
+        int[] colors = new int[] { 0xffffff, 0xf6fff5, 0xecffec, 0xe3ffe2, 0xd9ffd9, 0xd0ffcf };
+
+        for (int i = 0; i < 6; i++) {
+            nameRow.addChild(
+                new TextWidget(Character.toString(deleno.charAt(i))).setDefaultColor(colors[i])
+                    .setScale(0.8f)
+                    .setTextAlignment(Alignment.CenterLeft));
+        }
+        return nameRow;
     }
 
     @Override

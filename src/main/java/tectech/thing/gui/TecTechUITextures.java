@@ -23,6 +23,7 @@ public class TecTechUITextures {
     public static final UITexture BACKGROUND_GLOW_BLUE = UITexture.fullImage(MODID, "gui/background/blue_glow");
     public static final UITexture BACKGROUND_GLOW_GREEN = UITexture.fullImage(MODID, "gui/background/green_glow");
     public static final UITexture BACKGROUND_GLOW_WHITE = UITexture.fullImage(MODID, "gui/background/white_glow");
+    public static final UITexture BACKGROUND_GLOW_RAINBOW = UITexture.fullImage(MODID, "gui/background/rainbow_glow");
     public static final UITexture BACKGROUND_SPACE = UITexture.fullImage(MODID, "gui/background/space");
 
     public static final UITexture BUTTON_STANDARD_16x16 = UITexture.fullImage(MODID, "gui/button/standard_16x16");
@@ -82,6 +83,7 @@ public class TecTechUITextures {
     public static final UITexture OVERLAY_BUTTON_BATTERY_OFF = UITexture
         .fullImage(MODID, "gui/overlay_button/battery_off");
     public static final UITexture OVERLAY_BUTTON_FLAG = UITexture.fullImage(MODID, "gui/overlay_button/flag");
+    public static final UITexture OVERLAY_BUTTON_HEART = UITexture.fullImage(MODID, "gui/overlay_button/heart");
     public static final UITexture OVERLAY_CYCLIC_BLUE = UITexture.fullImage(MODID, "gui/overlay_button/cyclic_blue");
     public static final UITexture OVERLAY_EJECTION_LOCKED = UITexture
         .fullImage(MODID, "gui/overlay_button/eject_disabled");
@@ -176,6 +178,7 @@ public class TecTechUITextures {
         .fullImage(MODID, "gui/picture/milestone_catalyst");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION = UITexture
         .fullImage(MODID, "gui/picture/milestone_composition");
+    public static final UITexture PICTURE_GODFORGE_THANKS = UITexture.fullImage(MODID, "gui/picture/thanks");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE_GLOW = UITexture
         .fullImage(MODID, "gui/picture/milestone_charge_glow");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION_GLOW = UITexture
