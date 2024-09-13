@@ -373,7 +373,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 17, 27, 10, elementBudget, env, false, true);
+        int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 17, 27, 10, realBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -454,6 +455,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                // Limit ocs up to hatch tier
                 int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
                 if (ocs < 0) ocs = 0;
                 return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
@@ -476,20 +478,22 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 // Deactivation resets stability to 100 and catalyzing cost to 1
                 for (MTEHatchInputBus bus : mInputBusses) {
                     for (ItemStack inputItem : bus.mInventory) {
-                        if (inputItem.getItem() instanceof MetaGeneratedItem01) {
-                            if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
-                                inputItem.stackSize -= 1;
-                                blackHoleStatus = 2;
-                                createRenderBlock();
-                                break;
-                            } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
-                                inputItem.stackSize -= 1;
-                                blackHoleStatus = 1;
-                                blackHoleStability = 100;
-                                catalyzingCostModifier = 1;
-                                rendererTileEntity = null;
-                                destroyRenderBlock();
-                                break;
+                        if (inputItem != null) {
+                            if (inputItem.getItem() instanceof MetaGeneratedItem01) {
+                                if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
+                                    inputItem.stackSize -= 1;
+                                    blackHoleStatus = 2;
+                                    createRenderBlock();
+                                    break;
+                                } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
+                                    inputItem.stackSize -= 1;
+                                    blackHoleStatus = 1;
+                                    blackHoleStability = 100;
+                                    catalyzingCostModifier = 1;
+                                    rendererTileEntity = null;
+                                    destroyRenderBlock();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -524,6 +528,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
+        // Void contents of active recipe without crashing machine if it becomes unstable
         if (blackHoleStatus != 2) {
             mOutputItems = null;
             mOutputFluids = null;
