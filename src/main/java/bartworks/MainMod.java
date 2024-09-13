@@ -74,6 +74,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import tectech.loader.recipe.Godforge;
 
 @Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = GT_Version.VERSION, dependencies = """
     required-after:IC2;\
@@ -210,5 +211,8 @@ public final class MainMod {
             .forEach(
                 map -> map.getBackend()
                     .reInit());
+
+        // because the above code runs so late that I couldn't find anywhere else to call this
+        Godforge.initMoltenModuleRecipes();
     }
 }

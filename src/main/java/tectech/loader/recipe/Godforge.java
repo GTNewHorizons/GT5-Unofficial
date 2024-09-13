@@ -3,6 +3,8 @@ package tectech.loader.recipe;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FOG_EXOTIC_TIER;
@@ -30,11 +32,18 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 
 public class Godforge implements Runnable {
@@ -238,6 +247,7 @@ public class Godforge implements Runnable {
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t1_1step[i] != null) {
+
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t1_1step[i])
                         .fluidOutputs(solid_plasmas_t1_1step[i])
@@ -313,6 +323,7 @@ public class Godforge implements Runnable {
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t2_1step[i] != null) {
+
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t2_1step[i])
                         .fluidOutputs(solid_plasmas_t2_1step[i])
@@ -348,6 +359,7 @@ public class Godforge implements Runnable {
                     .addTo(godforgePlasmaRecipes);
 
                 if (molten_t2_xstep[i] != null) {
+
                     GTValues.RA.stdBuilder()
                         .fluidInputs(molten_t2_xstep[i])
                         .fluidOutputs(solid_plasmas_t2_xstep[i])
@@ -732,5 +744,79 @@ public class Godforge implements Runnable {
                     ItemList.Robot_Arm_UMV.get(64), ItemList.Conveyor_Module_UMV.get(64) });
         }
 
+    }
+
+    public static void initMoltenModuleRecipes() {
+        for (GTRecipe recipe : RecipeMaps.blastFurnaceRecipes.getAllRecipes()) {
+            List<ItemStack> itemOutputs = new ArrayList<>(1);
+            List<FluidStack> fluidOutputs = new ArrayList<>(2);
+
+            int[] originalChances = recipe.mChances;
+            IntList newChances = new IntArrayList();
+            for (int i = 0; i < recipe.mOutputs.length; i++) {
+                ItemStack stack = recipe.getOutput(i);
+                if (stack == null) continue;
+                FluidStack potentialFluid = convertToMolten(stack);
+                if (potentialFluid != null) {
+                    potentialFluid.amount *= stack.stackSize;
+                    fluidOutputs.add(potentialFluid);
+                } else {
+                    itemOutputs.add(stack);
+                    if (originalChances != null) {
+                        int chance = 10000;
+                        if (originalChances.length > i) {
+                            chance = originalChances[i];
+                        }
+                        newChances.add(chance);
+                    }
+                }
+            }
+
+            fluidOutputs.addAll(Arrays.asList(recipe.mFluidOutputs));
+
+            GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+                .noOptimize()
+                .itemOutputs(itemOutputs.toArray(new ItemStack[0]))
+                .fluidOutputs(fluidOutputs.toArray(new FluidStack[0]))
+                .duration(recipe.mDuration)
+                .eut(recipe.mEUt)
+                .specialValue(recipe.mSpecialValue);
+
+            if (recipe.mInputs != null) builder.itemInputs(recipe.mInputs);
+            if (recipe.mFluidInputs != null) builder.fluidInputs(recipe.mFluidInputs);
+            if (!newChances.isEmpty()) builder.outputChances(newChances.toIntArray());
+
+            builder.addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
+        }
+    }
+
+    private static FluidStack convertToMolten(ItemStack stack) {
+        // if this is null it has to be a gt++ material
+        ItemData data = GTOreDictUnificator.getAssociation(stack);
+        Materials mat = data == null ? null : data.mMaterial.mMaterial;
+        if (mat != null) {
+            if (mat.mStandardMoltenFluid != null) {
+                return mat.getMolten(INGOTS * data.mMaterial.mAmount / GTValues.M);
+            } else if (mat.mFluid != null) {
+                return mat.getFluid(BUCKETS);
+            }
+        }
+        int[] oreIDs = OreDictionary.getOreIDs(stack);
+        if (oreIDs.length == 0) {
+            return null;
+        }
+        String dict = OreDictionary.getOreName(oreIDs[0]);
+
+        // Check various oredicts
+        String strippedOreDict = null;
+        if (dict.startsWith("ingotHot")) {
+            strippedOreDict = dict.substring(8);
+        } else if (dict.startsWith("dustRoasted") && !dict.contains("Cobalt")) {
+            strippedOreDict = dict.substring(11);
+        }
+        if (strippedOreDict != null) {
+            return FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), INGOTS);
+        }
+        return null;
     }
 }
