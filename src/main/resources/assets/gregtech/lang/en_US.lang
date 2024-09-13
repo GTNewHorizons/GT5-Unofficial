@@ -582,6 +582,36 @@ GT5U.gui.text.meteor_reset=§dReset completed!
 GT5U.gui.text.missing_schematic=§dMissing Schematic.
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
+GT5U.gui.config.client=Client
+GT5U.gui.config.client.color_modulation=Color Modulation
+GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
+GT5U.gui.config.client.color_modulation.construction_foam=Construction Foam
+GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
+GT5U.gui.config.client.interface=Interface
+GT5U.gui.config.client.preference=Preference
+GT5U.gui.config.client.render=Render
+GT5U.gui.config.client.waila=Waila
+GT5U.gui.config.client.nei=NEI
+GT5U.gui.config.client.nei.recipe_categories=Recipe Categories
+GT5U.gui.config.gregtech=Gregtech
+GT5U.gui.config.gregtech.debug=Debug
+GT5U.gui.config.gregtech.features=Features
+GT5U.gui.config.gregtech.general=General
+GT5U.gui.config.gregtech.harvest_level=Harvest Level
+GT5U.gui.config.gregtech.machines=Machines
+GT5U.gui.config.gregtech.ore_drop_behavior=Ore Drop Behavior
+GT5U.gui.config.gregtech.pollution=Pollution
+GT5U.gui.config.machine_stats=Machine Stats
+GT5U.gui.config.machine_stats.bronze_solar_boiler=Bronze Solar Boiler
+GT5U.gui.config.machine_stats.steel_solar_boiler=Steel Solar Boiler
+GT5U.gui.config.machine_stats.machines=Machines
+GT5U.gui.config.machine_stats.microwave_energy_transmitter=Microwave Energy Transmitter
+GT5U.gui.config.machine_stats.mass_fabricator=Mass Fabricator
+GT5U.gui.config.machine_stats.teleporter=Teleporter
+GT5U.gui.config.worldgen=Worldgen
+GT5U.gui.config.worldgen.end_asteroids=End Asteroids
+GT5U.gui.config.worldgen.general=General
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
