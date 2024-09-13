@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -156,7 +157,8 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            GTUtility.trans("322", "Overflow point: ") + data.overflowPoint + GTUtility.trans("323", "L"));
+            StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_overflow_point") + data.overflowPoint
+                + StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_l_per_second"));
         return data;
     }
 
@@ -176,7 +178,8 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            GTUtility.trans("322", "Overflow point: ") + data.overflowPoint + GTUtility.trans("323", "L"));
+            StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_overflow_point") + data.overflowPoint
+                + StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_l_per_second"));
         aTileEntity.setCoverDataAtSide(side, data);
         return true;
     }
@@ -207,9 +210,13 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder
                 .widget(
-                    new TextWidget(GTUtility.trans("322.0", "Overflow point (L):"))
+                    new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_overflow_point"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(57, 35))
+                .widget(
+                    new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_l_per_second"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(77, 35))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
                         .addFollower(
@@ -225,9 +232,13 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 .setPos(57, 45)
                                 .setSize(width, height)))
                 .widget(
-                    new TextWidget(GTUtility.trans("322.1", "Voiding rate (L/update):"))
+                    new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_voiding_rate"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(63, 77))
+                .widget(
+                    new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_l_per_update"))
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(77, 35))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
                         .addFollower(
@@ -253,25 +264,25 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 0,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT)
-                                    .addTooltip(GTUtility.trans("322.2", "Allow fluid Input"))
+                                    .addTooltip(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_allow_fluid_input"))
                                     .setPos(21, 69))
                             .addToggleButton(
                                 1,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT)
-                                    .addTooltip(GTUtility.trans("322.3", "Block fluid Input"))
+                                    .addTooltip(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_block_fluid_input"))
                                     .setPos(12, 69))
                             .addToggleButton(
                                 2,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
-                                    .addTooltip(GTUtility.trans("322.4", "Allow fluid output"))
+                                    .addTooltip(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_allow_fluid_output"))
                                     .setPos(21, 86))
                             .addToggleButton(
                                 3,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_OUTPUT)
-                                    .addTooltip(GTUtility.trans("322.5", "Block fluid output"))
+                                    .addTooltip(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_block_fluid_output"))
                                     .setPos(12, 86)));
         }
 
