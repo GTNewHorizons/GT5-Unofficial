@@ -230,7 +230,6 @@ public class BioRecipes {
         recipePelletMold();
         recipeAluminiumPellet();
         recipeAlumina();
-        recipeAluminium();
         recipeLithiumChloride();
         recipeSulfuricAcid();
         recipeUrea();
@@ -898,20 +897,6 @@ public class BioRecipes {
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
-            .addTo(blastFurnaceRecipes);
-    }
-
-    private static void recipeAluminium() {
-        // 2Al2O3 + 3C = 4Al + 3CO2
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 10),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(3000L))
-            .duration(2 * MINUTES)
-            .eut(TierEU.RECIPE_MV)
-            .metadata(COIL_HEAT, 1600)
             .addTo(blastFurnaceRecipes);
     }
 
