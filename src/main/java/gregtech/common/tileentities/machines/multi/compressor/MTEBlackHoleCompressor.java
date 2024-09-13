@@ -543,8 +543,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (aTick % 20 == 0) {
             if (blackHoleStatus == 2) {
                 if (blackHoleStability >= 0) {
-                    if (rendererTileEntity == null) createRenderBlock();
-                    rendererTileEntity.setStability(blackHoleStability / 100F);
                     float stabilityDecrease = 1F;
                     // If the machine is running, reduce stability loss by 25%
                     if (this.maxProgresstime() != 0) {
@@ -572,6 +570,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     }
                     if (rendererTileEntity == null) createRenderBlock();
                     rendererTileEntity.toggleLaser(didDrain);
+                    rendererTileEntity.setStability(blackHoleStability / 100F);
                     if (blackHoleStability >= 0) blackHoleStability -= stabilityDecrease;
                     else blackHoleStability = 0;
                 } else blackHoleStatus = 3;
