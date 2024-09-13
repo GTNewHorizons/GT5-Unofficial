@@ -42,12 +42,12 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     @Override
     public OverflowValveData createDataObject() {
-        return new OverflowValveData(0, 0, false, false);
+        return new OverflowValveData(0, maxOverflowPoint / 10, false, true);
     }
 
     @Override
     public OverflowValveData createDataObject(int aLegacyData) {
-        return new OverflowValveData(aLegacyData, 0, false, false);
+        return new OverflowValveData(aLegacyData, maxOverflowPoint / 10, false, true);
     }
 
     private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData data) {
