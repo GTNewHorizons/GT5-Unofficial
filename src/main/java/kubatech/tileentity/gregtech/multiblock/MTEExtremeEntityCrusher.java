@@ -122,7 +122,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.Tags;
-import kubatech.api.helpers.ReflectionHelper;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.ModUtils;
@@ -433,8 +432,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (this.mMaxProgresstime == 0) return;
         if (event.mrs.equals(masterStoneRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
             Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
-            if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering) {
-                RitualEffectWellOfSuffering effect = (RitualEffectWellOfSuffering) ritual.effect;
+            if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
                 event.setCanceled(true); // we will handle that
                 String owner = event.mrs.getOwner();
                 int currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
@@ -463,12 +461,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                         * (effect.canDrainReagent(
                             event.mrs,
                             ReagentRegistry.offensaReagent,
-                            ReflectionHelper.getField(effect, "offensaDrain", 3),
+                            RitualEffectWellOfSuffering.offensaDrain,
                             true) ? 2 : 1)
                         * (effect.canDrainReagent(
                             event.mrs,
                             ReagentRegistry.tenebraeReagent,
-                            ReflectionHelper.getField(effect, "tennebraeDrain", 5),
+                            RitualEffectWellOfSuffering.tennebraeDrain,
                             true) ? 2 : 1),
                     true);
 
