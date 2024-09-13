@@ -1446,7 +1446,9 @@ for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
 for.bees.species.dragonblood=Dragonblood
 
-for.bees.authority.machinist=Diddy & Nilau
+for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Diddy & Noila
+
+for.bees.authority.machinist=Diddy & Noila
 
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension
@@ -1654,6 +1656,16 @@ GT5U.gui.text.warm_up=§aWarming up
 GT5U.gui.text.machine_locked_to_different_recipe=§7Machine is already locked to a different recipe
 GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
 GT5U.gui.text.no_tools=§7Missing applicable tools
+
+# Cover Overflow Valve
+GTPP.gui.text.cover_overflow_valve_overflow_point=§7Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=§7Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§7Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=§7Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§7Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=§7Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_l_per_second=§7L/s
+GTPP.gui.text.cover_overflow_valve_l_per_update=§7L/update
 
 GTPP.EBF.heat=Heat capacity
 
