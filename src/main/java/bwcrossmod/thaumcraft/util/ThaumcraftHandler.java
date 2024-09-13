@@ -13,9 +13,9 @@
 
 package bwcrossmod.thaumcraft.util;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.configs.Configuration;
 import bartworks.util.Pair;
 import bartworks.util.log.DebugLog;
 import thaumcraft.api.ThaumcraftApi;

@@ -11,13 +11,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.common.configs.Configuration;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.oregen.BWOreLayer;
@@ -48,12 +48,11 @@ public class VoidMinerUtility {
 
         private final Set<String> voidMinerBlacklistedDrops;
 
-
-
         public DropMap() {
             internalMap = new HashMap<>();
             totalWeight = 0;
-            voidMinerBlacklistedDrops = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
+            voidMinerBlacklistedDrops = Collections
+                .unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
         }
 
         /**
@@ -142,8 +141,12 @@ public class VoidMinerUtility {
         dropMapsByDimId.put(7, getDropMapVanilla(7));
 
         // ross dims
-        dropMapsByDimId.put(Configuration.crossModInteractions.ross128BID, getDropMapRoss(Configuration.crossModInteractions.ross128BID));
-        dropMapsByDimId.put(Configuration.crossModInteractions.ross128BAID, getDropMapRoss(Configuration.crossModInteractions.ross128BAID));
+        dropMapsByDimId.put(
+            Configuration.crossModInteractions.ross128BID,
+            getDropMapRoss(Configuration.crossModInteractions.ross128BID));
+        dropMapsByDimId.put(
+            Configuration.crossModInteractions.ross128BAID,
+            getDropMapRoss(Configuration.crossModInteractions.ross128BAID));
 
         // other space dims
         for (ModContainer modContainer : getModContainers()) {

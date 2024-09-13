@@ -24,12 +24,12 @@ import static gregtech.api.enums.Materials.Stibnite;
 import static gregtech.api.enums.Materials.Tetrahedrite;
 import static gregtech.api.enums.Materials.Uraninite;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import bartworks.common.configs.Configuration;
 import bartworks.system.material.WerkstoffLoader;
 import bwcrossmod.galacticraft.planets.ross128b.WorldProviderRoss128b;
 import gregtech.api.interfaces.ISubTagContainer;

@@ -80,7 +80,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -96,6 +95,7 @@ import bartworks.API.SideReference;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
 import bartworks.client.renderer.BWBlockOreRenderer;
+import bartworks.common.configs.Configuration;
 import bartworks.system.material.CircuitGeneration.BWCircuitsLoader;
 import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;

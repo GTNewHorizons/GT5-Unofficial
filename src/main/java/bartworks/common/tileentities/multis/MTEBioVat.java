@@ -33,7 +33,6 @@ import java.util.HashSet;
 
 import javax.annotation.Nullable;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -57,6 +56,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.API.SideReference;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
+import bartworks.common.configs.Configuration;
 import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.net.RendererPacket;

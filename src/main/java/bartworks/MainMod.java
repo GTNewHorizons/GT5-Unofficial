@@ -19,7 +19,6 @@ import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
 
-import bartworks.common.configs.Configuration;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -34,6 +33,7 @@ import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
 import bartworks.client.textures.PrefixTextureLinker;
+import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.loaders.ArtificialMicaLine;
 import bartworks.common.loaders.BioCultureLoader;
@@ -74,19 +74,22 @@ import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 
-@Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = GT_Version.VERSION,
+@Mod(
+    modid = MainMod.MOD_ID,
+    name = MainMod.NAME,
+    version = GT_Version.VERSION,
     guiFactory = "bartworks.client.gui.BWGuiFactory",
     dependencies = """
-    required-after:IC2;\
-    required-after:gregtech;\
-    after:berriespp;\
-    after:tectech;\
-    after:GalacticraftMars;\
-    after:GalacticraftCore;\
-    after:Forestry;\
-    after:ProjRed|Illumination;\
-    after:RandomThings;\
-    before:miscutils;""")
+        required-after:IC2;\
+        required-after:gregtech;\
+        after:berriespp;\
+        after:tectech;\
+        after:GalacticraftMars;\
+        after:GalacticraftCore;\
+        after:Forestry;\
+        after:ProjRed|Illumination;\
+        after:RandomThings;\
+        before:miscutils;""")
 public final class MainMod {
 
     public static final String NAME = "BartWorks";
