@@ -74,7 +74,9 @@ import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 
-@Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = GT_Version.VERSION, dependencies = """
+@Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = GT_Version.VERSION,
+    guiFactory = "bartworks.client.gui.BWGuiFactory",
+    dependencies = """
     required-after:IC2;\
     required-after:gregtech;\
     after:berriespp;\
