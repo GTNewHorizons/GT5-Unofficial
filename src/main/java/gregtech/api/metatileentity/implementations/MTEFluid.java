@@ -64,7 +64,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GTClient;
-import gregtech.common.config.other.ConfigGeneral;
+import gregtech.common.config.Other;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverInfo;
@@ -504,7 +504,7 @@ public class MTEFluid extends MetaPipeEntity {
 
                 boolean wasActionPerformed = false;
 
-                int limit = ConfigGeneral.pipeWrenchingChainRange;
+                int limit = Other.pipeWrenchingChainRange;
                 for (int connected = 0; connected < limit; connected++) {
 
                     TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);

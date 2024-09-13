@@ -26,7 +26,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
+import gregtech.common.config.MachineStats;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -38,10 +38,10 @@ public class MTEBoilerSolar extends MTEBoiler {
         "Steam Power by the Sun%n" + "Produces %sL of Steam per second%n"
             + "Calcifies over time, reducing Steam output to %sL/s%n"
             + "Break and replace to descale");
-    protected int calcificationTicks = ConfigBronzeSolarBoiler.calcificationTicks;
-    protected int cooldownTicks = ConfigBronzeSolarBoiler.cooldownTicks;
-    protected int maxOutputPerSecond = ConfigBronzeSolarBoiler.maxOutputPerSecond;
-    protected int minOutputPerSecond = ConfigBronzeSolarBoiler.minOutputPerSecond;
+    protected int calcificationTicks = MachineStats.bronzeSolarBoiler.calcificationTicks;
+    protected int cooldownTicks = MachineStats.bronzeSolarBoiler.cooldownTicks;
+    protected int maxOutputPerSecond = MachineStats.bronzeSolarBoiler.maxOutputPerSecond;
+    protected int minOutputPerSecond = MachineStats.bronzeSolarBoiler.minOutputPerSecond;
 
     protected final int basicTemperatureMod = 5; // Base Celsius gain or loss
     private int mRunTimeTicks = 0;

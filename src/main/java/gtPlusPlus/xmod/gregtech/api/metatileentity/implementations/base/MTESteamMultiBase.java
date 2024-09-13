@@ -51,6 +51,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     protected static final String TT_steaminputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamInputBus");
     protected static final String TT_steamoutputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamOutputBus");
     protected static final String TT_steamhatch = StatCollector.translateToLocal("GTPP.MBTT.SteamHatch");
+    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "Processing Speed & Steam Consumption is doubled under High Pressure";
 
     public MTESteamMultiBase(String aName) {
         super(aName);
@@ -400,6 +401,19 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             currentTip.add("Average CPU load of ~" + formatNumbers(tAverageTime) + " ns");
         }
         super.getMTEWailaBody(itemStack, currentTip, accessor, config);
+    }
+
+    protected static String getSteamTierTextForWaila(NBTTagCompound tag) {
+        int tierMachine = tag.getInteger("tierMachine");
+        String tierMachineText;
+        if (tierMachine == 1) {
+            tierMachineText = "Basic";
+        } else if (tierMachine == 2) {
+            tierMachineText = "High Pressure";
+        } else {
+            tierMachineText = String.valueOf(tierMachine);
+        }
+        return tierMachineText;
     }
 
     protected static <T extends MTESteamMultiBase<T>> HatchElementBuilder<T> buildSteamInput(Class<T> typeToken) {

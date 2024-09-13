@@ -15,7 +15,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.net.GTPacketInfiniteSpraycan;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.common.config.other.ConfigGeneral;
+import gregtech.common.config.Other;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
@@ -32,7 +32,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     private byte mCurrentColor;
 
     public BehaviourSprayColorInfinite(ItemStack sprayCan) {
-        super(sprayCan, sprayCan, sprayCan, ConfigGeneral.sprayCanChainRange, 0);
+        super(sprayCan, sprayCan, sprayCan, Other.sprayCanChainRange, 0);
         this.mTooltip = "";
         mCurrentColor = 0;
     }
@@ -51,7 +51,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     protected long getUses(ItemStack aStack, NBTTagCompound tNBT) {
-        return ConfigGeneral.sprayCanChainRange;
+        return Other.sprayCanChainRange;
     }
 
     @Override

@@ -3,11 +3,11 @@ package gregtech.common.items;
 public enum IDMetaItem02 {
 
     // Please pretty please, add your entries while conserving the order
-    ThermosCan_Dark_Coffee(0),
-    ThermosCan_Dark_Cafe_au_lait(1),
-    ThermosCan_Coffee(2),
-    ThermosCan_Cafe_au_lait(3),
-    ThermosCan_Lait_au_cafe(4),
+    ThermosCan_Coffee(0),
+    ThermosCan_Sweet_Coffee(1),
+    ThermosCan_Latte(2),
+    ThermosCan_Sweet_Latte(3),
+    ThermosCan_Sweet_Jesus_Latte(4),
     ThermosCan_Dark_Chocolate_Milk(5),
     ThermosCan_Chocolate_Milk(6),
     ThermosCan_Tea(7),

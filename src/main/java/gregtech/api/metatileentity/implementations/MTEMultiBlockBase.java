@@ -96,7 +96,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.Pollution;
-import gregtech.common.config.machinestats.ConfigMachines;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -172,9 +172,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public MTEMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
         this.processingLogic = null;
-        MTEMultiBlockBase.disableMaintenance = ConfigMachines.disableMaintenanceChecks;
-        this.damageFactorLow = ConfigMachines.damageFactorLow;
-        this.damageFactorHigh = ConfigMachines.damageFactorHigh;
+        MTEMultiBlockBase.disableMaintenance = MachineStats.machines.disableMaintenanceChecks;
+        this.damageFactorLow = MachineStats.machines.damageFactorLow;
+        this.damageFactorHigh = MachineStats.machines.damageFactorHigh;
         this.mNEI = "";
         if (!shouldCheckMaintenance()) fixAllIssues();
     }
@@ -182,9 +182,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public MTEMultiBlockBase(String aName) {
         super(aName, 2);
         this.processingLogic = createProcessingLogic();
-        MTEMultiBlockBase.disableMaintenance = ConfigMachines.disableMaintenanceChecks;
-        this.damageFactorLow = ConfigMachines.damageFactorLow;
-        this.damageFactorHigh = ConfigMachines.damageFactorHigh;
+        MTEMultiBlockBase.disableMaintenance = MachineStats.machines.disableMaintenanceChecks;
+        this.damageFactorLow = MachineStats.machines.damageFactorLow;
+        this.damageFactorHigh = MachineStats.machines.damageFactorHigh;
         if (!shouldCheckMaintenance()) fixAllIssues();
     }
 

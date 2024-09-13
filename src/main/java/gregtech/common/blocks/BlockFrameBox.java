@@ -11,6 +11,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -125,6 +126,7 @@ public class BlockFrameBox extends BlockContainer {
         ForgeDirection direction = ForgeDirection.getOrientation(side);
         // If this block already holds a TE, just forward the call
         TileEntity te = worldIn.getTileEntity(x, y, z);
+
         if (te instanceof BaseMetaPipeEntity baseTileEntity) {
             // If this baseTileEntity has no MetaTileEntity associated with it, we need to create it
             // This happens on world load for some reason
@@ -139,8 +141,7 @@ public class BlockFrameBox extends BlockContainer {
         ItemStack item = player.getHeldItem();
         if (isCover(item)) {
             BaseMetaPipeEntity newTileEntity = spawnFrameEntity(worldIn, x, y, z);
-            newTileEntity.onRightclick(player, direction, subX, subY, subZ);
-            return true;
+            return newTileEntity.onRightclick(player, direction, subX, subY, subZ);
         }
 
         return false;
@@ -183,7 +184,7 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public int getHarvestLevel(int aMeta) {
-        return aMeta % 4;
+        return 3;
     }
 
     @Override
@@ -209,6 +210,8 @@ public class BlockFrameBox extends BlockContainer {
 
     @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
+        if (aWorld.isRemote) return;
+
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity gtTE) {
             gtTE.onBlockDestroyed();
@@ -234,6 +237,11 @@ public class BlockFrameBox extends BlockContainer {
             return;
         }
         super.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+    }
+
+    @Override
+    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
+        return Blocks.iron_block.getBlockHardness(aWorld, aX, aY, aZ);
     }
 
     @Override
