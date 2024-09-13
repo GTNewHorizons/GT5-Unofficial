@@ -47,7 +47,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     @Override
     public OverflowValveData createDataObject(int aLegacyData) {
-        return new OverflowValveData(aLegacyData, 0, false, true);
+        return new OverflowValveData(aLegacyData, maxOverflowPoint / 10, false, true);
     }
 
     private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData data) {
@@ -63,9 +63,9 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     @Override
     protected OverflowValveData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         OverflowValveData data, ICoverable aTileEntity, long aTimer) {
-        if (data == null) return new OverflowValveData(0, 0, false, false);
+        if (data == null) return new OverflowValveData(0, 0, false, true);
 
-        if (data.voidingRate == 0) return data;
+        if (data.voidingRate == 0 || data.voidingRate > data.overflowPoint) return data;
 
         if (aTileEntity instanceof CommonMetaTileEntity common) {
             IMetaTileEntity tile = common.getMetaTileEntity();
