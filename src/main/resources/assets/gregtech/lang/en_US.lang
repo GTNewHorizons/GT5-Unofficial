@@ -1657,6 +1657,16 @@ GT5U.gui.text.machine_locked_to_different_recipe=§7Machine is already locked to
 GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
 GT5U.gui.text.no_tools=§7Missing applicable tools
 
+# Cover Overflow Valve
+GTPP.gui.text.cover_overflow_valve_overflow_point=§7Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=§7Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§7Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=§7Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§7Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=§7Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_l_per_second=§7L/s
+GTPP.gui.text.cover_overflow_valve_l_per_update=§7L/update
+
 GTPP.EBF.heat=Heat capacity
 
 GTPP.machines.tier=Tier
