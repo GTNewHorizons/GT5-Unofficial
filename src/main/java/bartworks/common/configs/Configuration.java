@@ -165,9 +165,8 @@ public class Configuration {
         public int basePollutionMBFSecond;
     }
 
-    @Config.LangKey("GT5U.gui.config.ross_ruin")
     @Config.RequiresMcRestart
-    @Config.LangKeyPattern(pattern = "GT5U.gui.config.ross_ruin.%cat.%field")
+    @Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
     public static class RossRuinMetas {
 
         @Config.Ignore()
