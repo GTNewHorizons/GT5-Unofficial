@@ -47,7 +47,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     @Override
     public OverflowValveData createDataObject(int aLegacyData) {
-        return new OverflowValveData(0, 0, false, false);
+        return new OverflowValveData(aLegacyData, 0, false, false);
     }
 
     private FluidStack doOverflowThing(FluidStack fluid, OverflowValveData data) {
@@ -177,7 +177,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         GTUtility.sendChatToPlayer(
             aPlayer,
             GTUtility.trans("322", "Overflow point: ") + data.overflowPoint + GTUtility.trans("323", "L"));
-        aTileEntity.setCoverDataAtSide(side, new ISerializableObject.LegacyCoverData(data.overflowPoint));
+        aTileEntity.setCoverDataAtSide(side, data);
         return true;
     }
 
