@@ -264,25 +264,33 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                 0,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_INPUT)
-                                    .addTooltip(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_allow_fluid_input"))
+                                    .addTooltip(
+                                        StatCollector
+                                            .translateToLocal("GTPP.gui.text.cover_overflow_valve_allow_fluid_input"))
                                     .setPos(21, 69))
                             .addToggleButton(
                                 1,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_INPUT)
-                                    .addTooltip(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_block_fluid_input"))
+                                    .addTooltip(
+                                        StatCollector
+                                            .translateToLocal("GTPP.gui.text.cover_overflow_valve_block_fluid_input"))
                                     .setPos(12, 69))
                             .addToggleButton(
                                 2,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_ALLOW_OUTPUT)
-                                    .addTooltip(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_allow_fluid_output"))
+                                    .addTooltip(
+                                        StatCollector
+                                            .translateToLocal("GTPP.gui.text.cover_overflow_valve_allow_fluid_output"))
                                     .setPos(21, 86))
                             .addToggleButton(
                                 3,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
                                 widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_BLOCK_OUTPUT)
-                                    .addTooltip(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_block_fluid_output"))
+                                    .addTooltip(
+                                        StatCollector
+                                            .translateToLocal("GTPP.gui.text.cover_overflow_valve_block_fluid_output"))
                                     .setPos(12, 86)));
         }
 
