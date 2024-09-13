@@ -10,6 +10,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.util.GTRecipe;
+import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import tectech.thing.CustomItemList;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -73,6 +74,15 @@ public class TecTechRecipeMaps {
         .progressBarPos(78, 33)
         .neiTransferRect(78, 33, 20, 20)
         .frontend(GodforgeExoticFrontend::new)
+        .build();
+    public static final RecipeMap<RecipeMapBackend> godforgeMoltenRecipes = RecipeMapBuilder.of("gt.recipe.fog_molten")
+        .maxIO(6, 6, 1, 2)
+        .minInputs(1, 0)
+        .progressBar(TecTechUITextures.PROGRESSBAR_GODFORGE_PLASMA, ProgressBar.Direction.RIGHT)
+        .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
+        .logo(TecTechUITextures.PICTURE_GODFORGE_LOGO)
+        .logoSize(18, 18)
+        .logoPos(151, 63)
         .build();
 
 }
