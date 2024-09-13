@@ -164,12 +164,10 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                         .entrySet()
                         .stream()
                         .flatMap(entry -> {
-                            boolean merge = entry.getKey() != defaultCategory
-                                && GTMod.gregtechproxy.recipeCategorySettings
-                                    .getOrDefault(entry.getKey(), RecipeCategorySetting.getDefault())
-                                    == RecipeCategorySetting.MERGE;
-                            return merge ? entry.getValue()
-                                .stream() : Stream.empty();
+                            RecipeCategory recipeCategory = entry.getKey();
+                            Collection<GTRecipe> correspondingRecipes = entry.getValue();
+                            boolean merge = recipeCategory.settingSupplier.get() == RecipeCategorySetting.MERGE;
+                            return merge ? correspondingRecipes.stream() : Stream.empty();
                         });
                     recipes = Stream.concat(
                         recipesToMerge,
@@ -179,9 +177,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                         .collect(Collectors.toList());
                 } else {
                     // This is "sub" category
-                    if (GTMod.gregtechproxy.recipeCategorySettings
-                        .getOrDefault(recipeCategory, RecipeCategorySetting.getDefault())
-                        == RecipeCategorySetting.ENABLE) {
+                    if (recipeCategory.settingSupplier.get() == RecipeCategorySetting.ENABLE) {
                         recipes = recipeMap.getBackend()
                             .getRecipesByCategory(recipeCategory);
                     } else {
