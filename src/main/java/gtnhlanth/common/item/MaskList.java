@@ -58,10 +58,10 @@ public enum MaskList {
     // the latter uses a different base mask
     LPIC("lpic", "Low Power IC", 150, "", BLANK1, Dyes.dyeYellow, TierEU.RECIPE_MV, 2e-3f, 4e-3f, 30, 2,
         ItemList.Circuit_Wafer_LPIC.get(1)), // Same as above, except for yellow
-    NPIC("npic", "Nano Power IC", 70, "", BLANK3, Dyes.dyeRed, TierEU.RECIPE_LuV, 1, 100000, 50, 4,
+    NPIC("npic", "Nano Power IC", 70, "", BLANK3, Dyes.dyeRed, TierEU.RECIPE_LuV, 1, 3000, 50, 4,
         ItemList.Circuit_Wafer_NPIC.get(1), ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
         ItemList.Circuit_Silicon_Wafer3), // Same
-    PPIC("ppic", "PPIC", 50, "", BLANK3, null, TierEU.RECIPE_ZPM, 10, 15, 50, 6, ItemList.Circuit_Wafer_PPIC.get(1),
+    PPIC("ppic", "PPIC", 50, "", BLANK3, null, TierEU.RECIPE_ZPM, 1.5f, 10, 50, 6, ItemList.Circuit_Wafer_PPIC.get(1),
         ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2, ItemList.Circuit_Silicon_Wafer3), // CR
                                                                                                            // recipe
     QPIC("qpic", "QPIC", 50, "", BLANK3, Dyes.dyeBlue, TierEU.RECIPE_UV, 5, 9, 50, 6,
