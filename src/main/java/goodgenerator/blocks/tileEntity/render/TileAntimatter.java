@@ -27,7 +27,7 @@ public class TileAntimatter extends TileEntity {
     public float coreScaleSnapshot = 1f;
     public final float coreScaleTransitionTime = 2.5f;
     public float timeSnapshot;
-    public float spikeFactor = 1f;
+    public float spikeFactor = .1f;
 
     // Protomatter Settings
     public static float protoSpiralMaxRadius = .5f;
