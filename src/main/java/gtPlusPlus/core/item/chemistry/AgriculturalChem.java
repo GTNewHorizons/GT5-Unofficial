@@ -12,7 +12,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.init.Blocks;
@@ -21,8 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import cpw.mods.fml.common.Optional;
 import forestry.core.items.ItemForestryBonemeal;
@@ -376,6 +373,14 @@ public class AgriculturalChem extends ItemPackage {
         }
         if (!mFish.isEmpty()) {
             for (ItemStack g : mFish) {
+                boolean foundDupe = false;
+                for (ItemStack old : mList_Master_Meats) {
+                    if (GTUtility.areStacksEqual(g, old)) {
+                        foundDupe = true;
+                        break;
+                    }
+                }
+                if (foundDupe) continue;
                 mList_Master_Meats.put(g);
             }
         }
@@ -406,6 +411,14 @@ public class AgriculturalChem extends ItemPackage {
         }
         if (!mBones.isEmpty()) {
             for (ItemStack g : mBones) {
+                boolean foundDupe = false;
+                for (ItemStack old : mList_Master_Bones) {
+                    if (GTUtility.areStacksEqual(g, old)) {
+                        foundDupe = true;
+                        break;
+                    }
+                }
+                if (foundDupe) continue;
                 mList_Master_Bones.put(g);
             }
         }
@@ -457,15 +470,11 @@ public class AgriculturalChem extends ItemPackage {
         ItemStack aEmptyCells = Materials.Empty.getCells(2);
         ItemStack aInputCells = ItemUtils.getItemStackOfAmountFromOreDict("cellRawAnimalWaste", 2);
         FluidStack aOutput = FluidUtils.getFluidStack(FertileManureSlurry, 1000);
-        HashSet<Pair<Item, Item>> pairs = new HashSet<>();
 
         for (FluidStack aBloodStack : mBloodFluids) {
             for (ItemStack aBoneStack : mList_Master_Bones) {
                 aBone = ItemUtils.getSimpleStack(aBoneStack, 2);
                 for (ItemStack aMeatStack : mList_Master_Meats) {
-                    Pair<Item, Item> pair = Pair.of(aBoneStack.getItem(), aMeatStack.getItem());
-                    if (pairs.contains(pair)) continue;
-                    pairs.add(pair);
                     aMeat = ItemUtils.getSimpleStack(aMeatStack, 5);
                     // Poop Juice to Fertile Slurry
                     GTValues.RA.stdBuilder()
