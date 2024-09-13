@@ -972,6 +972,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                                 xCoord,
                                 yCoord,
                                 zCoord);
+                            sendClientData();
                         }
                         return true;
                     }
