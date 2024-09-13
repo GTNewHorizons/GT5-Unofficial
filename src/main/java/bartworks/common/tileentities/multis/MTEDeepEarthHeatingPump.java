@@ -190,11 +190,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         int yHead, int oldYHead) {
         if (this.mMode != 3) {
             this.isPickingPipes = false;
-            try {
-                Field workState = this.getClass()
-                    .getField("workState");
-                workState.setInt(this, 0);
-            } catch (NoSuchFieldError | NoSuchFieldException | IllegalAccessException ignored) {}
+            this.workState = 0;
             return true;
         }
         return super.workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
@@ -215,12 +211,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         int yHead, int oldYHead) {
         if (this.mMode == 3) {
             this.isPickingPipes = true;
-            try {
-                Field workState = this.getClass()
-                    .getSuperclass()
-                    .getDeclaredField("workState");
-                workState.setInt(this, 2);
-            } catch (NoSuchFieldError | NoSuchFieldException | IllegalAccessException ignored) {}
+            this.workState = 2;
             return true;
         }
 
