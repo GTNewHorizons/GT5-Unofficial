@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -40,6 +41,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -460,26 +462,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
             @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // Limit ocs up to hatch tier
-                int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
-                if (ocs < 0) ocs = 0;
-                return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setSpeedBoost(speedBoost)
-                    .setEUtDiscount(euModifier)
-                    .setAmperageOC(amperageOC)
-                    .setDurationDecreasePerOC(overClockTimeReduction)
-                    .setEUtIncreasePerOC(overClockPowerIncrease)
-                    .setParallel(getMaxParallelRecipes())
-                    .limitOverclockCount(ocs);
-            }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 // Loop through all items and look for the Activation and Deactivation Catalysts
                 // Deactivation resets stability to 100 and catalyzing cost to 1
                 for (MTEHatchInputBus bus : mInputBusses) {
@@ -504,6 +487,31 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                         }
                     }
                 }
+                return super.findRecipeMatches(map);
+            }
+
+            @NotNull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                // Limit ocs up to hatch tier
+                int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
+                if (ocs < 0) ocs = 0;
+                return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                    .setAmperage(availableAmperage)
+                    .setEUt(availableVoltage)
+                    .setDuration(recipe.mDuration)
+                    .setSpeedBoost(speedBoost)
+                    .setEUtDiscount(euModifier)
+                    .setAmperageOC(amperageOC)
+                    .setDurationDecreasePerOC(overClockTimeReduction)
+                    .setEUtIncreasePerOC(overClockPowerIncrease)
+                    .setParallel(getMaxParallelRecipes())
+                    .limitOverclockCount(ocs);
+            }
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
                 // Default speed bonus
                 setSpeedBonus(0.2F);
