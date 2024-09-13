@@ -107,6 +107,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private long guiPassiveEnergy = 0;
     private long guiActiveEnergy = 0;
 
+    private boolean canRender = false;
+
     private List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterForge>>() {
 
@@ -886,12 +888,15 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public void updateAntimatterSize(float antimatterAmount) {
-        TileAntimatter render = forceGetAntimatterRender();
-
-        if (antimatterAmount < 0) {
-            setProtoRender(false);
-            render.setCoreSize(0);
+        if (antimatterAmount <= 0) {
+            destroyAntimatterRender();
             return;
+        }
+
+        TileAntimatter render = getAntimatterRender();
+        if (render == null) {
+            createAntimatterRender();
+            render = getAntimatterRender();
         }
 
         float size = (float) Math.pow(antimatterAmount, 0.17);
@@ -899,9 +904,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public void setProtoRender(boolean flag) {
-        TileAntimatter render = forceGetAntimatterRender();
+        TileAntimatter render = getAntimatterRender();
+        if (render == null) return;
         render.setProtomatterRender(flag);
-        if (flag) render.setRotationFields(getRotation(), getDirection());
+        render.setRotationFields(getRotation(), getDirection());
     }
 
     public TileAntimatter getAntimatterRender() {
@@ -973,12 +979,4 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         world.setBlock(wX, wY, wZ, Blocks.air);
         world.setBlock(wX, wY, wZ, Loaders.antimatterRenderBlock);
     }
-
-    public TileAntimatter forceGetAntimatterRender() {
-        TileAntimatter render = getAntimatterRender();
-        if (render != null) return render;
-        else createAntimatterRender();
-        return getAntimatterRender();
-    }
-
 }

@@ -16,9 +16,9 @@ public class TileAntimatter extends TileEntity {
     public boolean shouldRender = true;
 
     // Antimatter Core settings
-    public static final float spikeR = 0.82f, spikeG = 0.92f, spikeB = 1f;
-    public static final float coreR = 0.43f, coreG = 0.40f, coreB = 1f;
-    public static final float maximalRadius = 9; // Includes core radius + spike length
+    public static final float spikeR = 0.153f, spikeG = 0.435f, spikeB = 1f;
+    public static final float coreR = 0.435f, coreG = 0.718f, coreB = 1f;
+    public static final float maximalRadius = 7; // Includes core radius + spike length
     // Due to being partially managed by a global timer, rotationSpeedMultiplier shouldn't change
     // Otherwise it'll cause a snapping effect
     public final float rotationSpeedMultiplier = 1;
@@ -27,7 +27,7 @@ public class TileAntimatter extends TileEntity {
     public float coreScaleSnapshot = 1f;
     public final float coreScaleTransitionTime = 2.5f;
     public float timeSnapshot;
-    public float spikeFactor = .1f;
+    public float spikeFactor = .01f;
 
     // Protomatter Settings
     public static float protoSpiralMaxRadius = .5f;
