@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraftforge.common.config.Configuration;
-
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import gregtech.mixin.Mixin;
@@ -24,6 +24,14 @@ import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 @IFMLLoadingPlugin.Name("GregTech 5 Unofficial core plugin")
 public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
+    static {
+        try {
+            ConfigurationManager.registerConfig(Configuration.class);
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static File minecraftDir;
     private static Boolean islwjgl3Present = null;
 
@@ -31,8 +39,6 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
         // Injection Code taken from CodeChickenLib
         if (minecraftDir != null) return; // get called twice, once for IFMLCallHook
         minecraftDir = (File) FMLInjectionData.data()[6];
-        // do all the configuration already now...
-        new ConfigHandler(new Configuration(new File(new File(minecraftDir, "config"), "bartworks.cfg")));
     }
 
     @Override

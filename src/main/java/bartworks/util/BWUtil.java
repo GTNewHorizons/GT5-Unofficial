@@ -295,14 +295,6 @@ public class BWUtil {
         return (int) (30 * Math.pow(4, tier - 1));
     }
 
-    public static long getTierVoltage(int tier) {
-        return getTierVoltage((byte) tier);
-    }
-
-    public static long getTierVoltage(byte tier) {
-        return 8L << 2 * tier;
-    }
-
     public static byte getTier(long voltage) {
         if (voltage <= Integer.MAX_VALUE - 7) return GTUtility.getTier(voltage);
         byte t = 0;

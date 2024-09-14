@@ -187,7 +187,6 @@ import bartworks.common.blocks.BWBlocksGlass;
 import bartworks.common.blocks.BWBlocksGlass2;
 import bartworks.common.blocks.BWMachineBlockContainer;
 import bartworks.common.blocks.BWTileEntityContainer;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.items.ItemCircuitProgrammer;
 import bartworks.common.items.ItemRockCutter;
@@ -410,8 +409,7 @@ public class ItemRegistry {
         // GT2 stuff
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BWItemBlocks.class, "BW_ItemBlocks");
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[1], BWItemBlocks.class, "GT_LESU_CASING");
-        if (ConfigHandler.teslastaff)
-            GameRegistry.registerItem(ItemRegistry.TESLASTAFF, ItemRegistry.TESLASTAFF.getUnlocalizedName());
+        GameRegistry.registerItem(ItemRegistry.TESLASTAFF, ItemRegistry.TESLASTAFF.getUnlocalizedName());
 
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_LV, ItemRegistry.ROCKCUTTER_LV.getUnlocalizedName());
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_MV, ItemRegistry.ROCKCUTTER_MV.getUnlocalizedName());
