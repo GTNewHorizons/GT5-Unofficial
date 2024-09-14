@@ -465,7 +465,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -542,6 +541,7 @@ import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.render.items.DataStickRenderer;
+import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 
 public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {

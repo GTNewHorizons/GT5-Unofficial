@@ -17,7 +17,8 @@ public interface IIconRegistration {
      *                     register icons inside the method.
      * @param basePath     The base icon path for this meta-item. Intended to be fed to
      *                     {@link Mods#getResourcePath(String...)}. (Probably {@link Mods#GregTech}, but we won't
-     *                     judge.)
+     *                     judge.) The base path will include the FULL metadata ID, not offset (e.g. 32468 instead
+     *                     of 468), so place in the appropriate directory.
      */
     default void registerIcons(final IIconRegister iconRegister, final String basePath) {}
 }
