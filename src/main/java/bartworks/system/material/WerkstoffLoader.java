@@ -1956,10 +1956,7 @@ public class WerkstoffLoader {
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BWItemMetaGeneratedBlock.class, "bw.blockores.01");
         GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BWItemMetaGeneratedBlock.class, "bw.blockores.02");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BWItemMetaGeneratedBlock.class, "bw.werkstoffblocks.01");
-        if (!Configuration.system.disableBoltedBlocksCasing) GameRegistry.registerBlock(
-            WerkstoffLoader.BWBlockCasings,
-            BWItemMetaGeneratedBlock.class,
-            "bw.werkstoffblockscasing.01");
+        GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasings, BWItemMetaGeneratedBlock.class, "bw.werkstoffblockscasing.01");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasingsAdvanced, BWItemMetaGeneratedBlock.class, "bw.werkstoffblockscasingadvanced.01");
 
         GTMetaItemEnhancer.addAdditionalOreDictToForestry();

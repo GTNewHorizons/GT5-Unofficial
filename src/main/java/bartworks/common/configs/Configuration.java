@@ -101,10 +101,6 @@ public class Configuration {
         @Config.DefaultBoolean(true)
         public boolean addGlassTierInTooltips;
 
-        @Config.Comment("This switch disable the generation of bolted casings")
-        @Config.DefaultBoolean(false)
-        public boolean disableBoltedBlocksCasing;
-
         @Config.Comment("Enables or Disables the debug log.")
         @Config.DefaultBoolean(false)
         public boolean debugLog;
