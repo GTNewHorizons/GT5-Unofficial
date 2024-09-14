@@ -45,7 +45,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -528,7 +527,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(cutterRecipes);
         }
-        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
     }
 
     private void registerPlateAlloy(final String aOreDictName, final ItemStack aStack) {

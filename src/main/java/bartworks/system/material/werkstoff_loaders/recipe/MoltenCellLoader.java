@@ -14,7 +14,6 @@
 package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.capsuleMolten;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
@@ -125,18 +124,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) ((double) werkstoff.getStats()
                         .getMass() / 9D))
-                .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Block.get(0))
-                .itemOutputs(werkstoff.get(block))
-                .fluidInputs(werkstoff.getMolten(1296))
-                .duration(
-                    (int) werkstoff.getStats()
-                        .getMass() * 9)
                 .eut(
                     werkstoff.getStats()
                         .getMass() > 128 ? 64 : 30)
