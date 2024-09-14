@@ -137,7 +137,7 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
-        if (SideReference.Side.Client && Configuration.system.tooltips)
+        if (SideReference.Side.Client && Configuration.system.addGlassTierInTooltips)
             MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
         ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (SideReference.Side.Server) {

@@ -101,9 +101,9 @@ public class Configuration {
     @Config.Comment("System section.")
     public static class System {
 
-        @Config.Comment("If you wish to enable extra tooltips")
+        @Config.Comment("If true, add glass tier in tooltips.")
         @Config.DefaultBoolean(true)
-        public boolean tooltips;
+        public boolean addGlassTierInTooltips;
 
         @Config.Comment("This switch sets the lowest unnerfed Circuit Recipe Tier. -1 to disable it completely.")
         @Config.DefaultInt(5)
