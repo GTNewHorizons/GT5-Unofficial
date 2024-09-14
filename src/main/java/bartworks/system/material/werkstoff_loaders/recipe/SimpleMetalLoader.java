@@ -101,49 +101,10 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 return;
             }
 
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(stick, 2),
-                GTProxy.tBits,
-                new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(stick),
-                GTProxy.tBits,
-                new Object[] { "f ", " X", 'X', werkstoff.get(ingot) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(plate),
-                GTProxy.tBits,
-                new Object[] { "h", "X", "X", 'X', werkstoff.get(ingot) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(foil, 2),
-                GTProxy.tBits,
-                new Object[] { "hX", 'X', werkstoff.get(plate) });
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot, 3))
-                .itemOutputs(werkstoff.get(plate, 2))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass(),
-                        1L))
-                .eut(16)
-                .addTo(hammerRecipes);
-
             GregTechAPI.registerCover(
                 werkstoff.get(plate),
                 TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false),
                 null);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot))
-                .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 5L,
-                        1L))
-                .eut(16)
-                .addTo(latheRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(stick, 2))
