@@ -1871,6 +1871,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(4, 4))
             .widget(
                 ButtonWidget.closeWindowButton(true)
+                    .setOnClick((data, widget) -> {
+                        if (!widget.isClient()) {
+                            widget.getWindow()
+                                .closeWindow();
+                            widget.getContext()
+                                .closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                        }
+                    })
                     .setPos(282, 4));
         if (debugMode) {
             builder.widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -2095,17 +2103,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         upgrades[currentUpgradeID] = false;
                     }
                 }
-                if (!widget.getContext()
-                    .isClient()) {
-                    widget.getContext()
-                        .closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
-                    widget.getContext()
-                        .closeWindow(UPGRADE_TREE_WINDOW_ID);
-                    widget.getContext()
-                        .openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
-                    widget.getContext()
-                        .openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
-                }
             })
                 .setSize(40, 15)
                 .setBackground(() -> {
@@ -2196,8 +2193,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             followupUpgrades = followingUpgradeIDs;
             isUpradeSplitStart = isStartOfSplit;
             doesCurrentUpgradeRequireExtraMats = requiresExtraMaterials;
-            if (!widget.isClient()) widget.getContext()
-                .openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+            if (!widget.isClient()) {
+                // unfortunately this is the easiest way to prevent this window desyncing. it causes the window to
+                // reposition itself on the screen which would be a good thing to not do.
+                if (widget.getContext()
+                    .isWindowOpen(INDIVIDUAL_UPGRADE_WINDOW_ID)) {
+                    widget.getContext()
+                        .closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                }
+                widget.getContext()
+                    .openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+            }
         })
             .setSize(40, 15)
             .setBackground(() -> {
@@ -2225,7 +2231,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         int startUpgradeID, int endUpgradeID) {
         return new DrawableWidget()
             .setDrawable(
-                (upgrades[startUpgradeID] && upgrades[endUpgradeID])
+                () -> (upgrades[startUpgradeID] && upgrades[endUpgradeID])
                     ? coloredLine(colorCode, true).withRotationDegree(rotationAngle)
                     : coloredLine(colorCode, false).withRotationDegree(rotationAngle))
             .setPos(pos)

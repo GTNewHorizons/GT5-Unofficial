@@ -198,13 +198,8 @@ public final class MainMod {
         OreDictHandler.adaptCacheForWorld();
         CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
-        if (!recipesAdded) {
-            if (!disableExtraGasRecipes) StaticRecipeChangeLoaders.addEBFGasRecipes();
-
-            if (classicMode) DownTierLoader.run();
-
-            recipesAdded = true;
-        }
+        if (!recipesAdded && !disableExtraGasRecipes) StaticRecipeChangeLoaders.addEBFGasRecipes();
+        if (!recipesAdded && classicMode) DownTierLoader.run();
 
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()
@@ -213,6 +208,8 @@ public final class MainMod {
                     .reInit());
 
         // because the above code runs so late that I couldn't find anywhere else to call this
-        Godforge.initMoltenModuleRecipes();
+        if (!recipesAdded) Godforge.initMoltenModuleRecipes();
+
+        recipesAdded = true;
     }
 }
