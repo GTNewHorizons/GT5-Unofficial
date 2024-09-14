@@ -5,6 +5,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
 @Config(modid = Mods.Names.BART_WORKS, filename = "bartworks")
+@Config.RequiresMcRestart
 public class Configuration {
 
     public static final Mixins mixins = new Mixins();
@@ -23,7 +24,6 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.mixins")
     @Config.Comment("Mixins section.")
-    @Config.RequiresMcRestart
     public static class Mixins {
 
         @Config.Comment("if true, patches the crafting manager to cache recipes in class: net.minecraft.item.crafting.CraftingManager")
@@ -33,7 +33,6 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.crossmod")
     @Config.Comment("Crossmod interactions section.")
-    @Config.RequiresMcRestart
     public static class CrossModInteractions {
 
         @Config.Comment("The Dim ID for Ross128b")
@@ -71,7 +70,6 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.multiblocks")
     @Config.Comment("Multiblocks section.")
-    @Config.RequiresMcRestart
     public static class Multiblocks {
 
         @Config.Comment("This will set Up the Energy per LESU Cell")
@@ -104,7 +102,6 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.system")
     @Config.Comment("System section.")
-    @Config.RequiresMcRestart
     public static class System {
 
         @Config.Comment("Enables the classic Mode (all recipes in normal machines are doable in MV")
@@ -142,7 +139,6 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.singleblocks")
     @Config.Comment("Single blocks section.")
-    @Config.RequiresMcRestart
     public static class SingleBlocks {
 
         @Config.Comment("mL Water per Sec for the StirlingPump")
@@ -152,7 +148,6 @@ public class Configuration {
 
     @Config.LangKey("GT5U.gui.config.pollution")
     @Config.Comment("Pollution section.")
-    @Config.RequiresMcRestart
     public static class Pollution {
 
         @Config.Comment("How much should the Simple Stirling Water Pump produce pollution per second")
@@ -164,7 +159,6 @@ public class Configuration {
         public int basePollutionMBFSecond;
     }
 
-    @Config.RequiresMcRestart
     @Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
     @Config.Comment("Ross' ruins machine metaIDs section.")
     public static class RossRuinMetas {
