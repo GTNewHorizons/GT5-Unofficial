@@ -273,19 +273,20 @@ public class GGMaterial implements Runnable {
         OffsetID + 22,
         TextureSet.SET_DIAMOND);
 
+    // Atomic Separation Catalyst
     public static final Werkstoff atomicSeparationCatalyst = new Werkstoff(
         new short[] { 0xe8, 0x5e, 0x0c },
         "Atomic Separation Catalyst",
         "the melting core...",
         new Werkstoff.Stats().setMeltingPoint(5000),
         Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
+        new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
             .addMetalItems()
             .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems(),
+            .addMultipleIngotMetalWorkingItems()
+            .addMetaSolidifierRecipes(),
         OffsetID + 21,
         TextureSet.SET_SHINY,
         new Pair<>(GGMaterial.orundum, 2),
@@ -306,8 +307,7 @@ public class GGMaterial implements Runnable {
             .setSpeedOverride(100f)
             .setQualityOverride((byte) 11),
         Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures()
-            .onlyDust()
+        new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
             .addMetalItems()
             .addSimpleMetalWorkingItems()
@@ -1464,7 +1464,6 @@ public class GGMaterial implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addMultipleIngotMetalWorkingItems()
-            .addMetalCraftingSolidifierRecipes()
             .addMetaSolidifierRecipes(),
         OffsetID + 110,
         TextureSet.SET_SHINY);
@@ -1486,7 +1485,6 @@ public class GGMaterial implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addMultipleIngotMetalWorkingItems()
-            .addMetalCraftingSolidifierRecipes()
             .addMetaSolidifierRecipes(),
         OffsetID + 111,
         TextureSet.SET_SHINY);
