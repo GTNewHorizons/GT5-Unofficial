@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -37,14 +38,14 @@ public class MTEBoilerBase extends MTEBoiler {
             aID,
             "electricboiler." + tier + ".tier.single",
             aNameRegional,
-            "Produces " + (GTPPCore.ConfigSwitches.boilerSteamPerSecond * tier) + "L of Steam per second");
-        this.steamPerSecond = (GTPPCore.ConfigSwitches.boilerSteamPerSecond * tier);
+            "Produces " + (Configuration.machines.boilerSteamPerSecond * tier) + "L of Steam per second");
+        this.steamPerSecond = (Configuration.machines.boilerSteamPerSecond * tier);
         this.tier = tier;
     }
 
     public MTEBoilerBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.steamPerSecond = (GTPPCore.ConfigSwitches.boilerSteamPerSecond * aTier);
+        this.steamPerSecond = (Configuration.machines.boilerSteamPerSecond * aTier);
         this.tier = aTier;
     }
 

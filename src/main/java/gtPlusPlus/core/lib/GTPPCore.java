@@ -67,16 +67,6 @@ public class GTPPCore {
 
     public static class ConfigSwitches {
 
-        // Debug
-        public static boolean MACHINE_INFO = true;
-        public static boolean showHiddenNEIItems = false;
-        public static boolean dumpItemAndBlockData = false;
-
-        // Machine Related
-        public static boolean enableThaumcraftShardUnification = false;
-        public static boolean disableIC2Recipes = false;
-        public static int boilerSteamPerSecond = 750;
-
         // Feature Related
         public static boolean enableCustomCapes = false;
         public static int enableWatchdogBGM = PreloaderCore.enableWatchdogBGM;

@@ -19,43 +19,6 @@ public class ConfigHandler {
             new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
         config.load();
 
-        // Debug
-        /*
-         * DEBUG = config.getBoolean("debugMode", "debug", false,
-         * "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
-         */
-        MACHINE_INFO = config.getBoolean(
-            "enableMachineInfoLogging",
-            "debug",
-            false,
-            "Makes many machines display lots of debug logging.");
-        showHiddenNEIItems = config
-            .getBoolean("showHiddenNEIItems", "debug", false, "Makes all items hidden from NEI display.");
-        dumpItemAndBlockData = config.getBoolean(
-            "dumpItemAndBlockData",
-            "debug",
-            false,
-            "Dumps all GT++ and Toxic Everglade Data to en_US.lang in the config folder. This config option can be used by foreign players to generate blank .lang files, which they can populate with their language of choice.");
-
-        // Machines
-        enableThaumcraftShardUnification = config.getBoolean(
-            "enableThaumcraftShardUnification",
-            "machines",
-            false,
-            "Allows the use of TC shards across many recipes by oreDicting them into a common group.");
-        disableIC2Recipes = config.getBoolean(
-            "disableIC2Recipes",
-            "machines",
-            false,
-            "Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
-        boilerSteamPerSecond = config.getInt(
-            "boilerSteamPerSecond",
-            "machines",
-            750,
-            0,
-            10000,
-            "Sets the steam per second value in LV,MV,HV boilers (respectively 1x,2x,3x this number for the tiers)");
-
         // GT-Fixes
         turbineCutoffBase = config.getInt(
             "turbineCutoffBase",

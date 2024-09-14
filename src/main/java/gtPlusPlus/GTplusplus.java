@@ -188,7 +188,7 @@ public class GTplusplus implements ActionListener {
         MetaGTProxy.init();
         CoreManager.init();
         // Used by foreign players to generate .lang files for translation.
-        if (GTPPCore.ConfigSwitches.dumpItemAndBlockData) {
+        if (Configuration.debug.dumpItemAndBlockData) {
             LocaleUtils.generateFakeLocaleFile();
         }
     }

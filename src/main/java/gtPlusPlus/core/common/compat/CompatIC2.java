@@ -2,6 +2,7 @@ package gtPlusPlus.core.common.compat;
 
 import static gtPlusPlus.core.handler.CompatHandler.RemoveRecipeQueue;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
@@ -42,7 +43,7 @@ public class CompatIC2 {
 
     private static void run() {
 
-        if (ConfigSwitches.disableIC2Recipes) {
+        if (Configuration.machines.disableIC2Recipes) {
 
             // Remove these.
             RemoveRecipeQueue.add("IC2:itemCable");

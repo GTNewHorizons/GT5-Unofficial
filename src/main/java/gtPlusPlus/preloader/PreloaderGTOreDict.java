@@ -2,6 +2,7 @@ package gtPlusPlus.preloader;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 
 import org.apache.logging.log4j.Level;
@@ -54,7 +55,7 @@ public class PreloaderGTOreDict {
             }
 
         } catch (final Throwable e) {
-            if (GTPPCore.ConfigSwitches.showHiddenNEIItems) {
+            if (Configuration.debug.showHiddenNEIItems) {
                 FMLRelaunchLog.log(
                     "[GT++ ASM] OreDictTransformer",
                     Level.INFO,
