@@ -284,16 +284,6 @@ public class MaterialFix {
                     GTModHandler.addCraftingRecipe(
                         tMaterial.get(OrePrefixes.stickLong, 1),
                         new Object[] { "PhP", 'P', tMaterial.get(OrePrefixes.stick, 1) });
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(tMaterial.get(OrePrefixes.stick, 2))
-                        .itemOutputs(tMaterial.get(OrePrefixes.stickLong, 1))
-                        .duration(
-                            Math.max(
-                                tMaterial.getStats()
-                                    .getMass(),
-                                1L) * TICKS)
-                        .eut(TierEU.RECIPE_LV / 2)
-                        .addTo(hammerRecipes);
                 }
             }
             if (tMaterial.hasItemType(OrePrefixes.spring)) {
