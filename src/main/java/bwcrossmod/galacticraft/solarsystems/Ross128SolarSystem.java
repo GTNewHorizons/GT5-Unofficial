@@ -64,7 +64,7 @@ public class Ross128SolarSystem {
             .addAll(Arrays.asList(IAtmosphericGas.OXYGEN, IAtmosphericGas.NITROGEN, IAtmosphericGas.ARGON));
         Ross128SolarSystem.Ross128b
             .setDimensionInfo(Configuration.crossModInteractions.ross128BID, WorldProviderRoss128b.class);
-        Ross128SolarSystem.Ross128b.setTierRequired(Configuration.crossModInteractions.ross128btier);
+        Ross128SolarSystem.Ross128b.setTierRequired(Configuration.CrossModInteractions.ross128btier);
 
         Ross128SolarSystem.Ross128ba = new Moon("Ross128ba").setParentPlanet(Ross128SolarSystem.Ross128b);
         Ross128SolarSystem.Ross128ba.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(10f, 15f))
@@ -73,7 +73,7 @@ public class Ross128SolarSystem {
             new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128ba.png"));
         Ross128SolarSystem.Ross128ba
             .setDimensionInfo(Configuration.crossModInteractions.ross128BAID, WorldProviderRoss128ba.class);
-        Ross128SolarSystem.Ross128ba.setTierRequired(Configuration.crossModInteractions.ross128batier);
+        Ross128SolarSystem.Ross128ba.setTierRequired(Configuration.CrossModInteractions.ross128batier);
 
         GalaxyRegistry.registerSolarSystem(Ross128SolarSystem.Ross128System);
         GalaxyRegistry.registerPlanet(Ross128SolarSystem.Ross128b);

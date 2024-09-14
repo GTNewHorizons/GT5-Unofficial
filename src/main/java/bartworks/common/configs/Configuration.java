@@ -42,13 +42,11 @@ public class Configuration {
         @Config.DefaultInt(63)
         public int ross128BAID;
 
-        @Config.Comment("The Rocket Tier for Ross128b")
-        @Config.DefaultInt(3)
-        public int ross128btier;
+        @Config.Ignore()
+        public static int ross128btier = 3;
 
-        @Config.Comment("The Rocket Tier for Ross128a")
-        @Config.DefaultInt(5)
-        public int ross128batier;
+        @Config.Ignore()
+        public static int ross128batier = 5;
 
         @Config.Comment("Higher Values mean lesser Ruins.")
         @Config.DefaultInt(512)
