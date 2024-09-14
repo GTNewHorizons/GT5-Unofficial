@@ -229,8 +229,6 @@ public class BioRecipes {
         recipeSodiumCarbonate();
         recipePelletMold();
         recipeAluminiumPellet();
-        recipeAlumina();
-        recipeAluminium();
         recipeLithiumChloride();
         recipeSulfuricAcid();
         recipeUrea();
@@ -883,36 +881,6 @@ public class BioRecipes {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(extruderRecipes);
-    }
-
-    private static void recipeAlumina() {
-        // 2NaAlO2 + 2NaOH + 2CO2 = Al2O3 + 2Na2CO3 + H2O
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mSodiumAluminate, 8),
-                ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 6))
-            .itemOutputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 5),
-                ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 12))
-            .fluidInputs(Materials.CarbonDioxide.getGas(2000L))
-            .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .metadata(COIL_HEAT, 1200)
-            .addTo(blastFurnaceRecipes);
-    }
-
-    private static void recipeAluminium() {
-        // 2Al2O3 + 3C = 4Al + 3CO2
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(AgriculturalChem.mAlumina, 10),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(3000L))
-            .duration(2 * MINUTES)
-            .eut(TierEU.RECIPE_MV)
-            .metadata(COIL_HEAT, 1600)
-            .addTo(blastFurnaceRecipes);
     }
 
     private static void recipeLithiumChloride() {
