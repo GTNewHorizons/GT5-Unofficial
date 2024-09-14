@@ -15,7 +15,7 @@ public class Configuration {
 
     public static final Multiblocks multiblocks = new Multiblocks();
 
-    public static final System system = new System();
+    public static final Tooltip tooltip = new Tooltip();
 
     public static final SingleBlocks singleBlocks = new SingleBlocks();
 
@@ -95,7 +95,7 @@ public class Configuration {
     }
 
     @Config.Comment("System section.")
-    public static class System {
+    public static class Tooltip {
 
         @Config.Comment("If true, add glass tier in tooltips.")
         @Config.DefaultBoolean(true)
