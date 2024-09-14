@@ -16,20 +16,16 @@ package bartworks.system.material.werkstoff_loaders.recipe;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
-import static gregtech.api.enums.OrePrefixes.foil;
 import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
-import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-
-import net.minecraft.item.ItemStack;
 
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
@@ -42,8 +38,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy;
 
 public class SimpleMetalLoader implements IWerkstoffRunnable {
