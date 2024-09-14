@@ -25,7 +25,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.other.ConfigGeneral;
+import gregtech.common.config.Other;
 
 public class BehaviourSprayColor extends BehaviourNone {
 
@@ -46,11 +46,11 @@ public class BehaviourSprayColor extends BehaviourNone {
         .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
     private final String mTooltipUnstackable = GTLanguageManager
         .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
-    private final String mTooltipChain = GTLanguageManager.addStringLocalization(
+    protected final String mTooltipChain = GTLanguageManager.addStringLocalization(
         "gt.behaviour.paintspray.chain",
         "If used while sneaking it will spray a chain of blocks");
 
-    private final String mTooltipChainAmount = GTLanguageManager.addStringLocalization(
+    protected final String mTooltipChainAmount = GTLanguageManager.addStringLocalization(
         "gt.behaviour.paintspray.chain_amount",
         "Sprays up to %d blocks, in the direction you're looking at");
 
@@ -88,14 +88,10 @@ public class BehaviourSprayColor extends BehaviourNone {
         if (tNBT == null) {
             tNBT = new NBTTagCompound();
         }
-        long tUses = tNBT.getLong("GT.RemainingPaint");
-        if (GTUtility.areStacksEqual(aStack, this.mFull, true)) {
-            aStack.func_150996_a(this.mUsed.getItem());
-            Items.feather.setDamage(aStack, Items.feather.getDamage(this.mUsed));
-            tUses = this.mUses;
-        }
+        long tUses = getUses(aStack, tNBT);
+
         int painted = 0;
-        int maxPainted = ConfigGeneral.sprayCanChainRange;
+        int maxPainted = Other.sprayCanChainRange;
         ForgeDirection lookSide;
         Vec3 look = aPlayer.getLookVec();
         double absX = Math.abs(look.xCoord);
@@ -149,6 +145,21 @@ public class BehaviourSprayColor extends BehaviourNone {
                 }
             }
         }
+        setRemainingUses(aStack, tNBT, tUses);
+        return rOutput;
+    }
+
+    protected long getUses(ItemStack aStack, NBTTagCompound tNBT) {
+        long tUses = tNBT.getLong("GT.RemainingPaint");
+        if (GTUtility.areStacksEqual(aStack, this.mFull, true)) {
+            aStack.func_150996_a(this.mUsed.getItem());
+            Items.feather.setDamage(aStack, Items.feather.getDamage(this.mUsed));
+            tUses = this.mUses;
+        }
+        return tUses;
+    }
+
+    protected void setRemainingUses(ItemStack aStack, NBTTagCompound tNBT, long tUses) {
         tNBT.removeTag("GT.RemainingPaint");
         if (tUses > 0L) {
             tNBT.setLong("GT.RemainingPaint", tUses);
@@ -166,7 +177,6 @@ public class BehaviourSprayColor extends BehaviourNone {
                 Items.feather.setDamage(aStack, Items.feather.getDamage(this.mEmpty));
             }
         }
-        return rOutput;
     }
 
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
@@ -174,40 +184,44 @@ public class BehaviourSprayColor extends BehaviourNone {
         if (aBlock != Blocks.air) {
             if (this.mAllowedVanillaBlocks.contains(aBlock) || aBlock instanceof BlockColored) {
                 if (aBlock == Blocks.hardened_clay) {
-                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_hardened_clay, (~this.mColor) & 0xF, 3);
+                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_hardened_clay, (~getColor()) & 0xF, 3);
                     return true;
                 }
                 if (aBlock == Blocks.glass_pane) {
-                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass_pane, (~this.mColor) & 0xF, 3);
+                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass_pane, (~getColor()) & 0xF, 3);
                     return true;
                 }
                 if (aBlock == Blocks.glass) {
-                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass, (~this.mColor) & 0xF, 3);
+                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass, (~getColor()) & 0xF, 3);
                     return true;
                 }
-                if (aWorld.getBlockMetadata(aX, aY, aZ) == ((~this.mColor) & 0xF)) {
+                if (aWorld.getBlockMetadata(aX, aY, aZ) == ((~getColor()) & 0xF)) {
                     return false;
                 }
-                aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (~this.mColor) & 0xF, 3);
+                aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (~getColor()) & 0xF, 3);
                 return true;
             }
 
             if (aBlock instanceof IColorableTile) {
-                return ((IColorableTile) aBlock).recolourBlock(side, AEColor.values()[(~this.mColor) & 0xF], player);
+                return ((IColorableTile) aBlock).recolourBlock(side, AEColor.values()[(~getColor()) & 0xF], player);
             }
 
             if (aBlock instanceof BlockCableBus) {
-                return ((BlockCableBus) aBlock).recolourBlock(aWorld, aX, aY, aZ, side, (~this.mColor) & 0xF, player);
+                return ((BlockCableBus) aBlock).recolourBlock(aWorld, aX, aY, aZ, side, (~getColor()) & 0xF, player);
             }
         }
-        return aBlock.recolourBlock(aWorld, aX, aY, aZ, side, (~this.mColor) & 0xF);
+        return aBlock.recolourBlock(aWorld, aX, aY, aZ, side, (~getColor()) & 0xF);
+    }
+
+    protected byte getColor() {
+        return this.mColor;
     }
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         aList.add(this.mTooltipChain);
-        aList.add(String.format(this.mTooltipChainAmount, ConfigGeneral.sprayCanChainRange));
+        aList.add(String.format(this.mTooltipChainAmount, Other.sprayCanChainRange));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
             : GTUtility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");

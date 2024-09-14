@@ -512,7 +512,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_319", "Any player");
         addStringLocalization("Interaction_DESCRIPTION_Index_320", "Other players");
         addStringLocalization("Interaction_DESCRIPTION_Index_321", "Only owner");
-        addStringLocalization("Interaction_DESCRIPTION_Index_322", "Overflow point: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_323", "L");
         addStringLocalization("Interaction_DESCRIPTION_Index_324", "Now");
         addStringLocalization("Interaction_DESCRIPTION_Index_325", "Max");
@@ -561,11 +560,11 @@ public class GTLanguageManager {
 
         addStringLocalization("Item_DESCRIPTION_Index_000", "Stored Heat: %s");
         addStringLocalization("Item_DESCRIPTION_Index_001", "Durability: %s/%s");
-        addStringLocalization("Item_DESCRIPTION_Index_002", "%s lvl %s");
+        addStringLocalization("Item_DESCRIPTION_Index_002", "%s Tier %s");
         addStringLocalization("Item_DESCRIPTION_Index_003", "Attack Damage: %s");
         addStringLocalization("Item_DESCRIPTION_Index_004", "Mining Speed: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_005", "Turbine Efficiency: %s");
-        addStringLocalization("Item_DESCRIPTION_Index_006", "Optimal Steam flow: %s L/t");
+        addStringLocalization("Item_DESCRIPTION_Index_005", "Base Efficiency: %s");
+        addStringLocalization("Item_DESCRIPTION_Index_006", "Fuel | Optimal Flow > EU/t Produced | Efficiency");
         addStringLocalization("Item_DESCRIPTION_Index_007", "Energy from Optimal Gas Flow: %s EU/t");
         addStringLocalization("Item_DESCRIPTION_Index_008", "Energy from Optimal Plasma Flow: %s EU/t");
         addStringLocalization("Item_DESCRIPTION_Index_009", "Contains %s EU   Tier: %s");

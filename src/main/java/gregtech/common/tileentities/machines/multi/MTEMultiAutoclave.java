@@ -20,6 +20,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLA
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static net.minecraft.util.EnumChatFormatting.BLUE;
+import static net.minecraft.util.EnumChatFormatting.GOLD;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -32,6 +34,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -44,9 +47,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -189,16 +195,20 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return STRUCTURE_DEFINITION;
     }
 
+    private static final String TOOLTIP_BAR = GOLD
+        + "---------------------------------------------------------------------------------------";
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Autoclave")
+            .addInfo(TOOLTIP_BAR)
             .addInfo("Controller Block for the Industrial Autoclave.")
-            .addInfo("Gains 12 parallels per item pipe casing tier.")
-            .addInfo("Each pipe casing (bronze, steel, titanium, tungstensteel)")
-            .addInfo("decreases the EU usageby 1/pipe tier.")
-            .addInfo("Heating Coils increase speed by 1/((tier + 1) / 2).")
-            .addInfo("Needs a minimum of 128 Pressure Containment Casings.")
+            .addInfo(TOOLTIP_BAR)
+            .addInfo("Processes 12 items per Item Pipe Casing Tier.")
+            .addInfo("Energy consumption is reduced with higher fluid pipe tiers.")
+            .addInfo(BLUE + "Energy consumption = Recipe Consumption * (12 - Pipe Casing Tier) / 12.")
+            .addInfo("Each coil level makes the machine 25% faster than singleblock machines of the same voltage.")
             .addInfo(AuthorVolence)
             .addSeparator()
             .beginStructureBlock(7, 7, 9, true)
@@ -287,6 +297,12 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         if (mMachine) return -1;
         int build = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
         return build;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_MULTI_AUTOCLAVE_LOOP.resourceLocation;
     }
 
     @Override

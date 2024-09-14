@@ -212,12 +212,9 @@ public class GT_MetaTileEntity_RadioHatch extends MTEHatch implements RecipeMapW
                 }
 
                 if (this.lastRecipe == null || this.lastFail) {
-                    this.lastRecipe = BartWorksRecipeMaps.radioHatchRecipes.findRecipe(
-                        this.getBaseMetaTileEntity(),
-                        false,
-                        Integer.MAX_VALUE - 7,
-                        null,
-                        this.mInventory[0]);
+                    this.lastRecipe = BartWorksRecipeMaps.radioHatchRecipes.findRecipeQuery()
+                        .items(this.mInventory[0])
+                        .find();
                     if (this.lastRecipe == null) {
                         this.lastFail = true;
                         this.lastUsedItem = this.mInventory[0] == null ? null : this.mInventory[0].copy();

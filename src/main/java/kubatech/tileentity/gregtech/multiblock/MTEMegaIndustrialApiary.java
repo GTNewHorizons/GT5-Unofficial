@@ -90,6 +90,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -737,16 +738,22 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .setPos(10, 16)
                 .setBackground(new Rectangle().setColor(Color.rgb(163, 163, 198)))
                 .setEnabled(w -> isInInventory));
+
         builder.widget(
             new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
                 .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(140, 4)
+                .setPos(140, 91)
                 .setSize(55, 16));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, null);
-        builder.widget(screenElements.setEnabled(w -> !isInInventory));
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(screenElements.setPos(10, 0))
+                .setPos(0, 7)
+                .setSize(190, 79)
+                .setEnabled(w -> !isInInventory));
 
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))

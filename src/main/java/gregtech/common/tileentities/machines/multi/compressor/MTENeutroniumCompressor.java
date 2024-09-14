@@ -9,10 +9,10 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -40,6 +40,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -115,11 +116,11 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
+                        .addIcon(OVERLAY_MULTI_NEUTRONIUM_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -128,11 +129,11 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 6)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR)
+                        .addIcon(OVERLAY_MULTI_NEUTRONIUM)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW)
+                        .addIcon(OVERLAY_MULTI_NEUTRONIUM_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -207,7 +208,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > 0) {
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0) {
                     return CheckRecipeResultRegistry.NO_BLACK_HOLE;
                 }
                 return super.validateRecipe(recipe);

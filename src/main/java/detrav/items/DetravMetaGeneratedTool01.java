@@ -1,9 +1,26 @@
 package detrav.items;
 
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerLuV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerZPM;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerEV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerIV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerLuV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerMV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUHV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerULV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerUV;
+import static detrav.enums.IDDetraveMetaGeneratedTool01.ProspectorScannerZPM;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +33,6 @@ import detrav.items.tools.DetravProspector;
 import detrav.items.tools.DetravToolElectricProspector;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -32,7 +48,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         super("detrav.metatool.01");
         INSTANCE = this;
         addTool(
-            0,
+            ProspectorScannerULV.ID,
             "Prospector's Scanner(ULV)",
             "",
             new DetravProspector(0),
@@ -41,7 +57,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            2,
+            ProspectorScannerLV.ID,
             "Prospector's Scanner(LV)",
             "",
             new DetravProspector(1),
@@ -50,7 +66,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            4,
+            ProspectorScannerMV.ID,
             "Prospector's Scanner(MV)",
             "",
             new DetravProspector(2),
@@ -59,7 +75,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            6,
+            ProspectorScannerHV.ID,
             "Prospector's Scanner(HV)",
             "",
             new DetravProspector(3),
@@ -68,7 +84,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            8,
+            ProspectorScannerEV.ID,
             "Prospector's Scanner(EV)",
             "",
             new DetravProspector(4),
@@ -77,7 +93,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            10,
+            ProspectorScannerIV.ID,
             "Prospector's Scanner(IV)",
             "",
             new DetravProspector(5),
@@ -86,7 +102,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            12,
+            ProspectorScannerLuV.ID,
             "Prospector's Scanner(LuV)",
             "",
             new DetravProspector(6),
@@ -95,7 +111,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            14,
+            ProspectorScannerZPM.ID,
             "Prospector's Scanner(ZPM)",
             "",
             new DetravProspector(7),
@@ -104,7 +120,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            16,
+            ProspectorScannerUV.ID,
             "Prospector's Scanner(UV)",
             "",
             new DetravProspector(8),
@@ -113,7 +129,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
-            18,
+            ProspectorScannerUHV.ID,
             "Prospector's Scanner(UHV)",
             "",
             new DetravProspector(9),
@@ -123,7 +139,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
 
         addTool(
-            100,
+            ElectricProspectorScannerLuV.ID,
             "Electric Prospector's Scanner (LuV)",
             "",
             new DetravToolElectricProspector(6),
@@ -132,7 +148,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L));
         addTool(
-            102,
+            ElectricProspectorScannerZPM.ID,
             "Electric Prospector's Scanner (ZPM)",
             "",
             new DetravToolElectricProspector(7),
@@ -141,7 +157,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L));
         addTool(
-            104,
+            ElectricProspectorScannerUV.ID,
             "Electric Prospector's Scanner (UV)",
             "",
             new DetravToolElectricProspector(8),
@@ -150,7 +166,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
             new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L));
         addTool(
-            106,
+            ElectricProspectorScannerUHV.ID,
             "Electric Prospector's Scanner (UHV)",
             "",
             new DetravToolElectricProspector(9),
@@ -169,32 +185,30 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         int tOffset = aList.size();
         if (tStats == null) return;
 
-        String name = aStack.getUnlocalizedName();
-        String num = name.substring("gt.detrav.metatool.01.".length());
-        int meta = Integer.parseInt(num);
+        int meta = Items.feather.getDamage(aStack);
+
+        // range in chunks
         int range = getHarvestLevel(aStack, "") / 2 + (meta / 4);
         if ((range % 2) == 0) {
             range += 1;
         }
+
         if (meta < 100) {
             aList.add(
-                tOffset + 0,
+                tOffset,
                 EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability")
                     + EnumChatFormatting.GREEN
-                    + Long.toString(tMaxDamage - getToolDamage(aStack))
+                    + (tMaxDamage - getToolDamage(aStack))
                     + " / "
-                    + Long.toString(tMaxDamage)
+                    + tMaxDamage
                     + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 1,
                 EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 2,
-                EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")
-                    + Integer.toString(range)
-                    + "x"
-                    + Integer.toString(range)
-                    + EnumChatFormatting.GRAY);
+                EnumChatFormatting.WHITE + StatCollector
+                    .translateToLocal("tooltip.detrav.scanner.range") + range + "x" + range + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 3,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0")
@@ -207,7 +221,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 tOffset + 5,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.success.chance")
                     + EnumChatFormatting.RESET
-                    + Integer.toString(((((1 + meta) * 8) <= 100) ? ((1 + meta) * 8) : 100))
+                    + (Math.min(((1 + meta) * 8), 100))
                     + EnumChatFormatting.GRAY
                     + "%");
             aList.add(
@@ -216,44 +230,45 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             aList.add(
                 tOffset + 7,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.1"));
+            return;
 
-        } else if (meta >= 100 && meta < 200) {
-            aList.add(
-                tOffset + 0,
-                EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability")
-                    + EnumChatFormatting.GREEN
-                    + (tMaxDamage - getToolDamage(aStack))
-                    + " / "
-                    + tMaxDamage
-                    + EnumChatFormatting.GRAY);
-            aList.add(
-                tOffset + 1,
-                EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
-            aList.add(
-                tOffset + 2,
-                EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")
-                    + EnumChatFormatting.YELLOW
-                    + (getHarvestLevel(aStack, "") * 2 + 1)
-                    + "x"
-                    + (getHarvestLevel(aStack, "") * 2 + 1)
-                    + EnumChatFormatting.GRAY);
-            aList.add(
-                tOffset + 3,
-                EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0"));
-            aList.add(
-                tOffset + 4,
-                EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.1"));
-            aList.add(
-                tOffset + 5,
-                EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.2"));
-            aList.add(
-                tOffset + 6,
-                EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.3"));
-            aList.add(
-                tOffset + 7,
-                EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.4"));
         }
 
+        // from here, it's for the electric prospector scanners
+        aList.add(
+            tOffset + 0,
+            EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability")
+                + EnumChatFormatting.GREEN
+                + (tMaxDamage - getToolDamage(aStack))
+                + " / "
+                + tMaxDamage
+                + EnumChatFormatting.GRAY);
+        aList.add(
+            tOffset + 1,
+            EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
+        aList.add(
+            tOffset + 2,
+            EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")
+                + EnumChatFormatting.YELLOW
+                + (getHarvestLevel(aStack, "") * 2 + 1)
+                + "x"
+                + (getHarvestLevel(aStack, "") * 2 + 1)
+                + EnumChatFormatting.GRAY);
+        aList.add(
+            tOffset + 3,
+            EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0"));
+        aList.add(
+            tOffset + 4,
+            EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.1"));
+        aList.add(
+            tOffset + 5,
+            EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.2"));
+        aList.add(
+            tOffset + 6,
+            EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.3"));
+        aList.add(
+            tOffset + 7,
+            EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.4"));
     }
 
     public Long getToolGTDetravData(ItemStack aStack) {
@@ -281,56 +296,38 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
     public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
 
         ItemStack dStack;
-        if (Mods.NewHorizonsCoreMod.isModLoaded()) {
+        if (NewHorizonsCoreMod.isModLoaded()) {
             // Materials at tiers
-            list.add(getToolWithStats(0, 1, Materials.Polycaprolactam, Materials.Polycaprolactam, null));
-            list.add(getToolWithStats(2, 1, Materials.Steel, Materials.Steel, null));
-            list.add(getToolWithStats(2, 1, Materials.Bronze, Materials.Steel, null));
-            list.add(getToolWithStats(4, 1, Materials.Manyullyn, Materials.Aluminium, null));
-            list.add(getToolWithStats(6, 1, Materials.DamascusSteel, Materials.DamascusSteel, null));
-            list.add(getToolWithStats(8, 1, Materials.Titanium, Materials.Titanium, null));
-            list.add(getToolWithStats(10, 1, Materials.TungstenSteel, Materials.TungstenSteel, null));
-            list.add(getToolWithStats(12, 1, Materials.Iridium, Materials.Iridium, null));
-            list.add(getToolWithStats(12, 1, Materials.Osmium, Materials.Osmium, null));
-            list.add(getToolWithStats(14, 1, Materials.Neutronium, Materials.Neutronium, null));
-            list.add(getToolWithStats(16, 1, Materials.InfinityCatalyst, Materials.InfinityCatalyst, null));
-            list.add(getToolWithStats(18, 1, Materials.Infinity, Materials.Infinity, null));
-        }
+            list.add(
+                getToolWithStats(
+                    ProspectorScannerULV.ID,
+                    1,
+                    Materials.Polycaprolactam,
+                    Materials.Polycaprolactam,
+                    null));
+            list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Steel, Materials.Steel, null));
+            list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Bronze, Materials.Steel, null));
+            list.add(getToolWithStats(ProspectorScannerMV.ID, 1, Materials.Manyullyn, Materials.Aluminium, null));
+            list.add(
+                getToolWithStats(ProspectorScannerHV.ID, 1, Materials.DamascusSteel, Materials.DamascusSteel, null));
+            list.add(getToolWithStats(ProspectorScannerEV.ID, 1, Materials.Titanium, Materials.Titanium, null));
+            list.add(
+                getToolWithStats(ProspectorScannerIV.ID, 1, Materials.TungstenSteel, Materials.TungstenSteel, null));
+            list.add(getToolWithStats(ProspectorScannerLuV.ID, 1, Materials.Iridium, Materials.Iridium, null));
+            list.add(getToolWithStats(ProspectorScannerLuV.ID, 1, Materials.Osmium, Materials.Osmium, null));
+            list.add(getToolWithStats(ProspectorScannerZPM.ID, 1, Materials.Neutronium, Materials.Neutronium, null));
+            list.add(
+                getToolWithStats(
+                    ProspectorScannerUV.ID,
+                    1,
+                    Materials.InfinityCatalyst,
+                    Materials.InfinityCatalyst,
+                    null));
+            list.add(getToolWithStats(ProspectorScannerUHV.ID, 1, Materials.Infinity, Materials.Infinity, null));
 
-        // Steel for comparison
-        list.add(getToolWithStats(0, 1, Materials.Steel, Materials.Steel, null));
-        list.add(getToolWithStats(2, 1, Materials.Steel, Materials.Steel, null));
-        list.add(getToolWithStats(4, 1, Materials.Steel, Materials.Steel, null));
-        list.add(getToolWithStats(6, 1, Materials.Steel, Materials.Steel, null));
-        list.add(getToolWithStats(8, 1, Materials.Steel, Materials.Steel, null));
-        list.add(getToolWithStats(10, 1, Materials.Steel, Materials.Steel, null));
-        list.add(getToolWithStats(12, 1, Materials.Steel, Materials.Steel, null));
-        list.add(getToolWithStats(14, 1, Materials.Steel, Materials.Steel, null));
-        list.add(getToolWithStats(16, 1, Materials.Steel, Materials.Steel, null));
-        list.add(getToolWithStats(18, 1, Materials.Steel, Materials.Steel, null));
-
-        // Electric Scanners
-        dStack = getToolWithStats(
-            100,
-            1,
-            Materials.Iridium,
-            Materials.TungstenSteel,
-            new long[] { 102400000L, GTValues.V[6], 6L, -1L });
-        setCharge(dStack, 102400000L);
-        list.add(dStack);
-
-        dStack = getToolWithStats(
-            102,
-            1,
-            Materials.Neutronium,
-            Materials.TungstenSteel,
-            new long[] { 409600000L, GTValues.V[7], 7L, -1L });
-        setCharge(dStack, 409600000L);
-        list.add(dStack);
-
-        if (Mods.NewHorizonsCoreMod.isModLoaded()) {
+            // electric prospector scanners:
             dStack = getToolWithStats(
-                104,
+                ElectricProspectorScannerUV.ID,
                 1,
                 Materials.InfinityCatalyst,
                 Materials.TungstenSteel,
@@ -339,22 +336,53 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             list.add(dStack);
 
             dStack = getToolWithStats(
-                106,
+                ElectricProspectorScannerUHV.ID,
                 1,
                 Materials.Infinity,
                 Materials.TungstenSteel,
                 new long[] { 6553600000L, GTValues.V[9], 9L, -1L });
             setCharge(dStack, 6553600000L);
             list.add(dStack);
-        } else {
-            dStack = getToolWithStats(
-                106,
-                1,
-                Materials.Neutronium,
-                Materials.TungstenSteel,
-                new long[] { 6553600000L, GTValues.V[9], 9L, -1L });
-            setCharge(dStack, 6553600000L);
-            list.add(dStack);
         }
+
+        // Steel for comparison
+        list.add(getToolWithStats(ProspectorScannerULV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerMV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerHV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerEV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerIV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerLuV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerZPM.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerUV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerUHV.ID, 1, Materials.Steel, Materials.Steel, null));
+
+        // Electric Scanners
+        dStack = getToolWithStats(
+            ElectricProspectorScannerLuV.ID,
+            1,
+            Materials.Iridium,
+            Materials.TungstenSteel,
+            new long[] { 102400000L, GTValues.V[6], 6L, -1L });
+        setCharge(dStack, 102400000L);
+        list.add(dStack);
+
+        dStack = getToolWithStats(
+            ElectricProspectorScannerZPM.ID,
+            1,
+            Materials.Neutronium,
+            Materials.TungstenSteel,
+            new long[] { 409600000L, GTValues.V[7], 7L, -1L });
+        setCharge(dStack, 409600000L);
+        list.add(dStack);
+
+        dStack = getToolWithStats(
+            ElectricProspectorScannerUHV.ID,
+            1,
+            Materials.Neutronium,
+            Materials.TungstenSteel,
+            new long[] { 6553600000L, GTValues.V[9], 9L, -1L });
+        setCharge(dStack, 6553600000L);
+        list.add(dStack);
     }
 }

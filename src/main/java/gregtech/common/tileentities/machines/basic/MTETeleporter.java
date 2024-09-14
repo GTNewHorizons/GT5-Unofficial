@@ -61,7 +61,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.machinestats.ConfigTeleporter;
+import gregtech.common.config.MachineStats;
 
 public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
 
@@ -245,9 +245,9 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
 
     @Override
     public void onConfigLoad() {
-        sInterDimensionalTeleportAllowed = ConfigTeleporter.interDimensionalTPAllowed;
-        sPassiveEnergyDrain = ConfigTeleporter.passiveEnergyDrain;
-        sPowerMultiplyer = ConfigTeleporter.powerMultiplier;
+        sInterDimensionalTeleportAllowed = MachineStats.teleporter.interDimensionalTPAllowed;
+        sPassiveEnergyDrain = MachineStats.teleporter.passiveEnergyDrain;
+        sPowerMultiplyer = MachineStats.teleporter.powerMultiplier;
         sFPowerMultiplyer = sPowerMultiplyer / 100.0;
     }
 

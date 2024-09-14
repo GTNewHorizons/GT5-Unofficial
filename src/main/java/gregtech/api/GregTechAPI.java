@@ -56,7 +56,6 @@ import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
-import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTCreativeTab;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -221,10 +220,6 @@ public class GregTechAPI {
      */
     @SideOnly(Side.CLIENT)
     public static IIconRegister sBlockIcons, sItemIcons;
-    /**
-     * The Configuration Objects
-     */
-    public static GTConfig NEIClientFIle;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
@@ -246,6 +241,7 @@ public class GregTechAPI {
     public static Block sBlockTintedGlass;
     public static Block sLaserRender;
     public static Block sWormholeRender;
+    public static Block sBlackholeRender;
     /**
      * Getting assigned by the Config
      */

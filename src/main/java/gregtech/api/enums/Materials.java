@@ -34,7 +34,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.gregtech.ConfigHarvestLevel;
+import gregtech.common.config.Gregtech;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
@@ -420,6 +420,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * Not possible to determine exact Components
      */
     public static Materials Antimatter;
+    public static Materials Protomatter;
     public static Materials AdvancedGlue;
     public static Materials BioFuel;
     public static Materials Biomass;
@@ -948,6 +949,18 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials TengamAttuned;
     public static Materials TengamRaw;
 
+    public static Materials DenseSteam = makeDenseSteam();
+    private static Materials makeDenseSteam() {
+        return new MaterialBuilder(232, TextureSet.SET_FLUID , "Dense Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
+    }
+    public static Materials DenseSuperheatedSteam = makeDenseSuperheatedSteam();
+    private static Materials makeDenseSuperheatedSteam() {
+        return new MaterialBuilder(233, TextureSet.SET_FLUID , "Dense Superheated Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
+    }
+    public static Materials DenseSupercriticalSteam = makeDenseSupercriticalSteam();
+    private static Materials makeDenseSupercriticalSteam() {
+        return new MaterialBuilder(234, TextureSet.SET_FLUID , "Dense Supercritical Steam").addCell().addGas().setRGB(255, 255, 255).setColor(Dyes.dyeWhite).constructMaterial();
+    }
     // Activated Carbon Line and waterline chemicals
     public static Materials ActivatedCarbon;
     public static Materials PreActivatedCarbon;
@@ -2657,9 +2670,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addHarvestLevels() {
-        GTMod.gregtechproxy.mChangeHarvestLevels = ConfigHarvestLevel.activateHarvestLevelChange;
-        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, ConfigHarvestLevel.maxHarvestLevel);
-        GTMod.gregtechproxy.mGraniteHavestLevel = ConfigHarvestLevel.graniteHarvestLevel;
+        GTMod.gregtechproxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
+        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
+        GTMod.gregtechproxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
     }
 
     public static void initMaterialProperties() {

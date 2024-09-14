@@ -275,7 +275,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     @Override
     public int getMaxParallelRecipes() {
-        return tierMachine == 1 ? 8 : 16;
+        return 8;
     }
 
     @Override
@@ -306,27 +306,26 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33)
-                    .setSpeedBoost(1.5);
+                    .setEUtDiscount(1.25 * tierMachine)
+                    .setSpeedBoost(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getTierRecipes() {
-        return tierMachine == 1 ? 1 : 2;
+        return 1;
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Forge Hammer")
-            .addInfo("33.3% faster than the single block Steam Forge Hammer")
-            .addInfo("Uses only 66.6% of the steam/s that the single block Forge Hammer uses")
-            .addInfo("Bronze tier runs recipes up to LV tier")
-            .addInfo("Steel tier runs recipes up to MV tier")
-            .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
+            .addInfo("Controller Block for the Steam Presser")
+            .addInfo("25% faster than using single block steam machines of the same pressure")
+            .addInfo("Only consumes steam at 62.5% of the L/s normally required")
+            .addInfo("Processes up to 8 items at once")
+            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .addSeparator()
             .beginStructureBlock(6, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -338,12 +337,12 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
                     + EnumChatFormatting.GRAY
                     + " Any casing")
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
+            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Iron Block")
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
+            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
@@ -371,11 +370,10 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-
         currenttip.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
-                + tag.getInteger("tierMachine")
+                + getSteamTierTextForWaila(tag)
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "

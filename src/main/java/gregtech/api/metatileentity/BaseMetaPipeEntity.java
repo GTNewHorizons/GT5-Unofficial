@@ -972,6 +972,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                                 xCoord,
                                 yCoord,
                                 zCoord);
+                            sendClientData();
                         }
                         return true;
                     }
@@ -1000,16 +1001,12 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
             if (getCoverInfoAtSide(side).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;
         }
-
         if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
-
         try {
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity()) {
-                final boolean handled = mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);
-                if (handled) {
-                    mMetaTileEntity.markDirty();
-                }
-                return handled;
+                mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);// Always returns false?
+                mMetaTileEntity.markDirty();
+                return true; // Play the animation
             }
         } catch (Throwable e) {
             GT_FML_LOGGER.error("Encountered Exception while right clicking TileEntity", e);
