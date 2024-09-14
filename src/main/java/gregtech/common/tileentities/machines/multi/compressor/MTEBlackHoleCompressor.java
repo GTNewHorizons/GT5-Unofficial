@@ -1,10 +1,16 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
 import static bartworks.util.BWTooltipReference.TT;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.GTValues.Ollie;
-import static gregtech.api.enums.HatchElement.*;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
@@ -18,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -34,6 +41,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -44,7 +52,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -189,39 +196,17 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public boolean supportsMachineModeSwitch() {
-        return true;
-    }
-
-    @Override
-    public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_COMPRESSING);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SINGULARITY);
-    }
-
-    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            shouldRender = !shouldRender;
-            if (!shouldRender) {
-                PlayerUtils.messagePlayer(aPlayer, "Rendering off");
-                rendererTileEntity = null;
-                destroyRenderBlock();
-            } else {
-                if (blackHoleStatus != 1) createRenderBlock();
-                PlayerUtils.messagePlayer(aPlayer, "Rendering on");
-            }
+        shouldRender = !shouldRender;
+        if (!shouldRender) {
+            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+            rendererTileEntity = null;
+            destroyRenderBlock();
         } else {
-            setMachineMode(nextMachineMode());
-            PlayerUtils.messagePlayer(
-                aPlayer,
-                String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+            if (blackHoleStatus != 1) createRenderBlock();
+            PlayerUtils.messagePlayer(aPlayer, "Rendering on");
         }
-    }
 
-    @Override
-    public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.BLACKHOLE.mode." + machineMode);
     }
 
     @Override
@@ -288,6 +273,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 EnumChatFormatting.LIGHT_PURPLE
                     + "No longer requires heat management to perform superdense compression")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
+            .addInfo(EnumChatFormatting.BLUE + "Use circuit 20 for compressor and 21 for Neutronium Compressor")
             .addSeparator()
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
@@ -448,32 +434,27 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
     }
 
+    private int getModeFromCircuit(ItemStack[] t) {
+        for (ItemStack j : t) {
+            if (j.getItem() == GTUtility.getIntegratedCircuit(0)
+                .getItem()) {
+                if (j.getItemDamage() == 20) {
+                    return MACHINEMODE_COMPRESSOR;
+                } else if (j.getItemDamage() <= 21) {
+                    return MACHINEMODE_BLACKHOLE;
+                }
+            }
+        }
+        return 0;
+    }
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
             @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // Limit ocs up to hatch tier
-                int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
-                if (ocs < 0) ocs = 0;
-                return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setSpeedBoost(speedBoost)
-                    .setEUtDiscount(euModifier)
-                    .setAmperageOC(amperageOC)
-                    .setDurationDecreasePerOC(overClockTimeReduction)
-                    .setEUtIncreasePerOC(overClockPowerIncrease)
-                    .setParallel(getMaxParallelRecipes())
-                    .limitOverclockCount(ocs);
-            }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 // Loop through all items and look for the Activation and Deactivation Catalysts
                 // Deactivation resets stability to 100 and catalyzing cost to 1
                 for (MTEHatchInputBus bus : mInputBusses) {
@@ -498,6 +479,35 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                         }
                     }
                 }
+
+                RecipeMap<?> realMap = (getModeFromCircuit(inputItems) == MACHINEMODE_COMPRESSOR)
+                    ? RecipeMaps.compressorRecipes
+                    : RecipeMaps.neutroniumCompressorRecipes;
+                return super.findRecipeMatches(realMap);
+            }
+
+            @NotNull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                // Limit ocs up to hatch tier
+                int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
+                if (ocs < 0) ocs = 0;
+                return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                    .setAmperage(availableAmperage)
+                    .setEUt(availableVoltage)
+                    .setDuration(recipe.mDuration)
+                    .setSpeedBoost(speedBoost)
+                    .setEUtDiscount(euModifier)
+                    .setAmperageOC(amperageOC)
+                    .setDurationDecreasePerOC(overClockTimeReduction)
+                    .setEUtIncreasePerOC(overClockPowerIncrease)
+                    .setParallel(getMaxParallelRecipes())
+                    .limitOverclockCount(ocs);
+            }
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
                 // Default speed bonus
                 setSpeedBonus(0.2F);
@@ -543,8 +553,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (aTick % 20 == 0) {
             if (blackHoleStatus == 2) {
                 if (blackHoleStability >= 0) {
-                    if (rendererTileEntity == null) createRenderBlock();
-                    rendererTileEntity.setStability(blackHoleStability / 100F);
                     float stabilityDecrease = 1F;
                     // If the machine is running, reduce stability loss by 25%
                     if (this.maxProgresstime() != 0) {
@@ -570,8 +578,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                             break;
                         }
                     }
-                    if (rendererTileEntity == null) createRenderBlock();
-                    rendererTileEntity.toggleLaser(didDrain);
+                    if (shouldRender) {
+                        if (rendererTileEntity == null) createRenderBlock();
+                        rendererTileEntity.toggleLaser(didDrain);
+                        rendererTileEntity.setStability(blackHoleStability / 100F);
+                    }
                     if (blackHoleStability >= 0) blackHoleStability -= stabilityDecrease;
                     else blackHoleStability = 0;
                 } else blackHoleStatus = 3;
@@ -590,12 +601,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     private static final int MACHINEMODE_COMPRESSOR = 0;
     private static final int MACHINEMODE_BLACKHOLE = 1;
-
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_COMPRESSOR) ? RecipeMaps.compressorRecipes
-            : RecipeMaps.neutroniumCompressorRecipes;
-    }
 
     @Nonnull
     @Override
