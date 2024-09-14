@@ -34,7 +34,7 @@ public enum UndergroundFluidNames {
     veryHeavyOil("liquid_extra_heavy_oil", new short[] { 0x00, 0x00, 0x50 });
 
     public final String name;
-    // the color override to use with in ore scanner
+    // color override used for detrav ore scanner
     public final short[] renderColor;
 
     UndergroundFluidNames(String name, short[] renderColor) {
