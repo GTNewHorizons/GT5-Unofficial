@@ -78,9 +78,8 @@ public class Configuration {
         @Config.DefaultBoolean(false)
         public boolean DEHPDirectSteam;
 
-        @Config.Comment("This changes the Maximum Recipes per Operation to the specified value")
-        @Config.DefaultInt(256)
-        public int megaMachinesMax;
+        @Config.Ignore()
+        public static int megaMachinesMax = 256;
 
         @Config.Comment("This are the maximum parallel Operations the BioVat can do, when the output is half full.")
         @Config.DefaultInt(1_000)
