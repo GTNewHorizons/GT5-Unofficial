@@ -69,7 +69,7 @@ public class Configuration {
     public static class Multiblocks {
 
         @Config.Comment("This will set Up the Energy per LESU Cell")
-        @Config.DefaultInt(1_000_000)
+        @Config.DefaultInt(20_000_000)
         public int energyPerCell;
 
         @Config.Comment("This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant")
