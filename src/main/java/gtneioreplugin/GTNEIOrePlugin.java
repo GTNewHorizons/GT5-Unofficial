@@ -47,14 +47,6 @@ public class GTNEIOrePlugin {
     public static final String VERSION = GT_Version.VERSION;
     public static final Logger LOG = LogManager.getLogger(NAME);
     public static File instanceDir;
-    public static final CreativeTabs creativeTab = new CreativeTabs(MODID) {
-
-        @Override
-        public Item getTabIconItem() {
-            return GameRegistry.makeItemStack("gregtech:gt.blockores", 386, 1, null)
-                .getItem();
-        }
-    };
 
     @Mod.Instance(MODID)
     public static GTNEIOrePlugin instance;
