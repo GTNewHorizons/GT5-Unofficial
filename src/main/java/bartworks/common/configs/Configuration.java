@@ -105,10 +105,6 @@ public class Configuration {
         @Config.DefaultBoolean(false)
         public boolean disableBoltedBlocksCasing;
 
-        @Config.Comment("This switch disable the generation of rebolted casings")
-        @Config.DefaultBoolean(false)
-        public boolean disableReboltedBlocksCasing;
-
         @Config.Comment("Enables or Disables the debug log.")
         @Config.DefaultBoolean(false)
         public boolean debugLog;

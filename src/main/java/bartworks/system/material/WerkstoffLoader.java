@@ -1960,10 +1960,7 @@ public class WerkstoffLoader {
             WerkstoffLoader.BWBlockCasings,
             BWItemMetaGeneratedBlock.class,
             "bw.werkstoffblockscasing.01");
-        if (!Configuration.system.disableReboltedBlocksCasing) GameRegistry.registerBlock(
-            WerkstoffLoader.BWBlockCasingsAdvanced,
-            BWItemMetaGeneratedBlock.class,
-            "bw.werkstoffblockscasingadvanced.01");
+        GameRegistry.registerBlock(WerkstoffLoader.BWBlockCasingsAdvanced, BWItemMetaGeneratedBlock.class, "bw.werkstoffblockscasingadvanced.01");
 
         GTMetaItemEnhancer.addAdditionalOreDictToForestry();
         GTMetaItemEnhancer.init();
