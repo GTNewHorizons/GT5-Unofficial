@@ -56,7 +56,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.API.SideReference;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.net.RendererPacket;
@@ -232,10 +232,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
     }
 
     private int calcMod(double x) {
-        double y = this.getOutputCapacity() / 2D, z = ConfigHandler.bioVatMaxParallelBonus;
+        double y = this.getOutputCapacity() / 2D, z = Configuration.Multiblocks.bioVatMaxParallelBonus;
 
         int ret = MathUtils.ceilInt((-1D / y * Math.pow(x - y, 2D) + y) / y * z);
-        return MathUtils.clamp(1, ret, ConfigHandler.bioVatMaxParallelBonus);
+        return MathUtils.clamp(1, ret, Configuration.Multiblocks.bioVatMaxParallelBonus);
     }
 
     @Override

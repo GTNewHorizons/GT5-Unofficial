@@ -46,7 +46,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import bartworks.util.BWUtil;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -148,7 +148,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
     private int mHeatingCapacity;
     private byte glassTier;
-    private final static int polPtick = ConfigHandler.basePollutionMBFSecond / 20 * ConfigHandler.megaMachinesMax;
+    private final static int polPtick = Configuration.pollution.basePollutionMBFSecond / 20
+        * Configuration.Multiblocks.megaMachinesMax;
 
     public MTEMegaBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -312,7 +313,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        }.setMaxParallel(ConfigHandler.megaMachinesMax);
+        }.setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     @Override
