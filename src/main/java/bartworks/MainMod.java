@@ -200,7 +200,6 @@ public final class MainMod {
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
         if (!recipesAdded) {
             StaticRecipeChangeLoaders.addEBFGasRecipes();
-            recipesAdded = true;
         }
 
         // Accept recipe map changes into Buffers
