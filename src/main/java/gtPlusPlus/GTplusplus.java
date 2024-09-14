@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
@@ -109,6 +112,13 @@ public class GTplusplus implements ActionListener {
         }
     }
 
+    static {
+        try {
+            ConfigurationManager.registerConfig(Configuration.class);
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
     // Mod Instance
