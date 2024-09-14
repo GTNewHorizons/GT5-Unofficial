@@ -104,7 +104,7 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.potatojuice"), 750))
                         .duration(6 * SECONDS + 8 * TICKS)
                         .eut(4)
-                        .addTo(brewingRecipes);
+                        .addTo(mixerRecipes);
                 }
             }
             case "cropLemon" -> {
