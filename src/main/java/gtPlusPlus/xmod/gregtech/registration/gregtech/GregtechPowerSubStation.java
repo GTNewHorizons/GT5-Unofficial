@@ -21,9 +21,7 @@ public class GregtechPowerSubStation {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Power Substation Node.");
-        if (Configuration.gregtech.enableMultiblock_PowerSubstation) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

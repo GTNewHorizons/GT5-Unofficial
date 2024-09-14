@@ -12,9 +12,7 @@ public class GregtechIndustrialMacerator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Maceration Stack Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialMacerationStack) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

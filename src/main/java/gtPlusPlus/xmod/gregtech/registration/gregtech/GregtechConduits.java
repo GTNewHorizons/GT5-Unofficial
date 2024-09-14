@@ -49,13 +49,9 @@ public class GregtechConduits {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
-        if (Configuration.gregtech.enableCustom_Cables) {
-            run1();
-        }
-        if (Configuration.gregtech.enableCustom_Pipes) {
-            run2();
-            run3();
-        }
+        run1();
+        run2();
+        run3();
     }
 
     private static void run3() {

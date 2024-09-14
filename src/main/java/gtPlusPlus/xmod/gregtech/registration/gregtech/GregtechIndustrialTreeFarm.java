@@ -11,10 +11,10 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MT
 public class GregtechIndustrialTreeFarm {
 
     public static void run() {
-        if (Configuration.gregtech.enableMultiblock_TreeFarmer) {
-            Logger.INFO("Gregtech5u Content | Registering Tree Farm Multiblock.");
-            run1();
-        }
+
+        Logger.INFO("Gregtech5u Content | Registering Tree Farm Multiblock.");
+        run1();
+
     }
 
     private static void run1() {

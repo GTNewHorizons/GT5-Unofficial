@@ -12,9 +12,7 @@ public class GregtechIndustrialSifter {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Sifter Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialSifter) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

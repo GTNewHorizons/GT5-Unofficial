@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.GTMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
@@ -132,7 +133,7 @@ public class AchievementHandler {
             GregtechItemList.Boiler_Advanced_MV.get(1),
             aBaseAchievementName,
             false);
-        if (PollutionUtils.isPollutionEnabled()) {
+        if (GTMod.gregtechproxy.mPollution) {
             this.registerAchievement(
                 "pollutionremoval",
                 -11,

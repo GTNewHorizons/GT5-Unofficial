@@ -12,9 +12,7 @@ public class GregtechIndustrialFuelRefinery {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Fuel Processing and Refinery Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_NuclearFuelRefinery) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

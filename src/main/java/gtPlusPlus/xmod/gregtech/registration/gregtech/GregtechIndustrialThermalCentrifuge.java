@@ -12,9 +12,7 @@ public class GregtechIndustrialThermalCentrifuge {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Thermal Centrifuge Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialThermalCentrifuge) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

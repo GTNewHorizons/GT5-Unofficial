@@ -22,9 +22,8 @@ public class GregtechGeothermalThermalGenerator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Geothermal Engines.");
-        if (Configuration.gregtech.enableMachine_GeothermalEngines) {
-            run1();
-        }
+        run1();
+
     }
 
     private static void run1() {

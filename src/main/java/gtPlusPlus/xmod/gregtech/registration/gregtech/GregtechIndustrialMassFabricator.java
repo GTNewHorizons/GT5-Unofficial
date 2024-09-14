@@ -20,10 +20,8 @@ public class GregtechIndustrialMassFabricator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Matter Fabricator Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_MatterFabricator) {
-            generateRecipes();
-            run1();
-        }
+        generateRecipes();
+        run1();
     }
 
     private static void run1() {

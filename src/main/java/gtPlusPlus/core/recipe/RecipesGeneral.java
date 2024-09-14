@@ -10,6 +10,7 @@ import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
+import gregtech.GTMod;
 import gtPlusPlus.core.config.Configuration;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -131,41 +132,41 @@ public class RecipesGeneral {
             Logger.INFO("Added shapeless recipe for Tumbaga Dust.");
         }
 
-        if (Configuration.gregtech.enableMachine_Pollution) {
-            RecipeUtils.addShapedRecipe(
-                CI.craftingToolFile,
-                "plateIron",
-                "stickIron",
-                "plateIron",
-                "ringIron",
-                "plateIron",
-                "stickIron",
-                "plateIron",
-                CI.craftingToolHammer_Hard,
-                ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 0, 1));
-            RecipeUtils.addShapedRecipe(
-                CI.craftingToolFile,
-                "plateBronze",
-                "stickBronze",
-                "plateBronze",
-                "ringBronze",
-                "plateBronze",
-                "stickBronze",
-                "plateBronze",
-                CI.craftingToolHammer_Hard,
-                ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 1, 1));
-            RecipeUtils.addShapedRecipe(
-                CI.craftingToolFile,
-                "plateSteel",
-                "stickSteel",
-                "plateSteel",
-                "ringSteel",
-                "plateSteel",
-                "stickSteel",
-                "plateSteel",
-                CI.craftingToolHammer_Hard,
-                ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 2, 1));
-        }
+
+        RecipeUtils.addShapedRecipe(
+            CI.craftingToolFile,
+            "plateIron",
+            "stickIron",
+            "plateIron",
+            "ringIron",
+            "plateIron",
+            "stickIron",
+            "plateIron",
+            CI.craftingToolHammer_Hard,
+            ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 0, 1));
+        RecipeUtils.addShapedRecipe(
+            CI.craftingToolFile,
+            "plateBronze",
+            "stickBronze",
+            "plateBronze",
+            "ringBronze",
+            "plateBronze",
+            "stickBronze",
+            "plateBronze",
+            CI.craftingToolHammer_Hard,
+            ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 1, 1));
+        RecipeUtils.addShapedRecipe(
+            CI.craftingToolFile,
+            "plateSteel",
+            "stickSteel",
+            "plateSteel",
+            "ringSteel",
+            "plateSteel",
+            "stickSteel",
+            "plateSteel",
+            CI.craftingToolHammer_Hard,
+            ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 2, 1));
+
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -427,7 +428,7 @@ public class RecipesGeneral {
             CI.component_Plate[8],
             GregtechItemList.Hatch_Input_Naquadah.get(1L, new Object[0]));
 
-        if (PollutionUtils.isPollutionEnabled()) {
+        if (GTMod.gregtechproxy.mPollution) {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_LV.get(1L, new Object[0]),
                 bitsd,

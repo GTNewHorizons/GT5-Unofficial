@@ -12,9 +12,7 @@ public class GregtechIndustrialCokeOven {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Coke Oven Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialCokeOven) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

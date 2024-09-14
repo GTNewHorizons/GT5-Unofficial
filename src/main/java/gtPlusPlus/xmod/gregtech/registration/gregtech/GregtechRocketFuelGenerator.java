@@ -24,9 +24,8 @@ public class GregtechRocketFuelGenerator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Rocket Engines.");
-        if (Configuration.gregtech.enableMachine_RocketEngines) {
-            run1();
-        }
+        run1();
+
     }
 
     private static void run1() {

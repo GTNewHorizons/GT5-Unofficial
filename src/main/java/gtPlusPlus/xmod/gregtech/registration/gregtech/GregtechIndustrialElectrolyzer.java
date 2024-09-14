@@ -12,9 +12,7 @@ public class GregtechIndustrialElectrolyzer {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Electrolyzer Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialElectrolyzer) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

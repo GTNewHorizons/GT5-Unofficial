@@ -12,9 +12,7 @@ public class GregtechIndustrialWashPlant {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Wash Plant Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialWashPlant) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

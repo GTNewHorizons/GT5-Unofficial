@@ -15,9 +15,7 @@ public class GregtechTieredFluidTanks {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Portable Fluid Tanks.");
-        if (Configuration.gregtech.enableMachine_FluidTanks) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

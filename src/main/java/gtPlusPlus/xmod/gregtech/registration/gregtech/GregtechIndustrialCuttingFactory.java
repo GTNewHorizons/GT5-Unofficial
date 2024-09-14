@@ -12,9 +12,8 @@ public class GregtechIndustrialCuttingFactory {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Cutting Factory Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialCuttingMachine) {
-            run1();
-        }
+        run1();
+
     }
 
     private static void run1() {

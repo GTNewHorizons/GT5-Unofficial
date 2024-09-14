@@ -12,9 +12,7 @@ public class GregtechIndustrialWiremill {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Wire Factory Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialWireMill) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

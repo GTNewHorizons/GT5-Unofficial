@@ -12,9 +12,7 @@ public class GregtechIndustrialMultiMachine {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Multi-Machine Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialMultiMachine) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

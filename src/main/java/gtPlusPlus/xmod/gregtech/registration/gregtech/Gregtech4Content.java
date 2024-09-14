@@ -116,12 +116,11 @@ public class Gregtech4Content {
 
     private static void thermalBoiler() {
         // Gregtech 4 Thermal Boiler
-        if (Configuration.gregtech.enableMultiblock_ThermalBoiler) {
-            Logger.INFO("Gregtech 4 Content | Registering Thermal Boiler.");
-            GregtechItemList.GT4_Thermal_Boiler.set(
-                new MTEThermalBoiler(GT4_Thermal_Boiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler")
-                    .getStackForm(1L));
-        }
+        Logger.INFO("Gregtech 4 Content | Registering Thermal Boiler.");
+        GregtechItemList.GT4_Thermal_Boiler.set(
+            new MTEThermalBoiler(GT4_Thermal_Boiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler")
+                .getStackForm(1L));
+
     }
 
     private static void multiCrafter() {

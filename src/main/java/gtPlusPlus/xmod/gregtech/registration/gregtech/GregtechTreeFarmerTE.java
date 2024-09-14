@@ -12,9 +12,8 @@ public class GregtechTreeFarmerTE {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Tree Farmer Structural Block.");
-        if (Configuration.gregtech.enableMultiblock_TreeFarmer) {
-            run1();
-        }
+        run1();
+
     }
 
     private static void run1() {

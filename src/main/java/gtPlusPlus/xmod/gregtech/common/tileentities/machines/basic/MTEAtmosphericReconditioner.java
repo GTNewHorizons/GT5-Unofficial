@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.V;
 
 import java.util.Collections;
 
+import gregtech.GTMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -74,12 +75,12 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
                 new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
                 new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
-        mPollutionEnabled = PollutionUtils.isPollutionEnabled();
+        mPollutionEnabled = GTMod.gregtechproxy.mPollution;
     }
 
     public MTEAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 2, aDescription, aTextures, 2, 0);
-        mPollutionEnabled = PollutionUtils.isPollutionEnabled();
+        mPollutionEnabled = GTMod.gregtechproxy.mPollution;
     }
 
     @Override
@@ -239,9 +240,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
                             // Only check every 30s.
                             if (!isIdle && aTick % (20L * 30) == 0L) {
-                                mPollutionEnabled = PollutionUtils.isPollutionEnabled();
+                                mPollutionEnabled = GTMod.gregtechproxy.mPollution;
                                 // Clear out pollution if it's disabled, because I am a nice gal.
-                                if (!PollutionUtils.isPollutionEnabled()) {
+                                if (!GTMod.gregtechproxy.mPollution) {
                                     PollutionUtils.nullifyPollution(this.getBaseMetaTileEntity());
                                 }
                             }

@@ -12,9 +12,7 @@ public class GregtechIndustrialMixer {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Mixer Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialPlatePress) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

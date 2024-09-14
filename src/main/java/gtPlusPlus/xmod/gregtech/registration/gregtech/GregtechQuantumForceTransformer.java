@@ -12,12 +12,11 @@ public class GregtechQuantumForceTransformer {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Quantum Force Transformer Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_QuantumForceTransformer) {
-            GregtechItemList.QuantumForceTransformer.set(
-                new MTEQuantumForceTransformer(
-                    QuantumForceTransformer.ID,
-                    "quantumforcetransformer.controller.tier.single",
-                    "Quantum Force Transformer").getStackForm(1L));
-        }
+        GregtechItemList.QuantumForceTransformer.set(
+            new MTEQuantumForceTransformer(
+                QuantumForceTransformer.ID,
+                "quantumforcetransformer.controller.tier.single",
+                "Quantum Force Transformer").getStackForm(1L));
+
     }
 }

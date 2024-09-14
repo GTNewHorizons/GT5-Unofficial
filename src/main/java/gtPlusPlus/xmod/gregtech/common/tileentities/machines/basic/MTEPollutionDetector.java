@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import gregtech.GTMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -270,7 +271,7 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
     }
 
     private void showPollution(final World worldIn, final EntityPlayer playerIn) {
-        if (!PollutionUtils.isPollutionEnabled()) {
+        if (!GTMod.gregtechproxy.mPollution) {
             PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
             PlayerUtils.messagePlayer(playerIn, "This chunk contains " + getCurrentChunkPollution() + " pollution.");

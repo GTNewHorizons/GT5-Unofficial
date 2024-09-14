@@ -36,9 +36,7 @@ public class GregtechDehydrator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Chemical Dehydrators.");
-        if (Configuration.gregtech.enableMachine_Dehydrators) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

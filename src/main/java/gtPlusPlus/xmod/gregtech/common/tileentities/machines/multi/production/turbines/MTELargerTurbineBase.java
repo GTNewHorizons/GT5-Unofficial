@@ -14,6 +14,7 @@ import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.G
 
 import java.util.ArrayList;
 
+import gregtech.GTMod;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -193,7 +194,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     private boolean requiresMufflers() {
-        if (!PollutionUtils.isPollutionEnabled()) {
+        if (!GTMod.gregtechproxy.mPollution) {
             return false;
         }
         return getPollutionPerSecond(null) > 0;

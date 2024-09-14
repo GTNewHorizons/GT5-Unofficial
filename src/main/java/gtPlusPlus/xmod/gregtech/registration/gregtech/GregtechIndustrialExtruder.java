@@ -12,9 +12,7 @@ public class GregtechIndustrialExtruder {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Extrusion Multiblock.");
-        if (Configuration.gregtech.enableMultiblock_IndustrialExtrudingMachine) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {

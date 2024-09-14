@@ -17,6 +17,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Muffler_Adv_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_Reservoir;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -39,7 +40,7 @@ public class GregtechCustomHatches {
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Custom Fluid Hatches.");
         run1();
-        if (PollutionUtils.isPollutionEnabled()) {
+        if (GTMod.gregtechproxy.mPollution) {
             run2();
         }
         run3();

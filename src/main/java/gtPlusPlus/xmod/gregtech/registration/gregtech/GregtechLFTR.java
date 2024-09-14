@@ -22,9 +22,7 @@ public class GregtechLFTR {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Liquid Fluorine Thorium Reactor [LFTR].");
-        if (Configuration.gregtech.enableMultiblock_LiquidFluorideThoriumReactor) {
-            run1();
-        }
+        run1();
     }
 
     private static void run1() {
