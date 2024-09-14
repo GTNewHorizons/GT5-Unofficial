@@ -578,9 +578,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                             break;
                         }
                     }
-                    if (rendererTileEntity == null) createRenderBlock();
-                    rendererTileEntity.toggleLaser(didDrain);
-                    rendererTileEntity.setStability(blackHoleStability / 100F);
+                    if (shouldRender) {
+                        if (rendererTileEntity == null) createRenderBlock();
+                        rendererTileEntity.toggleLaser(didDrain);
+                        rendererTileEntity.setStability(blackHoleStability / 100F);
+                    }
                     if (blackHoleStability >= 0) blackHoleStability -= stabilityDecrease;
                     else blackHoleStability = 0;
                 } else blackHoleStatus = 3;
