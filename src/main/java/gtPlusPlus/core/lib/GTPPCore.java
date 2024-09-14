@@ -38,7 +38,6 @@ public class GTPPCore {
     public static int EVERGLADES_ID = 227;
     public static int EVERGLADESBIOME_ID = 238;
 
-    public static int turbineCutoffBase = 75000;
 
     // Tooltips;
     public static final Supplier<String> GT_Tooltip = () -> StatCollector.translateToLocal("GTPP.core.GT_Tooltip");
@@ -72,46 +71,9 @@ public class GTPPCore {
         public static int enableWatchdogBGM = PreloaderCore.enableWatchdogBGM;
         public static boolean hideUniversalCells = true;
 
-        // Single Block Machines
-        public static boolean enableMachine_Dehydrators = true;
-        public static boolean enableMachine_SteamConverter = true;
-        public static boolean enableMachine_FluidTanks = true;
-        public static boolean enableMachine_RocketEngines = true;
-        public static boolean enableMachine_GeothermalEngines = true;
-        public static boolean enableMachine_Tesseracts = true;
-        public static boolean enableMachine_SimpleWasher = true;
-        public static boolean enableMachine_Pollution = true;
-        public static boolean enableCustom_Pipes = true;
-        public static boolean enableCustom_Cables = true;
+
         public static boolean enableMachine_RedstoneBlocks = true;
 
-        // Multiblocks
-        public static boolean enableMultiblock_AlloyBlastSmelter = true;
-        public static boolean enableMultiblock_QuantumForceTransformer = true;
-        public static boolean enableMultiblock_IndustrialCentrifuge = true;
-        public static boolean enableMultiblock_IndustrialCokeOven = true;
-        public static boolean enableMultiblock_IndustrialElectrolyzer = true;
-        public static boolean enableMultiblock_WaterPump = true;
-        public static boolean enableMultiblock_IndustrialMacerationStack = true;
-        public static boolean enableMultiblock_IndustrialPlatePress = true;
-        public static boolean enableMultiblock_IndustrialWireMill = true;
-        public static boolean enableMultiblock_MatterFabricator = true;
-        public static boolean enableMultiblock_MultiTank = true;
-        public static boolean enableMultiblock_PowerSubstation = true;
-        public static boolean enableMultiblock_LiquidFluorideThoriumReactor = true;
-        public static boolean enableMultiblock_NuclearSaltProcessingPlant = true;
-        public static boolean enableMultiblock_NuclearFuelRefinery = true;
-        public static boolean enableMultiblock_TreeFarmer = true;
-        public static boolean enableMultiblock_IndustrialSifter = true;
-        public static boolean enableMultiblock_IndustrialThermalCentrifuge = true;
-        public static boolean enableMultiblock_IndustrialWashPlant = true;
-        public static boolean enableMultiblock_LargeAutoCrafter = true;
-        public static boolean enableMultiblock_ThermalBoiler = true;
-        public static boolean enableMultiblock_IndustrialCuttingMachine = true;
-        public static boolean enableMultiblock_IndustrialFishingPort = true;
-        public static boolean enableMultiblock_IndustrialExtrudingMachine = true;
-        public static boolean enableMultiblock_IndustrialMultiMachine = true;
-        public static boolean enableMultiblock_Cyclotron = true;
 
         // Visuals
         public static boolean useGregtechTextures = true;

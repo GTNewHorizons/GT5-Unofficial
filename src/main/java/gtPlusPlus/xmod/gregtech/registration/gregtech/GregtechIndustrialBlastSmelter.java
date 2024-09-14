@@ -4,6 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Industrial_AlloyBlastSmelter;
 import static gregtech.api.enums.MetaTileEntityIDs.Mega_AlloyBlastSmelter;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEAlloyBlastSmelter;
@@ -13,7 +14,7 @@ public class GregtechIndustrialBlastSmelter {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Alloy Blast Smelter Multiblock.");
-        if (GTPPCore.ConfigSwitches.enableMultiblock_AlloyBlastSmelter) {
+        if (Configuration.gregtech.enableMultiblock_AlloyBlastSmelter) {
             run1();
         }
     }

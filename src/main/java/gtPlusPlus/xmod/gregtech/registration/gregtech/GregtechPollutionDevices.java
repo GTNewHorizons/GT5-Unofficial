@@ -13,6 +13,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Creator;
 import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Detector;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -30,7 +31,7 @@ public class GregtechPollutionDevices {
     }
 
     private static void run1() {
-        if (GTPPCore.ConfigSwitches.enableMachine_Pollution) {
+        if (Configuration.gregtech.enableMachine_Pollution) {
             // 759
             GregtechItemList.Pollution_Detector.set(
                 new MTEPollutionDetector(

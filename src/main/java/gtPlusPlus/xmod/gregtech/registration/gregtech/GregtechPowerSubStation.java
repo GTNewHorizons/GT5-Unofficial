@@ -9,6 +9,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.PowerSubStation;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -20,7 +21,7 @@ public class GregtechPowerSubStation {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Power Substation Node.");
-        if (GTPPCore.ConfigSwitches.enableMultiblock_PowerSubstation) {
+        if (Configuration.gregtech.enableMultiblock_PowerSubstation) {
             run1();
         }
     }

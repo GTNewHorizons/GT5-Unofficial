@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -607,7 +608,7 @@ public final class ModItems {
             false,
             null);
 
-        if (GTPPCore.ConfigSwitches.enableMachine_Pollution) {
+        if (Configuration.gregtech.enableMachine_Pollution) {
             itemBasicTurbine = new ItemBasicScrubberTurbine();
         }
 
@@ -643,7 +644,7 @@ public final class ModItems {
         // //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 
         // Load Tree Farmer
-        if (GTPPCore.ConfigSwitches.enableMultiblock_TreeFarmer) { // https://en.wikipedia.org/wiki/UAN
+        if (Configuration.gregtech.enableMultiblock_TreeFarmer) { // https://en.wikipedia.org/wiki/UAN
             dustFertUN18 = ItemUtils
                 .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
             dustFertUN32 = ItemUtils
@@ -989,11 +990,11 @@ public final class ModItems {
 
         // A plate of Europium.
         if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null)
-            && GTPPCore.ConfigSwitches.enableCustom_Pipes) {
+            && Configuration.gregtech.enableCustom_Pipes) {
             itemPlateEuropium = new BaseItemPlate(MaterialsElements.getInstance().EUROPIUM);
         }
         if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null)
-            && GTPPCore.ConfigSwitches.enableCustom_Pipes) {
+            && Configuration.gregtech.enableCustom_Pipes) {
             itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialsElements.getInstance().EUROPIUM);
         }
 

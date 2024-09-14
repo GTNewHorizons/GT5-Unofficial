@@ -13,6 +13,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -48,10 +49,10 @@ public class GregtechConduits {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
-        if (GTPPCore.ConfigSwitches.enableCustom_Cables) {
+        if (Configuration.gregtech.enableCustom_Cables) {
             run1();
         }
-        if (GTPPCore.ConfigSwitches.enableCustom_Pipes) {
+        if (Configuration.gregtech.enableCustom_Pipes) {
             run2();
             run3();
         }

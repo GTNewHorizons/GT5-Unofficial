@@ -19,6 +19,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -928,7 +929,7 @@ public class RecipesMachines {
         IV_MACHINE_AlloySmelter = ItemList.Machine_IV_AlloySmelter.get(1);
         IV_MACHINE_Mixer = ItemList.Machine_IV_Mixer.get(1);
         EV_MACHINE_ChemicalBath = ItemList.Machine_EV_ChemicalBath.get(1);
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialCokeOven) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialCokeOven) {
             if (Railcraft.isModLoaded()) {
                 // Misc
                 INPUT_RCCokeOvenBlock = ItemUtils
@@ -1174,7 +1175,7 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialCentrifuge) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialCentrifuge) {
             // Industrial Centrifuge
             RECIPE_IndustrialCentrifugeController = GregtechItemList.Industrial_Centrifuge.get(1);
             RECIPE_IndustrialCentrifugeCasing = GregtechItemList.Casing_Centrifuge1.get(1);
@@ -1217,7 +1218,7 @@ public class RecipesMachines {
 
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialCokeOven) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialCokeOven) {
             // Industrial Coke Oven
             RECIPE_IndustrialCokeOvenController = GregtechItemList.Industrial_CokeOven.get(1);
             RECIPE_IndustrialCokeOvenFrame = GregtechItemList.Casing_CokeOven.get(1);
@@ -1287,7 +1288,7 @@ public class RecipesMachines {
                 RECIPE_IndustrialCokeOvenCasingB);
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialElectrolyzer) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialElectrolyzer) {
             // Industrial Electrolyzer
             RECIPE_IndustrialElectrolyzerController = GregtechItemList.Industrial_Electrolyzer.get(1);
             RECIPE_IndustrialElectrolyzerFrame = GregtechItemList.Casing_Electrolyzer.get(1);
@@ -1330,7 +1331,7 @@ public class RecipesMachines {
                 RECIPE_IndustrialElectrolyzerController);
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialPlatePress) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialPlatePress) {
             // Industrial Material Press
             RECIPE_IndustrialMaterialPressController = GregtechItemList.Industrial_PlatePress.get(1);
             RECIPE_IndustrialMaterialPressFrame = GregtechItemList.Casing_MaterialPress.get(1);
@@ -1373,7 +1374,7 @@ public class RecipesMachines {
                 RECIPE_IndustrialMaterialPressController);
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialMacerationStack) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialMacerationStack) {
             // Industrial Maceration Stack
             RECIPE_IndustrialMacerationStackController = GregtechItemList.Industrial_MacerationStack.get(1);
             RECIPE_IndustrialMacerationStackFrame = GregtechItemList.Casing_MacerationStack.get(1);
@@ -1428,7 +1429,7 @@ public class RecipesMachines {
                 GregtechItemList.Maceration_Upgrade_Chip.get(1));
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialWireMill) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialWireMill) {
             // Industrial Wire Factory
             RECIPE_IndustrialWireFactoryController = GregtechItemList.Industrial_WireFactory.get(1);
             RECIPE_IndustrialWireFactoryFrame = GregtechItemList.Casing_WireFactory.get(1);
@@ -1471,7 +1472,7 @@ public class RecipesMachines {
         }
 
         // Tiered Tanks
-        if (GTPPCore.ConfigSwitches.enableMachine_FluidTanks) {
+        if (Configuration.gregtech.enableMachine_FluidTanks) {
             CI.component_Plate[1] = "plateTin";
             pipeTier1 = "pipeLargeClay";
             CI.circuitTier1 = ItemList.Circuit_Primitive.get(1);
@@ -1540,7 +1541,7 @@ public class RecipesMachines {
                 GregtechItemList.GTFluidTank_HV.get(1));
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_MultiTank) {
+        if (Configuration.gregtech.enableMultiblock_MultiTank) {
             // Industrial Multi Tank
             // RECIPE_IndustrialMultiTankController = GregtechItemList.Industrial_MultiTank.get(1);
             RECIPE_IndustrialMultiTankFrame = GregtechItemList.Casing_MultitankExterior.get(1);
@@ -1681,7 +1682,7 @@ public class RecipesMachines {
                 ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.IV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tungsten), 'G', MaterialsAlloy.NITINOL_60.getGear(1) });
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_AlloyBlastSmelter) {
+        if (Configuration.gregtech.enableMultiblock_AlloyBlastSmelter) {
             // Industrial Blast Smelter
             RECIPE_IndustrialBlastSmelterController = GregtechItemList.Industrial_AlloyBlastSmelter.get(1);
             RECIPE_IndustrialBlastSmelterFrame = GregtechItemList.Casing_BlastSmelter.get(1);
@@ -1774,7 +1775,7 @@ public class RecipesMachines {
             1200 * 20,
             (int) GTValues.VP[11]);
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_MatterFabricator) {
+        if (Configuration.gregtech.enableMultiblock_MatterFabricator) {
             // Industrial Matter Fabricator
             RECIPE_IndustrialMatterFabController = GregtechItemList.Industrial_MassFab.get(1);
             RECIPE_IndustrialMatterFabFrame = GregtechItemList.Casing_MatterFab.get(1);
@@ -1836,7 +1837,7 @@ public class RecipesMachines {
 
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialSifter) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialSifter) {
             // Industrial Sieve
             RECIPE_IndustrialSieveController = GregtechItemList.Industrial_Sifter.get(1);
             RECIPE_IndustrialSieveFrame = GregtechItemList.Casing_Sifter.get(1);
@@ -1900,7 +1901,7 @@ public class RecipesMachines {
 
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_TreeFarmer) {
+        if (Configuration.gregtech.enableMultiblock_TreeFarmer) {
             // Industrial Tree Farmer
             RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);
             RECIPE_TreeFarmFrame = GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(1);
@@ -1933,7 +1934,7 @@ public class RecipesMachines {
 
         }
 
-        if (GTPPCore.ConfigSwitches.enableMachine_Tesseracts) {
+        if (Configuration.gregtech.enableMachine_Tesseracts) {
             // Tesseracts
             RECIPE_TesseractGenerator = GregtechItemList.GT4_Tesseract_Generator.get(1);
             RECIPE_TesseractTerminal = GregtechItemList.GT4_Tesseract_Terminal.get(1);
@@ -1963,7 +1964,7 @@ public class RecipesMachines {
                 RECIPE_TesseractTerminal);
         }
 
-        if (GTPPCore.ConfigSwitches.enableMachine_SimpleWasher) {
+        if (Configuration.gregtech.enableMachine_SimpleWasher) {
             final List<ItemStack> washers = ImmutableList.of(
                 GregtechItemList.SimpleDustWasher_LV.get(1),
                 GregtechItemList.SimpleDustWasher_MV.get(1),
@@ -1992,7 +1993,7 @@ public class RecipesMachines {
             }
         }
 
-        if (GTPPCore.ConfigSwitches.enableMachine_Pollution && PollutionUtils.isPollutionEnabled()) {
+        if (Configuration.gregtech.enableMachine_Pollution && PollutionUtils.isPollutionEnabled()) {
 
             RecipeUtils.addShapedGregtechRecipe(
                 "plateCarbon",
@@ -2141,7 +2142,7 @@ public class RecipesMachines {
                 GregtechItemList.Pollution_Cleaner_MAX.get(1));
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_ThermalBoiler) {
+        if (Configuration.gregtech.enableMultiblock_ThermalBoiler) {
             RECIPE_ThermalBoilerController = GregtechItemList.GT4_Thermal_Boiler.get(1);
             RECIPE_ThermalBoilerCasing = GregtechItemList.Casing_ThermalContainment.get(2);
             ItemStack centrifugeEV = ItemList.Machine_EV_Centrifuge.get(1);
@@ -2224,7 +2225,7 @@ public class RecipesMachines {
             CI.getTieredCircuit(7),
             GregtechItemList.Hatch_Air_Intake_Extreme.get(1));
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor) {
+        if (Configuration.gregtech.enableMultiblock_LiquidFluorideThoriumReactor) {
 
             // Thorium Reactor
             RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);
@@ -2395,7 +2396,7 @@ public class RecipesMachines {
         }
 
         // Cyclotron
-        if (GTPPCore.ConfigSwitches.enableMultiblock_Cyclotron) {
+        if (Configuration.gregtech.enableMultiblock_Cyclotron) {
             RECIPE_CyclotronController = GregtechItemList.COMET_Cyclotron.get(1);
             RECIPE_CyclotronOuterCasing = GregtechItemList.Casing_Cyclotron_External.get(1);
             RECIPE_CyclotronInnerCoil = GregtechItemList.Casing_Cyclotron_Coil.get(1);
@@ -2456,7 +2457,7 @@ public class RecipesMachines {
                 ItemList.Electric_Pump_EV, 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
                 OrePrefixes.cableGt08.get(Materials.Electrum), 'G', MaterialsAlloy.INCONEL_792.getGear(1) });
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_PowerSubstation) {
+        if (Configuration.gregtech.enableMultiblock_PowerSubstation) {
             RecipeUtils.addShapedRecipe(
                 "screwTitanium",
                 "plateIncoloy020",
@@ -2484,7 +2485,7 @@ public class RecipesMachines {
                 GregtechItemList.PowerSubStation.get(1));
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialThermalCentrifuge) {
             RecipeUtils.addShapedRecipe(
                 "plateRedSteel",
                 CI.craftingToolHammer_Hard,
@@ -2519,7 +2520,7 @@ public class RecipesMachines {
                 GregtechItemList.Industrial_ThermalCentrifuge.get(1));
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialWashPlant) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialWashPlant) {
             RecipeUtils.addShapedRecipe(
                 "plateGrisium",
                 CI.craftingToolHammer_Hard,
@@ -2555,7 +2556,7 @@ public class RecipesMachines {
                 GregtechItemList.Industrial_WashPlant.get(1));
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_LargeAutoCrafter) {
+        if (Configuration.gregtech.enableMultiblock_LargeAutoCrafter) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemUtils.getSimpleStack(GregtechItemList.Casing_Multi_Use.get(1), 1),
@@ -2597,7 +2598,7 @@ public class RecipesMachines {
 
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialCuttingMachine) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialCuttingMachine) {
             ItemStack plate = MaterialsAlloy.MARAGING300.getPlate(1);
             RecipeUtils.addShapedRecipe(
                 plate,
@@ -2635,7 +2636,7 @@ public class RecipesMachines {
         }
 
         // IV_MACHINE_Extruder
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialExtrudingMachine) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialExtrudingMachine) {
             ItemStack plate = MaterialsAlloy.INCONEL_690.getPlate(1);
             RecipeUtils.addShapedRecipe(
                 plate,
@@ -2672,7 +2673,7 @@ public class RecipesMachines {
                 GregtechItemList.Industrial_Extruder.get(1));
         }
 
-        if (GTPPCore.ConfigSwitches.enableMultiblock_IndustrialFishingPort) {
+        if (Configuration.gregtech.enableMultiblock_IndustrialFishingPort) {
             ItemStack plate = MaterialsAlloy.AQUATIC_STEEL.getPlate(1);
             RecipeUtils.addShapedRecipe(
                 plate,

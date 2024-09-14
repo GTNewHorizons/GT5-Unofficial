@@ -14,6 +14,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import java.util.List;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableList;
@@ -34,7 +35,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class GregtechSimpleWasher {
 
     public static void run() {
-        if (GTPPCore.ConfigSwitches.enableMachine_SimpleWasher) {
+        if (Configuration.gregtech.enableMachine_SimpleWasher) {
             generateDirtyDustRecipes();
             generateDirtyCrushedRecipes();
             // Register the Simple Washer Entity.

@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTESpargeTower;
@@ -21,7 +22,7 @@ public class GregtechLFTR {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Liquid Fluorine Thorium Reactor [LFTR].");
-        if (GTPPCore.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor) {
+        if (Configuration.gregtech.enableMultiblock_LiquidFluorideThoriumReactor) {
             run1();
         }
     }

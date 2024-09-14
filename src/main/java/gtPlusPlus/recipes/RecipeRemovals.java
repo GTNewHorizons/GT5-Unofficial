@@ -4,6 +4,7 @@ import static gtPlusPlus.core.util.minecraft.MaterialUtils.getMaterialName;
 
 import java.util.Collection;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -36,7 +37,7 @@ public class RecipeRemovals {
     // Doesn't actually remove recipes, just hide them
     private static void removeCrudeTurbineRotors() {
         int aRemoved = 0;
-        int CUT = GTPPCore.turbineCutoffBase;
+        int CUT = Configuration.gregtech.turbineCutoffBase;
         Item aU;
         Collection<GTRecipe> aAssRecipes = RecipeMaps.assemblerRecipes.getAllRecipes();
         // 170, 172, 174, 176

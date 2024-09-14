@@ -23,6 +23,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.GT4_Thermal_Boiler;
 
 import gregtech.api.GregTechAPI;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWorkbench;
@@ -115,7 +116,7 @@ public class Gregtech4Content {
 
     private static void thermalBoiler() {
         // Gregtech 4 Thermal Boiler
-        if (GTPPCore.ConfigSwitches.enableMultiblock_ThermalBoiler) {
+        if (Configuration.gregtech.enableMultiblock_ThermalBoiler) {
             Logger.INFO("Gregtech 4 Content | Registering Thermal Boiler.");
             GregtechItemList.GT4_Thermal_Boiler.set(
                 new MTEThermalBoiler(GT4_Thermal_Boiler.ID, "gtplusplus.thermal.boiler", "Thermal Boiler")

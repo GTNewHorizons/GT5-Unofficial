@@ -13,6 +13,7 @@ import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRec
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -35,7 +36,7 @@ public class GregtechDehydrator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Chemical Dehydrators.");
-        if (GTPPCore.ConfigSwitches.enableMachine_Dehydrators) {
+        if (Configuration.gregtech.enableMachine_Dehydrators) {
             run1();
         }
     }

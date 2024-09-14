@@ -10,6 +10,7 @@ import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -130,7 +131,7 @@ public class RecipesGeneral {
             Logger.INFO("Added shapeless recipe for Tumbaga Dust.");
         }
 
-        if (GTPPCore.ConfigSwitches.enableMachine_Pollution) {
+        if (Configuration.gregtech.enableMachine_Pollution) {
             RecipeUtils.addShapedRecipe(
                 CI.craftingToolFile,
                 "plateIron",

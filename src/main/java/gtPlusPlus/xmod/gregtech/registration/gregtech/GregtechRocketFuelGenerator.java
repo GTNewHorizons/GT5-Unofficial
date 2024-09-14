@@ -5,6 +5,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Rocket_Engine_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Rocket_Engine_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.Rocket_Engine_LuV;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ItemList;
@@ -23,7 +24,7 @@ public class GregtechRocketFuelGenerator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Rocket Engines.");
-        if (GTPPCore.ConfigSwitches.enableMachine_RocketEngines) {
+        if (Configuration.gregtech.enableMachine_RocketEngines) {
             run1();
         }
     }

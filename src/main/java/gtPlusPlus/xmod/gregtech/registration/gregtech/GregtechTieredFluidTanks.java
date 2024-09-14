@@ -6,6 +6,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.GTFluidTank_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.GTFluidTank_ULV;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.MTETieredTank;
@@ -14,7 +15,7 @@ public class GregtechTieredFluidTanks {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Portable Fluid Tanks.");
-        if (GTPPCore.ConfigSwitches.enableMachine_FluidTanks) {
+        if (Configuration.gregtech.enableMachine_FluidTanks) {
             run1();
         }
     }
