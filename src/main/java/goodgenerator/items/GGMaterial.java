@@ -260,7 +260,7 @@ public class GGMaterial implements Runnable {
         new Pair<>(WerkstoffLoader.Thorium232, 1),
         new Pair<>(Fluorine, 4));
 
-    // Atomic Separation Catalyst
+    // Orundum
     public static final Werkstoff orundum = new Werkstoff(
         new short[] { 0xcd, 0x26, 0x26 },
         "Orundum",
@@ -306,13 +306,14 @@ public class GGMaterial implements Runnable {
             .setSpeedOverride(100f)
             .setQualityOverride((byte) 11),
         Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
+        new Werkstoff.GenerationFeatures()
             .onlyDust()
             .addMolten()
             .addMetalItems()
             .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems(),
+            .addMultipleIngotMetalWorkingItems()
+            .addMetaSolidifierRecipes(),
         OffsetID + 23,
         TextureSet.SET_SHINY);
 
@@ -1461,7 +1462,9 @@ public class GGMaterial implements Runnable {
             .addMolten()
             .addMetalItems()
             .addCraftingMetalWorkingItems()
+            .addSimpleMetalWorkingItems()
             .addMultipleIngotMetalWorkingItems()
+            .addMetalCraftingSolidifierRecipes()
             .addMetaSolidifierRecipes(),
         OffsetID + 110,
         TextureSet.SET_SHINY);
