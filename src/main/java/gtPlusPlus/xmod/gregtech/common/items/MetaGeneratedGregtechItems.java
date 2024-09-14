@@ -56,7 +56,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.items.GTMetaItemX32;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.common.covers.CoverOverflow;
+import gtPlusPlus.xmod.gregtech.common.covers.CoverOverflowValve;
 
 public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
 
@@ -373,31 +373,31 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[4][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflow(64));
+            new CoverOverflowValve(64_000));
         GregTechAPI.registerCover(
             GregtechItemList.Cover_Overflow_MV.get(1L),
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflow(512));
+            new CoverOverflowValve(512_000));
         GregTechAPI.registerCover(
             GregtechItemList.Cover_Overflow_HV.get(1L),
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflow(4096));
+            new CoverOverflowValve(4_096_000));
         GregTechAPI.registerCover(
             GregtechItemList.Cover_Overflow_EV.get(1L),
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflow(32768));
+            new CoverOverflowValve(32_768_000));
         GregTechAPI.registerCover(
             GregtechItemList.Cover_Overflow_IV.get(1L),
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
-            new CoverOverflow(262144));
+            new CoverOverflowValve(262_144_000));
     }
 
 }
