@@ -13,7 +13,6 @@
 
 package bartworks.common.loaders;
 
-import bartworks.common.commands.ChangeConfig;
 import bartworks.common.commands.ClearCraftingCache;
 import bartworks.common.commands.GetWorkingDirectory;
 import bartworks.common.commands.PrintRecipeListToFile;
@@ -25,7 +24,6 @@ public class RegisterServerCommands {
 
     public static void registerAll(FMLServerStartingEvent event) {
         event.registerServerCommand(new SummonRuin());
-        event.registerServerCommand(new ChangeConfig());
         event.registerServerCommand(new PrintRecipeListToFile());
         event.registerServerCommand(new ClearCraftingCache());
         event.registerServerCommand(new GetWorkingDirectory());

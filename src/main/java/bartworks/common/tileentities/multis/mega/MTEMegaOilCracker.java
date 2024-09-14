@@ -49,7 +49,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -220,7 +220,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                 this.setEuModifier(1.0F - Math.min(0.1F * (MTEMegaOilCracker.this.heatLevel.getTier() + 1), 0.5F));
                 return super.process();
             }
-        }.setMaxParallel(ConfigHandler.megaMachinesMax);
+        }.setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     public HeatingCoilLevel getCoilLevel() {
