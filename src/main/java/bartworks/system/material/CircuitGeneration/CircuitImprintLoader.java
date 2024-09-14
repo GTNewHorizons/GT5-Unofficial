@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -113,7 +114,7 @@ public class CircuitImprintLoader {
                 GTRecipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null) BartWorksRecipeMaps.circuitAssemblyLineRecipes.addRecipe(newRecipe);
                 addCutoffRecipeToSets(toRem, toAdd, circuitRecipe);
-            } else if (circuitRecipe.mEUt > BWUtil.getTierVoltage(Configuration.system.cutoffTier))
+            } else if (circuitRecipe.mEUt > TierEU.IV)
                 toRem.add(circuitRecipe);
         }
     }
@@ -134,7 +135,7 @@ public class CircuitImprintLoader {
 
     private static void addCutoffRecipeToSets(HashSet<GTRecipe> toRem, HashSet<GTRecipe> toAdd,
         GTRecipe circuitRecipe) {
-        if (circuitRecipe.mEUt > BWUtil.getTierVoltage(Configuration.system.cutoffTier)) {
+        if (circuitRecipe.mEUt > TierEU.IV) {
             toRem.add(circuitRecipe);
             toAdd.add(CircuitImprintLoader.makeMoreExpensive(circuitRecipe));
         }
