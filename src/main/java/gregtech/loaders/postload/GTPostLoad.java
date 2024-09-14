@@ -1,40 +1,7 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GalacticraftCore;
-import static gregtech.api.enums.Mods.GalacticraftMars;
-import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
-import static gregtech.api.recipe.RecipeMaps.massFabFakeRecipes;
-import static gregtech.api.recipe.RecipeMaps.rockBreakerFakeRecipes;
-import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
-import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.google.common.base.Stopwatch;
-
 import cpw.mods.fml.common.ProgressManager;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -52,11 +19,36 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.enums.Mods.GalacticraftMars;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.massFabFakeRecipes;
+import static gregtech.api.recipe.RecipeMaps.rockBreakerFakeRecipes;
+import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 @SuppressWarnings("deprecation")
 public class GTPostLoad {
@@ -441,53 +433,6 @@ public class GTPostLoad {
         if ((m.mTypes & 2) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
         if ((m.mTypes & 4) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
         if (m.getBlocks(1) != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, m.getBlocks(1));
-    }
-
-    public static void createGTtoolsCreativeTab() {
-        new CreativeTabs("GTtools") {
-
-            @SideOnly(Side.CLIENT)
-            @Override
-            public ItemStack getIconItemStack() {
-                return ItemList.Tool_Cheat.get(1, new ItemStack(Blocks.iron_block, 1));
-            }
-
-            @SideOnly(Side.CLIENT)
-            @Override
-            public Item getTabIconItem() {
-                return ItemList.Circuit_Integrated.getItem();
-            }
-
-            @Override
-            public void displayAllReleventItems(List<ItemStack> aList) {
-
-                for (int i = 0; i < 32766; i += 2) {
-                    if (MetaGeneratedTool01.INSTANCE.getToolStats(new ItemStack(MetaGeneratedTool01.INSTANCE, 1, i))
-                        == null) {
-                        continue;
-                    }
-
-                    ItemStack tStack = new ItemStack(MetaGeneratedTool01.INSTANCE, 1, i);
-                    MetaGeneratedTool01.INSTANCE.isItemStackUsable(tStack);
-                    aList
-                        .add(MetaGeneratedTool01.INSTANCE.getToolWithStats(i, 1, Materials.Lead, Materials.Lead, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(i, 1, Materials.Nickel, Materials.Nickel, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(i, 1, Materials.Cobalt, Materials.Cobalt, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE.getToolWithStats(i, 1, Materials.Osmium, Materials.Osmium, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(i, 1, Materials.Adamantium, Materials.Adamantium, null));
-                    aList.add(
-                        MetaGeneratedTool01.INSTANCE
-                            .getToolWithStats(i, 1, Materials.Neutronium, Materials.Neutronium, null));
-
-                }
-                super.displayAllReleventItems(aList);
-            }
-        };
     }
 
     public static void addSolidFakeLargeBoilerFuels() {

@@ -589,8 +589,6 @@ public class GTMod implements IGTMod {
         GregTechAPI.sAfterGTLoad = null;
         GregTechAPI.sBeforeGTPostload = null;
         GregTechAPI.sAfterGTPostload = null;
-
-        GTPostLoad.createGTtoolsCreativeTab();
     }
 
     @Mod.EventHandler
