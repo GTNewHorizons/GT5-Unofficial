@@ -273,7 +273,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 EnumChatFormatting.LIGHT_PURPLE
                     + "No longer requires heat management to perform superdense compression")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
-            .addInfo(EnumChatFormatting.BLUE + "Use circuit 1 for compressor and 2 for Neutronium Compressor")
+            .addInfo(EnumChatFormatting.BLUE + "Use circuit 20 for compressor and 21 for Neutronium Compressor")
             .addSeparator()
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
@@ -438,9 +438,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         for (ItemStack j : t) {
             if (j.getItem() == GTUtility.getIntegratedCircuit(0)
                 .getItem()) {
-                if (j.getItemDamage() == 1) {
+                if (j.getItemDamage() == 20) {
                     return MACHINEMODE_COMPRESSOR;
-                } else if (j.getItemDamage() <= 2) {
+                } else if (j.getItemDamage() <= 21) {
                     return MACHINEMODE_BLACKHOLE;
                 }
             }
