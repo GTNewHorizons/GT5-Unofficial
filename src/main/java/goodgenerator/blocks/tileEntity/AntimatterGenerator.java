@@ -98,14 +98,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                             .anyOf(HatchElement.ExoticEnergy)
                             .adder(AntimatterGenerator::addLaserSource)
                             .casingIndex(x.textureIndex(2))
-                            .dot(1)
+                            .dot(2)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
                     'I',
                     lazy(
                         x -> buildHatchAdder(AntimatterGenerator.class).atLeast(HatchElement.InputHatch)
                             .casingIndex(x.textureIndex(1))
-                            .dot(2)
+                            .dot(1)
                             .buildAndChain(x.getCasingBlock(1), x.getCasingMeta(1))))
                 .build();
         }
@@ -338,8 +338,16 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Enable wireless EU mode with screwdriver")
             .addInfo("Wireless mode requires SC UMV Base or better")
             .addInfo("Wireless mode uses hatch capacity limit")
-            .addDynamoHatch("1-9, Hint block with dot 4", 4)
-            .addInputHatch("1-6, Hint block with dot 1", 1)
+            .addSeparator()
+            .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
+            .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
+            .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
+            .addCasingInfoMin("Protomatter Activation Coil", 32, false)
+            .addCasingInfoMin("Antimatter Annihilation Matrix", 600, false)
+            .addCasingInfoMin("Naquadria Frame Box", 293, false)
+            .addCasingInfoMin("Advanced Filter Casing", 209, false)
+            .addInputHatch("2, Hint block with dot 1", 1)
+            .addOtherStructurePart("Laser Source Hatch", "1-64, Hint Block with dot 2", 2)
             .toolTipFinisher("Good Generator");
         return tt;
     }
