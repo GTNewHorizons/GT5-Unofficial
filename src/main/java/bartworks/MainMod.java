@@ -198,7 +198,10 @@ public final class MainMod {
         OreDictHandler.adaptCacheForWorld();
         CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
-        StaticRecipeChangeLoaders.addEBFGasRecipes();
+        if (!recipesAdded) {
+            StaticRecipeChangeLoaders.addEBFGasRecipes();
+            recipesAdded = true;
+        }
 
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()
