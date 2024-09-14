@@ -23,11 +23,11 @@ public enum Dimensions {
     BarnardaF("BarnardaF"),
     TCetiE("TCetiE"),
     Ross128b("Ross128b"),
-    Ross128ba("Ross128ba"),;
+    Ross128ba("Ross128ba");
 
     public final String id;
 
-    private Dimensions(String id) {
+    Dimensions(String id) {
         this.id = id;
     }
 }

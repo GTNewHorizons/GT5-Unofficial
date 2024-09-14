@@ -500,9 +500,15 @@ public class GTUtility {
     }
 
     public static byte getTier(long l) {
-        byte i = -1;
-        while (++i < V.length) if (l <= V[i]) return i;
-        return (byte) (V.length - 1);
+        if (l > V[14]) return 15;
+        if (l <= V[0]) return 0;
+
+        // numberOfLeadingZeros is implemented in hardware by x86 LZCNT
+        // and is extremely efficient (takes only a couple of hardware cycles)
+        // (64 - numberOfLeadingZeros(l - 1)) = ceil(log_2(l))
+        int log2L = 64 - Long.numberOfLeadingZeros(l - 1);
+
+        return (byte) ((log2L - 2) / 2);
     }
 
     public static long getAmperageForTier(long voltage, byte tier) {
