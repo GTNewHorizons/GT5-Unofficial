@@ -196,7 +196,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         private static final int height = 10;
 
         // fluid input buttons coordinates
-        private static final int xFI = 42;
+        private static final int xFI = 43;
         private static final int yFI = 81;
 
         // fluid output buttons coordinates
