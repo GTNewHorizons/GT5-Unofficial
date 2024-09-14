@@ -32,8 +32,7 @@ public class ServerJoinedPacket extends GTPacketNew {
 
     public ServerJoinedPacket(Object obj) {
         super(false);
-        this.config = (byte) (Configuration.system.classicMode && Configuration.system.disableExtraGassesForEBF ? 3
-            : Configuration.system.classicMode ? 2 : Configuration.system.disableExtraGassesForEBF ? 1 : 0);
+        this.config = 0;
     }
 
     @Override
@@ -54,8 +53,6 @@ public class ServerJoinedPacket extends GTPacketNew {
 
     @Override
     public void process(IBlockAccess iBlockAccess) {
-        boolean gas = (this.config & 1) != 0;
-        boolean classic = (this.config & 0b10) != 0;
-        MainMod.runOnPlayerJoined(classic, gas);
+        MainMod.runOnPlayerJoined(false, false);
     }
 }

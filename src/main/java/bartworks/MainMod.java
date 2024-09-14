@@ -52,7 +52,6 @@ import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
-import bartworks.system.material.processingLoaders.DownTierLoader;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
 import bartworks.util.log.DebugLog;
@@ -179,7 +178,7 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
-        MainMod.runOnPlayerJoined(Configuration.system.classicMode, Configuration.system.disableExtraGassesForEBF);
+        MainMod.runOnPlayerJoined(false, false);
     }
 
     @Mod.EventHandler
@@ -200,10 +199,7 @@ public final class MainMod {
         CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
         if (!recipesAdded) {
-            if (!disableExtraGasRecipes) StaticRecipeChangeLoaders.addEBFGasRecipes();
-
-            if (classicMode) DownTierLoader.run();
-
+            StaticRecipeChangeLoaders.addEBFGasRecipes();
             recipesAdded = true;
         }
 

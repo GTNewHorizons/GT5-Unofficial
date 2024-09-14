@@ -101,10 +101,6 @@ public class Configuration {
     @Config.Comment("System section.")
     public static class System {
 
-        @Config.Comment("Enables the classic Mode (all recipes in normal machines are doable in MV")
-        @Config.DefaultBoolean(false)
-        public boolean classicMode;
-
         @Config.Comment("If you wish to enable extra tooltips")
         @Config.DefaultBoolean(true)
         public boolean tooltips;
@@ -116,10 +112,6 @@ public class Configuration {
         @Config.Comment("This switch sets the lowest unnerfed Circuit Recipe Tier. -1 to disable it completely.")
         @Config.DefaultInt(5)
         public int cutoffTier;
-
-        @Config.Comment("This switch disables extra gas recipes for the EBF, i.e. Xenon instead of Nitrogen")
-        @Config.DefaultBoolean(false)
-        public boolean disableExtraGassesForEBF;
 
         @Config.Comment("This switch disable the generation of bolted casings")
         @Config.DefaultBoolean(false)
