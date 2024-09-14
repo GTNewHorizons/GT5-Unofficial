@@ -172,6 +172,7 @@ public class Configuration {
         public HV hv = new HV();
         public EV ev = new EV();
 
+        @Config.Comment("Possible machines for high pressure steam ruins.")
         public static class HighPressureSteam {
 
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
@@ -191,6 +192,7 @@ public class Configuration {
             public int[] machines;
         }
 
+        @Config.Comment("Possible machines for LV ruins.")
         public static class LV {
 
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
@@ -212,6 +214,7 @@ public class Configuration {
             public int[] machines;
         }
 
+        @Config.Comment("Possible machines for MV ruins.")
         public static class MV {
 
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
@@ -233,6 +236,7 @@ public class Configuration {
             public int[] machines;
         }
 
+        @Config.Comment("Possible machines for HV ruins.")
         public static class HV {
 
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
@@ -254,6 +258,7 @@ public class Configuration {
             public int[] machines;
         }
 
+        @Config.Comment("Possible machines for EV ruins.")
         public static class EV {
 
             @Config.Comment("MetaIDs of the GT machines for the buffer slots")
