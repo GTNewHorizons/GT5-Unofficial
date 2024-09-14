@@ -7,28 +7,22 @@ import gregtech.api.enums.Mods;
 @Config(modid = Mods.Names.BART_WORKS, filename = "bartworks")
 public class Configuration {
 
-    @Config.Comment("Mixins section.")
     public static final Mixins mixins = new Mixins();
 
-    @Config.Comment("Crossmod interactions section.")
     public static final CrossModInteractions crossModInteractions = new CrossModInteractions();
 
-    @Config.Comment("Multiblocks section.")
     public static final Multiblocks multiblocks = new Multiblocks();
 
-    @Config.Comment("System section.")
     public static final System system = new System();
 
-    @Config.Comment("Single blocks section.")
     public static final SingleBlocks singleBlocks = new SingleBlocks();
 
-    @Config.Comment("Pollution section.")
     public static final Pollution pollution = new Pollution();
 
-    @Config.Comment("Ross' ruins machine metaIDs section.")
     public static final RossRuinMetas rossRuinMetas = new RossRuinMetas();
 
     @Config.LangKey("GT5U.gui.config.mixins")
+    @Config.Comment("Mixins section.")
     @Config.RequiresMcRestart
     public static class Mixins {
 
@@ -38,6 +32,7 @@ public class Configuration {
     }
 
     @Config.LangKey("GT5U.gui.config.crossmod")
+    @Config.Comment("Crossmod interactions section.")
     @Config.RequiresMcRestart
     public static class CrossModInteractions {
 
@@ -75,6 +70,7 @@ public class Configuration {
     }
 
     @Config.LangKey("GT5U.gui.config.multiblocks")
+    @Config.Comment("Multiblocks section.")
     @Config.RequiresMcRestart
     public static class Multiblocks {
 
@@ -107,6 +103,7 @@ public class Configuration {
     }
 
     @Config.LangKey("GT5U.gui.config.system")
+    @Config.Comment("System section.")
     @Config.RequiresMcRestart
     public static class System {
 
@@ -144,6 +141,7 @@ public class Configuration {
     }
 
     @Config.LangKey("GT5U.gui.config.singleblocks")
+    @Config.Comment("Single blocks section.")
     @Config.RequiresMcRestart
     public static class SingleBlocks {
 
@@ -153,6 +151,7 @@ public class Configuration {
     }
 
     @Config.LangKey("GT5U.gui.config.pollution")
+    @Config.Comment("Pollution section.")
     @Config.RequiresMcRestart
     public static class Pollution {
 
@@ -167,6 +166,7 @@ public class Configuration {
 
     @Config.RequiresMcRestart
     @Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
+    @Config.Comment("Ross' ruins machine metaIDs section.")
     public static class RossRuinMetas {
 
         @Config.Ignore()
