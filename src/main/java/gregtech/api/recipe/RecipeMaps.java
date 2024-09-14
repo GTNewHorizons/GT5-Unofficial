@@ -180,7 +180,7 @@ public final class RecipeMaps {
         .disableRegisterNEI()
         .build();
     public static final RecipeMap<FurnaceBackend> furnaceRecipes = RecipeMapBuilder
-        .of("mc.recipe.furnace", FurnaceBackend::new)
+        .of("gt.recipe.furnace", FurnaceBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 9)
         .slotOverlays(
