@@ -373,6 +373,14 @@ public class AgriculturalChem extends ItemPackage {
         }
         if (!mFish.isEmpty()) {
             for (ItemStack g : mFish) {
+                boolean foundDupe = false;
+                for (ItemStack old : mList_Master_Meats) {
+                    if (GTUtility.areStacksEqual(g, old)) {
+                        foundDupe = true;
+                        break;
+                    }
+                }
+                if (foundDupe) continue;
                 mList_Master_Meats.put(g);
             }
         }
@@ -403,6 +411,14 @@ public class AgriculturalChem extends ItemPackage {
         }
         if (!mBones.isEmpty()) {
             for (ItemStack g : mBones) {
+                boolean foundDupe = false;
+                for (ItemStack old : mList_Master_Bones) {
+                    if (GTUtility.areStacksEqual(g, old)) {
+                        foundDupe = true;
+                        break;
+                    }
+                }
+                if (foundDupe) continue;
                 mList_Master_Bones.put(g);
             }
         }
