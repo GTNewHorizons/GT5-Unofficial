@@ -118,22 +118,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 GTProxy.tBits,
                 new Object[] { "hX", 'X', werkstoff.get(plate) });
 
-            benderRecipes.add(
-                new GTRecipe(
-                    true,
-                    new ItemStack[] { werkstoff.get(ingot), GTUtility.getIntegratedCircuit(1) },
-                    new ItemStack[] { werkstoff.get(plate) },
-                    null,
-                    null,
-                    null,
-                    null,
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass(),
-                        1L),
-                    24,
-                    0));
-
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 3))
                 .itemOutputs(werkstoff.get(plate, 2))
@@ -160,28 +144,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         1L))
                 .eut(16)
                 .addTo(latheRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(werkstoff.get(foil, 4))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 1L,
-                        1L))
-                .eut(24)
-                .addTo(benderRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(10))
-                .itemOutputs(werkstoff.get(foil, 4))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 2L,
-                        1L))
-                .eut(24)
-                .addTo(benderRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(stick, 2))
