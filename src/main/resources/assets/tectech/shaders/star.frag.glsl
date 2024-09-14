@@ -4,10 +4,6 @@ uniform float u_Gamma;
 
 varying vec2 v_TexCoord;
 
-const float PI = 3.1415926535897;
-
-//const vec3 baseAngle = PI/4;
-
 vec3 toYIQ(vec3 rgb){
     return mat3( 0.299, 1.0, 0.40462981, 0.587, -0.46081557, -1.0, 0.114, -0.53918443, 0.59537019 ) * rgb;
 }
@@ -24,7 +20,7 @@ void main() {
     if (length(original.xy) < .01){
         gl_FragColor = vec4(texture,1);
     } else {
-        vec3 targetYIQ = toYIQ(u_Color);
+        vec3 targetYIQ = toYIQ(u_Color.rgb);
         vec3 originalYIQ = toYIQ(texture);
         vec3 yiqColor = vec3(original.x,targetYIQ.yz);
         vec3 finalrgb = toRGB(yiqColor);
