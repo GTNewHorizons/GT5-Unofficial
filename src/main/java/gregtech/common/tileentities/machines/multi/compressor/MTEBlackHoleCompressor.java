@@ -52,7 +52,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -197,39 +196,17 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public boolean supportsMachineModeSwitch() {
-        return true;
-    }
-
-    @Override
-    public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_COMPRESSING);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SINGULARITY);
-    }
-
-    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            shouldRender = !shouldRender;
-            if (!shouldRender) {
-                PlayerUtils.messagePlayer(aPlayer, "Rendering off");
-                rendererTileEntity = null;
-                destroyRenderBlock();
-            } else {
-                if (blackHoleStatus != 1) createRenderBlock();
-                PlayerUtils.messagePlayer(aPlayer, "Rendering on");
-            }
+        shouldRender = !shouldRender;
+        if (!shouldRender) {
+            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+            rendererTileEntity = null;
+            destroyRenderBlock();
         } else {
-            setMachineMode(nextMachineMode());
-            PlayerUtils.messagePlayer(
-                aPlayer,
-                String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
+            if (blackHoleStatus != 1) createRenderBlock();
+            PlayerUtils.messagePlayer(aPlayer, "Rendering on");
         }
-    }
 
-    @Override
-    public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.BLACKHOLE.mode." + machineMode);
     }
 
     @Override
@@ -296,6 +273,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 EnumChatFormatting.LIGHT_PURPLE
                     + "No longer requires heat management to perform superdense compression")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
+            .addInfo(EnumChatFormatting.BLUE + "Use circuit 1 for compressor and 2 for Neutronium Compressor")
             .addSeparator()
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
@@ -456,6 +434,20 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
     }
 
+    private int getModeFromCircuit(ItemStack[] t) {
+        for (ItemStack j : t) {
+            if (j.getItem() == GTUtility.getIntegratedCircuit(0)
+                .getItem()) {
+                if (j.getItemDamage() == 1) {
+                    return MACHINEMODE_COMPRESSOR;
+                } else if (j.getItemDamage() <= 2) {
+                    return MACHINEMODE_BLACKHOLE;
+                }
+            }
+        }
+        return 0;
+    }
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -487,7 +479,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                         }
                     }
                 }
-                return super.findRecipeMatches(map);
+
+                RecipeMap<?> realMap = (getModeFromCircuit(inputItems) == MACHINEMODE_COMPRESSOR)
+                    ? RecipeMaps.compressorRecipes
+                    : RecipeMaps.neutroniumCompressorRecipes;
+                return super.findRecipeMatches(realMap);
             }
 
             @NotNull
@@ -603,12 +599,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
     private static final int MACHINEMODE_COMPRESSOR = 0;
     private static final int MACHINEMODE_BLACKHOLE = 1;
-
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_COMPRESSOR) ? RecipeMaps.compressorRecipes
-            : RecipeMaps.neutroniumCompressorRecipes;
-    }
 
     @Nonnull
     @Override
