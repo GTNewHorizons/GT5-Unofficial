@@ -1,5 +1,7 @@
 package tectech.recipe;
 
+import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
+import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static gregtech.api.util.GTUtility.trans;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -52,11 +54,10 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
         long eut = recipeInfo.recipe.mEUt;
         long duration = recipeInfo.recipe.mDuration;
         String multistep = "No";
-        if (recipeInfo.recipe.mSpecialItems.toString()
-            .equals("true")) {
+        if (recipeInfo.recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false)) {
             multistep = "Yes";
         }
-        String requiredUpgrade = switch (recipeInfo.recipe.mSpecialValue) {
+        String requiredUpgrade = switch (recipeInfo.recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0)) {
             case 1 -> "T4-T5";
             case 2 -> "Exotic";
             default -> "T1-T3";
