@@ -105,10 +105,6 @@ public class Configuration {
         @Config.DefaultBoolean(true)
         public boolean tooltips;
 
-        @Config.Comment("Enables the Teslastaff, an Item used to destroy Electric Armors")
-        @Config.DefaultBoolean(false)
-        public boolean teslastaff;
-
         @Config.Comment("This switch sets the lowest unnerfed Circuit Recipe Tier. -1 to disable it completely.")
         @Config.DefaultInt(5)
         public int cutoffTier;

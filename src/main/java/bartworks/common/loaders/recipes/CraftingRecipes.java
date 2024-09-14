@@ -125,14 +125,12 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L), 'C', "circuitAdvanced", 'B',
                 ItemList.IC2_EnergyCrystal.get(1L) });
 
-        if (Configuration.system.teslastaff) {
-            GTModHandler.addCraftingRecipe(
-                new ItemStack(ItemRegistry.TESLASTAFF),
-                RecipeLoader.BITSD,
-                new Object[] { "BO ", "OP ", "  P", 'O',
-                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 1L), 'B',
-                    ItemList.Energy_LapotronicOrb.get(1L), 'P', "plateAlloyIridium", });
-        }
+        GTModHandler.addCraftingRecipe(
+            new ItemStack(ItemRegistry.TESLASTAFF),
+            RecipeLoader.BITSD,
+            new Object[] { "BO ", "OP ", "  P", 'O',
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 1L), 'B',
+                ItemList.Energy_LapotronicOrb.get(1L), 'P', "plateAlloyIridium", });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.PUMPPARTS, 1, 0), // tube
