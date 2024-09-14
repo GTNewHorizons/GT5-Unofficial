@@ -107,8 +107,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private long guiPassiveEnergy = 0;
     private long guiActiveEnergy = 0;
 
-    private boolean canRender = false;
-
     private List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterForge>>() {
 
@@ -517,8 +515,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
         fluidConsumptions[MAGNETIC_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
         fluidConsumptions[GRAVITY_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
-        fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 2 / 7));
-        fluidConsumptions[ACTIVATION_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 1 / 3));
+        fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.2857142f)); // 2/7
+        fluidConsumptions[ACTIVATION_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.3333333f)); // 1/3
 
         for (int i = 0; i < modifiers.length; i++) {
             modifiers[i] = 0.0f;
@@ -887,15 +885,12 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public void updateAntimatterSize(float antimatterAmount) {
-        if (antimatterAmount <= 0) {
-            destroyAntimatterRender();
-            return;
-        }
+        TileAntimatter render = forceGetAntimatterRender();
 
-        TileAntimatter render = getAntimatterRender();
-        if (render == null) {
-            createAntimatterRender();
-            render = getAntimatterRender();
+        if (antimatterAmount < 0) {
+            setProtoRender(false);
+            render.setCoreSize(0);
+            return;
         }
 
         float size = (float) Math.pow(antimatterAmount, 0.17);
@@ -903,10 +898,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public void setProtoRender(boolean flag) {
-        TileAntimatter render = getAntimatterRender();
-        if (render == null) return;
+        TileAntimatter render = forceGetAntimatterRender();
         render.setProtomatterRender(flag);
-        render.setRotationFields(getRotation(), getDirection());
+        if (flag) render.setRotationFields(getRotation(), getDirection());
     }
 
     public TileAntimatter getAntimatterRender() {
@@ -978,4 +972,12 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         world.setBlock(wX, wY, wZ, Blocks.air);
         world.setBlock(wX, wY, wZ, Loaders.antimatterRenderBlock);
     }
+
+    public TileAntimatter forceGetAntimatterRender() {
+        TileAntimatter render = getAntimatterRender();
+        if (render != null) return render;
+        else createAntimatterRender();
+        return getAntimatterRender();
+    }
+
 }
