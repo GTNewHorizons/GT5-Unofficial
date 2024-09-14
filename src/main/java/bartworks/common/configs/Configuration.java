@@ -81,9 +81,8 @@ public class Configuration {
         @Config.Ignore()
         public static int megaMachinesMax = 256;
 
-        @Config.Comment("This are the maximum parallel Operations the BioVat can do, when the output is half full.")
-        @Config.DefaultInt(1_000)
-        public int bioVatMaxParallelBonus;
+        @Config.Ignore()
+        public static int bioVatMaxParallelBonus = 1_000;
 
         @Config.Comment({
             "This is a blacklist for the Void Miner, blacklisted ores will not enter the drop prize pool.",

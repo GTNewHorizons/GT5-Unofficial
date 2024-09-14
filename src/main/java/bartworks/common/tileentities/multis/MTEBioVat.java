@@ -232,10 +232,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
     }
 
     private int calcMod(double x) {
-        double y = this.getOutputCapacity() / 2D, z = Configuration.multiblocks.bioVatMaxParallelBonus;
+        double y = this.getOutputCapacity() / 2D, z = Configuration.Multiblocks.bioVatMaxParallelBonus;
 
         int ret = MathUtils.ceilInt((-1D / y * Math.pow(x - y, 2D) + y) / y * z);
-        return MathUtils.clamp(1, ret, Configuration.multiblocks.bioVatMaxParallelBonus);
+        return MathUtils.clamp(1, ret, Configuration.Multiblocks.bioVatMaxParallelBonus);
     }
 
     @Override
