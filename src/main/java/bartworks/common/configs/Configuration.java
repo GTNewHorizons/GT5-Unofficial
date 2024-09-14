@@ -5,6 +5,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
 @Config(modid = Mods.Names.BART_WORKS, filename = "bartworks")
+@Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
 @Config.RequiresMcRestart
 public class Configuration {
 
@@ -22,7 +23,6 @@ public class Configuration {
 
     public static final RossRuinMetas rossRuinMetas = new RossRuinMetas();
 
-    @Config.LangKey("GT5U.gui.config.mixins")
     @Config.Comment("Mixins section.")
     public static class Mixins {
 
@@ -31,7 +31,6 @@ public class Configuration {
         public boolean enableCraftingManagerRecipeCaching = false;
     }
 
-    @Config.LangKey("GT5U.gui.config.crossmod")
     @Config.Comment("Crossmod interactions section.")
     public static class CrossModInteractions {
 
@@ -68,7 +67,6 @@ public class Configuration {
         public boolean disableMagicalForest;
     }
 
-    @Config.LangKey("GT5U.gui.config.multiblocks")
     @Config.Comment("Multiblocks section.")
     public static class Multiblocks {
 
@@ -100,7 +98,6 @@ public class Configuration {
         public boolean disablePistonInEIC;
     }
 
-    @Config.LangKey("GT5U.gui.config.system")
     @Config.Comment("System section.")
     public static class System {
 
@@ -137,7 +134,6 @@ public class Configuration {
         public boolean debugLog;
     }
 
-    @Config.LangKey("GT5U.gui.config.singleblocks")
     @Config.Comment("Single blocks section.")
     public static class SingleBlocks {
 
@@ -146,7 +142,6 @@ public class Configuration {
         public int mbWaterperSec;
     }
 
-    @Config.LangKey("GT5U.gui.config.pollution")
     @Config.Comment("Pollution section.")
     public static class Pollution {
 
@@ -159,7 +154,6 @@ public class Configuration {
         public int basePollutionMBFSecond;
     }
 
-    @Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
     @Config.Comment("Ross' ruins machine metaIDs section.")
     public static class RossRuinMetas {
 
