@@ -18,7 +18,6 @@ import net.minecraft.world.IBlockAccess;
 import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.MainMod;
-import bartworks.common.configs.ConfigHandler;
 import gregtech.api.net.GTPacketNew;
 import io.netty.buffer.ByteBuf;
 
@@ -32,8 +31,7 @@ public class ServerJoinedPacket extends GTPacketNew {
 
     public ServerJoinedPacket(Object obj) {
         super(false);
-        this.config = (byte) (ConfigHandler.classicMode && ConfigHandler.disableExtraGassesForEBF ? 3
-            : ConfigHandler.classicMode ? 2 : ConfigHandler.disableExtraGassesForEBF ? 1 : 0);
+        this.config = 0;
     }
 
     @Override
@@ -54,8 +52,6 @@ public class ServerJoinedPacket extends GTPacketNew {
 
     @Override
     public void process(IBlockAccess iBlockAccess) {
-        boolean gas = (this.config & 1) != 0;
-        boolean classic = (this.config & 0b10) != 0;
-        MainMod.runOnPlayerJoined(classic, gas);
+        MainMod.runOnPlayerJoined(false, false);
     }
 }
