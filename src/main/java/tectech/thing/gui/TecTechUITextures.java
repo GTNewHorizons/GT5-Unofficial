@@ -164,11 +164,26 @@ public class TecTechUITextures {
     public static final UITexture PICTURE_PARAMETER_GRAY = UITexture.fullImage(MODID, "gui/picture/parameter_gray");
     public static final UITexture PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE = UITexture
         .fullImage(MODID, "gui/picture/uncertainty/monitor_multimachine");
-    public static final UITexture PICTURE_UPGRADE_CONNECTOR_FULL = UITexture.fullImage(MODID, "gui/picture/connector");
-    public static final UITexture PICTURE_UPGRADE_CONNECTOR_EMPTY = UITexture
-        .fullImage(MODID, "gui/picture/connector_empty");
-    public static final UITexture PICTURE_UPGRADE_CONNECTOR_SWITCH = UITexture
-        .fullImage(MODID, "gui/picture/connector_switch");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_PURPLE = UITexture
+        .fullImage(MODID, "gui/picture/connector_purple");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_GREEN = UITexture
+        .fullImage(MODID, "gui/picture/connector_green");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_ORANGE = UITexture
+        .fullImage(MODID, "gui/picture/connector_orange");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_BLUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_blue");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED = UITexture
+        .fullImage(MODID, "gui/picture/connector_red");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_PURPLE_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_purple_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_GREEN_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_green_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_ORANGE_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_orange_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_blue_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_red_opaque");
     public static final UITexture SLOT_OUTLINE_GREEN = UITexture.fullImage(MODID, "gui/picture/green_selector");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
         .fullImage(MODID, "gui/picture/milestone_charge");

@@ -1418,6 +1418,44 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         final int PARENT_WIDTH = 300;
         final int PARENT_HEIGHT = 300;
         ModularWindow.Builder builder = ModularWindow.builder(PARENT_WIDTH, PARENT_HEIGHT);
+
+        scrollable.widget(createUpgradeConnectorLine(new Pos2d(143, 71), 45, 0, 0, 0, 1))
+            .widget(createUpgradeConnectorLine(new Pos2d(124, 124), 60, 27, 0, 1, 2))
+            .widget(createUpgradeConnectorLine(new Pos2d(162, 124), 60, 333, 0, 1, 3))
+            .widget(createUpgradeConnectorLine(new Pos2d(94, 184), 60, 27, 0, 2, 4))
+            .widget(createUpgradeConnectorLine(new Pos2d(130, 184), 60, 336, 0, 2, 5))
+            .widget(createUpgradeConnectorLine(new Pos2d(156, 184), 60, 24, 0, 3, 5))
+            .widget(createUpgradeConnectorLine(new Pos2d(192, 184), 60, 333, 0, 3, 6))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 251), 45, 0, 0, 5, 7))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 311), 45, 0, 0, 7, 9))
+            .widget(createUpgradeConnectorLine(new Pos2d(78, 250), 110, 5, 4, 4, 8))
+            .widget(createUpgradeConnectorLine(new Pos2d(110, 290), 80, 40, 4, 7, 8))
+            .widget(createUpgradeConnectorLine(new Pos2d(208, 250), 110, 355, 4, 6, 10))
+            .widget(createUpgradeConnectorLine(new Pos2d(176, 290), 80, 320, 4, 7, 10))
+            .widget(createUpgradeConnectorLine(new Pos2d(100, 355), 80, 313, 0, 8, 11))
+            .widget(createUpgradeConnectorLine(new Pos2d(186, 355), 80, 47, 0, 10, 11))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 430), 48, 0, 2, 11, 13))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 490), 48, 0, 2, 13, 18))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 550), 48, 0, 2, 18, 21))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 610), 48, 0, 2, 21, 23))
+            .widget(createUpgradeConnectorLine(new Pos2d(110, 410), 80, 40, 1, 11, 12))
+            .widget(createUpgradeConnectorLine(new Pos2d(83, 490), 48, 0, 1, 12, 17))
+            .widget(createUpgradeConnectorLine(new Pos2d(83, 550), 48, 0, 1, 17, 20))
+            .widget(createUpgradeConnectorLine(new Pos2d(101, 590), 80, 320, 1, 20, 23))
+            .widget(createUpgradeConnectorLine(new Pos2d(53, 536), 35, 45, 1, 17, 16))
+            .widget(createUpgradeConnectorLine(new Pos2d(176, 410), 80, 320, 3, 11, 14))
+            .widget(createUpgradeConnectorLine(new Pos2d(203, 490), 48, 0, 3, 14, 19))
+            .widget(createUpgradeConnectorLine(new Pos2d(203, 550), 48, 0, 3, 19, 22))
+            .widget(createUpgradeConnectorLine(new Pos2d(185, 590), 80, 40, 3, 22, 23))
+            .widget(createUpgradeConnectorLine(new Pos2d(233, 476), 35, 315, 3, 14, 15))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 670), 48, 0, 0, 23, 24))
+            .widget(createUpgradeConnectorLine(new Pos2d(101, 707), 75, 62.3f, 0, 24, 25))
+            .widget(createUpgradeConnectorLine(new Pos2d(53, 772), 78, 0, 0, 25, 26))
+            .widget(createUpgradeConnectorLine(new Pos2d(95, 837), 75, 297.7f, 0, 26, 27))
+            .widget(createUpgradeConnectorLine(new Pos2d(191, 837), 75, 62.3f, 0, 27, 28))
+            .widget(createUpgradeConnectorLine(new Pos2d(233, 772), 78, 0, 0, 28, 29))
+            .widget(createUpgradeConnectorLine(new Pos2d(191, 747), 75, 62.3f, 0, 29, 30));
+
         scrollable
             .widget(
                 createUpgradeBox(
@@ -2057,6 +2095,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         upgrades[currentUpgradeID] = false;
                     }
                 }
+                if (!widget.getContext()
+                    .isClient()) {
+                    widget.getContext()
+                        .closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                    widget.getContext()
+                        .closeWindow(UPGRADE_TREE_WINDOW_ID);
+                    widget.getContext()
+                        .openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
+                    widget.getContext()
+                        .openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                }
             })
                 .setSize(40, 15)
                 .setBackground(() -> {
@@ -2170,6 +2219,44 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(() -> upgrades[upgradeID], val -> upgrades[upgradeID] = val),
                 builder);
+    }
+
+    private Widget createUpgradeConnectorLine(Pos2d pos, int length, float rotationAngle, int colorCode,
+        int startUpgradeID, int endUpgradeID) {
+        return new DrawableWidget()
+            .setDrawable(
+                (upgrades[startUpgradeID] && upgrades[endUpgradeID])
+                    ? coloredLine(colorCode, true).withRotationDegree(rotationAngle)
+                    : coloredLine(colorCode, false).withRotationDegree(rotationAngle))
+            .setPos(pos)
+            .setSize(6, length);
+    }
+
+    private IDrawable coloredLine(int colorCode, boolean opaque) {
+        IDrawable line;
+        switch (colorCode) {
+            case 1 -> {
+                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_PURPLE_OPAQUE
+                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_PURPLE;
+            }
+            case 2 -> {
+                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_ORANGE_OPAQUE
+                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_ORANGE;
+            }
+            case 3 -> {
+                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_GREEN_OPAQUE
+                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_GREEN;
+            }
+            case 4 -> {
+                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE
+                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_RED;
+            }
+            default -> {
+                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE
+                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_BLUE;
+            }
+        }
+        return line;
     }
 
     protected ModularWindow createManualInsertionWindow(final EntityPlayer player) {
