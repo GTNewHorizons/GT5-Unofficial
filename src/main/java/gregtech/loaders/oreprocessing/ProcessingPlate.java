@@ -528,7 +528,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(cutterRecipes);
         }
-        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
     }
 
     private void registerPlateAlloy(final String aOreDictName, final ItemStack aStack) {
