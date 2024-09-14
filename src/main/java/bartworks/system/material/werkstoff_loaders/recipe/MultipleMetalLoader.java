@@ -55,14 +55,6 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                 werkstoff.get(plateDouble),
                 TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false),
                 null);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plateDouble))
-                .itemOutputs(werkstoff.get(dust, 2))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
         }
     }
 }

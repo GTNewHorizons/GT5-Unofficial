@@ -283,8 +283,8 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
             .addMetalItems()
-            .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
+            .addSimpleMetalWorkingItems()
             .addMultipleIngotMetalWorkingItems()
             .addMetaSolidifierRecipes(),
         OffsetID + 21,
@@ -310,8 +310,8 @@ public class GGMaterial implements Runnable {
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
             .addMetalItems()
-            .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
+            .addSimpleMetalWorkingItems()
             .addMultipleIngotMetalWorkingItems()
             .addMetaSolidifierRecipes(),
         OffsetID + 23,
