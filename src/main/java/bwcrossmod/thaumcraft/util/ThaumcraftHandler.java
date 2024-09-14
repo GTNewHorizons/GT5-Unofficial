@@ -23,6 +23,8 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 
+import static bartworks.MainMod.DEBUG;
+
 public class ThaumcraftHandler {
 
     public static boolean isMagicalForestBiome(int biomeID) {
@@ -42,7 +44,7 @@ public class ThaumcraftHandler {
             for (Pair<Object, Integer> a : aspectPair) {
                 Aspect aspect = (Aspect) a.getKey();
                 int amount = a.getValue();
-                if (Configuration.system.debugLog) DebugLog.log(
+                if (DEBUG) DebugLog.log(
                     "Stack:" + stack.getDisplayName()
                         + " Damage:"
                         + stack.getItemDamage()

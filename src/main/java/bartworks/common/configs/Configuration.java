@@ -100,10 +100,6 @@ public class Configuration {
         @Config.Comment("If true, add glass tier in tooltips.")
         @Config.DefaultBoolean(true)
         public boolean addGlassTierInTooltips;
-
-        @Config.Comment("Enables or Disables the debug log.")
-        @Config.DefaultBoolean(false)
-        public boolean debugLog;
     }
 
     @Config.Comment("Single blocks section.")

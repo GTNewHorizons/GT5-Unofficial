@@ -100,6 +100,8 @@ public final class MainMod {
     public static final CreativeTabs BWT = new BartWorksTab(BartWorks.ID);
     public static final IGuiHandler GH = new GuiHandler();
 
+    public static final boolean DEBUG = Boolean.getBoolean("bw.debug");
+
     @Mod.Instance(MainMod.MOD_ID)
     public static MainMod instance;
 
@@ -114,7 +116,7 @@ public final class MainMod {
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_GlasBlocks");
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_GlasBlocks2");
 
-        if (Configuration.system.debugLog) {
+        if (DEBUG) {
             try {
                 DebugLog.initDebugLog(preinit);
             } catch (IOException e) {
