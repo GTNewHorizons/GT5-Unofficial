@@ -94,7 +94,7 @@ public class Configuration {
         public boolean disablePistonInEIC;
     }
 
-    @Config.Comment("System section.")
+    @Config.Comment("Tooltip section.")
     public static class Tooltip {
 
         @Config.Comment("If true, add glass tier in tooltips.")
