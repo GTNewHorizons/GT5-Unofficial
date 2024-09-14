@@ -13,17 +13,16 @@
 
 package bwcrossmod.thaumcraft.util;
 
+import static bartworks.MainMod.DEBUG;
+
 import net.minecraft.item.ItemStack;
 
-import bartworks.common.configs.Configuration;
 import bartworks.util.Pair;
 import bartworks.util.log.DebugLog;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
-
-import static bartworks.MainMod.DEBUG;
 
 public class ThaumcraftHandler {
 

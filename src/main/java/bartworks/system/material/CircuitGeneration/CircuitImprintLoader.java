@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -36,7 +35,6 @@ import com.google.common.collect.HashBiMap;
 import bartworks.API.recipe.BWNBTDependantCraftingRecipe;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.ASM.BWCoreStaticReplacementMethodes;
-import bartworks.common.configs.Configuration;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import bartworks.util.Pair;
@@ -44,6 +42,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -114,8 +113,7 @@ public class CircuitImprintLoader {
                 GTRecipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null) BartWorksRecipeMaps.circuitAssemblyLineRecipes.addRecipe(newRecipe);
                 addCutoffRecipeToSets(toRem, toAdd, circuitRecipe);
-            } else if (circuitRecipe.mEUt > TierEU.IV)
-                toRem.add(circuitRecipe);
+            } else if (circuitRecipe.mEUt > TierEU.IV) toRem.add(circuitRecipe);
         }
     }
 
