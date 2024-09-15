@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FOG_EXOTIC_TIER;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
@@ -228,12 +229,13 @@ public class Godforge implements Runnable {
         {
             // Single step
             ItemStack[] solids_t1_1step = { Materials.Lead.getDust(1), Materials.Plutonium241.getDust(1),
-                Materials.Thorium.getDust(1) };
+                Materials.Thorium.getDust(1), Materials.Naquadria.getDust(1) };
 
             FluidStack[] molten_t1_1step = convertToFluid(solids_t1_1step);
 
             FluidStack[] solid_plasmas_t1_1step = { Materials.Lead.getPlasma(144),
-                Materials.Plutonium241.getPlasma(144), Materials.Thorium.getPlasma(144) };
+                Materials.Plutonium241.getPlasma(144), Materials.Thorium.getPlasma(144),
+                Materials.Naquadria.getPlasma(144) };
 
             for (int i = 0; i < solids_t1_1step.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -773,6 +775,7 @@ public class Godforge implements Runnable {
             }
 
             fluidOutputs.addAll(Arrays.asList(recipe.mFluidOutputs));
+            Integer heat = recipe.getMetadata(COIL_HEAT);
 
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .noOptimize()
@@ -785,6 +788,7 @@ public class Godforge implements Runnable {
             if (recipe.mInputs != null) builder.itemInputs(recipe.mInputs);
             if (recipe.mFluidInputs != null) builder.fluidInputs(recipe.mFluidInputs);
             if (!newChances.isEmpty()) builder.outputChances(newChances.toIntArray());
+            if (heat != null) builder.metadata(COIL_HEAT, heat);
 
             builder.addTo(TecTechRecipeMaps.godforgeMoltenRecipes);
         }
