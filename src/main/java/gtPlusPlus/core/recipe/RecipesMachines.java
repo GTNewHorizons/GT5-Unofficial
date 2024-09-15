@@ -1651,32 +1651,32 @@ public class RecipesMachines {
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_LV.get(1L),
-            CI.bits,
+            CI.bitsd,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LV, 'P', ItemList.Electric_Piston_LV, 'E',
                 ItemList.Electric_Motor_LV, 'C', OrePrefixes.circuit.get(Materials.LV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Cobalt), 'G', MaterialsAlloy.TUMBAGA.getGear(2) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_MV.get(1L),
-            CI.bits,
+            CI.bitsd,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_MV, 'P', ItemList.Electric_Piston_MV, 'E',
                 ItemList.Electric_Motor_MV, 'C', OrePrefixes.circuit.get(Materials.MV), 'W',
                 OrePrefixes.cableGt01.get(Materials.AnnealedCopper), 'G', MaterialsAlloy.EGLIN_STEEL.getGear(2) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_HV.get(1L),
-            CI.bits,
+            CI.bitsd,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_HV, 'P', ItemList.Electric_Piston_HV, 'E',
                 ItemList.Electric_Motor_HV, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Gold), 'G',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Chrome, 1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_EV.get(1L),
-            CI.bits,
+            CI.bitsd,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Titanium), 'G', MaterialsAlloy.INCOLOY_DS.getGear(1) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Generator_SemiFluid_IV.get(1L),
-            CI.bits,
+            CI.bitsd,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', OrePrefixes.circuit.get(Materials.IV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Tungsten), 'G', MaterialsAlloy.NITINOL_60.getGear(1) });
