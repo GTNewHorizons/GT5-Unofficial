@@ -11,7 +11,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -471,7 +471,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<>();
-        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             if (tHatch instanceof MTEHatchSolidifier) {
                 continue;
             }

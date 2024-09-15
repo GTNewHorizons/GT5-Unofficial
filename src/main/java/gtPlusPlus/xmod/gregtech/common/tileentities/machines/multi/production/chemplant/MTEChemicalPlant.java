@@ -11,7 +11,7 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -659,7 +659,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
      */
     public ArrayList<ItemStack> getCatalystInputs() {
         ArrayList<ItemStack> tItems = new ArrayList<>();
-        for (MTEHatchCatalysts tHatch : filterValidMTEs(mCatalystBuses)) {
+        for (MTEHatchCatalysts tHatch : validMTEList(mCatalystBuses)) {
             AutoMap<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
             if (!aHatchContent.isEmpty()) {
                 tItems.addAll(aHatchContent);

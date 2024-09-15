@@ -12,7 +12,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -168,7 +168,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     public void updateSlots() {
-        for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mCryotheumHatches)) tHatch.updateSlots();
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mCryotheumHatches)) tHatch.updateSlots();
         super.updateSlots();
     }
 

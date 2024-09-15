@@ -13,7 +13,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -189,7 +189,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
 
     @Override
     public void updateSlots() {
-        for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mPyrotheumHatches)) tHatch.updateSlots();
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mPyrotheumHatches)) tHatch.updateSlots();
         super.updateSlots();
     }
 
