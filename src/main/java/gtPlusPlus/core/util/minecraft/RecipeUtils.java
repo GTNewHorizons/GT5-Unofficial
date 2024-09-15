@@ -65,7 +65,7 @@ public class RecipeUtils {
 
         try {
             int size = CompatHandler.mRecipesToGenerate.size();
-            CompatHandler.mRecipesToGenerate.put(new InternalRecipeObject(o, resultItem, false));
+            CompatHandler.mRecipesToGenerate.add(new InternalRecipeObject(o, resultItem, false));
             // Utils.LOG_WARNING("Success! Added a recipe for "+resultItem.getDisplayName());
             if (CompatHandler.mRecipesToGenerate.size() > size) {
                 if (!CompatHandler.areInitItemsLoaded) {
@@ -171,7 +171,7 @@ public class RecipeUtils {
         }
 
         int size = CompatHandler.mGtRecipesToGenerate.size();
-        CompatHandler.mGtRecipesToGenerate.put(new InternalRecipeObject(o, OutputItem, true));
+        CompatHandler.mGtRecipesToGenerate.add(new InternalRecipeObject(o, OutputItem, true));
 
         if (CompatHandler.mGtRecipesToGenerate.size() > size) {
             if (!CompatHandler.areInitItemsLoaded) {
@@ -415,7 +415,7 @@ public class RecipeUtils {
         ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aDataObject);
 
         int size = CompatHandler.mRecipesToGenerate.size();
-        CompatHandler.mRecipesToGenerate.put(new InternalRecipeObject2(aRecipe));
+        CompatHandler.mRecipesToGenerate.add(new InternalRecipeObject2(aRecipe));
         if (CompatHandler.mRecipesToGenerate.size() > size) {
             if (!CompatHandler.areInitItemsLoaded) {
                 RegistrationHandler.recipesSuccess++;

@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +46,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
@@ -365,10 +365,10 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
     }
 
-    private static AutoMap<AutoMap<WeightedRandomFishable>> categories = new AutoMap<>();
-    private static AutoMap<WeightedRandomFishable> categoryFish = new AutoMap<>();
-    private static AutoMap<WeightedRandomFishable> categoryJunk = new AutoMap<>();
-    private static AutoMap<WeightedRandomFishable> categoryLoot = new AutoMap<>();
+    private static ArrayList<ArrayList<WeightedRandomFishable>> categories = new ArrayList<>();
+    private static ArrayList<WeightedRandomFishable> categoryFish = new ArrayList<>();
+    private static ArrayList<WeightedRandomFishable> categoryJunk = new ArrayList<>();
+    private static ArrayList<WeightedRandomFishable> categoryLoot = new ArrayList<>();
     private static boolean hasGenerateRecipes = false;
     private int mMode = 14;
     private int mMax = 8;
@@ -376,18 +376,12 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     private void generateRecipes() {
         if (hasGenerateRecipes) return;
 
-        categories.put(categoryFish);
-        categories.put(categoryJunk);
-        categories.put(categoryLoot);
-        for (WeightedRandomFishable h : FishPondFakeRecipe.fish) {
-            categoryFish.put(h);
-        }
-        for (WeightedRandomFishable h : FishPondFakeRecipe.junk) {
-            categoryJunk.put(h);
-        }
-        for (WeightedRandomFishable h : FishPondFakeRecipe.treasure) {
-            categoryLoot.put(h);
-        }
+        categories.add(categoryFish);
+        categories.add(categoryJunk);
+        categories.add(categoryLoot);
+        categoryFish.addAll(FishPondFakeRecipe.fish);
+        categoryJunk.addAll(FishPondFakeRecipe.junk);
+        categoryLoot.addAll(FishPondFakeRecipe.treasure);
         hasGenerateRecipes = true;
     }
 
@@ -450,7 +444,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
         ItemStack[] mFishOutput = new ItemStack[this.mMax];
         if (this.mMode == 14) {
             for (int k = 0; k < this.mMax; k++) {
-                if (mFishOutput[k] == null) for (WeightedRandomFishable g : categoryFish.values()) {
+                if (mFishOutput[k] == null) for (WeightedRandomFishable g : categoryFish) {
                     if (MathUtils.randInt(0, (65 - getMaxParallelRecipes())) <= 2) {
                         ItemStack t = reflectiveFish(g);
                         if (t != null) {
@@ -461,7 +455,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             }
         } else if (this.mMode == 15) {
             for (int k = 0; k < this.mMax; k++) {
-                if (mFishOutput[k] == null) for (WeightedRandomFishable g : categoryJunk.values()) {
+                if (mFishOutput[k] == null) for (WeightedRandomFishable g : categoryJunk) {
                     if (MathUtils.randInt(0, 100) <= 1) {
                         ItemStack t = reflectiveFish(g);
                         if (t != null) {
@@ -472,7 +466,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             }
         } else if (this.mMode == 16) {
             for (int k = 0; k < this.mMax; k++) {
-                if (mFishOutput[k] == null) for (WeightedRandomFishable g : categoryLoot.values()) {
+                if (mFishOutput[k] == null) for (WeightedRandomFishable g : categoryLoot) {
                     if (MathUtils.randInt(0, 1000) <= 2) {
                         ItemStack t = reflectiveFish(g);
                         if (t != null) {

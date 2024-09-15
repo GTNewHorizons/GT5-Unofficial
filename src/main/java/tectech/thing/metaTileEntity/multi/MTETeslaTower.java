@@ -11,7 +11,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -457,7 +457,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(false);
         }
@@ -466,7 +466,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         mTier = -1;
 
         if (structureCheck_EM("main", 3, 16, 0)) {
-            for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+            for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
                 cap.getBaseMetaTileEntity()
                     .setActive(iGregTechTileEntity.isActive());
             }
@@ -522,7 +522,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         mMaxProgresstime = 20;
         vTier = -1;
         long[] capacitorData;
-        for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             if (cap.getCapacitors()[0] > vTier) {
                 vTier = (int) cap.getCapacitors()[0];
             }
@@ -540,7 +540,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         }
 
         outputVoltageMax = V[vTier + 1];
-        for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(true);
             capacitorData = cap.getCapacitors();
@@ -620,7 +620,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         super.onRemoval();
         if (!getBaseMetaTileEntity().isClientSide()) {
             TeslaUtil.teslaSimpleNodeSetRemove(this);
-            for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+            for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
                 cap.getBaseMetaTileEntity()
                     .setActive(false);
             }
@@ -723,7 +723,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
-        for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(false);
         }

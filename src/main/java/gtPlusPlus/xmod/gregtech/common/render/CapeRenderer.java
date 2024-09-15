@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
@@ -23,7 +24,6 @@ import org.lwjgl.opengl.GL11;
 
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -252,11 +252,11 @@ public class CapeRenderer extends RenderPlayer {
         private static boolean mapsPopulated = false;
 
         // UUID - Username
-        private static final AutoMap<Pair<String, String>> mOrangeCapes = new AutoMap<>();
-        private static final AutoMap<Pair<String, String>> mMiscCapes = new AutoMap<>();
-        private static final AutoMap<Pair<String, String>> mBetaTestCapes = new AutoMap<>();
-        private static final AutoMap<Pair<String, String>> mPatreonCapes = new AutoMap<>();
-        private static final AutoMap<Pair<String, String>> mDevCapes = new AutoMap<>();
+        private static final ArrayList<Pair<String, String>> mOrangeCapes = new ArrayList<>();
+        private static final ArrayList<Pair<String, String>> mMiscCapes = new ArrayList<>();
+        private static final ArrayList<Pair<String, String>> mBetaTestCapes = new ArrayList<>();
+        private static final ArrayList<Pair<String, String>> mPatreonCapes = new ArrayList<>();
+        private static final ArrayList<Pair<String, String>> mDevCapes = new ArrayList<>();
 
         private static boolean init() {
             CapeUtils.handleOldCapeCache();
@@ -353,7 +353,7 @@ public class CapeRenderer extends RenderPlayer {
             if (aCache != null && !aCache.isEmpty()) {
                 return aCache;
             }
-            return new AutoMap<>();
+            return new ArrayList<>();
         }
 
         private static File allocateTempFile() {
@@ -377,16 +377,16 @@ public class CapeRenderer extends RenderPlayer {
                 if (sAES == null) {
                     sAES = new AES();
                 }
-                AutoMap<String> aDecodedData = new AutoMap<>();
+                ArrayList<String> aDecodedData = new ArrayList<>();
                 for (String aToDecode : aCacheData) {
-                    aDecodedData.put(sAES.decode(aToDecode));
+                    aDecodedData.add(sAES.decode(aToDecode));
                 }
                 if (!aDecodedData.isEmpty()) {
-                    AutoMap<Pair<String, String>> aCapeType1 = new AutoMap<>();
-                    AutoMap<Pair<String, String>> aCapeType2 = new AutoMap<>();
-                    AutoMap<Pair<String, String>> aCapeType3 = new AutoMap<>();
-                    AutoMap<Pair<String, String>> aCapeType4 = new AutoMap<>();
-                    AutoMap<Pair<String, String>> aCapeType5 = new AutoMap<>();
+                    ArrayList<Pair<String, String>> aCapeType1 = new ArrayList<>();
+                    ArrayList<Pair<String, String>> aCapeType2 = new ArrayList<>();
+                    ArrayList<Pair<String, String>> aCapeType3 = new ArrayList<>();
+                    ArrayList<Pair<String, String>> aCapeType4 = new ArrayList<>();
+                    ArrayList<Pair<String, String>> aCapeType5 = new ArrayList<>();
                     boolean didProcessStringData = false;
                     Logger.INFO("Decoded String Count: " + aDecodedData.size());
                     for (String aToSplit : aDecodedData) {

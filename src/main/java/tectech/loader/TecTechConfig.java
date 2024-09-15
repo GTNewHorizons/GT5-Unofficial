@@ -13,11 +13,6 @@ public class TecTechConfig extends ConfigManager {
     // final static to allow compiler to remove the debug code when this is false
     public static boolean DEBUG_MODE = false;
     public static boolean POWERLESS_MODE = false;
-    /**
-     * Not complete; enabled by default only in dev env
-     */
-    public boolean ENABLE_GOD_FORGE;
-
     public boolean BOOM_ENABLE;
     public boolean DISABLE_BLOCK_HARDNESS_NERF;
     public boolean EASY_SCAN;

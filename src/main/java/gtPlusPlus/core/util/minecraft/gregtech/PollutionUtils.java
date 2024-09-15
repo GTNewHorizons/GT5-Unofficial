@@ -1,5 +1,7 @@
 package gtPlusPlus.core.util.minecraft.gregtech;
 
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
@@ -12,7 +14,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.common.Pollution;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -21,7 +22,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class PollutionUtils {
 
-    public static AutoMap<FluidStack> mPollutionFluidStacks = new AutoMap<>();
+    public static ArrayList<FluidStack> mPollutionFluidStacks = new ArrayList<>();
 
     public static boolean isPollutionEnabled() {
         return GTMod.gregtechproxy.mPollution;
@@ -99,10 +100,10 @@ public class PollutionUtils {
             CD = FluidUtils.getFluidStack("carbondioxide", 1000);
             CM = FluidUtils.getFluidStack("carbonmonoxide", 1000);
             SD = FluidUtils.getFluidStack("sulfurdioxide", 1000);
-            if (PollutionUtils.mPollutionFluidStacks.size() == 0) {
+            if (PollutionUtils.mPollutionFluidStacks.isEmpty()) {
                 if (CD != null) {
                     Logger.INFO("[PollutionCompat] Found carbon dioxide fluid, registering it.");
-                    PollutionUtils.mPollutionFluidStacks.put(CD);
+                    PollutionUtils.mPollutionFluidStacks.add(CD);
                     MaterialMisc.CARBON_DIOXIDE.registerComponentForMaterial(CD);
                     ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonDioxide", 1);
                     if (ItemUtils.checkForInvalidItems(cellCD)) {
@@ -118,7 +119,7 @@ public class PollutionUtils {
 
                 if (CM != null) {
                     Logger.INFO("[PollutionCompat] Found carbon monoxide fluid, registering it.");
-                    PollutionUtils.mPollutionFluidStacks.put(CM);
+                    PollutionUtils.mPollutionFluidStacks.add(CM);
                     MaterialMisc.CARBON_MONOXIDE.registerComponentForMaterial(CM);
                     ItemStack cellCD = ItemUtils.getItemStackOfAmountFromOreDict("cellCarbonMonoxide", 1);
                     if (ItemUtils.checkForInvalidItems(cellCD)) {
@@ -134,7 +135,7 @@ public class PollutionUtils {
 
                 if (SD != null) {
                     Logger.INFO("[PollutionCompat] Found sulfur dioxide fluid, registering it.");
-                    PollutionUtils.mPollutionFluidStacks.put(SD);
+                    PollutionUtils.mPollutionFluidStacks.add(SD);
                 }
             }
         } else {

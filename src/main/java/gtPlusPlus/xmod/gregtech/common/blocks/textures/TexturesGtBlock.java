@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import java.util.ArrayList;
+
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -11,13 +13,13 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
+import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.config.Configuration;
 
 public class TexturesGtBlock {
 
     private static final boolean mAnimated = Configuration.visual.enableAnimatedTextures;
-    private static final AutoMap<Runnable> mCustomiconMap = new AutoMap<>();
+    private static final ArrayList<Runnable> mCustomiconMap = new ArrayList<>();
 
     /*
      * Handles Custom Textures.
@@ -36,7 +38,7 @@ public class TexturesGtBlock {
         public CustomIcon(final String aModID, final String aIconName) {
             this.mIconName = aIconName;
             this.mModID = aModID;
-            mCustomiconMap.put(this);
+            mCustomiconMap.add(this);
             Logger.WARNING("Constructing a Custom Texture. " + this.mIconName);
             GregTechAPI.sGTBlockIconload.add(this);
         }
