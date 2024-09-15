@@ -1,7 +1,5 @@
 package tectech.util;
 
-import static gregtech.api.enums.GTValues.V;
-
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.Formatter;
@@ -93,19 +91,6 @@ public final class TTUtility {
 
     public static String getUniqueIdentifier(ItemStack is) {
         return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ':' + is.getUnlocalizedName();
-    }
-
-    public static byte getTier(long l) {
-        byte b = -1;
-
-        do {
-            ++b;
-            if (b >= V.length) {
-                return b;
-            }
-        } while (l > V[b]);
-
-        return b;
     }
 
     public static void setTier(int tier, Object me) {
