@@ -13,12 +13,10 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
 import static gregtech.api.enums.OrePrefixes.dustTiny;
-import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.ingotHot;
 import static gregtech.api.enums.OrePrefixes.nugget;
@@ -508,16 +506,6 @@ public class DustLoader implements IWerkstoffRunnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(nugget))
                     .itemOutputs(werkstoff.get(dustTiny))
-                    .duration(20 * SECONDS)
-                    .eut(2)
-                    .addTo(maceratorRecipes);
-
-            }
-            if (werkstoff.hasItemType(ingot) || werkstoff.hasItemType(gem)) {
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(block))
-                    .itemOutputs(werkstoff.get(dust, 9))
                     .duration(20 * SECONDS)
                     .eut(2)
                     .addTo(maceratorRecipes);
