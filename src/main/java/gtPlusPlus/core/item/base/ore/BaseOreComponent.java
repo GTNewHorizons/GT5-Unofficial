@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -180,7 +181,7 @@ public class BaseOreComponent extends Item {
                 this.overlay = par1IconRegister
                     .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
-        } else if (GTPPCore.ConfigSwitches.useGregtechTextures) {
+        } else if (Configuration.visual.useGregtechTextures) {
             // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
             // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
             // layer 0 texture path.");
@@ -210,10 +211,10 @@ public class BaseOreComponent extends Item {
             }
             return this.componentColour;
         } else {
-            if (renderPass == 0 && !GTPPCore.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
                 return this.componentColour;
             }
-            if (renderPass == 1 && GTPPCore.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
                 return Utils.rgbtoHexValue(230, 230, 230);
             }
             return this.componentColour;

@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -78,7 +79,7 @@ public class BaseItemIngotHot extends BaseItemIngot {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        if (GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (Configuration.visual.useGregtechTextures) {
             return true;
         } else {
             return false;
@@ -88,7 +89,7 @@ public class BaseItemIngotHot extends BaseItemIngot {
     @Override
     public void registerIcons(final IIconRegister i) {
 
-        if (GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (Configuration.visual.useGregtechTextures) {
             this.base = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "ingotHot");
             this.overlay = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "ingotHot_OVERLAY");
         } else {
@@ -100,9 +101,9 @@ public class BaseItemIngotHot extends BaseItemIngot {
 
     @Override
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (pass == 0 && GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (pass == 0 && Configuration.visual.useGregtechTextures) {
             return this.base;
-        } else if (pass == 1 && GTPPCore.ConfigSwitches.useGregtechTextures) {
+        } else if (pass == 1 && Configuration.visual.useGregtechTextures) {
             return this.overlay;
         } else {
             return this.overlay;

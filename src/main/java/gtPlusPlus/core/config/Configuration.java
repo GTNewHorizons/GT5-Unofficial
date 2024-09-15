@@ -12,6 +12,7 @@ public class Configuration {
     public static final Gregtech gregtech = new Gregtech();
     public static final Pollution pollution = new Pollution();
     public static final Features features = new Features();
+    public static final Visual visual = new Visual();
 
     public static class Debug{
 
@@ -225,5 +226,15 @@ public class Configuration {
         @Config.Comment("Hides every filled IC2 Universal Cell from NEI.")
         @Config.DefaultBoolean(true)
         public boolean hideUniversalCells;
+    }
+
+    public static class Visual{
+        @Config.Comment("Enables Animated GT++ Textures")
+        @Config.DefaultBoolean(true)
+        public boolean enableAnimatedTextures;
+
+        @Config.Comment("Use GT textures")
+        @Config.DefaultBoolean(true)
+        public boolean useGregtechTextures;
     }
 }

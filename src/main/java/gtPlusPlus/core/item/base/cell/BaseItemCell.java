@@ -3,6 +3,7 @@ package gtPlusPlus.core.item.base.cell;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -47,7 +48,7 @@ public class BaseItemCell extends BaseItemComponent {
     @Override
     public void registerIcons(final IIconRegister i) {
 
-        if (GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (Configuration.visual.useGregtechTextures) {
             this.base = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "cell");
             this.overlay = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "cell_OVERLAY");
         } else {
@@ -62,10 +63,10 @@ public class BaseItemCell extends BaseItemComponent {
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
-        if (renderPass == 0 && !GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
             return Utils.rgbtoHexValue(230, 230, 230);
         }
-        if (renderPass == 1 && GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
             return Utils.rgbtoHexValue(230, 230, 230);
         }
         return this.componentColour;

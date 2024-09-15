@@ -23,9 +23,5 @@ public class ConfigHandler {
         EVERGLADESBIOME_ID = config
             .getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
 
-        // Visual
-        enableAnimatedTextures = config
-            .getBoolean("enableAnimatedTextures", "visual", true, "Enables Animated GT++ Textures, Requires Restart");
-        config.save();
     }
 }

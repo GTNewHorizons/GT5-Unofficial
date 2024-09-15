@@ -69,11 +69,6 @@ public class GTPPCore {
 
 
         public static boolean enableMachine_RedstoneBlocks = true;
-
-
-        // Visuals
-        public static boolean useGregtechTextures = true;
-        public static boolean enableAnimatedTextures = false;
     }
 
     public static class Everglades {

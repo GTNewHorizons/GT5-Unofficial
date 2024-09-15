@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +17,7 @@ import gtPlusPlus.core.lib.GTPPCore;
 
 public class TexturesGtBlock {
 
-    private static final boolean mAnimated = GTPPCore.ConfigSwitches.enableAnimatedTextures;
+    private static final boolean mAnimated = Configuration.visual.enableAnimatedTextures;
     private static final AutoMap<Runnable> mCustomiconMap = new AutoMap<>();
 
     /*

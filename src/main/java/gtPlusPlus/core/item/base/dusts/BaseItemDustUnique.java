@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -120,7 +121,7 @@ public class BaseItemDustUnique extends Item {
     }
 
     private String getCorrectTexture(final String pileSize) {
-        if (!GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (!Configuration.visual.useGregtechTextures) {
             if ((pileSize.equals("dust")) || (pileSize.equals("Dust"))) {
                 this.setTextureName(GTPlusPlus.ID + ":" + "dust");
             } else {

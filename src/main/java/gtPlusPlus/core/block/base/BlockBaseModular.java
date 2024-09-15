@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.util.HashMap;
 import java.util.Map;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -198,7 +199,7 @@ public class BlockBaseModular extends BasicBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        if (!GTPPCore.ConfigSwitches.useGregtechTextures || this.blockMaterial == null
+        if (!Configuration.visual.useGregtechTextures || this.blockMaterial == null
             || this.thisBlock == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.thisBlock.getTexture());
         }
