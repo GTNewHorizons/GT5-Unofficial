@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,7 +52,7 @@ public class ExoticEnergyInputHelper {
 
     public static long getTotalEuMulti(Collection<? extends MTEHatch> hatches) {
         long rEU = 0L;
-        for (MTEHatch tHatch : filterValidMTEs(hatches)) {
+        for (MTEHatch tHatch : validMTEList(hatches)) {
             rEU += tHatch.getBaseMetaTileEntity()
                 .getInputVoltage() * tHatch.maxWorkingAmperesIn();
         }
@@ -61,7 +61,7 @@ public class ExoticEnergyInputHelper {
 
     public static long getMaxInputVoltageMulti(Collection<? extends MTEHatch> hatches) {
         long rVoltage = 0;
-        for (MTEHatch tHatch : filterValidMTEs(hatches)) {
+        for (MTEHatch tHatch : validMTEList(hatches)) {
             rVoltage += tHatch.getBaseMetaTileEntity()
                 .getInputVoltage();
         }
@@ -70,7 +70,7 @@ public class ExoticEnergyInputHelper {
 
     public static long getAverageInputVoltageMulti(Collection<? extends MTEHatch> hatches) {
         long rVoltage = 0;
-        for (MTEHatch tHatch : filterValidMTEs(hatches)) {
+        for (MTEHatch tHatch : validMTEList(hatches)) {
             rVoltage += tHatch.getBaseMetaTileEntity()
                 .getInputVoltage();
         }
@@ -82,7 +82,7 @@ public class ExoticEnergyInputHelper {
 
     public static long getMaxInputAmpsMulti(Collection<? extends MTEHatch> hatches) {
         long rAmp = 0;
-        for (MTEHatch tHatch : filterValidMTEs(hatches)) {
+        for (MTEHatch tHatch : validMTEList(hatches)) {
             rAmp += tHatch.getBaseMetaTileEntity()
                 .getInputAmperage();
         }
@@ -91,7 +91,7 @@ public class ExoticEnergyInputHelper {
 
     public static long getMaxWorkingInputAmpsMulti(Collection<? extends MTEHatch> hatches) {
         long rAmp = 0;
-        for (MTEHatch tHatch : filterValidMTEs(hatches)) {
+        for (MTEHatch tHatch : validMTEList(hatches)) {
             rAmp += tHatch.maxWorkingAmperesIn();
         }
         return rAmp;
