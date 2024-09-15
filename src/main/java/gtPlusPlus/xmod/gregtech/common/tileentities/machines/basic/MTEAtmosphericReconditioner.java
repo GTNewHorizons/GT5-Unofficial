@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.V;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +37,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.recipe.common.CI;
@@ -360,7 +361,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         if (this.mTier < 7) {
             mCurrentChunkPollution = PollutionUtils.getPollution(getBaseMetaTileEntity());
         } else {
-            AutoMap<Chunk> aSurrounding = new AutoMap<>();
+            ArrayList<Chunk> aSurrounding = new ArrayList<>();
             World aWorld = this.getBaseMetaTileEntity()
                 .getWorld();
             int xPos = this.getBaseMetaTileEntity()
@@ -376,15 +377,15 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             Chunk c1 = aWorld.getChunkFromBlockCoords(xPos + 32, zPos - 32);
             Chunk c2 = aWorld.getChunkFromBlockCoords(xPos + 32, zPos);
             Chunk c3 = aWorld.getChunkFromBlockCoords(xPos + 32, zPos + 32);
-            aSurrounding.put(a1);
-            aSurrounding.put(a2);
-            aSurrounding.put(a3);
-            aSurrounding.put(b1);
-            aSurrounding.put(b2);
-            aSurrounding.put(b3);
-            aSurrounding.put(c1);
-            aSurrounding.put(c2);
-            aSurrounding.put(c3);
+            aSurrounding.add(a1);
+            aSurrounding.add(a2);
+            aSurrounding.add(a3);
+            aSurrounding.add(b1);
+            aSurrounding.add(b2);
+            aSurrounding.add(b3);
+            aSurrounding.add(c1);
+            aSurrounding.add(c2);
+            aSurrounding.add(c3);
             for (Chunk r : aSurrounding) {
                 mCurrentChunkPollution += getPollutionInChunk(r);
             }
@@ -587,7 +588,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         } else {
             int chunksWithRemoval = 0;
             int totalRemoved = 0;
-            AutoMap<Chunk> aSurrounding = new AutoMap<>();
+            ArrayList<Chunk> aSurrounding = new ArrayList<>();
             Chunk aThisChunk = this.getBaseMetaTileEntity()
                 .getWorld()
                 .getChunkFromBlockCoords(
@@ -615,15 +616,15 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             Chunk c2 = aWorld.getChunkFromBlockCoords(xPos + 32, zPos);
             Chunk c3 = aWorld.getChunkFromBlockCoords(xPos + 32, zPos + 32);
 
-            aSurrounding.put(a1);
-            aSurrounding.put(a2);
-            aSurrounding.put(a3);
-            aSurrounding.put(b1);
-            aSurrounding.put(b2);
-            aSurrounding.put(b3);
-            aSurrounding.put(c1);
-            aSurrounding.put(c2);
-            aSurrounding.put(c3);
+            aSurrounding.add(a1);
+            aSurrounding.add(a2);
+            aSurrounding.add(a3);
+            aSurrounding.add(b1);
+            aSurrounding.add(b2);
+            aSurrounding.add(b3);
+            aSurrounding.add(c1);
+            aSurrounding.add(c2);
+            aSurrounding.add(c3);
 
             for (Chunk r : aSurrounding) {
                 if (!r.isChunkLoaded) {
@@ -763,10 +764,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     @Override
     public String[] getInfoData() {
-        AutoMap<String> aTooltipSuper = new AutoMap<>();
-        for (String s : super.getInfoData()) {
-            aTooltipSuper.put(s);
-        }
+        ArrayList<String> aTooltipSuper = new ArrayList<>();
+        aTooltipSuper.addAll(Arrays.asList(super.getInfoData()));
         int mAirSides = getFreeSpaces();
         int reduction = 0;
 
@@ -778,11 +777,11 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 * Math.max((tTier - 2), 1);
             reduction = MathUtils.safeInt(((long) reduction / 100) * this.mOptimalAirFlow);
 
-            aTooltipSuper.put("Maximum pollution removed per second: " + reduction);
+            aTooltipSuper.add("Maximum pollution removed per second: " + reduction);
         } catch (Throwable t) {
-            aTooltipSuper.put("Maximum pollution removed per second: " + mPollutionReduction);
+            aTooltipSuper.add("Maximum pollution removed per second: " + mPollutionReduction);
         }
-        aTooltipSuper.put("Air Sides: " + mAirSides);
+        aTooltipSuper.add("Air Sides: " + mAirSides);
 
         String[] mBuiltOutput = new String[aTooltipSuper.size()];
         int aIndex = 0;

@@ -1,9 +1,10 @@
 package gregtech.api.util;
 
+import java.util.ArrayList;
+
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.TierEU;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -92,12 +93,11 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
     }
 
     public String[] getRecipeInfo() {
-        AutoMap<String> result = new AutoMap<>();
-        result.put("Input " + ItemUtils.getArrayStackNames(mFluidInputs));
-        result.put("Output " + ItemUtils.getArrayStackNames(mFluidOutputs));
-        result.put("Duration: " + mDuration);
-        result.put("EU/t: " + mEUt);
-        String s[] = result.toArray();
-        return s;
+        ArrayList<String> result = new ArrayList<>();
+        result.add("Input " + ItemUtils.getArrayStackNames(mFluidInputs));
+        result.add("Output " + ItemUtils.getArrayStackNames(mFluidOutputs));
+        result.add("Duration: " + mDuration);
+        result.add("EU/t: " + mEUt);
+        return result.toArray(new String[] {});
     }
 }
