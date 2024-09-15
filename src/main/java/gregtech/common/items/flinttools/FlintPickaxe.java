@@ -1,7 +1,6 @@
 package gregtech.common.items.flinttools;
 
 import net.minecraft.item.ItemPickaxe;
-import net.minecraft.creativetab.CreativeTabs;
 
 public class FlintPickaxe extends ItemPickaxe {
 

@@ -260,7 +260,6 @@ public class BookAndLootLoader implements Runnable {
             "mineshaftCorridor",
             new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L), 1, 4, 2));
 
-
         ChestGenHooks
             .addItem("villageBlacksmith", new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L), 1, 1, 1));
         ChestGenHooks.addItem(

@@ -15,7 +15,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import gregtech.common.items.flinttools.FlintTools;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -89,6 +88,7 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
 import gregtech.common.covers.CoverFacadeAE;
+import gregtech.common.items.flinttools.FlintTools;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
