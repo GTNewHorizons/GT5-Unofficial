@@ -906,7 +906,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         TileAntimatter render = getAntimatterRender();
         if (render == null) return;
         render.setProtomatterRender(flag);
-        render.setRotationFields(getRotation(), getDirection());
+        if (!flag) return;
+        render.setRotationFields(getDirection(), getRotation());
     }
 
     public TileAntimatter getAntimatterRender() {

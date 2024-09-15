@@ -1,5 +1,7 @@
 package gtPlusPlus.core.tileentities.general;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -10,7 +12,6 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.slots.SlotIntegratedCircuit;
@@ -69,11 +70,11 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
         if (aInputs[25] != null) {
             hasOutput = true;
         }
-        AutoMap<Integer> aValidSlots = new AutoMap<>();
+        ArrayList<Integer> aValidSlots = new ArrayList<>();
         int aSlotCount = 0;
         for (ItemStack i : aInputs) {
             if (i != null) {
-                aValidSlots.put(aSlotCount);
+                aValidSlots.add(aSlotCount);
             }
             aSlotCount++;
         }

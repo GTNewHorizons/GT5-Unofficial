@@ -2,15 +2,14 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.util.HashSet;
+
 import net.minecraftforge.fluids.FluidStack;
 
-import gtPlusPlus.api.objects.data.AutoMap;
+public class GasSpargingRecipeMap {
 
-public class GasSpargingRecipeMap extends AutoMap<GasSpargingRecipe> {
-
-    public static final AutoMap<GasSpargingRecipe> mRecipes = new AutoMap<>();
+    public static final HashSet<GasSpargingRecipe> mRecipes = new HashSet<>();
     public static final String mUnlocalizedName = "gtpp.recipe.lftr.sparging";
-    public static final String mNEIName = mUnlocalizedName;
     public static final String mNEIDisplayName = "LFTR Gas Sparging";
     public static final String mNEIGUIPath = GregTech.getResourcePath("textures", "gui/basicmachines/FissionFuel.png");
 
@@ -30,7 +29,7 @@ public class GasSpargingRecipeMap extends AutoMap<GasSpargingRecipe> {
         }
         int aMapSize = mRecipes.size();
         GasSpargingRecipe aRecipe = new GasSpargingRecipe(aSpargeGas, aSpentFuel, aSpargedFuel, aOutputs, aMaxOutputs);
-        mRecipes.put(aRecipe);
+        mRecipes.add(aRecipe);
         return mRecipes.size() > aMapSize;
     }
 

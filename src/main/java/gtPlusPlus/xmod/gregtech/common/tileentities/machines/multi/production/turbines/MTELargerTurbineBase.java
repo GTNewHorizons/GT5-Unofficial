@@ -9,7 +9,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
 import java.util.ArrayList;
@@ -49,7 +49,6 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -201,7 +200,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     public final double getMufflerReduction() {
         double totalReduction = 0;
-        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
             totalReduction += ((double) tHatch.calculatePollutionReduction(100)) / 100;
         }
         return totalReduction / 4;
@@ -334,8 +333,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             log("Found " + aTurbineAssemblies.size() + ", expected 12.");
             return false;
         }
-        AutoMap<Materials> aTurbineMats = new AutoMap<>();
-        AutoMap<Integer> aTurbineSizes = new AutoMap<>();
+        ArrayList<Materials> aTurbineMats = new ArrayList<>();
+        ArrayList<Integer> aTurbineSizes = new ArrayList<>();
         for (MTEHatchTurbine aHatch : aTurbineAssemblies) {
             aTurbineMats.add(MetaGeneratedTool.getPrimaryMaterial(aHatch.getTurbine()));
             aTurbineSizes.add(getTurbineSize(aHatch.getTurbine()));
@@ -599,7 +598,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -666,7 +665,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public boolean polluteEnvironment(int aPollutionLevel) {
         if (this.requiresMufflers()) {
             mPollution += aPollutionLevel * getPollutionMultiplier() * mufflerReduction;
-            for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+            for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
                 if (mPollution >= 10000) {
                     if (PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10000)) {
                         mPollution -= 10000;
@@ -770,7 +769,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         if (this.mTurbineRotorHatches.isEmpty() || ((System.currentTimeMillis() / 1000) - mLastHatchUpdate) <= 2) {
             return;
         }
-        for (MTEHatchTurbine h : filterValidMTEs(this.mTurbineRotorHatches)) {
+        for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
             h.setActive(aState);
         }
 
@@ -809,7 +808,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public boolean addEnergyOutputMultipleDynamos(long aEU, boolean aAllowMixedVoltageDynamos) {
         int injected = 0;
         long aFirstVoltageFound = -1;
-        for (MTEHatch aDynamo : filterValidMTEs(mAllDynamoHatches)) {
+        for (MTEHatch aDynamo : validMTEList(mAllDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             // Check against voltage to check when hatch mixing
             if (aFirstVoltageFound == -1) {
@@ -822,7 +821,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         int aAmpsToInject;
         int aRemainder;
         int ampsOnCurrentHatch;
-        for (MTEHatch aDynamo : filterValidMTEs(mAllDynamoHatches)) {
+        for (MTEHatch aDynamo : validMTEList(mAllDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);

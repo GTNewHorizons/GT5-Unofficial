@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -9,7 +11,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GTRenderedTexture;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -55,8 +56,8 @@ public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public AutoMap<ItemStack> getItemsValidForUsageSlots() {
-        return new AutoMap<>();
+    public ArrayList<ItemStack> getItemsValidForUsageSlots() {
+        return new ArrayList<>();
     }
 
     @Override

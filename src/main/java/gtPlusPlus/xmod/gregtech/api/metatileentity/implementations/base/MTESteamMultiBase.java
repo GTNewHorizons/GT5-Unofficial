@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -197,7 +197,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     public boolean depleteInput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
-        for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) {
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
             FluidStack tLiquid = tHatch.getFluid();
             if (tLiquid != null && tLiquid.isFluidEqual(aLiquid)) {
                 tLiquid = tHatch.drain(aLiquid.amount, false);
@@ -215,7 +215,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         if (GTUtility.isStackInvalid(aStack)) return false;
         FluidStack aLiquid = GTUtility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
-        for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) {
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
             if (GTUtility.areStacksEqual(
                 aStack,
                 tHatch.getBaseMetaTileEntity()
@@ -228,7 +228,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                 }
             }
         }
-        for (MteHatchSteamBusInput tHatch : filterValidMTEs(mSteamInputs)) {
+        for (MteHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
             tHatch.mRecipeMap = getRecipeMap();
             for (int i = tHatch.getBaseMetaTileEntity()
                 .getSizeInventory() - 1; i >= 0; i--) {
@@ -251,7 +251,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<>();
-        for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) {
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
             if (tHatch.getFillableStack() != null) {
                 rList.add(tHatch.getFillableStack());
             }
@@ -265,7 +265,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
-        for (MteHatchSteamBusInput tHatch : filterValidMTEs(mSteamInputs)) {
+        for (MteHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
             tHatch.mRecipeMap = getRecipeMap();
             for (int i = tHatch.getBaseMetaTileEntity()
                 .getSizeInventory() - 1; i >= 0; i--) {
@@ -288,7 +288,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
-            for (MTEHatchSteamBusOutput tHatch : filterValidMTEs(mSteamOutputs)) {
+            for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
                 if (!outputSuccess) {
                     for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
                         if (tHatch.getBaseMetaTileEntity()
@@ -296,7 +296,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
                     }
                 }
             }
-            for (MTEHatchOutput tHatch : filterValidMTEs(mOutputHatches)) {
+            for (MTEHatchOutput tHatch : validMTEList(mOutputHatches)) {
                 if (!outputSuccess && tHatch.outputsItems()) {
                     if (tHatch.getBaseMetaTileEntity()
                         .addStackToSlot(1, single)) outputSuccess = true;
@@ -309,7 +309,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     public ArrayList<ItemStack> getStoredOutputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
-        for (MTEHatchSteamBusOutput tHatch : filterValidMTEs(mSteamOutputs)) {
+        for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
             for (int i = tHatch.getBaseMetaTileEntity()
                 .getSizeInventory() - 1; i >= 0; i--) {
                 rList.add(
@@ -323,7 +323,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
     @Override
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
-        for (final MTEHatch tBus : filterValidMTEs(mSteamOutputs)) {
+        for (final MTEHatch tBus : validMTEList(mSteamOutputs)) {
             final IInventory tBusInv = tBus.getBaseMetaTileEntity();
             for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
                 ret.add(tBus.getStackInSlot(i));
@@ -334,8 +334,8 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
 
     @Override
     public void updateSlots() {
-        for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mSteamInputFluids)) tHatch.updateSlots();
-        for (MteHatchSteamBusInput tHatch : filterValidMTEs(mSteamInputs)) tHatch.updateSlots();
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) tHatch.updateSlots();
+        for (MteHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) tHatch.updateSlots();
     }
 
     @Override

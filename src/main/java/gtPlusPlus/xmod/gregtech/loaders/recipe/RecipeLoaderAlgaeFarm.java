@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.item.ItemStack;
@@ -8,7 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipe;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.WeightedCollection;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -16,8 +16,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeLoaderAlgaeFarm {
 
-    private static final HashMap<Integer, AutoMap<GTRecipe>> mRecipeCache = new HashMap<>();
-    private static final HashMap<Integer, AutoMap<GTRecipe>> mRecipeCompostCache = new HashMap<>();
+    private static final HashMap<Integer, ArrayList<GTRecipe>> mRecipeCache = new HashMap<>();
+    private static final HashMap<Integer, ArrayList<GTRecipe>> mRecipeCompostCache = new HashMap<>();
 
     public static void generateRecipes() {
         for (int i = 0; i < 15; i++) {
@@ -29,12 +29,12 @@ public class RecipeLoaderAlgaeFarm {
     }
 
     public static GTRecipe getTieredRecipeFromCache(int aTier, boolean aCompost) {
-        HashMap<Integer, AutoMap<GTRecipe>> aMap = aCompost ? mRecipeCompostCache : mRecipeCache;
+        HashMap<Integer, ArrayList<GTRecipe>> aMap = aCompost ? mRecipeCompostCache : mRecipeCache;
         String aComp = aCompost ? "(Compost)" : "";
 
-        AutoMap<GTRecipe> aTemp = aMap.get(aTier);
+        ArrayList<GTRecipe> aTemp = aMap.get(aTier);
         if (aTemp == null || aTemp.isEmpty()) {
-            aTemp = new AutoMap<>();
+            aTemp = new ArrayList<>();
             aMap.put(aTier, aTemp);
             Logger.INFO("Tier " + aTier + aComp + " had no recipes, initialising new map.");
         }
@@ -42,7 +42,7 @@ public class RecipeLoaderAlgaeFarm {
             Logger
                 .INFO("Tier " + aTier + aComp + " has less than 500 recipes, generating " + (500 - aTemp.size()) + ".");
             for (int i = aTemp.size(); i < 500; i++) {
-                aTemp.put(generateBaseRecipe(aCompost, aTier));
+                aTemp.add(generateBaseRecipe(aCompost, aTier));
             }
         }
         int aIndex = MathUtils.randInt(0, aTemp.isEmpty() ? 1 : aTemp.size());
@@ -109,61 +109,59 @@ public class RecipeLoaderAlgaeFarm {
     }
 
     private static ItemStack[] getOutputsForTier(int aTier) {
-
-        // Create an Automap to dump contents into
-        AutoMap<ItemStack> aOutputMap = new AutoMap<>();
+        ArrayList<ItemStack> aOutputMap = new ArrayList<>();
 
         // Add loot relevant to tier and also add any from lower tiers.
 
         if (aTier >= 0) {
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 2));
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 2));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
             if (MathUtils.randInt(0, 10) > 9) {
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
             }
         }
 
         if (aTier >= 1) {
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
             if (MathUtils.randInt(0, 10) > 9) {
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
             }
         }
         if (aTier >= 2) {
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 3));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 3));
             if (MathUtils.randInt(0, 10) > 9) {
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 8));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 8));
             }
         }
         if (aTier >= 3) {
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 1));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 1));
             if (MathUtils.randInt(0, 10) > 9) {
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
             }
         }
         if (aTier >= 4) {
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 2));
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 3));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 2));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 3));
             if (MathUtils.randInt(0, 10) > 9) {
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
             }
         }
         if (aTier >= 5) {
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 2));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 2));
             if (MathUtils.randInt(0, 10) > 9) {
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 4));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 4));
             }
         }
         // Tier 6 is Highest for outputs
         if (aTier >= 6) {
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
-            aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 2));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
+            aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 2));
             if (MathUtils.randInt(0, 10) > 9) {
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 8));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 8));
             }
         }
 
@@ -171,10 +169,10 @@ public class RecipeLoaderAlgaeFarm {
         for (int i2 = 0; i2 < 20; i2++) {
             if (aTier >= (6 + i2)) {
                 int aMulti = i2 + 1;
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, aMulti * 4));
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, aMulti * 3));
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, aMulti * 2));
-                aOutputMap.put(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, aMulti));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, aMulti * 4));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, aMulti * 3));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, aMulti * 2));
+                aOutputMap.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, aMulti));
             } else {
                 i2 = 20;
             }

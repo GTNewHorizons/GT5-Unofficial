@@ -16,16 +16,20 @@ package bartworks.system.material.werkstoff_loaders.recipe;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
+import static gregtech.api.enums.OrePrefixes.foil;
 import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plate;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+
+import net.minecraft.item.ItemStack;
 
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
@@ -38,6 +42,8 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy;
 
 public class SimpleMetalLoader implements IWerkstoffRunnable {
@@ -95,10 +101,87 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 return;
             }
 
+            GTModHandler.addCraftingRecipe(
+                werkstoff.get(stick, 2),
+                GTProxy.tBits,
+                new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
+            GTModHandler.addCraftingRecipe(
+                werkstoff.get(stick),
+                GTProxy.tBits,
+                new Object[] { "f ", " X", 'X', werkstoff.get(ingot) });
+            GTModHandler.addCraftingRecipe(
+                werkstoff.get(plate),
+                GTProxy.tBits,
+                new Object[] { "h", "X", "X", 'X', werkstoff.get(ingot) });
+            GTModHandler.addCraftingRecipe(
+                werkstoff.get(foil, 2),
+                GTProxy.tBits,
+                new Object[] { "hX", 'X', werkstoff.get(plate) });
+
+            benderRecipes.add(
+                new GTRecipe(
+                    true,
+                    new ItemStack[] { werkstoff.get(ingot), GTUtility.getIntegratedCircuit(1) },
+                    new ItemStack[] { werkstoff.get(plate) },
+                    null,
+                    null,
+                    null,
+                    null,
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L),
+                    24,
+                    0));
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot, 3))
+                .itemOutputs(werkstoff.get(plate, 2))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L))
+                .eut(16)
+                .addTo(hammerRecipes);
+
             GregTechAPI.registerCover(
                 werkstoff.get(plate),
                 TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false),
                 null);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot))
+                .itemOutputs(werkstoff.get(stick), werkstoff.get(dustSmall, 2))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 5L,
+                        1L))
+                .eut(16)
+                .addTo(latheRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
+                .itemOutputs(werkstoff.get(foil, 4))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 1L,
+                        1L))
+                .eut(24)
+                .addTo(benderRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(10))
+                .itemOutputs(werkstoff.get(foil, 4))
+                .duration(
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass() * 2L,
+                        1L))
+                .eut(24)
+                .addTo(benderRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(stick, 2))

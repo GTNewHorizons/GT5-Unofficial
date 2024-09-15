@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.item.Item;
@@ -22,7 +23,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.data.Quad;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
@@ -642,10 +642,10 @@ public class MilledOreProcessing extends ItemPackage {
     }
 
     private void addPineOilExtraction() {
-        AutoMap<ItemStack> aLogs = new AutoMap<>();
-        AutoMap<ItemStack> aLeaves = new AutoMap<>();
-        AutoMap<ItemStack> aSaplings = new AutoMap<>();
-        AutoMap<ItemStack> aPinecones = new AutoMap<>();
+        ArrayList<ItemStack> aLogs = new ArrayList<>();
+        ArrayList<ItemStack> aLeaves = new ArrayList<>();
+        ArrayList<ItemStack> aSaplings = new ArrayList<>();
+        ArrayList<ItemStack> aPinecones = new ArrayList<>();
 
         ItemStack aCrushedPine = ItemUtils.getSimpleStack(AgriculturalChem.mCrushedPine, 1);
 
@@ -745,10 +745,10 @@ public class MilledOreProcessing extends ItemPackage {
 
     public static ItemStack[] cleanArray(ItemStack[] input) {
         int aArraySize = input.length;
-        AutoMap<ItemStack> aCleanedItems = new AutoMap<>();
+        ArrayList<ItemStack> aCleanedItems = new ArrayList<>();
         for (ItemStack checkStack : input) {
             if (ItemUtils.checkForInvalidItems(checkStack)) {
-                aCleanedItems.put(checkStack);
+                aCleanedItems.add(checkStack);
             }
         }
         ItemStack[] aOutput = new ItemStack[aCleanedItems.size()];
@@ -799,10 +799,9 @@ public class MilledOreProcessing extends ItemPackage {
 
     private static ItemStack[] getArrayFromQuad(
         Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>> aData) {
-        AutoMap<ItemStack> aOutputs = new AutoMap<>();
+        ArrayList<ItemStack> aOutputs = new ArrayList<>();
         for (Object aPair : aData.values()) {
-            if (aPair != null && Pair.class.isInstance(aPair)) {
-                Pair aObj = (Pair) aPair;
+            if (aPair instanceof Pair aObj) {
                 Material aMat = (Material) aObj.getKey();
                 int aCount = (int) aObj.getValue();
                 aOutputs.addAll(getItemStackFromPair(aMat, aCount));
@@ -816,23 +815,23 @@ public class MilledOreProcessing extends ItemPackage {
         return aRealOutputArray;
     }
 
-    private static AutoMap<ItemStack> getItemStackFromPair(Material aMat, Integer aCount) {
-        AutoMap<ItemStack> aOutputs = new AutoMap<>();
+    private static ArrayList<ItemStack> getItemStackFromPair(Material aMat, Integer aCount) {
+        ArrayList<ItemStack> aOutputs = new ArrayList<>();
         if (aCount > 64) {
-            AutoMap<Integer> sizes = getStackSizes(aCount);
+            ArrayList<Integer> sizes = getStackSizes(aCount);
             for (int aSplitSize : sizes) {
                 ItemStack aDustStack = aMat.getDust(aSplitSize);
-                aOutputs.put(aDustStack);
+                aOutputs.add(aDustStack);
             }
         } else {
             ItemStack aDustStack = aMat.getDust(aCount);
-            aOutputs.put(aDustStack);
+            aOutputs.add(aDustStack);
         }
         return aOutputs;
     }
 
-    private static AutoMap<Integer> getStackSizes(int aBigSize) {
-        AutoMap<Integer> aSizes = new AutoMap<>();
+    private static ArrayList<Integer> getStackSizes(int aBigSize) {
+        ArrayList<Integer> aSizes = new ArrayList<>();
         if (aBigSize <= 64) {
             aSizes.add(aBigSize);
         } else {

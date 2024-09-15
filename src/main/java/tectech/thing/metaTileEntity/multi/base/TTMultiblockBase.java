@@ -9,7 +9,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
 
@@ -401,13 +401,13 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public String[] getInfoData() { // TODO Do it
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
-        for (MTEHatchEnergyMulti tHatch : filterValidMTEs(eEnergyMulti)) {
+        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -982,7 +982,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         boolean busy = mMaxProgresstime > 0;
         if (busy) { // write from buffer to hatches only
-            for (MTEHatchParam hatch : filterValidMTEs(eParamHatches)) {
+            for (MTEHatchParam hatch : validMTEList(eParamHatches)) {
                 if (hatch.param < 0) {
                     continue;
                 }
@@ -995,7 +995,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 hatch.input1D = parametrization.iParamsOut[hatchId + 10];
             }
         } else { // if has nothing to do update all
-            for (MTEHatchParam hatch : filterValidMTEs(eParamHatches)) {
+            for (MTEHatchParam hatch : validMTEList(eParamHatches)) {
                 if (hatch.param < 0) {
                     continue;
                 }
@@ -1243,18 +1243,18 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
 
-        for (MTEHatchDataConnector<?> hatch_data : filterValidMTEs(eOutputData)) {
+        for (MTEHatchDataConnector<?> hatch_data : validMTEList(eOutputData)) {
             hatch_data.id = -1;
         }
-        for (MTEHatchDataConnector<?> hatch_data : filterValidMTEs(eInputData)) {
+        for (MTEHatchDataConnector<?> hatch_data : validMTEList(eInputData)) {
             hatch_data.id = -1;
         }
 
-        for (MTEHatchUncertainty hatch : filterValidMTEs(eUncertainHatches)) {
+        for (MTEHatchUncertainty hatch : validMTEList(eUncertainHatches)) {
             hatch.getBaseMetaTileEntity()
                 .setActive(false);
         }
-        for (MTEHatchParam hatch : filterValidMTEs(eParamHatches)) {
+        for (MTEHatchParam hatch : validMTEList(eParamHatches)) {
             hatch.getBaseMetaTileEntity()
                 .setActive(false);
         }
@@ -1270,19 +1270,19 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     protected void setupHatches_EM() {
         short id = 1;
 
-        for (MTEHatchDataConnector<?> hatch_data : filterValidMTEs(eOutputData)) {
+        for (MTEHatchDataConnector<?> hatch_data : validMTEList(eOutputData)) {
             hatch_data.id = id++;
         }
         id = 1;
-        for (MTEHatchDataConnector<?> hatch_data : filterValidMTEs(eInputData)) {
+        for (MTEHatchDataConnector<?> hatch_data : validMTEList(eInputData)) {
             hatch_data.id = id++;
         }
 
-        for (MTEHatchUncertainty hatch : filterValidMTEs(eUncertainHatches)) {
+        for (MTEHatchUncertainty hatch : validMTEList(eUncertainHatches)) {
             hatch.getBaseMetaTileEntity()
                 .setActive(true);
         }
-        for (MTEHatchParam hatch : filterValidMTEs(eParamHatches)) {
+        for (MTEHatchParam hatch : validMTEList(eParamHatches)) {
             hatch.getBaseMetaTileEntity()
                 .setActive(true);
         }
@@ -1296,7 +1296,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             maxEUinputMax = V[0];
             maxEUoutputMin = V[15];
             maxEUoutputMax = V[0];
-            for (MTEHatchEnergy hatch : filterValidMTEs(mEnergyHatches)) {
+            for (MTEHatchEnergy hatch : validMTEList(mEnergyHatches)) {
                 if (hatch.maxEUInput() < maxEUinputMin) {
                     maxEUinputMin = hatch.maxEUInput();
                 }
@@ -1304,7 +1304,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     maxEUinputMax = hatch.maxEUInput();
                 }
             }
-            for (MTEHatchEnergyMulti hatch : filterValidMTEs(eEnergyMulti)) {
+            for (MTEHatchEnergyMulti hatch : validMTEList(eEnergyMulti)) {
                 if (hatch.maxEUInput() < maxEUinputMin) {
                     maxEUinputMin = hatch.maxEUInput();
                 }
@@ -1312,7 +1312,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     maxEUinputMax = hatch.maxEUInput();
                 }
             }
-            for (MTEHatchDynamo hatch : filterValidMTEs(mDynamoHatches)) {
+            for (MTEHatchDynamo hatch : validMTEList(mDynamoHatches)) {
                 if (hatch.maxEUOutput() < maxEUoutputMin) {
                     maxEUoutputMin = hatch.maxEUOutput();
                 }
@@ -1320,7 +1320,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     maxEUoutputMax = hatch.maxEUOutput();
                 }
             }
-            for (MTEHatchDynamoMulti hatch : filterValidMTEs(eDynamoMulti)) {
+            for (MTEHatchDynamoMulti hatch : validMTEList(eDynamoMulti)) {
                 if (hatch.maxEUOutput() < maxEUoutputMin) {
                     maxEUoutputMin = hatch.maxEUOutput();
                 }
@@ -1331,16 +1331,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             eMaxAmpereFlow = 0;
             eMaxAmpereGen = 0;
             // counts only full amps
-            for (MTEHatchEnergy hatch : filterValidMTEs(mEnergyHatches)) {
+            for (MTEHatchEnergy hatch : validMTEList(mEnergyHatches)) {
                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin;
             }
-            for (MTEHatchEnergyMulti hatch : filterValidMTEs(eEnergyMulti)) {
+            for (MTEHatchEnergyMulti hatch : validMTEList(eEnergyMulti)) {
                 eMaxAmpereFlow += hatch.maxEUInput() / maxEUinputMin * hatch.Amperes;
             }
-            for (MTEHatchDynamo hatch : filterValidMTEs(mDynamoHatches)) {
+            for (MTEHatchDynamo hatch : validMTEList(mDynamoHatches)) {
                 eMaxAmpereGen += hatch.maxEUOutput() / maxEUoutputMin;
             }
-            for (MTEHatchDynamoMulti hatch : filterValidMTEs(eDynamoMulti)) {
+            for (MTEHatchDynamoMulti hatch : validMTEList(eDynamoMulti)) {
                 eMaxAmpereGen += hatch.maxEUOutput() / maxEUoutputMin * hatch.Amperes;
             }
         } else {
@@ -1361,7 +1361,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected final void powerPass(IGregTechTileEntity aBaseMetaTileEntity) {
         long euVar;
-        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
             euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
             if (tHatch.getBaseMetaTileEntity()
                 .getStoredEU() <= tHatch.maxEUStore() - euVar
@@ -1372,7 +1372,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         .getStoredEU() + euVar);
             }
         }
-        for (MTEHatchDynamoMulti tHatch : filterValidMTEs(eDynamoMulti)) {
+        for (MTEHatchDynamoMulti tHatch : validMTEList(eDynamoMulti)) {
             euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
             if (tHatch.getBaseMetaTileEntity()
                 .getStoredEU() <= tHatch.maxEUStore() - euVar
@@ -1387,7 +1387,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected final void powerPass_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         long euVar;
-        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
             euVar = tHatch.maxEUOutput();
             if (tHatch.getBaseMetaTileEntity()
                 .getStoredEU() <= tHatch.maxEUStore() - euVar
@@ -1397,7 +1397,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         .getStoredEU() + euVar);
             }
         }
-        for (MTEHatchDynamoMulti tHatch : filterValidMTEs(eDynamoMulti)) {
+        for (MTEHatchDynamoMulti tHatch : validMTEList(eDynamoMulti)) {
             euVar = tHatch.maxEUOutput() * tHatch.Amperes;
             if (tHatch.getBaseMetaTileEntity()
                 .getStoredEU() <= tHatch.maxEUStore() - euVar
@@ -1416,7 +1416,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected final void powerInput() {
         long euVar;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             if (getEUVar() > getMinimumStoredEU()) {
                 break;
             }
@@ -1426,7 +1426,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 setEUVar(getEUVar() + euVar);
             }
         }
-        for (MTEHatchEnergyMulti tHatch : filterValidMTEs(eEnergyMulti)) {
+        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
             if (getEUVar() > getMinimumStoredEU()) {
                 break;
             }
@@ -1440,7 +1440,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected final void powerInput_EM() {
         long euVar;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             if (getEUVar() > getMinimumStoredEU()) {
                 break;
             }
@@ -1450,7 +1450,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 setEUVar(getEUVar() + euVar);
             }
         }
-        for (MTEHatchEnergyMulti tHatch : filterValidMTEs(eEnergyMulti)) {
+        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
             if (getEUVar() > getMinimumStoredEU()) {
                 break;
             }
@@ -1558,7 +1558,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         }
         long euVar = EU * Amperes;
         long diff;
-        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
             if (tHatch.maxEUOutput() < EU) {
                 explodeMultiblock();
             }
@@ -1576,7 +1576,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 }
             }
         }
-        for (MTEHatchDynamoMulti tHatch : filterValidMTEs(eDynamoMulti)) {
+        for (MTEHatchDynamoMulti tHatch : validMTEList(eDynamoMulti)) {
             if (tHatch.maxEUOutput() < EU) {
                 explodeMultiblock();
             }

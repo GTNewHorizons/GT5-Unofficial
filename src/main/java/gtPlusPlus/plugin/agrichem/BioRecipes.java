@@ -47,7 +47,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
@@ -535,8 +534,8 @@ public class BioRecipes {
     public static final HashSet<GTItemStack> mNuts = new HashSet<>();
     public static final HashSet<GTItemStack> mSeeds = new HashSet<>();
 
-    public static final AutoMap<ItemStack> mList_Master_FruitVege = new AutoMap<>();
-    public static final AutoMap<ItemStack> mList_Master_Seeds = new AutoMap<>();
+    public static final ArrayList<ItemStack> mList_Master_FruitVege = new ArrayList<>();
+    public static final ArrayList<ItemStack> mList_Master_Seeds = new ArrayList<>();
 
     private static void processFermentationOreDict() {
         processOreDictEntry("listAllfruit", mFruits);
@@ -550,22 +549,22 @@ public class BioRecipes {
 
         if (!mFruits.isEmpty()) {
             for (GTItemStack g : mFruits) {
-                mList_Master_FruitVege.put(g.toStack());
+                mList_Master_FruitVege.add(g.toStack());
             }
         }
         if (!mVege.isEmpty()) {
             for (GTItemStack g : mVege) {
-                mList_Master_FruitVege.put(g.toStack());
+                mList_Master_FruitVege.add(g.toStack());
             }
         }
         if (!mNuts.isEmpty()) {
             for (GTItemStack g : mNuts) {
-                mList_Master_FruitVege.put(g.toStack());
+                mList_Master_FruitVege.add(g.toStack());
             }
         }
         if (!mSeeds.isEmpty()) {
             for (GTItemStack g : mSeeds) {
-                mList_Master_Seeds.put(g.toStack());
+                mList_Master_Seeds.add(g.toStack());
             }
         }
     }
@@ -582,8 +581,8 @@ public class BioRecipes {
 
     private static void recipeFermentationBase() {
         processFermentationOreDict();
-        AutoMap<ItemStack> aFruitVege = mList_Master_FruitVege;
-        AutoMap<ItemStack> aSeeds = mList_Master_Seeds;
+        ArrayList<ItemStack> aFruitVege = mList_Master_FruitVege;
+        ArrayList<ItemStack> aSeeds = mList_Master_Seeds;
         ArrayList<ItemStack> aMap = OreDictionary.getOres("cropSugarbeet");
         for (ItemStack a : aFruitVege) {
             if (aMap.contains(a)) {
@@ -797,17 +796,17 @@ public class BioRecipes {
     private static void recipeAluminiumPellet() {
 
         // Ore Names, no prefix
-        AutoMap<String> aOreNames = new AutoMap<>();
+        ArrayList<String> aOreNames = new ArrayList<>();
 
-        aOreNames.put("Lazurite");
-        aOreNames.put("Bauxite");
-        aOreNames.put("Grossular");
-        aOreNames.put("Pyrope");
-        aOreNames.put("Sodalite");
-        aOreNames.put("Spodumene");
-        aOreNames.put("Ruby");
-        aOreNames.put("Sapphire");
-        aOreNames.put("GreenSapphire");
+        aOreNames.add("Lazurite");
+        aOreNames.add("Bauxite");
+        aOreNames.add("Grossular");
+        aOreNames.add("Pyrope");
+        aOreNames.add("Sodalite");
+        aOreNames.add("Spodumene");
+        aOreNames.add("Ruby");
+        aOreNames.add("Sapphire");
+        aOreNames.add("GreenSapphire");
 
         // Voltage
         HashMap<String, Integer> aOreData1 = new HashMap<>();

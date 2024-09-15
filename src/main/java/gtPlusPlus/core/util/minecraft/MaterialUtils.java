@@ -1,5 +1,6 @@
 package gtPlusPlus.core.util.minecraft;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +16,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.TypeCounter;
 import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -292,15 +292,15 @@ public class MaterialUtils {
         return m;
     }
 
-    public static AutoMap<Material> getCompoundMaterialsRecursively(Material aMat) {
+    public static ArrayList<Material> getCompoundMaterialsRecursively(Material aMat) {
         return getCompoundMaterialsRecursively_Speiger(aMat);
     }
 
-    public static AutoMap<Material> getCompoundMaterialsRecursively_Speiger(Material toSearch) {
-        AutoMap<Material> resultList = new AutoMap<>();
+    public static ArrayList<Material> getCompoundMaterialsRecursively_Speiger(Material toSearch) {
+        ArrayList<Material> resultList = new ArrayList<>();
         if (toSearch.getComposites()
             .isEmpty()) {
-            resultList.put(toSearch);
+            resultList.add(toSearch);
             return resultList;
         }
         final int HARD_LIMIT = 1000;
@@ -315,7 +315,7 @@ public class MaterialUtils {
             Material current = toCheck.remove();
             if (current.getComposites()
                 .isEmpty()) {
-                resultList.put(current);
+                resultList.add(current);
             } else {
                 for (MaterialStack entry : current.getComposites()) {
                     toCheck.add(entry.getStackMaterial());
