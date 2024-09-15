@@ -13,6 +13,7 @@ public class Configuration {
     public static final Pollution pollution = new Pollution();
     public static final Features features = new Features();
     public static final Visual visual = new Visual();
+    public static final Worldgen worldgen = new Worldgen();
 
     public static class Debug{
 
@@ -236,5 +237,14 @@ public class Configuration {
         @Config.Comment("Use GT textures")
         @Config.DefaultBoolean(true)
         public boolean useGregtechTextures;
+    }
+
+    public static class Worldgen{
+        @Config.Comment("The ID of the Toxic Everglades.")
+        @Config.DefaultInt(227)
+        public int EVERGLADES_ID;
+        @Config.Comment("The biome within the Toxic Everglades.")
+        @Config.DefaultInt(199)
+        public int EVERGLADESBIOME_ID;
     }
 }

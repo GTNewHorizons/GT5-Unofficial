@@ -1,5 +1,6 @@
 package gtPlusPlus.everglades.biome;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityBat;
@@ -38,11 +39,9 @@ public class BiomeEverglades {
 
         @SuppressWarnings("unchecked")
         public BiomeGenEverglades() {
-            super(GTPPCore.EVERGLADESBIOME_ID);
-            // this.setBiomeID();
+            super(Configuration.worldgen.EVERGLADESBIOME_ID);
             this.theBiomeDecorator = new CustomBiomeGenerator();
             this.theBiomeDecorator.treesPerChunk = 10;
-            // Logger.INFO("Dark World Temperature Category: "+getTempCategory());
             this.setBiomeName("Toxic Everglades");
             this.topBlock = DimensionEverglades.blockTopLayer;
             this.fillerBlock = DimensionEverglades.blockSecondLayer;

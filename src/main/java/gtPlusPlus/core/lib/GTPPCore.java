@@ -34,11 +34,6 @@ public class GTPPCore {
     public static final String name = "GT++";
     public static final String VERSION = GT_Version.VERSION;
 
-    // Tweakables
-    public static int EVERGLADES_ID = 227;
-    public static int EVERGLADESBIOME_ID = 238;
-
-
     // Tooltips;
     public static final Supplier<String> GT_Tooltip = () -> StatCollector.translateToLocal("GTPP.core.GT_Tooltip");
     public static final Supplier<String> GT_Tooltip_Builder = () -> StatCollector
