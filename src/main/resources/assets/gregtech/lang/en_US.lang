@@ -1598,6 +1598,12 @@ gt.solar.system.mercury=Mercury
 gt.solar.system.titan=Titan
 gt.solar.system.phobos=Phobos
 
+item.flintSword.name=Flint Sword
+item.flintAxe.name=Flint Axe
+item.flintShovel.name=Flint Shovel
+item.flintPickaxe.name=Flint Pickaxe
+item.flintHoe.name=Flint Hoe
+
 gt.multiBlock.controller.cokeOven=Coke Oven
 
 gt.locker.waila_armor_slot_none=Slot %s: §7None

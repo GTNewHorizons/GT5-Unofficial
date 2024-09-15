@@ -15,6 +15,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.common.items.flinttools.FlintAxe;
+import gregtech.common.items.flinttools.FlintHoe;
+import gregtech.common.items.flinttools.FlintPickaxe;
+import gregtech.common.items.flinttools.FlintShovel;
+import gregtech.common.items.flinttools.FlintSword;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -328,6 +334,12 @@ public class GTMod implements IGTMod {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) AssemblyLineServer.fillMap(aEvent);
+
+        GameRegistry.registerItem(new FlintAxe(), "flintAxe");
+        GameRegistry.registerItem(new FlintSword(), "flintSword");
+        GameRegistry.registerItem(new FlintPickaxe(), "flintPickaxe");
+        GameRegistry.registerItem(new FlintShovel(), "flintShovel");
+        GameRegistry.registerItem(new FlintHoe(), "flintHoe");
     }
 
     @Mod.EventHandler
