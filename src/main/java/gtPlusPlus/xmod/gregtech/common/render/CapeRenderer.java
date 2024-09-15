@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -77,7 +78,7 @@ public class CapeRenderer extends RenderPlayer {
         if (hasSetRenderer) {
 
             // We have capes turned off, so let's not render.
-            if (!ConfigSwitches.enableCustomCapes) {
+            if (!Configuration.features.enableCustomCapes) {
                 return;
             }
 

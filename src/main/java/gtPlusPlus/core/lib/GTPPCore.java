@@ -66,10 +66,6 @@ public class GTPPCore {
 
     public static class ConfigSwitches {
 
-        // Feature Related
-        public static boolean enableCustomCapes = false;
-        public static int enableWatchdogBGM = PreloaderCore.enableWatchdogBGM;
-        public static boolean hideUniversalCells = true;
 
 
         public static boolean enableMachine_RedstoneBlocks = true;

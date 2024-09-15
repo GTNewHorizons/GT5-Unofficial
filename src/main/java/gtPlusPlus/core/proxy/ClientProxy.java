@@ -2,6 +2,7 @@ package gtPlusPlus.core.proxy;
 
 import java.util.ArrayList;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,7 +68,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
 
     @SubscribeEvent
     public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
-        if (ConfigSwitches.enableCustomCapes) {
+        if (Configuration.features.enableCustomCapes) {
             mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
         }
     }
@@ -78,7 +79,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
     @Override
     public void preInit(final FMLPreInitializationEvent e) {
         super.preInit(e);
-        if (ConfigSwitches.enableCustomCapes) {
+        if (Configuration.features.enableCustomCapes) {
             onPreLoad();
         }
         // Do this weird things for textures.
@@ -157,7 +158,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
 
     @Override
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-        if (GTPPCore.ConfigSwitches.hideUniversalCells) {
+        if (Configuration.features.hideUniversalCells) {
             hideUniversalCells();
         }
         super.onLoadComplete(event);

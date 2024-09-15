@@ -11,6 +11,7 @@ public class Configuration {
     public static final Machines machines = new Machines();
     public static final Gregtech gregtech = new Gregtech();
     public static final Pollution pollution = new Pollution();
+    public static final Features features = new Features();
 
     public static class Debug{
 
@@ -214,5 +215,15 @@ public class Configuration {
         @Config.Comment("coefficient applied to the base rate of the single block geothermal engines based on its tier (first is tier 0 aka ULV)")
         @Config.DefaultDoubleList({0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0})
         public double[] pollutionReleasedByTierGeothermalGenerator;
+    }
+
+    public static class Features{
+        @Config.Comment( "Enables Custom GT++ Cape.")
+        @Config.DefaultBoolean(false)
+        public boolean enableCustomCapes;
+
+        @Config.Comment("Hides every filled IC2 Universal Cell from NEI.")
+        @Config.DefaultBoolean(true)
+        public boolean hideUniversalCells;
     }
 }

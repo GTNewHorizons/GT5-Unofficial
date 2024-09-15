@@ -18,19 +18,6 @@ public class ConfigHandler {
             new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
         config.load();
 
-        // Features
-        enableCustomCapes = config.getBoolean("enableSupporterCape", "features", true, "Enables Custom GT++ Cape.");
-
-        enableWatchdogBGM = config.getInt(
-            "enableWatchdogBGM",
-            "features",
-            0,
-            0,
-            Short.MAX_VALUE,
-            "Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.");
-        hideUniversalCells = config
-            .getBoolean("hideUniversalCells", "features", true, "Hides every filled IC2 Universal Cell from NEI.");
-
         // Biomes
         EVERGLADES_ID = config.getInt("darkworld_ID", "worldgen", 227, 1, 254, "The ID of the Dark Dimension.");
         EVERGLADESBIOME_ID = config
