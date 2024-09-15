@@ -39,13 +39,11 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
-import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.plugin.manager.CoreManager;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
@@ -161,9 +159,6 @@ public class GTplusplus implements ActionListener {
 
         // Give this a go mate.
         setupMaterialBlacklist();
-
-        // Handle GT++ Config
-        ConfigHandler.handleConfigFile(event);
 
         // Check for Dev
         GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
