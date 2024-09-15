@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -55,7 +56,7 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.tea"), 750))
                         .duration(6 * SECONDS + 8 * TICKS)
                         .eut(4)
-                        .addTo(brewingRecipes);
+                        .addTo(mixerRecipes);
                 }
             }
             case "cropGrape" -> {
@@ -66,7 +67,7 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.grapejuice"), 750))
                         .duration(6 * SECONDS + 8 * TICKS)
                         .eut(4)
-                        .addTo(brewingRecipes);
+                        .addTo(mixerRecipes);
                 }
             }
             case "cropChilipepper" -> GTValues.RA.stdBuilder()
@@ -103,7 +104,7 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.potatojuice"), 750))
                         .duration(6 * SECONDS + 8 * TICKS)
                         .eut(4)
-                        .addTo(brewingRecipes);
+                        .addTo(mixerRecipes);
                 }
             }
             case "cropLemon" -> {
@@ -121,7 +122,7 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         .fluidOutputs(new FluidStack(FluidRegistry.getFluid("potion.lemonjuice"), 750))
                         .duration(6 * SECONDS + 8 * TICKS)
                         .eut(4)
-                        .addTo(brewingRecipes);
+                        .addTo(mixerRecipes);
                 }
 
                 GTValues.RA.stdBuilder()
