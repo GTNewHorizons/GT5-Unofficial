@@ -4,7 +4,6 @@ import static gtPlusPlus.core.util.minecraft.MaterialUtils.getMaterialName;
 
 import java.util.Collection;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -18,7 +17,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 

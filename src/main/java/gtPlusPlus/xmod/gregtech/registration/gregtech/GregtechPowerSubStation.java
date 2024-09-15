@@ -9,8 +9,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.PowerSubStation;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;

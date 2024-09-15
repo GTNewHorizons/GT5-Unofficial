@@ -4,7 +4,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_LuV;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ItemList;
@@ -12,7 +11,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;

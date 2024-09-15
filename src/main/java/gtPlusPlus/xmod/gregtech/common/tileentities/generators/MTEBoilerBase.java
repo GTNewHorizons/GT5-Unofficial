@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,6 +24,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.tileentities.boilers.MTEBoiler;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 

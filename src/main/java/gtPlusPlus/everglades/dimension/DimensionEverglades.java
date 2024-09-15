@@ -1,11 +1,10 @@
 package gtPlusPlus.everglades.dimension;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.DimensionManager;
 
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.everglades.block.BlockEvergladesPortal;
 import gtPlusPlus.everglades.item.ItemEvergladesPortalTrigger;
 import gtPlusPlus.everglades.world.WorldProviderMod;

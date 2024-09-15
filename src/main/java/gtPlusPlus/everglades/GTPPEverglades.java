@@ -164,7 +164,8 @@ public class GTPPEverglades implements ActionListener {
     }
 
     public void addVMDrop(Block block, int meta, float weight) {
-        MTEVoidMinerBase.addBlockToDimensionList(gtPlusPlus.core.config.Configuration.worldgen.EVERGLADES_ID, block, meta, weight);
+        MTEVoidMinerBase
+            .addBlockToDimensionList(gtPlusPlus.core.config.Configuration.worldgen.EVERGLADES_ID, block, meta, weight);
     }
 
     @EventHandler

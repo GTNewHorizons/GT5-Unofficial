@@ -17,7 +17,6 @@ import gregtech.GT_Version;
 import gregtech.api.objects.XSTR;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractTerminal;

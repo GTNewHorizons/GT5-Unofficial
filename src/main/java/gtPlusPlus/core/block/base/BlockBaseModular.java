@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.util.HashMap;
 import java.util.Map;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -20,8 +19,8 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;

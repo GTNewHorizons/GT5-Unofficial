@@ -13,7 +13,6 @@ import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRec
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;

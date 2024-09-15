@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -26,6 +25,7 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.data.AES;

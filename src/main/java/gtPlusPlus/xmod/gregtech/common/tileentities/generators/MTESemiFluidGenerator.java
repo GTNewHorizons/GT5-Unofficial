@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -20,6 +19,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 
 public class MTESemiFluidGenerator extends MTEBasicGenerator {

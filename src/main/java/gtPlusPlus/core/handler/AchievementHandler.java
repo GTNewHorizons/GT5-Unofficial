@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.GTMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
@@ -17,6 +16,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
+import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
 import gtPlusPlus.api.objects.Logger;
@@ -26,7 +26,6 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 

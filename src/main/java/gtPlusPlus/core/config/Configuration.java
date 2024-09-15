@@ -1,12 +1,14 @@
 package gtPlusPlus.core.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.Names.G_T_PLUS_PLUS,configSubDirectory = "GTPlusPlus", filename = "GTPlusPlus")
+@Config(modid = Mods.Names.G_T_PLUS_PLUS, configSubDirectory = "GTPlusPlus", filename = "GTPlusPlus")
 @Config.LangKeyPattern(pattern = "gtpp.gui.config.%cat.%field", fullyQualified = true)
 @Config.RequiresMcRestart
 public class Configuration {
+
     public static final Debug debug = new Debug();
     public static final Machines machines = new Machines();
     public static final Gregtech gregtech = new Gregtech();
@@ -15,7 +17,7 @@ public class Configuration {
     public static final Visual visual = new Visual();
     public static final Worldgen worldgen = new Worldgen();
 
-    public static class Debug{
+    public static class Debug {
 
         @Config.Comment("Makes many machines display lots of debug logging.")
         @Config.DefaultBoolean(false)
@@ -31,7 +33,8 @@ public class Configuration {
 
     }
 
-    public static class Machines{
+    public static class Machines {
+
         @Config.Comment("Allows the use of TC shards across many recipes by oreDicting them into a common group.")
         @Config.DefaultBoolean(false)
         public boolean enableThaumcraftShardUnification;
@@ -44,13 +47,14 @@ public class Configuration {
         public int boilerSteamPerSecond;
     }
 
-    public static class Gregtech{
+    public static class Gregtech {
+
         @Config.Comment("Rotors below this durability will be removed, prevents NEI clutter. Minimum Durability is N * x, where N is the new value set and x is the turbine size, where 1 is Tiny and 4 is Huge. Set to 0 to disable.")
         @Config.DefaultInt(25_500)
         public int turbineCutoffBase;
     }
 
-    public static class Pollution{
+    public static class Pollution {
 
         @Config.Comment("pollution rate in gibbl/s for the Amazon warehousing depot")
         @Config.DefaultInt(40)
@@ -129,7 +133,7 @@ public class Configuration {
         public int pollutionPerSecondMultiIsaMill;
         @Config.Comment("pollution rate in gibbl/s for the Dangote distillus in distillery mode")
         @Config.DefaultInt(240)
-        public int pollutionPerSecondMultiAdvDistillationTower_ModeDistillery ;
+        public int pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
         @Config.Comment("pollution rate in gibbl/s for the Dangote distillus in distillation tower mode")
         @Config.DefaultInt(480)
         public int pollutionPerSecondMultiAdvDistillationTower_ModeDT;
@@ -194,13 +198,13 @@ public class Configuration {
         @Config.DefaultInt(40)
         public int basePollutionPerSecondSemiFluidGenerator;
         @Config.Comment("coefficient applied to the base rate of the single block semi fluid generators based on its tier (first is tier 0 aka ULV)")
-        @Config.DefaultDoubleList({0.0, 2.0, 4.0, 8.0, 12.0, 16.0})
+        @Config.DefaultDoubleList({ 0.0, 2.0, 4.0, 8.0, 12.0, 16.0 })
         public double[] pollutionReleasedByTierSemiFluidGenerator;
         @Config.Comment("base pollution rate in gibbl/s for the single block boilers")
         @Config.DefaultInt(35)
         public int basePollutionPerSecondBoiler;
         @Config.Comment("coefficient applied to the base rate of the single block boilers based on its tier (first is tier 0 aka ULV)")
-        @Config.DefaultDoubleList({0.0, 1.0, 1.43, 1.86})
+        @Config.DefaultDoubleList({ 0.0, 1.0, 1.43, 1.86 })
         public double[] pollutionReleasedByTierBoiler;
         @Config.Comment("minimum base pollution rate in gibbl/s for the single block rocket engines")
         @Config.DefaultInt(250)
@@ -209,18 +213,19 @@ public class Configuration {
         @Config.DefaultInt(2_000)
         public int baseMaxPollutionPerSecondRocketFuelGenerator;
         @Config.Comment("coefficient applied to the base rate of the single block rocket engines based on its tier (first is tier 0 aka ULV)")
-        @Config.DefaultDoubleList({0.0, 0.0, 0.0, 0.0, 1.0, 2.0, 3.0})
+        @Config.DefaultDoubleList({ 0.0, 0.0, 0.0, 0.0, 1.0, 2.0, 3.0 })
         public double[] pollutionReleasedByTierRocketFuelGenerator;
         @Config.Comment("base pollution rate in gibbl/s for the geothermal engines")
         @Config.DefaultInt(100)
         public int basePollutionPerSecondGeothermalGenerator;
         @Config.Comment("coefficient applied to the base rate of the single block geothermal engines based on its tier (first is tier 0 aka ULV)")
-        @Config.DefaultDoubleList({0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0})
+        @Config.DefaultDoubleList({ 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0 })
         public double[] pollutionReleasedByTierGeothermalGenerator;
     }
 
-    public static class Features{
-        @Config.Comment( "Enables Custom GT++ Cape.")
+    public static class Features {
+
+        @Config.Comment("Enables Custom GT++ Cape.")
         @Config.DefaultBoolean(false)
         public boolean enableCustomCapes;
 
@@ -229,7 +234,8 @@ public class Configuration {
         public boolean hideUniversalCells;
     }
 
-    public static class Visual{
+    public static class Visual {
+
         @Config.Comment("Enables Animated GT++ Textures")
         @Config.DefaultBoolean(true)
         public boolean enableAnimatedTextures;
@@ -239,7 +245,8 @@ public class Configuration {
         public boolean useGregtechTextures;
     }
 
-    public static class Worldgen{
+    public static class Worldgen {
+
         @Config.Comment("The ID of the Toxic Everglades.")
         @Config.DefaultInt(227)
         public int EVERGLADES_ID;

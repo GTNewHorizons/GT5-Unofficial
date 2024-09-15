@@ -23,8 +23,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.GT4_Thermal_Boiler;
 
 import gregtech.api.GregTechAPI;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWorkbench;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
