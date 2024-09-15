@@ -57,6 +57,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
     modid = Names.G_T_PLUS_PLUS,
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
+    guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
     dependencies = "required-after:Forge;" + " after:TConstruct;"
         + " after:dreamcraft;"
         + " after:IC2;"
