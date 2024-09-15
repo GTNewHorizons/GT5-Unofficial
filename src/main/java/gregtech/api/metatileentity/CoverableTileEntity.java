@@ -421,6 +421,21 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return true;
     }
 
+    @Override
+    public ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
+        final CoverInfo coverInfo = getCoverInfoAtSide(side);
+        if (!coverInfo.isValid()) return null;
+        if (!coverInfo.onCoverRemoval(aForced) && !aForced) return null;
+        final ItemStack tStack = coverInfo.getDrop();
+        if (tStack != null) {
+            coverInfo.onDropped();
+        }
+        clearCoverInfoAtSide(side);
+        updateOutputRedstoneSignal(side);
+
+        return tStack;
+    }
+
     protected void onBaseTEDestroyed() {
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final CoverInfo coverInfo = getCoverInfoAtSide(side);

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -171,7 +170,7 @@ public class RadialMenuBuilder {
 
         @Override
         public void apply(RadialMenu menu) {
-            var opt = new RadialMenuOption();
+            RadialMenuOption opt = new RadialMenuOption();
 
             opt.label = this.label;
             opt.weight = this.weight;
@@ -234,7 +233,7 @@ public class RadialMenuBuilder {
 
         @Override
         public void apply(RadialMenu menu) {
-            var opt = new RadialMenuOption();
+            RadialMenuOption opt = new RadialMenuOption();
 
             opt.label = this.label;
             opt.weight = this.weight;

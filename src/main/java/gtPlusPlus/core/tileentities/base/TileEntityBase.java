@@ -1063,6 +1063,26 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         return false;
     }
 
+    @Override
+    public ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
+        if (getCoverBehaviorAtSide(side)
+            .onCoverRemoval(side, getCoverIDAtSide(side), mCoverData[side.ordinal()], this, aForced) || aForced) {
+            ItemStack tStack = getCoverBehaviorAtSide(side)
+                .getDrop(side, getCoverIDAtSide(side), getCoverDataAtSide(side), this);
+            if (tStack != null) {
+                tStack.setTagCompound(null);
+            }
+            setCoverIDAtSide(side, 0);
+            if (mMetaTileEntity.hasSidedRedstoneOutputBehavior()) {
+                setOutputRedstoneSignal(side, (byte) 0);
+            } else {
+                setOutputRedstoneSignal(side, (byte) 15);
+            }
+            return tStack;
+        }
+        return null;
+    }
+
     public String getOwnerName() {
         if (GTUtility.isStringInvalid(mOwnerName)) return "Player";
         return mOwnerName;
