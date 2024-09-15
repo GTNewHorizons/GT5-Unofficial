@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.gtnewhorizons.mutecore.MuTECore;
 import com.gtnewhorizons.mutecore.api.registry.MultiTileContainer.FakeEntity;
+
 import dev.dominion.ecs.api.Entity;
 import dev.dominion.ecs.api.Results;
 import dev.dominion.ecs.api.Results.With1;
@@ -28,6 +29,7 @@ public abstract class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> impl
     protected boolean validateEntityComponents(@Nonnull Entity entity) {
         return true;
     }
+
     public void process(@Nonnull Entity entity) {}
 
     // #endregion

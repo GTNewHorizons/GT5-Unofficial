@@ -25,7 +25,10 @@ public enum GTPacketTypes {
     UPDATE_ITEM(13, new GTPacketUpdateItem()),
     SEND_COVER_DATA(16, new GTPacketSendCoverData()),
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
+<<<<<<< HEAD
     MULTI_TILE_ENTITY(18, new GTPacketMultiTileEntity()),
+=======
+>>>>>>> 20484f6001 (fix old api and make it compile after rebase)
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
     TOOL_SWITCH_MODE(20, new GTPacketToolSwitchMode()),
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),

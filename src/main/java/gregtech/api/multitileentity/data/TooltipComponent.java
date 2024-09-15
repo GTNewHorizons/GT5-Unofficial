@@ -7,17 +7,17 @@ import org.lwjgl.input.Keyboard;
 
 import com.gtnewhorizons.mutecore.api.item.TooltipAssigner;
 
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class TooltipComponent implements TooltipAssigner {
 
-    private GT_Multiblock_Tooltip_Builder tooltip;
+    private MultiblockTooltipBuilder tooltip;
 
-    public TooltipComponent(GT_Multiblock_Tooltip_Builder tooltip) {
+    public TooltipComponent(MultiblockTooltipBuilder tooltip) {
         this.tooltip = tooltip;
     }
 
-    public GT_Multiblock_Tooltip_Builder getTooltip() {
+    public MultiblockTooltipBuilder getTooltip() {
         return tooltip;
     }
 

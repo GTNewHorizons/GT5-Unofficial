@@ -2,13 +2,14 @@ package gregtech.api.multitileentity;
 
 import java.lang.ref.WeakReference;
 
-import com.gtnewhorizons.mutecore.api.data.Coordinates;
-import com.gtnewhorizons.mutecore.api.data.WorldContainer;
-import dev.dominion.ecs.api.Entity;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+
+import com.gtnewhorizons.mutecore.api.data.Coordinates;
+import com.gtnewhorizons.mutecore.api.data.WorldContainer;
+
+import dev.dominion.ecs.api.Entity;
 
 public class WeakTargetRef<T extends Entity> {
 
@@ -35,7 +36,8 @@ public class WeakTargetRef<T extends Entity> {
         }
         Coordinates coords = newTarget.get(Coordinates.class);
         position.set(coords.getX(), coords.getY(), coords.getZ());
-        world = newTarget.get(WorldContainer.class).getWorld();
+        world = newTarget.get(WorldContainer.class)
+            .getWorld();
     }
 
     public void setWorld(World world) {

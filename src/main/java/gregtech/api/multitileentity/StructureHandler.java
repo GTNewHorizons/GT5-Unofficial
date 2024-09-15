@@ -8,12 +8,10 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.mutecore.api.data.Coordinates;
 import com.gtnewhorizons.mutecore.api.data.WorldContainer;
-import dev.dominion.ecs.api.Entity;
 
-import gregtech.api.multitileentity.data.Structure;
+import dev.dominion.ecs.api.Entity;
 import gregtech.api.multitileentity.data.TooltipComponent;
 
 public abstract class StructureHandler implements IAlignment, ISurvivalConstructable {
@@ -24,20 +22,51 @@ public abstract class StructureHandler implements IAlignment, ISurvivalConstruct
         this.entity = entity;
     }
 
-    protected final void construct(ItemStack stackSize, String piece, int offsetX, int offsetY, int offsetZ, boolean hintsOnly) {
+    protected final void construct(ItemStack stackSize, String piece, int offsetX, int offsetY, int offsetZ,
+        boolean hintsOnly) {
         Coordinates coords = entity.get(Coordinates.class);
-        getStructureDefinition().buildOrHints(entity, stackSize, piece, entity.get(WorldContainer.class).getWorld(), entity.get(ExtendedFacing.class), coords.getX(), coords.getY(), coords.getZ(), offsetX, offsetY, offsetZ, hintsOnly);
+        getStructureDefinition().buildOrHints(
+            entity,
+            stackSize,
+            piece,
+            entity.get(WorldContainer.class)
+                .getWorld(),
+            entity.get(ExtendedFacing.class),
+            coords.getX(),
+            coords.getY(),
+            coords.getZ(),
+            offsetX,
+            offsetY,
+            offsetZ,
+            hintsOnly);
     }
 
-    protected final int survivalConstruct(ItemStack stackSize, String piece, int offsetX, int offsetY, int offsetZ, int elementBudget,
-        ISurvivalBuildEnvironment env) {
+    protected final int survivalConstruct(ItemStack stackSize, String piece, int offsetX, int offsetY, int offsetZ,
+        int elementBudget, ISurvivalBuildEnvironment env) {
         Coordinates coords = entity.get(Coordinates.class);
-        return getStructureDefinition().survivalBuild(entity, stackSize, piece, entity.get(WorldContainer.class).getWorld(), entity.get(ExtendedFacing.class), coords.getX(), coords.getY(), coords.getZ(), offsetX, offsetY, offsetZ, elementBudget, env, true);
+        return getStructureDefinition().survivalBuild(
+            entity,
+            stackSize,
+            piece,
+            entity.get(WorldContainer.class)
+                .getWorld(),
+            entity.get(ExtendedFacing.class),
+            coords.getX(),
+            coords.getY(),
+            coords.getZ(),
+            offsetX,
+            offsetY,
+            offsetZ,
+            elementBudget,
+            env,
+            true);
     }
 
     @Override
     public final String[] getStructureDescription(ItemStack stackSize) {
-        return entity.get(TooltipComponent.class).getTooltip().getStructureHint();
+        return entity.get(TooltipComponent.class)
+            .getTooltip()
+            .getStructureHint();
     }
 
     @Override

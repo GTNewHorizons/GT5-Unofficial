@@ -835,7 +835,8 @@ public class GTClient extends GTProxy implements Runnable {
 
         if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sWireCutterList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSolderingToolList)
-            || (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSoftHammerList)) && aEvent.player.isSneaking()) {
+            || (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSoftHammerList))
+                && aEvent.player.isSneaking()) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             return;

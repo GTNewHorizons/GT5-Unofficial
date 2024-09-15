@@ -294,12 +294,12 @@ public class GTMod implements IGTMod {
             .register(MTEHatchCraftingInputME.class);
 
         GTPreLoad.runMineTweakerCompat();
-        new GT_Loader_OreProcessing().run();
-        new GT_Loader_OreDictionary().run();
-        new GT_Loader_ItemData().run();
-        new GT_Loader_Item_Block_And_Fluid().run();
-        new GT_Loader_MetaTileEntities().run();
-        if (GT_Values.enableMultiTileEntities && Loader.isModLoaded("mutecore")) {
+        new LoaderOreProcessing().run();
+        new LoaderGTOreDictionary().run();
+        new LoaderGTItemData().run();
+        new LoaderGTBlockFluid().run();
+        new LoaderMetaTileEntities().run();
+        if (GTValues.enableMultiTileEntities && Loader.isModLoaded("mutecore")) {
             new GT_Loader_MultiTileEntities().run();
         }
 

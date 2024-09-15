@@ -34,12 +34,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.implementations.MTESpecialFilter;
-import gregtech.api.multitileentity.MultiTileEntityItem;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.ItemMachines;
-import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 
 public class MTERecipeFilter extends MTESpecialFilter {
 

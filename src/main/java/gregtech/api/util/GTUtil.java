@@ -24,7 +24,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
