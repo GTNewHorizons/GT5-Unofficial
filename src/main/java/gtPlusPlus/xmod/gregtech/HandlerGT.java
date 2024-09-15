@@ -31,7 +31,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 public class HandlerGT {
 
     public static GTConfig mMaterialProperties = null;
-    public static GTPPConfig sCustomWorldgenFile = null;
     public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<>();
     public static MetaGeneratedTool sMetaGeneratedToolInstance;
 

@@ -85,23 +85,14 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         boolean GC_UNUSED3, Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         super(aName, sList, aDefault);
         Logger.WORLD("Creating Ore Layer Object");
-        this.mOverworld = HandlerGT.sCustomWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
-        this.mNether = HandlerGT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
-        this.mEnd = HandlerGT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
+        this.mOverworld =  aOverworld;
+        this.mNether = aNether;
+        this.mEnd = aEnd;
         this.mMinY = 5;
-        short mMaxY = 14;
-        if (mMaxY < (this.mMinY + 7)) {
-            GTLog.out.println("Oremix " + this.mWorldGenName + " has invalid Min/Max heights!");
-            mMaxY = (short) (this.mMinY + 7);
-        }
-        this.mMaxY = mMaxY;
-        this.mWeight = ((short) HandlerGT.sCustomWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
-        this.mDensity = ((short) HandlerGT.sCustomWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
-        this.mSize = ((short) Math
-            .max(1, HandlerGT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
+        this.mMaxY = 14;
+        this.mWeight = (short) aWeight;
+        this.mDensity = (short) aDensity;
+        this.mSize = (short) Math.max(1, aSize);
         this.mPrimary = aPrimary;
         this.mSecondary = aSecondary;
         this.mBetween = aBetween;

@@ -64,11 +64,6 @@ public class GTPPEverglades implements ActionListener {
         getEvergladesBiome().instance = instance;
         Everglades_Dimension.instance = instance;
         getEvergladesBiome().preInit(event);
-
-        // Load/Set Custom Ore Gen
-        HandlerGT.sCustomWorldgenFile = new GTPPConfig(
-            new Configuration(
-                new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
     }
 
     @EventHandler
@@ -132,11 +127,6 @@ public class GTPPEverglades implements ActionListener {
     }
 
     protected synchronized void setVars(FMLPreInitializationEvent event) {
-        // Init WorldGen config.
-        HandlerGT.sCustomWorldgenFile = new GTPPConfig(
-            new Configuration(
-                new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
-
         if (DimensionManager.isDimensionRegistered(DimensionEverglades.DIMID)) {
             DimensionEverglades.DIMID = DimensionManager.getNextFreeDimId();
         }
