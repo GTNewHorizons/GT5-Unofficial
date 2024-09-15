@@ -11,7 +11,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTEnergy;
 
@@ -624,18 +624,18 @@ public class GregtechMetaTileEntity_PowerSubStationController
         long aInputAverage = 0;
         long aOutputAverage = 0;
         // Input Power
-        for (MTEHatch THatch : filterValidMTEs(this.mDischargeHatches)) {
+        for (MTEHatch THatch : validMTEList(this.mDischargeHatches)) {
             aInputAverage += drawEnergyFromHatch(THatch);
         }
-        for (MTEHatch tHatch : filterValidMTEs(this.mAllEnergyHatches)) {
+        for (MTEHatch tHatch : validMTEList(this.mAllEnergyHatches)) {
             aInputAverage += drawEnergyFromHatch(tHatch);
         }
 
         // Output Power
-        for (MTEHatch THatch : filterValidMTEs(this.mChargeHatches)) {
+        for (MTEHatch THatch : validMTEList(this.mChargeHatches)) {
             aOutputAverage += addEnergyToHatch(THatch);
         }
-        for (MTEHatch tHatch : filterValidMTEs(this.mAllDynamoHatches)) {
+        for (MTEHatch tHatch : validMTEList(this.mAllDynamoHatches)) {
             aOutputAverage += addEnergyToHatch(tHatch);
         }
         // reset progress time

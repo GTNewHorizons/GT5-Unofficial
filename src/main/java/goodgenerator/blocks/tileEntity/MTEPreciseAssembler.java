@@ -7,7 +7,7 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -389,10 +389,10 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     private int checkEnergyHatchTier() {
         int tier = 0;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             tier = Math.max(tHatch.mTier, tier);
         }
-        for (MTEHatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
             tier = Math.max(tHatch.mTier, tier);
         }
         return tier;
@@ -420,28 +420,28 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 hatch.updateTexture(texture);
             }
         }
-        for (MTEHatch hatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatch hatch : validMTEList(mInputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatch hatch : validMTEList(mInputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mOutputHatches)) {
+        for (MTEHatch hatch : validMTEList(mOutputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mOutputBusses)) {
+        for (MTEHatch hatch : validMTEList(mOutputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatch hatch : validMTEList(mEnergyHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mMaintenanceHatches)) {
+        for (MTEHatch hatch : validMTEList(mMaintenanceHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatch hatch : validMTEList(mMufflerHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (MTEHatch hatch : validMTEList(mExoticEnergyHatches)) {
             hatch.updateTexture(texture);
         }
     }
