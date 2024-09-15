@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -192,8 +193,8 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         if (machineMode == MACHINEMODE_FORMER)
-            return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
+            return Configuration.pollution.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
     }
 
     @Override

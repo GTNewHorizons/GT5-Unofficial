@@ -37,6 +37,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
@@ -209,7 +210,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiTreeFarm;
+        return Configuration.pollution.pollutionPerSecondMultiTreeFarm;
     }
 
     @Override

@@ -15,6 +15,7 @@ import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 import java.util.HashMap;
 import java.util.Map;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -277,7 +278,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialFishingPond;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialFishingPond;
     }
 
     @Override

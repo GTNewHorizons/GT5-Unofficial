@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -168,7 +169,7 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
 
     @Override
     public int getPollutionPerSecond(ItemStack arg0) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiPackager;
+        return Configuration.pollution.pollutionPerSecondMultiPackager;
     }
 
     @Override

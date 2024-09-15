@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -160,7 +161,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
     @Override
     public int getPollution() {
-        return (int) (GTPPCore.ConfigSwitches.basePollutionPerSecondGeothermalGenerator
-            * GTPPCore.ConfigSwitches.pollutionReleasedByTierGeothermalGenerator[mTier]);
+        return (int) (Configuration.pollution.basePollutionPerSecondGeothermalGenerator
+            * Configuration.pollution.pollutionReleasedByTierGeothermalGenerator[mTier]);
     }
 }

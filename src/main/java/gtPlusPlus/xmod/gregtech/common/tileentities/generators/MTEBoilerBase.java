@@ -232,8 +232,8 @@ public class MTEBoilerBase extends MTEBoiler {
 
     @Override
     protected int getPollution() {
-        return (int) (GTPPCore.ConfigSwitches.basePollutionPerSecondBoiler
-            * GTPPCore.ConfigSwitches.pollutionReleasedByTierBoiler[this.tier]);
+        return (int) (Configuration.pollution.basePollutionPerSecondBoiler
+            * Configuration.pollution.pollutionReleasedByTierBoiler[this.tier]);
     }
 
     @Override

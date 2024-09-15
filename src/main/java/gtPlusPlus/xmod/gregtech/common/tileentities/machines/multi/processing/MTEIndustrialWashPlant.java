@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -248,8 +249,8 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         if (machineMode == MACHINEMODE_CHEMBATH)
-            return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
+            return Configuration.pollution.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 
     @Override

@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -304,8 +305,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         if (this.mMode == Mode.Distillery)
-            return GTPPCore.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
+            return Configuration.pollution.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
+        return Configuration.pollution.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -37,8 +38,8 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
 
     @Override
     public int getPollution() {
-        return (int) (GTPPCore.ConfigSwitches.basePollutionPerSecondSemiFluidGenerator
-            * GTPPCore.ConfigSwitches.pollutionReleasedByTierSemiFluidGenerator[this.mTier]);
+        return (int) (Configuration.pollution.basePollutionPerSecondSemiFluidGenerator
+            * Configuration.pollution.pollutionReleasedByTierSemiFluidGenerator[this.mTier]);
     }
 
     @Override

@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gtPlusPlus.core.config.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -221,13 +222,13 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     public int getPollutionPerSecond(final ItemStack aStack) {
         switch (machineMode) {
             case MACHINEMODE_METAL -> {
-                return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
+                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
             }
             case MACHINEMODE_FLUID -> {
-                return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
+                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
             }
             default -> {
-                return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
+                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
             }
         }
     }
