@@ -2,9 +2,13 @@ package bwcrossmod.galacticgreg;
 
 import static galacticgreg.registry.GalacticGregRegistry.getModContainers;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import net.minecraft.block.Block;
@@ -13,7 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.oregen.BWOreLayer;
@@ -42,9 +46,13 @@ public class VoidMinerUtility {
         private float totalWeight;
         private final Map<GTUtility.ItemId, Float> internalMap;
 
+        private final Set<String> voidMinerBlacklistedDrops;
+
         public DropMap() {
             internalMap = new HashMap<>();
             totalWeight = 0;
+            voidMinerBlacklistedDrops = Collections
+                .unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
         }
 
         /**
@@ -67,7 +75,7 @@ public class VoidMinerUtility {
          * @param weight the non normalised weight
          */
         public void addDrop(Block block, int meta, float weight) {
-            if (ConfigHandler.voidMinerBlacklist.contains(
+            if (this.voidMinerBlacklistedDrops.contains(
                 String.format(
                     "%s:%d",
                     GameRegistry.findUniqueIdentifierFor(block)
@@ -86,7 +94,7 @@ public class VoidMinerUtility {
         public void addDrop(ItemStack itemStack, float weight) {
             Item item = itemStack.getItem();
             int meta = Items.feather.getDamage(itemStack);
-            if (ConfigHandler.voidMinerBlacklist.contains(
+            if (this.voidMinerBlacklistedDrops.contains(
                 String.format(
                     "%s:%d",
                     GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item))
@@ -133,8 +141,12 @@ public class VoidMinerUtility {
         dropMapsByDimId.put(7, getDropMapVanilla(7));
 
         // ross dims
-        dropMapsByDimId.put(ConfigHandler.ross128BID, getDropMapRoss(ConfigHandler.ross128BID));
-        dropMapsByDimId.put(ConfigHandler.ross128BAID, getDropMapRoss(ConfigHandler.ross128BAID));
+        dropMapsByDimId.put(
+            Configuration.crossModInteractions.ross128BID,
+            getDropMapRoss(Configuration.crossModInteractions.ross128BID));
+        dropMapsByDimId.put(
+            Configuration.crossModInteractions.ross128BAID,
+            getDropMapRoss(Configuration.crossModInteractions.ross128BAID));
 
         // other space dims
         for (ModContainer modContainer : getModContainers()) {
