@@ -14,7 +14,7 @@ public class Configuration {
     public static final Features features = new Features();
     public static final Visual visual = new Visual();
     public static final Worldgen worldgen = new Worldgen();
-
+    @Config.Comment("Debug section")
     public static class Debug{
 
         @Config.Comment("Makes many machines display lots of debug logging.")
@@ -30,7 +30,7 @@ public class Configuration {
         public boolean dumpItemAndBlockData;
 
     }
-
+    @Config.Comment("Machines section")
     public static class Machines{
         @Config.Comment("Allows the use of TC shards across many recipes by oreDicting them into a common group.")
         @Config.DefaultBoolean(false)
@@ -43,13 +43,13 @@ public class Configuration {
         @Config.DefaultInt(750)
         public int boilerSteamPerSecond;
     }
-
+    @Config.Comment("GregTech section")
     public static class Gregtech{
         @Config.Comment("Rotors below this durability will be removed, prevents NEI clutter. Minimum Durability is N * x, where N is the new value set and x is the turbine size, where 1 is Tiny and 4 is Huge. Set to 0 to disable.")
         @Config.DefaultInt(25_500)
         public int turbineCutoffBase;
     }
-
+    @Config.Comment("Pollution section")
     public static class Pollution{
 
         @Config.Comment("pollution rate in gibbl/s for the Amazon warehousing depot")
@@ -218,7 +218,7 @@ public class Configuration {
         @Config.DefaultDoubleList({0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0})
         public double[] pollutionReleasedByTierGeothermalGenerator;
     }
-
+    @Config.Comment("Features section")
     public static class Features{
         @Config.Comment( "Enables Custom GT++ Cape.")
         @Config.DefaultBoolean(false)
@@ -228,7 +228,7 @@ public class Configuration {
         @Config.DefaultBoolean(true)
         public boolean hideUniversalCells;
     }
-
+    @Config.Comment("Visual section")
     public static class Visual{
         @Config.Comment("Enables Animated GT++ Textures")
         @Config.DefaultBoolean(true)
@@ -238,7 +238,7 @@ public class Configuration {
         @Config.DefaultBoolean(true)
         public boolean useGregtechTextures;
     }
-
+    @Config.Comment("Worldgen section")
     public static class Worldgen{
         @Config.Comment("The ID of the Toxic Everglades.")
         @Config.DefaultInt(227)
