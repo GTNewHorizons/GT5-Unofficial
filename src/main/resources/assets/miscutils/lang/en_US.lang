@@ -3549,6 +3549,7 @@ item.BasicGenericChemItem.32.name=Synchrotron-Capable Catalyst
 item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
 
 # config gui
+gtpp.gui.config.general=General
 gtpp.gui.config.general.debug=Debug
 gtpp.gui.config.general.machines=Machines
 gtpp.gui.config.general.gregtech=GregTech
@@ -3556,3 +3557,6 @@ gtpp.gui.config.general.pollution=Pollution
 gtpp.gui.config.general.features=Features
 gtpp.gui.config.general.visual=Visual
 gtpp.gui.config.general.worldgen=Worldgen
+gtpp.gui.config.asm=ASM Configuration
+gtpp.gui.config.asm.debug=Debug
+gtpp.gui.config.asm.general=General

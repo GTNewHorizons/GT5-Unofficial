@@ -1,12 +1,12 @@
 package gtPlusPlus.api.objects;
 
+import gtPlusPlus.core.config.ASMConfiguration;
 import org.apache.logging.log4j.LogManager;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.preloader.asm.AsmConfig;
 
 public class Logger {
 
@@ -21,7 +21,7 @@ public class Logger {
         return gtPlusPlusLogger;
     }
 
-    private static final boolean enabled = !AsmConfig.disableAllLogging;
+    private static final boolean enabled = !ASMConfiguration.debug.disableAllLogging;
 
     public static final org.apache.logging.log4j.Logger getLogger() {
         return modLogger;
