@@ -27,7 +27,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.api.objects.minecraft.SafeTexture;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -41,13 +40,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
      * Each mapped object holds the data for the six sides.
      */
     @SideOnly(Side.CLIENT)
-    private AutoMap<CubicObject<SafeTexture>> mSidedTextureArray;
-
-    /**
-     * Holds the data for the six sides, each side holds an array of data for each respective meta.
-     */
-    @SideOnly(Side.CLIENT)
-    private AutoMap<CubicObject<String>> mSidedTexturePathArray;
+    private ArrayList<CubicObject<SafeTexture>> mSidedTextureArray;
 
     /**
      * Does this block have any meta at all?
@@ -163,8 +156,11 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         Logger.INFO("[TeTexture] Building Texture Maps for " + getTileEntityName() + ".");
 
         // Init on the Client side only, to prevent Field initialisers existing in the Server side bytecode.
-        mSidedTextureArray = new AutoMap<>();
-        mSidedTexturePathArray = new AutoMap<>();
+        mSidedTextureArray = new ArrayList<>();
+        /**
+         * Holds the data for the six sides, each side holds an array of data for each respective meta.
+         */
+        ArrayList<CubicObject<String>> sidedTexturePathArray = new ArrayList<>();
 
         // Store them in forge order
         // DOWN, UP, NORTH, SOUTH, WEST, EAST
@@ -191,7 +187,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
             Logger.INFO("[TeTexture] Found custom texture data, using this instead. Size: " + aDataMap.length);
             // Map each meta string data to the main map.
             for (int i = 0; i < aDataMap.length; i++) {
-                mSidedTexturePathArray.put(aDataMap[i]);
+                sidedTexturePathArray.add(aDataMap[i]);
                 Logger.INFO("Mapped value for meta " + i + ".");
             }
         } else {
@@ -231,17 +227,17 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
                     aStringFront,
                     aStringLeft,
                     aStringRight);
-                mSidedTexturePathArray.put(aMetaBlob);
+                sidedTexturePathArray.add(aMetaBlob);
                 Logger.INFO("[TeTexture] Added Texture Path data to map for meta " + i);
             }
         }
-        Logger.INFO("[TeTexture] Map size for pathing: " + mSidedTexturePathArray.size());
+        Logger.INFO("[TeTexture] Map size for pathing: " + sidedTexturePathArray.size());
 
         // Iteration Index
         int aIndex = 0;
 
         // Iterate each CubicObject, holding the six texture paths for each meta.
-        for (CubicObject<String> aMetaBlob : mSidedTexturePathArray) {
+        for (CubicObject<String> aMetaBlob : sidedTexturePathArray) {
             // Make a Safe Texture for each side
             SafeTexture aBottom = SafeTexture.register(aMetaBlob.DOWN);
             SafeTexture aTop = SafeTexture.register(aMetaBlob.UP);
@@ -254,7 +250,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
             // Convenience Blob
             CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<>(aInjectBlob);
             // Store this Blob into
-            mSidedTextureArray.put(aMetaBlob2);
+            mSidedTextureArray.add(aMetaBlob2);
             Logger.INFO("[TeTexture] Added SafeTexture data to map for meta " + (aIndex++));
         }
         Logger.INFO("[TeTexture] Map size for registration: " + mSidedTextureArray.size());

@@ -9,7 +9,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.AirIntake;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
@@ -387,7 +387,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
-        for (MTEHatch aDynamo : filterValidMTEs(this.mAllDynamoHatches)) {
+        for (MTEHatch aDynamo : validMTEList(this.mAllDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             long aTotal = aDynamo.maxAmperesOut() * aVoltage;
             // Check against voltage to check when hatch mixing
@@ -411,7 +411,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         int aAmpsToInject;
         int aRemainder;
 
-        for (MTEHatch aDynamo : filterValidMTEs(this.mAllDynamoHatches)) {
+        for (MTEHatch aDynamo : validMTEList(this.mAllDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);

@@ -1,8 +1,8 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import java.util.ArrayList;
 
-import gtPlusPlus.api.objects.data.AutoMap;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class CubicObject<T> {
 
@@ -15,7 +15,7 @@ public class CubicObject<T> {
     public final T UP;
     public final T DOWN;
 
-    public CubicObject(AutoMap<T> aDataSet) {
+    public CubicObject(ArrayList<T> aDataSet) {
         this(aDataSet.get(0), aDataSet.get(1), aDataSet.get(2), aDataSet.get(3), aDataSet.get(4), aDataSet.get(5));
     }
 

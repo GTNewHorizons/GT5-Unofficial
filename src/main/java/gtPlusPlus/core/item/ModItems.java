@@ -958,23 +958,21 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.GEAR, MaterialsElements.STANDALONE.RHUGNOR);
 
         // Special Sillyness
-        if (true) {
 
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateSodium", 1) == null) {
-                new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
-            }
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateSodium", 1) == null) {
+            new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
+        }
 
-            Material meatRaw = MaterialsOther.MEAT;
-            // A plate of Meat.
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null) {
-                itemPlateRawMeat = new BaseItemPlate(meatRaw);
-                ItemUtils.registerFuel(ItemUtils.getSimpleStack(itemPlateRawMeat), 100);
-            }
-            // A Block of Meat.
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null) {
-                blockRawMeat = new BlockBaseModular(meatRaw, BlockTypes.STANDARD);
-                ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
-            }
+        Material meatRaw = MaterialsOther.MEAT;
+        // A plate of Meat.
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null) {
+            itemPlateRawMeat = new BaseItemPlate(meatRaw);
+            ItemUtils.registerFuel(ItemUtils.getSimpleStack(itemPlateRawMeat), 100);
+        }
+        // A Block of Meat.
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null) {
+            blockRawMeat = new BlockBaseModular(meatRaw, BlockTypes.STANDARD);
+            ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
         }
 
         // A plate of Vanadium.

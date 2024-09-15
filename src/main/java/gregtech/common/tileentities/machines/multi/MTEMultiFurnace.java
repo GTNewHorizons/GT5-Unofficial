@@ -14,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 
@@ -283,12 +283,12 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (final MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches))
+        for (final MTEHatchMuffler tHatch : validMTEList(mMufflerHatches))
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (final MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (final MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()

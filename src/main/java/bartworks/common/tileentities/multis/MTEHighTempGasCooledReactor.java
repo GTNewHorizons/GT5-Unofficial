@@ -18,7 +18,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -327,7 +327,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
                     this.fuelsupply,
                     HTGRMaterials.MATERIALS_PER_FUEL * this.fueltype + HTGRMaterials.USABLE_FUEL_INDEX);
                 boolean storedAll = false;
-                for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+                for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
                     if (tHatch.storeAll(iStack)) {
                         storedAll = true;
                         break;
@@ -357,7 +357,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
             int takecoolant = this.coolanttaking;
             int drainedamount = 0;
 
-            for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+            for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
                 FluidStack tLiquid = tHatch.getFluid();
                 if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
                     FluidStack drained = tHatch.drain(takecoolant, true);

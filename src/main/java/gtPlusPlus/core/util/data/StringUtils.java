@@ -1,7 +1,8 @@
 package gtPlusPlus.core.util.data;
 
+import java.util.ArrayList;
+
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.Utils;
 
 public class StringUtils {
@@ -105,7 +106,7 @@ public class StringUtils {
 
     /**
      * Is this a special regex character for delimination? (.$|()[]{}^?*+\\)
-     * 
+     *
      * @param aChar - The char to test
      * @return - Is this a special character?
      */
@@ -146,18 +147,18 @@ public class StringUtils {
 
         Logger.INFO("Splitting " + aInput);
         String[] aSplit = aInput.split(aDelim);
-        Logger.INFO("Split into " + aSplit == null ? "" + 0 : aSplit.length + " parts.");
-        if (aSplit == null || aSplit.length == 0) {
+        Logger.INFO(aSplit.length + " parts.");
+        if (aSplit.length == 0) {
             return aInput;
         } else {
-            AutoMap<String> aTemp = new AutoMap<>();
+            ArrayList<String> aTemp = new ArrayList<>();
             for (String s : aSplit) {
                 Logger.INFO("Found: " + s);
                 s = s.replace(".", "");
                 s = Utils.sanitizeString(s);
                 s = firstLetterCaps(s);
                 Logger.INFO("Formatted & Captilized: " + s);
-                aTemp.put(s);
+                aTemp.add(s);
             }
             Logger.INFO("Rebuilding");
             StringBuilder aReturn = new StringBuilder();
