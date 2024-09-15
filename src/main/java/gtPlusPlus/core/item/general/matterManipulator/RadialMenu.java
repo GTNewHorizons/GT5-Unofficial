@@ -16,6 +16,9 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+
 public class RadialMenu extends Widget implements Interactable {
 
     public List<RadialMenuOption> options = new ArrayList<>();
@@ -34,9 +37,11 @@ public class RadialMenu extends Widget implements Interactable {
 
     @Override
     public void draw(float partialTicks) {
+        Minecraft.getMinecraft().mcProfiler.startSection("radial menu");
+        
         double weightSum = 0;
 
-        for(var option : options) {
+        for(RadialMenuOption option : options) {
             option.isHidden = option.hidden.getAsBoolean();
 
             if (!option.isHidden) {
@@ -47,7 +52,7 @@ public class RadialMenu extends Widget implements Interactable {
         double currentAngle = 0;
 
         for(int i = 0; i < options.size(); i++) {
-            var option = options.get(i);
+            RadialMenuOption option = options.get(i);
 
             if (option.isHidden) {
                 option.startTheta = 0;
@@ -65,7 +70,7 @@ public class RadialMenu extends Widget implements Interactable {
         if(!options.isEmpty()) {
             double offset = (options.get(0).startTheta - options.get(0).endTheta) / 2;
     
-            for(var option : options) {
+            for(RadialMenuOption option : options) {
                 option.startTheta -= offset;
                 option.endTheta -= offset;
             }
@@ -91,11 +96,15 @@ public class RadialMenu extends Widget implements Interactable {
         // convert from screen space into a centered square w/ bounds [-1, 1] space
         GlStateManager.scale(dim / 2, dim / 2, 1);
 
-        var mouse = getMousePosition();
-        var mouseRadius = mouse.x;
-        var mouseTheta = mouse.y;
+        Vector2d mouse = getMousePosition();
+        double mouseRadius = mouse.x;
+        double mouseTheta = mouse.y;
 
-        for(var option : options) {
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+
+        for(RadialMenuOption option : options) {
             if (option.isHidden) {
                 continue;
             }
@@ -105,9 +114,9 @@ public class RadialMenu extends Widget implements Interactable {
                 isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
 
             if(isHoveredOver) {
-                GL11.glColor3f(0.75f, 0.75f, 0.75f);
+                GL11.glColor4f(0.25f, 0.25f, 0.25f, 1f);
             } else {
-                GL11.glColor3f(0, 0, 0);
+                GL11.glColor4f(0f, 0f, 0f, 1f);
             }
 
             GlStateManager.glBegin(GL11.GL_TRIANGLE_STRIP);
@@ -128,9 +137,11 @@ public class RadialMenu extends Widget implements Interactable {
             GlStateManager.glEnd();
         }
 
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
         GlStateManager.popMatrix();
 
-        for(var option : options) {
+        for(RadialMenuOption option : options) {
             if (option.isHidden) {
                 continue;
             }
@@ -139,19 +150,24 @@ public class RadialMenu extends Widget implements Interactable {
                 (innerRadius + outerRadius) / 2,
                 (option.startTheta + option.endTheta) / 2,
                 50,
-                0xFFFFFF,
+                0xFFCCCCCC,
                 option.label.get()
             );
         }
+
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_BLEND);
+
+        Minecraft.getMinecraft().mcProfiler.endSection();
     }
 
     @Override
     public ClickResult onClick(int mouseButton, boolean doubleClick) {
-        var mouse = getMousePosition();
-        var mouseRadius = mouse.x;
-        var mouseTheta = mouse.y;
+        Vector2d mouse = getMousePosition();
+        double mouseRadius = mouse.x;
+        double mouseTheta = mouse.y;
 
-        for(var option : options) {
+        for(RadialMenuOption option : options) {
             boolean isHoveredOver =
                 mouseRadius >= innerRadius && mouseRadius <= outerRadius &&
                 isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
@@ -196,8 +212,8 @@ public class RadialMenu extends Widget implements Interactable {
     }
 
     private Vector2d getMousePosition() {
-        var pos = getPos();
-        var size = getSize();
+        Pos2d pos = getPos();
+        Size size = getSize();
 
         int dim = Math.min(size.width, size.height);
 
@@ -214,9 +230,9 @@ public class RadialMenu extends Widget implements Interactable {
     }
 
     private void radialText(double radius, double theta, int wrapWidth, int color, String text) {
-        var renderer = TextRenderer.getFontRenderer();
+        FontRenderer renderer = TextRenderer.getFontRenderer();
 
-        var size = getSize();
+        Size size = getSize();
 
         int dim = Math.min(size.width, size.height);
 
@@ -228,13 +244,13 @@ public class RadialMenu extends Widget implements Interactable {
         int boundsX = 0;
         int boundsY = lines.size() * renderer.FONT_HEIGHT;
 
-        for(var line : lines) {
+        for(String line : lines) {
             boundsX = Math.max(boundsX, renderer.getStringWidth(line));
         }
 
         int nextY = y - boundsY / 2;
 
-        for(var line : lines) {
+        for(String line : lines) {
             int width = renderer.getStringWidth(line);
             int height = renderer.FONT_HEIGHT;
 

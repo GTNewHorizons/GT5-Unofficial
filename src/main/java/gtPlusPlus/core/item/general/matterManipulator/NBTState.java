@@ -18,19 +18,26 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import appeng.api.AEApi;
+import appeng.api.config.SecurityPermissions;
+import appeng.api.features.ILocatable;
+import appeng.api.implementations.tiles.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.security.ISecurityGrid;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.api.util.DimensionalCoord;
 import appeng.tile.misc.TileSecurity;
+import appeng.tile.networking.TileWireless;
 import gregtech.api.util.GTUtility;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -46,10 +53,11 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
 class NBTState {
@@ -68,7 +76,7 @@ class NBTState {
     public transient IMEMonitor<IAEItemStack> itemStorage;
 
     public static NBTState load(NBTTagCompound tag) {
-        var state = GSON.fromJson(toJsonObject(tag), NBTState.class);
+        NBTState state = GSON.fromJson(toJsonObject(tag), NBTState.class);
 
         if(state == null) state = new NBTState();
         if(state.config == null) state.config = new NBTState.Config();
@@ -99,7 +107,7 @@ class NBTState {
             return false;
         }
 
-        var grid = AEApi.instance().registries().locatable().getLocatableBy(addr);
+        ILocatable grid = AEApi.instance().registries().locatable().getLocatableBy(addr);
 
         if(grid instanceof TileSecurity security) {
             this.securityTerminal = security;
@@ -114,6 +122,55 @@ class NBTState {
         }
 
         return hasMEConnection();
+    }
+
+    private transient IWirelessAccessPoint prevAccessPoint;
+
+    public boolean canInteractWithAE(EntityPlayer player) {
+        if (grid == null) {
+            return false;
+        }
+
+        IEnergyGrid eg = grid.getCache(IEnergyGrid.class);
+        if (!eg.isNetworkPowered()) {
+            return false;
+        }
+
+        ISecurityGrid sec = grid.getCache(ISecurityGrid.class);
+        if (!sec.hasPermission(player, SecurityPermissions.EXTRACT) || !sec.hasPermission(player, SecurityPermissions.INJECT)) {
+            return false;
+        }
+
+        if (checkAEDistance(player, prevAccessPoint)) {
+            return true;
+        }
+
+        for (IGridNode node : grid.getMachines(TileWireless.class)) {
+            if (checkAEDistance(player, (IWirelessAccessPoint) node.getMachine())) {
+                prevAccessPoint = (IWirelessAccessPoint) node.getMachine();
+                return true;
+            }
+        }
+
+        prevAccessPoint = null;
+
+        return false;
+    }
+
+    private boolean checkAEDistance(EntityPlayer player, IWirelessAccessPoint accessPoint) {
+        if (accessPoint != null && accessPoint.getGrid() == grid && accessPoint.isActive()) {
+            DimensionalCoord coord = accessPoint.getLocation();
+
+            if (coord.getWorld().provider.dimensionId != player.worldObj.provider.dimensionId) {
+                return false;
+            }
+
+            double distance = player.getDistanceSq(coord.x, coord.y, coord.z);
+
+            return Math.pow(accessPoint.getRange(), 2) >= distance;
+        } else {
+            return false;
+        }
     }
 
     //#region Pending blocks
@@ -161,7 +218,7 @@ class NBTState {
     }
 
     private void iterateLine(ArrayList<PendingBlock> pending, int x1, int y1, int z1, int x2, int y2, int z2) {
-        var edges = config.getEdges();
+        ItemStack edges = config.getEdges();
 
         int dx = Math.abs(x1 - x2), dy = Math.abs(y1 - y2), dz = Math.abs(z1 - z2);
         int sx = x1 < x2 ? 1 : -1, sy = y1 < y2 ? 1 : -1, sz = z1 < z2 ? 1 : -1;
@@ -248,10 +305,10 @@ class NBTState {
 
     private void iterateCube(ArrayList<PendingBlock> pending, int minX, int minY, int minZ, int maxX, int maxY,
             int maxZ) {
-        var corners = config.getCorners();
-        var edges = config.getEdges();
-        var faces = config.getFaces();
-        var volumes = config.getVolumes();
+        ItemStack corners = config.getCorners();
+        ItemStack edges = config.getEdges();
+        ItemStack faces = config.getFaces();
+        ItemStack volumes = config.getVolumes();
         for(int x = minX; x <= maxX; x++) {
             for(int y = minY; y <= maxY; y++) {
                 for(int z = minZ; z <= maxZ; z++) {
@@ -261,7 +318,7 @@ class NBTState {
                     if(y > minY && y < maxY) insideCount++;
                     if(z > minZ && z < maxZ) insideCount++;
 
-                    var selection = switch(insideCount) {
+                    ItemStack selection = switch(insideCount) {
                         case 0 -> corners;
                         case 1 -> edges;
                         case 2 -> faces;
@@ -281,8 +338,8 @@ class NBTState {
     }
 
     private void iterateSphere(ArrayList<PendingBlock> pending, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-        var faces = config.getFaces();
-        var volumes = config.getVolumes();
+        ItemStack faces = config.getFaces();
+        ItemStack volumes = config.getVolumes();
         
         int sx = maxX - minX + 1;
         int sy = maxY - minY + 1;
@@ -304,7 +361,7 @@ class NBTState {
                     );
 
                     if(distance <= 1) {
-                        var block = new PendingBlock(
+                        PendingBlock block = new PendingBlock(
                             config.coordA.worldId, x + minX, y + minY, z + minZ,
                             volumes,
                             1, 1
@@ -334,8 +391,8 @@ class NBTState {
             directions.add(DirectionUtil.South);
         }
 
-        for(var block : pending) {
-            for(var dir : directions) {
+        for(PendingBlock block : pending) {
+            for(DirectionUtil dir : directions) {
                 if(!present[block.x - minX + 1 + dir.offsetX][block.y - minY + 1 + dir.offsetY][block.z - minZ + 1 + dir.offsetZ]) {
                     block.setBlock(faces);
                     block.buildOrder = 0;
@@ -362,6 +419,10 @@ class NBTState {
         public JsonElement corners, edges, faces, volumes;
 
         private static JsonElement saveStack(ItemStack stack) {
+            if (stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemBlock)) {
+                stack = null;
+            }
+
             return stack == null ? null : toJsonObject(stack.writeToNBT(new NBTTagCompound()));
         }
     
@@ -428,7 +489,7 @@ class NBTState {
             Vec3 modifiedPosVec = posVec
                 .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
 
-            var hit = player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
+            MovingObjectPosition hit = player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
 
             Vector3i target;
 
@@ -436,7 +497,7 @@ class NBTState {
                 target = new Vector3i(hit.blockX, hit.blockY, hit.blockZ);
 
                 if (!player.isSneaking()) {
-                    var dir = DirectionUtil.fromSide(hit.sideHit);
+                    DirectionUtil dir = DirectionUtil.fromSide(hit.sideHit);
                     target.add(dir.offsetX, dir.offsetY, dir.offsetZ);
                 }
             } else {
@@ -595,18 +656,17 @@ class NBTState {
     }
 
     static class PendingBlock extends Location {
-        @Nonnull
-        public Block block;
+        @Nullable
+        public ItemBlock block;
         public int metadata;
         @Nullable
         public NBTTagCompound nbt;
         public int renderOrder, buildOrder;
         
+        @SuppressWarnings("null")
         public PendingBlock(int worldId, int x, int y, int z, ItemStack block) {
             super(worldId, x, y, z);
-            this.block = block == null ? Blocks.air : ((ItemBlock)block.getItem()).field_150939_a;
-            this.metadata = block == null ? 0 : block.getItemDamage();
-            this.nbt = block == null ? null : block.getTagCompound();
+            setBlock(block);
         }
 
         public PendingBlock(int worldId, int x, int y, int z, ItemStack block, int renderOrder, int buildOrder) {
@@ -616,14 +676,14 @@ class NBTState {
         }
 
         public void setBlock(ItemStack block) {
-            if(block == null) {
-                this.block = Blocks.air;
-                this.metadata = 0;
-                this.nbt = null;
-            } else {
-                this.block = block.getItem() == null ? Blocks.air : ((ItemBlock)block.getItem()).field_150939_a;
+            if(block != null && block.getItem() instanceof ItemBlock item) {
+                this.block = item;
                 this.metadata = block.getItemDamage();
                 this.nbt = block.getTagCompound();
+            } else {
+                this.block = (ItemBlock) Item.getItemFromBlock(Blocks.air);
+                this.metadata = 0;
+                this.nbt = null;
             }
         }
 
@@ -673,7 +733,7 @@ class NBTState {
 
         public @Nullable World getWorld() {
             if (MinecraftServer.getServer() != null) {
-                for (var world : MinecraftServer.getServer().worldServers) {
+                for (WorldServer world : MinecraftServer.getServer().worldServers) {
                     if (world.provider.dimensionId == worldId) {
                         return world;
                     }
