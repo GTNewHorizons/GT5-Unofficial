@@ -9,6 +9,5 @@ public class FlintPickaxe extends ItemPickaxe {
         super(FlintTools.FLINT_MATERIAL);
         this.setUnlocalizedName("flintPickaxe");
         this.setTextureName("gregtech:tools/flintPickaxe");
-        this.setCreativeTab(CreativeTabs.tabTools);
     }
 }

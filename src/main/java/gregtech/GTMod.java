@@ -330,8 +330,10 @@ public class GTMod implements IGTMod {
             .getEffectiveSide()
             .isServer()) AssemblyLineServer.fillMap(aEvent);
 
-        FlintTools.registerFlintTools();
-        FlintTools.registerTransformFlintTools();
+        // Flint tool setup.
+        FlintTools.registerTools();
+        FlintTools.registerPosteaTransformations();
+        FlintTools.registerRecipes();
     }
 
     @Mod.EventHandler
