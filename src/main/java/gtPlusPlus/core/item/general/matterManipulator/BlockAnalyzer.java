@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 public class BlockAnalyzer {
     
@@ -41,8 +42,8 @@ public class BlockAnalyzer {
             return build.tryConsumeItems(items);
         }
 
-        public void givePlayerItems(ItemStack... items) {
-            build.givePlayerItems(items);
+        public void givePlayerStuff(ItemStack[] items, FluidStack[] fluids) {
+            build.givePlayerStuff(items, fluids);
         }
     }
 

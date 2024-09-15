@@ -5,17 +5,25 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.spongepowered.include.com.google.common.base.Objects;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.PlayerSource;
+import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.util.item.AEFluidStack;
 import appeng.util.item.AEItemStack;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingBlock;
 import ic2.api.item.ElectricItem;
@@ -23,11 +31,18 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class PendingBuild {
     public LinkedList<PendingBlock> pendingBlocks;
@@ -63,12 +78,13 @@ public class PendingBuild {
         Integer lastChunkX = null, lastChunkZ = null;
         int shuffleCount = 0;
 
-        var world = placingPlayer.worldObj;
+        World world = placingPlayer.worldObj;
 
         ArrayList<ItemStack> drops = new ArrayList<>();
+        ArrayList<FluidStack> fluidDrops = new ArrayList<>();
 
         while(list.size() < BLOCKS_PER_PLACE && pendingBlocks.size() > 0) {
-            var next = pendingBlocks.getFirst();
+            PendingBlock next = pendingBlocks.getFirst();
 
             int x = next.x, y = next.y, z = next.z;
 
@@ -110,7 +126,8 @@ public class PendingBuild {
                 break;
             }
 
-            Block block = next.block;
+            @SuppressWarnings("null")
+            Block block = next.block == null ? Blocks.air : next.block.field_150939_a;
             Block existing = world.getBlock(x, y, z);
             int existingMeta = world.getBlockMetadata(x, y, z);
 
@@ -142,7 +159,7 @@ public class PendingBuild {
                     break;
                 }
 
-                removeBlock(world, x, y, z, existing, existingMeta, drops);
+                removeBlock(world, x, y, z, existing, existingMeta, drops, fluidDrops);
             }
 
             // shuffle unplaceable blocks to the end of the queue
@@ -165,21 +182,19 @@ public class PendingBuild {
             list.add(pendingBlocks.removeFirst());
         }
 
-        if (!placingPlayer.capabilities.isCreativeMode) {
-            ArrayList<ItemStack> splitDrops = new ArrayList<>();
-    
-            for(var drop : drops) {
-                while(drop.stackSize > 64) {
-                    splitDrops.add(drop.splitStack(64));
-                }
-    
-                if(drop.stackSize > 0) {
-                    splitDrops.add(drop);
-                }
+        ArrayList<ItemStack> splitDrops = new ArrayList<>();
+
+        for(ItemStack drop : drops) {
+            while(drop.stackSize > 64) {
+                splitDrops.add(drop.splitStack(64));
             }
-    
-            givePlayerItems(splitDrops.toArray(new ItemStack[0]));
+
+            if(drop.stackSize > 0) {
+                splitDrops.add(drop);
+            }
         }
+
+        givePlayerStuff(splitDrops.toArray(new ItemStack[0]), fluidDrops.toArray(new FluidStack[0]));
 
         if(list.isEmpty()) {
             if(!pendingBlocks.isEmpty()) {
@@ -203,8 +218,15 @@ public class PendingBuild {
             }
         }
 
-        for(var pending : list) {
-            world.setBlock(pending.x, pending.y, pending.z, pending.block, pending.metadata, 3);
+        for(PendingBlock pending : list) {
+            if (pending.block != null) {
+                pending.block.placeBlockAt(
+                    item,
+                    player, player.worldObj,
+                    pending.x, pending.y, pending.z,
+                    -1, 0, 0, 0,
+                    pending.metadata);
+            }
         }
 
         if (list.size() > 0) {
@@ -239,37 +261,117 @@ public class PendingBuild {
         }
     }
 
-    public void givePlayerItems(ItemStack... items) {
+    public void givePlayerStuff(ItemStack[] items, FluidStack[] fluids) {
         if (manipulator.encKey != null && !manipulator.hasMEConnection()) {
             manipulator.connectToMESystem();
         }
 
-        for (ItemStack item : items) {
-            if (manipulator.hasMEConnection()) {
-                IAEItemStack result = manipulator.storageGrid.getItemInventory().injectItems(
-                    AEItemStack.create(item),
-                    Actionable.MODULATE,
-                    new PlayerSource(placingPlayer, manipulator.securityTerminal));
+        boolean hasME = manipulator.hasMEConnection() && manipulator.canInteractWithAE(placingPlayer);
+
+        if (items != null) {
+            for (ItemStack item : items) {
+                if (hasME) {
+                    IAEItemStack result = manipulator.storageGrid.getItemInventory().injectItems(
+                        AEItemStack.create(item),
+                        Actionable.MODULATE,
+                        new PlayerSource(placingPlayer, manipulator.securityTerminal));
+        
+                    if (result != null) {
+                        item.stackSize = (int) result.getStackSize();
+                    } else {
+                        item.stackSize = 0;
+                    }
+                }
+        
+                if (item.stackSize <= 0) {
+                    continue;
+                }
     
-                if (result != null) {
-                    item.stackSize = (int) result.getStackSize();
-                } else {
-                    item.stackSize = 0;
+                placingPlayer.inventory.addItemStackToInventory(item);
+    
+                if (item.stackSize <= 0) {
+                    continue;
+                }
+    
+                placingPlayer.worldObj.spawnEntityInWorld(new EntityItem(placingPlayer.worldObj, placingPlayer.posX, placingPlayer.posY, placingPlayer.posZ, item));
+            }
+        }
+
+        if (fluids != null) {
+            for (FluidStack fluid : fluids) {
+                if (hasME) {
+                    IAEFluidStack result = manipulator.storageGrid.getFluidInventory().injectItems(
+                        AEFluidStack.create(fluid),
+                        Actionable.MODULATE,
+                        new PlayerSource(placingPlayer, manipulator.securityTerminal));
+        
+                    if (result != null) {
+                        fluid.amount = (int) result.getStackSize();
+                    } else {
+                        fluid.amount = 0;
+                    }
+                }
+    
+                if (fluid.amount <= 0) {
+                    continue;
+                }
+    
+                ItemStack idealCell = inventoryStream(placingPlayer.inventory)
+                    .filter(x -> (
+                        x != null &&
+                        x.getItem() instanceof IFluidContainerItem container &&
+                        container.fill(x, fluid, false) == fluid.amount
+                    ))
+                    .findFirst()
+                    .orElse(null);
+    
+                if (idealCell != null) {
+                    fluid.amount -= ((IFluidContainerItem) idealCell.getItem()).fill(idealCell, fluid, true);
+                    placingPlayer.inventory.markDirty();
+                }
+    
+                if (fluid.amount <= 0) {
+                    continue;
+                }
+
+                List<ItemStack> validCells = inventoryStream(placingPlayer.inventory)
+                    .filter(x -> (
+                        x != null &&
+                        x.getItem() instanceof IFluidContainerItem container &&
+                        container.fill(x, fluid, false) > 0
+                    ))
+                    .collect(Collectors.toList());
+    
+                for (ItemStack cell : validCells) {
+                    fluid.amount -= ((IFluidContainerItem) cell.getItem()).fill(idealCell, fluid, true);
+                    placingPlayer.inventory.markDirty();
+
+                    if (fluid.amount <= 0) {
+                        break;
+                    }
+                }
+
+                if (fluid.amount > 0) {
+                    placingPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "Could not find a container for fluid (it was voided): " + fluid.amount + "L of " + fluid.getLocalizedName()));
                 }
             }
-    
-            if (item.stackSize <= 0) {
-                continue;
-            }
-
-            placingPlayer.inventory.addItemStackToInventory(item);
-
-            if (item.stackSize <= 0) {
-                continue;
-            }
-
-            placingPlayer.worldObj.spawnEntityInWorld(new EntityItem(placingPlayer.worldObj, placingPlayer.posX, placingPlayer.posY, placingPlayer.posZ, item));
         }
+    }
+
+    private Stream<ItemStack> inventoryStream(IInventory inv) {
+        return IntStream.range(0, inv.getSizeInventory()).mapToObj(inv::getStackInSlot);
+    }
+
+    private ItemStack findFluidCell(int minCapacity) {
+        for (int i = 0; i < placingPlayer.inventory.getSizeInventory(); i++) {
+            ItemStack stack = placingPlayer.inventory.getStackInSlot(i);
+
+            if (stack != null && stack.getItem() instanceof IFluidContainerItem fluidContainer && fluidContainer.getCapacity(stack) >= minCapacity) {
+                return stack;
+            }
+        }
+
+        return null;
     }
 
     private boolean consumeItemsFromPlayer(ItemStack[] items, boolean simulate) {
@@ -328,6 +430,10 @@ public class PendingBuild {
             }
         }
 
+        if (!manipulator.canInteractWithAE(placingPlayer)) {
+            return false;
+        }
+
         for (ItemStack item : items) {
             IAEItemStack result = manipulator.storageGrid.getItemInventory().extractItems(
                 AEItemStack.create(item),
@@ -358,19 +464,21 @@ public class PendingBuild {
 
     static {
         try {
-            Field isBlockContainer = Block.class.getDeclaredField("isBlockContainer");
+            Field isBlockContainer = ReflectionHelper.findField(Block.class, "field_149758_A", "isBlockContainer");
             isBlockContainer.setAccessible(true);
+            java.util.Objects.requireNonNull(isBlockContainer);
             IS_BLOCK_CONTAINER = MethodHandles.lookup().unreflectGetter(isBlockContainer);
-        } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             throw new RuntimeException("Could not find field Block.isBlockContainer", e);
         }
     }
 
     public boolean tryConsumePower(ItemStack stack, PendingBlock pendingBlock) {
-        double euUsage = 1.0;
+        double euUsage = EU_PER_BLOCK;
 
         try {
-            if((boolean)IS_BLOCK_CONTAINER.invoke(pendingBlock.block)) {
+            ItemBlock block = pendingBlock.block;
+            if(block != null && (boolean)IS_BLOCK_CONTAINER.invoke(block.field_150939_a)) {
                 euUsage *= TE_PENALTY;
             }
         } catch (Throwable e) {
@@ -386,22 +494,77 @@ public class PendingBuild {
         return ElectricItem.manager.use(stack, euUsage, placingPlayer);
     }
 
-    private void removeBlock(World world, int x, int y, int z, Block existing, int existingMeta, ArrayList<ItemStack> pendingDrops) {
-        var drops = existing.getDrops(world, x, y, z, existingMeta, 0);
+    private void removeBlock(World world, int x, int y, int z, Block existing, int existingMeta, ArrayList<ItemStack> pendingDrops, ArrayList<FluidStack> pendingFluidDrops) {
+        TileEntity te = world.getTileEntity(x, y, z);
 
-        for(var drop : drops) {
-            for(var pending : pendingDrops) {
-                if (areStacksBasicallyEqual(drop, pending)) {
-                    pending.stackSize += drop.stackSize;
-                    drop.stackSize = 0;
+        List<ItemStack> drops = new ArrayList<>();
+
+        emptyInventory(te, drops);
+        emptyTank(te, pendingFluidDrops);
+        removeCovers(te, drops);
+
+        drops.addAll(existing.getDrops(world, x, y, z, existingMeta, 0));
+
+        mergeStacks(pendingDrops, drops);
+
+        world.setBlock(x, y, z, Blocks.air);
+    }
+
+    private void mergeStacks(List<ItemStack> dest, List<ItemStack> src) {
+        for(ItemStack output : dest) {
+            for(ItemStack input : src) {
+                if (areStacksBasicallyEqual(input, output)) {
+                    input.stackSize += output.stackSize;
+                    output.stackSize = 0;
                 }
-            }
-
-            if(drop.stackSize > 0) {
-                pendingDrops.add(drop);
             }
         }
 
-        world.setBlock(x, y, z, Blocks.air);
+        for (ItemStack input : src) {
+            if (input.stackSize > 0) {
+                dest.add(input);
+            }
+        }
+    }
+
+    private void emptyInventory(TileEntity te, List<ItemStack> drops) {
+        if (te instanceof IInventory inv) {
+            int size = inv.getSizeInventory();
+
+            for (int i = 0; i < size; i++) {
+                ItemStack stack = inv.getStackInSlot(i);
+
+                if (stack != null && stack.getItem() != null) {
+                    inv.setInventorySlotContents(i, null);
+
+                    drops.add(stack);
+                }
+            }
+
+            inv.markDirty();
+        }
+    }
+
+    private void emptyTank(TileEntity te, List<FluidStack> drops) {
+        if (te instanceof IFluidHandler handler) {
+            FluidStack fluid = null;
+            while ((fluid = handler.drain(ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true)) != null && fluid.getFluid() != null && fluid.amount > 0) {
+                drops.add(fluid);
+            }
+        }
+    }
+
+    private void removeCovers(TileEntity te, List<ItemStack> drops) {
+        if (te instanceof ICoverable coverable) {
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (coverable.getCoverIDAtSide(side) != 0) {
+                    ItemStack cover = coverable.removeCoverAtSide(side, true);
+    
+                    if (cover != null) {
+                        drops.add(cover);
+                    }
+                }
+            }
+        }
     }
 }
