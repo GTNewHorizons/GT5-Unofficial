@@ -258,7 +258,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             Location location = new Location(world, hit.blockX, hit.blockY, hit.blockZ);
 
             if(!player.isSneaking()) {
-                location.offset(DirectionUtil.fromSide(hit.sideHit));
+                location.offset(ForgeDirection.getOrientation(hit.sideHit));
             }
 
             switch(state.config.coordMode) {
@@ -548,6 +548,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             });
     }
 
+    // spotless:off
     private void addCommonOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
         builder.branch()
                 .label("Set Mode")
@@ -787,6 +788,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     private void addDebuggingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
 
     }
+    // spotless:on
 
     //#endregion
 

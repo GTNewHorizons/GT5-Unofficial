@@ -374,25 +374,25 @@ class NBTState {
             }
         }
 
-        ArrayList<DirectionUtil> directions = new ArrayList<>();
+        ArrayList<ForgeDirection> directions = new ArrayList<>();
 
         if(rx > 1) {
-            directions.add(DirectionUtil.East);
-            directions.add(DirectionUtil.West);
+            directions.add(ForgeDirection.EAST);
+            directions.add(ForgeDirection.WEST);
         }
 
         if(ry > 1) {
-            directions.add(DirectionUtil.Up);
-            directions.add(DirectionUtil.Down);
+            directions.add(ForgeDirection.UP);
+            directions.add(ForgeDirection.DOWN);
         }
 
         if(rz > 1) {
-            directions.add(DirectionUtil.North);
-            directions.add(DirectionUtil.South);
+            directions.add(ForgeDirection.NORTH);
+            directions.add(ForgeDirection.SOUTH);
         }
 
         for(PendingBlock block : pending) {
-            for(DirectionUtil dir : directions) {
+            for(ForgeDirection dir : directions) {
                 if(!present[block.x - minX + 1 + dir.offsetX][block.y - minY + 1 + dir.offsetY][block.z - minZ + 1 + dir.offsetZ]) {
                     block.setBlock(faces);
                     block.buildOrder = 0;
@@ -497,7 +497,7 @@ class NBTState {
                 target = new Vector3i(hit.blockX, hit.blockY, hit.blockZ);
 
                 if (!player.isSneaking()) {
-                    DirectionUtil dir = DirectionUtil.fromSide(hit.sideHit);
+                    ForgeDirection dir = ForgeDirection.getOrientation(hit.sideHit);
                     target.add(dir.offsetX, dir.offsetY, dir.offsetZ);
                 }
             } else {
@@ -751,7 +751,7 @@ class NBTState {
             return null;
         }
 
-        public Location offset(DirectionUtil dir) {
+        public Location offset(ForgeDirection dir) {
             this.x += dir.offsetX;
             this.y += dir.offsetY;
             this.z += dir.offsetZ;
