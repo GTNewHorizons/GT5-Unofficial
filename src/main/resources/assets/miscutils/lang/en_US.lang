@@ -1,4 +1,4 @@
-//Creative Tabs
+# Creative Tabs
 itemGroup.MiscUtilBlockTab=[GT++] Blocks
 itemGroup.MiscUtilMiscTab=[GT++] Items
 itemGroup.MiscUtilCombatTab=[GT++] Combat
@@ -7,41 +7,41 @@ itemGroup.MiscUtilMachineTab=[GT++] Machines
 itemGroup.MiscUtilOtherTab=[GT++] Items II
 itemGroup.MiscUtilBOP=[GT++] Biomes O'Plenty Additions
 
-//Debug
+# Debug
 item.AAA_Broken.name=[Non-existent Item] Report This Recipe On Github, Please.
 item.itemBedLocator_Base.name=Bed Locator [NBT Test]
 item.itemBaseItemWithCharge.name=Base Chargeable Item
 item.miscutils_itemDebugShapeSpawner.name=[Debug] Shapes
 
-//Fluids
+# Fluids
 tile.fluidSludge.name=Stagnant Waste Water
 tile.fluidSludge.0.name=Stagnant Waste Water
 
-//Death Messages
+# Death Messages
 death.attack.plasmabolt=%s died by burning hot plasma.
 death.attack.plasmabolt.player=%1$s was killed by %2$s using plasma.
 death.attack.gtpp.grinder=%s was ground into nothingness by an IsaMill.
 
-//Batch mode chat message
+# Batch mode chat message
 misc.BatchModeTextOn=Batch recipes (ME output bus recommended, will void excess outputs!)
 misc.BatchModeTextOff=Don't batch recipes
 
-//Alternative Materials
+# Alternative Materials
 item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
 item.itemIngotBatteryAlloy.name=Ingot of Battery Alloy
 item.itemStickyRubber.name=Gumlet of Sticky Rubber
 
-//Unused Fuel rods
+# Unused Fuel rods
 item.itemFuelRod_Empty.name=Empty Fuel Rod
 item.itemFuelRod_Thorium.name=Thorium Fuel Rod
 item.itemFuelRod_Uranium.name=Uranium Fuel Rod
 item.itemFuelRod_Plutonium.name=Plutonium Fuel Rod
 
-//Entities
+# Entities
 entity.constructStaballoy.name=Staballoy Construct
 entity.sickBlaze.name=Infected Zealot
 
-//Tile Entities
+# Tile Entities
 tile.blockToolBuilder.name=GregTech Tool Constructor
 tile.blockEggBox.name=Egg Box
 tile.blockCircuitProgrammer.name=Circuit Programmer
@@ -52,7 +52,7 @@ tile.blockPestKiller.name=Pest Killer
 tile.blockSuperJukebox.name=Sir Mixalot [Jukebox]
 tile.blockSuperJukebox.deprecated=§cDEPRECATED, Use the Electric Jukeboxes instead
 
-//Tools
+# Tools
 item.itemBufferCore.name=Energy Core
 item.itemStaballoyPickaxe.name=Tunnel Digger
 item.itemStaballoyAxe.name=Tree Feller
@@ -136,7 +136,7 @@ gtpp.nei.tgs.info-2=by machine energy tier
 gtpp.nei.tgs.info-3=and tool type
 
 
-//Thermal Foundation Stuff
+# Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
 item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket
 item.MiscUtils.bucket.bucketEnder.name=Resonant Ender Bucket
@@ -145,13 +145,13 @@ item.MiscUtils.material.dustCryotheum.name=Cryotheum Dust
 item.MiscUtils.material.rodBlizz.name=Blizz Rod
 item.MiscUtils.material.dustBlizz.name=Blizz Powder
 
-//------------- 'miscutils' is Case Sensitive Here, unsure why
+# ------------- 'miscutils' is Case Sensitive Here, unsure why
 tile.miscutils.fluid.pyrotheum.name=Blazing Pyrotheum
 tile.miscutils.fluid.cryotheum.name=Gelid Cryotheum
 tile.miscutils.fluid.ender.name=Resonant Ender
-//--------------
+# --------------
 
-//Forestry Stuff
+# Forestry Stuff
 item.frameAccelerated.name=Accelerated Frame
 item.frameVoid.name=Void Frame
 item.frameMutagenic.name=Mutagenic Frame
@@ -167,7 +167,7 @@ item.frameSlowing.name=Slowing Frame
 item.frameStabilizing.name=Stabilizing Frame
 item.frameUseless.name=Useless Frame
 
-//IC2 stuff
+# IC2 stuff
 item.itemEnergeticRotorBlade.name=Energetic Alloy Rotor Blade
 item.itemTungstenSteelRotorBlade.name=TungstenSteel Rotor Blade
 item.itemVibrantRotorBlade.name=Vibrant Alloy Rotor Blade
@@ -182,13 +182,13 @@ item.itemMagnaliumShaft.name=Magnalium Shaft
 item.itemUltimetShaft.name=Ultimet Shaft
 
 
-//Misc Items
+# Misc Items
 item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
 item.itemPlateEnrichedSoularium.name=Enriched Soularium Plate
 item.itemHeliumBlob.name=Mysterious Hydrogen Substance
 item.itemAlkalusDisk.name=Alkalus Disk
 
-//Misc Blocks
+# Misc Blocks
 tile.blockCompressedObsidian.0.name=Compressed Obsidian (9)
 tile.blockCompressedObsidian.1.name=Double Compressed Obsidian (81)
 tile.blockCompressedObsidian.2.name=Triple Compressed Obsidian (729)
@@ -203,12 +203,12 @@ tile.blockCompressedObsidian.10.name=Quintuple Compressed Glowstone (59049)
 tile.blockNet.name=Net
 
 
-//GT++ Items
+# GT++ Items
 
-//Meta Tool
+# Meta Tool
 MU-metaitem.01.0.name=MU-metaitem.01.0.name
 
-//Cells
+# Cells
 item.SulfurDioxide.name=High Quality Sulfur Dioxide Cell
 item.mobessence.name=Mob Essence Cell
 item.Fertiliser.name=Fertiliser Cell
@@ -221,11 +221,11 @@ item.Hydroxide.name=Hydroxide Cell
 item.Ammonium.name=Ammonium Cell
 item.AmmoniumTetrafluoroberyllate.name=Ammonium Tetrafluoroberyllate Cell
 
-//Resources
+# Resources
 item.itemCoalCoke.name=Coking Coal
 item.itemHydrogenBlob.name=Mysterious Hydrogen Blob
 
-//Normal Items
+# Normal Items
 item.itemSimpleFiremaker.name=Basic Firemaker
 item.itemFiber.name=Plant Fiber
 item.itemRope.name=Rope
@@ -277,14 +277,14 @@ item.itemControlCore.tooltip.2=Lower tiers may be used to underclock, which is u
 item.thekeytothecity.tooltip.0=You feel like you're on top of the world.
 item.thekeytothecity.tooltip.1=Wear it around your neck like an amulet.
 
-//Conversion Dusts
+# Conversion Dusts
 item.dustNeptunium238.name=Neptunium 238 Dust
 item.dustRadium226.name=Radium 226 Dust
 item.itemDustDecayedRadium226.name=Decayed Radium 226 Dust
 item.itemDustSmallDecayedRadium226.name=Small Decayed Radium 226 Dust
 item.itemDustTinyDecayedRadium226.name=Tiny Decayed Radium 226 Dust
 
-//Material Items
+# Material Items
 item.itemDustGadolinium.name=Gadolinium Dust
 item.itemDustSmallGadolinium.name=Small Pile of Gadolinium Dust
 item.itemDustTinyGadolinium.name=Tiny Pile of Gadolinium Dust
@@ -1575,7 +1575,7 @@ item.crushedPurifiedYellorium.name=Purified Crushed Yellorium Ore
 item.dustImpureYellorium.name=Impure Yellorium Dust
 item.dustPureYellorium.name=Purified Yellorium Dust
 
-//Shards
+# Shards
 item.itemDrained.name=Drained Shard
 item.itemAer.name=Aer Shard
 item.itemIgnis.name=Ignis Shard
@@ -1587,7 +1587,7 @@ item.itemDustInfusedEarth.name=Infused Earth Dust
 item.itemDustInfusedWater.name=Infused Water Dust
 
 
-//Misc Material Items
+# Misc Material Items
 item.itemDustLithiumCarbonate.name=Lithium Carbonate Dust
 item.itemDustSmallLithiumCarbonate.name=Small Pile of Lithium Carbonate Dust
 item.itemDustTinyLithiumCarbonate.name=Tiny Pile of Lithium Carbonate Dust
@@ -1640,7 +1640,7 @@ item.itemDebugClearing.name=Debug Square [%d]
 item.itemDebugClearing.0.tooltip=Mode: Clear
 item.itemDebugClearing.1.tooltip=Mode: Fill
 
-//Multitools
+# Multitools
 item.AluminiumMultipick.name=Aluminium Multipick
 item.AluminiumMultispade.name=Aluminium Multispade
 item.BerylliumMultispade.name=Beryllium Multispade
@@ -1793,18 +1793,18 @@ item.TantalumCarbideMultipick.name=Tantalum Carbide Multipick
 item.TantalumCarbideMultispade.name=Tantalum Carbide Multispade
 
 
-//Items that Don't fit into another category
+# Items that Don't fit into another category
 
-//Plates
+# Plates
 item.itemPlateClay.name=Clay Plate
 item.itemPlateDoubleClay.name=Double Clay Plate
 item.itemPlateLithium.name=Lithium Plate
 item.itemPlateDoubleEuropium.name=Double Europium Plate
 
-//Gears
+# Gears
 item.itemSmallGearWroughtIron.name=Small Wrought Iron Gear
 
-//Misc
+# Misc
 item.itemFoilUranium235.name=Uranium 235 Foil
 
 item.itemBoilerChassis_0.name=Advanced Boiler Chassis [Tier 1]
@@ -1902,16 +1902,10 @@ item.itemBufferCore9.name=Energy Core [UV].
 item.itemBufferCore10.name=Energy Core [UHV].
 item.itembookgt.name=§oThermal Boiler Manual
 
-// Everglade Items
+# Everglade Items
 item.everglades.trigger.name=§6Alkalus Disk [§cActivated§6]
 
-
-
-
-
-
-
-//Blocks
+# Blocks
 tile.blockRainforestOakLog.name=Rainforest Oak
 tile.blockRainforestOakLeaves.name=Oak Leaves
 tile.blockRainforestOakSapling.name=Rainforest Oak Sapling
@@ -1919,11 +1913,11 @@ tile.blockPineLogLog.name=Pine Log
 tile.blockPineLeaves.name=Pine Leaves
 tile.blockPineSapling.name=Pine Sapling
 
-//TC Stuff
+# TC Stuff
 tile.blockFastAlchemyFurnace.0.name=Broken
 tile.blockFastArcaneAlembic.1.name=Broken
 
-//Frame Boxes
+# Frame Boxes
 tile.Block of Selenium.name=Block of Selenium
 tile.Selenium Frame Box.name=Selenium Frame Box
 tile.Block of Bromine.name=Block of Bromine
@@ -2048,7 +2042,7 @@ tile.Trinium Naquadah Carbonite Frame Box.name=Trinium Naquadah Carbonite Frame 
 tile.Block of Quantum.name=Block of Quantum
 tile.Quantum Frame Box.name=Quantum Frame Box
 
-//Ores
+# Ores
 tile.OreFluoriteF.name=Fluorite (F) Ore
 tile.OreCrocoite.name=Crocoite Ore
 tile.OreGeikielite.name=Geikielite Ore
@@ -2082,7 +2076,7 @@ tile.OreFluorcaphite.name=Fluorcaphite Ore
 tile.OreFlorencite.name=Florencite Ore
 tile.OreCryoliteF.name=Cryolite (F) Ore
 
-//Misc
+# Misc
 tile.blockMFEffect.name=Special
 tile.fluidBlockSludge.name=Sludge
 tile.blockWorkbenchGT.name=Workbench
@@ -2099,7 +2093,7 @@ tile.blockModularity.name=Modularity Bench
 tile.blockBlackGate.name=Wither Cage
 tile.blockTankXpConverter.name=Experience Converter
 
-//Everglades Blocks
+# Everglades Blocks
 tile.blockDarkWorldPortal.name=A Glimpse of the Future
 tile.blockDarkWorldGround.name=Unstable Earth
 tile.blockDarkWorldGround2.name=Polluted Soil
@@ -2107,13 +2101,13 @@ tile.blockDarkWorldGround2.2.name=Highly Polluted Soil
 tile.blockDarkWorldPortalFrame.name=Containment Frame
 
 
-//Added 1/4/18
+# Added 1/4/18
 tile.blockMiningPipeFake.name=Strengthened Mining Pipe
 tile.blockMiningHeadFake.name=Bedrock Drill
 item.itemPlateMeatRaw.name=Fleshy Panel
 tile.Block of MeatRaw.name=Block of Raw Meat
 
-//Added 26/5/18
+# Added 26/5/18
 item.BurntLiFBeF2ThF4UF4.name=Cell of Used Reactor Fuel [LiFBeF2ThF4UF4]
 item.BurntLiFBeF2ZrF4UF4.name=Cell of Used Reactor Fuel [LiFBeF2ZrF4UF4]
 item.BurntLiFBeF2ZrF4U235.name=Cell of Used Reactor Fuel [LiFBeF2ZrF4U235]
@@ -2139,7 +2133,7 @@ entity.toxinBall.name=Toxin globule
 entity.plasmaBolt.name=Plasma
 entity.bigChickenFriendly.name=Giant Chicken
 
-//Added 26/6/18
+# Added 26/6/18
 tile.OreTrinium.name=Trinium Ore
 item.crushedTrinium.name=Crushed Trinium Ore
 item.crushedCentrifugedTrinium.name=Centrifuged Crushed Trinium Ore
@@ -2147,7 +2141,7 @@ item.crushedPurifiedTrinium.name=Purified Crushed Trinium Ore
 item.dustImpureTrinium.name=Impure Trinium Dust
 item.dustPureTrinium.name=Purified Trinium Dust
 
-//Added 1/7/18
+# Added 1/7/18
 entity.WiseVillager.name=Wise Villager
 tile.blockMobSpawnerEx.0.name=Monster Spawner
 tile.blockMobSpawnerEx.1.name=Monster Spawner
@@ -2170,15 +2164,15 @@ description.villager.profession.miscutils.technician=GT Technician
 description.villager.profession.miscutils.trader=Ore Trader
 description.villager.profession.miscutils.aboriginal=Native Australian
 
-//Added 23/8/18
+# Added 23/8/18
 item.itemHatTinFoil.name=Tin Foil Hat
 
-//Added 13/9/18
+# Added 13/9/18
 entity.Aboriginal.name=Native
 entity.miscutils.constructStaballoy.name=Staballoy Construct
 entity.miscutils.sickBlaze.name=Infected Zealot
 
-//Added 15/9/18
+# Added 15/9/18
 item.ZirconiumTetrafluoride.name=Zirconium Tetrafluoride Cell
 item.Formaldehyde.name=Formaldehyde Cell
 item.RocketFuelMixA.name=H8N4C2O4 Rocket Fuel Cell
@@ -2194,9 +2188,9 @@ item.AmmoniumNitrateSlurry.name=Ammonium Nitrate Slurry Cell
 item.Kerosene.name=Kerosene Cell
 item.LiquidOxygen.name=Liquid Oxygen Cell [LOX]
 
-//Added 8/1/19
+# Added 8/1/19
 
-//Ores
+# Ores
 
 tile.OreIrarsite.name=Irarsite Ore
 item.crushedIrarsite.name=Crushed Irarsite Ore
@@ -2351,7 +2345,7 @@ item.dustPureDemicheleiteBr.name=Purified Demicheleite (Br) Dust
 item.itemDustDemicheleiteBr.name=Demicheleite (Br) Dust
 
 
-//Materials
+# Materials
 
 item.itemIngotTitansteel.name=Titansteel Ingot
 item.itemHotIngotTitansteel.name=Hot Titansteel Ingot
@@ -2673,52 +2667,34 @@ item.itemCellAbyssalAlloy.name=Abyssal Alloy Cell
 tile.Block of Abyssal Alloy.name=Block of Abyssal Alloy
 tile.Abyssal Alloy Frame Box.name=Abyssal Alloy Frame Box
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Radioactive
+# Radioactive
 item.dustTechnetium99M.name=Technetium 99M Dust
 item.dustTechnetium99.name=Technetium 99 Dust
 item.dustMolybdenum99.name=Molybdenum 99 Dust
 
-//Bags
+# Bags
 item.item.MysticBag.name=Mystic Pouch
 item.item.Eatotron9000.name=Eatotronic 9000
 item.item.ToolBox.name=Workers Toolbox
 
-//Cells
+# Cells
 item.Bromine.name=Bromine Cell
 item.Krypton.name=Krypton Cell
 item.cryotheum.name=Cryotheum Cell
 item.pyrotheum.name=Pyrotheum Cell
 item.GeneticMutagen.name=Mutagen Cell
 
-//Ingots
+# Ingots
 item.itemHotIngotIncoloy020.name=Hot Incoloy-020 Ingot
 item.itemHotIngotIncoloyDS.name=Hot Incoloy-DS Ingot
 item.itemHotIngotTalonite.name=Hot Talonite Ingot
 item.itemHotIngotHastelloyX.name=Hot Hastelloy-X Ingot
 item.itemHotIngotHastelloyW.name=Hot Hastelloy-W Carbide Ingot
 
-//Railcraft Fix
+# Railcraft Fix
 item.railcraft.part.plate.lead.name=Lead Plate
 
-//Ions
+# Ions
 item.particle.ion.Hydrogen.name=Hydrogen Ion
 item.particle.ion.Helium.name=Helium Ion
 item.particle.ion.Lithium.name=Lithium Ion
@@ -2865,7 +2841,7 @@ item.particle.base.Pion.name=Pion
 item.particle.base.ETA Meson.name=ETA Meson
 item.particle.base.Unknown.name=Unknown Particle
 
-//Added 12/1/19
+# Added 12/1/19
 
 tile.playerDoorGlass.name=Glass Auto-Door
 tile.playerDoorCactus.name=Cactus Auto-Door
@@ -2873,7 +2849,7 @@ tile.playerDoorIce.name=Ice Auto-Door
 tile.playerDoorIron.name=Iron Auto-Door
 tile.playerDoorWood.name=Wooden Auto-Door
 
-//Added 4/2/19
+# Added 4/2/19
 
 item.GTPP.BattPack.06.name=Charge Pack [LuV]
 item.GTPP.BattPack.07.name=Charge Pack [ZPM]
@@ -2881,7 +2857,7 @@ item.GTPP.BattPack.08.name=Charge Pack [UV]
 item.GTPP.BattPack.09.name=Charge Pack [UHV]
 
 
-//Added 13/3/19
+# Added 13/3/19
 item.gtpp.debug.scanner.name=GT++ Debug Scanner
 item.RawWaste.name=Cell of Animal Waste
 item.ManureSlurry.name=Cell of Manure Slurry
@@ -2891,7 +2867,7 @@ item.itemDustSmallDemicheleiteBr.name=Small Pile of Demicheleite (Br)
 tile.blockPooCollector.name=Agricultural Sewer
 tile.Block of Lithium 7.name=Block of Lithium 7
 
-//Added 14/3/19
+# Added 14/3/19
 item.blood.name=Cell of Blood
 item.aniline.name=Aniline Cell
 item.cadaverine.name=Cadaverine Cell
@@ -2936,8 +2912,8 @@ item.itemPlateDoubleTeflon.name=Double Teflon Plate
 item.itemCellTeflon.name=Teflon Cell
 tile.Block of Teflon.name=Block of Teflon
 
-//Added 17/4/19
-//Spelling Corrections
+# Added 17/4/19
+# Spelling Corrections
 item.particle.ion.Aluminium.name=Aluminium Ion
 item.particle.ion.Caesium.name=Caesium Ion
 
@@ -3037,7 +3013,7 @@ item.itemCellWhiteMetal.name=White Metal Cell
 tile.Block of White Metal.name=Block of White Metal
 tile.White Metal Frame Box.name=White Metal Frame Box
 
-//Added 29/04/2019
+# Added 29/04/2019
 tile.OreRunite.name=Runite Ore
 item.crushedRunite.name=Crushed Runite Ore
 item.oreRawRunite.name=Raw Runite Ore
@@ -3067,7 +3043,7 @@ tile.Block of Rhugnor.name=Block of Rhugnor
 
 
 
-//Added 13/5/19
+# Added 13/5/19
 
 item.GTPP.BattPack.01.name=Charge Pack [LV]
 item.GTPP.BattPack.02.name=Charge Pack [MV]
@@ -3119,14 +3095,14 @@ item.itemHeavyPlateAncientGranite.name=Heavy Ancient Granite Plate
 item.GTPP.bauble.fireprotection.0.name=Supreme Pizza Gloves
 
 
-//Added 16/5/19
+# Added 16/5/19
 item.itemCellSeleniumDioxide.name=Selenium Dioxide Cell
 item.itemCellSeleniousAcid.name=Selenious Acid Cell
 
-//Added 25/7/19
+# Added 25/7/19
 container.pestkiller=Pest Killer
 
-//Added 15/8/19
+# Added 15/8/19
 gtpp.nei.decayables=Decayables Chest
 entity.batKing.name=Bat King
 item.itemCellCarbyne.name=Carbyne Cell
@@ -3139,8 +3115,8 @@ item.LiquidHydrogen.name=Liquid Hydrogen Cell [LOH]
 
 
 
-//Added 24/8/19
-//Debug Labels
+# Added 24/8/19
+# Debug Labels
 tile.blockDoorAlloy.name=Reinforced Door
 tile.blockInhibitorObelisk.name=Inhibitor Obelisk
 tile.Battlesign.name=Battlesign
@@ -3152,7 +3128,7 @@ tile.pipeBlock.name=Pipe
 item.null.name=Null Item report it on github
 
 
-//Added 24/8/19
+# Added 24/8/19
 tile.OreGreenockite.name=Greenockite Ore
 item.crushedGreenockite.name=Crushed Greenockite Ore
 item.oreRawGreenockite.name=Raw Greenockite Ore
@@ -3197,7 +3173,7 @@ item.itemDustRareEarthIII.name=Rare Earth (III) Dust
 item.itemDustTinyRareEarthIII.name=Tiny Pile of Rare Earth (III) Dust
 item.itemDustSmallRareEarthIII.name=Small Pile of Rare Earth (III) Dust
 
-//Added 16/10/19
+# Added 16/10/19
 item.BioRecipeSelector.name=Programmed Bio Circuit
 item.FermentationBase.name=Cell of Fermentation Base
 item.ureamix.name=Cell of Urea Mix
@@ -3227,16 +3203,16 @@ item.BasicAgrichemItem.19.name=Sodium Hydroxide
 item.BasicAgrichemItem.20.name=Sodium Carbonate
 item.BasicAgrichemItem.21.name=Lithium Chloride
 
-//Added 24/10/19
+# Added 24/10/19
 item.butanol.name=Butanol Cell
 
-//Try Fix IC2 Garbage vv
+# Try Fix IC2 Garbage vv
 fluidHotWater=Heated Water
 fluidHotWater.name=Heated Water
-//Try Fix IC2 Garbage ^^
+# Try Fix IC2 Garbage ^^
 
 
-//Added 11/12/19
+# Added 11/12/19
 item.itemHotIngotTitanium.name=Hot Titanium Ingot
 item.OilHeavy.name=Heavy Oil Cell
 item.UnsymmetricalDimethylhydrazine.name=Unsymmetrical Dimethylhydrazine Cell
@@ -3252,7 +3228,7 @@ item.saltwater.name=Salt Water Cell
 item.BasicAgrichemItem.22.name=Mold (Pellet)
 item.BasicAgrichemItem.23.name=Clean Aluminium Mix
 
-//Added 12/12/19
+# Added 12/12/19
 
 item.BasicGenericChemItem.0.name=Red Metal Catalyst
 item.BasicGenericChemItem.1.name=Yellow Metal Catalyst
@@ -3263,10 +3239,10 @@ item.BasicGenericChemItem.5.name=Brown Metal Catalyst
 item.MudRedSlurry.name=Cell of Red Mud Slurry
 item.liquid_toluene.name=Toluene Cell
 
-//Added 17/01/20
+# Added 17/01/20
 item.BasicGenericChemItem.6.name=Pink Metal Catalyst
 
-//Added 23/03/20
+# Added 23/03/20
 item.BasicMetaFood.0.name=Raw Human Meat
 item.BasicMetaFood.1.name=Cooked Human Meat
 item.BasicMetaFood.2.name=Raw Horse Meat
@@ -3292,7 +3268,7 @@ item.BasicAlgaeItem.4.name=Breedable Algae
 item.BasicAlgaeItem.5.name=Breedable Algae
 item.BasicAlgaeItem.6.name=Breedable Algae
 
-//Added 30/03/20
+# Added 30/03/20
 item.milledChalcopyrite.name=Milled Chalcopyrite
 item.milledSphalerite.name=Milled Sphalerite
 item.milledNickel.name=Milled Nickel
@@ -3306,7 +3282,7 @@ item.FrothPentlanditeflotation.name=Pentlandite Flotation Froth Cell
 item.BasicGenericChemItem.7.name=Alumina Milling Ball
 item.BasicGenericChemItem.8.name=Soapstone Milling Ball
 
-//Added 31/03/20
+# Added 31/03/20
 item.BasicGenericChemItem.9.name=Sodium Ethoxide Dust
 item.BasicGenericChemItem.10.name=Sodium Ethyl Xanthate Dust
 item.BasicGenericChemItem.11.name=Potassium Ethyl Xanthate Dust
@@ -3317,7 +3293,7 @@ item.BasicAgrichemItem.24.name=Pinecone
 item.BasicAgrichemItem.25.name=Crushed Pine Materials
 item.pineoil.name=Pine Oil Cell
 
-//Added 11/4/20
+# Added 11/4/20
 item.milledRedstone.name=Milled Redstone
 item.milledSpessartine.name=Milled Spessartine
 item.milledGrossular.name=Milled Grossular
@@ -3329,10 +3305,10 @@ item.FrothGrossularflotation.name=Grossular Flotation Froth Cell
 item.FrothAlmandineflotation.name=Almandine Flotation Froth Cell
 item.FrothPyropeflotation.name=Pyrope Flotation Froth Cell
 
-//Added 13/04/20
+# Added 13/04/20
 item.T3RecipeSelector.name=Programmed Breakthrough Circuit
 
-//Added 03/05/20
+# Added 03/05/20
 entity.miscutils.batKing.name=Spectral Bat
 entity.miscutils.bigChickenFriendly.name=Giant Chicken
 entity.miscutils.AusDingo.name=Dingo
@@ -3341,10 +3317,10 @@ entity.miscutils.AusSpider.name=Forest Spider
 entity.miscutils.AusOctopus.name=Octopus
 container.EggBox=Egg Hatching Box
 
-//Added 24/05/20
+# Added 24/05/20
 container.VolumetricFlaskSetter=Volumetric Flask Configurator
 
-//Added 26/05/20
+# Added 26/05/20
 item.itemIngotLaurenium.name=Laurenium Ingot
 item.itemHotIngotLaurenium.name=Hot Laurenium Ingot
 item.itemDustLaurenium.name=Laurenium Dust
@@ -3382,7 +3358,7 @@ item.itemCellBotmium.name=Botmium Cell
 tile.Block of Botmium.name=Block of Botmium
 tile.Botmium Frame Box.name=Botmium Frame Box
 
-//Added 29/05/20
+# Added 29/05/20
 item.itemBasicTurbine.name=Basic Turbine
 item.itemBasicTurbine_0.name=Basic Iron Turbine
 item.itemBasicTurbine_1.name=Basic Bronze Turbine
@@ -3394,7 +3370,7 @@ interaction.voidexcess.disabled=Void Excess Disabled
 interaction.separateBusses.enabled=Input busses are separated
 interaction.separateBusses.disabled=Input busses are not separated
 
-//Added 29/11/21
+# Added 29/11/21
 
 item.BasicNuclearChemItem.0.name=Uranium Residue Mix
 item.BasicNuclearChemItem.1.name=Plutonium Residue Mix
@@ -3410,7 +3386,7 @@ item.itemCellLiFBeF2ZrF4UF4.name=LFTR Fuel II Cell
 item.itemCellLiFBeF2ThF4UF4.name=LFTR Fuel III Cell
 item.Li2BeF2UF4.name=Burnt Li2BeF2UF4 Cell
 
-//Added 6/12/21
+# Added 6/12/21
 item.itemCellLiFBeF2UF4FP.name=LiFBeF2UF4FP Cell
 item.itemCellUF6F2.name=UF6F2 Cell
 item.itemCellLiFBeF2ThF4.name=LiFBeF2ThF4 Cell
@@ -3422,7 +3398,7 @@ item.itemCellLiFBeF2UF4.name=LiFBeF2UF4 Cell
 item.itemCellSodiumFluoride.name=Sodium Fluoride Cell
 item.itemCellLiFBeF2.name=LiFBeF2 Cell
 
-//Added 7/12/21
+# Added 7/12/21
 item.itemCellDysprosium.name=Dysprosium Cell
 item.itemCellThorium.name=Thorium Cell
 item.itemCellTellurium.name=Tellurium Cell
@@ -3443,7 +3419,7 @@ item.itemDustTinyAmmoniumTetrafluoroberyllate.name=Tiny Ammonium Tetrafluorobery
 item.itemDustSmallAmmoniumTetrafluoroberyllate.name=Small Ammonium Tetrafluoroberyllate Dust
 item.itemDustAmmoniumTetrafluoroberyllate.name=Ammonium Tetrafluoroberyllate Dust
 
-//Added 10/12/21
+# Added 10/12/21
 item.ImpureLiFBeF2.name=Impure LiFBeF2 Cell
 item.itemCellHeliumSpargedLiFBeF2UF4FP.name=Helium Sparged LiFBeF2UF4FP Cell
 item.itemCellFluorineSpargedLiFThF4.name=Fluorine Sparged LiFThF4 Cell
@@ -3465,7 +3441,7 @@ item.itemRotorHS188A.name=HS-188A Rotor
 item.itemGearHS188A.name=HS-188A Gear
 item.itemCellHS188A.name=HS-188A Cell
 
-//Added 12/12/21
+# Added 12/12/21
 item.itemIngotErbium.name=Erbium Ingot
 item.itemHotIngotErbium.name=Hot Erbium Ingot
 item.itemDustErbium.name=Erbium Dust
@@ -3517,30 +3493,30 @@ item.itemCellPraseodymium.name=Praseodymium Cell
 item.milledMonazite.name=Milled Monazite
 item.FrothMonaziteflotation.name=Monazite Flotation Froth Cell
 
-//Added 18/12/21
+# Added 18/12/21
 item.BasicGenericChemItem.13.name=Formaldehyde Catalyst
 item.hydrogenchloridemix.name=Hydrogen Chlorine Mix
 
-//Added 19/01/22
+# Added 19/01/22
 item.SunnariumBit.name=Sunnarium Bit
 
-//Added 29/01/22
+# Added 29/01/22
 sleep.event.okay=You slept well and now feel a little better.
 sleep.event.good=You slept well and now feel much better.
 sleep.event.wellrested=You feel really well rested.
 sleep.event.downsides=The downsides of life no longer effect you.
 item.miscutils:magicfeather.name=Magical Feather
 
-//Added 10/02/22
+# Added 10/02/22
 item.BasicGenericChemItem.14.name=Solid-Acid Catalyst
 
-//Added 30/05/22
+# Added 30/05/22
 item.BasicGenericChemItem.15.name=Infinite Mutation Catalyst
 
-//Added 23/10/22
+# Added 23/10/22
 miscutils.machines.QFTFluidMode=Quantum Force Transformer Fluid Output Mode
 
-//Added 16/11/22
+# Added 16/11/22
 item.BasicGenericChemItem.16.name=Platinum Group Catalyst
 item.BasicGenericChemItem.17.name=Plastic Polymer Catalyst
 item.BasicGenericChemItem.18.name=Rubber Polymer Catalyst
@@ -3561,13 +3537,13 @@ item.itemSimpleFiremaker.message.1=You somehow managed to set yourself on fire..
 item.itemSimpleFiremaker.message.2=You created a fire!
 item.itemSimpleFiremaker.message.3=Your attemp does nothing.
 
-//Added 17/07/23
+# Added 17/07/23
 item.BasicGenericChemItem.29.name=Limpid Water Catalyst
 item.BasicGenericChemItem.30.name=Flawless Water Catalyst
 
-//Added 18/07/23
+# Added 18/07/23
 item.BasicGenericChemItem.31.name=Particle Acceleration Catalyst
 item.BasicGenericChemItem.32.name=Synchrotron-Capable Catalyst
 
-//Added 19/09/23
+# Added 19/09/23
 item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
