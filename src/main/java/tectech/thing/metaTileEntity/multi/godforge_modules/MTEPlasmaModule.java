@@ -1,6 +1,8 @@
 package tectech.thing.metaTileEntity.multi.godforge_modules;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
+import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
@@ -11,7 +13,6 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -42,6 +43,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import tectech.loader.TecTechConfig;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.util.CommonValues;
 
@@ -49,7 +51,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
     private long EUt = 0;
     private int currentParallel = 0;
-    private boolean debug = false;
+    private boolean debug = TecTechConfig.DEBUG_MODE;
     private int inputMaxParallel = 0;
 
     public MTEPlasmaModule(int aID, String aName, String aNameRegional) {
@@ -78,8 +80,8 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
-                if (recipe.mSpecialValue > getPlasmaTier()
-                    || Objects.equals(recipe.mSpecialItems.toString(), "true") && !isMultiStepPlasmaCapable) {
+                if (recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0) > getPlasmaTier()
+                    || (recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) && !isMultiStepPlasmaCapable)) {
                     return SimpleCheckRecipeResult.ofFailure("missing_upgrades");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -201,9 +203,16 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 + formatNumbers(mMaxProgresstime / 20)
                 + RESET
                 + " s");
-        str.add("Currently using: " + RED + formatNumbers(EUt) + RESET + " EU/t");
+        str.add(
+            "Currently using: " + RED
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0")
+                + RESET
+                + " EU/t");
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
-        str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(currentParallel));
+        str.add(
+            YELLOW + "Current Parallel: "
+                + RESET
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0"));
         str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));
         str.add(YELLOW + "Energy multiplier: " + RESET + formatNumbers(getEnergyDiscount()));
         str.add(YELLOW + "Recipe time divisor per non-perfect OC: " + RESET + formatNumbers(getOverclockTimeFactor()));
