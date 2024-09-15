@@ -8,8 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-import gtPlusPlus.xmod.gregtech.HandlerGT;
-
 public abstract class WorldGen_GT {
 
     public final String mWorldGenName;

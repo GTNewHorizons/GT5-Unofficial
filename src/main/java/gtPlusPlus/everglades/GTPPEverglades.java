@@ -4,11 +4,9 @@ import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.config.Configuration;
 
 import bwcrossmod.galacticgreg.MTEVoidMinerBase;
 import cpw.mods.fml.common.Mod;
@@ -31,8 +29,6 @@ import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Base;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Ore_Layer;
 import gtPlusPlus.everglades.gen.gt.WorldGen_Ores;
 import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.xmod.gregtech.HandlerGT;
-import gtPlusPlus.xmod.gregtech.api.util.GTPPConfig;
 
 @Mod(
     modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,

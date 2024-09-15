@@ -3,13 +3,13 @@ package gtPlusPlus.preloader.asm.transformers;
 import java.util.HashSet;
 import java.util.Set;
 
-import gtPlusPlus.core.config.ASMConfiguration;
 import net.minecraft.launchwrapper.IClassTransformer;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import gregtech.asm.GTCorePlugin;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.preloader.PreloaderLogger;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;

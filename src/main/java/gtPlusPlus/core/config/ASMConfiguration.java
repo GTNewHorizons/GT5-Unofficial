@@ -1,6 +1,7 @@
 package gtPlusPlus.core.config;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
 @Config(modid = Mods.Names.G_T_PLUS_PLUS, configSubDirectory = "GTPlusPlus", category = "asm", filename = "GTPlusPlus")
@@ -8,12 +9,14 @@ import gregtech.api.enums.Mods;
 @Config.Comment("ASM section")
 @Config.RequiresMcRestart
 public class ASMConfiguration {
+
     public static Debug debug = new Debug();
     public static General general = new General();
 
     // Debug
     @Config.Comment("Debug section")
-    public static class Debug{
+    public static class Debug {
+
         @Config.Comment("Disables ALL logging from GT++.")
         @Config.DefaultBoolean(true)
         public boolean disableAllLogging;
@@ -32,7 +35,7 @@ public class ASMConfiguration {
     }
 
     @Config.Comment("General section")
-    public static class General{
+    public static class General {
         // General Features
 
         @Config.Comment("Prevents the game crashing from having invalid keybinds. https://github.com/alkcorp/GTplusplus/issues/544")

@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gregtech.api.enums.MetaTileEntityIDs.RedstoneStrengthDisplay;
+
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneStrengthDisplay;
-
-import static gregtech.api.enums.MetaTileEntityIDs.RedstoneStrengthDisplay;
 
 public class GregtechRedstoneStrengthDisplay {
 

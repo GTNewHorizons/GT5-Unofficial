@@ -1,7 +1,5 @@
 package gregtech.api.enums;
 
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-
 /**
  * An enum for all registered MetaTileEntities.
  * No more magic numbers about TE's IDs. Yay!!!

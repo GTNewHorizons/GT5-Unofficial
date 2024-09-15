@@ -24,7 +24,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.everglades.dimension.DimensionEverglades;
-import gtPlusPlus.xmod.gregtech.HandlerGT;
 
 public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
 
@@ -85,7 +84,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         boolean GC_UNUSED3, Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         super(aName, sList, aDefault);
         Logger.WORLD("Creating Ore Layer Object");
-        this.mOverworld =  aOverworld;
+        this.mOverworld = aOverworld;
         this.mNether = aNether;
         this.mEnd = aEnd;
         this.mMinY = 5;
