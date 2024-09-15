@@ -29,7 +29,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import bartworks.system.material.WerkstoffLoader;
 import bwcrossmod.galacticraft.planets.ross128b.WorldProviderRoss128b;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -183,6 +183,6 @@ public class BWWorldGenRoss128b extends BWOreLayer {
 
     @Override
     public boolean isGenerationAllowed(String aDimName, int aDimensionType, int aAllowedDimensionType) {
-        return aDimensionType == ConfigHandler.ross128BID;
+        return aDimensionType == Configuration.crossModInteractions.ross128BID;
     }
 }

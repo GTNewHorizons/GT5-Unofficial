@@ -67,7 +67,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.MainMod;
 import bartworks.client.renderer.EICPistonVisualizer;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import bartworks.common.net.EICPacket;
 import bartworks.util.Coords;
 import cpw.mods.fml.relauncher.Side;
@@ -95,7 +95,7 @@ import gregtech.api.util.OverclockCalculator;
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
     implements ISurvivalConstructable {
 
-    private static final boolean pistonEnabled = !ConfigHandler.disablePistonInEIC;
+    private static final boolean pistonEnabled = !Configuration.multiblocks.disablePistonInEIC;
     private Boolean piston = true;
     private static final SoundResource sound = SoundResource.RANDOM_EXPLODE;
     private final ArrayList<ChunkCoordinates> chunkCoordinates = new ArrayList<>(5);

@@ -26,7 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -98,7 +98,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         tt.addMachineType("Geothermal Heat Pump")
             .addInfo("Consumes " + GTValues.V[this.mTier + 2] + "EU/t")
             .addInfo("Has 4 Modes, use the Screwdriver to change them:");
-        if (ConfigHandler.DEHPDirectSteam) {
+        if (Configuration.multiblocks.DEHPDirectSteam) {
             tt.addInfo("0 Idle, 1 Steam, 2 Superheated Steam (requires Distilled Water), 3 Retract")
                 .addInfo("Explodes when it runs out of Water/Distilled Water")
                 .addInfo(
@@ -233,7 +233,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         if (this.mMode == 0) {
             this.mMode = 1;
         }
-        if (ConfigHandler.DEHPDirectSteam) {
+        if (Configuration.multiblocks.DEHPDirectSteam) {
             if (this.mMode == 1) {
                 long steamProduced = this.mTier * 600 * 2L * this.mEfficiency / 10000L;
                 long waterConsume = (steamProduced + 160) / 160;
