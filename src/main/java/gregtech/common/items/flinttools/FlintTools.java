@@ -8,8 +8,10 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import org.jetbrains.annotations.NotNull;
 
 public class FlintTools {
     public static Item.ToolMaterial FLINT_MATERIAL = EnumHelper.addToolMaterial("FLINT", 1, 128, 4.0F, 1.0F, 5);
@@ -99,14 +101,15 @@ public class FlintTools {
         );
     }
 
-    // Below is transition code, to move from old GT tools, to new flint tools. Eventually, this can be removed.
     public static NBTTagCompound transformFlintTool(NBTTagCompound tagCompound) {
         int oldId = tagCompound.getShort("Damage");
         int id;
+        boolean fireAspect = false;
 
         switch (oldId) {
             case 0:
                 id = Item.getIdFromItem(FlintTools.SWORD);
+                fireAspect = true;
                 break;
             case 2:
                 id = Item.getIdFromItem(FlintTools.PICKAXE);
@@ -116,6 +119,7 @@ public class FlintTools {
                 break;
             case 6:
                 id = Item.getIdFromItem(FlintTools.AXE);
+                fireAspect = true;
                 break;
             case 8:
                 id = Item.getIdFromItem(FlintTools.HOE);
@@ -131,9 +135,32 @@ public class FlintTools {
         tagCompound.setShort("Damage", (short) 0);
         tagCompound.setTag("tag", new NBTTagCompound()); // Erase old GT data.
 
+        // Apply Fire Aspect enchantment if fireAspect is true
+        if (fireAspect) {
+            NBTTagCompound enchantTag = getEnchantedTagCompound();
+
+            // Attach the new tag containing the enchantments to the tool
+            tagCompound.setTag("tag", enchantTag);
+        }
+
         return tagCompound;
     }
 
+    @NotNull
+    private static NBTTagCompound getEnchantedTagCompound() {
+        NBTTagCompound enchantTag = new NBTTagCompound();
+        NBTTagList enchantments = new NBTTagList();
+
+        // Add Fire Aspect enchantment
+        NBTTagCompound fireAspectTag = new NBTTagCompound();
+        fireAspectTag.setShort("id", (short) Enchantment.fireAspect.effectId); // Fire Aspect ID
+        fireAspectTag.setShort("lvl", (short) 1); // Level 1
+        enchantments.appendTag(fireAspectTag);
+
+        // Attach enchantments list to the "tag" NBTTagCompound
+        enchantTag.setTag("ench", enchantments);
+        return enchantTag;
+    }
 
     public static void registerPosteaTransformations() {
         ItemStackReplacementManager.addItemReplacement("gregtech:gt.metatool.01", FlintTools::transformFlintTool);
