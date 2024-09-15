@@ -9,13 +9,11 @@ public class GregtechRedstoneStrengthDisplay {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Redstone Strength Display.");
-        if (GTPPCore.ConfigSwitches.enableMachine_RedstoneBlocks) {
-            GregtechItemList.RedstoneStrengthDisplay.set(
-                new MTERedstoneStrengthDisplay(
-                    31804,
-                    "redstone.display",
-                    "Redstone Strength Display",
-                    "Displays Redstone Strength").getStackForm(1L));
-        }
+        GregtechItemList.RedstoneStrengthDisplay.set(
+            new MTERedstoneStrengthDisplay(
+                31804,
+                "redstone.display",
+                "Redstone Strength Display",
+                "Displays Redstone Strength").getStackForm(1L));
     }
 }

@@ -1,7 +1,5 @@
 package gtPlusPlus.core.config;
 
-import static gregtech.api.enums.Mods.GregTech;
-import static gtPlusPlus.core.lib.GTPPCore.ConfigSwitches.*;
 import static gtPlusPlus.core.lib.GTPPCore.EVERGLADESBIOME_ID;
 import static gtPlusPlus.core.lib.GTPPCore.EVERGLADES_ID;
 

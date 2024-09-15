@@ -9,8 +9,6 @@ public class GregtechRedstoneStrengthScale {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Redstone Strength Scale.");
-        if (GTPPCore.ConfigSwitches.enableMachine_RedstoneBlocks) {
-            GregtechItemList.RedstoneStrengthScale.set(new MTERedstoneStrengthScale(31805).getStackForm(1L));
-        }
+        GregtechItemList.RedstoneStrengthScale.set(new MTERedstoneStrengthScale(31805).getStackForm(1L));
     }
 }

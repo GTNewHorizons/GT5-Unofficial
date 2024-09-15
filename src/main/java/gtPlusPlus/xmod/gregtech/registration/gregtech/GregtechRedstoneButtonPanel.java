@@ -9,8 +9,7 @@ public class GregtechRedstoneButtonPanel {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Redstone Button Panel.");
-        if (GTPPCore.ConfigSwitches.enableMachine_RedstoneBlocks) {
-            GregtechItemList.RedstoneButtonPanel.set(new MTERedstoneButtonPanel(31800).getStackForm(1L));
-        }
+        GregtechItemList.RedstoneButtonPanel.set(new MTERedstoneButtonPanel(31800).getStackForm(1L));
+
     }
 }

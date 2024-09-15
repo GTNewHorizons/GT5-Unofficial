@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.ForbiddenMagic;
 
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class CompatThaumcraft {

@@ -5,7 +5,6 @@ import static gtPlusPlus.core.handler.CompatHandler.RemoveRecipeQueue;
 import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 

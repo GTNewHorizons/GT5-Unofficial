@@ -27,7 +27,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
 import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.data.AES;
 import gtPlusPlus.core.util.data.FileUtils;

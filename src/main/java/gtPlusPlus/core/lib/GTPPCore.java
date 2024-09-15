@@ -64,13 +64,6 @@ public class GTPPCore {
 
     public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
-    public static class ConfigSwitches {
-
-
-
-        public static boolean enableMachine_RedstoneBlocks = true;
-    }
-
     public static class Everglades {
 
         public static final String NAME = "GT++ Toxic Everglades";

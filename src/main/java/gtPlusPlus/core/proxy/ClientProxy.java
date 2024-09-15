@@ -44,8 +44,6 @@ import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.nei.NEIGTPPConfig;
 import gtPlusPlus.xmod.gregtech.common.render.CapeRenderer;
