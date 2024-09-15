@@ -2,7 +2,6 @@ package gtPlusPlus.core.proxy;
 
 import java.util.ArrayList;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +38,7 @@ import gtPlusPlus.core.client.renderer.RenderSickBlaze;
 import gtPlusPlus.core.client.renderer.RenderStaballoyConstruct;
 import gtPlusPlus.core.client.renderer.RenderToxinball;
 import gtPlusPlus.core.common.CommonProxy;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;

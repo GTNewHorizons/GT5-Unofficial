@@ -19,8 +19,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 
-import gregtech.GTMod;
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -32,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.loader.Loaders;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -47,14 +46,12 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.everglades.dimension.DimensionEverglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
@@ -1174,7 +1171,6 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
-
         // Industrial Centrifuge
         RECIPE_IndustrialCentrifugeController = GregtechItemList.Industrial_Centrifuge.get(1);
         RECIPE_IndustrialCentrifugeCasing = GregtechItemList.Casing_Centrifuge1.get(1);
@@ -1282,7 +1278,6 @@ public class RecipesMachines {
             plateSteel,
             plateSteel,
             RECIPE_IndustrialCokeOvenCasingB);
-
 
         // Industrial Electrolyzer
         RECIPE_IndustrialElectrolyzerController = GregtechItemList.Industrial_Electrolyzer.get(1);
@@ -1459,7 +1454,6 @@ public class RecipesMachines {
             "plateZeron100",
             RECIPE_IndustrialWireFactoryController);
 
-
         // Tiered Tanks
         CI.component_Plate[1] = "plateTin";
         pipeTier1 = "pipeLargeClay";
@@ -1527,8 +1521,6 @@ public class RecipesMachines {
             CI.electricPump_MV,
             CI.circuitTier1,
             GregtechItemList.GTFluidTank_HV.get(1));
-
-
 
         // Industrial Multi Tank
         // RECIPE_IndustrialMultiTankController = GregtechItemList.Industrial_MultiTank.get(1);
@@ -1729,8 +1721,6 @@ public class RecipesMachines {
             .eut(16)
             .addTo(assemblerRecipes);
 
-
-
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_Coil_Infinity.get(1),
@@ -1909,9 +1899,6 @@ public class RecipesMachines {
             .eut(64)
             .addTo(assemblerRecipes);
 
-
-
-
         // Tesseracts
         RECIPE_TesseractGenerator = GregtechItemList.GT4_Tesseract_Generator.get(1);
         RECIPE_TesseractTerminal = GregtechItemList.GT4_Tesseract_Terminal.get(1);
@@ -1940,7 +1927,6 @@ public class RecipesMachines {
             "plateTitanium",
             RECIPE_TesseractTerminal);
 
-
         // simple washer
         final List<ItemStack> washers = ImmutableList.of(
             GregtechItemList.SimpleDustWasher_LV.get(1),
@@ -1968,7 +1954,6 @@ public class RecipesMachines {
                 .addTo(assemblerRecipes);
 
         }
-
 
         if (GTMod.gregtechproxy.mPollution) {
             RecipeUtils.addShapedGregtechRecipe(
@@ -2118,7 +2103,6 @@ public class RecipesMachines {
                 GregtechItemList.Pollution_Cleaner_MAX.get(1));
         }
 
-
         RECIPE_ThermalBoilerController = GregtechItemList.GT4_Thermal_Boiler.get(1);
         RECIPE_ThermalBoilerCasing = GregtechItemList.Casing_ThermalContainment.get(2);
         ItemStack centrifugeEV = ItemList.Machine_EV_Centrifuge.get(1);
@@ -2174,8 +2158,6 @@ public class RecipesMachines {
             .eut(240)
             .addTo(assemblerRecipes);
 
-
-
         // Air Intake Hatch
         RecipeUtils.addShapedGregtechRecipe(
             CI.component_Plate[6],
@@ -2200,8 +2182,6 @@ public class RecipesMachines {
             ItemList.Hatch_Input_ZPM.get(1),
             CI.getTieredCircuit(7),
             GregtechItemList.Hatch_Air_Intake_Extreme.get(1));
-
-
 
         // Thorium Reactor
         RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);
@@ -2421,8 +2401,6 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-
-
         // Mazut
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_LargeSemifluidGenerator.get(1L),
@@ -2430,7 +2408,6 @@ public class RecipesMachines {
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Pump_EV, 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
                 OrePrefixes.cableGt08.get(Materials.Electrum), 'G', MaterialsAlloy.INCONEL_792.getGear(1) });
-
 
         RecipeUtils.addShapedRecipe(
             "screwTitanium",
@@ -2564,8 +2541,6 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
-
-
         ItemStack plate = MaterialsAlloy.MARAGING300.getPlate(1);
         RecipeUtils.addShapedRecipe(
             plate,
@@ -2600,7 +2575,6 @@ public class RecipesMachines {
             CI.getTieredCircuit(4),
             plate,
             GregtechItemList.Industrial_CuttingFactoryController.get(1));
-
 
         // IV_MACHINE_Extruder
         plate = MaterialsAlloy.INCONEL_690.getPlate(1);
@@ -2637,8 +2611,6 @@ public class RecipesMachines {
             CI.getTieredCircuit(5),
             plate,
             GregtechItemList.Industrial_Extruder.get(1));
-
-
 
         plate = MaterialsAlloy.AQUATIC_STEEL.getPlate(1);
         RecipeUtils.addShapedRecipe(
@@ -2864,7 +2836,6 @@ public class RecipesMachines {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);
-
 
         // Drilling Platform Casings
         GTValues.RA.stdBuilder()

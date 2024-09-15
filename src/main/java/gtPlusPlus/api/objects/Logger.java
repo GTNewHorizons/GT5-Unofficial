@@ -1,11 +1,10 @@
 package gtPlusPlus.api.objects;
 
-import gtPlusPlus.core.config.Configuration;
 import org.apache.logging.log4j.LogManager;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.preloader.asm.AsmConfig;
 

@@ -14,7 +14,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import java.util.List;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableList;

@@ -13,9 +13,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Creator;
 import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Detector;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEAtmosphericReconditioner;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEPollutionCreator;

@@ -8,7 +8,6 @@ import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -67,7 +66,6 @@ import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.ItemGregtechPump;
 import gtPlusPlus.core.item.wearable.WearableLoader;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -608,9 +606,7 @@ public final class ModItems {
             false,
             null);
 
-
         itemBasicTurbine = new ItemBasicScrubberTurbine();
-
 
         // Zirconium
         // Cinter Pellet.
@@ -693,8 +689,6 @@ public final class ModItems {
          * GT_Values.RA.addMixerRecipe( arg0, //Item In arg1, arg2, arg3, arg4, //Fluid in arg5, //Fluid Out arg6,
          * //Item out arg7, //Eu arg8); //Time
          */
-
-
 
         // Juice
         FluidUtils.generateFluidNonMolten(

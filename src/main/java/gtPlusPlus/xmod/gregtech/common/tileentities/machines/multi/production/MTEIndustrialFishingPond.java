@@ -15,7 +15,6 @@ import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 import java.util.HashMap;
 import java.util.Map;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -49,6 +48,7 @@ import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;

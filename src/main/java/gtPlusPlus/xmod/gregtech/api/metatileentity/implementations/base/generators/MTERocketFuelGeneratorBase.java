@@ -4,7 +4,6 @@ import static gregtech.api.enums.GTValues.V;
 
 import java.util.Collection;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -22,6 +21,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;

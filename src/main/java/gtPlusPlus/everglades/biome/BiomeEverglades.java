@@ -1,6 +1,5 @@
 package gtPlusPlus.everglades.biome;
 
-import gtPlusPlus.core.config.Configuration;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityBat;
@@ -13,9 +12,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.everglades.dimension.DimensionEverglades;
 
 public class BiomeEverglades {

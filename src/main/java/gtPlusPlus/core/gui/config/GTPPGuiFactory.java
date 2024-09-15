@@ -1,7 +1,8 @@
 package gtPlusPlus.core.gui.config;
 
-import com.gtnewhorizon.gtnhlib.config.SimpleGuiFactory;
 import net.minecraft.client.gui.GuiScreen;
+
+import com.gtnewhorizon.gtnhlib.config.SimpleGuiFactory;
 
 public class GTPPGuiFactory implements SimpleGuiFactory {
 

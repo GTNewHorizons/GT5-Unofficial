@@ -1,11 +1,13 @@
 package gtPlusPlus.core.gui.config;
 
-import com.gtnewhorizon.gtnhlib.config.ConfigException;
-import com.gtnewhorizon.gtnhlib.config.SimpleGuiConfig;
-import gtPlusPlus.core.config.Configuration;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.gui.GuiScreen;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.SimpleGuiConfig;
+
+import gtPlusPlus.core.config.Configuration;
 
 public class ConfigGUI extends SimpleGuiConfig {
 
