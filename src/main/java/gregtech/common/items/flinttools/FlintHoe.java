@@ -6,7 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 public class FlintHoe extends ItemHoe {
 
     public FlintHoe() {
-        super(Util.FLINT_MATERIAL);
+        super(FlintTools.FLINT_MATERIAL);
         this.setUnlocalizedName("flintHoe");
         this.setTextureName("gregtech:tools/flintHoe");
         this.setCreativeTab(CreativeTabs.tabTools);

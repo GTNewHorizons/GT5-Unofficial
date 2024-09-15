@@ -21,6 +21,7 @@ import gregtech.common.items.flinttools.FlintHoe;
 import gregtech.common.items.flinttools.FlintPickaxe;
 import gregtech.common.items.flinttools.FlintShovel;
 import gregtech.common.items.flinttools.FlintSword;
+import gregtech.common.items.flinttools.FlintTools;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -335,11 +336,7 @@ public class GTMod implements IGTMod {
             .getEffectiveSide()
             .isServer()) AssemblyLineServer.fillMap(aEvent);
 
-        GameRegistry.registerItem(new FlintAxe(), "flintAxe");
-        GameRegistry.registerItem(new FlintSword(), "flintSword");
-        GameRegistry.registerItem(new FlintPickaxe(), "flintPickaxe");
-        GameRegistry.registerItem(new FlintShovel(), "flintShovel");
-        GameRegistry.registerItem(new FlintHoe(), "flintHoe");
+        FlintTools.registerTools();
     }
 
     @Mod.EventHandler
