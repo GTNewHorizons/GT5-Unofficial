@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
+import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
@@ -1315,6 +1316,15 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("InfinityPlasma")
+            .withLocalizedName("Infinity Plasma")
+            .withStateAndTemperature(PLASMA, 10000)
+            .buildAndRegister()
+            .configureMaterials(Materials.Infinity)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Infinity, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withLocalizedName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
@@ -2091,34 +2101,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .set(OrePrefixes.nugget, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
         GTOreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.Iron,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.Steel,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.TinAlloy,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.Copper,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
-            false,
-            false);
 
         GTOreDictUnificator.set(
             OrePrefixes.dust,

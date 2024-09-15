@@ -693,7 +693,6 @@ public enum OrePrefixes {
         plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateSuperdense.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
@@ -860,6 +859,7 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(Materials.Glowstone);
         nanite.mGeneratedItems.add(MaterialsUEVplus.Eternity);
         nanite.mGeneratedItems.add(MaterialsUEVplus.SixPhasedCopper);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.MagMatter);
         // -----
 
         gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);

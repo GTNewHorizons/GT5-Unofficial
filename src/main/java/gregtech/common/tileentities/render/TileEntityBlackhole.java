@@ -22,15 +22,19 @@ public class TileEntityBlackhole extends TileEntity {
     private static final String RENDER_NBT_TAG = NBT_TAG + "LASER_RENDER";
 
     public void setLaserColor(float r, float g, float b) {
-        laserR = r;
-        laserG = g;
-        laserB = b;
-        updateToClient();
+        if (!worldObj.isRemote) {
+            laserR = r;
+            laserG = g;
+            laserB = b;
+            updateToClient();
+        }
     }
 
     public void toggleLaser(boolean toggle) {
-        laserRender = toggle;
-        updateToClient();
+        if (!worldObj.isRemote) {
+            laserRender = toggle;
+            updateToClient();
+        }
     }
 
     public float getLaserR() {
@@ -51,8 +55,10 @@ public class TileEntityBlackhole extends TileEntity {
 
     public void setStability(float stability) {
         // Can probably be simplified, maps stability > .5 as 1, and stability <.5 from 0 to 1
-        this.stability = ((float) Math.min(stability + .5, 1f) - .5f) * 2f;
-        updateToClient();
+        if (!worldObj.isRemote) {
+            this.stability = ((float) Math.min(stability + .5, 1f) - .5f) * 2f;
+            updateToClient();
+        }
     }
 
     public float getStability() {

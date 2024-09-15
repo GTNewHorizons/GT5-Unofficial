@@ -500,7 +500,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.other.ConfigGeneral;
+import gregtech.common.config.Other;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;
@@ -4585,7 +4585,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 ItemList.Spray_Empty.get(1L),
                 ItemList.SPRAY_CAN_DYES_USED[i].get(1L),
                 ItemList.SPRAY_CAN_DYES[i].get(1L),
-                ConfigGeneral.sprayCanUses,
+                Other.sprayCanUses,
                 i);
             addItemBehavior(32000 + Spray_Colors[i], behaviourSprayColor);
             addItemBehavior(32000 + Spray_Colors_Used[i], behaviourSprayColor);

@@ -95,7 +95,6 @@ import bartworks.API.SideReference;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
 import bartworks.client.renderer.BWBlockOreRenderer;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.system.material.CircuitGeneration.BWCircuitsLoader;
 import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
@@ -1956,11 +1955,11 @@ public class WerkstoffLoader {
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BWItemMetaGeneratedBlock.class, "bw.blockores.01");
         GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BWItemMetaGeneratedBlock.class, "bw.blockores.02");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BWItemMetaGeneratedBlock.class, "bw.werkstoffblocks.01");
-        if (!ConfigHandler.disableBoltedBlocksCasing) GameRegistry.registerBlock(
+        GameRegistry.registerBlock(
             WerkstoffLoader.BWBlockCasings,
             BWItemMetaGeneratedBlock.class,
             "bw.werkstoffblockscasing.01");
-        if (!ConfigHandler.disableReboltedBlocksCasing) GameRegistry.registerBlock(
+        GameRegistry.registerBlock(
             WerkstoffLoader.BWBlockCasingsAdvanced,
             BWItemMetaGeneratedBlock.class,
             "bw.werkstoffblockscasingadvanced.01");

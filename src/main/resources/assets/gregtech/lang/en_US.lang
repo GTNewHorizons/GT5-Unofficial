@@ -531,7 +531,7 @@ GT5U.gui.text.drill_exhausted=§dDrill has exhausted all resources
 GT5U.gui.text.drill_generic_finished=§7Mining pipes have been retracted
 GT5U.gui.text.drill_retract_pipes_finished=§7Operation aborted
 GT5U.gui.text.backfiller_no_concrete=§7No liquid concrete
-GT5U.gui.text.no_black_hole=§7Black hole is not active
+GT5U.gui.text.no_black_hole=§7Requires an active black hole
 GT5U.gui.text.unstable_black_hole=§7Black hole is unstable
 GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.backfiller_working=§aPouring concrete
@@ -577,6 +577,36 @@ GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
+
+GT5U.gui.config.client=Client
+GT5U.gui.config.client.color_modulation=Color Modulation
+GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
+GT5U.gui.config.client.color_modulation.construction_foam=Construction Foam
+GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
+GT5U.gui.config.client.interface=Interface
+GT5U.gui.config.client.preference=Preference
+GT5U.gui.config.client.render=Render
+GT5U.gui.config.client.waila=Waila
+GT5U.gui.config.client.nei=NEI
+GT5U.gui.config.client.nei.recipe_categories=Recipe Categories
+GT5U.gui.config.gregtech=Gregtech
+GT5U.gui.config.gregtech.debug=Debug
+GT5U.gui.config.gregtech.features=Features
+GT5U.gui.config.gregtech.general=General
+GT5U.gui.config.gregtech.harvest_level=Harvest Level
+GT5U.gui.config.gregtech.machines=Machines
+GT5U.gui.config.gregtech.ore_drop_behavior=Ore Drop Behavior
+GT5U.gui.config.gregtech.pollution=Pollution
+GT5U.gui.config.machine_stats=Machine Stats
+GT5U.gui.config.machine_stats.bronze_solar_boiler=Bronze Solar Boiler
+GT5U.gui.config.machine_stats.steel_solar_boiler=Steel Solar Boiler
+GT5U.gui.config.machine_stats.machines=Machines
+GT5U.gui.config.machine_stats.microwave_energy_transmitter=Microwave Energy Transmitter
+GT5U.gui.config.machine_stats.mass_fabricator=Mass Fabricator
+GT5U.gui.config.machine_stats.teleporter=Teleporter
+GT5U.gui.config.worldgen=Worldgen
+GT5U.gui.config.worldgen.end_asteroids=End Asteroids
+GT5U.gui.config.worldgen.general=General
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
@@ -1416,7 +1446,9 @@ for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
 for.bees.species.dragonblood=Dragonblood
 
-for.bees.authority.machinist=Diddy & Nilau
+for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Diddy & Noila
+
+for.bees.authority.machinist=Diddy & Noila
 
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension
@@ -1624,6 +1656,16 @@ GT5U.gui.text.warm_up=§aWarming up
 GT5U.gui.text.machine_locked_to_different_recipe=§7Machine is already locked to a different recipe
 GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
 GT5U.gui.text.no_tools=§7Missing applicable tools
+
+# Cover Overflow Valve
+GTPP.gui.text.cover_overflow_valve_overflow_point=§7Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=§7Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§7Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=§7Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§7Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=§7Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_l_per_second=§7L/s
+GTPP.gui.text.cover_overflow_valve_l_per_update=§7L/update
 
 GTPP.EBF.heat=Heat capacity
 
