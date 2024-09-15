@@ -1,5 +1,7 @@
 package gtnhlanth.common.hatch;
 
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -7,7 +9,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GTRenderedTexture;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchNbtConsumable;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtnhlanth.common.item.ICanFocus;
@@ -36,15 +37,15 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public AutoMap<ItemStack> getItemsValidForUsageSlots() {
-        return new AutoMap<>();
+    public ArrayList<ItemStack> getItemsValidForUsageSlots() {
+        return new ArrayList<>();
     }
 
     @Override
     public boolean isItemValidForUsageSlot(ItemStack aStack) {
 
         if (this.getContentUsageSlots()
-            .size() == 0) {
+            .isEmpty()) {
             return aStack.getItem() instanceof ICanFocus;
         } else {
             return false;
@@ -60,7 +61,7 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
     public void depleteFocusDurability(int damage) {
 
         ItemStack stack = this.getContentUsageSlots()
-            .toArray()[0];
+            .get(0);
 
         Util.depleteDurabilityOfStack(stack, damage);
 
