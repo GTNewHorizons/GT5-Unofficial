@@ -12,7 +12,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static gregtech.common.items.IDMetaTool01.BRANCHCUTTER;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_HV;
 import static gregtech.common.items.IDMetaTool01.BUZZSAW_LV;
@@ -542,7 +542,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
         ItemStack controllerSlot = getControllerSlot();
         if (controllerSlot == null || !(controllerSlot.getItem() instanceof MetaGeneratedTool01)) return false;
 
-        for (MTEHatchInputBus inputBus : filterValidMTEs(mInputBusses)) {
+        for (MTEHatchInputBus inputBus : validMTEList(mInputBusses)) {
             ItemStack[] inventory = inputBus.getRealInventory();
             for (int slot = 0; slot < inventory.length; ++slot) {
                 if (isValidSapling(inventory[slot])) {
