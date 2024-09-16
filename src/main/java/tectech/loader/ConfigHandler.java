@@ -12,6 +12,7 @@ public class ConfigHandler {
     public static Modules modules = new Modules();
     public static TeslaTweaks teslaTweaks = new TeslaTweaks();
 
+    @Config.Comment("Debug section")
     public static class Debug{
         @Config.Comment("Enables logging and other purely debug features")
         @Config.DefaultBoolean(false)
@@ -21,6 +22,7 @@ public class ConfigHandler {
         public boolean POWERLESS_MODE = false;
     }
 
+    @Config.Comment("Features section")
     public static class Features{
         @Config.Comment("Set to false to disable explosions on everything bad that you can do")
         @Config.DefaultBoolean(true)
@@ -33,12 +35,14 @@ public class ConfigHandler {
         public boolean NERF_FUSION;
     }
 
+    @Config.Comment("Modules section")
     public static class Modules{
         @Config.Comment("If set to true, every op/admin will receive all errors occurred during the startup phase as in game message on join")
         @Config.DefaultBoolean(false)
         public boolean MOD_ADMIN_ERROR_LOGS;
     }
 
+    @Config.Comment("Tesla tweaks section")
     public static class TeslaTweaks{
         @Config.Comment("Set to true to enable outputting plasmas as gasses from the tesla tower with a 1:1 ratio")
         @Config.DefaultBoolean(false)
