@@ -3,7 +3,6 @@ package gtPlusPlus;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gtPlusPlus.core.lib.GTPPCore.ConfigSwitches.enableCustomCapes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,7 +41,6 @@ import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.plugin.manager.CoreManager;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
@@ -144,10 +142,6 @@ public class GTplusplus implements ActionListener {
         // Load all class objects within the plugin package.
         CoreManager.veryEarlyInit();
         PacketHandler.init();
-
-        if (!Utils.isServer()) {
-            enableCustomCapes = true;
-        }
 
         // Give this a go mate.
         setupMaterialBlacklist();

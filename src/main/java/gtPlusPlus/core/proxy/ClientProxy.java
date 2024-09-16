@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -21,7 +20,6 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
@@ -39,25 +37,13 @@ import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.nei.NEIGTPPConfig;
-import gtPlusPlus.xmod.gregtech.common.render.CapeRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
 import ic2.core.item.ItemFluidCell;
 
 public class ClientProxy extends CommonProxy {
-
-    private final CapeRenderer mCapeRenderer = new CapeRenderer();
-    public static String playerName = "";
-
-    @SubscribeEvent
-    public void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
-        if (ConfigSwitches.enableCustomCapes) {
-            mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
-        }
-    }
 
     @Override
     public void preInit(final FMLPreInitializationEvent e) {
