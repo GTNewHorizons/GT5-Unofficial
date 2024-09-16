@@ -1652,7 +1652,9 @@ public class WerkstoffLoader {
             DebugLog.log("Loading Recipes" + (System.nanoTime() - timepre));
             Integer[] clsArr = {};
             int size = 0;
-            if (BetterLoadingScreen.isModLoaded()) clsArr = CLSCompat.initCls();
+            if (BetterLoadingScreen.isModLoaded()) {
+                clsArr = CLSCompat.initCls();
+            }
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
                 new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new OreLoader(), new RawOreLoader(),
@@ -1670,7 +1672,9 @@ public class WerkstoffLoader {
                     progressBar.step("");
                     continue;
                 }
-                if (BetterLoadingScreen.isModLoaded()) size = CLSCompat.invokeStepSize(werkstoff, clsArr, size);
+                if (BetterLoadingScreen.isModLoaded()) {
+                    size = CLSCompat.invokeStepSize(werkstoff, clsArr, size);
+                }
                 DebugLog.log("Werkstoff: " + werkstoff.getDefaultName() + " " + (System.nanoTime() - timepreone));
                 for (IWerkstoffRunnable runnable : werkstoffRunnables) {
                     String loaderName = runnable.getClass()
