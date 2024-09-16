@@ -237,7 +237,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + ", 1) (Gaussian distribution with mean of "
                     + String.valueOf(this.baseSkew)
                     + ")")
-            .addInfo("The total change be negative!")
+            .addInfo("The total change can be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
             .addInfo(
