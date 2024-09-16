@@ -3,7 +3,6 @@ package gtPlusPlus;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gtPlusPlus.core.lib.GTPPCore.ConfigSwitches.enableCustomCapes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +11,9 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
+
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -34,16 +36,14 @@ import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
-import gtPlusPlus.core.config.ConfigHandler;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.plugin.manager.CoreManager;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
@@ -57,6 +57,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
     modid = Names.G_T_PLUS_PLUS,
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
+    guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
     dependencies = "required-after:Forge;" + " after:TConstruct;"
         + " after:dreamcraft;"
         + " after:IC2;"
@@ -109,6 +110,13 @@ public class GTplusplus implements ActionListener {
         }
     }
 
+    static {
+        try {
+            ConfigurationManager.registerConfig(Configuration.class);
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
     // Mod Instance
@@ -150,15 +158,8 @@ public class GTplusplus implements ActionListener {
         CoreManager.veryEarlyInit();
         PacketHandler.init();
 
-        if (!Utils.isServer()) {
-            enableCustomCapes = true;
-        }
-
         // Give this a go mate.
         setupMaterialBlacklist();
-
-        // Handle GT++ Config
-        ConfigHandler.handleConfigFile(event);
 
         // Check for Dev
         GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
@@ -178,7 +179,7 @@ public class GTplusplus implements ActionListener {
         MetaGTProxy.init();
         CoreManager.init();
         // Used by foreign players to generate .lang files for translation.
-        if (GTPPCore.ConfigSwitches.dumpItemAndBlockData) {
+        if (Configuration.debug.dumpItemAndBlockData) {
             LocaleUtils.generateFakeLocaleFile();
         }
     }
@@ -222,7 +223,6 @@ public class GTplusplus implements ActionListener {
     public synchronized void serverStarting(final FMLServerStartingEvent event) {
         INIT_PHASE.SERVER_START.setPhaseActive(true);
         event.registerServerCommand(new CommandMath());
-        event.registerServerCommand(new CommandEnableDebugWhileRunning());
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }

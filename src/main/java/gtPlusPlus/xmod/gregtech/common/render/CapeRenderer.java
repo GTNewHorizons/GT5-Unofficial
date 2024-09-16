@@ -25,8 +25,8 @@ import org.lwjgl.opengl.GL11;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
 import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.data.AES;
 import gtPlusPlus.core.util.data.FileUtils;
@@ -77,7 +77,7 @@ public class CapeRenderer extends RenderPlayer {
         if (hasSetRenderer) {
 
             // We have capes turned off, so let's not render.
-            if (!ConfigSwitches.enableCustomCapes) {
+            if (!Configuration.features.enableCustomCapes) {
                 return;
             }
 

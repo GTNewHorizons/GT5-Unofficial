@@ -27,6 +27,7 @@ import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
@@ -169,7 +170,7 @@ public class BaseItemComponent extends Item {
     }
 
     public String getCorrectTextures() {
-        if (!GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (!Configuration.visual.useGregtechTextures) {
             return GTPlusPlus.ID + ":" + "item" + this.componentType.COMPONENT_NAME;
         }
         String metType = "9j4852jyo3rjmh3owlhw9oe";
@@ -324,7 +325,7 @@ public class BaseItemComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        return (GTPPCore.ConfigSwitches.useGregtechTextures ? true : false);
+        return (Configuration.visual.useGregtechTextures ? true : false);
     }
 
     @SuppressWarnings("unchecked")
@@ -332,10 +333,10 @@ public class BaseItemComponent extends Item {
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 
         if (this.componentType == ComponentTypes.CELL || this.componentType == ComponentTypes.PLASMACELL) {
-            if (renderPass == 0 && !GTPPCore.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
                 return Utils.rgbtoHexValue(255, 255, 255);
             }
-            if (renderPass == 1 && GTPPCore.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
                 return Utils.rgbtoHexValue(255, 255, 255);
             }
         }
@@ -380,7 +381,7 @@ public class BaseItemComponent extends Item {
 
     @Override
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (Configuration.visual.useGregtechTextures) {
             if (pass == 0) {
                 return this.base;
             }
@@ -392,7 +393,7 @@ public class BaseItemComponent extends Item {
     @Override
     public void registerIcons(final IIconRegister i) {
 
-        if (GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (Configuration.visual.useGregtechTextures) {
             this.base = i.registerIcon(getCorrectTextures());
             this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
         } else {
