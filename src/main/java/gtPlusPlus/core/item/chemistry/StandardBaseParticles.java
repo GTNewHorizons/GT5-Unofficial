@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.material.Particle.ElementaryGroup;
@@ -87,7 +87,7 @@ public class StandardBaseParticles extends BaseItemParticle {
     }
 
     public static Particle getParticle(ItemStack aStack) {
-        AutoMap<Particle> g = Particle.aMap;
+        ArrayList<Particle> g = Particle.aMap;
         for (Particle p : g) {
             String aPartName = Utils.sanitizeString(p.mParticleName.toLowerCase());
             String expectedPart = Utils.sanitizeString(aTypes[aStack.getItemDamage()].toLowerCase());

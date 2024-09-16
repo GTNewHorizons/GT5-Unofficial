@@ -1,5 +1,7 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityChicken;
@@ -14,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -63,10 +64,10 @@ public class TileEntityAdvPooCollector extends TileEntityBaseFluidCollector {
         return false;
     }
 
-    private static AutoMap<Class> aEntityToDrain = new AutoMap<>();
+    private static final ArrayList<Class> aEntityToDrain = new ArrayList<>();
 
     @Override
-    public AutoMap<Class> aThingsToLookFor() {
+    public ArrayList<Class> aThingsToLookFor() {
         if (aEntityToDrain.isEmpty()) {
             aEntityToDrain.add(EntityAnimal.class);
             aEntityToDrain.add(IAnimals.class);

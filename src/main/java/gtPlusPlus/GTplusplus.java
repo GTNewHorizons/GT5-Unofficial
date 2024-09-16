@@ -280,25 +280,25 @@ public class GTplusplus implements ActionListener {
     }
 
     private static void setupMaterialBlacklist() {
-        Material.invalidMaterials.put(Materials._NULL);
-        Material.invalidMaterials.put(Materials.Clay);
-        Material.invalidMaterials.put(Materials.Phosphorus);
-        Material.invalidMaterials.put(Materials.Steel);
-        Material.invalidMaterials.put(Materials.Bronze);
-        Material.invalidMaterials.put(Materials.Hydrogen);
+        Material.invalidMaterials.add(Materials._NULL);
+        Material.invalidMaterials.add(Materials.Clay);
+        Material.invalidMaterials.add(Materials.Phosphorus);
+        Material.invalidMaterials.add(Materials.Steel);
+        Material.invalidMaterials.add(Materials.Bronze);
+        Material.invalidMaterials.add(Materials.Hydrogen);
         // Infused TC stuff
-        Material.invalidMaterials.put(Materials.InfusedAir);
-        Material.invalidMaterials.put(Materials.InfusedEarth);
-        Material.invalidMaterials.put(Materials.InfusedFire);
-        Material.invalidMaterials.put(Materials.InfusedWater);
+        Material.invalidMaterials.add(Materials.InfusedAir);
+        Material.invalidMaterials.add(Materials.InfusedEarth);
+        Material.invalidMaterials.add(Materials.InfusedFire);
+        Material.invalidMaterials.add(Materials.InfusedWater);
         // EIO Materials
-        Material.invalidMaterials.put(Materials.SoulSand);
-        Material.invalidMaterials.put(Materials.EnderPearl);
-        Material.invalidMaterials.put(Materials.EnderEye);
-        Material.invalidMaterials.put(Materials.Redstone);
-        Material.invalidMaterials.put(Materials.Glowstone);
-        Material.invalidMaterials.put(Materials.Soularium);
-        Material.invalidMaterials.put(Materials.PhasedIron);
+        Material.invalidMaterials.add(Materials.SoulSand);
+        Material.invalidMaterials.add(Materials.EnderPearl);
+        Material.invalidMaterials.add(Materials.EnderEye);
+        Material.invalidMaterials.add(Materials.Redstone);
+        Material.invalidMaterials.add(Materials.Glowstone);
+        Material.invalidMaterials.add(Materials.Soularium);
+        Material.invalidMaterials.add(Materials.PhasedIron);
 
     }
 

@@ -1,5 +1,6 @@
 package gtPlusPlus.core.block.machine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -25,7 +26,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.inventories.InventorySuperJukebox;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -315,12 +315,12 @@ public class BlockSuperJukebox extends BlockJukebox {
 
         // Determine which record to play
         public boolean selectRecordToPlayFromInventoryAndSetViaVanillaHandler() {
-            AutoMap<ItemStack> mValidRecords = new AutoMap<>();
+            ArrayList<ItemStack> mValidRecords = new ArrayList<>();
             for (ItemStack g : this.getInventory()
                 .getInventory()) {
                 if (g != null) {
                     if (g.getItem() instanceof ItemRecord) {
-                        mValidRecords.put(g);
+                        mValidRecords.add(g);
                     }
                 }
             }

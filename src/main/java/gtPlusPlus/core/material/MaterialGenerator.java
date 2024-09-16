@@ -2,6 +2,7 @@ package gtPlusPlus.core.material;
 
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -13,7 +14,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -63,7 +63,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenShapedCrafting;
 
 public class MaterialGenerator {
 
-    public static final AutoMap<Set<RunnableWithInfo<Material>>> mRecipeMapsToGenerate = new AutoMap<>();
+    public static final ArrayList<Set<RunnableWithInfo<Material>>> mRecipeMapsToGenerate = new ArrayList<>();
 
     @SuppressWarnings("unused")
     private static volatile Item temp;
