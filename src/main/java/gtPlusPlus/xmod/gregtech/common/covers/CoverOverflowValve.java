@@ -43,7 +43,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
     @Override
     public OverflowValveData createDataObject() {
-        return new OverflowValveData(0, 0, false, true);
+        return new OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
     }
 
     @Override
@@ -64,9 +64,9 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     @Override
     protected OverflowValveData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         OverflowValveData data, ICoverable aTileEntity, long aTimer) {
-        if (data == null) return new OverflowValveData(0, 0, false, true);
+        if (data == null) return new OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
 
-        if (data.voidingRate == 0 || data.voidingRate > data.overflowPoint) return data;
+        if (data.voidingRate == 0) return data;
 
         if (aTileEntity instanceof CommonMetaTileEntity common) {
             IMetaTileEntity tile = common.getMetaTileEntity();
@@ -83,12 +83,6 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     }
 
     // Overrides methods
-
-    @Override
-    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, OverflowValveData data,
-        ICoverable aTileEntity) {
-        return true;
-    }
 
     @Override
     protected int getTickRateImpl(ForgeDirection side, int aCoverID, OverflowValveData data, ICoverable aTileEntity) {
@@ -157,8 +151,8 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_overflow_point") + data.overflowPoint
-                + StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_l_per_second"));
+            StatCollector
+                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", data.overflowPoint));
         return data;
     }
 
@@ -178,12 +172,11 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
 
         GTUtility.sendChatToPlayer(
             aPlayer,
-            StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_overflow_point") + data.overflowPoint
-                + StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_l_per_second"));
+            StatCollector
+                .translateToLocalFormatted("GTPP.chat.text.cover_overflow_valve_overflow_point", data.overflowPoint));
         aTileEntity.setCoverDataAtSide(side, data);
         return true;
     }
-
     // GUI
 
     @Override
@@ -199,8 +192,24 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     private final class OverflowUIFactory extends UIFactory {
 
         // width and height of text input for "Overflow Point" and "Voiding Rate"
-        private static final int width = 73;
-        private static final int height = 12;
+        private static final int width = 71;
+        private static final int height = 10;
+
+        // fluid input buttons coordinates
+        private static final int xFI = 43;
+        private static final int yFI = 81;
+
+        // fluid output buttons coordinates
+        private static final int xFO = 6;
+        private static final int yFO = 81;
+
+        // Overflow Point 2x text + input coordinates
+        private static final int xOP = 6;
+        private static final int yOP = 27;
+
+        // Voiding Rate 2x text + input coordinates
+        private static final int xVR = 6;
+        private static final int yVR = 53;
 
         public OverflowUIFactory(CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -212,11 +221,11 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                 .widget(
                     new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_overflow_point"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(57, 35))
+                        .setPos(xOP, yOP))
                 .widget(
-                    new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_l_per_second"))
+                    new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_liter"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(77, 35))
+                        .setPos(xOP + width + 3, yOP + 11))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
                         .addFollower(
@@ -224,21 +233,22 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                             coverData -> (double) coverData.overflowPoint,
                             (coverData, state) -> {
                                 coverData.overflowPoint = state.intValue();
+                                coverData.voidingRate = Math.min(state.intValue(), coverData.voidingRate);
                                 return coverData;
                             },
                             widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)
-                                .setPos(57, 45)
+                                .setPos(xOP, yOP + 10)
                                 .setSize(width, height)))
                 .widget(
                     new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_voiding_rate"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(63, 77))
+                        .setPos(xVR + 6, yVR))
                 .widget(
                     new TextWidget(StatCollector.translateToLocal("GTPP.gui.text.cover_overflow_valve_l_per_update"))
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(77, 35))
+                        .setPos(xVR + width + 3, yVR + 11))
                 .widget(
                     new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverOverflowValve.this)
                         .addFollower(
@@ -251,7 +261,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                             widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
                                 .setScrollValues(1000, 144, 100000)
                                 .setFocusOnGuiOpen(true)
-                                .setPos(57, 87)
+                                .setPos(xVR, yVR + 10)
                                 .setSize(width, height)))
                 .widget(
                     new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
@@ -267,7 +277,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                     .addTooltip(
                                         StatCollector
                                             .translateToLocal("GTPP.gui.text.cover_overflow_valve_allow_fluid_input"))
-                                    .setPos(21, 69))
+                                    .setPos(xFI + 18, yFI))
                             .addToggleButton(
                                 1,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -275,7 +285,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                     .addTooltip(
                                         StatCollector
                                             .translateToLocal("GTPP.gui.text.cover_overflow_valve_block_fluid_input"))
-                                    .setPos(12, 69))
+                                    .setPos(xFI, yFI))
                             .addToggleButton(
                                 2,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -283,7 +293,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                     .addTooltip(
                                         StatCollector
                                             .translateToLocal("GTPP.gui.text.cover_overflow_valve_allow_fluid_output"))
-                                    .setPos(21, 86))
+                                    .setPos(xFO, yFO))
                             .addToggleButton(
                                 3,
                                 CoverDataFollowerToggleButtonWidget.ofDisableable(),
@@ -291,7 +301,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                                     .addTooltip(
                                         StatCollector
                                             .translateToLocal("GTPP.gui.text.cover_overflow_valve_block_fluid_output"))
-                                    .setPos(12, 86)));
+                                    .setPos(xFO + 18, yFO)));
         }
 
         private boolean getClickable(int id, OverflowValveData data) {
