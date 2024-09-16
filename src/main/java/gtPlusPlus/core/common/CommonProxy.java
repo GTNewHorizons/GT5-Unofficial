@@ -9,6 +9,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -38,7 +39,6 @@ import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.preloader.PreloaderCore;
@@ -86,10 +86,12 @@ public class CommonProxy {
         // Handles Sleep Benefits
         PlayerSleepEventHandler.init();
         // Handles Magic Feather
-        Utils.registerEvent(ModItems.itemMagicFeather);
-
+        MinecraftForge.EVENT_BUS.register(ModItems.itemMagicFeather);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(ModItems.itemMagicFeather);
         MinecraftForge.EVENT_BUS.register(new EnderDragonDeathHandler());
-        Utils.registerEvent(new EntityDeathHandler());
+        MinecraftForge.EVENT_BUS.register(new EntityDeathHandler());
 
         // Compat Handling
         CompatHandler.registerMyModsOreDictEntries();
