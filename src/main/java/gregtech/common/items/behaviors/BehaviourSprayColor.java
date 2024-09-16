@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -16,13 +15,11 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import appeng.api.implementations.tiles.IColorableTile;
-import appeng.api.util.AEColor;
-import appeng.block.networking.BlockCableBus;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
@@ -180,37 +177,8 @@ public class BehaviourSprayColor extends BehaviourNone {
     }
 
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        final Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if (aBlock != Blocks.air) {
-            if (this.mAllowedVanillaBlocks.contains(aBlock) || aBlock instanceof BlockColored) {
-                if (aBlock == Blocks.hardened_clay) {
-                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_hardened_clay, (~getColor()) & 0xF, 3);
-                    return true;
-                }
-                if (aBlock == Blocks.glass_pane) {
-                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass_pane, (~getColor()) & 0xF, 3);
-                    return true;
-                }
-                if (aBlock == Blocks.glass) {
-                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass, (~getColor()) & 0xF, 3);
-                    return true;
-                }
-                if (aWorld.getBlockMetadata(aX, aY, aZ) == ((~getColor()) & 0xF)) {
-                    return false;
-                }
-                aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (~getColor()) & 0xF, 3);
-                return true;
-            }
-
-            if (aBlock instanceof IColorableTile) {
-                return ((IColorableTile) aBlock).recolourBlock(side, AEColor.values()[(~getColor()) & 0xF], player);
-            }
-
-            if (aBlock instanceof BlockCableBus) {
-                return ((BlockCableBus) aBlock).recolourBlock(aWorld, aX, aY, aZ, side, (~getColor()) & 0xF, player);
-            }
-        }
-        return aBlock.recolourBlock(aWorld, aX, aY, aZ, side, (~getColor()) & 0xF);
+        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player)
+            .setColor(getColor());
     }
 
     protected byte getColor() {

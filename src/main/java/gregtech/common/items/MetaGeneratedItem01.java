@@ -540,8 +540,6 @@ import gregtech.common.items.behaviors.BehaviourSprayColor;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
-import gregtech.common.render.items.DataStickRenderer;
-import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 
 public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
@@ -1049,7 +1047,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Spray_Color_Infinite.ID,
                 "Infinite Spray Can",
                 "Contains all sixteen colors, as well as solvent!",
-                new InfiniteSprayCanRenderer(),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
@@ -2815,8 +2812,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Data Stick",
                 "A Low Capacity Data Storage",
                 SubTag.NO_UNIFICATION,
-                new BehaviourDataStick(),
-                new DataStickRenderer()));
+                new BehaviourDataStick()));
 
         ItemList.Tool_Cover_Copy_Paste.set(
             addItem(
@@ -3466,6 +3462,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         setAllFluidContainerStats();
         setAllElectricStats();
         registerTieredTooltips();
+        registerSubIcons();
 
         craftingShapedRecipes();
         craftingShapelessRecipes();
@@ -4636,6 +4633,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         setElectricStats(32000 + BatteryHull_UIV_Full.ID, 104857600000L, GTValues.V[11], 11L, -3L, true);
         setElectricStats(32000 + BatteryHull_UMV_Full.ID, 419430400000L, GTValues.V[12], 12L, -3L, true);
         setElectricStats(32000 + BatteryHull_UxV_Full.ID, 1677721600000L, GTValues.V[13], 13L, -3L, true);
+    }
+
+    private void registerSubIcons() {
+        setSubIcons(Spray_Color_Infinite.ID, 3);
     }
 
     private void registerTieredTooltips() {

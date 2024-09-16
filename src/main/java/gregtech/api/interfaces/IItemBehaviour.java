@@ -21,6 +21,10 @@ public interface IItemBehaviour<E extends Item> {
         return false;
     }
 
+    default boolean onMiddleClick(E aItem, ItemStack aStack, EntityPlayer aPlayer) {
+        return false;
+    }
+
     boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
     boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,

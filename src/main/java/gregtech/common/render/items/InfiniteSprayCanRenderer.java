@@ -1,25 +1,26 @@
 package gregtech.common.render.items;
 
-import static gregtech.api.enums.Mods.GregTech;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
-import gregtech.api.interfaces.IIconRegistration;
+import gregtech.api.enums.ItemList;
+import gregtech.api.items.MetaGeneratedItem;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.render.GTRenderUtil;
 
-public class InfiniteSprayCanRenderer implements IItemRenderer, IIconRegistration {
+@SideOnly(Side.CLIENT)
+public class InfiniteSprayCanRenderer implements IItemRenderer {
 
-    private IIcon baseLayer;
-    private IIcon paintRegion;
-    private IIcon lockLayer;
+    public InfiniteSprayCanRenderer() {
+        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, this);
+    }
 
     @Override
     public boolean handleRenderType(final ItemStack item, final ItemRenderType type) {
@@ -38,21 +39,27 @@ public class InfiniteSprayCanRenderer implements IItemRenderer, IIconRegistratio
     }
 
     @Override
-    public void registerIcons(final IIconRegister iconRegister, final String basePath) {
-        baseLayer = iconRegister.registerIcon(GregTech.getResourcePath(basePath + "/" + "base"));
-        // noinspection SpellCheckingInspection
-        paintRegion = iconRegister.registerIcon(GregTech.getResourcePath(basePath + "/" + "paintregion"));
-        lockLayer = iconRegister.registerIcon(GregTech.getResourcePath(basePath + "/" + "locked"));
-    }
-
-    @Override
     public void renderItem(final ItemRenderType type, final ItemStack item, final Object... data) {
-        if (baseLayer == null || paintRegion == null || lockLayer == null) {
-            throw new RuntimeException("registerIcons not called!");
+        final Dyes dye = BehaviourSprayColorInfinite.getDye(item);
+        final short[] modulation = dye.getRGBA();
+
+        if (!(item.getItem() instanceof final MetaGeneratedItem mgItem)) {
+            return;
         }
 
-        Dyes dye = BehaviourSprayColorInfinite.getDye(item);
-        short[] modulation = dye.getRGBA();
+        final IIcon[] iconList = mgItem.mIconList[item.getItemDamage() - mgItem.mOffset];
+        if (iconList == null || iconList.length < 4) {
+            return;
+        }
+
+        final IIcon baseLayer = iconList[1];
+        final IIcon lockLayer = iconList[2];
+        final IIcon paintRegion = iconList[3];
+
+        if (baseLayer == null || paintRegion == null || lockLayer == null) {
+            return;
+        }
+
         boolean locked = false;
 
         if (item.hasTagCompound()) {

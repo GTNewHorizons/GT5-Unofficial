@@ -1,12 +1,14 @@
 package gregtech.common.items.behaviors;
 
 import static gregtech.api.enums.GTValues.AuthorQuerns;
+import static net.minecraft.util.MovingObjectPosition.MovingObjectType.BLOCK;
 
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -14,7 +16,9 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.net.GTPacketInfiniteSpraycan;
+import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
@@ -86,29 +90,60 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     @Override
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
+        ColoredBlockContainer block = ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player);
         if (mCurrentColor == REMOVE_COLOR) {
-            return BehaviourSprayColorRemover.removeColor(aWorld, aX, aY, aZ, side, player);
+            return block.removeColor();
         }
-        return super.colorize(aWorld, aX, aY, aZ, side, player);
+        return block.setColor(getColor());
     }
 
+    @Override
     public boolean onLeftClick(MetaBaseItem item, ItemStack aStack, EntityPlayer aPlayer) {
-        GTValues.NW.sendToServer(new GTPacketInfiniteSpraycan(aPlayer.isSneaking()));
+        sendPacket(GTPacketInfiniteSpraycan.Action.INCREMENT_COLOR);
 
         return true;
     }
 
-    private static byte clampColor(byte newColor) {
-        if (newColor > REMOVE_COLOR) {
-            newColor = 0;
-        } else if (newColor < 0) {
-            newColor = REMOVE_COLOR;
+    @Override
+    public boolean onMiddleClick(final MetaBaseItem item, final ItemStack itemStack, final EntityPlayer player) {
+        if (player.isSneaking()) {
+            sendPacket(GTPacketInfiniteSpraycan.Action.LOCK_CAN);
+            return true;
+        } else if (!isLocked(itemStack)) {
+            MovingObjectPosition position = GTUtility.getPlayerLookingTarget(player);
+            if (position != null && position.typeOfHit == BLOCK) {
+                ColoredBlockContainer block = ColoredBlockContainer.getInstance(player, position);
+                if (block.getColor()
+                    .isPresent()) {
+                    sendPacket(
+                        GTPacketInfiniteSpraycan.Action.SET_COLOR,
+                        block.getColor()
+                            .get());
+                    return true;
+                }
+            }
+
+            // TODO: GUI fallback
         }
-        return newColor;
+
+        return false;
     }
 
-    public void setNewColor(final ItemStack aStack, final boolean wasSneaking) {
-        final NBTTagCompound tag = aStack.hasTagCompound() ? aStack.getTagCompound() : new NBTTagCompound();
+    private static void sendPacket(GTPacketInfiniteSpraycan.Action action) {
+        GTValues.NW.sendToServer(new GTPacketInfiniteSpraycan(action));
+    }
+
+    private static void sendPacket(@SuppressWarnings("SameParameterValue") GTPacketInfiniteSpraycan.Action action,
+        int newColor) {
+        GTValues.NW.sendToServer(new GTPacketInfiniteSpraycan(action, newColor));
+    }
+
+    public void incrementColor(final ItemStack itemStack, final boolean wasSneaking) {
+        if (isLocked(itemStack)) {
+            return;
+        }
+
+        final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
         byte color = 0;
 
         if (tag.hasKey(COLOR_NBT_TAG)) {
@@ -117,15 +152,36 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         color = clampColor((byte) (color + (wasSneaking ? -1 : 1)));
 
+        setColor(itemStack, color);
+    }
+
+    public void setColor(final ItemStack itemStack, final byte color) {
+        if (isLocked(itemStack)) {
+            return;
+        }
+
+        final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
+
         tag.setByte(COLOR_NBT_TAG, color);
         mCurrentColor = color;
-        aStack.setTagCompound(tag);
+        itemStack.setTagCompound(tag);
 
         if (mCurrentColor == REMOVE_COLOR) {
-            aStack.setStackDisplayName("Infinite Spray Can (Solvent)");
+            itemStack.setStackDisplayName("Infinite Spray Can (Solvent)");
         } else {
-            aStack.setStackDisplayName("Infinite Spray Can (" + Dyes.get(mCurrentColor).mName + ")");
+            itemStack.setStackDisplayName("Infinite Spray Can (" + Dyes.get(mCurrentColor).mName + ")");
         }
+    }
+
+    public void toggleLock(final ItemStack aStack) {
+        final NBTTagCompound tag = aStack.hasTagCompound() ? aStack.getTagCompound() : new NBTTagCompound();
+        tag.setBoolean(LOCK_NBT_TAG, !tag.getBoolean(LOCK_NBT_TAG));
+        aStack.setTagCompound(tag);
+    }
+
+    public boolean isLocked(final ItemStack aStack) {
+        return aStack.hasTagCompound() && aStack.getTagCompound()
+            .getBoolean(LOCK_NBT_TAG);
     }
 
     @Override
@@ -137,5 +193,14 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         aList.add(AuthorQuerns);
 
         return aList;
+    }
+
+    private static byte clampColor(byte newColor) {
+        if (newColor > REMOVE_COLOR) {
+            newColor = 0;
+        } else if (newColor < 0) {
+            newColor = REMOVE_COLOR;
+        }
+        return newColor;
     }
 }

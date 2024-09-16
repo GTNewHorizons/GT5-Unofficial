@@ -21,7 +21,6 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
@@ -165,11 +164,6 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
                     addItemBehavior(mOffset + aID, (IItemBehaviour<MetaBaseItem>) tRandomData);
                     tUseOreDict = false;
                 }
-
-                if (tRandomData instanceof IItemRenderer renderer) {
-                    setSpecialRenderer(mOffset + aID, renderer);
-                }
-
                 if (tRandomData instanceof IItemContainer) {
                     ((IItemContainer) tRandomData).set(rStack);
                     tUseOreDict = false;
@@ -247,6 +241,12 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
             if (aMetaValue >= mOffset && aUseAnimations) mIconList[aMetaValue - mOffset] = Arrays
                 .copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
         }
+        return this;
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    public final MetaGeneratedItem setSubIcons(int metaValue, int length) {
+        mIconList[metaValue] = Arrays.copyOf(mIconList[metaValue], length + 1);
         return this;
     }
 
@@ -383,8 +383,6 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     @Override
     @SideOnly(Side.CLIENT)
     public final void registerIcons(IIconRegister aIconRegister) {
-        super.registerIcons(aIconRegister);
-
         short j = (short) mEnabledItems.length();
         for (short i = 0; i < j; i++) if (mEnabledItems.get(i)) {
             for (byte k = 1; k < mIconList[i].length; k++) {

@@ -6,11 +6,9 @@ import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,13 +20,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import gregtech.api.enums.SubTag;
-import gregtech.api.interfaces.IIconRegistration;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
@@ -44,7 +40,6 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
     private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<MetaBaseItem>>> mItemBehaviors = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Short, IItemRenderer> specialRenderers = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -72,27 +67,6 @@ public abstract class MetaBaseItem extends GTGenericItem
             .computeIfAbsent((short) aMetaValue, k -> new ArrayList<>(1));
         tList.add(aBehavior);
         return this;
-    }
-
-    public final MetaBaseItem setSpecialRenderer(int metaValue, IItemRenderer newRenderer) {
-        if (metaValue < 0 || metaValue >= 32766 || newRenderer == null) {
-            return this;
-        }
-        specialRenderers.put((short) metaValue, newRenderer);
-        return this;
-    }
-
-    public final Optional<IItemRenderer> getSpecialRenderer(int metaValue) {
-        return Optional.ofNullable(specialRenderers.get((short) metaValue));
-    }
-
-    @Override
-    public void registerIcons(final IIconRegister iconRegister) {
-        specialRenderers.forEach((metadata, renderer) -> {
-            if (renderer instanceof IIconRegistration registration) {
-                registration.registerIcons(iconRegister, getUnlocalizedName() + "/" + metadata);
-            }
-        });
     }
 
     public abstract Long[] getElectricStats(ItemStack aStack);
@@ -147,6 +121,10 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     public boolean onLeftClick(ItemStack aStack, EntityPlayer aPlayer) {
         return forEachBehavior(aStack, behavior -> behavior.onLeftClick(this, aStack, aPlayer));
+    }
+
+    public boolean onMiddleClick(ItemStack aStack, EntityPlayer aPlayer) {
+        return forEachBehavior(aStack, behavior -> behavior.onMiddleClick(this, aStack, aPlayer));
     }
 
     @Override
