@@ -9,6 +9,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -47,7 +48,7 @@ public class CommonProxy {
 
     public CommonProxy() {
         // Should Register Gregtech Materials I've Made
-        Utils.registerEvent(this);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public void preInit(final FMLPreInitializationEvent e) {
@@ -87,7 +88,7 @@ public class CommonProxy {
         // Handles Magic Feather
         Utils.registerEvent(ModItems.itemMagicFeather);
 
-        Utils.registerEvent(new EnderDragonDeathHandler());
+        MinecraftForge.EVENT_BUS.register(new EnderDragonDeathHandler());
         Utils.registerEvent(new EntityDeathHandler());
 
         // Compat Handling
@@ -204,38 +205,28 @@ public class CommonProxy {
         return ctx.getServerHandler().playerEntity;
     }
 
-    @SuppressWarnings("unused") // used by the event bus
+    @Optional.Method(modid = Mods.Names.BAUBLES)
     @SubscribeEvent
     public void onPlayerAttacked(LivingAttackEvent event) {
-        if (Mods.Baubles.isModLoaded()) {
-            BaubleAttackHandler.run(event);
+        if (!(event.entityLiving instanceof EntityPlayer player)) {
+            return;
         }
-    }
-
-    // Prevent class loading errors if Baubles are missing
-    private static final class BaubleAttackHandler {
-
-        public static void run(LivingAttackEvent event) {
-            if (!(event.entityLiving instanceof EntityPlayer player)) {
-                return;
-            }
-            InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
-            if (baubles == null) {
-                return;
-            }
-            final ItemStack bauble1 = baubles.getStackInSlot(1);
-            if (bauble1 != null && bauble1.getItem() instanceof BaseBauble gtBauble
-                && gtBauble.getDamageNegations()
-                    .contains(event.source.damageType)) {
-                event.setCanceled(true);
-                return;
-            }
-            final ItemStack bauble2 = baubles.getStackInSlot(2);
-            if (bauble2 != null && bauble2.getItem() instanceof BaseBauble gtBauble
-                && gtBauble.getDamageNegations()
-                    .contains(event.source.damageType)) {
-                event.setCanceled(true);
-            }
+        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
+        if (baubles == null) {
+            return;
+        }
+        final ItemStack bauble1 = baubles.getStackInSlot(1);
+        if (bauble1 != null && bauble1.getItem() instanceof BaseBauble gtBauble
+            && gtBauble.getDamageNegations()
+                .contains(event.source.damageType)) {
+            event.setCanceled(true);
+            return;
+        }
+        final ItemStack bauble2 = baubles.getStackInSlot(2);
+        if (bauble2 != null && bauble2.getItem() instanceof BaseBauble gtBauble
+            && gtBauble.getDamageNegations()
+                .contains(event.source.damageType)) {
+            event.setCanceled(true);
         }
     }
 }
