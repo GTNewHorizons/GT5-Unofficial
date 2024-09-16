@@ -66,7 +66,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         OverflowValveData data, ICoverable aTileEntity, long aTimer) {
         if (data == null) return new OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
 
-        if (data.voidingRate == 0) return data;
+        if (data.overflowPoint == 0) return data;
 
         if (aTileEntity instanceof CommonMetaTileEntity common) {
             IMetaTileEntity tile = common.getMetaTileEntity();
@@ -83,6 +83,12 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     }
 
     // Overrides methods
+
+    @Override
+    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, OverflowValveData aCoverVariable,
+        ICoverable aTileEntity) {
+        return true;
+    }
 
     @Override
     protected int getTickRateImpl(ForgeDirection side, int aCoverID, OverflowValveData data, ICoverable aTileEntity) {
@@ -159,12 +165,11 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
     @Override
     protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID, OverflowValveData data,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        boolean aShift = aPlayer.isSneaking();
-        int aAmount = aShift ? 128 : 8;
+        int amount = aPlayer.isSneaking() ? 128 : 8;
         if (GTUtility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
-            data.overflowPoint += aAmount;
+            data.overflowPoint += amount;
         } else {
-            data.overflowPoint -= aAmount;
+            data.overflowPoint -= amount;
         }
 
         if (data.overflowPoint > maxOverflowPoint) data.overflowPoint = minOverflowPoint;
@@ -233,7 +238,6 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                             coverData -> (double) coverData.overflowPoint,
                             (coverData, state) -> {
                                 coverData.overflowPoint = state.intValue();
-                                coverData.voidingRate = Math.min(state.intValue(), coverData.voidingRate);
                                 return coverData;
                             },
                             widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
@@ -255,7 +259,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
                             new CoverDataFollowerNumericWidget<>(),
                             coverData -> (double) coverData.voidingRate,
                             (coverData, state) -> {
-                                coverData.voidingRate = Math.min(state.intValue(), coverData.overflowPoint);
+                                coverData.voidingRate = state.intValue();
                                 return coverData;
                             },
                             widget -> widget.setBounds(minOverflowPoint, maxOverflowPoint)
