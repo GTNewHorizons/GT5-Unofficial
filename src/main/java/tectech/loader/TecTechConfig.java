@@ -10,22 +10,19 @@ public class TecTechConfig extends ConfigManager {
         super(pConfigBaseDirectory, pModCollectionDirectory, pModID);
     }
 
-
     /**
      * This loading phases do not correspond to mod loading phases!
      */
     @Override
     protected void PreInit() {
 
-
     }
 
     /**
      * This loading phases do not correspond to mod loading phases!
      */
     @Override
-    protected void Init() {
-    }
+    protected void Init() {}
 
     /**
      * This loading phases do not correspond to mod loading phases!

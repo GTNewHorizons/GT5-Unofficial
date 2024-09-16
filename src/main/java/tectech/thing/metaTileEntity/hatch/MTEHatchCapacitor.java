@@ -30,7 +30,6 @@ import gregtech.api.objects.GTRenderedTexture;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
-import tectech.loader.TecTechConfig;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 

@@ -1,7 +1,8 @@
 package tectech.loader.gui;
 
-import com.gtnewhorizon.gtnhlib.config.SimpleGuiFactory;
 import net.minecraft.client.gui.GuiScreen;
+
+import com.gtnewhorizon.gtnhlib.config.SimpleGuiFactory;
 
 public class TecTechGUIFactory implements SimpleGuiFactory {
 

@@ -44,7 +44,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.loader.ConfigHandler;
-import tectech.loader.TecTechConfig;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.util.CommonValues;
 

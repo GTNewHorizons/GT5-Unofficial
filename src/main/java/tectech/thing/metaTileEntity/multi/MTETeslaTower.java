@@ -61,7 +61,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.spark.RendererMessage;
@@ -93,28 +92,32 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     // region variables
     private static final int transferRadiusTowerFromConfig = ConfigHandler.teslaTweaks.TESLA_MULTI_RANGE_TOWER; // Default
-                                                                                                            // is 32
+    // is 32
     private static final int transferRadiusTransceiverFromConfig = ConfigHandler.teslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER; // Default
-                                                                                                                        // is
-                                                                                                                        // 16
+    // is
+    // 16
     private static final int transferRadiusCoverUltimateFromConfig = ConfigHandler.teslaTweaks.TESLA_MULTI_RANGE_COVER; // Default
-                                                                                                                    // is
-                                                                                                                    // 16
+    // is
+    // 16
     private static final int plasmaRangeMultiT1 = ConfigHandler.teslaTweaks.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1; // Default
-                                                                                                                 // is 2
+    // is 2
     private static final int plasmaRangeMultiT2 = ConfigHandler.teslaTweaks.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2; // Default
-                                                                                                                 // is 4
-    private static final int heliumUse = ConfigHandler.teslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM; // Default is
-                                                                                                        // 100
+    // is 4
+    private static final int heliumUse = ConfigHandler.teslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM; // Default
+                                                                                                            // is
+    // 100
     private static final int nitrogenUse = ConfigHandler.teslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN; // Default
-                                                                                                            // is 50
-    private static final int radonUse = ConfigHandler.teslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON; // Default is 50
+    // is 50
+    private static final int radonUse = ConfigHandler.teslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON; // Default is
+                                                                                                          // 50
     private static final boolean visualEffect = ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT; // Default is true
     // Default is {1, 1, 1}
     private static final int[] plasmaTierLoss = new int[] { ConfigHandler.teslaTweaks.TESLA_MULTI_LOSS_PER_BLOCK_T0,
-        ConfigHandler.teslaTweaks.TESLA_MULTI_LOSS_PER_BLOCK_T1, ConfigHandler.teslaTweaks.TESLA_MULTI_LOSS_PER_BLOCK_T2 };
-    private static final float overDriveLoss = ConfigHandler.teslaTweaks.TESLA_MULTI_LOSS_FACTOR_OVERDRIVE; // Default is
-                                                                                                        // 0.25F;
+        ConfigHandler.teslaTweaks.TESLA_MULTI_LOSS_PER_BLOCK_T1,
+        ConfigHandler.teslaTweaks.TESLA_MULTI_LOSS_PER_BLOCK_T2 };
+    private static final float overDriveLoss = ConfigHandler.teslaTweaks.TESLA_MULTI_LOSS_FACTOR_OVERDRIVE; // Default
+                                                                                                            // is
+    // 0.25F;
     private static final boolean doFluidOutput = ConfigHandler.teslaTweaks.TESLA_MULTI_GAS_OUTPUT; // Default is false
 
     // Face icons

@@ -1,18 +1,21 @@
 package tectech.loader;
 
 import com.gtnewhorizon.gtnhlib.config.Config;
+
 import gregtech.api.enums.Mods;
 
 @Config(modid = Mods.Names.TECTECH, filename = "tectech")
 @Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
 @Config.RequiresMcRestart
 public class ConfigHandler {
+
     public static Debug debug = new Debug();
     public static Features features = new Features();
     public static Modules modules = new Modules();
     public static TeslaTweaks teslaTweaks = new TeslaTweaks();
 
-    public static class Debug{
+    public static class Debug {
+
         @Config.Comment("Enables logging and other purely debug features")
         @Config.DefaultBoolean(false)
         public boolean DEBUG_MODE;
@@ -21,7 +24,8 @@ public class ConfigHandler {
         public boolean POWERLESS_MODE = false;
     }
 
-    public static class Features{
+    public static class Features {
+
         @Config.Comment("Set to false to disable explosions on everything bad that you can do")
         @Config.DefaultBoolean(true)
         public boolean BOOM_ENABLE;
@@ -33,13 +37,15 @@ public class ConfigHandler {
         public boolean NERF_FUSION;
     }
 
-    public static class Modules{
+    public static class Modules {
+
         @Config.Comment("If set to true, every op/admin will receive all errors occurred during the startup phase as in game message on join")
         @Config.DefaultBoolean(false)
         public boolean MOD_ADMIN_ERROR_LOGS;
     }
 
-    public static class TeslaTweaks{
+    public static class TeslaTweaks {
+
         @Config.Comment("Set to true to enable outputting plasmas as gasses from the tesla tower with a 1:1 ratio")
         @Config.DefaultBoolean(false)
         public boolean TESLA_MULTI_GAS_OUTPUT;

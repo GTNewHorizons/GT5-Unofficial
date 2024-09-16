@@ -3,7 +3,6 @@ package tectech.loader;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static tectech.TecTech.LOGGER;
-import static tectech.TecTech.configTecTech;
 import static tectech.TecTech.creativeTabTecTech;
 import static tectech.TecTech.proxy;
 

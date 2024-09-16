@@ -94,7 +94,6 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
-import tectech.loader.TecTechConfig;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
