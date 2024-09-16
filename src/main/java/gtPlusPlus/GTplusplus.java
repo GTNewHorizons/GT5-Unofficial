@@ -110,15 +110,12 @@ public class GTplusplus implements ActionListener {
 
     public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
-    // Mod Instance
     @Mod.Instance(Names.G_T_PLUS_PLUS)
     public static GTplusplus instance;
 
-    // GT++ Proxy Instances
-    @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.proxy.ServerProxy")
+    @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")
     public static CommonProxy proxy;
 
-    // Loads Textures
     @SideOnly(value = Side.CLIENT)
     public static void loadTextures() {
         Logger.INFO("Loading some textures on the client.");
@@ -141,7 +138,6 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.SUPER.setPhaseActive(true);
     }
 
-    // Pre-Init
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         INIT_PHASE.PRE_INIT.setPhaseActive(true);
@@ -168,7 +164,6 @@ public class GTplusplus implements ActionListener {
         CoreManager.preInit();
     }
 
-    // Init
     @Mod.EventHandler
     public void init(final FMLInitializationEvent event) {
         INIT_PHASE.INIT.setPhaseActive(true);
@@ -182,7 +177,6 @@ public class GTplusplus implements ActionListener {
         }
     }
 
-    // Post-Init
     @Mod.EventHandler
     public void postInit(final FMLPostInitializationEvent event) {
         INIT_PHASE.POST_INIT.setPhaseActive(true);
