@@ -860,7 +860,7 @@ public class ItemUtils {
                 aCleanedItems.add(checkStack);
             }
         }
-        for (int i = 0; i < aArraySize; i++) {
+        for (int i = 0; i < aCleanedItems.size(); i++) {
             ItemStack aMappedStack = aCleanedItems.get(i);
             if (aMappedStack != null) {
                 aOutput[i] = aMappedStack;
