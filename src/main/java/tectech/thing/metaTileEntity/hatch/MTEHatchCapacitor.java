@@ -29,6 +29,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.GTRenderedTexture;
 import tectech.Reference;
 import tectech.TecTech;
+import tectech.loader.ConfigHandler;
 import tectech.loader.TecTechConfig;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
@@ -220,7 +221,7 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
             this.current = current;
             this.energyMax = energyMax;
             componentBinds.put(unlocalizedName, this);
-            if (TecTechConfig.DEBUG_MODE) {
+            if (ConfigHandler.debug.DEBUG_MODE) {
                 TecTech.LOGGER.info("Tesla Capacitor registered: " + unlocalizedName);
             }
         }

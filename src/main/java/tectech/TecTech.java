@@ -1,5 +1,13 @@
 package tectech;
 
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import gregtech.common.config.Client;
+import gregtech.common.config.Gregtech;
+import gregtech.common.config.MachineStats;
+import gregtech.common.config.OPStuff;
+import gregtech.common.config.Other;
+import gregtech.common.config.Worldgen;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -13,6 +21,7 @@ import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.api.enums.Mods;
 import gregtech.api.objects.XSTR;
+import tectech.loader.ConfigHandler;
 import tectech.loader.MainLoader;
 import tectech.loader.TecTechConfig;
 import tectech.loader.gui.CreativeTabTecTech;
@@ -26,6 +35,7 @@ import tectech.recipe.TecTechRecipeMaps;
     modid = Reference.MODID,
     name = Reference.NAME,
     version = Reference.VERSION,
+    guiFactory = "tectech.loader.gui.TecTechGUIFactory",
     dependencies = "required-after:Forge@[10.13.4.1614,);" + "required-after:YAMCore@[0.5.70,);"
         + "required-after:structurelib;"
         + "after:ComputerCraft;"
@@ -37,7 +47,13 @@ import tectech.recipe.TecTechRecipeMaps;
         + "after:CoFHCore;"
         + "after:Thaumcraft;")
 public class TecTech {
-
+    static {
+        try {
+            ConfigurationManager.registerConfig(ConfigHandler.class);
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
     public static CommonProxy proxy;
 
@@ -73,8 +89,8 @@ public class TecTech {
             LOGGER.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
         }
 
-        if (configTecTech.MOD_ADMIN_ERROR_LOGS) {
-            LOGGER.setDebugOutput(TecTechConfig.DEBUG_MODE);
+        if (ConfigHandler.modules.MOD_ADMIN_ERROR_LOGS) {
+            LOGGER.setDebugOutput(ConfigHandler.debug.DEBUG_MODE);
             LOGGER.debug("moduleAdminErrorLogs is enabled");
             IngameErrorLog moduleAdminErrorLogs = new IngameErrorLog();
         }

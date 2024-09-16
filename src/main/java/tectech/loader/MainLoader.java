@@ -6,7 +6,6 @@ import static tectech.TecTech.LOGGER;
 import static tectech.TecTech.configTecTech;
 import static tectech.TecTech.creativeTabTecTech;
 import static tectech.TecTech.proxy;
-import static tectech.loader.TecTechConfig.DEBUG_MODE;
 
 import java.util.HashMap;
 
@@ -101,7 +100,7 @@ public final class MainLoader {
         new BaseRecipeLoader().run();
         TecTech.LOGGER.info("Recipe Init Done");
 
-        if (!configTecTech.DISABLE_BLOCK_HARDNESS_NERF) {
+        if (!ConfigHandler.features.DISABLE_BLOCK_HARDNESS_NERF) {
             progressBarPostLoad.step("Nerf blocks blast resistance");
             adjustTwilightBlockResistance();
             TecTech.LOGGER.info("Blocks nerf done");
@@ -115,7 +114,7 @@ public final class MainLoader {
 
     public static void addAfterGregTechPostLoadRunner() {
         GregTechAPI.sAfterGTPostload.add(() -> {
-            if (TecTech.configTecTech.NERF_FUSION) {
+            if (ConfigHandler.features.NERF_FUSION) {
                 FixBrokenFusionRecipes();
             }
         });
@@ -126,14 +125,14 @@ public final class MainLoader {
         for (Materials material : Materials.values()) {
             FluidStack p = material.getPlasma(1);
             if (p != null) {
-                if (DEBUG_MODE) {
+                if (ConfigHandler.debug.DEBUG_MODE) {
                     LOGGER.info("Found Plasma of " + material.mName);
                 }
                 if (material.mElement != null && (material.mElement.mProtons >= Materials.Iron.mElement.mProtons
                     || -material.mElement.mProtons >= Materials.Iron.mElement.mProtons
                     || material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons
                     || -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
-                    if (DEBUG_MODE) {
+                    if (ConfigHandler.debug.DEBUG_MODE) {
                         LOGGER.info("Attempting to bind " + material.mName);
                     }
                     if (material.getMolten(1) != null) {
@@ -163,21 +162,21 @@ public final class MainLoader {
         for (GTRecipe r : RecipeMaps.fusionRecipes.getAllRecipes()) {
             Fluid fluid = binds.get(r.mFluidOutputs[0].getFluid());
             if (fluid != null) {
-                if (DEBUG_MODE) {
+                if (ConfigHandler.debug.DEBUG_MODE) {
                     LOGGER.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
                 }
                 r.mFluidOutputs[0] = new FluidStack(fluid, r.mFluidOutputs[0].amount);
             }
             fluid = binds.get(r.mFluidInputs[0].getFluid());
             if (fluid != null) {
-                if (DEBUG_MODE) {
+                if (ConfigHandler.debug.DEBUG_MODE) {
                     LOGGER.info("Fixing plasma use in Recipe " + r.mFluidInputs[0].getUnlocalizedName());
                 }
                 r.mFluidInputs[0] = new FluidStack(fluid, r.mFluidInputs[0].amount);
             }
             fluid = binds.get(r.mFluidInputs[1].getFluid());
             if (fluid != null) {
-                if (DEBUG_MODE) {
+                if (ConfigHandler.debug.DEBUG_MODE) {
                     LOGGER.info("Fixing plasma use in Recipe " + r.mFluidInputs[1].getUnlocalizedName());
                 }
                 r.mFluidInputs[1] = new FluidStack(fluid, r.mFluidInputs[1].amount);

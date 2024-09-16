@@ -93,6 +93,7 @@ import gregtech.common.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import tectech.Reference;
 import tectech.TecTech;
+import tectech.loader.ConfigHandler;
 import tectech.loader.TecTechConfig;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector;
@@ -567,7 +568,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 explodeMultiblock();
             }
         } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE) {
+            if (ConfigHandler.debug.DEBUG_MODE) {
                 e.printStackTrace();
             }
         }
@@ -1491,7 +1492,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
-            if (TecTechConfig.POWERLESS_MODE) {
+            if (ConfigHandler.debug.POWERLESS_MODE) {
                 return true;
             }
             if (!drainEnergyInput_EM(
@@ -1510,7 +1511,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
-            if (TecTechConfig.POWERLESS_MODE) {
+            if (ConfigHandler.debug.POWERLESS_MODE) {
                 return true;
             }
             if (!drainEnergyInput(
@@ -1626,7 +1627,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                                                                         // - 1) / maxEUinputMin
                                                                                         // + 1 = 1! //if
             // not too much A
-            if (TecTechConfig.DEBUG_MODE) {
+            if (ConfigHandler.debug.DEBUG_MODE) {
                 TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
                 TecTech.LOGGER.debug("L2 " + EUtEffective + ' ' + maxEUinputMax + ' ' + (EUtEffective > maxEUinputMax));
                 TecTech.LOGGER.debug("L3 " + Amperes + ' ' + getMaxInputEnergy());
@@ -1755,7 +1756,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return;
         }
         explodedThisTick = true;
-        if (!TecTech.configTecTech.BOOM_ENABLE) {
+        if (!ConfigHandler.features.BOOM_ENABLE) {
             TecTech.proxy.broadcast(
                 "Multi Explode BOOM! " + getBaseMetaTileEntity().getXCoord()
                     + ' '
@@ -1797,7 +1798,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        if (!TecTech.configTecTech.BOOM_ENABLE) {
+        if (!ConfigHandler.features.BOOM_ENABLE) {
             TecTech.proxy.broadcast(
                 "Multi DoExplosion BOOM! " + getBaseMetaTileEntity().getXCoord()
                     + ' '

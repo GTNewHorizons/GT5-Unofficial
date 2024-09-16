@@ -100,6 +100,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import tectech.TecTech;
+import tectech.loader.ConfigHandler;
 import tectech.loader.TecTechConfig;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.TileEntityForgeOfGods;
@@ -182,8 +183,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         + "--------------------------------------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
         : GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
-
-    private final boolean debugMode = TecTechConfig.DEBUG_MODE;
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
@@ -489,7 +488,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 determineCompositionMilestoneLevel();
                 checkInversionStatus();
                 determineMilestoneProgress();
-                if (!debugMode) {
+                if (!ConfigHandler.debug.DEBUG_MODE) {
                     determineGravitonShardAmount();
                 }
                 if (upgrades[30] && gravitonShardEjection) {
@@ -703,7 +702,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!debugMode) return;
+        if (!ConfigHandler.debug.DEBUG_MODE) return;
         if (isRenderActive) {
             destroyRenderer();
             isRenderActive = false;
@@ -1880,7 +1879,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         }
                     })
                     .setPos(282, 4));
-        if (debugMode) {
+        if (ConfigHandler.debug.DEBUG_MODE) {
             builder.widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
                 upgrades = new boolean[31];
                 materialPaidUpgrades = new boolean[7];

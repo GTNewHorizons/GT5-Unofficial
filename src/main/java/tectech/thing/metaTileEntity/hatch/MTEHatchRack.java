@@ -41,6 +41,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.GTRenderedTexture;
 import tectech.TecTech;
+import tectech.loader.ConfigHandler;
 import tectech.loader.TecTechConfig;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
@@ -391,7 +392,7 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
             this.maxHeat = maxHeat;
             this.subZero = subZero;
             componentBinds.put(unlocalizedName, this);
-            if (TecTechConfig.DEBUG_MODE) {
+            if (ConfigHandler.debug.DEBUG_MODE) {
                 TecTech.LOGGER.info("Component registered: " + unlocalizedName);
             }
         }
