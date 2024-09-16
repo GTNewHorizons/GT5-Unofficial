@@ -234,7 +234,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 "The change is split between the 16 Antimatter Hatches, sampled from N(" + EnumChatFormatting.AQUA
                     + String.valueOf(this.baseSkew)
                     + EnumChatFormatting.GRAY
-                    + ", 1) (Gaussian distribution with mean of 0.2)")
+                    + ", 1) (Gaussian distribution with mean of "
+                    + String.valueOf(this.baseSkew)
+                    + ")")
             .addInfo("The total change be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
