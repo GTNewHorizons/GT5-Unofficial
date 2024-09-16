@@ -1004,9 +1004,9 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
         try {
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity()) {
-                mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);// Always returns false?
+                boolean value = mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);
                 mMetaTileEntity.markDirty();
-                return true; // Play the animation
+                return value;
             }
         } catch (Throwable e) {
             GT_FML_LOGGER.error("Encountered Exception while right clicking TileEntity", e);
