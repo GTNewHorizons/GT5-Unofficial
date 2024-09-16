@@ -1,7 +1,5 @@
 package gregtech.common.items.flinttools;
 
-import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
@@ -11,9 +9,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class FlintTools {
+
     public static Item.ToolMaterial FLINT_MATERIAL = EnumHelper.addToolMaterial("FLINT", 1, 128, 4.0F, 1.0F, 5);
 
     public static Item AXE;
@@ -40,65 +44,52 @@ public class FlintTools {
 
     public static void registerRecipes() {
         // Flint Sword Recipe, with
-        GameRegistry.addRecipe(new EnchantedRecipe(new ItemStack(FlintTools.SWORD),
-            " F ",
-            " F ",
-            " S ",
-            'F', Items.flint,
-            'S', Items.stick
-        ));
+        GameRegistry.addRecipe(
+            new EnchantedRecipe(
+                new ItemStack(FlintTools.SWORD),
+                " F ",
+                " F ",
+                " S ",
+                'F',
+                Items.flint,
+                'S',
+                Items.stick));
 
         // Flint Pickaxe Recipe
-        GameRegistry.addRecipe(new ItemStack(FlintTools.PICKAXE),
-            "FFF",
-            " S ",
-            " S ",
-            'F', Items.flint,
-            'S', Items.stick
-        );
+        GameRegistry
+            .addRecipe(new ItemStack(FlintTools.PICKAXE), "FFF", " S ", " S ", 'F', Items.flint, 'S', Items.stick);
 
         // Flint Axe Recipe with Fire Aspect I
-        GameRegistry.addRecipe(new EnchantedRecipe(new ItemStack(FlintTools.AXE),
-            "FF ",
-            "FS ",
-            " S ",
-            'F', Items.flint,
-            'S', Items.stick
-        ));
+        GameRegistry.addRecipe(
+            new EnchantedRecipe(
+                new ItemStack(FlintTools.AXE),
+                "FF ",
+                "FS ",
+                " S ",
+                'F',
+                Items.flint,
+                'S',
+                Items.stick));
 
-        GameRegistry.addRecipe(new EnchantedRecipe(new ItemStack(FlintTools.AXE),
-            " FF",
-            " SF",
-            " S ",
-            'F', Items.flint,
-            'S', Items.stick
-        ));
+        GameRegistry.addRecipe(
+            new EnchantedRecipe(
+                new ItemStack(FlintTools.AXE),
+                " FF",
+                " SF",
+                " S ",
+                'F',
+                Items.flint,
+                'S',
+                Items.stick));
 
         // Flint Shovel Recipe
-        GameRegistry.addRecipe(new ItemStack(FlintTools.SHOVEL),
-            " F ",
-            " S ",
-            " S ",
-            'F', Items.flint,
-            'S', Items.stick
-        );
+        GameRegistry
+            .addRecipe(new ItemStack(FlintTools.SHOVEL), " F ", " S ", " S ", 'F', Items.flint, 'S', Items.stick);
 
         // Flint Hoe Recipe
-        GameRegistry.addRecipe(new ItemStack(FlintTools.HOE),
-            "FF ",
-            " S ",
-            " S ",
-            'F', Items.flint,
-            'S', Items.stick
-        );
+        GameRegistry.addRecipe(new ItemStack(FlintTools.HOE), "FF ", " S ", " S ", 'F', Items.flint, 'S', Items.stick);
 
-        GameRegistry.addRecipe(new ItemStack(FlintTools.HOE),
-            " FF",
-            " S ",
-            " S ",
-            'F', Items.flint,
-            'S', Items.stick
-        );
+        GameRegistry.addRecipe(new ItemStack(FlintTools.HOE), " FF", " S ", " S ", 'F', Items.flint, 'S', Items.stick);
     }
 
     public static NBTTagCompound transformFlintTool(NBTTagCompound tagCompound) {

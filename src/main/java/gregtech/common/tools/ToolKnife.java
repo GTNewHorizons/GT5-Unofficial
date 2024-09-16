@@ -4,9 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -77,18 +75,18 @@ public class ToolKnife extends GTTool {
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "sword")
             || GTToolHarvestHelper.isAppropriateMaterial(
-            aBlock,
-            Material.leaves,
-            Material.gourd,
-            Material.vine,
-            Material.web,
-            Material.cloth,
-            Material.carpet,
-            Material.plants,
-            Material.cactus,
-            Material.cake,
-            Material.tnt,
-            Material.sponge);
+                aBlock,
+                Material.leaves,
+                Material.gourd,
+                Material.vine,
+                Material.web,
+                Material.cloth,
+                Material.carpet,
+                Material.plants,
+                Material.cactus,
+                Material.cake,
+                Material.tnt,
+                Material.sponge);
     }
 
     @Override

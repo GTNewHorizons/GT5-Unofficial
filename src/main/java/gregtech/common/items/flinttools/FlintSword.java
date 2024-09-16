@@ -1,12 +1,12 @@
 package gregtech.common.items.flinttools;
 
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.creativetab.CreativeTabs;
-
-import java.util.List;
 
 public class FlintSword extends ItemSword {
 
