@@ -4,6 +4,7 @@ import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import baubles.common.container.InventoryBaubles;
@@ -29,7 +30,7 @@ import gtPlusPlus.core.handler.CompatIntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
-import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
+import gtPlusPlus.core.handler.events.MolecularTransformerTooltipNotice;
 import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BaseBauble;
@@ -79,7 +80,9 @@ public class CommonProxy {
     public void init(final FMLInitializationEvent e) {
         CI.init();
 
-        Utils.registerEvent(new GeneralTooltipEventHandler());
+        if (Mods.AdvancedSolarPanel.isModLoaded()) {
+            MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
+        }
         // Handles Tooltips for items giving custom multiblock behaviour
         Utils.registerEvent(new SpecialBehaviourTooltipHandler());
         // Handles Sleep Benefits
