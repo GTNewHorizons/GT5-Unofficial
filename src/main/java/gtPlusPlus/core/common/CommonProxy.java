@@ -41,7 +41,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy {
@@ -83,8 +82,6 @@ public class CommonProxy {
         if (Mods.AdvancedSolarPanel.isModLoaded()) {
             MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
         }
-        // Handles Tooltips for items giving custom multiblock behaviour
-        Utils.registerEvent(new SpecialBehaviourTooltipHandler());
         // Handles Sleep Benefits
         PlayerSleepEventHandler.init();
         // Handles Magic Feather
