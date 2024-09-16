@@ -199,6 +199,8 @@ import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
+import static gregtech.common.items.IDMetaItem03.MeteorMinerSchematic1;
+import static gregtech.common.items.IDMetaItem03.MeteorMinerSchematic2;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.NuclearStar;
 import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing;
@@ -1337,6 +1339,16 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
                 White_Dwarf_Shape_Extruder_ToolHeadDrill.ID,
                 "White Dwarf Extruder Shape (Drill Head)",
                 "White Dwarf Extruder Shape for a Drill Head"));
+        ItemList.MeteorMinerSchematic1.set(
+            addItem(
+                MeteorMinerSchematic1.ID,
+                "Meteor Miner Tier 1 Schematic",
+                "Schematic needed to enable the Tier 1 Meteor Miner"));
+        ItemList.MeteorMinerSchematic2.set(
+            addItem(
+                MeteorMinerSchematic2.ID,
+                "Meteor Miner Tier 2 Schematic",
+                "Schematic needed to enable the Tier 2 Meteor Miner"));
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();
