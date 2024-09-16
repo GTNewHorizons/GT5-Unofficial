@@ -24,7 +24,6 @@ import gregtech.api.metatileentity.implementations.MTEFluid;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -48,13 +47,9 @@ public class GregtechConduits {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
-        if (GTPPCore.ConfigSwitches.enableCustom_Cables) {
-            run1();
-        }
-        if (GTPPCore.ConfigSwitches.enableCustom_Pipes) {
-            run2();
-            run3();
-        }
+        run1();
+        run2();
+        run3();
     }
 
     private static void run3() {

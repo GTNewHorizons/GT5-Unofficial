@@ -13,8 +13,8 @@ import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import gregtech.mixin.Mixin;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.PreloaderDummyContainer;
 import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 
@@ -27,6 +27,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
     static {
         try {
             ConfigurationManager.registerConfig(Configuration.class);
+            ConfigurationManager.registerConfig(ASMConfiguration.class);
         } catch (ConfigException e) {
             throw new RuntimeException(e);
         }
@@ -64,7 +65,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
         if (mcDir != null && mcDir.exists()) {
             PreloaderCore.setMinecraftDirectory(mcDir);
         }
-        PreloaderCore.DEBUG_MODE = AsmConfig.debugMode;
+        PreloaderCore.DEBUG_MODE = ASMConfiguration.debug.debugMode;
     }
 
     @Override
