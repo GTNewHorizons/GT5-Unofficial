@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static java.lang.Math.floor;
 import static java.lang.Math.log;
@@ -97,7 +98,6 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -407,14 +407,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             if (ticker % (5 * SECONDS) == 0) {
                 ticker = 0;
                 startRecipeProcessing();
-                FluidStack[] fluidInHatch = null;
-                boolean fuelDrained = false;
-                if (mInputHatches != null && mInputHatches.size() != 0) {
-                    fluidInHatch = this.getStoredFluids()
-                        .toArray(new FluidStack[0]);
-                }
-                int maxModuleCount = 8;
 
+                int maxModuleCount = 8;
                 if (upgrades[26]) {
                     maxModuleCount += 4;
                 }
@@ -450,37 +444,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             createRenderer();
                         }
                     } else {
-                        fuelConsumption = (long) calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1);
-                        if (fluidInHatch != null && fuelConsumption < Integer.MAX_VALUE) {
-                            for (FluidStack fluid : fluidInHatch) {
-                                if (fluid.isFluidEqual(validFuelList.get(selectedFuelType))) {
-                                    FluidStack fluidNeeded = new FluidStack(
-                                        validFuelList.get(selectedFuelType),
-                                        (int) fuelConsumption);
-                                    FluidStack fluidReal;
-                                    if (mInputHatches.get(0) instanceof MTEHatchInputME meHatch) {
-                                        fluidReal = meHatch.drain(ForgeDirection.UNKNOWN, fluidNeeded, true);
-                                    } else {
-                                        fluidReal = mInputHatches.get(0)
-                                            .drain(fluidNeeded.amount, true);
-                                    }
-                                    if (fluidReal == null || fluidReal.amount < fluidNeeded.amount) {
-                                        reduceBattery(fuelConsumptionFactor);
-                                    } else {
-                                        totalFuelConsumed += getFuelFactor();
-                                        if (batteryCharging) {
-                                            increaseBattery(fuelConsumptionFactor);
-                                        }
-                                    }
-                                    fuelDrained = true;
-                                }
-                            }
-                            if (!fuelDrained) {
-                                reduceBattery(fuelConsumptionFactor);
-                            }
-                        } else {
-                            reduceBattery(fuelConsumptionFactor);
-                        }
+                        drainFuel();
                     }
                 }
 
@@ -521,6 +485,34 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 endRecipeProcessing();
             }
         }
+    }
+
+    private void drainFuel() {
+        fuelConsumption = (long) calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1);
+        if (fuelConsumption >= Integer.MAX_VALUE) {
+            reduceBattery(fuelConsumptionFactor);
+            return;
+        }
+
+        FluidStack fuelToDrain = validFuelList.get(selectedFuelType)
+            .copy();
+        for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
+            FluidStack drained = hatch.drain(ForgeDirection.UNKNOWN, fuelToDrain, true);
+            if (drained == null) {
+                continue;
+            }
+
+            fuelToDrain.amount -= drained.amount;
+
+            if (fuelToDrain.amount == 0) {
+                totalFuelConsumed += getFuelFactor();
+                if (batteryCharging) {
+                    increaseBattery(fuelConsumptionFactor);
+                }
+                return;
+            }
+        }
+        reduceBattery(fuelConsumptionFactor);
     }
 
     public boolean addModuleToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
