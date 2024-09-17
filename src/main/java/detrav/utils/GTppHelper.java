@@ -1,9 +1,11 @@
 package detrav.utils;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
 
+import gregtech.GTMod;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -12,23 +14,27 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 
-/**
- * Created by bartimaeusnek on 19.04.2018.
- */
 public class GTppHelper {
 
-    public static final HashMap<Short, Material> decodeoresGTpp = new HashMap<>();
-    public static final HashMap<Material, Short> encodeoresGTpp = new HashMap<>();
+    private static boolean initialized;
+    private static final HashMap<Short, Material> decodeoresGTpp = new HashMap<>();
+    private static final HashMap<Material, Short> encodeoresGTpp = new HashMap<>();
 
-    public static void generate_OreIDs() {
+    private static void generate_OreIDs() {
         short n = 0;
-        for (; n < MaterialsOres.class.getFields().length; ++n) {
+        final Field[] fields = MaterialsOres.class.getFields();
+        for (; n < fields.length; ++n) {
             try {
-                Short i = (short) (n + 1);
-                Material m = ((Material) MaterialsOres.class.getFields()[n].get(MaterialsOres.class.getFields()[n]));
-                decodeoresGTpp.put(i, m);
-                encodeoresGTpp.put(m, i);
-            } catch (Exception ignored) {}
+                final Object o = fields[n].get(null);
+                if (o instanceof Material m) {
+                    Short i = (short) (n + 1);
+                    decodeoresGTpp.put(i, m);
+                    encodeoresGTpp.put(m, i);
+                }
+            } catch (Exception e) {
+                GTMod.GT_FML_LOGGER
+                    .error("Exception caught when trying to generate GT++ ore ids for detrav ore scanner", e);
+            }
         }
         // Manually add ores from other places than the ore class
         // Fluorite
@@ -52,16 +58,28 @@ public class GTppHelper {
         encodeoresGTpp.put(MaterialsElements.STANDALONE.GRANITE, (short) (n + 1));
     }
 
-    public static boolean isGTppBlock(Block tBlock) {
-        return tBlock instanceof BlockBaseOre;
+    public static short getMetaFromBlock(Block block) {
+        if (!initialized) {
+            generate_OreIDs();
+            initialized = true;
+        }
+        return (short) (GTppHelper.encodeoresGTpp.get(((BlockBaseOre) block).getMaterialEx()) + 7000);
     }
 
-    public static short getGTppMeta(Block tBlock) {
-        return (short) (GTppHelper.encodeoresGTpp.get(((BlockBaseOre) tBlock).getMaterialEx()) + 7000);
+    public static Material getMatFromMeta(int meta) {
+        if (!initialized) {
+            generate_OreIDs();
+            initialized = true;
+        }
+        return GTppHelper.decodeoresGTpp.get((short) (meta - 7000));
     }
 
-    public static String getGTppVeinName(Block tBlock) {
-        return tBlock.getLocalizedName();
+    public static boolean isGTppBlock(Block block) {
+        return block instanceof BlockBaseOre;
+    }
+
+    public static String getGTppVeinName(Block block) {
+        return block.getLocalizedName();
     }
 
 }

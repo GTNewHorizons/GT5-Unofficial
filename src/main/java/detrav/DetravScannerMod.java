@@ -15,7 +15,6 @@ import detrav.items.processing.ProcessingDetravToolProspector;
 import detrav.net.DetravNetwork;
 import detrav.proxies.CommonProxy;
 import detrav.utils.DetravCreativeTab;
-import detrav.utils.GTppHelper;
 import gregtech.GT_Version;
 import gregtech.api.GregTechAPI;
 
@@ -64,6 +63,5 @@ public class DetravScannerMod {
     @EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
         proxy.onPostLoad();
-        GTppHelper.generate_OreIDs();
     }
 }
