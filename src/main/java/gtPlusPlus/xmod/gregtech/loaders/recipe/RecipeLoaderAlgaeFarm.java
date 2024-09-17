@@ -45,7 +45,7 @@ public class RecipeLoaderAlgaeFarm {
                 aTemp.add(generateBaseRecipe(aCompost, aTier));
             }
         }
-        int aIndex = MathUtils.randInt(0, aTemp.isEmpty() ? 1 : aTemp.size());
+        int aIndex = MathUtils.randInt(0, (aTemp.isEmpty() ? 1 : aTemp.size()) - 1);
         Logger.INFO("Using recipe with index of " + aIndex + ". " + aComp);
         return aTemp.get(aIndex);
     }
