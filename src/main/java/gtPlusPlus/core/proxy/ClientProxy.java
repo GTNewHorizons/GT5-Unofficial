@@ -34,13 +34,12 @@ import gtPlusPlus.core.client.renderer.RenderSickBlaze;
 import gtPlusPlus.core.client.renderer.RenderStaballoyConstruct;
 import gtPlusPlus.core.client.renderer.RenderToxinball;
 import gtPlusPlus.core.common.CommonProxy;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.nei.NEIGTPPConfig;
 import gtPlusPlus.xmod.gregtech.common.render.CapeRenderer;
@@ -63,7 +62,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
 
     @SubscribeEvent
     public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
-        if (ConfigSwitches.enableCustomCapes) {
+        if (Configuration.features.enableCustomCapes) {
             mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
         }
     }
@@ -74,7 +73,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
     @Override
     public void preInit(final FMLPreInitializationEvent e) {
         super.preInit(e);
-        if (ConfigSwitches.enableCustomCapes) {
+        if (Configuration.features.enableCustomCapes) {
             onPreLoad();
         }
         // Do this weird things for textures.
@@ -145,7 +144,7 @@ public class ClientProxy extends CommonProxy implements Runnable {
 
     @Override
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-        if (GTPPCore.ConfigSwitches.hideUniversalCells) {
+        if (Configuration.features.hideUniversalCells) {
             hideUniversalCells();
         }
         super.onLoadComplete(event);

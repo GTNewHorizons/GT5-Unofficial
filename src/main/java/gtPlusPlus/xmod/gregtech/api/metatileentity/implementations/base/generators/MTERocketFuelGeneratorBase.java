@@ -21,6 +21,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
@@ -32,19 +33,19 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
     public MTERocketFuelGeneratorBase(final int aID, final String aName, final String aNameRegional, final int aTier,
         final String aDescription, final ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
-        pollMin = (int) (GTPPCore.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator
-            * GTPPCore.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
-        pollMax = (int) (GTPPCore.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator
-            * GTPPCore.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
+        pollMin = (int) (Configuration.pollution.baseMinPollutionPerSecondRocketFuelGenerator
+            * Configuration.pollution.pollutionReleasedByTierRocketFuelGenerator[mTier]);
+        pollMax = (int) (Configuration.pollution.baseMaxPollutionPerSecondRocketFuelGenerator
+            * Configuration.pollution.pollutionReleasedByTierRocketFuelGenerator[mTier]);
     }
 
     public MTERocketFuelGeneratorBase(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
-        pollMin = (int) (GTPPCore.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator
-            * GTPPCore.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
-        pollMax = (int) (GTPPCore.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator
-            * GTPPCore.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator[mTier]);
+        pollMin = (int) (Configuration.pollution.baseMinPollutionPerSecondRocketFuelGenerator
+            * Configuration.pollution.pollutionReleasedByTierRocketFuelGenerator[mTier]);
+        pollMax = (int) (Configuration.pollution.baseMaxPollutionPerSecondRocketFuelGenerator
+            * Configuration.pollution.pollutionReleasedByTierRocketFuelGenerator[mTier]);
     }
 
     @Override
