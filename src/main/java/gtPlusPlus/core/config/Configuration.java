@@ -230,11 +230,6 @@ public class Configuration {
 
     @Config.Comment("Features section")
     public static class Features {
-
-        @Config.Comment("Enables Custom GT++ Cape.")
-        @Config.DefaultBoolean(false)
-        public boolean enableCustomCapes;
-
         @Config.Comment("Hides every filled IC2 Universal Cell from NEI.")
         @Config.DefaultBoolean(true)
         public boolean hideUniversalCells;
