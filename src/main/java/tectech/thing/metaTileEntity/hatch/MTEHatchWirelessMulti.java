@@ -37,10 +37,11 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
         ? (long) (ticks_between_energy_addition / (overflowDivisor * 2))
         : ticks_between_energy_addition;
 
-    private final long eu_transferred_per_operation_long = overflowDivisor
-        > 1 ? eu_transferred_per_operation.divide(BigInteger.valueOf((long) (overflowDivisor * precisionMultiplier)))
+    private final long eu_transferred_per_operation_long = overflowDivisor > 1
+        ? eu_transferred_per_operation.divide(BigInteger.valueOf((long) (overflowDivisor * precisionMultiplier * 2)))
             .multiply(BigInteger.valueOf(precisionMultiplier))
-            .longValue() : eu_transferred_per_operation.longValue();
+            .longValue()
+        : eu_transferred_per_operation.longValue();
 
     private UUID owner_uuid;
 
