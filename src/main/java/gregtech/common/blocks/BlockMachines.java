@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.api.items.MetaBaseItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -358,14 +359,26 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         if (tTileEntity == null) {
             return false;
         }
+
+        final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+
         if (aPlayer.isSneaking()) {
-            final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
             if (tCurrentItem != null && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
                 && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) return false;
         }
+
+        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+
+        // Used for Ring of Loki support
+        if (tCurrentItem != null && tCurrentItem.getItem() instanceof MetaBaseItem mbItem) {
+            if (mbItem.forEachBehavior(tCurrentItem, behavior -> behavior.shouldInterruptBlockActivation(aPlayer, tTileEntity, side))) {
+                return false;
+            }
+        }
+
         if (tTileEntity instanceof IGregTechTileEntity gtTE) {
             if (gtTE.getTimer() < 1L) {
                 return false;
@@ -374,7 +387,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 return true;
             }
             return ((IGregTechTileEntity) tTileEntity)
-                .onRightclick(aPlayer, ForgeDirection.getOrientation(ordinalSide), aOffsetX, aOffsetY, aOffsetZ);
+                .onRightclick(aPlayer, side, aOffsetX, aOffsetY, aOffsetZ);
         }
         return false;
     }

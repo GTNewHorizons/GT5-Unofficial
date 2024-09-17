@@ -20,8 +20,6 @@ import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -187,7 +185,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         return REMOVE_COLOR;
     }
 
-    @SideOnly(Side.CLIENT)
     private static void displayLockedMessage() {
         GTNHLib.proxy.printMessageAboveHotbar(
             StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.lock_error"),
@@ -209,7 +206,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     //endregion
 
     //region Server Actions
-    @SideOnly(Side.SERVER)
     public void incrementColor(final ItemStack itemStack, final boolean wasSneaking) {
         if (isLocked(itemStack)) {
             return;
@@ -233,7 +229,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         setColor(itemStack, color);
     }
 
-    @SideOnly(Side.SERVER)
     public void setColor(final ItemStack itemStack, final byte color) {
         if (isLocked(itemStack)) {
             return;
@@ -248,7 +243,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         setItemStackName(itemStack);
     }
 
-    @SideOnly(Side.SERVER)
     public void toggleLock(final ItemStack itemStack) {
         final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
         tag.setBoolean(LOCK_NBT_TAG, !tag.getBoolean(LOCK_NBT_TAG));
@@ -286,7 +280,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             .getBoolean(LOCK_NBT_TAG);
     }
 
-    @SideOnly(Side.CLIENT)
     private static class DyeSelectGUI extends SelectItemUIFactory {
 
         public DyeSelectGUI(final String header, final ItemStack headerItem, final Consumer<ItemStack> selectedCallback,

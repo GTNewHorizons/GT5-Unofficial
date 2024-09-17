@@ -7,15 +7,12 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.render.GTRenderUtil;
 
-@SideOnly(Side.CLIENT)
 public class InfiniteSprayCanRenderer implements IItemRenderer {
 
     public InfiniteSprayCanRenderer() {

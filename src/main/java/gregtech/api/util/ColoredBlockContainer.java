@@ -84,6 +84,21 @@ public abstract class ColoredBlockContainer {
             player);
     }
 
+    public static ColoredBlockContainer getInstance(EntityPlayer player, TileEntity tileEntity, ForgeDirection side) {
+        if (tileEntity == null) {
+            return NULL_INSTANCE;
+        }
+
+        return getInstance(
+            player.worldObj,
+            tileEntity.xCoord,
+            tileEntity.yCoord,
+            tileEntity.zCoord,
+            side,
+            player
+        );
+    }
+
     public static ColoredBlockContainer getInstance(World world, int x, int y, int z, ForgeDirection side,
         EntityPlayer player) {
         final Block block = world.getBlock(x, y, z);
