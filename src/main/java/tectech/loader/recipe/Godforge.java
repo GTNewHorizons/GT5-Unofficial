@@ -463,7 +463,7 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1), Materials.Bismuth.getMolten(1))
-                .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(144))
+                .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(576))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
