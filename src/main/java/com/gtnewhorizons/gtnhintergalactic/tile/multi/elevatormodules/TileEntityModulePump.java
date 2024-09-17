@@ -403,20 +403,15 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0")) // Module that
-                    // adds Space
-                    // Pumping
-                    // Operations to the
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
                     .addInfo(
                             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc1")) // Sucking
-                    // up
-                    // entire
-                    // gas planets was
-                    // never easier
+                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
+
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t1.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2")).addSeparator()
                     .beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
@@ -500,20 +495,18 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0")) // Module that
-                    // adds Space
-                    // Pumping
-                    // Operations to the
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc0"))
                     .addInfo(
                             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc1")) // Literally
-                    // sucks
+                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
+
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
-                    .addSeparator().beginStructureBlock(1, 5, 2, false)
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3")).addSeparator()
+                    .beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
@@ -601,10 +594,12 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                                     + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc3"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT4"))
+
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.desc4"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc5"))
-                    .addSeparator().beginStructureBlock(1, 5, 2, false)
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t3.desc5"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.pump.t2.desc6"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT4")).addSeparator()
+                    .beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
