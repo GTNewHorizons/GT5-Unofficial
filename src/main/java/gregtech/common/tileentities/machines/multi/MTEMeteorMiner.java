@@ -444,6 +444,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         aNBT.setBoolean("isWaiting", isWaiting);
         aNBT.setBoolean("stopAllRendering", stopAllRendering);
         aNBT.setInteger("multiTier", multiTier);
+        aNBT.setInteger("fortuneTier", fortuneTier);
     }
 
     @Override
@@ -461,6 +462,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         isWaiting = aNBT.getBoolean("isWaiting");
         stopAllRendering = aNBT.getBoolean("stopAllRendering");
         multiTier = aNBT.getInteger("multiTier");
+        fortuneTier = aNBT.getInteger("fortuneTier");
     }
 
     private void reset() {
