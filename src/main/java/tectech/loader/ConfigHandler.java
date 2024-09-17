@@ -8,7 +8,6 @@ import gregtech.api.enums.Mods;
 @Config.RequiresMcRestart
 public class ConfigHandler {
     public static Debug debug = new Debug();
-    public static Features features = new Features();
     public static TeslaTweaks teslaTweaks = new TeslaTweaks();
 
     @Config.Comment("Debug section")
@@ -16,13 +15,6 @@ public class ConfigHandler {
         @Config.Comment("Enables logging and other purely debug features")
         @Config.DefaultBoolean(false)
         public boolean DEBUG_MODE;
-    }
-
-    @Config.Comment("Features section")
-    public static class Features{
-        @Config.Comment("Set to true to disable the block hardness nerf")
-        @Config.DefaultBoolean(false)
-        public boolean DISABLE_BLOCK_HARDNESS_NERF;
     }
 
     @Config.Comment("Tesla tweaks section")

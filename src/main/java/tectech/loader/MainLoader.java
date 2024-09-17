@@ -78,7 +78,7 @@ public final class MainLoader {
     }
 
     public static void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 4);
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 2);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if (NewHorizonsCoreMod.isModLoaded()) {
@@ -98,30 +98,6 @@ public final class MainLoader {
         progressBarPostLoad.step("Recipes");
         new BaseRecipeLoader().run();
         TecTech.LOGGER.info("Recipe Init Done");
-
-        if (!ConfigHandler.features.DISABLE_BLOCK_HARDNESS_NERF) {
-            progressBarPostLoad.step("Nerf blocks blast resistance");
-            adjustTwilightBlockResistance();
-            TecTech.LOGGER.info("Blocks nerf done");
-        } else {
-            progressBarPostLoad.step("Do not nerf blocks blast resistance");
-            TecTech.LOGGER.info("Blocks were not nerfed");
-        }
-    }
-
-    private static void safeSetResistance(Block block, float resistance) {
-        if (block != null) {
-            block.setResistance(resistance);
-        }
-    }
-
-    private static void adjustTwilightBlockResistance() {
-        if (TwilightForest.isModLoaded()) {
-            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFShield"), 30);
-            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFThorns"), 10);
-            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFTowerTranslucent"), 30);
-            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFDeadrock"), 5);
-        }
     }
 
     public static void onLoadCompleted() {
