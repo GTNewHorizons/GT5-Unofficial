@@ -49,7 +49,6 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -334,8 +333,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             log("Found " + aTurbineAssemblies.size() + ", expected 12.");
             return false;
         }
-        AutoMap<Materials> aTurbineMats = new AutoMap<>();
-        AutoMap<Integer> aTurbineSizes = new AutoMap<>();
+        ArrayList<Materials> aTurbineMats = new ArrayList<>();
+        ArrayList<Integer> aTurbineSizes = new ArrayList<>();
         for (MTEHatchTurbine aHatch : aTurbineAssemblies) {
             aTurbineMats.add(MetaGeneratedTool.getPrimaryMaterial(aHatch.getTurbine()));
             aTurbineSizes.add(getTurbineSize(aHatch.getTurbine()));

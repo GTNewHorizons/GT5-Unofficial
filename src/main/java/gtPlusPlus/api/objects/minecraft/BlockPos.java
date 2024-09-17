@@ -1,6 +1,7 @@
 package gtPlusPlus.api.objects.minecraft;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,7 +11,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.api.objects.data.AutoMap;
 
 public class BlockPos implements Serializable {
 
@@ -151,14 +151,14 @@ public class BlockPos implements Serializable {
         return new BlockPos(this.xPos, this.yPos, this.zPos - 1, this.dim);
     }
 
-    public AutoMap<BlockPos> getSurroundingBlocks() {
-        AutoMap<BlockPos> sides = new AutoMap<>();
-        sides.put(getUp());
-        sides.put(getDown());
-        sides.put(getXPos());
-        sides.put(getXNeg());
-        sides.put(getZPos());
-        sides.put(getZNeg());
+    public ArrayList<BlockPos> getSurroundingBlocks() {
+        ArrayList<BlockPos> sides = new ArrayList<>();
+        sides.add(getUp());
+        sides.add(getDown());
+        sides.add(getXPos());
+        sides.add(getXNeg());
+        sides.add(getZPos());
+        sides.add(getZNeg());
         return sides;
     }
 
@@ -195,7 +195,7 @@ public class BlockPos implements Serializable {
      * @return - Does this block have a neighbour that is the same?
      */
     public boolean hasSimilarNeighbour(boolean strict) {
-        for (BlockPos g : getSurroundingBlocks().values()) {
+        for (BlockPos g : getSurroundingBlocks()) {
             if (getBlockAtPos(g) == getBlockAtPos()) {
                 if (!strict) {
                     return true;
@@ -209,7 +209,7 @@ public class BlockPos implements Serializable {
         return false;
     }
 
-    public AutoMap<BlockPos> getSimilarNeighbour() {
+    public ArrayList<BlockPos> getSimilarNeighbour() {
         return getSimilarNeighbour(false);
     }
 
@@ -217,15 +217,15 @@ public class BlockPos implements Serializable {
      * @param strict - Does this check Meta Data?
      * @return - Does this block have a neighbour that is the same?
      */
-    public AutoMap<BlockPos> getSimilarNeighbour(boolean strict) {
-        AutoMap<BlockPos> sides = new AutoMap<>();
-        for (BlockPos g : getSurroundingBlocks().values()) {
+    public ArrayList<BlockPos> getSimilarNeighbour(boolean strict) {
+        ArrayList<BlockPos> sides = new ArrayList<>();
+        for (BlockPos g : getSurroundingBlocks()) {
             if (getBlockAtPos(g) == getBlockAtPos()) {
                 if (!strict) {
-                    sides.put(g);
+                    sides.add(g);
                 } else {
                     if (getMetaAtPos() == getMetaAtPos(g)) {
-                        sides.put(g);
+                        sides.add(g);
                     }
                 }
             }
@@ -234,12 +234,8 @@ public class BlockPos implements Serializable {
     }
 
     public Set<BlockPos> getValidNeighboursAndSelf() {
-        AutoMap<BlockPos> h = getSimilarNeighbour(true);
-        h.put(this);
-        Set<BlockPos> result = new HashSet<>();
-        for (BlockPos f : h.values()) {
-            result.add(f);
-        }
-        return result;
+        ArrayList<BlockPos> h = getSimilarNeighbour(true);
+        h.add(this);
+        return new HashSet<>(h);
     }
 }

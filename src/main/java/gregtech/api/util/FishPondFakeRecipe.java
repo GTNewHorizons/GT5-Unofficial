@@ -11,7 +11,6 @@ import net.minecraftforge.common.FishingHooks;
 
 import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
@@ -36,13 +35,13 @@ public class FishPondFakeRecipe {
             e.printStackTrace();
         }
 
-        AutoMap<ArrayList<WeightedRandomFishable>> mega = new AutoMap<>();
-        mega.put(fish);
-        mega.put(junk);
-        mega.put(treasure);
+        ArrayList<ArrayList<WeightedRandomFishable>> mega = new ArrayList<>();
+        mega.add(fish);
+        mega.add(junk);
+        mega.add(treasure);
 
         int mType = 14;
-        for (ArrayList<WeightedRandomFishable> f : mega.values()) {
+        for (ArrayList<WeightedRandomFishable> f : mega) {
             for (WeightedRandomFishable weightedRandomFishable : f) {
                 if (weightedRandomFishable != null) {
                     WeightedRandomFishable u = weightedRandomFishable;

@@ -229,8 +229,15 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.AQUA
                     + String.valueOf(this.baseSkew)
                     + EnumChatFormatting.GRAY
-                    + ", 1) of antimatter per cycle, consuming equal amounts of Protomatter")
-            .addInfo("The change can be negative! (N = Normal Distribution with mean of 0.2)")
+                    + ", 0.25) of antimatter per cycle, consuming equal amounts of Protomatter")
+            .addInfo(
+                "The change is split between the 16 Antimatter Hatches, sampled from N(" + EnumChatFormatting.AQUA
+                    + String.valueOf(this.baseSkew)
+                    + EnumChatFormatting.GRAY
+                    + ", 1) (Gaussian distribution with mean of "
+                    + String.valueOf(this.baseSkew)
+                    + ")")
+            .addInfo("The total change can be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
             .addInfo(
@@ -299,6 +306,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 "2. Depleted Naquadah Fuel Mk VI - Distribution skew " + EnumChatFormatting.AQUA
                     + "+0.10"
                     + EnumChatFormatting.GRAY)
+            .addInfo("Each stabilization can only use one of the fluids at a time")
             .addSeparator()
             .addCasingInfoMin("Antimatter Containment Casing", 512, false)
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
@@ -906,7 +914,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         TileAntimatter render = getAntimatterRender();
         if (render == null) return;
         render.setProtomatterRender(flag);
-        render.setRotationFields(getRotation(), getDirection());
+        if (!flag) return;
+        render.setRotationFields(getDirection(), getRotation());
     }
 
     public TileAntimatter getAntimatterRender() {
