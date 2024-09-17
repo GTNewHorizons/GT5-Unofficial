@@ -423,7 +423,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                 String name = input.get()
                     .getDisplayName();
                 this.fortuneTier = name.equals("Terra Shatterer") ? 3
-                    : name.equals("Pickaxe of the Core") ? 2 : name.equals("Bound Pickaxe") ? 1 : 0;
+                    : name.equals("Bound Pickaxe") ? 2 : name.equals("Pickaxe of the Core") ? 1 : 0;
                 return;
             }
         }
