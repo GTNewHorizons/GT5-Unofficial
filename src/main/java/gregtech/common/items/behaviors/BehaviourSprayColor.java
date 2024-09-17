@@ -1,12 +1,9 @@
 package gregtech.common.items.behaviors;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,13 +28,6 @@ public class BehaviourSprayColor extends BehaviourNone {
     private final ItemStack mFull;
     private final long mUses;
     private final byte mColor;
-    private final Collection<Block> mAllowedVanillaBlocks = Arrays.asList(
-        Blocks.glass,
-        Blocks.glass_pane,
-        Blocks.stained_glass,
-        Blocks.stained_glass_pane,
-        Blocks.carpet,
-        Blocks.hardened_clay);
     protected String mTooltip;
     private final String mTooltipUses = GTLanguageManager
         .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");

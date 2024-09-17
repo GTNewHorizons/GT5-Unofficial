@@ -92,18 +92,10 @@ public class GTPacketInfiniteSpraycan extends GTPacketNew {
                 final EntityPlayerMP player, final int newColor) {
                 if (!behaviour.isLocked(itemStack)) {
                     behaviour.incrementColor(itemStack, player.isSneaking());
-                    GTUtility.sendSoundToPlayers(
-                        player.worldObj,
-                        SoundResource.GT_SPRAYCAN_SHAKE,
-                        1.0F,
-                        1,
-                        (int) player.posX,
-                        (int) player.posY,
-                        (int) player.posZ);
+                    playShakeSound(player);
 
                     return true;
                 }
-                // TODO: Sad, ineffectual shake noise for when it's locked
                 return false;
             }
         },
@@ -123,11 +115,23 @@ public class GTPacketInfiniteSpraycan extends GTPacketNew {
                 final EntityPlayerMP player, final int newColor) {
                 if (newColor != -1) {
                     behavior.setColor(itemStack, (byte) newColor);
+                    Action.playShakeSound(player);
                     return true;
                 }
                 return false;
             }
         };
+
+        private static void playShakeSound(final EntityPlayerMP player) {
+            GTUtility.sendSoundToPlayers(
+                player.worldObj,
+                SoundResource.GT_SPRAYCAN_SHAKE,
+                1.0F,
+                1,
+                (int) player.posX,
+                (int) player.posY,
+                (int) player.posZ);
+        }
 
         abstract boolean execute(final BehaviourSprayColorInfinite behavior, ItemStack itemStack, EntityPlayerMP player,
             final int newColor);

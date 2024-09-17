@@ -23,6 +23,7 @@ import appeng.integration.IntegrationRegistry;
 import appeng.integration.IntegrationType;
 import appeng.integration.abstraction.IFMP;
 import appeng.tile.networking.TileCableBus;
+import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 
 /**
@@ -106,12 +107,6 @@ public abstract class ColoredBlockContainer {
         return NULL_INSTANCE;
     }
 
-    private static int transformColor(final int newColor) {
-        // GT, for some reason, reverses the order of its dyes, so this function has to be used a lot to convert
-        // between GT dye order and vanilla dye order.
-        return (~(byte) newColor) & 0xF;
-    }
-
     /**
      * Provides functionality for various types of vanilla blocks that use their metadata value for color. Also performs
      * some transformations of blocks, e.g. glass is transformed to stained glass when sprayed.
@@ -155,12 +150,12 @@ public abstract class ColoredBlockContainer {
 
         @Override
         public Optional<Integer> getColor() {
-            return Optional.of(transformColor(originalColor));
+            return Optional.of(Dyes.transformDyeIndex(originalColor));
         }
 
         @Override
         public boolean setColor(final int newColor) {
-            final int transformedColor = transformColor(newColor);
+            final int transformedColor = Dyes.transformDyeIndex(newColor);
 
             if (TRANSFORMATIONS.containsKey(block)) {
                 world.setBlock(x, y, z, TRANSFORMATIONS.get(block), transformedColor, 3);
@@ -214,14 +209,14 @@ public abstract class ColoredBlockContainer {
         @Override
         public Optional<Integer> getColor() {
             return Optional.of(
-                transformColor(
+                Dyes.transformDyeIndex(
                     colorableTile.getColor()
                         .ordinal()));
         }
 
         @Override
         public boolean setColor(final int newColor) {
-            return colorableTile.recolourBlock(side, AEColor.values()[transformColor(newColor)], player);
+            return colorableTile.recolourBlock(side, AEColor.values()[Dyes.transformDyeIndex(newColor)], player);
         }
 
         @Override
@@ -256,7 +251,7 @@ public abstract class ColoredBlockContainer {
 
         @Override
         public boolean setColor(final int newColor) {
-            return bus.recolourBlock(world, x, y, z, side, transformColor(newColor), player);
+            return bus.recolourBlock(world, x, y, z, side, Dyes.transformDyeIndex(newColor), player);
         }
 
         @Override
@@ -276,7 +271,7 @@ public abstract class ColoredBlockContainer {
                 aeColor = ((IFMP) IntegrationRegistry.INSTANCE.getInstance(IntegrationType.FMP)).getCableContainer(te).getColor();
             }
 
-            return aeColor == null ? Optional.empty() : Optional.of(transformColor(aeColor.ordinal()));
+            return aeColor == null ? Optional.empty() : Optional.of(Dyes.transformDyeIndex(aeColor.ordinal()));
         }
     }
 
@@ -299,7 +294,7 @@ public abstract class ColoredBlockContainer {
 
         @Override
         public boolean removeColor() {
-            if (coloredTileEntity.getColorization() > 0) {
+            if (coloredTileEntity.getColorization() > -1) {
                 coloredTileEntity.setColorization((byte) -1);
                 return true;
             }
