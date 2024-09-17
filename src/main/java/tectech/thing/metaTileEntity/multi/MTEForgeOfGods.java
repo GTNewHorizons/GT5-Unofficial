@@ -61,6 +61,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
@@ -1377,15 +1378,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private Widget createMilestoneButton(int milestoneID, int width, int height, Pos2d pos) {
         return new ButtonWidget().setOnClick((clickData, widget) -> {
             currentMilestoneID = milestoneID;
-            if (!widget.isClient()) {
-                if (widget.getContext()
-                    .isWindowOpen(INDIVIDUAL_MILESTONE_WINDOW_ID)) {
-                    widget.getContext()
-                        .closeWindow(INDIVIDUAL_MILESTONE_WINDOW_ID);
-                }
-                widget.getContext()
-                    .openSyncedWindow(INDIVIDUAL_MILESTONE_WINDOW_ID);
-            }
+            reopenWindow(widget, INDIVIDUAL_MILESTONE_WINDOW_ID);
         })
             .setSize(width, height)
             .setBackground(() -> switch (milestoneID) {
@@ -2191,17 +2184,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             followupUpgrades = followingUpgradeIDs;
             isUpradeSplitStart = isStartOfSplit;
             doesCurrentUpgradeRequireExtraMats = requiresExtraMaterials;
-            if (!widget.isClient()) {
-                // unfortunately this is the easiest way to prevent this window desyncing. it causes the window to
-                // reposition itself on the screen which would be a good thing to not do.
-                if (widget.getContext()
-                    .isWindowOpen(INDIVIDUAL_UPGRADE_WINDOW_ID)) {
-                    widget.getContext()
-                        .closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
-                }
-                widget.getContext()
-                    .openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
-            }
+            reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
         })
             .setSize(40, 15)
             .setBackground(() -> {
@@ -2674,6 +2657,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(90, 140)
                     .setSize(100, 60));
         return builder.build();
+    }
+
+    private void reopenWindow(Widget widget, int windowId) {
+        if (!widget.isClient()) {
+            ModularUIContext ctx = widget.getContext();
+            if (ctx.isWindowOpen(windowId)) {
+                ctx.closeWindow(windowId);
+            }
+            ctx.openSyncedWindow(windowId);
+        }
     }
 
     private DynamicPositionedRow delenoName() {
