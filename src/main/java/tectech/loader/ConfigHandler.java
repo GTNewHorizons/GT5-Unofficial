@@ -16,9 +16,6 @@ public class ConfigHandler {
         @Config.Comment("Enables logging and other purely debug features")
         @Config.DefaultBoolean(false)
         public boolean DEBUG_MODE;
-        @Config.Comment("Enables 0EU/t multi block machinery")
-        @Config.DefaultBoolean(false)
-        public boolean POWERLESS_MODE = false;
     }
 
     @Config.Comment("Features section")

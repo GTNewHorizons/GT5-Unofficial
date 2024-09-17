@@ -1491,9 +1491,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
-            if (ConfigHandler.debug.POWERLESS_MODE) {
-                return true;
-            }
             if (!drainEnergyInput_EM(
                 getPowerFlow(),
                 getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
@@ -1510,9 +1507,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (allowProduction && euFlow > 0) {
             addEnergyOutput_EM(getPowerFlow() * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (euFlow < 0) {
-            if (ConfigHandler.debug.POWERLESS_MODE) {
-                return true;
-            }
             if (!drainEnergyInput(
                 getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
                 eAmpereFlow)) {
