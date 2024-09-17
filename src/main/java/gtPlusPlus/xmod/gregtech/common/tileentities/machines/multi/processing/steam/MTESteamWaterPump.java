@@ -204,7 +204,7 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         if (this.mOutputHatches.size() != 1 || this.mSteamInputFluids.size() != 1) return false;
 
         currentHumidity = getHumidity();
-        return mCountCasing >= 9;
+        return mCountCasing >= 10;
     }
 
     @Override
