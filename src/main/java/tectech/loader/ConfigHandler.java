@@ -9,7 +9,6 @@ import gregtech.api.enums.Mods;
 public class ConfigHandler {
     public static Debug debug = new Debug();
     public static Features features = new Features();
-    public static Modules modules = new Modules();
     public static TeslaTweaks teslaTweaks = new TeslaTweaks();
 
     @Config.Comment("Debug section")
@@ -33,13 +32,6 @@ public class ConfigHandler {
         @Config.Comment("Set to true to enable removal of plasmas heavier than Fe and other weird ones")
         @Config.DefaultBoolean(false)
         public boolean NERF_FUSION;
-    }
-
-    @Config.Comment("Modules section")
-    public static class Modules{
-        @Config.Comment("If set to true, every op/admin will receive all errors occurred during the startup phase as in game message on join")
-        @Config.DefaultBoolean(false)
-        public boolean MOD_ADMIN_ERROR_LOGS;
     }
 
     @Config.Comment("Tesla tweaks section")

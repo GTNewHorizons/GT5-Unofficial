@@ -17,7 +17,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.api.enums.Mods;
 import gregtech.api.objects.XSTR;
@@ -77,12 +76,6 @@ public class TecTech {
     @SuppressWarnings("unused")
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         LOGGER.setDebugOutput(true);
-
-        if (ConfigHandler.modules.MOD_ADMIN_ERROR_LOGS) {
-            LOGGER.setDebugOutput(ConfigHandler.debug.DEBUG_MODE);
-            LOGGER.debug("moduleAdminErrorLogs is enabled");
-            IngameErrorLog moduleAdminErrorLogs = new IngameErrorLog();
-        }
 
         enderWorldSavedData = new EnderWorldSavedData();
         FMLCommonHandler.instance()
