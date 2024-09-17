@@ -1,24 +1,14 @@
 package tectech.loader;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Mods.TwilightForest;
 import static tectech.TecTech.LOGGER;
 import static tectech.TecTech.creativeTabTecTech;
 import static tectech.TecTech.proxy;
 
-import java.util.HashMap;
-
 import net.minecraft.block.Block;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.ProgressManager;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTRecipe;
 import tectech.TecTech;
 import tectech.loader.gui.CreativeTabTecTech;
 import tectech.loader.recipe.BaseRecipeLoader;

@@ -27,7 +27,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
-import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.spark.RendererMessage;

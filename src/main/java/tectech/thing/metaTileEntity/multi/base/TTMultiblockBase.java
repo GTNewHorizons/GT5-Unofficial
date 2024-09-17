@@ -33,7 +33,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
-import com.google.common.collect.Iterables;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -69,7 +68,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -89,7 +87,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import tectech.Reference;
 import tectech.TecTech;
@@ -1745,13 +1742,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     // empty body to prevent any explosion
     @Override
-    public final void explodeMultiblock() {
-    }
+    public final void explodeMultiblock() {}
 
     // empty body to prevent any explosion
     @Override
-    public void doExplosion(long aExplosionPower) {
-    }
+    public void doExplosion(long aExplosionPower) {}
 
     // region adder methods
     @Override

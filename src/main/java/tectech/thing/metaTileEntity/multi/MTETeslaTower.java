@@ -61,7 +61,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.spark.RendererMessage;
@@ -288,7 +287,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
         value = (int) value;
         if (value < 0) return LedStatus.STATUS_TOO_LOW;
-        if (value >ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER) return LedStatus.STATUS_HIGH;
+        if (value > ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER) return LedStatus.STATUS_HIGH;
         if (value < ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER) return LedStatus.STATUS_LOW;
         return LedStatus.STATUS_OK;
     };
@@ -397,19 +396,22 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             if (fluidHatch.mFluid != null) {
                 if (fluidHatch.mFluid.isFluidEqual(Materials.Helium.getPlasma(1))
                     && fluidHatch.mFluid.amount >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM) {
-                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;
+                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
+                        - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;
 
                     plasmaTier = 1;
                     return;
-                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))
-                    && fluidHatch.mFluid.amount >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN) {
-                        fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN;
+                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && fluidHatch.mFluid.amount
+                    >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN) {
+                        fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
+                            - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN;
 
                         plasmaTier = 1;
                         return;
-                    } else if (fluidHatch.mFluid.isFluidEqual(Materials.Radon.getPlasma(1))
-                        && fluidHatch.mFluid.amount >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON) {
-                            fluidHatch.mFluid.amount = fluidHatch.mFluid.amount -ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON;
+                    } else if (fluidHatch.mFluid.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidHatch.mFluid.amount
+                        >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON) {
+                            fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
+                                - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON;
 
                             plasmaTier = 2;
                             return;

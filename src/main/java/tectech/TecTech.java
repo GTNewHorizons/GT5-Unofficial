@@ -1,14 +1,9 @@
 package tectech;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
-import gregtech.common.config.Client;
-import gregtech.common.config.Gregtech;
-import gregtech.common.config.MachineStats;
-import gregtech.common.config.OPStuff;
-import gregtech.common.config.Other;
-import gregtech.common.config.Worldgen;
-import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -45,6 +40,7 @@ import tectech.recipe.TecTechRecipeMaps;
         + "after:CoFHCore;"
         + "after:Thaumcraft;")
 public class TecTech {
+
     static {
         try {
             ConfigurationManager.registerConfig(ConfigHandler.class);
@@ -61,7 +57,6 @@ public class TecTech {
     public static final XSTR RANDOM = XSTR.XSTR_INSTANCE;
     public static final LogHelper LOGGER = new LogHelper(Reference.MODID);
     public static CreativeTabTecTech creativeTabTecTech;
-
 
     public static EnderWorldSavedData enderWorldSavedData;
 
