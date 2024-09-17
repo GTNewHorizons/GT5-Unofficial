@@ -26,9 +26,6 @@ public class ConfigHandler {
         @Config.Comment("Set to true to disable the block hardness nerf")
         @Config.DefaultBoolean(false)
         public boolean DISABLE_BLOCK_HARDNESS_NERF;
-        @Config.Comment("Set to true to enable removal of plasmas heavier than Fe and other weird ones")
-        @Config.DefaultBoolean(false)
-        public boolean NERF_FUSION;
     }
 
     @Config.Comment("Tesla tweaks section")

@@ -95,7 +95,6 @@ public class TecTech {
         hasCOFH = Mods.COFHCore.isModLoaded();
 
         MainLoader.load();
-        MainLoader.addAfterGregTechPostLoadRunner();
     }
 
     @Mod.EventHandler
