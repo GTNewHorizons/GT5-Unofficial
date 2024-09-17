@@ -11,7 +11,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.recipe.GTRecipeUtils;
@@ -19,7 +18,7 @@ import gtPlusPlus.core.util.recipe.GTRecipeUtils;
 public class RecipeGenMultisUsingFluidInsteadOfCells {
 
     private static ItemStack mEmptyCell;
-    private static final AutoMap<ItemStack> mItemsToIgnore = new AutoMap<>();
+    private static final ArrayList<ItemStack> mItemsToIgnore = new ArrayList<>();
     private static boolean mInit = false;
 
     private static void init() {
@@ -82,10 +81,10 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                 FluidStack[] aInputFluids = x.mFluidInputs.clone();
                 FluidStack[] aOutputFluids = x.mFluidOutputs.clone();
 
-                AutoMap<ItemStack> aInputItemsMap = new AutoMap<>();
-                AutoMap<ItemStack> aOutputItemsMap = new AutoMap<>();
-                AutoMap<FluidStack> aInputFluidsMap = new AutoMap<>();
-                AutoMap<FluidStack> aOutputFluidsMap = new AutoMap<>();
+                ArrayList<ItemStack> aInputItemsMap = new ArrayList<>();
+                ArrayList<ItemStack> aOutputItemsMap = new ArrayList<>();
+                ArrayList<FluidStack> aInputFluidsMap = new ArrayList<>();
+                ArrayList<FluidStack> aOutputFluidsMap = new ArrayList<>();
 
                 // Iterate Inputs, Convert valid items into fluids
                 for (ItemStack aInputStack : aInputItems) {

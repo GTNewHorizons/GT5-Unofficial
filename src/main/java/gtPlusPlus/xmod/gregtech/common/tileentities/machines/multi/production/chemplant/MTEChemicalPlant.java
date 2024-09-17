@@ -11,7 +11,7 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +62,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
@@ -659,8 +658,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
      */
     public ArrayList<ItemStack> getCatalystInputs() {
         ArrayList<ItemStack> tItems = new ArrayList<>();
-        for (MTEHatchCatalysts tHatch : filterValidMTEs(mCatalystBuses)) {
-            AutoMap<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
+        for (MTEHatchCatalysts tHatch : validMTEList(mCatalystBuses)) {
+            ArrayList<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
             if (!aHatchContent.isEmpty()) {
                 tItems.addAll(aHatchContent);
             }

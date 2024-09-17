@@ -1,11 +1,11 @@
 package gtPlusPlus.core.util.minecraft;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import gregtech.api.enums.Mods;
 import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
@@ -22,7 +22,7 @@ public class MiningUtils {
         String aTextWorldGen;
         if (MiningUtils.findAndMapOreTypesFromGT()) {
             int mapKey = 0;
-            for (AutoMap<WorldgenGTOreLayer> g : MiningUtils.mOreMaps) {
+            for (ArrayList<WorldgenGTOreLayer> g : MiningUtils.mOreMaps) {
                 for (WorldgenGTOreLayer h : g) {
 
                     try {
@@ -40,14 +40,14 @@ public class MiningUtils {
         }
     }
 
-    public static AutoMap<WorldgenGTOreLayer>[] mOreMaps = new AutoMap[7];
-    private static final AutoMap<WorldgenGTOreLayer> Ores_Overworld = new AutoMap<>();
-    private static final AutoMap<WorldgenGTOreLayer> Ores_Nether = new AutoMap<>();
-    private static final AutoMap<WorldgenGTOreLayer> Ores_End = new AutoMap<>();
-    private static final AutoMap<WorldgenGTOreLayer> Ores_Moon = new AutoMap<>();
-    private static final AutoMap<WorldgenGTOreLayer> Ores_Mars = new AutoMap<>();
-    private static final AutoMap<WorldgenGTOreLayer> Ores_Comets = new AutoMap<>();
-    private static final AutoMap<WorldgenGTOreLayer> Ores_Misc = new AutoMap<>();
+    public static ArrayList<WorldgenGTOreLayer>[] mOreMaps = new ArrayList[7];
+    private static final ArrayList<WorldgenGTOreLayer> Ores_Overworld = new ArrayList<>();
+    private static final ArrayList<WorldgenGTOreLayer> Ores_Nether = new ArrayList<>();
+    private static final ArrayList<WorldgenGTOreLayer> Ores_End = new ArrayList<>();
+    private static final ArrayList<WorldgenGTOreLayer> Ores_Moon = new ArrayList<>();
+    private static final ArrayList<WorldgenGTOreLayer> Ores_Mars = new ArrayList<>();
+    private static final ArrayList<WorldgenGTOreLayer> Ores_Comets = new ArrayList<>();
+    private static final ArrayList<WorldgenGTOreLayer> Ores_Misc = new ArrayList<>();
 
     public static boolean findAndMapOreTypesFromGT() {
         // Gets Moon ID
@@ -73,20 +73,20 @@ public class MiningUtils {
         for (WorldgenGTOreLayer gtOreLayer : WorldgenGTOreLayer.sList) {
             if (gtOreLayer.mEnabled) {
                 if (gtOreLayer.mOverworld) {
-                    Ores_Overworld.put(gtOreLayer);
+                    Ores_Overworld.add(gtOreLayer);
                 }
                 if (gtOreLayer.mNether) {
-                    Ores_Nether.put(gtOreLayer);
+                    Ores_Nether.add(gtOreLayer);
                 }
                 if (gtOreLayer.mEnd || gtOreLayer.mEndAsteroid) {
-                    Ores_End.put(gtOreLayer);
+                    Ores_End.add(gtOreLayer);
                 }
                 if (gtOreLayer.mOverworld || gtOreLayer.mNether || (gtOreLayer.mEnd || gtOreLayer.mEndAsteroid)) {
                     continue;
                 }
-                Ores_Misc.put(gtOreLayer);
+                Ores_Misc.add(gtOreLayer);
             } else {
-                Ores_Comets.put(gtOreLayer);
+                Ores_Comets.add(gtOreLayer);
             }
         }
 

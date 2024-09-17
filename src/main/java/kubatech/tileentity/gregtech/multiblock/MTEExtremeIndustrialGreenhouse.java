@@ -31,7 +31,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static kubatech.api.Variables.Author;
 import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
@@ -694,7 +694,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         if (bucket.getSeedCount() <= 0) return true;
 
         // check if we have an ME output bus to output to.
-        for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+        for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
             if (!(tHatch instanceof MTEHatchOutputBusME)) continue;
             for (ItemStack stack : bucket.tryRemoveSeed(bucket.getSeedCount(), false)) {
                 ((MTEHatchOutputBusME) tHatch).store(stack);
@@ -710,7 +710,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .build();
         if (helper.getMaxParallel() > 0) {
             for (ItemStack toOutput : bucket.tryRemoveSeed(helper.getMaxParallel(), false)) {
-                for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+                for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
                     if (tHatch.storeAll(toOutput)) break;
                 }
             }

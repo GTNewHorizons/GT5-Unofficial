@@ -649,27 +649,25 @@ public final class ModItems {
             dustFertUN32 = ItemUtils
                 .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
 
-            ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
-            ItemStack temp2 = null;
-
             if (Forestry.isModLoaded()) {
-                temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
-            }
-            if (temp1 != null) {
-                fluidFertBasic = FluidUtils.generateFluidNonMolten(
-                    "Fertiliser",
-                    "Fertiliser",
-                    32,
-                    new short[] { 45, 170, 45, 100 },
-                    temp1,
-                    null,
-                    true);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(temp2)
-                    .fluidOutputs(new FluidStack(fluidFertBasic, 36))
-                    .duration(5 * TICKS)
-                    .eut(16)
-                    .addTo(fluidExtractionRecipes);
+                ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
+                ItemStack temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
+                if (temp1 != null && temp2 != null) {
+                    fluidFertBasic = FluidUtils.generateFluidNonMolten(
+                        "Fertiliser",
+                        "Fertiliser",
+                        32,
+                        new short[] { 45, 170, 45, 100 },
+                        temp1,
+                        null,
+                        true);
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(temp2)
+                        .fluidOutputs(new FluidStack(fluidFertBasic, 36))
+                        .duration(5 * TICKS)
+                        .eut(16)
+                        .addTo(fluidExtractionRecipes);
+                }
             }
             fluidFertUN32 = FluidUtils.generateFluidNonMolten(
                 "UN32Fertiliser",
@@ -958,23 +956,21 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.GEAR, MaterialsElements.STANDALONE.RHUGNOR);
 
         // Special Sillyness
-        if (true) {
 
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateSodium", 1) == null) {
-                new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
-            }
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateSodium", 1) == null) {
+            new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
+        }
 
-            Material meatRaw = MaterialsOther.MEAT;
-            // A plate of Meat.
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null) {
-                itemPlateRawMeat = new BaseItemPlate(meatRaw);
-                ItemUtils.registerFuel(ItemUtils.getSimpleStack(itemPlateRawMeat), 100);
-            }
-            // A Block of Meat.
-            if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null) {
-                blockRawMeat = new BlockBaseModular(meatRaw, BlockTypes.STANDARD);
-                ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
-            }
+        Material meatRaw = MaterialsOther.MEAT;
+        // A plate of Meat.
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateMeatRaw", 1) == null) {
+            itemPlateRawMeat = new BaseItemPlate(meatRaw);
+            ItemUtils.registerFuel(ItemUtils.getSimpleStack(itemPlateRawMeat), 100);
+        }
+        // A Block of Meat.
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("blockMeatRaw", 1) == null) {
+            blockRawMeat = new BlockBaseModular(meatRaw, BlockTypes.STANDARD);
+            ItemUtils.registerFuel(ItemUtils.getSimpleStack(blockRawMeat), 900);
         }
 
         // A plate of Vanadium.

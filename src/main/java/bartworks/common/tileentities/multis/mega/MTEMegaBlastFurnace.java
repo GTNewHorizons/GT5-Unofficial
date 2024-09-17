@@ -24,7 +24,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -358,7 +358,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         if (isOutputPollution) {
             tOutputHatches = this.mPollutionOutputHatches;
             int pollutionReduction = 0;
-            for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+            for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
                 pollutionReduction = 100 - tHatch.calculatePollutionReduction(100);
                 break;
             }

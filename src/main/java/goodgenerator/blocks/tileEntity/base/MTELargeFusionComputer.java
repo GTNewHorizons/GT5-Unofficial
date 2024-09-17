@@ -5,7 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.List;
 
@@ -300,7 +300,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
                     long energyLimit = getSingleHatchPower();
                     List<MTEHatch> hatches = getExoticAndNormalEnergyHatchList();
-                    for (MTEHatch hatch : filterValidMTEs(hatches)) {
+                    for (MTEHatch hatch : validMTEList(hatches)) {
                         long consumableEnergy = Math.min(hatch.getEUVar(), energyLimit);
                         long receivedEnergy = Math
                             .min(consumableEnergy, maxEUStore() - aBaseMetaTileEntity.getStoredEU());

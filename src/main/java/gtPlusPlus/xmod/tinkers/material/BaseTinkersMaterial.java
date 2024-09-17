@@ -40,7 +40,7 @@ public class BaseTinkersMaterial {
         mID = aNextFreeID++;
         Logger.INFO("[TiCon] Assigning ID " + mID + " to " + mLocalName + ".");
         aInternalMaterialIdMap.put(mUnlocalName, mID);
-        HandlerTinkers.mTinkerMaterials.put(this);
+        HandlerTinkers.mTinkerMaterials.add(this);
     }
 
     public String getUnlocalName() {

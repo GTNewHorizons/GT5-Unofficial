@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.tinkers.util;
 
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -11,12 +12,11 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import tconstruct.library.crafting.DryingRackRecipes;
 
 public class TinkersDryingRecipe {
 
-    public static AutoMap<TinkersDryingRecipe> recipes = new AutoMap<>();
+    public static ArrayList<TinkersDryingRecipe> recipes = new ArrayList<>();
 
     public final int time;
     public final ItemStack input;
@@ -60,10 +60,10 @@ public class TinkersDryingRecipe {
     }
 
     private static List<DryingRackRecipes.DryingRecipe> getDryingRecipes() {
-        AutoMap<DryingRackRecipes.DryingRecipe> aData = new AutoMap<>();
+        ArrayList<DryingRackRecipes.DryingRecipe> aData = new ArrayList<>();
         int aCount = 0;
         for (DryingRackRecipes.DryingRecipe recipe : DryingRackRecipes.recipes) {
-            aData.put(recipe);
+            aData.add(recipe);
             aCount++;
         }
         Logger.INFO("Found " + aCount + " Tinkers drying rack recipes.");
