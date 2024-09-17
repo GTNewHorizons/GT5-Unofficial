@@ -649,27 +649,25 @@ public final class ModItems {
             dustFertUN32 = ItemUtils
                 .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
 
-            ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
-            ItemStack temp2 = null;
-
             if (Forestry.isModLoaded()) {
-                temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
-            }
-            if (temp1 != null) {
-                fluidFertBasic = FluidUtils.generateFluidNonMolten(
-                    "Fertiliser",
-                    "Fertiliser",
-                    32,
-                    new short[] { 45, 170, 45, 100 },
-                    temp1,
-                    null,
-                    true);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(temp2)
-                    .fluidOutputs(new FluidStack(fluidFertBasic, 36))
-                    .duration(5 * TICKS)
-                    .eut(16)
-                    .addTo(fluidExtractionRecipes);
+                ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
+                ItemStack temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
+                if (temp1 != null && temp2 != null) {
+                    fluidFertBasic = FluidUtils.generateFluidNonMolten(
+                        "Fertiliser",
+                        "Fertiliser",
+                        32,
+                        new short[] { 45, 170, 45, 100 },
+                        temp1,
+                        null,
+                        true);
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(temp2)
+                        .fluidOutputs(new FluidStack(fluidFertBasic, 36))
+                        .duration(5 * TICKS)
+                        .eut(16)
+                        .addTo(fluidExtractionRecipes);
+                }
             }
             fluidFertUN32 = FluidUtils.generateFluidNonMolten(
                 "UN32Fertiliser",
