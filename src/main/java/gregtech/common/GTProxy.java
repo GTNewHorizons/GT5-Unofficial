@@ -2719,15 +2719,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
         ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
-
         if (BetterLoadingScreen.isModLoaded()) {
-            GTValues.cls_enabled = true;
-            try {
-                GTCLSCompat.stepMaterialsCLS(mEvents, progressBar);
-            } catch (IllegalAccessException e) {
-                GT_FML_LOGGER.catching(e);
-            }
-        } else GTProxy.stepMaterialsVanilla(this.mEvents, progressBar);
+            GTCLSCompat.stepMaterialsCLS(mEvents, progressBar);
+        } else {
+            GTProxy.stepMaterialsVanilla(this.mEvents, progressBar);
+        }
     }
 
     @Deprecated
