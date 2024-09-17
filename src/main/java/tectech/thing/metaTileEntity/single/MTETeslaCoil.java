@@ -47,10 +47,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
     private int sparkCount = 10;
 
-    private static final int transferRadiusMax = ConfigHandler.teslaTweaks.TESLA_SINGLE_RANGE; // Default is 20
-    private static final int perBlockLoss = ConfigHandler.teslaTweaks.TESLA_SINGLE_LOSS_PER_BLOCK; // Default is 1
-    private static final float overDriveLoss = ConfigHandler.teslaTweaks.TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE; // Default is
-                                                                                                         // 0.25F
+    private static final int transferRadiusMax = ConfigHandler.TeslaTweaks.TESLA_SINGLE_RANGE;
     private static final int transferRadiusMin = 4; // Minimum user configurable
     private int transferRadius = transferRadiusMax; // Default transferRadius setting
 
@@ -334,12 +331,12 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     @Override
     public int getTeslaEnergyLossPerBlock() {
-        return perBlockLoss;
+        return ConfigHandler.TeslaTweaks.TESLA_SINGLE_LOSS_PER_BLOCK;
     }
 
     @Override
     public float getTeslaOverdriveLossCoefficient() {
-        return overDriveLoss;
+        return ConfigHandler.TeslaTweaks.TESLA_SINGLE_LOSS_FACTOR_OVERDRIVE;
     }
 
     @Override
