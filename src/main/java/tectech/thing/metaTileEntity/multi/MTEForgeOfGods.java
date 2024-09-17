@@ -1261,6 +1261,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(233, 215))
             .widget(
                 ButtonWidget.closeWindowButton(true)
+                    .setOnClick((data, widget) -> {
+                        if (!widget.isClient()) {
+                            widget.getWindow()
+                                .closeWindow();
+                            widget.getContext()
+                                .closeWindow(INDIVIDUAL_MILESTONE_WINDOW_ID);
+                        }
+                    })
                     .setPos(382, 6));
         return builder.build();
     }
