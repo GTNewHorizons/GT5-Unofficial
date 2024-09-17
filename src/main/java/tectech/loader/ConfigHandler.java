@@ -20,9 +20,6 @@ public class ConfigHandler {
 
     @Config.Comment("Features section")
     public static class Features{
-        @Config.Comment("Set to false to disable explosions on everything bad that you can do")
-        @Config.DefaultBoolean(true)
-        public boolean BOOM_ENABLE;
         @Config.Comment("Set to true to disable the block hardness nerf")
         @Config.DefaultBoolean(false)
         public boolean DISABLE_BLOCK_HARDNESS_NERF;
@@ -30,8 +27,6 @@ public class ConfigHandler {
 
     @Config.Comment("Tesla tweaks section")
     public static class TeslaTweaks{
-        @Config.Ignore()
-        public static final boolean TESLA_MULTI_GAS_OUTPUT=false;
         @Config.Ignore()
         public static final float TESLA_MULTI_LOSS_FACTOR_OVERDRIVE=0.25f;
         @Config.Ignore()

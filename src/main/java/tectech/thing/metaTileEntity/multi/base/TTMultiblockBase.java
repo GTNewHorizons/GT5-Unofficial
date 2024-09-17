@@ -1743,70 +1743,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
 
+    // empty body to prevent any explosion
     @Override
     public final void explodeMultiblock() {
-        if (explodedThisTick) {
-            return;
-        }
-        explodedThisTick = true;
-        if (!ConfigHandler.features.BOOM_ENABLE) {
-            TecTech.proxy.broadcast(
-                "Multi Explode BOOM! " + getBaseMetaTileEntity().getXCoord()
-                    + ' '
-                    + getBaseMetaTileEntity().getYCoord()
-                    + ' '
-                    + getBaseMetaTileEntity().getZCoord());
-            StackTraceElement[] ste = Thread.currentThread()
-                .getStackTrace();
-            TecTech.proxy.broadcast("Multi Explode BOOM! " + ste[2].toString());
-            return;
-        }
-        extraExplosions_EM();
-        Pollution.addPollution(getBaseMetaTileEntity(), 600000);
-        mInventory[1] = null;
-        @SuppressWarnings("unchecked")
-        Iterable<MetaTileEntity> allHatches = Iterables.concat(
-            mInputBusses,
-            mOutputBusses,
-            mInputHatches,
-            mOutputHatches,
-            mDynamoHatches,
-            mMufflerHatches,
-            mEnergyHatches,
-            mMaintenanceHatches,
-            eParamHatches,
-            eEnergyMulti,
-            eUncertainHatches,
-            eDynamoMulti,
-            eInputData,
-            eOutputData);
-        for (MetaTileEntity tTileEntity : allHatches) {
-            if (tTileEntity != null && tTileEntity.getBaseMetaTileEntity() != null) {
-                tTileEntity.getBaseMetaTileEntity()
-                    .doExplosion(V[9]);
-            }
-        }
-        getBaseMetaTileEntity().doExplosion(V[15]);
     }
 
+    // empty body to prevent any explosion
     @Override
     public void doExplosion(long aExplosionPower) {
-        if (!ConfigHandler.features.BOOM_ENABLE) {
-            TecTech.proxy.broadcast(
-                "Multi DoExplosion BOOM! " + getBaseMetaTileEntity().getXCoord()
-                    + ' '
-                    + getBaseMetaTileEntity().getYCoord()
-                    + ' '
-                    + getBaseMetaTileEntity().getZCoord());
-            StackTraceElement[] ste = Thread.currentThread()
-                .getStackTrace();
-            TecTech.proxy.broadcast("Multi DoExplosion BOOM! " + ste[2].toString());
-            return;
-        }
-        explodeMultiblock();
-        super.doExplosion(aExplosionPower);
-    } // Redirecting to explodemultiblock
-      // endregion
+    }
 
     // region adder methods
     @Override
