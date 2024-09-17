@@ -15,13 +15,17 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -62,6 +66,8 @@ import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.render.TileEntityLaserBeacon;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> implements ISurvivalConstructable {
 
@@ -403,6 +409,11 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     }
 
     private void setFortuneTier() {
+        this.fortuneTier = 0;
+        if (this.multiTier == 2) {
+            this.fortuneTier = 3;
+            return;
+        }
         if (!mInputBusses.isEmpty()) {
             Optional<ItemStack> input = Optional.ofNullable(
                 mInputBusses.get(0)
@@ -416,7 +427,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                 return;
             }
         }
-        this.fortuneTier = 0;
     }
 
     @Override
@@ -497,7 +507,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         if (!hasFinished) {
             renderer.setShouldRender(true);
             renderer.setRange((double) (this.currentRadius + 32.5 + this.getLaserToEndHeight()));
-            if (this.multiTier == 1) this.setFortuneTier();
+            this.setFortuneTier();
             for (int i = 0; i < (this.multiTier == 1 ? 1 : 4); i++) {
                 this.startMining(this.xDrill, this.yDrill);
             }
@@ -543,7 +553,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                             currentY,
                             currentZ,
                             blockMeta,
-                            this.multiTier == 1 ? this.fortuneTier : 3));
+                            this.fortuneTier));
                     getBaseMetaTileEntity().getWorld()
                         .setBlockToAir(currentX, currentY, currentZ);
                 }
@@ -670,5 +680,28 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                     })
                 .setPos(new Pos2d(174, 112))
                 .setSize(16, 16));
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("fortune", this.fortuneTier);
+        tag.setInteger("tier", this.multiTier);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            (this.multiTier > 0 ? "Current Tier: " : "") + EnumChatFormatting.WHITE
+                + StatCollector.translateToLocal("GT5U.METEOR_MINER_CONTROLLER.tier." + tag.getInteger("tier"))
+                + EnumChatFormatting.RESET);
+        currentTip.add(
+            "Augment: " + EnumChatFormatting.WHITE
+                + StatCollector.translateToLocal("GT5U.METEOR_MINER_CONTROLLER.fortune." + tag.getInteger("fortune"))
+                + EnumChatFormatting.RESET);
     }
 }
