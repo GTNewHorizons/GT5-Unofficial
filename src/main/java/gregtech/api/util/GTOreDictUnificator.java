@@ -324,7 +324,7 @@ public class GTOreDictUnificator {
             List<ItemStack> tList = sUnificationTable.get(aStack);
             if (tList != null) {
                 for (ItemStack tStack : tList) {
-                    ItemStack tStack1 = GTUtility.copyAmount(aStack.stackSize, tStack);
+                    ItemStack tStack1 = GTUtility.copyAmountUnsafe(aStack.stackSize, tStack);
                     rList.add(tStack1);
                 }
             }

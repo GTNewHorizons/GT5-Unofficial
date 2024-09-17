@@ -86,7 +86,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
     public static boolean islwjgl3Present() {
         if (islwjgl3Present == null) {
             try {
-                final String className = "org.lwjgl.system.Platform";
+                final String className = "org/lwjgl/system/Platform.class";
                 islwjgl3Present = ClassLoader.getSystemClassLoader()
                     .getResource(className) != null;
             } catch (Exception e) {
