@@ -42,7 +42,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.GTRenderedTexture;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
-import tectech.loader.TecTechConfig;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;

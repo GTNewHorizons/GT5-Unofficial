@@ -23,7 +23,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.objects.XSTR;
 import tectech.loader.ConfigHandler;
 import tectech.loader.MainLoader;
-import tectech.loader.TecTechConfig;
 import tectech.loader.gui.CreativeTabTecTech;
 import tectech.loader.thing.MuTeLoader;
 import tectech.mechanics.enderStorage.EnderWorldSavedData;
@@ -64,7 +63,6 @@ public class TecTech {
     public static final LogHelper LOGGER = new LogHelper(Reference.MODID);
     public static CreativeTabTecTech creativeTabTecTech;
 
-    public static TecTechConfig configTecTech;
 
     public static EnderWorldSavedData enderWorldSavedData;
 
@@ -79,15 +77,6 @@ public class TecTech {
     @SuppressWarnings("unused")
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         LOGGER.setDebugOutput(true);
-
-        configTecTech = new TecTechConfig(
-            PreEvent.getModConfigurationDirectory(),
-            Reference.COLLECTIONNAME,
-            Reference.MODID);
-
-        if (!configTecTech.LoadConfig()) {
-            LOGGER.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
-        }
 
         if (ConfigHandler.modules.MOD_ADMIN_ERROR_LOGS) {
             LOGGER.setDebugOutput(ConfigHandler.debug.DEBUG_MODE);
