@@ -22,7 +22,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -31,11 +30,11 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenRecycling implements Runnable {
 
-    public static AutoMap<Runnable> mQueuedRecyclingGenerators = new AutoMap<>();
+    public static ArrayList<Runnable> mQueuedRecyclingGenerators = new ArrayList<>();
 
     public static void executeGenerators() {
         if (mQueuedRecyclingGenerators.size() > 0) {
-            for (Runnable R : mQueuedRecyclingGenerators.values()) {
+            for (Runnable R : mQueuedRecyclingGenerators) {
                 R.run();
             }
         }
@@ -49,7 +48,7 @@ public class RecipeGenRecycling implements Runnable {
         if (mNameMap == null) {
             mNameMap = this.getNameMap();
         }
-        mQueuedRecyclingGenerators.put(this);
+        mQueuedRecyclingGenerators.add(this);
     }
 
     @Override

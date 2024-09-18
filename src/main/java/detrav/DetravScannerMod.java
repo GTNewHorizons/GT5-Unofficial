@@ -10,11 +10,11 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import detrav.items.DetravMetaGeneratedTool01;
+import detrav.items.processing.ProcessingDetravToolProspector;
 import detrav.net.DetravNetwork;
 import detrav.proxies.CommonProxy;
 import detrav.utils.DetravCreativeTab;
-import detrav.utils.FluidColors;
-import detrav.utils.GTppHelper;
 import gregtech.GT_Version;
 import gregtech.api.GregTechAPI;
 
@@ -35,7 +35,10 @@ public class DetravScannerMod {
     public static DetravScannerMod instance;
 
     public DetravScannerMod() {
-        GregTechAPI.sAfterGTPreload.add(new DetravLoaderAfterGTPreload());
+        GregTechAPI.sAfterGTPreload.add(() -> {
+            new DetravMetaGeneratedTool01(); // items
+            new ProcessingDetravToolProspector(); // recipes and etc
+        });
         new DetravNetwork();
     }
 
@@ -60,7 +63,5 @@ public class DetravScannerMod {
     @EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
         proxy.onPostLoad();
-        GTppHelper.generate_OreIDs();
-        FluidColors.makeColors();
     }
 }

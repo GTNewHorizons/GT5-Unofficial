@@ -13,7 +13,6 @@
 
 package bartworks.system.worldgen;
 
-import static bartworks.common.configs.ConfigHandler.maxTierRoss;
 import static net.minecraftforge.common.ChestGenHooks.PYRAMID_JUNGLE_CHEST;
 
 import java.security.SecureRandom;
@@ -29,6 +28,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import bartworks.common.configs.Configuration;
 import bartworks.util.Pair;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -163,7 +163,6 @@ public abstract class MapGenRuins extends WorldGenerator {
             if (BTE.getMetaTileID() != meta || worldObj.getTileEntity(x, y, z) != BTE || BTE.isInvalid()) {
                 this.redoTile(BTE, worldObj, x, y, z, meta, ownerName, facing);
                 this.checkTile(BTE, worldObj, x, y, z, meta, ownerName, facing, depth);
-                depth++;
             }
         } else {
             worldObj.removeTileEntity(x, y, z);
@@ -225,11 +224,11 @@ public abstract class MapGenRuins extends WorldGenerator {
             this.setMiscBlocks(new int[] { 1 }, Blocks.log);
             this.statBlocks = new int[] { rand.nextInt(this.ToBuildWith[0].length) };
             int colored = rand.nextInt(15);
-            int tier = secureRandom.nextInt(maxTierRoss);
+            int tier = secureRandom.nextInt(Configuration.RossRuinMetas.maxTierRoss);
             boolean useColor = rand.nextBoolean();
             byte set = 0;
-            byte toSet = (byte) (rand.nextInt(maxTierRoss - tier) + 1);
-            short cablemeta = BWWorldGenUtil.getCable(secureRandom, tier);
+            byte toSet = (byte) (rand.nextInt(Configuration.RossRuinMetas.maxTierRoss - tier) + 1);
+            int cablemeta = BWWorldGenUtil.getCable(secureRandom, tier);
             byte treeinaRow = 0;
             boolean lastset = rand.nextBoolean();
             for (int dx = -6; dx <= 6; dx++) {
@@ -316,7 +315,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                 }
 
                                 if (dx == 4 && dz == 4) {
-                                    short meta = BWWorldGenUtil.getGenerator(secureRandom, tier);
+                                    int meta = BWWorldGenUtil.getGenerator(secureRandom, tier);
                                     this.setGTMachine(
                                         worldObj,
                                         x + dx,
@@ -327,7 +326,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                         tier > 0 ? ForgeDirection.WEST : ForgeDirection.UP);
                                 } else if (dx == 3 && dz == 4) {
                                     if (tier > 0) {
-                                        short meta = BWWorldGenUtil.getBuffer(secureRandom, tier);
+                                        int meta = BWWorldGenUtil.getBuffer(secureRandom, tier);
                                         this.setGTMachine(
                                             worldObj,
                                             x + dx,
@@ -343,7 +342,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                     this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cablemeta);
                                 } else if (dx < 3 && dx > -5 && dz == 3 && set < toSet) {
                                     if (!lastset || treeinaRow > 2) {
-                                        short meta = BWWorldGenUtil.getMachine(secureRandom, tier);
+                                        int meta = BWWorldGenUtil.getMachine(secureRandom, tier);
                                         this.setGTMachine(
                                             worldObj,
                                             x + dx,
@@ -481,7 +480,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                         break tosetloop;
                     }
                     if (!lastset || treeinaRow > 2 && worldObj.getTileEntity(x + dx, y + dy, z + dz) == null) {
-                        short meta = BWWorldGenUtil.getMachine(secureRandom, tier);
+                        int meta = BWWorldGenUtil.getMachine(secureRandom, tier);
                         this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, ForgeDirection.UP);
 
                         set++;

@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -17,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.IntConsumer;
+import java.util.function.LongConsumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -96,7 +97,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.Pollution;
-import gregtech.common.config.machinestats.ConfigMachines;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -172,9 +173,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public MTEMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
         this.processingLogic = null;
-        MTEMultiBlockBase.disableMaintenance = ConfigMachines.disableMaintenanceChecks;
-        this.damageFactorLow = ConfigMachines.damageFactorLow;
-        this.damageFactorHigh = ConfigMachines.damageFactorHigh;
+        MTEMultiBlockBase.disableMaintenance = MachineStats.machines.disableMaintenanceChecks;
+        this.damageFactorLow = MachineStats.machines.damageFactorLow;
+        this.damageFactorHigh = MachineStats.machines.damageFactorHigh;
         this.mNEI = "";
         if (!shouldCheckMaintenance()) fixAllIssues();
     }
@@ -182,9 +183,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public MTEMultiBlockBase(String aName) {
         super(aName, 2);
         this.processingLogic = createProcessingLogic();
-        MTEMultiBlockBase.disableMaintenance = ConfigMachines.disableMaintenanceChecks;
-        this.damageFactorLow = ConfigMachines.damageFactorLow;
-        this.damageFactorHigh = ConfigMachines.damageFactorHigh;
+        MTEMultiBlockBase.disableMaintenance = MachineStats.machines.disableMaintenanceChecks;
+        this.damageFactorLow = MachineStats.machines.damageFactorLow;
+        this.damageFactorHigh = MachineStats.machines.damageFactorHigh;
         if (!shouldCheckMaintenance()) fixAllIssues();
     }
 
@@ -508,7 +509,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (!shouldCheckMaintenance()) return;
 
         if (getRepairStatus() != getIdealStatus()) {
-            for (MTEHatchMaintenance tHatch : filterValidMTEs(mMaintenanceHatches)) {
+            for (MTEHatchMaintenance tHatch : validMTEList(mMaintenanceHatches)) {
                 if (tHatch.mAuto) tHatch.autoMaintainance();
                 if (tHatch.mWrench) mWrench = true;
                 if (tHatch.mScrewdriver) mScrewdriver = true;
@@ -592,12 +593,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     if (mOutputItems != null) {
                         for (ItemStack tStack : mOutputItems) {
                             if (tStack != null) {
-                                try {
-                                    GTMod.achievements.issueAchivementHatch(
-                                        aBaseMetaTileEntity.getWorld()
-                                            .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
-                                        tStack);
-                                } catch (Exception ignored) {}
                                 addOutput(tStack);
                             }
                         }
@@ -605,14 +600,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     }
                     if (mOutputFluids != null) {
                         addFluidOutputs(mOutputFluids);
-                        if (mOutputFluids.length > 1) {
-                            try {
-                                GTMod.achievements.issueAchievement(
-                                    aBaseMetaTileEntity.getWorld()
-                                        .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
-                                    "oilplant");
-                            } catch (Exception ignored) {}
-                        }
                         mOutputFluids = null;
                     }
                     mEfficiency = Math.max(
@@ -646,8 +633,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean polluteEnvironment(int aPollutionLevel) {
+        // Early exit if pollution is disabled
+        if (!GTMod.gregtechproxy.mPollution) return true;
         mPollution += aPollutionLevel;
-        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
             if (mPollution >= 10000) {
                 if (tHatch.polluteEnvironment(this)) {
                     mPollution -= 10000;
@@ -1112,7 +1101,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aEU <= 0) {
             return true;
         }
-        if (mDynamoHatches.size() > 0) {
+        if (!mDynamoHatches.isEmpty()) {
             return addEnergyOutputMultipleDynamos(aEU, true);
         }
         return false;
@@ -1123,7 +1112,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
-        for (MTEHatchDynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             long aTotal = aDynamo.maxAmperesOut() * aVoltage;
             // Check against voltage to check when hatch mixing
@@ -1147,7 +1136,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         int aAmpsToInject;
         int aRemainder;
         int ampsOnCurrentHatch;
-        for (MTEHatchDynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);
@@ -1172,7 +1161,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      */
     public long getMaxInputVoltage() {
         long rVoltage = 0;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) rVoltage += tHatch.getBaseMetaTileEntity()
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) rVoltage += tHatch.getBaseMetaTileEntity()
             .getInputVoltage();
         return rVoltage;
     }
@@ -1194,7 +1183,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      */
     public long getMaxInputPower() {
         long eut = 0;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
             eut += baseTile.getInputVoltage() * baseTile.getInputAmperage();
         }
@@ -1206,7 +1195,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      */
     public long getInputVoltageTier() {
         long rTier = 0;
-        if (mEnergyHatches.size() > 0) {
+        if (!mEnergyHatches.isEmpty()) {
             rTier = mEnergyHatches.get(0)
                 .getInputTier();
             for (int i = 1; i < mEnergyHatches.size(); i++) {
@@ -1259,7 +1248,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean drainEnergyInput(long aEU) {
         if (aEU <= 0) return true;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             if (tHatch.getBaseMetaTileEntity()
                 .decreaseStoredEnergyUnits(aEU, false)) return true;
         }
@@ -1268,7 +1257,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected static boolean dumpFluid(List<MTEHatchOutput> aOutputHatches, FluidStack copiedFluidStack,
         boolean restrictiveHatchesOnly) {
-        for (MTEHatchOutput tHatch : filterValidMTEs(aOutputHatches)) {
+        for (MTEHatchOutput tHatch : validMTEList(aOutputHatches)) {
             if (restrictiveHatchesOnly && tHatch.mMode == 0) {
                 continue;
             }
@@ -1307,7 +1296,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean depleteInput(FluidStack aLiquid, boolean simulate) {
         if (aLiquid == null) return false;
-        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             setHatchRecipeMap(tHatch);
             FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
             if (tLiquid != null && tLiquid.amount >= aLiquid.amount) {
@@ -1332,10 +1321,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         boolean outputSuccess = true;
         // noinspection DataFlowIssue
+        final List<MTEHatchOutput> filteredHatches = filterValidMTEs(mOutputHatches);
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
-            for (MTEHatchOutput tHatch : filterValidMTEs(mOutputHatches)) {
+            for (MTEHatchOutput tHatch : filteredHatches) {
                 if (!outputSuccess && tHatch.outputsItems()) {
                     if (tHatch.getBaseMetaTileEntity()
                         .addStackToSlot(1, single)) outputSuccess = true;
@@ -1363,32 +1353,25 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (GTUtility.isStackInvalid(aStack)) return false;
         FluidStack aLiquid = GTUtility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
-        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             setHatchRecipeMap(tHatch);
-            if (GTUtility.areStacksEqual(
-                aStack,
-                tHatch.getBaseMetaTileEntity()
-                    .getStackInSlot(0))) {
-                if (tHatch.getBaseMetaTileEntity()
-                    .getStackInSlot(0).stackSize >= aStack.stackSize) {
-                    tHatch.getBaseMetaTileEntity()
-                        .decrStackSize(0, aStack.stackSize);
+            final IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
+            ItemStack stackInFirstSlot = baseMetaTileEntity.getStackInSlot(0);
+            if (GTUtility.areStacksEqual(aStack, stackInFirstSlot)) {
+                if (stackInFirstSlot.stackSize >= aStack.stackSize) {
+                    baseMetaTileEntity.decrStackSize(0, aStack.stackSize);
                     return true;
                 }
             }
         }
-        for (MTEHatchInputBus tHatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
             tHatch.mRecipeMap = getRecipeMap();
-            for (int i = tHatch.getBaseMetaTileEntity()
-                .getSizeInventory() - 1; i >= 0; i--) {
-                if (GTUtility.areStacksEqual(
-                    aStack,
-                    tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i))) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i).stackSize >= aStack.stackSize) {
-                        tHatch.getBaseMetaTileEntity()
-                            .decrStackSize(i, aStack.stackSize);
+            final IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
+            for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
+                if (GTUtility.areStacksEqual(aStack, stackInSlot)) {
+                    if (stackInSlot.stackSize >= aStack.stackSize) {
+                        baseMetaTileEntity.decrStackSize(i, aStack.stackSize);
                         return true;
                     }
                 }
@@ -1399,12 +1382,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public ArrayList<ItemStack> getStoredOutputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
-        for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
-            for (int i = tHatch.getBaseMetaTileEntity()
-                .getSizeInventory() - 1; i >= 0; i--) {
-                rList.add(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i));
+        for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
+            IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
+            for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                rList.add(baseMetaTileEntity.getStackInSlot(i));
             }
         }
         return rList;
@@ -1413,7 +1394,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public ArrayList<FluidStack> getStoredFluids() {
         ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
-        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             setHatchRecipeMap(tHatch);
             if (tHatch instanceof MTEHatchMultiInput multiInputHatch) {
                 for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
@@ -1429,8 +1410,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     }
                 }
             } else {
-                if (tHatch.getFillableStack() != null) {
-                    rList.add(tHatch.getFillableStack());
+                FluidStack fillableStack = tHatch.getFillableStack();
+                if (fillableStack != null) {
+                    rList.add(fillableStack);
                 }
             }
         }
@@ -1481,7 +1463,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> rList = new ArrayList<>();
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
-        for (MTEHatchInputBus tHatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
             if (tHatch instanceof MTEHatchCraftingInputME) {
                 continue;
             }
@@ -1501,8 +1483,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
 
-        if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
-            .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
+        ItemStack stackInSlot1 = getStackInSlot(1);
+        if (stackInSlot1 != null && stackInSlot1.getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) rList.add(stackInSlot1);
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
         }
@@ -1536,7 +1519,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
-        for (MTEHatchInputBus tHatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
             if (tHatch instanceof MTEHatchCraftingInputME) {
                 continue;
             }
@@ -1556,8 +1539,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
 
-        if (getStackInSlot(1) != null && getStackInSlot(1).getUnlocalizedName()
-            .startsWith("gt.integrated_circuit")) rList.add(getStackInSlot(1));
+        ItemStack stackInSlot1 = getStackInSlot(1);
+        if (stackInSlot1 != null && stackInSlot1.getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) rList.add(stackInSlot1);
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
         }
@@ -1566,7 +1550,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public Map<GTUtility.ItemId, ItemStack> getStoredInputsFromME() {
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new Object2ReferenceOpenHashMap<>();
-        for (MTEHatchInputBus tHatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
             if (tHatch instanceof MTEHatchInputBusME meBus) {
                 for (int i = meBus.getSizeInventory() - 1; i >= 0; i--) {
                     ItemStack itemStack = meBus.getStackInSlot(i);
@@ -1582,7 +1566,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public Map<Fluid, FluidStack> getStoredFluidsFromME() {
         Map<Fluid, FluidStack> fluidsFromME = new Reference2ReferenceOpenHashMap<>();
-        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack fluid : meHatch.getStoredFluids()) {
                     if (fluid != null) {
@@ -1611,17 +1595,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public void updateSlots() {
-        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) tHatch.updateSlots();
-        for (MTEHatchInputBus tHatch : filterValidMTEs(mInputBusses)) tHatch.updateSlots();
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) tHatch.updateSlots();
+        for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) tHatch.updateSlots();
     }
 
     protected void startRecipeProcessing() {
-        for (MTEHatchInputBus hatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 aware.startRecipeProcessing();
             }
         }
-        for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput hatch : validMTEList(mInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 aware.startRecipeProcessing();
             }
@@ -1635,12 +1619,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected void endRecipeProcessing() {
-        for (MTEHatchInputBus hatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatchInputBus hatch : validMTEList(mInputBusses)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 setResultIfFailure(aware.endRecipeProcessing(this));
             }
         }
-        for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput hatch : validMTEList(mInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 setResultIfFailure(aware.endRecipeProcessing(this));
             }
@@ -1665,21 +1649,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 mSmartInputHatches.add(hatch);
             }
         }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            setHatchRecipeMap((MTEHatchInput) aMetaTileEntity);
-            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInput hatch) {
+            setHatchRecipeMap(hatch);
+            return mInputHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchInputBus) {
-            ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInputBus hatch) {
+            hatch.mRecipeMap = getRecipeMap();
+            return mInputBusses.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchOutput) return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-        if (aMetaTileEntity instanceof MTEHatchOutputBus) return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
-        if (aMetaTileEntity instanceof MTEHatchEnergy) return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-        if (aMetaTileEntity instanceof MTEHatchDynamo) return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
-        if (aMetaTileEntity instanceof MTEHatchMaintenance)
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-        if (aMetaTileEntity instanceof MTEHatchMuffler) return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutput hatch) return mOutputHatches.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) return mOutputBusses.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) return mEnergyHatches.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) return mDynamoHatches.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) return mMaintenanceHatches.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchMuffler hatch) return mMufflerHatches.add(hatch);
         return false;
     }
 
@@ -1833,17 +1816,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            final IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
+            storedEnergy += baseMetaTileEntity.getStoredEU();
+            maxEnergy += baseMetaTileEntity.getEUCapacity();
         }
 
         return new String[] {
@@ -1913,47 +1895,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return supportsSlotAutomation(aIndex);
-    }
-
-    protected ItemStack[] getCompactedInputs() {
-        // TODO: repalce method with a cleaner one
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        int tInputList_sS = tInputList.size();
-        for (int i = 0; i < tInputList_sS - 1; i++) {
-            for (int j = i + 1; j < tInputList_sS; j++) {
-                if (!GTUtility.areStacksEqual(tInputList.get(i), tInputList.get(j))) continue;
-                if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
-                    tInputList.remove(j--);
-                    tInputList_sS = tInputList.size();
-                } else {
-                    tInputList.remove(i--);
-                    tInputList_sS = tInputList.size();
-                    break;
-                }
-            }
-        }
-        return tInputList.toArray(new ItemStack[0]);
-    }
-
-    protected FluidStack[] getCompactedFluids() {
-        // TODO: repalce method with a cleaner one
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        int tFluidList_sS = tFluidList.size();
-        for (int i = 0; i < tFluidList_sS - 1; i++) {
-            for (int j = i + 1; j < tFluidList_sS; j++) {
-                if (!GTUtility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) continue;
-
-                if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
-                    tFluidList.remove(j--);
-                    tFluidList_sS = tFluidList.size();
-                } else {
-                    tFluidList.remove(i--);
-                    tFluidList_sS = tFluidList.size();
-                    break;
-                }
-            }
-        }
-        return tFluidList.toArray(new FluidStack[0]);
     }
 
     @Override
@@ -2155,20 +2096,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean isAllowedToWork() {
-        return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isAllowedToWork();
+        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        return baseMetaTileEntity != null && baseMetaTileEntity.isAllowedToWork();
     }
 
     @Override
     public void disableWorking() {
-        if (getBaseMetaTileEntity() != null) {
-            getBaseMetaTileEntity().disableWorking();
+        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity != null) {
+            baseMetaTileEntity.disableWorking();
         }
     }
 
     @Override
     public void enableWorking() {
-        if (getBaseMetaTileEntity() != null) {
-            getBaseMetaTileEntity().enableWorking();
+        final IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity != null) {
+            baseMetaTileEntity.enableWorking();
         }
     }
 
@@ -2223,7 +2167,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
         List<ItemStack> ret = new ArrayList<>();
-        for (final MTEHatch tBus : filterValidMTEs(mOutputBusses)) {
+        for (final MTEHatch tBus : validMTEList(mOutputBusses)) {
             if (!(tBus instanceof MTEHatchOutputBusME)) {
                 final IInventory tBusInv = tBus.getBaseMetaTileEntity();
                 for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
@@ -2277,7 +2221,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean canDumpItemToME() {
-        for (MTEHatch tHatch : filterValidMTEs(mOutputBusses)) {
+        for (MTEHatch tHatch : validMTEList(mOutputBusses)) {
             if (tHatch instanceof MTEHatchOutputBusME) {
                 if ((((MTEHatchOutputBusME) tHatch).canAcceptItem())) {
                     return true;
@@ -2494,14 +2438,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
 
-        IntConsumer appendRate = (amount) -> {
+        LongConsumer appendRate = (amount) -> {
             double processPerTick = (double) amount / mMaxProgresstime * 20;
+            ret.append(" (");
             if (processPerTick > 1) {
-                ret.append(" (");
                 numberFormat.format(Math.round(processPerTick * 10) / 10.0, ret);
                 ret.append("/s)");
             } else {
-                ret.append(" (");
                 numberFormat.format(Math.round(1 / processPerTick * 10) / 10.0, ret);
                 ret.append("s/ea)");
             }
@@ -2511,41 +2454,49 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         int MAX_LINES = 5;
 
         if (mOutputItems != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
             for (var item : mOutputItems) {
                 if (item == null) continue;
+                nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
                 if (lines >= MAX_LINES) {
                     ret.append("...");
                     return ret.toString();
                 }
                 lines++;
                 ret.append(EnumChatFormatting.AQUA)
-                    .append(item.getDisplayName())
+                    .append(entry.getKey())
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD);
-                numberFormat.format(item.stackSize, ret);
+                numberFormat.format(entry.getValue(), ret);
                 ret.append(EnumChatFormatting.WHITE);
-                appendRate.accept(item.stackSize);
+                appendRate.accept(entry.getValue());
                 ret.append('\n');
             }
         }
         if (mOutputFluids != null) {
+            HashMap<String, Long> nameToAmount = new HashMap<>();
             for (var fluid : mOutputFluids) {
                 if (fluid == null) continue;
+                nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
+            }
+            for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
                 if (lines >= MAX_LINES) {
                     ret.append("...");
                     return ret.toString();
                 }
                 lines++;
                 ret.append(EnumChatFormatting.AQUA)
-                    .append(fluid.getLocalizedName())
+                    .append(entry.getKey())
                     .append(EnumChatFormatting.WHITE)
                     .append(" x ")
                     .append(EnumChatFormatting.GOLD);
-                numberFormat.format(fluid.amount, ret);
+                numberFormat.format(entry.getValue(), ret);
                 ret.append("L")
                     .append(EnumChatFormatting.WHITE);
-                appendRate.accept(fluid.amount);
+                appendRate.accept(entry.getValue());
                 ret.append('\n');
             }
         }

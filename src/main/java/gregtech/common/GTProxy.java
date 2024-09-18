@@ -145,8 +145,6 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
-import gregtech.api.recipe.RecipeCategory;
-import gregtech.api.recipe.RecipeCategorySetting;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
@@ -163,7 +161,7 @@ import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTShapelessRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.config.opstuff.ConfigGeneral;
+import gregtech.common.config.OPStuff;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -719,8 +717,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
      */
     public boolean mRenderItemChargeBar = true;
 
-    public final Map<RecipeCategory, RecipeCategorySetting> recipeCategorySettings = new HashMap<>();
-
     /**
      * This enables showing voltage tier of transformer for Waila, instead of raw voltage number
      */
@@ -824,8 +820,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         GTLog.ore.println("GTMod: Preload-Phase started!");
 
         GregTechAPI.sPreloadStarted = true;
-        this.mIgnoreTcon = ConfigGeneral.ignoreTinkerConstruct;
-        this.replicatorExponent = ConfigGeneral.replicatorExponent;
+        this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
+        this.replicatorExponent = OPStuff.replicatorExponent;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
@@ -2723,15 +2719,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
         ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
-
         if (BetterLoadingScreen.isModLoaded()) {
-            GTValues.cls_enabled = true;
-            try {
-                GTCLSCompat.stepMaterialsCLS(mEvents, progressBar);
-            } catch (IllegalAccessException e) {
-                GT_FML_LOGGER.catching(e);
-            }
-        } else GTProxy.stepMaterialsVanilla(this.mEvents, progressBar);
+            GTCLSCompat.stepMaterialsCLS(mEvents, progressBar);
+        } else {
+            GTProxy.stepMaterialsVanilla(this.mEvents, progressBar);
+        }
     }
 
     @Deprecated

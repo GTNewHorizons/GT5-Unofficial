@@ -15,9 +15,6 @@ package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
-import static gregtech.api.enums.OrePrefixes.dust;
-import static gregtech.api.enums.OrePrefixes.dustSmall;
-import static gregtech.api.enums.OrePrefixes.dustTiny;
 import static gregtech.api.enums.OrePrefixes.gearGt;
 import static gregtech.api.enums.OrePrefixes.gearGtSmall;
 import static gregtech.api.enums.OrePrefixes.gem;
@@ -32,10 +29,8 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -80,13 +75,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(4)
                 .addTo(cutterRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(bolt))
-                .itemOutputs(werkstoff.get(dustTiny, 1))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
             // screw
 
             GTValues.RA.stdBuilder()
@@ -104,13 +92,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 werkstoff.get(screw),
                 GTProxy.tBits,
                 new Object[] { "fX", "X ", 'X', werkstoff.get(bolt) });
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(screw))
-                .itemOutputs(werkstoff.get(dustTiny, 1))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
 
             if (werkstoff.hasItemType(gem)) return;
 
@@ -252,35 +233,6 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                  * WerkstoffLoader.rotorMold.get(0L), werkstoff.getMolten(612), werkstoff.get(rotor), 100, 60);
                  */
             }
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gearGt))
-                .itemOutputs(werkstoff.get(dust, 4))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gearGtSmall))
-                .itemOutputs(werkstoff.get(dust, 1))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(rotor))
-                .itemOutputs(werkstoff.get(dust, 4), werkstoff.get(dustSmall))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ring))
-                .itemOutputs(werkstoff.get(dustSmall, 1))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
         }
     }
 }

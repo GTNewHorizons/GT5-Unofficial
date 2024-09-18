@@ -35,7 +35,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
@@ -855,13 +854,13 @@ public class ItemUtils {
     public static ItemStack[] cleanItemStackArray(ItemStack[] input) {
         int aArraySize = input.length;
         ItemStack[] aOutput = new ItemStack[aArraySize];
-        AutoMap<ItemStack> aCleanedItems = new AutoMap<>();
+        ArrayList<ItemStack> aCleanedItems = new ArrayList<>();
         for (ItemStack checkStack : input) {
             if (ItemUtils.checkForInvalidItems(checkStack)) {
-                aCleanedItems.put(checkStack);
+                aCleanedItems.add(checkStack);
             }
         }
-        for (int i = 0; i < aArraySize; i++) {
+        for (int i = 0; i < aCleanedItems.size(); i++) {
             ItemStack aMappedStack = aCleanedItems.get(i);
             if (aMappedStack != null) {
                 aOutput[i] = aMappedStack;

@@ -47,7 +47,7 @@ import bartworks.API.ITileDropsContent;
 import bartworks.API.ITileHasDifferentTextureSides;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import gregtech.api.util.GTUtility;
 import gregtech.common.Pollution;
 
@@ -113,8 +113,8 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
             ++this.tick;
             --this.fuel;
             if (this.tick % 20 == 0) {
-                if (this.outputstack.amount <= 8000 - ConfigHandler.mbWaterperSec)
-                    this.outputstack.amount += ConfigHandler.mbWaterperSec;
+                if (this.outputstack.amount <= 8000 - Configuration.singleBlocks.mbWaterperSec)
+                    this.outputstack.amount += Configuration.singleBlocks.mbWaterperSec;
                 this.tick = 0;
             }
         }
@@ -167,7 +167,8 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
             .ifPresent(e -> {
                 if (e.getTotalWorldTime() % 20 == 0) {
                     Optional.ofNullable(e.getChunkFromBlockCoords(this.xCoord, this.zCoord))
-                        .ifPresent(c -> Pollution.addPollution(c, ConfigHandler.pollutionHeatedWaterPumpSecond));
+                        .ifPresent(
+                            c -> Pollution.addPollution(c, Configuration.pollution.pollutionHeatedWaterPumpSecond));
                 }
             });
     }
@@ -330,10 +331,10 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
-                + GTUtility.formatNumbers(ConfigHandler.mbWaterperSec)
+                + GTUtility.formatNumbers(Configuration.singleBlocks.mbWaterperSec)
                 + String.format(
                     StatCollector.translateToLocal("tooltip.tile.waterpump.1.name"),
-                    ConfigHandler.pollutionHeatedWaterPumpSecond),
+                    Configuration.pollution.pollutionHeatedWaterPumpSecond),
             StatCollector.translateToLocal("tooltip.tile.waterpump.2.name") };
     }
 

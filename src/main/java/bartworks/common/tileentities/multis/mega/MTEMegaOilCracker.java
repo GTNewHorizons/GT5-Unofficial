@@ -25,7 +25,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -220,7 +220,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                 this.setEuModifier(1.0F - Math.min(0.1F * (MTEMegaOilCracker.this.heatLevel.getTier() + 1), 0.5F));
                 return super.process();
             }
-        }.setMaxParallel(ConfigHandler.megaMachinesMax);
+        }.setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     public HeatingCoilLevel getCoilLevel() {
@@ -358,7 +358,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public ArrayList<FluidStack> getStoredFluids() {
         final ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
-        for (final MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+        for (final MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
@@ -381,7 +381,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                 }
             }
         }
-        for (final MTEHatchInput tHatch : filterValidMTEs(mMiddleInputHatches)) {
+        for (final MTEHatchInput tHatch : validMTEList(mMiddleInputHatches)) {
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
@@ -445,7 +445,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
     @Override
     protected void startRecipeProcessing() {
-        for (MTEHatchInput hatch : filterValidMTEs(mMiddleInputHatches)) {
+        for (MTEHatchInput hatch : validMTEList(mMiddleInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 aware.startRecipeProcessing();
             }
@@ -456,7 +456,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     @Override
     protected void endRecipeProcessing() {
         super.endRecipeProcessing();
-        for (MTEHatchInput hatch : filterValidMTEs(mMiddleInputHatches)) {
+        for (MTEHatchInput hatch : validMTEList(mMiddleInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 setResultIfFailure(aware.endRecipeProcessing(this));
             }

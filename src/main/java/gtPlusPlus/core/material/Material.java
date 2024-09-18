@@ -22,7 +22,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -88,7 +87,7 @@ public class Material {
 
     public short werkstoffID;
 
-    public static AutoMap<Materials> invalidMaterials = new AutoMap<>();
+    public static ArrayList<Materials> invalidMaterials = new ArrayList<>();
 
     public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs) {
         this(materialName, defaultState, null, inputs);
@@ -408,26 +407,21 @@ public class Material {
             // set RGB
 
             if (rgba == null) {
-                if (vMaterialInput.size() > 0) {
+                if (!vMaterialInput.isEmpty()) {
 
                     try {
                         Short[] mMixedRGB = new Short[3];
-                        AutoMap<Material> mMaterialSet = MaterialUtils.getCompoundMaterialsRecursively(this);
+                        ArrayList<Material> mMaterialSet = MaterialUtils.getCompoundMaterialsRecursively(this);
                         for (int mnh = 0; mnh < 3; mnh++) {
-                            AutoMap<Short> aDataSet = new AutoMap<>();
-                            Set<Material> set4 = new HashSet<>();
-                            for (Material u : mMaterialSet) {
-                                // if (u.getState() == MaterialState.ORE || u.getState() == MaterialState.SOLID)
-                                set4.add(u);
-                            }
+                            ArrayList<Short> aDataSet = new ArrayList<>();
+                            // if (u.getState() == MaterialState.ORE || u.getState() == MaterialState.SOLID)
+                            Set<Material> set4 = new HashSet<>(mMaterialSet);
                             for (Material e : set4) {
-                                aDataSet.put(e.getRGB()[mnh]);
+                                aDataSet.add(e.getRGB()[mnh]);
                             }
 
-                            Short aAverage = MathUtils.getShortAverage(aDataSet);
-                            if (aAverage > Short.MAX_VALUE || aAverage < Short.MIN_VALUE
-                                || aAverage < 0
-                                || aAverage > 255) {
+                            short aAverage = MathUtils.getShortAverage(aDataSet);
+                            if (aAverage < 0 || aAverage > 255) {
                                 if (aAverage > 255) {
                                     while (aAverage > 255) {
                                         aAverage = (short) (aAverage / 2);
@@ -438,7 +432,7 @@ public class Material {
                             mMixedRGB[mnh] = aAverage;
                         }
 
-                        if (mMixedRGB != null && mMixedRGB[0] != null && mMixedRGB[1] != null && mMixedRGB[2] != null) {
+                        if (mMixedRGB[0] != null && mMixedRGB[1] != null && mMixedRGB[2] != null) {
                             this.RGBA = new short[] { mMixedRGB[0], mMixedRGB[1], mMixedRGB[2], 0 };
                         } else {
                             this.RGBA = Materials.Steel.mRGBa;
@@ -577,9 +571,9 @@ public class Material {
                 this.vRadiationLevel = (byte) radiationLevel;
             } else {
                 if (vMaterialInput.size() > 0) {
-                    AutoMap<Byte> aDataSet = new AutoMap<>();
+                    ArrayList<Byte> aDataSet = new ArrayList<>();
                     for (MaterialStack m : this.vMaterialInput) {
-                        aDataSet.put(m.getStackMaterial().vRadiationLevel);
+                        aDataSet.add(m.getStackMaterial().vRadiationLevel);
                     }
                     byte aAverage = MathUtils.getByteAverage(aDataSet);
                     if (aAverage > 0) {
@@ -612,14 +606,10 @@ public class Material {
             this.vSmallestRatio = this.getSmallestRatio(this.vMaterialInput);
             int tempSmallestSize = 0;
 
-            if (this.vSmallestRatio != null) {
-                for (long l : this.vSmallestRatio) {
-                    tempSmallestSize = (int) (tempSmallestSize + l);
-                }
-                this.smallestStackSizeWhenProcessing = tempSmallestSize; // Valid stacksizes
-            } else {
-                this.smallestStackSizeWhenProcessing = 1; // Valid stacksizes
+            for (long l : this.vSmallestRatio) {
+                tempSmallestSize = (int) (tempSmallestSize + l);
             }
+            this.smallestStackSizeWhenProcessing = tempSmallestSize; // Valid stacksizes
 
             // Makes a Fancy Chemical Tooltip
 
@@ -630,7 +620,7 @@ public class Material {
             this.vChemicalSymbol = chemicalSymbol;
             if (this.vMaterialInput != null) {
                 this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
-            } else if (!this.vChemicalSymbol.equals("")) {
+            } else if (!this.vChemicalSymbol.isEmpty()) {
                 Logger.MATERIALS("materialInput is null, using a valid chemical symbol.");
                 this.vChemicalFormula = this.vChemicalSymbol;
             } else {
@@ -665,13 +655,15 @@ public class Material {
                 this.mFluid = null;
                 this.mPlasma = null;
             }
-            String ratio = "";
+            StringBuilder ratio = new StringBuilder();
             if (this.vSmallestRatio != null) {
                 for (long l : this.vSmallestRatio) {
-                    if (ratio.equals("")) {
-                        ratio = String.valueOf(l);
+                    if (ratio.toString()
+                        .isEmpty()) {
+                        ratio = new StringBuilder(String.valueOf(l));
                     } else {
-                        ratio = ratio + ":" + l;
+                        ratio.append(":")
+                            .append(l);
                     }
                 }
             }
@@ -794,54 +786,48 @@ public class Material {
             }
         }
 
-        if (aSet == null) {
-            if (aGem >= this.getComposites()
-                .size() / 2) {
-                if (MathUtils.isNumberEven(aGem)) {
-                    Logger.MATERIALS(
-                        "Set textureset for " + this.localizedName
-                            + " to be "
-                            + TextureSet.SET_GEM_HORIZONTAL.mSetName
-                            + ".");
-                    return TextureSet.SET_GEM_HORIZONTAL;
-                } else {
-                    Logger.MATERIALS(
-                        "Set textureset for " + this.localizedName
-                            + " to be "
-                            + TextureSet.SET_GEM_VERTICAL.mSetName
-                            + ".");
-                    return TextureSet.SET_GEM_VERTICAL;
-                }
+        if (aGem >= this.getComposites()
+            .size() / 2) {
+            if (MathUtils.isNumberEven(aGem)) {
+                Logger.MATERIALS(
+                    "Set textureset for " + this.localizedName
+                        + " to be "
+                        + TextureSet.SET_GEM_HORIZONTAL.mSetName
+                        + ".");
+                return TextureSet.SET_GEM_HORIZONTAL;
+            } else {
+                Logger.MATERIALS(
+                    "Set textureset for " + this.localizedName
+                        + " to be "
+                        + TextureSet.SET_GEM_VERTICAL.mSetName
+                        + ".");
+                return TextureSet.SET_GEM_VERTICAL;
             }
         }
 
-        if (aSet == null) {
-            if (aShiny >= this.getComposites()
-                .size() / 3) {
-                Logger.MATERIALS(
-                    "Set textureset for " + this.localizedName + " to be " + TextureSet.SET_SHINY.mSetName + ".");
-                return TextureSet.SET_SHINY;
-            }
+        if (aShiny >= this.getComposites()
+            .size() / 3) {
+            Logger.MATERIALS(
+                "Set textureset for " + this.localizedName + " to be " + TextureSet.SET_SHINY.mSetName + ".");
+            return TextureSet.SET_SHINY;
         }
 
         // build hash table with count
-        AutoMap<Material> sets = new AutoMap<>();
-        if (this.vMaterialInput != null) {
-            for (MaterialStack r : this.vMaterialInput) {
-                if (r.getStackMaterial()
-                    .getTextureSet().mSetName.toLowerCase()
-                        .contains("fluid")) {
-                    sets.put(MaterialsElements.getInstance().GOLD);
-                } else {
-                    sets.put(r.getStackMaterial());
-                }
+        ArrayList<Material> sets = new ArrayList<>();
+        for (MaterialStack r : this.vMaterialInput) {
+            if (r.getStackMaterial()
+                .getTextureSet().mSetName.toLowerCase()
+                    .contains("fluid")) {
+                sets.add(MaterialsElements.getInstance().GOLD);
+            } else {
+                sets.add(r.getStackMaterial());
             }
-            TextureSet mostUsedTypeTextureSet = MaterialUtils.getMostCommonTextureSet(new ArrayList<>(sets.values()));
-            if (mostUsedTypeTextureSet != null && mostUsedTypeTextureSet instanceof TextureSet) {
-                Logger.MATERIALS(
-                    "Set textureset for " + this.localizedName + " to be " + mostUsedTypeTextureSet.mSetName + ".");
-                return mostUsedTypeTextureSet;
-            }
+        }
+        TextureSet mostUsedTypeTextureSet = MaterialUtils.getMostCommonTextureSet(sets);
+        if (mostUsedTypeTextureSet instanceof TextureSet) {
+            Logger.MATERIALS(
+                "Set textureset for " + this.localizedName + " to be " + mostUsedTypeTextureSet.mSetName + ".");
+            return mostUsedTypeTextureSet;
         }
         Logger.MATERIALS(
             "Set textureset for " + this.localizedName + " to be " + Materials.Iron.mIconSet.mSetName + ". [Fallback]");
@@ -1508,7 +1494,7 @@ public class Material {
             return null;
         }
         if (isValid != null) {
-            for (Materials m : invalidMaterials.values()) {
+            for (Materials m : invalidMaterials) {
                 if (isValid == m) {
                     return null;
                 }
@@ -1548,9 +1534,9 @@ public class Material {
 
     public final int calculateMeltingPoint() {
         try {
-            AutoMap<Integer> aDataSet = new AutoMap<>();
+            ArrayList<Integer> aDataSet = new ArrayList<>();
             for (MaterialStack m : this.vMaterialInput) {
-                aDataSet.put(
+                aDataSet.add(
                     m.getStackMaterial()
                         .getMeltingPointC());
             }
@@ -1565,9 +1551,9 @@ public class Material {
     public final int calculateBoilingPoint() {
         try {
 
-            AutoMap<Integer> aDataSet = new AutoMap<>();
+            ArrayList<Integer> aDataSet = new ArrayList<>();
             for (MaterialStack m : this.vMaterialInput) {
-                aDataSet.put(
+                aDataSet.add(
                     m.getStackMaterial()
                         .getBoilingPointC());
             }
@@ -1582,9 +1568,9 @@ public class Material {
     public final long calculateProtons() {
         try {
 
-            AutoMap<Long> aDataSet = new AutoMap<>();
+            ArrayList<Long> aDataSet = new ArrayList<>();
             for (MaterialStack m : this.vMaterialInput) {
-                aDataSet.put(
+                aDataSet.add(
                     m.getStackMaterial()
                         .getProtons());
             }
@@ -1599,9 +1585,9 @@ public class Material {
     public final long calculateNeutrons() {
         try {
 
-            AutoMap<Long> aDataSet = new AutoMap<>();
+            ArrayList<Long> aDataSet = new ArrayList<>();
             for (MaterialStack m : this.vMaterialInput) {
-                aDataSet.put(
+                aDataSet.add(
                     m.getStackMaterial()
                         .getNeutrons());
             }
@@ -1618,14 +1604,11 @@ public class Material {
         if (obj == null) {
             return false;
         }
-        if (!Material.class.isInstance(obj)) {
+        if (!(obj instanceof Material aObj)) {
             return false;
         }
-        Material aObj = (Material) obj;
         if (aObj.unlocalizedName.equals(this.unlocalizedName)) {
-            if (aObj.localizedName.equals(this.localizedName)) {
-                return true;
-            }
+            return aObj.localizedName.equals(this.localizedName);
         }
         return false;
     }

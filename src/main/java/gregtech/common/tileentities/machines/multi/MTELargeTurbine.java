@@ -14,13 +14,14 @@ import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_EMPTY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -51,6 +52,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LightingHelper;
+import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.render.GTRenderUtil;
@@ -265,6 +267,11 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             stopMachine(ShutDownReasonRegistry.NO_TURBINE);
             return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         }
+
+        TurbineStatCalculator turbine = new TurbineStatCalculator(
+            (MetaGeneratedTool) controllerSlot.getItem(),
+            controllerSlot);
+
         ArrayList<FluidStack> tFluids = getStoredFluids();
         if (!tFluids.isEmpty()) {
 
@@ -275,21 +282,10 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 || this.getBaseMetaTileEntity()
                     .hasInventoryBeenModified()) {
                 counter = 0;
-                baseEff = GTUtility.safeInt(
-                    (long) ((5F + ((MetaGeneratedTool) controllerSlot.getItem()).getToolCombatDamage(controllerSlot))
-                        * 1000F));
-                optFlow = GTUtility.safeInt(
-                    (long) Math.max(
-                        Float.MIN_NORMAL,
-                        ((MetaGeneratedTool) controllerSlot.getItem()).getToolStats(controllerSlot)
-                            .getSpeedMultiplier() * MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mToolSpeed
-                            * 50));
+                baseEff = (int) (100 * turbine.getEfficiency());
+                optFlow = (int) turbine.getOptimalFlow();
 
-                overflowMultiplier = getOverflowMultiplier(controllerSlot);
-
-                flowMultipliers[0] = MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mSteamMultiplier;
-                flowMultipliers[1] = MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mGasMultiplier;
-                flowMultipliers[2] = MetaGeneratedTool.getPrimaryMaterial(controllerSlot).mPlasmaMultiplier;
+                overflowMultiplier = turbine.getOverflowEfficiency();
 
                 if (optFlow <= 0 || baseEff <= 0) {
                     stopMachine(ShutDownReasonRegistry.NONE); // in case the turbine got removed
@@ -300,10 +296,10 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             }
         }
 
-        int newPower = fluidIntoPower(tFluids, optFlow, baseEff, overflowMultiplier, flowMultipliers); // How much the
-                                                                                                       // turbine should
-                                                                                                       // be producing
-                                                                                                       // with this flow
+        int newPower = fluidIntoPower(tFluids, turbine); // How much the
+                                                         // turbine should
+                                                         // be producing
+                                                         // with this flow
         int difference = newPower - this.mEUt; // difference between current output and new output
 
         // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the difference in
@@ -329,32 +325,18 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         }
     }
 
-    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier,
-        float[] flowMultipliers);
+    abstract int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine);
 
     abstract float getOverflowEfficiency(int totalFlow, int actualOptimalFlow, int overflowMultiplier);
 
     // Gets the maximum output that the turbine currently can handle. Going above this will cause the turbine to explode
     public long getMaximumOutput() {
         long aTotal = 0;
-        for (MTEHatchDynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             aTotal = aDynamo.maxAmperesOut() * aVoltage;
         }
         return aTotal;
-    }
-
-    public int getOverflowMultiplier(ItemStack aStack) {
-        int aOverflowMultiplier = 0;
-        int toolQualityLevel = MetaGeneratedTool.getPrimaryMaterial(aStack).mToolQuality;
-        if (toolQualityLevel >= 6) {
-            aOverflowMultiplier = 3;
-        } else if (toolQualityLevel >= 3) {
-            aOverflowMultiplier = 2;
-        } else {
-            aOverflowMultiplier = 1;
-        }
-        return aOverflowMultiplier;
     }
 
     @Override
@@ -381,7 +363,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
@@ -405,7 +387,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -456,20 +438,23 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + EnumChatFormatting.RESET
                 + " %" /* 8 */
         };
-        if (!this.getClass()
-            .getName()
-            .contains("Steam"))
-            ret[4] = StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.safeInt((long) realOptFlow)
-                + EnumChatFormatting.RESET
-                + " L/t";
         return ret;
     }
 
     public boolean hasTurbine() {
         return getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isClientSide() ? mHasTurbine
             : this.getMaxEfficiency(mInventory[1]) > 0;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+            looseFit ^= true;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
+                    : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
+        }
     }
 
     @Override

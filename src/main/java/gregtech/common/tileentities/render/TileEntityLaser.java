@@ -7,6 +7,9 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.joml.AxisAngle4f;
+import org.joml.Matrix4f;
+
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 
@@ -52,26 +55,48 @@ public class TileEntityLaser extends TileEntity {
     }
 
     public void setRotationFields(ForgeDirection direction, Rotation rotation, Flip flip) {
-        setRotationAngle(rotation, flip);
-        setRotationAxis(direction);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
+        Matrix4f rotationMatrix = new Matrix4f().identity();
 
-    private void setRotationAngle(Rotation rotation, Flip flip) {
-        int invert = (flip == Flip.HORIZONTAL || flip == Flip.VERTICAL) ? 1 : -1;
-        switch (rotation) {
-            case NORMAL -> rotationAngle = 0;
-            case CLOCKWISE -> rotationAngle = 90 * invert;
-            case COUNTER_CLOCKWISE -> rotationAngle = -90 * invert;
-            case UPSIDE_DOWN -> rotationAngle = 180;
-        }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
+        float localAngle = switch (rotation) {
+            case NORMAL -> 0;
+            case CLOCKWISE -> 90;
+            case COUNTER_CLOCKWISE -> -90;
+            case UPSIDE_DOWN -> 180;
+        };
+        localAngle *= (flip == Flip.HORIZONTAL || flip == Flip.VERTICAL) ? 1 : -1;
+        localAngle = (float) Math.toRadians(localAngle);
+        rotationMatrix.rotate(localAngle, direction.offsetX, direction.offsetY, direction.offsetZ);
 
-    public void setRotationAxis(ForgeDirection direction) {
-        rotAxisX = direction.offsetX;
-        rotAxisY = direction.offsetY;
-        rotAxisZ = direction.offsetZ;
+        float x = 0, y = 0;
+        float angle = switch (direction) {
+            case DOWN -> {
+                x = 1;
+                yield -90;
+            }
+            case UP -> {
+                x = 1;
+                yield -90;
+            }
+            case EAST, SOUTH -> {
+                y = 1;
+                yield 90;
+            }
+            case WEST, NORTH -> {
+                y = 1;
+                yield -90;
+            }
+            case UNKNOWN -> 0.0F;
+        };
+        angle = (float) Math.toRadians(angle);
+        rotationMatrix.rotate(angle, x, y, 0);
+
+        AxisAngle4f rotationVector = new AxisAngle4f();
+        rotationMatrix.getRotation(rotationVector);
+
+        rotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        rotAxisX = rotationVector.x;
+        rotAxisY = rotationVector.y;
+        rotAxisZ = rotationVector.z;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

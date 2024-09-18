@@ -42,7 +42,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.config.machinestats.ConfigMassFabricator;
+import gregtech.common.config.MachineStats;
 
 public class MTEMassfabricator extends MTEBasicMachine {
 
@@ -136,10 +136,10 @@ public class MTEMassfabricator extends MTEBasicMachine {
     @Override
     public void onConfigLoad() {
         super.onConfigLoad();
-        sDurationMultiplier = ConfigMassFabricator.durationMultiplier;
-        sUUAperUUM = ConfigMassFabricator.UUAPerUUM;
-        sUUASpeedBonus = ConfigMassFabricator.UUASpeedBonus;
-        sRequiresUUA = ConfigMassFabricator.requiresUUA;
+        sDurationMultiplier = MachineStats.massFabricator.durationMultiplier;
+        sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
+        sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
+        sRequiresUUA = MachineStats.massFabricator.requiresUUA;
         Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
     }
 
