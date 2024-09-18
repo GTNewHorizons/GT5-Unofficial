@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+
 import org.joml.Vector2d;
 import org.lwjgl.opengl.GL11;
 
@@ -19,8 +22,6 @@ import com.gtnewhorizons.modularui.api.widget.Interactable;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 
 import gregtech.api.enums.SoundResource;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 
 public class RadialMenu extends Widget implements Interactable {
 
@@ -43,10 +44,10 @@ public class RadialMenu extends Widget implements Interactable {
     @Override
     public void draw(float partialTicks) {
         Minecraft.getMinecraft().mcProfiler.startSection("radial menu");
-        
+
         double weightSum = 0;
 
-        for(RadialMenuOption option : options) {
+        for (RadialMenuOption option : options) {
             option.isHidden = option.hidden.getAsBoolean();
 
             if (!option.isHidden) {
@@ -56,7 +57,7 @@ public class RadialMenu extends Widget implements Interactable {
 
         double currentAngle = 0;
 
-        for(int i = 0; i < options.size(); i++) {
+        for (int i = 0; i < options.size(); i++) {
             RadialMenuOption option = options.get(i);
 
             if (option.isHidden) {
@@ -72,10 +73,10 @@ public class RadialMenu extends Widget implements Interactable {
             option.endTheta = currentAngle;
         }
 
-        if(!options.isEmpty()) {
+        if (!options.isEmpty()) {
             double offset = Math.abs(options.get(0).startTheta - options.get(0).endTheta) / 2;
-    
-            for(RadialMenuOption option : options) {
+
+            for (RadialMenuOption option : options) {
                 option.startTheta -= offset;
                 option.endTheta -= offset;
             }
@@ -86,13 +87,9 @@ public class RadialMenu extends Widget implements Interactable {
 
         GlStateManager.pushMatrix();
 
-        GlStateManager.translate(
-            pos.getX() + size.width / 2,
-            pos.getY() + size.height /2,
-            0
-        );
+        GlStateManager.translate(pos.getX() + size.width / 2, pos.getY() + size.height / 2, 0);
 
-        if(innerIcon != null) {
+        if (innerIcon != null) {
             innerIcon.draw(0, 0, 0, 0, partialTicks);
         }
 
@@ -109,32 +106,31 @@ public class RadialMenu extends Widget implements Interactable {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
-        for(RadialMenuOption option : options) {
+        for (RadialMenuOption option : options) {
             if (option.isHidden) {
                 continue;
             }
-            
-            boolean isHoveredOver =
-                mouseRadius >= innerRadius && mouseRadius <= outerRadius &&
-                isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
 
-            if(isHoveredOver) {
+            boolean isHoveredOver = mouseRadius >= innerRadius && mouseRadius <= outerRadius
+                && isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
+
+            if (isHoveredOver) {
                 GL11.glColor4f(0.25f, 0.25f, 0.25f, 1f);
             } else {
                 GL11.glColor4f(0f, 0f, 0f, 1f);
             }
 
             GlStateManager.glBegin(GL11.GL_TRIANGLE_STRIP);
-        
+
             double step = PI / 32;
 
-            for(int i = 0; true; i++) {
+            for (int i = 0; true; i++) {
                 double t = option.startTheta + i * step;
 
                 radialVertex(outerRadius, Math.min(Math.max(t, option.startTheta), option.endTheta));
                 radialVertex(innerRadius, Math.min(Math.max(t, option.startTheta), option.endTheta));
 
-                if(t > option.endTheta) {
+                if (t > option.endTheta) {
                     break;
                 }
             }
@@ -146,7 +142,7 @@ public class RadialMenu extends Widget implements Interactable {
 
         GlStateManager.popMatrix();
 
-        for(RadialMenuOption option : options) {
+        for (RadialMenuOption option : options) {
             if (option.isHidden) {
                 continue;
             }
@@ -156,8 +152,7 @@ public class RadialMenu extends Widget implements Interactable {
                 (option.startTheta + option.endTheta) / 2,
                 50,
                 0xFFCCCCCC,
-                option.label.get()
-            );
+                option.label.get());
         }
 
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -172,13 +167,12 @@ public class RadialMenu extends Widget implements Interactable {
         double mouseRadius = mouse.x;
         double mouseTheta = mouse.y;
 
-        for(RadialMenuOption option : options) {
-            boolean isHoveredOver =
-                mouseRadius >= innerRadius && mouseRadius <= outerRadius &&
-                isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
+        for (RadialMenuOption option : options) {
+            boolean isHoveredOver = mouseRadius >= innerRadius && mouseRadius <= outerRadius
+                && isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
 
-            if(isHoveredOver) {
-                if(option.hidden.getAsBoolean()) {
+            if (isHoveredOver) {
+                if (option.hidden.getAsBoolean()) {
                     return ClickResult.ACKNOWLEDGED;
                 } else {
                     Minecraft.getMinecraft().thePlayer.playSound(SoundResource.RANDOM_CLICK.toString(), 0.5f, 1f);
@@ -217,8 +211,10 @@ public class RadialMenu extends Widget implements Interactable {
 
         int dim = Math.min(size.width, size.height);
 
-        double mx = (double)this.getContext().getMousePos().x - pos.getX();
-        double my = (double)this.getContext().getMousePos().y - pos.getY();
+        double mx = (double) this.getContext()
+            .getMousePos().x - pos.getX();
+        double my = (double) this.getContext()
+            .getMousePos().y - pos.getY();
 
         // spotless:off
         mx = map(mx, size.width / 2 - dim / 2, size.width / 2 + dim / 2, -1, 1);
@@ -248,13 +244,13 @@ public class RadialMenu extends Widget implements Interactable {
         int boundsX = 0;
         int boundsY = lines.size() * renderer.FONT_HEIGHT;
 
-        for(String line : lines) {
+        for (String line : lines) {
             boundsX = Math.max(boundsX, renderer.getStringWidth(line));
         }
 
         int nextY = y - boundsY / 2;
 
-        for(String line : lines) {
+        for (String line : lines) {
             int width = renderer.getStringWidth(line);
             int height = renderer.FONT_HEIGHT;
 
@@ -276,10 +272,11 @@ public class RadialMenu extends Widget implements Interactable {
         double x = Math.cos(theta) * radius;
         double y = Math.sin(theta) * radius;
 
-        GlStateManager.glVertex3f((float)x, (float)y, 1);
+        GlStateManager.glVertex3f((float) x, (float) y, 1);
     }
 
     public static class RadialMenuOption {
+
         public Supplier<String> label;
         public double weight = 1;
 
@@ -293,6 +290,7 @@ public class RadialMenu extends Widget implements Interactable {
     }
 
     public static interface RadialMenuClickHandler {
+
         void onClick(RadialMenu menu, RadialMenuOption option, int mouseButton, boolean doubleClicked);
     }
 }

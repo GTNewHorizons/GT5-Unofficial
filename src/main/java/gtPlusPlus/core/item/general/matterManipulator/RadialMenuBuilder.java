@@ -6,15 +6,17 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gtPlusPlus.core.item.general.matterManipulator.RadialMenu.RadialMenuClickHandler;
 import gtPlusPlus.core.item.general.matterManipulator.RadialMenu.RadialMenuOption;
-import net.minecraft.item.ItemStack;
 
 public class RadialMenuBuilder {
+
     public final UIBuildContext buildContext;
     public final List<RadialMenuOptionBuilder<RadialMenuBuilder>> options = new ArrayList<>();
     public float innerRadius = 0.25f, outerRadius = 0.60f;
@@ -30,8 +32,7 @@ public class RadialMenuBuilder {
     }
 
     public RadialMenuBuilder innerIcon(ItemStack item) {
-        this.innerIcon = new ItemDrawable(item)
-            .withOffset(-8, -8)
+        this.innerIcon = new ItemDrawable(item).withOffset(-8, -8)
             .withFixedSize(32, 32);
         return this;
     }
@@ -74,8 +75,8 @@ public class RadialMenuBuilder {
         menu.innerIcon = this.innerIcon;
         menu.innerRadius = this.innerRadius;
         menu.outerRadius = this.outerRadius;
-        
-        for(var option : options) {
+
+        for (var option : options) {
             option.apply(menu);
         }
 
@@ -83,13 +84,14 @@ public class RadialMenuBuilder {
     }
 
     public static abstract class RadialMenuOptionBuilder<Parent> {
+
         public final UIBuildContext buildContext;
         public final Parent parent;
 
         public Supplier<String> label;
         public double weight = 1;
         public BooleanSupplier hidden = () -> false;
-        
+
         public RadialMenuOptionBuilder(UIBuildContext buildContext, Parent parent) {
             this.buildContext = buildContext;
             this.parent = parent;
@@ -143,7 +145,8 @@ public class RadialMenuBuilder {
         public RadialMenuOptionBuilderLeaf<Parent> onClicked(Runnable onClicked) {
             this.onClicked = (menu, option, mouseButton, doubleClicked) -> {
                 onClicked.run();
-                buildContext.getPlayer().closeScreen();
+                buildContext.getPlayer()
+                    .closeScreen();
             };
             return this;
         }
@@ -151,7 +154,8 @@ public class RadialMenuBuilder {
         public RadialMenuOptionBuilderLeaf<Parent> onClicked(BooleanSupplier onClicked) {
             this.onClicked = (menu, option, mouseButton, doubleClicked) -> {
                 if (onClicked.getAsBoolean()) {
-                    buildContext.getPlayer().closeScreen();
+                    buildContext.getPlayer()
+                        .closeScreen();
                 }
             };
             return this;
@@ -159,12 +163,13 @@ public class RadialMenuBuilder {
 
         public RadialMenuOptionBuilderLeaf<Parent> onClicked(int buttonId, Runnable onClicked) {
             this.onClicked = (menu, option, mouseButton, doubleClicked) -> {
-                if(mouseButton == buttonId) {
+                if (mouseButton == buttonId) {
                     onClicked.run();
-                    buildContext.getPlayer().closeScreen();
+                    buildContext.getPlayer()
+                        .closeScreen();
                 }
             };
-            
+
             return this;
         }
 
@@ -214,7 +219,8 @@ public class RadialMenuBuilder {
             return this;
         }
 
-        public RadialMenuOptionBuilderBranch<Parent> option(RadialMenuOptionBuilder<RadialMenuOptionBuilderBranch<Parent>> option) {
+        public RadialMenuOptionBuilderBranch<Parent> option(
+            RadialMenuOptionBuilder<RadialMenuOptionBuilderBranch<Parent>> option) {
             children.add(option);
             return this;
         }
@@ -241,7 +247,7 @@ public class RadialMenuBuilder {
             opt.onClick = (_1, option, mouseButton, doubleClicked) -> {
                 menu.options.clear();
 
-                for(var child : children) {
+                for (var child : children) {
                     child.apply(menu);
                 }
             };
