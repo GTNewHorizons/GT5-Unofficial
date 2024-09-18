@@ -2927,6 +2927,17 @@ public class RecipesMachines {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
+        // Charging Bus
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_IV.get(1),
+                CI.getRobotArm(5, 2),
+                CI.getEnergyCore(5, 4),
+                CI.getTieredComponent(OrePrefixes.circuit, 5, 8))
+            .itemOutputs(GregtechItemList.ChargingBus.get(1))
+            .duration(50 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
         // Mystic Frame
         GTValues.RA.stdBuilder()
             .itemInputs(

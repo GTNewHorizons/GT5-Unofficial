@@ -100,7 +100,7 @@ public class GregtechCustomHatches {
 
         // MultiBlock ChargingBus
         GregtechItemList.ChargingBus
-            .set(new MTEHatchChargingBus(ChargingBus.ID, "ChargingBus", "ChargingBus", 4).getStackForm(1L));
+            .set(new MTEHatchChargingBus(ChargingBus.ID, "Charging Bus", "Charging Bus", 4).getStackForm(1L));
 
         // Multiblock Reservoir Hatch
         GregtechItemList.Hatch_Reservoir.set(
