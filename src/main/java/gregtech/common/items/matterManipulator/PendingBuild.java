@@ -1,4 +1,4 @@
-package gtPlusPlus.core.item.general.matterManipulator;
+package gregtech.common.items.matterManipulator;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -48,7 +48,7 @@ import gregtech.api.interfaces.tileentity.IRedstoneEmitter;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.FluidId;
 import gregtech.api.util.GTUtility.ItemId;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingBlock;
+import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import ic2.api.item.ElectricItem;
 
 public class PendingBuild {

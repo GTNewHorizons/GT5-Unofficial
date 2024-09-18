@@ -1,4 +1,4 @@
-package gtPlusPlus.core.item.general.matterManipulator;
+package gregtech.common.items.matterManipulator;
 
 import static java.lang.Math.PI;
 

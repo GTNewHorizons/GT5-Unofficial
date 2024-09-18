@@ -1,6 +1,6 @@
-package gtPlusPlus.core.item.general.matterManipulator;
+package gregtech.common.items.matterManipulator;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -64,26 +64,27 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.BlockRemoveMode;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.BlockSelectMode;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.Config;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.CoordMode;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.Location;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingAction;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingBlock;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.PlaceMode;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.Shape;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
+import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
+import gregtech.common.items.matterManipulator.NBTState.Config;
+import gregtech.common.items.matterManipulator.NBTState.CoordMode;
+import gregtech.common.items.matterManipulator.NBTState.Location;
+import gregtech.common.items.matterManipulator.NBTState.PendingAction;
+import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
+import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
+import gregtech.common.items.matterManipulator.NBTState.Shape;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
 public class ItemMatterManipulator extends Item implements IElectricItem, INetworkUpdatableItem, INetworkEncodable {
 
     public ItemMatterManipulator() {
-        this.setCreativeTab(AddToCreativeTab.tabTools);
+        this.setCreativeTab(CreativeTabs.tabTools);
         this.setUnlocalizedName("itemMatterManipulator");
         this.setMaxStackSize(1);
-        this.setTextureName(GTPlusPlus.ID + ":" + "itemMatterManipulator");
+        this.setTextureName(GregTech.ID + ":" + "itemMatterManipulator");
+        GTLanguageManager.addStringLocalization("item.itemMatterManipulator.name", "Matter Manipulator");
 
         GameRegistry.registerItem(this, "itemMatterManipulator");
         MinecraftForge.EVENT_BUS.register(this);
@@ -218,18 +219,46 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             desc.add("Hold shift for more information.");
         } else {
             if (state.connectToMESystem()) {
-                desc.add("Has ME connection. (" + (state.canInteractWithAE(player) ? "Can interact currently" : "Cannot interact currently") + ")");
+                desc.add("Has an ME connection. (" + (state.canInteractWithAE(player) ? "Can interact currently" : "Cannot interact currently") + ")");
             } else {
-                desc.add("Does not have ME connection.");
+                desc.add("Does not have an ME connection.");
             }
 
-            addInfoLine(desc, "Coordinate A: %s", state.config.coordA);
-            addInfoLine(desc, "Coordinate B: %s", state.config.coordB);
-    
-            addInfoLine(desc, "Corner block: %s", state.config.getCorners(), ItemStack::getDisplayName);
-            addInfoLine(desc, "Edge block: %s", state.config.getEdges(), ItemStack::getDisplayName);
-            addInfoLine(desc, "Face block: %s", state.config.getFaces(), ItemStack::getDisplayName);
-            addInfoLine(desc, "Volume block: %s", state.config.getVolumes(), ItemStack::getDisplayName);
+            if (state.config.action != null) {
+                addInfoLine(desc, "Pending Action: %s", switch (state.config.action) {
+                    case GEOM_MOVING_COORDS -> "Moving coordinates";
+                    case GEOM_SELECTING_BLOCK -> "Selecting blocks to place";
+                });
+            }
+
+            addInfoLine(desc, "Mode: %s", switch (state.config.placeMode) {
+                case GEOMETRY -> "Geometry";
+                case MOVING -> "Moving";
+                case COPYING -> "Copying";
+                case DEBUGGING -> "Debugging";
+            });
+
+            addInfoLine(desc, "Removing: %s", switch (state.config.removeMode) {
+                case ALL -> "All blocks";
+                case REPLACEABLE -> "Replaceable blocks";
+                case NONE -> "No blocks";
+            });
+            
+            if (state.config.placeMode == PlaceMode.GEOMETRY) {
+                addInfoLine(desc, "Shape: %s", switch (state.config.shape) {
+                    case LINE -> "Line";
+                    case CUBE -> "Cube";
+                    case SPHERE -> "Sphere";
+                });
+            
+                addInfoLine(desc, "Coordinate A: %s", state.config.coordA);
+                addInfoLine(desc, "Coordinate B: %s", state.config.coordB);
+        
+                addInfoLine(desc, "Corner block: %s", state.config.getCorners(), ItemStack::getDisplayName);
+                addInfoLine(desc, "Edge block: %s", state.config.getEdges(), ItemStack::getDisplayName);
+                addInfoLine(desc, "Face block: %s", state.config.getFaces(), ItemStack::getDisplayName);
+                addInfoLine(desc, "Volume block: %s", state.config.getVolumes(), ItemStack::getDisplayName);
+            }
         }
         // spotless:on
     }
@@ -620,6 +649,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .done()
                 .option()
                     .label("Moving")
+                    .hidden(true)
                     .onClicked(() -> {
                         withState(buildContext, state -> {
                             state.config.placeMode = PlaceMode.MOVING;
@@ -628,6 +658,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .done()
                 .option()
                     .label("Copying")
+                    .hidden(true)
                     .onClicked(() -> {
                         withState(buildContext, state -> {
                             state.config.placeMode = PlaceMode.COPYING;
@@ -636,6 +667,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .done()
                 .option()
                     .label("Debugging")
+                    .hidden(true)
                     .onClicked(() -> {
                         withState(buildContext, state -> {
                             state.config.placeMode = PlaceMode.DEBUGGING;
