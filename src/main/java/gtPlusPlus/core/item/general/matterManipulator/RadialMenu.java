@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general.matterManipulator;
 
+import static java.lang.Math.PI;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -16,10 +18,13 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 
+import gregtech.api.enums.SoundResource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 
 public class RadialMenu extends Widget implements Interactable {
+
+    private static final double TAU = PI * 2;
 
     public List<RadialMenuOption> options = new ArrayList<>();
     public float innerRadius = 0.25f, outerRadius = 0.60f;
@@ -60,7 +65,7 @@ public class RadialMenu extends Widget implements Interactable {
                 continue;
             }
 
-            double sliceSize = option.weight / weightSum * Math.PI * 2;
+            double sliceSize = option.weight / weightSum * TAU;
 
             option.startTheta = currentAngle;
             currentAngle += sliceSize;
@@ -68,7 +73,7 @@ public class RadialMenu extends Widget implements Interactable {
         }
 
         if(!options.isEmpty()) {
-            double offset = (options.get(0).startTheta - options.get(0).endTheta) / 2;
+            double offset = Math.abs(options.get(0).startTheta - options.get(0).endTheta) / 2;
     
             for(RadialMenuOption option : options) {
                 option.startTheta -= offset;
@@ -121,7 +126,7 @@ public class RadialMenu extends Widget implements Interactable {
 
             GlStateManager.glBegin(GL11.GL_TRIANGLE_STRIP);
         
-            double step = Math.PI / 32;
+            double step = PI / 32;
 
             for(int i = 0; true; i++) {
                 double t = option.startTheta + i * step;
@@ -176,6 +181,7 @@ public class RadialMenu extends Widget implements Interactable {
                 if(option.hidden.getAsBoolean()) {
                     return ClickResult.ACKNOWLEDGED;
                 } else {
+                    Minecraft.getMinecraft().thePlayer.playSound(SoundResource.RANDOM_CLICK.toString(), 0.5f, 1f);
                     option.onClick.onClick(this, option, mouseButton, doubleClick);
                     return ClickResult.ACCEPT;
                 }
@@ -185,30 +191,24 @@ public class RadialMenu extends Widget implements Interactable {
         return ClickResult.IGNORE;
     }
 
-    private static double fmod(double value, double divisor) {
-        return (value % divisor + divisor) % divisor;
+    private static double mod_tau(double angle) {
+        return ((angle % TAU) + TAU) % TAU;
     }
 
     private static boolean isAngleBetween(double target, double angle1, double angle2) {
-        target = fmod(target, Math.PI * 2);
-        angle1 = fmod(angle1, Math.PI * 2);
-        angle2 = fmod(angle2, Math.PI * 2);
+        if (angle2 < angle1) return false;
 
-        // make the angle from angle1 to angle2 to be <= 180 degrees
-        double rAngle = fmod(angle2 - angle1, Math.PI * 2);
+        while (angle1 < 0) {
+            angle1 += TAU;
+            angle2 += TAU;
+        }
 
-        if (rAngle >= Math.PI) {
-            double temp = angle1;
-            angle1 = angle2;
-            angle2 = temp;
+        while (angle1 > TAU) {
+            angle1 -= TAU;
+            angle2 -= TAU;
         }
-        
-        // check if it passes through zero
-        if (angle1 <= angle2) {
-            return target >= angle1 && target <= angle2;  
-        } else {
-            return target >= angle1 || target <= angle2;
-        }
+
+        return mod_tau(target - angle1) < angle2 - angle1;
     }
 
     private Vector2d getMousePosition() {
@@ -220,11 +220,13 @@ public class RadialMenu extends Widget implements Interactable {
         double mx = (double)this.getContext().getMousePos().x - pos.getX();
         double my = (double)this.getContext().getMousePos().y - pos.getY();
 
+        // spotless:off
         mx = map(mx, size.width / 2 - dim / 2, size.width / 2 + dim / 2, -1, 1);
         my = map(my, size.height / 2 - dim / 2, size.height / 2 + dim / 2, -1, 1);
+        // spotless:on
 
         double mouseRadius = Math.sqrt(mx * mx + my * my);
-        double mouseTheta = (Math.atan2(my, mx) + Math.PI * 2) % (Math.PI * 2);
+        double mouseTheta = mod_tau(Math.atan2(my, mx));
 
         return new Vector2d(mouseRadius, mouseTheta);
     }
@@ -236,8 +238,10 @@ public class RadialMenu extends Widget implements Interactable {
 
         int dim = Math.min(size.width, size.height);
 
+        // spotless:off
         int x = (int)map(Math.cos(theta) * radius, -1, 1, size.width / 2 - dim / 2, size.width / 2 + dim / 2);
         int y = (int)map(Math.sin(theta) * radius, -1, 1, size.height / 2 - dim / 2, size.height / 2 + dim / 2);
+        // spotless:on
 
         List<String> lines = renderer.listFormattedStringToWidth(text, wrapWidth);
 
@@ -262,9 +266,11 @@ public class RadialMenu extends Widget implements Interactable {
         }
     }
 
+    // spotless:off
     private static double map(double x, double in_min, double in_max, double out_min, double out_max) {
         return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
+    // spotless:on
 
     private static void radialVertex(double radius, double theta) {
         double x = Math.cos(theta) * radius;

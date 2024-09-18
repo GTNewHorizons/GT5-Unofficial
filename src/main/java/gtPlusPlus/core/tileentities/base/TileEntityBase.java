@@ -1113,6 +1113,12 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
+    public void setWeakOutputRedstoneSignal(ForgeDirection side, byte aStrength) {
+        mStrongRedstone &= ~side.flag;
+        setOutputRedstoneSignal(side, aStrength);
+    }
+
+    @Override
     public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         if (!canAccessData() || !mMetaTileEntity.isElectric()
             || !inputEnergyFrom(side)
