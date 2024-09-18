@@ -1,4 +1,4 @@
-package gtPlusPlus.core.item.general.matterManipulator;
+package gregtech.common.items.matterManipulator;
 
 import java.util.ArrayList;
 
