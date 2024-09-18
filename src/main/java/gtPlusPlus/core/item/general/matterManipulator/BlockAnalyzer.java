@@ -4,13 +4,6 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import appeng.api.implementations.tiles.IColorableTile;
-import appeng.api.util.AEColor;
-import appeng.tile.AEBaseTile;
-import appeng.util.SettingsFrom;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.metatileentity.IConnectable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,9 +12,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import appeng.api.implementations.tiles.IColorableTile;
+import appeng.api.util.AEColor;
+import appeng.tile.AEBaseTile;
+import appeng.util.SettingsFrom;
+import gregtech.api.interfaces.metatileentity.IConnectable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
 public class BlockAnalyzer {
-    
+
     public static class BlockActionContext {
+
         public World world;
         public int x, y, z;
         public EntityPlayer player;
@@ -52,6 +54,7 @@ public class BlockAnalyzer {
     }
 
     static interface BlockAction {
+
         BlockActionResult apply(BlockActionContext context);
     }
 
@@ -62,12 +65,12 @@ public class BlockAnalyzer {
         APPLIED,
     }
 
-    private BlockAnalyzer() { }
+    private BlockAnalyzer() {}
 
     public static BlockAction[] getActions(BlockActionContext context) {
         TileEntity te = context.getTileEntity();
 
-        if(te == null) {
+        if (te == null) {
             return null;
         }
 
@@ -76,12 +79,12 @@ public class BlockAnalyzer {
         if (te instanceof IGregTechTileEntity gte) {
             IMetaTileEntity imte = gte.getMetaTileEntity();
 
-            if(imte instanceof IConnectable conn) {
+            if (imte instanceof IConnectable conn) {
                 actions.add(ConnectionAction.fromTile(conn));
             }
 
         }
-        
+
         if (te instanceof appeng.tile.AEBaseTile ae) {
             actions.add(CopyAETileAction.fromTile(ae));
         }
@@ -96,7 +99,7 @@ public class BlockAnalyzer {
     }
 
     public static class ConnectionAction implements BlockAction {
-        
+
         public final byte mConnections;
 
         private ConnectionAction(byte connections) {
@@ -106,10 +109,10 @@ public class BlockAnalyzer {
         public static @Nullable ConnectionAction fromTile(IConnectable conn) {
             byte connections = 0;
 
-            for(int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                 ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
 
-                if(conn.isConnectedAtSide(dir)) {
+                if (conn.isConnectedAtSide(dir)) {
                     connections |= dir.flag;
                 }
             }
@@ -118,7 +121,8 @@ public class BlockAnalyzer {
         }
 
         public BlockActionResult apply(BlockActionContext context) {
-            var te = context.getTileEntity() instanceof IGregTechTileEntity igte && igte.getMetaTileEntity() instanceof IConnectable conn ? conn : null;
+            var te = context.getTileEntity() instanceof IGregTechTileEntity igte
+                && igte.getMetaTileEntity() instanceof IConnectable conn ? conn : null;
 
             if (te == null) {
                 return BlockActionResult.NOT_APPLICABLE;
@@ -130,12 +134,12 @@ public class BlockAnalyzer {
 
             boolean didSomething = false;
 
-            for(int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                 ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
 
-                if(te.isConnectedAtSide(dir) != ((mConnections & dir.flag) != 0)) {
+                if (te.isConnectedAtSide(dir) != ((mConnections & dir.flag) != 0)) {
                     didSomething = true;
-                    if ((mConnections & dir.flag) != 0){
+                    if ((mConnections & dir.flag) != 0) {
                         te.connect(dir);
                     } else {
                         te.disconnect(dir);
@@ -153,7 +157,7 @@ public class BlockAnalyzer {
         public final ForgeDirection forward;
         public final ForgeDirection up;
         public final NBTTagCompound data;
-    
+
         private CopyAETileAction(boolean hasRotation, ForgeDirection forward, ForgeDirection up, NBTTagCompound data) {
             this.hasRotation = hasRotation;
             this.forward = forward;
@@ -165,7 +169,7 @@ public class BlockAnalyzer {
             boolean hasRotation = false;
             ForgeDirection forward = null, up = null;
 
-            if(sourceTile.canBeRotated()) {
+            if (sourceTile.canBeRotated()) {
                 hasRotation = true;
                 forward = sourceTile.getForward();
                 up = sourceTile.getUp();
@@ -187,7 +191,7 @@ public class BlockAnalyzer {
             if (!context.tryConsumePower(((hasRotation && te.canBeRotated()) ? 1 : 0) + (data != null ? 0.5 : 0))) {
                 return BlockActionResult.COULD_NOT_APPLY;
             }
-            
+
             if (hasRotation && te.canBeRotated()) {
                 te.setOrientation(forward, up);
             }
@@ -223,7 +227,7 @@ public class BlockAnalyzer {
             if (!context.tryConsumePower(te.getColor() != colour ? 1 : 0)) {
                 return BlockActionResult.COULD_NOT_APPLY;
             }
-            
+
             if (te.getColor() != colour) {
                 te.recolourBlock(ForgeDirection.UNKNOWN, colour, context.player);
                 return BlockActionResult.APPLIED;

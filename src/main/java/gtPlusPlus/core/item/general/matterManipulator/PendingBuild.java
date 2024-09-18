@@ -15,23 +15,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import appeng.api.config.Actionable;
-import appeng.api.networking.security.PlayerSource;
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.util.item.AEFluidStack;
-import appeng.util.item.AEItemStack;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import gregtech.GTMod;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IRedstoneEmitter;
-import gregtech.api.util.GTUtil;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.GTUtility.FluidId;
-import gregtech.api.util.GTUtility.ItemId;
-import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingBlock;
-import ic2.api.item.ElectricItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +34,25 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import appeng.api.config.Actionable;
+import appeng.api.networking.security.PlayerSource;
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.util.item.AEFluidStack;
+import appeng.util.item.AEItemStack;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import gregtech.GTMod;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IRedstoneEmitter;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.FluidId;
+import gregtech.api.util.GTUtility.ItemId;
+import gtPlusPlus.core.item.general.matterManipulator.NBTState.PendingBlock;
+import ic2.api.item.ElectricItem;
+
 public class PendingBuild {
+
     public LinkedList<PendingBlock> pendingBlocks;
     public EntityPlayer placingPlayer;
     public NBTState manipulator;
@@ -67,18 +68,27 @@ public class PendingBuild {
     private static final double EU_PER_BLOCK = 128.0, TE_PENALTY = 16.0;
 
     public void tryPlaceBlocks(ItemStack stack, EntityPlayer player) {
-        if(pendingBlocks == null) {
-            if(assembleTask != null && assembleTask.isDone()) {
+        if (pendingBlocks == null) {
+            if (assembleTask != null && assembleTask.isDone()) {
                 try {
                     pendingBlocks = assembleTask.get();
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
-                    player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "An error occurred while determining which blocks to place: " + e.getClass().getName() + ": " + e.getMessage()));
+                    player.addChatMessage(
+                        new ChatComponentText(
+                            EnumChatFormatting.RED + "An error occurred while determining which blocks to place: "
+                                + e.getClass()
+                                    .getName()
+                                + ": "
+                                + e.getMessage()));
                     player.setItemInUse(null, 0);
                     return;
                 }
             } else {
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Determining which blocks to place..."));
+                player.addChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY
+                            + "Determining which blocks to place..."));
                 return;
             }
         }
@@ -90,16 +100,16 @@ public class PendingBuild {
 
         World world = placingPlayer.worldObj;
 
-        while(list.size() < BLOCKS_PER_PLACE && pendingBlocks.size() > 0) {
+        while (list.size() < BLOCKS_PER_PLACE && pendingBlocks.size() > 0) {
             PendingBlock next = pendingBlocks.getFirst();
 
             int x = next.x, y = next.y, z = next.z;
 
-            if(placingPlayer.getDistanceSq(x, y, z) >= MAX_PLACE_DISTANCE) {
+            if (placingPlayer.getDistanceSq(x, y, z) >= MAX_PLACE_DISTANCE) {
                 pendingBlocks.addLast(pendingBlocks.removeFirst());
                 shuffleCount++;
 
-                if(shuffleCount > pendingBlocks.size()) {
+                if (shuffleCount > pendingBlocks.size()) {
                     break;
                 } else {
                     continue;
@@ -109,8 +119,9 @@ public class PendingBuild {
             int chunkX = x >> 4;
             int chunkZ = z >> 4;
 
-            if(!Objects.equals(chunkX, lastChunkX) || !Objects.equals(chunkZ, lastChunkZ)) {
-                if(!world.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+            if (!Objects.equals(chunkX, lastChunkX) || !Objects.equals(chunkZ, lastChunkZ)) {
+                if (!world.getChunkProvider()
+                    .chunkExists(chunkX, chunkZ)) {
                     pendingBlocks.removeFirst();
                     continue;
                 } else {
@@ -119,9 +130,13 @@ public class PendingBuild {
                 }
             }
 
+            // spotless:off
             if (!world.canMineBlock(player, x, y, z) || MinecraftServer.getServer().isBlockProtected(world, x, y, z, player)) {
+                // spotless:on
                 if (!printedProtectedBlockWarning) {
-                    player.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "Tried to break/place a block in a protected area!"));
+                    player.addChatMessage(
+                        new ChatComponentText(
+                            EnumChatFormatting.GOLD + "Tried to break/place a block in a protected area!"));
                     printedProtectedBlockWarning = true;
                 }
 
@@ -138,12 +153,12 @@ public class PendingBuild {
             Block existing = world.getBlock(x, y, z);
             int existingMeta = world.getBlockMetadata(x, y, z);
 
-            if(existing == block && existingMeta == next.metadata) {
+            if (existing == block && existingMeta == next.metadata) {
                 pendingBlocks.removeFirst();
                 continue;
             }
 
-            boolean canPlace = switch(manipulator.config.removeMode) {
+            boolean canPlace = switch (manipulator.config.removeMode) {
                 case NONE -> existing.isAir(world, x, y, z);
                 case REPLACEABLE -> existing.isReplaceable(world, x, y, z);
                 case ALL -> true;
@@ -153,7 +168,7 @@ public class PendingBuild {
                 pendingBlocks.addLast(pendingBlocks.removeFirst());
                 shuffleCount++;
 
-                if(shuffleCount > pendingBlocks.size()) {
+                if (shuffleCount > pendingBlocks.size()) {
                     break;
                 } else {
                     continue;
@@ -161,27 +176,35 @@ public class PendingBuild {
             }
 
             if (!existing.isAir(world, x, y, z)) {
-                if (!tryConsumePower(stack, new PendingBlock(world.provider.dimensionId, x, y, z, new ItemStack(existing, existingMeta)))) {
-                    player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Matter Manipulator ran out of EU."));
+                PendingBlock toRemove = new PendingBlock(
+                    world.provider.dimensionId,
+                    x,
+                    y,
+                    z,
+                    new ItemStack(existing, existingMeta));
+                if (!tryConsumePower(stack, toRemove)) {
+                    player.addChatMessage(
+                        new ChatComponentText(EnumChatFormatting.RED + "Matter Manipulator ran out of EU."));
                     break;
                 }
 
                 removeBlock(world, x, y, z, existing, existingMeta);
             }
 
-            if(!block.canPlaceBlockAt(world, next.x, next.y, next.z)) {
+            if (!block.canPlaceBlockAt(world, next.x, next.y, next.z)) {
                 pendingBlocks.addLast(pendingBlocks.removeFirst());
                 shuffleCount++;
 
-                if(shuffleCount > pendingBlocks.size()) {
+                if (shuffleCount > pendingBlocks.size()) {
                     break;
                 } else {
                     continue;
                 }
             }
 
-            if(!tryConsumePower(stack, next)) {
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Matter Manipulator ran out of EU."));
+            if (!tryConsumePower(stack, next)) {
+                player.addChatMessage(
+                    new ChatComponentText(EnumChatFormatting.RED + "Matter Manipulator ran out of EU."));
                 break;
             }
 
@@ -190,11 +213,15 @@ public class PendingBuild {
 
         actuallyGivePlayerStuff();
 
-        if(list.isEmpty()) {
-            if(!pendingBlocks.isEmpty()) {
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could not place " + pendingBlocks.size() + " remaining blocks."));
+        if (list.isEmpty()) {
+            if (!pendingBlocks.isEmpty()) {
+                player.addChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.RED + "Could not place " + pendingBlocks.size() + " remaining blocks."));
             } else {
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Finished placing blocks."));
+                player.addChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Finished placing blocks."));
             }
 
             player.setItemInUse(null, 0);
@@ -204,9 +231,15 @@ public class PendingBuild {
         ItemStack item = new ItemStack(list.get(0).block, list.size());
         if (item.getItem() != null) {
             item.setTagCompound(list.get(0).nbt);
-    
-            if(!tryConsumeItems(item)) {
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Could not find item, it will be skipped. (" + item.stackSize + " x " + item.getDisplayName() + ")"));
+
+            if (!tryConsumeItems(item)) {
+                player.addChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.RED + "Could not find item, it will be skipped. ("
+                            + item.stackSize
+                            + " x "
+                            + item.getDisplayName()
+                            + ")"));
                 player.setItemInUse(null, 0);
                 return;
             }
@@ -216,18 +249,24 @@ public class PendingBuild {
 
         int n = list.size();
 
-        for(PendingBlock pending : list) {
-            avgX += pending.x / (double)n;
-            avgY += pending.y / (double)n;
-            avgZ += pending.z / (double)n;
+        for (PendingBlock pending : list) {
+            avgX += pending.x / (double) n;
+            avgY += pending.y / (double) n;
+            avgZ += pending.z / (double) n;
 
             ItemBlock block = pending.block;
             if (block != null) {
                 block.placeBlockAt(
                     item,
-                    player, player.worldObj,
-                    pending.x, pending.y, pending.z,
-                    -1, 0, 0, 0,
+                    player,
+                    player.worldObj,
+                    pending.x,
+                    pending.y,
+                    pending.z,
+                    0,
+                    0,
+                    0,
+                    0,
                     pending.metadata);
             }
         }
@@ -238,23 +277,23 @@ public class PendingBuild {
                 SoundResource.MOB_ENDERMEN_PORTAL,
                 5.0F,
                 -1,
-                (int) avgX, 
-                (int) avgY, 
+                (int) avgX,
+                (int) avgY,
                 (int) avgZ);
         }
     }
 
     public boolean tryConsumeItems(ItemStack... items) {
-        if(placingPlayer.capabilities.isCreativeMode) {
+        if (placingPlayer.capabilities.isCreativeMode) {
             return true;
         } else {
-            if(consumeItemsFromPlayer(items, true)) {
+            if (consumeItemsFromPlayer(items, true)) {
                 consumeItemsFromPlayer(items, false);
 
                 return true;
             }
 
-            if(consumeItemsFromAE(items, true)) {
+            if (consumeItemsFromAE(items, true)) {
                 consumeItemsFromAE(items, false);
 
                 return true;
@@ -300,18 +339,19 @@ public class PendingBuild {
         }
 
         boolean hasME = manipulator.hasMEConnection() && manipulator.canInteractWithAE(placingPlayer);
-        
+
         pendingItems.forEach((item, amount) -> {
             if (hasME) {
                 AEItemStack stack = AEItemStack.create(item.getItemStack());
                 Objects.requireNonNull(stack);
                 stack.setStackSize(amount);
 
-                IAEItemStack result = manipulator.storageGrid.getItemInventory().injectItems(
-                    stack,
-                    Actionable.MODULATE,
-                    new PlayerSource(placingPlayer, manipulator.securityTerminal));
-    
+                IAEItemStack result = manipulator.storageGrid.getItemInventory()
+                    .injectItems(
+                        stack,
+                        Actionable.MODULATE,
+                        new PlayerSource(placingPlayer, manipulator.securityTerminal));
+
                 if (result != null) {
                     amount = result.getStackSize();
                 } else {
@@ -321,9 +361,9 @@ public class PendingBuild {
 
             while (amount > 0) {
                 ItemStack stack = item.getItemStack();
-                
+
                 int toRemove = (int) Math.min(amount, stack.getMaxStackSize());
-                
+
                 stack.stackSize = toRemove;
                 amount -= toRemove;
 
@@ -338,7 +378,13 @@ public class PendingBuild {
                 while (amount > 0) {
                     int toRemove = amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue();
                     amount -= toRemove;
-                    placingPlayer.worldObj.spawnEntityInWorld(new EntityItem(placingPlayer.worldObj, placingPlayer.posX, placingPlayer.posY, placingPlayer.posZ, item.getItemStack(toRemove)));
+                    placingPlayer.worldObj.spawnEntityInWorld(
+                        new EntityItem(
+                            placingPlayer.worldObj,
+                            placingPlayer.posX,
+                            placingPlayer.posY,
+                            placingPlayer.posZ,
+                            item.getItemStack(toRemove)));
                 }
             }
         });
@@ -350,11 +396,12 @@ public class PendingBuild {
                 AEFluidStack stack = AEFluidStack.create(id.getFluidStack());
                 stack.setStackSize(amount);
 
-                IAEFluidStack result = manipulator.storageGrid.getFluidInventory().injectItems(
-                    stack,
-                    Actionable.MODULATE,
-                    new PlayerSource(placingPlayer, manipulator.securityTerminal));
-    
+                IAEFluidStack result = manipulator.storageGrid.getFluidInventory()
+                    .injectItems(
+                        stack,
+                        Actionable.MODULATE,
+                        new PlayerSource(placingPlayer, manipulator.securityTerminal));
+
                 if (result != null) {
                     amount = result.getStackSize();
                 } else {
@@ -363,8 +410,10 @@ public class PendingBuild {
             }
 
             // this is final because of the lambdas, but its amount field is updated several times
-            final FluidStack fluid = id.getFluidStack(amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue());
+            final FluidStack fluid = id
+                .getFluidStack(amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue());
 
+            // spotless:off
             ItemStack idealCell = inventoryStream(placingPlayer.inventory)
                 .sorted(Comparator.comparingInt((ItemStack x) -> (
                     x != null && x.getItem() instanceof IFluidContainerItem container ? container.getCapacity(x) : 0
@@ -376,6 +425,7 @@ public class PendingBuild {
                 ))
                 .findFirst()
                 .orElse(null);
+            // spotless:on
 
             if (idealCell != null) {
                 amount -= ((IFluidContainerItem) idealCell.getItem()).fill(idealCell, fluid.copy(), true);
@@ -387,6 +437,7 @@ public class PendingBuild {
 
             fluid.amount = amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue();
 
+            // spotless:off
             List<ItemStack> validCells = inventoryStream(placingPlayer.inventory)
                 .filter(x -> (
                     x != null &&
@@ -394,6 +445,7 @@ public class PendingBuild {
                     container.fill(x, fluid, false) > 0
                 ))
                 .collect(Collectors.toList());
+            // spotless:on
 
             for (ItemStack cell : validCells) {
                 fluid.amount = amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue();
@@ -405,7 +457,12 @@ public class PendingBuild {
             }
 
             if (amount > 0 && !placingPlayer.capabilities.isCreativeMode) {
-                placingPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "Could not find a container for fluid (it was voided): " + amount + "L of " + fluid.getLocalizedName()));
+                placingPlayer.addChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.GOLD + "Could not find a container for fluid (it was voided): "
+                            + amount
+                            + "L of "
+                            + fluid.getLocalizedName()));
             }
         });
 
@@ -413,22 +470,23 @@ public class PendingBuild {
     }
 
     private Stream<ItemStack> inventoryStream(IInventory inv) {
-        return IntStream.range(0, inv.getSizeInventory()).mapToObj(inv::getStackInSlot);
+        return IntStream.range(0, inv.getSizeInventory())
+            .mapToObj(inv::getStackInSlot);
     }
 
     private boolean consumeItemsFromPlayer(ItemStack[] items, boolean simulate) {
-        for(int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length; i++) {
             items[i] = items[i].copy();
         }
 
         ItemStack[] inv = placingPlayer.inventory.mainInventory;
 
-        if(simulate) {
+        if (simulate) {
             inv = GTUtility.copyItemArray(inv);
         }
 
-        for(ItemStack item : items) {
-            for(int i = 0; i < inv.length; i++) {
+        for (ItemStack item : items) {
+            for (int i = 0; i < inv.length; i++) {
                 ItemStack slot = inv[i];
 
                 if (slot != null && areStacksBasicallyEqual(item, slot)) {
@@ -437,17 +495,17 @@ public class PendingBuild {
                     slot.stackSize -= toRemove;
                     item.stackSize -= toRemove;
 
-                    if(slot.stackSize == 0) {
+                    if (slot.stackSize == 0) {
                         inv[i] = null;
                     }
                 }
 
-                if(item.stackSize == 0) {
+                if (item.stackSize == 0) {
                     break;
                 }
             }
 
-            if(item.stackSize > 0) {
+            if (item.stackSize > 0) {
                 return false;
             }
         }
@@ -471,10 +529,11 @@ public class PendingBuild {
         }
 
         for (ItemStack item : items) {
-            IAEItemStack result = manipulator.storageGrid.getItemInventory().extractItems(
-                AEItemStack.create(item),
-                simulate ? Actionable.SIMULATE : Actionable.MODULATE,
-                new PlayerSource(placingPlayer, manipulator.securityTerminal));
+            IAEItemStack result = manipulator.storageGrid.getItemInventory()
+                .extractItems(
+                    AEItemStack.create(item),
+                    simulate ? Actionable.SIMULATE : Actionable.MODULATE,
+                    new PlayerSource(placingPlayer, manipulator.securityTerminal));
 
             if (result == null || result.getStackSize() == 0) {
                 return false;
@@ -489,11 +548,12 @@ public class PendingBuild {
     }
 
     private static boolean areStacksBasicallyEqual(ItemStack a, ItemStack b) {
-        if(a == null || b == null) {
+        if (a == null || b == null) {
             return a == null && b == null;
         }
 
-        return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage() && ItemStack.areItemStackTagsEqual(a, b);
+        return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage()
+            && ItemStack.areItemStackTagsEqual(a, b);
     }
 
     private static final MethodHandle IS_BLOCK_CONTAINER;
@@ -503,7 +563,8 @@ public class PendingBuild {
             Field isBlockContainer = ReflectionHelper.findField(Block.class, "field_149758_A", "isBlockContainer");
             isBlockContainer.setAccessible(true);
             Objects.requireNonNull(isBlockContainer);
-            IS_BLOCK_CONTAINER = MethodHandles.lookup().unreflectGetter(isBlockContainer);
+            IS_BLOCK_CONTAINER = MethodHandles.lookup()
+                .unreflectGetter(isBlockContainer);
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Could not find field Block.isBlockContainer", e);
         }
@@ -514,7 +575,7 @@ public class PendingBuild {
 
         try {
             ItemBlock block = pendingBlock.block;
-            if(block != null && (boolean)IS_BLOCK_CONTAINER.invoke(block.field_150939_a)) {
+            if (block != null && (boolean) IS_BLOCK_CONTAINER.invoke(block.field_150939_a)) {
                 euUsage *= TE_PENALTY;
             }
         } catch (Throwable e) {
@@ -544,10 +605,13 @@ public class PendingBuild {
 
         if (existing instanceof IFluidBlock fluidBlock && fluidBlock.canDrain(world, x, y, z)) {
             givePlayerFluids(fluidBlock.drain(world, x, y, z, true));
-        } if (existing == Blocks.water || existing == Blocks.lava) {
+        }
+        if (existing == Blocks.water || existing == Blocks.lava) {
             givePlayerFluids(new FluidStack(existing == Blocks.water ? FluidRegistry.WATER : FluidRegistry.LAVA, 1000));
         } else {
-            givePlayerItems(existing.getDrops(world, x, y, z, existingMeta, 0).toArray(new ItemStack[0]));
+            givePlayerItems(
+                existing.getDrops(world, x, y, z, existingMeta, 0)
+                    .toArray(new ItemStack[0]));
         }
 
         world.setBlock(x, y, z, Blocks.air);
@@ -574,7 +638,9 @@ public class PendingBuild {
     private void emptyTank(TileEntity te) {
         if (te instanceof IFluidHandler handler) {
             FluidStack fluid = null;
-            while ((fluid = handler.drain(ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true)) != null && fluid.getFluid() != null && fluid.amount > 0) {
+            while ((fluid = handler.drain(ForgeDirection.UNKNOWN, Integer.MAX_VALUE, true)) != null
+                && fluid.getFluid() != null
+                && fluid.amount > 0) {
                 givePlayerFluids(fluid);
             }
         }
@@ -585,7 +651,7 @@ public class PendingBuild {
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (coverable.getCoverIDAtSide(side) != 0) {
                     ItemStack cover = coverable.removeCoverAtSide(side, true);
-    
+
                     if (cover != null && cover.getItem() != null) {
                         givePlayerItems(cover);
                     }
