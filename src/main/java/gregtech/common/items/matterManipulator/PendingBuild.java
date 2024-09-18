@@ -22,6 +22,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -35,9 +36,15 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import appeng.api.config.Actionable;
+import appeng.api.implementations.tiles.ISegmentedInventory;
 import appeng.api.networking.security.PlayerSource;
+import appeng.api.parts.IPart;
+import appeng.api.parts.IPartHost;
+import appeng.api.parts.PartItemStack;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.helpers.ICustomNameObject;
+import appeng.parts.AEBasePart;
 import appeng.util.item.AEFluidStack;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -65,7 +72,7 @@ public class PendingBuild {
 
     private static final int BLOCKS_PER_PLACE = 256;
     private static final int MAX_PLACE_DISTANCE = 512 * 512;
-    private static final double EU_PER_BLOCK = 128.0, TE_PENALTY = 16.0;
+    private static final double EU_PER_BLOCK = 128.0, TE_PENALTY = 16.0, EU_DISTANCE_EXP = 1.25;
 
     public void tryPlaceBlocks(ItemStack stack, EntityPlayer player) {
         if (pendingBlocks == null) {
@@ -590,7 +597,7 @@ public class PendingBuild {
             return true;
         }
 
-        euUsage *= placingPlayer.getDistanceSq(x, y, z);
+        euUsage *= Math.pow(placingPlayer.getDistance(x, y, z), EU_DISTANCE_EXP);
 
         return ElectricItem.manager.use(stack, euUsage, placingPlayer);
     }
@@ -598,9 +605,10 @@ public class PendingBuild {
     private void removeBlock(World world, int x, int y, int z, Block existing, int existingMeta) {
         TileEntity te = world.getTileEntity(x, y, z);
 
-        emptyInventory(te);
+        emptyTileInventory(te);
         emptyTank(te);
         removeCovers(te);
+        resetAEMachine(te);
         resetKeptSettings(te);
 
         if (existing instanceof IFluidBlock fluidBlock && fluidBlock.canDrain(world, x, y, z)) {
@@ -617,22 +625,26 @@ public class PendingBuild {
         world.setBlock(x, y, z, Blocks.air);
     }
 
-    private void emptyInventory(TileEntity te) {
+    private void emptyTileInventory(TileEntity te) {
         if (te instanceof IInventory inv) {
-            int size = inv.getSizeInventory();
-
-            for (int i = 0; i < size; i++) {
-                ItemStack stack = inv.getStackInSlot(i);
-
-                if (stack != null && stack.getItem() != null) {
-                    inv.setInventorySlotContents(i, null);
-
-                    givePlayerItems(stack);
-                }
-            }
-
-            inv.markDirty();
+            emptyInventory(inv);
         }
+    }
+
+    private void emptyInventory(IInventory inv) {
+        int size = inv.getSizeInventory();
+
+        for (int i = 0; i < size; i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+
+            if (stack != null && stack.getItem() != null) {
+                inv.setInventorySlotContents(i, null);
+
+                givePlayerItems(stack);
+            }
+        }
+
+        inv.markDirty();
     }
 
     private void emptyTank(TileEntity te) {
@@ -654,6 +666,67 @@ public class PendingBuild {
 
                     if (cover != null && cover.getItem() != null) {
                         givePlayerItems(cover);
+                    }
+                }
+            }
+        }
+    }
+
+    private void resetAEMachine(Object machine) {
+        if (machine instanceof ISegmentedInventory segmentedInventory) {
+            IInventory upgrades = segmentedInventory.getInventoryByName("upgrades");
+
+            if (upgrades != null) {
+                emptyInventory(upgrades);
+            }
+
+            IInventory cells = segmentedInventory.getInventoryByName("cells");
+
+            if (cells != null) {
+                emptyInventory(cells);
+            }
+        }
+
+        if (machine instanceof ICustomNameObject customName) {
+            if (customName.hasCustomName()) {
+                try {
+                    customName.setCustomName(null);
+                } catch (IllegalArgumentException e) {
+                    // hack because AEBasePart's default setCustomName impl throws an IAE when the name is null
+                    if (machine instanceof AEBasePart basePart) {
+                        NBTTagCompound tag = basePart.getItemStack()
+                            .getTagCompound();
+
+                        if (tag != null) {
+                            tag.removeTag("display");
+
+                            if (tag.hasNoTags()) {
+                                basePart.getItemStack()
+                                    .setTagCompound(null);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (machine instanceof IPartHost host) {
+            // intentionally includes UNKNOWN to remove any cables
+            for (ForgeDirection dir : ForgeDirection.values()) {
+                IPart part = host.getPart(dir);
+
+                if (part != null) {
+                    resetAEMachine(part);
+
+                    host.removePart(dir, false);
+
+                    givePlayerItems(part.getItemStack(PartItemStack.Break));
+
+                    ArrayList<ItemStack> drops = new ArrayList<>();
+                    part.getDrops(drops, false);
+
+                    if (!drops.isEmpty()) {
+                        givePlayerItems(drops.toArray(new ItemStack[drops.size()]));
                     }
                 }
             }

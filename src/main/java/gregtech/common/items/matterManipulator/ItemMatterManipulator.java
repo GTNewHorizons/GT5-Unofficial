@@ -149,14 +149,11 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         NBTTagCompound newState = state.save();
 
         if (!Objects.equals(newState, itemStack.getTagCompound())) {
-            // spotless:off
-            boolean needsSyncToServer =
-                NetworkUtils.isClient() &&
-                (
-                    itemStack.getTagCompound() == null || 
-                    !Objects.equals(newState.getTag("config"), itemStack.getTagCompound().getTag("config"))
-                );
-            // spotless:on
+            boolean configChanged = itemStack.getTagCompound() == null || !Objects.equals(
+                newState.getTag("config"),
+                itemStack.getTagCompound()
+                    .getTag("config"));
+            boolean needsSyncToServer = NetworkUtils.isClient() && configChanged;
 
             itemStack.setTagCompound(newState);
 
@@ -545,7 +542,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             }
         }
 
-        if (ticksUsed >= 20 && (ticksUsed % 10) == 0 && !player.worldObj.isRemote) {
+        if (ticksUsed >= 20 && (ticksUsed % 2) == 0 && !player.worldObj.isRemote) {
             PENDING_BUILDS.get(player)
                 .tryPlaceBlocks(stack, player);
         }
