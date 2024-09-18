@@ -12,11 +12,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -548,14 +549,18 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
                 Block target = getBaseMetaTileEntity().getBlock(currentX, currentY, currentZ);
                 if (target.getBlockHardness(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ) > 0) {
                     final int blockMeta = getBaseMetaTileEntity().getMetaID(currentX, currentY, currentZ);
-                    addToOutput(
-                        target.getDrops(
-                            getBaseMetaTileEntity().getWorld(),
-                            currentX,
-                            currentY,
-                            currentZ,
-                            blockMeta,
-                            this.fortuneTier));
+                    res.addAll(
+                        target.getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, blockMeta, 0)
+                            .stream()
+                            .map(drop -> {
+                                int drops = drop.stackSize;
+                                if (this.fortuneTier > 0 && drop.getDisplayName()
+                                    .contains("Raw")) {
+                                    drops *= new Random().nextInt(this.fortuneTier + 1) + 1;
+                                }
+                                return new ItemStack(drop.getItem(), drops, drop.getItemDamage());
+                            })
+                            .collect(Collectors.toList()));
                     getBaseMetaTileEntity().getWorld()
                         .setBlockToAir(currentX, currentY, currentZ);
                 }
@@ -646,27 +651,6 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             if (requiredEnergy <= 0) return true;
         }
         return false;
-    }
-
-    private void addToOutput(ArrayList<ItemStack> drops) {
-        ArrayList<ItemStack> newItems = new ArrayList<>();
-
-        for (ItemStack d : drops) {
-            boolean found = false;
-
-            for (ItemStack r : res) {
-                if (d.isItemEqual(r)) {
-                    r.stackSize += d.stackSize; // Combine stack sizes
-                    found = true;
-                }
-            }
-
-            if (!found) {
-                newItems.add(d);
-            }
-        }
-
-        res.addAll(newItems);
     }
 
     @Override
