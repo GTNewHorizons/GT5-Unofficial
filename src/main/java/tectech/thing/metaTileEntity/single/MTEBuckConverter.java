@@ -33,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.util.GTUtility;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
@@ -219,7 +220,7 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 8))
             .widget(
-                new TextWidget().setStringSupplier(() -> "TIER: " + VN[TTUtility.getTier(Math.abs(EUT))])
+                new TextWidget().setStringSupplier(() -> "TIER: " + VN[GTUtility.getTier(Math.abs(EUT))])
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 16))
             .widget(

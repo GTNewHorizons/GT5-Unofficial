@@ -195,8 +195,6 @@ public class ConfigHandler {
             .getBoolean("enableMultiblock_Cyclotron", GregTech.ID, true, "COMET - Scientific Cyclotron.");
 
         // Features
-        enableCustomCapes = config.getBoolean("enableSupporterCape", "features", true, "Enables Custom GT++ Cape.");
-
         enableWatchdogBGM = config.getInt(
             "enableWatchdogBGM",
             "features",

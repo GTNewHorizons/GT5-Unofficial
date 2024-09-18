@@ -317,7 +317,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mMode = Mode.values()[aNBT.getByte("mMode")];
+        mMode = Mode.VALUES[aNBT.getByte("mMode")];
         mUpgraded = aNBT.getBoolean("mUpgraded");
         super.loadNBTData(aNBT);
     }

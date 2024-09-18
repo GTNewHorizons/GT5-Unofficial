@@ -434,6 +434,44 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         return 0;
     }
 
+    private void searchAndDecrementCatalysts() {
+        // Loop through all items and look for the Activation and Deactivation Catalysts
+        // Deactivation resets stability to 100 and catalyzing cost to 1
+
+        // Has to do this "start/endRecipeProcessing" nonsense, or it doesn't work with stocking bus.
+        for (MTEHatchInputBus bus : mInputBusses) {
+            ItemStack[] inv = bus.getRealInventory();
+            if (inv != null) {
+                for (int i = 0; i < inv.length; i++) {
+                    ItemStack inputItem = inv[i];
+                    if (inputItem != null) {
+                        if (inputItem.getItem() instanceof MetaGeneratedItem01) {
+                            if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
+                                startRecipeProcessing();
+                                bus.decrStackSize(i, 1);
+                                endRecipeProcessing();
+                                blackHoleStatus = 2;
+                                createRenderBlock();
+                                return;
+                            } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
+                                startRecipeProcessing();
+                                bus.decrStackSize(i, 1);
+                                endRecipeProcessing();
+                                inputItem.stackSize -= 1;
+                                blackHoleStatus = 1;
+                                blackHoleStability = 100;
+                                catalyzingCostModifier = 1;
+                                rendererTileEntity = null;
+                                destroyRenderBlock();
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -441,30 +479,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                // Loop through all items and look for the Activation and Deactivation Catalysts
-                // Deactivation resets stability to 100 and catalyzing cost to 1
-                for (MTEHatchInputBus bus : mInputBusses) {
-                    for (ItemStack inputItem : bus.mInventory) {
-                        if (inputItem != null) {
-                            if (inputItem.getItem() instanceof MetaGeneratedItem01) {
-                                if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
-                                    inputItem.stackSize -= 1;
-                                    blackHoleStatus = 2;
-                                    createRenderBlock();
-                                    break;
-                                } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
-                                    inputItem.stackSize -= 1;
-                                    blackHoleStatus = 1;
-                                    blackHoleStability = 100;
-                                    catalyzingCostModifier = 1;
-                                    rendererTileEntity = null;
-                                    destroyRenderBlock();
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
+                searchAndDecrementCatalysts();
 
                 RecipeMap<?> realMap = (getModeFromCircuit(inputItems) == MACHINEMODE_COMPRESSOR)
                     ? RecipeMaps.compressorRecipes
