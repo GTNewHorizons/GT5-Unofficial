@@ -9,6 +9,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.joml.AxisAngle4f;
+import org.joml.Matrix4f;
+
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 
 public class TileAntimatter extends TileEntity {
@@ -16,9 +19,9 @@ public class TileAntimatter extends TileEntity {
     public boolean shouldRender = true;
 
     // Antimatter Core settings
-    public static final float spikeR = 0.82f, spikeG = 0.92f, spikeB = 1f;
-    public static final float coreR = 0.43f, coreG = 0.40f, coreB = 1f;
-    public static final float maximalRadius = 9; // Includes core radius + spike length
+    public static final float spikeR = 0.153f, spikeG = 0.435f, spikeB = 1f;
+    public static final float coreR = 0.435f, coreG = 0.718f, coreB = 1f;
+    public static final float maximalRadius = 7; // Includes core radius + spike length
     // Due to being partially managed by a global timer, rotationSpeedMultiplier shouldn't change
     // Otherwise it'll cause a snapping effect
     public final float rotationSpeedMultiplier = 1;
@@ -27,7 +30,7 @@ public class TileAntimatter extends TileEntity {
     public float coreScaleSnapshot = 1f;
     public final float coreScaleTransitionTime = 2.5f;
     public float timeSnapshot;
-    public float spikeFactor = 1f;
+    public float spikeFactor = .01f;
 
     // Protomatter Settings
     public static float protoSpiralMaxRadius = .5f;
@@ -97,6 +100,7 @@ public class TileAntimatter extends TileEntity {
     }
 
     public void setProtomatterRender(boolean flag) {
+        if (protomatterRender == flag) return;
         protomatterRender = flag;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -114,16 +118,48 @@ public class TileAntimatter extends TileEntity {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
-    public void setRotationFields(Rotation rotation, ForgeDirection direction) {
-        switch (rotation) {
-            case NORMAL -> rotationAngle = 0;
-            case CLOCKWISE -> rotationAngle = 90;
-            case COUNTER_CLOCKWISE -> rotationAngle = -90;
-            case UPSIDE_DOWN -> rotationAngle = 180;
-        }
-        rotX = direction.offsetX;
-        rotY = direction.offsetY;
-        rotZ = direction.offsetZ;
+    public void setRotationFields(ForgeDirection direction, Rotation rotation) {
+        Matrix4f rotationMatrix = new Matrix4f().identity();
+
+        float localAngle = switch (rotation) {
+            case NORMAL -> 0;
+            case CLOCKWISE -> 90;
+            case COUNTER_CLOCKWISE -> -90;
+            case UPSIDE_DOWN -> 180;
+        };
+        localAngle = (float) Math.toRadians(localAngle);
+        rotationMatrix.rotate(localAngle, direction.offsetX, direction.offsetY, direction.offsetZ);
+
+        float x = 0, y = 0;
+        float angle = switch (direction) {
+            case DOWN -> {
+                x = 1;
+                yield 90;
+            }
+            case UP -> {
+                x = 1;
+                yield -90;
+            }
+            case EAST, SOUTH -> {
+                y = 1;
+                yield 90;
+            }
+            case WEST, NORTH -> {
+                y = 1;
+                yield -90;
+            }
+            case UNKNOWN -> 0.0F;
+        };
+        angle = (float) Math.toRadians(angle);
+        rotationMatrix.rotate(angle, x, y, 0);
+
+        AxisAngle4f rotationVector = new AxisAngle4f();
+        rotationMatrix.getRotation(rotationVector);
+
+        rotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        rotX = rotationVector.x;
+        rotY = rotationVector.y;
+        rotZ = rotationVector.z;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

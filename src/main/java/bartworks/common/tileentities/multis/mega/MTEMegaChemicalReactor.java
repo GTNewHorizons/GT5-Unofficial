@@ -39,7 +39,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
@@ -178,7 +178,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().enablePerfectOverclock()
-            .setMaxParallel(ConfigHandler.megaMachinesMax);
+            .setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     @Override

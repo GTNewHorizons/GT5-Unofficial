@@ -107,6 +107,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private long guiPassiveEnergy = 0;
     private long guiActiveEnergy = 0;
 
+    private boolean canRender = false;
+
     private List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterForge>>() {
 
@@ -183,7 +185,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Dimensions not included!" + EnumChatFormatting.GRAY)
             .addInfo("Converts protomatter into antimatter")
             .addInfo(
-                "Consumes 10 000 000 + (" + EnumChatFormatting.DARK_BLUE
+                "Consumes 10 000 000 + (" + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
@@ -194,7 +196,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.GRAY
                     + " EU/t passively. The consumption decays by 0.5% every tick when empty")
             .addInfo(
-                "Uses (" + EnumChatFormatting.DARK_BLUE
+                "Uses (" + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
@@ -216,7 +218,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "10% of antimatter will be voided!"
                     + EnumChatFormatting.GRAY)
             .addInfo(
-                "Produces (" + EnumChatFormatting.DARK_BLUE
+                "Produces (" + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + "^"
@@ -227,15 +229,22 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.AQUA
                     + String.valueOf(this.baseSkew)
                     + EnumChatFormatting.GRAY
-                    + ", 1) of antimatter per cycle, consuming equal amounts of Protomatter")
-            .addInfo("The change can be negative! (N = Skewed Normal Distribution)")
+                    + ", 0.25) of antimatter per cycle, consuming equal amounts of Protomatter")
+            .addInfo(
+                "The change is split between the 16 Antimatter Hatches, sampled from N(" + EnumChatFormatting.AQUA
+                    + String.valueOf(this.baseSkew)
+                    + EnumChatFormatting.GRAY
+                    + ", 1) (Gaussian distribution with mean of "
+                    + String.valueOf(this.baseSkew)
+                    + ")")
+            .addInfo("The total change can be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
             .addInfo(
                 EnumChatFormatting.GREEN + "Magnetic Stabilization"
                     + EnumChatFormatting.GRAY
                     + " (Uses "
-                    + EnumChatFormatting.DARK_BLUE
+                    + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + "^0.5 per cycle)")
@@ -251,7 +260,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 EnumChatFormatting.DARK_PURPLE + "Gravity Stabilization"
                     + EnumChatFormatting.GRAY
                     + " (Uses "
-                    + EnumChatFormatting.DARK_BLUE
+                    + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + "^0.5 per cycle)")
@@ -271,7 +280,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 EnumChatFormatting.GOLD + "Containment Stabilization"
                     + EnumChatFormatting.GRAY
                     + " (Uses "
-                    + EnumChatFormatting.DARK_BLUE
+                    + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + "^(2/7) per operation)")
@@ -285,7 +294,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 EnumChatFormatting.AQUA + "Activation Stabilization"
                     + EnumChatFormatting.GRAY
                     + " (Uses "
-                    + EnumChatFormatting.DARK_BLUE
+                    + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + "^(1/3) per operation)")
@@ -297,7 +306,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 "2. Depleted Naquadah Fuel Mk VI - Distribution skew " + EnumChatFormatting.AQUA
                     + "+0.10"
                     + EnumChatFormatting.GRAY)
-            .addSeparator()
+            .addInfo("Each stabilization can only use one of the fluids at a time")
             .addSeparator()
             .addCasingInfoMin("Antimatter Containment Casing", 512, false)
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
@@ -516,8 +525,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
         fluidConsumptions[MAGNETIC_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
         fluidConsumptions[GRAVITY_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 0.5));
-        fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 2 / 7));
-        fluidConsumptions[ACTIVATION_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 1 / 3));
+        fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 2.0f / 7.0f));
+        fluidConsumptions[ACTIVATION_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, 1.0f / 3.0f));
 
         for (int i = 0; i < modifiers.length; i++) {
             modifiers[i] = 0.0f;
@@ -886,12 +895,15 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public void updateAntimatterSize(float antimatterAmount) {
-        TileAntimatter render = forceGetAntimatterRender();
-
-        if (antimatterAmount < 0) {
-            setProtoRender(false);
-            render.setCoreSize(0);
+        if (antimatterAmount <= 0) {
+            destroyAntimatterRender();
             return;
+        }
+
+        TileAntimatter render = getAntimatterRender();
+        if (render == null) {
+            createAntimatterRender();
+            render = getAntimatterRender();
         }
 
         float size = (float) Math.pow(antimatterAmount, 0.17);
@@ -899,9 +911,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     public void setProtoRender(boolean flag) {
-        TileAntimatter render = forceGetAntimatterRender();
+        TileAntimatter render = getAntimatterRender();
+        if (render == null) return;
         render.setProtomatterRender(flag);
-        if (flag) render.setRotationFields(getRotation(), getDirection());
+        if (!flag) return;
+        render.setRotationFields(getDirection(), getRotation());
     }
 
     public TileAntimatter getAntimatterRender() {
@@ -973,12 +987,4 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         world.setBlock(wX, wY, wZ, Blocks.air);
         world.setBlock(wX, wY, wZ, Loaders.antimatterRenderBlock);
     }
-
-    public TileAntimatter forceGetAntimatterRender() {
-        TileAntimatter render = getAntimatterRender();
-        if (render != null) return render;
-        else createAntimatterRender();
-        return getAntimatterRender();
-    }
-
 }

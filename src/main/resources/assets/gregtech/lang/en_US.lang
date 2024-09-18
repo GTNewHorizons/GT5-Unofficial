@@ -531,7 +531,7 @@ GT5U.gui.text.drill_exhausted=§dDrill has exhausted all resources
 GT5U.gui.text.drill_generic_finished=§7Mining pipes have been retracted
 GT5U.gui.text.drill_retract_pipes_finished=§7Operation aborted
 GT5U.gui.text.backfiller_no_concrete=§7No liquid concrete
-GT5U.gui.text.no_black_hole=§7Black hole is not active
+GT5U.gui.text.no_black_hole=§7Requires an active black hole
 GT5U.gui.text.unstable_black_hole=§7Black hole is unstable
 GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.backfiller_working=§aPouring concrete
@@ -1457,7 +1457,9 @@ for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
 for.bees.species.dragonblood=Dragonblood
 
-for.bees.authority.machinist=Diddy & Nilau
+for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Diddy & Noila
+
+for.bees.authority.machinist=Diddy & Noila
 
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension
@@ -1665,6 +1667,17 @@ GT5U.gui.text.warm_up=§aWarming up
 GT5U.gui.text.machine_locked_to_different_recipe=§7Machine is already locked to a different recipe
 GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
 GT5U.gui.text.no_tools=§7Missing applicable tools
+
+# Cover Overflow Valve
+GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L
+GTPP.gui.text.cover_overflow_valve_overflow_point=Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_liter=L
+GTPP.gui.text.cover_overflow_valve_l_per_update=L/update
 
 GTPP.EBF.heat=Heat capacity
 

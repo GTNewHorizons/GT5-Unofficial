@@ -19,7 +19,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -290,7 +290,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         int takecoolant = this.coolanttaking;
         int drainedamount = 0;
 
-        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
             if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
                 FluidStack drained = tHatch.drain(takecoolant, true);

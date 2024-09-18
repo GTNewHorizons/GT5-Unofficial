@@ -6,7 +6,7 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
@@ -174,7 +174,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (MTEHatchRack rack : filterValidMTEs(eRacks)) {
+        for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
         }
@@ -203,7 +203,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             return false;
         }
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
-        for (MTEHatchRack rack : filterValidMTEs(eRacks)) {
+        for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
@@ -249,7 +249,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             && !aBaseMetaTileEntity.isActive()
             && aTick % 20 == CommonValues.MULTI_CHECK_AT) {
             double maxTemp = 0;
-            for (MTEHatchRack rack : filterValidMTEs(eRacks)) {
+            for (MTEHatchRack rack : validMTEList(eRacks)) {
                 if (rack.heat > maxTemp) {
                     maxTemp = rack.heat;
                 }
@@ -280,7 +280,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             short thingsActive = 0;
             int rackComputation;
 
-            for (MTEHatchRack rack : filterValidMTEs(eRacks)) {
+            for (MTEHatchRack rack : validMTEList(eRacks)) {
                 if (rack.heat > maxTemp) {
                     maxTemp = rack.heat;
                 }
@@ -330,18 +330,19 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 getBaseMetaTileEntity().getYCoord(),
                 getBaseMetaTileEntity().getZCoord());
 
-            QuantumDataPacket pack = new QuantumDataPacket(eAvailableData / (eOutputData.size())).unifyTraceWith(pos);
-            if (pack == null) {
-                return;
-            }
+            int eHatchData = 0;
+
             for (MTEHatchDataInput hatch : eInputData) {
                 if (hatch.q == null || hatch.q.contains(pos)) {
                     continue;
                 }
-                pack = pack.unifyPacketWith(hatch.q);
-                if (pack == null) {
-                    return;
-                }
+                eHatchData += hatch.q.getContent();
+            }
+
+            QuantumDataPacket pack = new QuantumDataPacket((eAvailableData + eHatchData) / eOutputData.size())
+                .unifyTraceWith(pos);
+            if (pack == null) {
+                return;
             }
 
             for (MTEHatchDataOutput o : eOutputData) {
@@ -446,7 +447,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public void onRemoval() {
         super.onRemoval();
-        for (MTEHatchRack rack : filterValidMTEs(eRacks)) {
+        for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
         }
@@ -469,7 +470,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
         eAvailableData = 0;
-        for (MTEHatchRack rack : filterValidMTEs(eRacks)) {
+        for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
         }
@@ -478,7 +479,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     protected void afterRecipeCheckFailed() {
         super.afterRecipeCheckFailed();
-        for (MTEHatchRack rack : filterValidMTEs(eRacks)) {
+        for (MTEHatchRack rack : validMTEList(eRacks)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
         }

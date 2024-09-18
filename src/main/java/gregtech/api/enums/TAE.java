@@ -6,7 +6,6 @@ import java.util.HashSet;
 
 import gregtech.api.interfaces.ITexture;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -53,22 +52,22 @@ public class TAE {
     }
 
     public static void finalizeTAE() {
-        String aFreeSpaces = "";
-        String aPageAndSlotFree = "";
-        AutoMap<Integer> aTemp = new AutoMap<>(mFreeSlots);
+        StringBuilder aFreeSpaces = new StringBuilder();
+        StringBuilder aPageAndSlotFree = new StringBuilder();
+        Integer[] aTemp = mFreeSlots.toArray(new Integer[] {});
         for (int i = 0; i < mFreeSlots.size(); i++) {
-            int j = aTemp.get(i);
-            aFreeSpaces += j;
-            aPageAndSlotFree += getPageFromIndex(j);
+            int j = aTemp[i];
+            aFreeSpaces.append(j);
+            aPageAndSlotFree.append(getPageFromIndex(j));
             if (i != (mFreeSlots.size() - 1)) {
-                aFreeSpaces += ", ";
-                aPageAndSlotFree += ", ";
+                aFreeSpaces.append(", ");
+                aPageAndSlotFree.append(", ");
             }
         }
         Logger.INFO("Free Indexes within TAE: " + aFreeSpaces);
         Logger.INFO("Free Page slots within TAE: " + aPageAndSlotFree);
         Logger.INFO("Filling them with ERROR textures.");
-        for (int aFreeSlot : aTemp.values()) {
+        for (int aFreeSlot : aTemp) {
             registerTexture(aFreeSlot, new GTPPCopiedBlockTexture(ModBlocks.blockCasingsTieredGTPP, 1, 15));
         }
         Logger.INFO("Finalising TAE.");

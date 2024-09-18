@@ -25,7 +25,6 @@ import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import bartworks.API.APIConfigValues;
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
 import bartworks.API.SideReference;
@@ -34,7 +33,7 @@ import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
 import bartworks.client.textures.PrefixTextureLinker;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.loaders.ArtificialMicaLine;
 import bartworks.common.loaders.BioCultureLoader;
@@ -53,7 +52,6 @@ import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
-import bartworks.system.material.processingLoaders.DownTierLoader;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
 import bartworks.util.log.DebugLog;
@@ -74,18 +72,24 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import tectech.loader.recipe.Godforge;
 
-@Mod(modid = MainMod.MOD_ID, name = MainMod.NAME, version = GT_Version.VERSION, dependencies = """
-    required-after:IC2;\
-    required-after:gregtech;\
-    after:berriespp;\
-    after:tectech;\
-    after:GalacticraftMars;\
-    after:GalacticraftCore;\
-    after:Forestry;\
-    after:ProjRed|Illumination;\
-    after:RandomThings;\
-    before:miscutils;""")
+@Mod(
+    modid = MainMod.MOD_ID,
+    name = MainMod.NAME,
+    version = GT_Version.VERSION,
+    guiFactory = "bartworks.client.gui.BWGuiFactory",
+    dependencies = """
+        required-after:IC2;\
+        required-after:gregtech;\
+        after:berriespp;\
+        after:tectech;\
+        after:GalacticraftMars;\
+        after:GalacticraftCore;\
+        after:Forestry;\
+        after:ProjRed|Illumination;\
+        after:RandomThings;\
+        before:miscutils;""")
 public final class MainMod {
 
     public static final String NAME = "BartWorks";
@@ -96,6 +100,8 @@ public final class MainMod {
     public static final CreativeTabs BIO_TAB = new BioTab("BioTab");
     public static final CreativeTabs BWT = new BartWorksTab(BartWorks.ID);
     public static final IGuiHandler GH = new GuiHandler();
+
+    public static final boolean DEBUG = Boolean.getBoolean("bw.debug");
 
     @Mod.Instance(MainMod.MOD_ID)
     public static MainMod instance;
@@ -108,12 +114,10 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
-        MainMod.LOGGER.info("Found GT++, continuing");
-
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_GlasBlocks");
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_GlasBlocks2");
 
-        if (APIConfigValues.debugLog) {
+        if (DEBUG) {
             try {
                 DebugLog.initDebugLog(preinit);
             } catch (IOException e) {
@@ -136,7 +140,7 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
-        if (SideReference.Side.Client && ConfigHandler.tooltips)
+        if (SideReference.Side.Client && Configuration.tooltip.addGlassTierInTooltips)
             MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
         ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (SideReference.Side.Server) {
@@ -177,7 +181,7 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
-        MainMod.runOnPlayerJoined(ConfigHandler.classicMode, ConfigHandler.disableExtraGassesForEBF);
+        MainMod.runOnPlayerJoined(false, false);
     }
 
     @Mod.EventHandler
@@ -198,11 +202,7 @@ public final class MainMod {
         CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
         if (!recipesAdded) {
-            if (!disableExtraGasRecipes) StaticRecipeChangeLoaders.addEBFGasRecipes();
-
-            if (classicMode) DownTierLoader.run();
-
-            recipesAdded = true;
+            StaticRecipeChangeLoaders.addEBFGasRecipes();
         }
 
         // Accept recipe map changes into Buffers
@@ -210,5 +210,10 @@ public final class MainMod {
             .forEach(
                 map -> map.getBackend()
                     .reInit());
+
+        // because the above code runs so late that I couldn't find anywhere else to call this
+        if (!recipesAdded) Godforge.initMoltenModuleRecipes();
+
+        recipesAdded = true;
     }
 }

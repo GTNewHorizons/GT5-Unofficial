@@ -2103,34 +2103,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .set(OrePrefixes.ingot, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
 
         GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.Iron,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.Steel,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.TinAlloy,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.Copper,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
             OrePrefixes.dust,
             Materials.Cocoa,
             GTModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));
