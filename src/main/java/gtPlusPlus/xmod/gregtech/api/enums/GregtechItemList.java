@@ -503,6 +503,9 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Reservoir Hatch
     Hatch_Reservoir,
 
+    // ChargingBus
+    ChargingBus,
+
     // XL Turbine Rotor Hatch
     Hatch_Turbine_Rotor,
 

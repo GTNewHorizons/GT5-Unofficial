@@ -1917,7 +1917,8 @@ public enum MetaTileEntityIDs {
     ComponentAssemblyLine(32026),
     AntimatterForge(32027),
     WireLumiium(32737),
-    WireSignalium(32749),;
+    WireSignalium(32749),
+    ChargingBus(31785);
 
     public final int ID;
 

@@ -37,11 +37,16 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -72,6 +77,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.tileentities.machines.MTEHatchChargingBus;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -82,6 +88,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISurvivalConstructable {
 
@@ -89,6 +97,8 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     private static final int TICKS_PER_OPERATION = 100;
     private static final int TOOL_DAMAGE_PER_OPERATION = 1;
     private static final int TOOL_CHARGE_PER_OPERATION = 32;
+    private boolean isChargingBus;
+    private long transferEU;
 
     private int mCasing;
     public static String mCasingName = "Sterile Farm Casing";
@@ -531,6 +541,54 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
         // No saplings were found.
         return null;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        for (MTEHatchInputBus inputBus : this.mInputBusses) {
+            if (inputBus instanceof MTEHatchChargingBus chargingBus) {
+                isChargingBus = true;
+                transferEU = getMaxInputEu() - getActualEnergyUsage();
+
+                long busMaxEU = chargingBus.maxEUStore();
+                long euUsage = transferEU + getActualEnergyUsage();
+
+                if (mProgresstime != 0) {
+                    if (getStoredEnergyInAllEnergyHatches() >= euUsage) {
+                        if (chargingBus.getEUVar() <= busMaxEU && transferEU > 0) {
+                            drainEnergyInput(transferEU);
+                            chargingBus.setEUVar(chargingBus.getEUVar() + transferEU);
+                        }
+                    }
+                }
+            } else isChargingBus = false;
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+
+        if (tag.getBoolean("isChargingBus")) {
+            currenttip.add(
+                StatCollector.translateToLocal("GTPP.machines.tgs.charging_bus") + ": "
+                    + EnumChatFormatting.RED
+                    + tag.getLong("transferEU")
+                    + EnumChatFormatting.RESET);
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("transferEU", transferEU);
+        tag.setBoolean("isChargingBus", isChargingBus);
+
     }
 
     /**
