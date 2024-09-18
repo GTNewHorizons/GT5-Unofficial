@@ -254,11 +254,15 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         setItemStackName(itemStack);
     }
 
-    public void toggleLock(final ItemStack itemStack) {
+    public boolean toggleLock(final ItemStack itemStack) {
         final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
-        tag.setBoolean(LOCK_NBT_TAG, !tag.getBoolean(LOCK_NBT_TAG));
+        final boolean newLockStatus = !tag.getBoolean(LOCK_NBT_TAG);
+
+        tag.setBoolean(LOCK_NBT_TAG, newLockStatus);
         itemStack.setTagCompound(tag);
         setItemStackName(itemStack);
+
+        return newLockStatus;
     }
 
     private void setItemStackName(final ItemStack itemStack) {

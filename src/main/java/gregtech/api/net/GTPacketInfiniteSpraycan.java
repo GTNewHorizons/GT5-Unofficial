@@ -104,7 +104,11 @@ public class GTPacketInfiniteSpraycan extends GTPacketNew {
             @Override
             boolean execute(final BehaviourSprayColorInfinite behavior, final ItemStack itemStack,
                 final EntityPlayerMP player, final int newColor) {
-                behavior.toggleLock(itemStack);
+                if (behavior.toggleLock(itemStack)) {
+                    Action.playLockSound(player);
+                } else {
+                    Action.playUnlockSound(player);
+                }
                 return true;
             }
         },
@@ -126,6 +130,28 @@ public class GTPacketInfiniteSpraycan extends GTPacketNew {
             GTUtility.sendSoundToPlayers(
                 player.worldObj,
                 SoundResource.GT_SPRAYCAN_SHAKE,
+                1.0F,
+                1,
+                (int) player.posX,
+                (int) player.posY,
+                (int) player.posZ);
+        }
+
+        private static void playLockSound(final EntityPlayerMP player) {
+            GTUtility.sendSoundToPlayers(
+                player.worldObj,
+                SoundResource.GT_SPRAYCAN_LOCK,
+                1.0F,
+                1,
+                (int) player.posX,
+                (int) player.posY,
+                (int) player.posZ);
+        }
+
+        private static void playUnlockSound(final EntityPlayerMP player) {
+            GTUtility.sendSoundToPlayers(
+                player.worldObj,
+                SoundResource.GT_SPRAYCAN_UNLOCK,
                 1.0F,
                 1,
                 (int) player.posX,
