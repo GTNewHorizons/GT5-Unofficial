@@ -10,7 +10,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEMassFabricator;
@@ -19,10 +18,8 @@ public class GregtechIndustrialMassFabricator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Matter Fabricator Multiblock.");
-        if (GTPPCore.ConfigSwitches.enableMultiblock_MatterFabricator) {
-            generateRecipes();
-            run1();
-        }
+        generateRecipes();
+        run1();
     }
 
     private static void run1() {

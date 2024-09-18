@@ -42,6 +42,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -192,8 +193,8 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         if (machineMode == MACHINEMODE_FORMER)
-            return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
+            return Configuration.pollution.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
     }
 
     @Override
