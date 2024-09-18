@@ -42,8 +42,12 @@ public class BlockAnalyzer {
             return build.tryConsumeItems(items);
         }
 
-        public void givePlayerStuff(ItemStack[] items, FluidStack[] fluids) {
-            build.givePlayerStuff(items, fluids);
+        public void givePlayerItems(ItemStack... items) {
+            build.givePlayerItems(items);
+        }
+
+        public void givePlayerFluids(FluidStack... fluids) {
+            build.givePlayerFluids(fluids);
         }
     }
 

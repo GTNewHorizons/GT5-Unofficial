@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
 import org.joml.Vector3i;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.libraries.com.google.common.collect.MapMaker;
@@ -54,6 +55,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -124,7 +126,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTab, List<ItemStack> subItems) {
         final ItemStack stack = new ItemStack(this, 1);
-        setState(stack, getState(stack));
+        stack.setTagCompound(new NBTState().save());
         subItems.add(stack.copy());
         ElectricItem.manager.charge(stack, getMaxCharge(null), Integer.MAX_VALUE, true, false);
         subItems.add(stack);
@@ -176,9 +178,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             NBTTagCompound inInventory = event.player.inventory.getCurrentItem().getTagCompound();
             NBTTagCompound using = (NBTTagCompound)event.player.getItemInUse().getTagCompound().copy();
 
+            // we don't want to stop using the item if only the charge changes
             using.setDouble("charge", inInventory.getDouble("charge"));
 
-            // only the charge has changed
             if(inInventory.equals(using)) {
                 event.player.setItemInUse(event.player.inventory.getCurrentItem(), event.player.getItemInUseCount());
             }
@@ -198,6 +200,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc, boolean advancedItemTooltips) {
         NBTState state = getState(itemStack);
 
+        // spotless:off
         if (!GuiScreen.isShiftKeyDown()) {
             desc.add("Hold shift for more information.");
         } else {
@@ -215,6 +218,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             addInfoLine(desc, "Face block: %s", state.config.getFaces(), ItemStack::getDisplayName);
             addInfoLine(desc, "Volume block: %s", state.config.getVolumes(), ItemStack::getDisplayName);
         }
+        // spotless:on
     }
 
     private <T> void addInfoLine(List<String> desc, String format, T value) {
@@ -247,7 +251,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             if (handleAction(itemStack, world, player, hit, state)) {
                 if(world.isRemote) {
                     setState(itemStack, state);
-                    player.inventory.markDirty();
                 }
 
                 return itemStack;
@@ -291,7 +294,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             }
 
             setState(itemStack, state);
-            player.inventory.markDirty();
             return itemStack;
         }
         
@@ -410,7 +412,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 
                 if (handleAction(heldItem, player.worldObj, player, hit, state)) {
                     setState(heldItem, state);
-                    player.inventory.markDirty();
                 }
             }
         }
@@ -526,9 +527,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         NBTState state = getState(heldStack);
         fn.accept(state);
         setState(heldStack, state);
-        buildContext.getPlayer().inventory.markDirty();
     }
 
+    // spotless:off
     private RadialMenuBuilder getMenuOptions(UIBuildContext buildContext) {
         ItemStack heldStack = buildContext.getPlayer().getHeldItem();
         NBTState initialState = getState(heldStack);
@@ -548,7 +549,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             });
     }
 
-    // spotless:off
     private void addCommonOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
         builder.branch()
                 .label("Set Mode")
@@ -808,11 +808,15 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         ItemStack held = player.getHeldItem();
 
-        if(held != null && held.getItem() == this) {
+        if (held != null && held.getItem() == this) {
             NBTState state = getState(held);
 
             Location coordA = state.config.getCoordA(player);
             Location coordB = state.config.getCoordB(player);
+
+            // this state is never saved anywhere, so this is safe
+            state.config.coordA = coordA;
+            state.config.coordB = coordB;
 
             boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
             boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
@@ -850,11 +854,13 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     StructureLibAPI.startHinting(player.worldObj);
         
                     for(PendingBlock block : state.getPendingBlocks()) {
-                        if(block.worldId == player.worldObj.provider.dimensionId && block.block != null && block.block.field_150939_a != Blocks.air) {
+                        ItemBlock blockItem = block.block;
+
+                        if(block.worldId == player.worldObj.provider.dimensionId && blockItem != null && blockItem.field_150939_a != Blocks.air) {
                             StructureLibAPI.hintParticle(
                                 player.worldObj,
                                 block.x, block.y, block.z,
-                                block.block.field_150939_a,
+                                blockItem.field_150939_a,
                                 block.metadata
                             );
                         }
@@ -910,8 +916,12 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         GL11.glDisable(GL11.GL_BLEND);
     }
 
+    private static Vector3d getVecForDir(ForgeDirection dir) {
+        return new Vector3d(dir.offsetX, dir.offsetY, dir.offsetZ);
+    }
+
     private static final int RULER_LENGTH = 128;
-    
+
     private void drawRulers(EntityPlayer player, int x, int y, int z, float partialTickTime) {
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
@@ -920,22 +930,32 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(false);
 
-        GL11.glBegin(GL11.GL_LINES);
+        GL11.glPointSize(4);
 
-        double x1 = x + 0.5;
-        double y1 = y + 0.5;
-        double z1 = z + 0.5;
+        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
+
+        GL11.glPushMatrix();
+        
+        double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double)partialTickTime;
+        double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double)partialTickTime;
+        double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)partialTickTime;
+        GL11.glTranslated(x - d0 + 0.5, y - d1 + 0.5, z - d2 + 0.5);
+
+        Tessellator tessellator = Tessellator.instance;
+
+        tessellator.startDrawing(GL11.GL_LINES);
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            double x2 = dir.offsetX * RULER_LENGTH + x1;
-            double y2 = dir.offsetY * RULER_LENGTH + y1;
-            double z2 = dir.offsetZ * RULER_LENGTH + z1;
+            Vector3d delta = getVecForDir(dir);
 
-            GL11.glVertex3d(x1, y1, z1);
-            GL11.glVertex3d(x2, y2, z2);
+            tessellator.addVertex(delta.x * 0.5, delta.y * 0.5, delta.z * 0.5);
+            tessellator.addVertex(delta.x * RULER_LENGTH, delta.y * RULER_LENGTH, delta.z * RULER_LENGTH);
         }
 
-        GL11.glEnd();
+        tessellator.draw();
+
+        GL11.glPopMatrix();
 
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
