@@ -82,13 +82,12 @@ public class ItemCustomComb extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        int meta = Math.max(0, Math.min(CustomCombs.values().length - 1, stack.getItemDamage()));
-        int colour = CustomCombs.values()[meta].getColours()[0];
-
+        final CustomCombs[] COMB_VALUES = CustomCombs.values();
+        int meta = Math.max(0, Math.min(COMB_VALUES.length - 1, stack.getItemDamage()));
+        int colour = COMB_VALUES[meta].getColours()[0];
         if (pass >= 1) {
-            colour = CustomCombs.values()[meta].getColours()[1];
+            colour = COMB_VALUES[meta].getColours()[1];
         }
-
         return colour;
     }
 

@@ -2,15 +2,10 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
-import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
@@ -41,13 +36,11 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluid;
 public class GregtechConduits {
 
     // 30000-30999
-
-    private static int BaseWireID = 30600;
-    private static int BasePipeID = 30700;
+    private static final int BaseWireID = 30600;
+    private static final int BasePipeID = 30700;
     private static int BasePipeHexadecupleID = 30100;
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
         if (GTPPCore.ConfigSwitches.enableCustom_Cables) {
             run1();
         }
@@ -58,142 +51,80 @@ public class GregtechConduits {
     }
 
     private static void run3() {
+        generateFluidMultiPipes(
+            Materials.Copper,
+            MaterialUtils.getMaterialName(Materials.Copper),
+            "Copper",
+            BasePipeHexadecupleID++,
+            60,
+            1000);
+        generateFluidMultiPipes(
+            Materials.Bronze,
+            MaterialUtils.getMaterialName(Materials.Bronze),
+            "Bronze",
+            BasePipeHexadecupleID++,
+            120,
+            2000);
+        generateFluidMultiPipes(
+            Materials.Steel,
+            MaterialUtils.getMaterialName(Materials.Steel),
+            "Steel",
+            BasePipeHexadecupleID++,
+            240,
+            2500);
+        generateFluidMultiPipes(
+            Materials.StainlessSteel,
+            MaterialUtils.getMaterialName(Materials.StainlessSteel),
+            "Stainless Steel",
+            BasePipeHexadecupleID++,
+            360,
+            3000);
+        generateFluidMultiPipes(
+            Materials.Titanium,
+            MaterialUtils.getMaterialName(Materials.Titanium),
+            "Titanium",
+            BasePipeHexadecupleID++,
+            480,
+            5000);
+        generateFluidMultiPipes(
+            Materials.TungstenSteel,
+            MaterialUtils.getMaterialName(Materials.TungstenSteel),
+            "Tungsten Steel",
+            BasePipeHexadecupleID++,
+            600,
+            7500);
+        generateFluidMultiPipes(
+            Materials.Plastic,
+            MaterialUtils.getMaterialName(Materials.Plastic),
+            "Plastic",
+            BasePipeHexadecupleID++,
+            360,
+            350);
 
-        try {
-            Class<MTEFluid> aPipeEntity = MTEFluid.class;
-            Constructor<MTEFluid> constructor = aPipeEntity.getConstructor(
-                int.class,
-                String.class,
-                String.class,
-                float.class,
-                Materials.class,
-                int.class,
-                int.class,
-                boolean.class,
-                int.class);
-            if (constructor != null) {
-                Logger.INFO("Generating Hexadecuple pipes.");
-                generateFluidMultiPipes(
-                    constructor,
-                    Materials.Copper,
-                    MaterialUtils.getMaterialName(Materials.Copper),
-                    "Copper",
-                    BasePipeHexadecupleID++,
-                    60,
-                    1000,
-                    true);
-                generateFluidMultiPipes(
-                    constructor,
-                    Materials.Bronze,
-                    MaterialUtils.getMaterialName(Materials.Bronze),
-                    "Bronze",
-                    BasePipeHexadecupleID++,
-                    120,
-                    2000,
-                    true);
-                generateFluidMultiPipes(
-                    constructor,
-                    Materials.Steel,
-                    MaterialUtils.getMaterialName(Materials.Steel),
-                    "Steel",
-                    BasePipeHexadecupleID++,
-                    240,
-                    2500,
-                    true);
-                generateFluidMultiPipes(
-                    constructor,
-                    Materials.StainlessSteel,
-                    MaterialUtils.getMaterialName(Materials.StainlessSteel),
-                    "Stainless Steel",
-                    BasePipeHexadecupleID++,
-                    360,
-                    3000,
-                    true);
-                generateFluidMultiPipes(
-                    constructor,
-                    Materials.Titanium,
-                    MaterialUtils.getMaterialName(Materials.Titanium),
-                    "Titanium",
-                    BasePipeHexadecupleID++,
-                    480,
-                    5000,
-                    true);
-                generateFluidMultiPipes(
-                    constructor,
-                    Materials.TungstenSteel,
-                    MaterialUtils.getMaterialName(Materials.TungstenSteel),
-                    "Tungsten Steel",
-                    BasePipeHexadecupleID++,
-                    600,
-                    7500,
-                    true);
-                generateFluidMultiPipes(
-                    constructor,
-                    Materials.Plastic,
-                    MaterialUtils.getMaterialName(Materials.Plastic),
-                    "Plastic",
-                    BasePipeHexadecupleID++,
-                    360,
-                    350,
-                    true);
-
-                Materials aPTFE = Materials.get("Polytetrafluoroethylene");
-                if (aPTFE != null) {
-                    generateFluidMultiPipes(
-                        constructor,
-                        aPTFE,
-                        MaterialUtils.getMaterialName(aPTFE),
-                        "PTFE",
-                        BasePipeHexadecupleID++,
-                        480,
-                        600,
-                        true);
-                }
-            } else {
-                Logger.INFO("Failed during Hexadecuple pipe generation.");
-            }
-
-        } catch (NoSuchMethodException | SecurityException e) {
-            Logger.INFO("Failed during Hexadecuple pipe generation. [Ecx]");
-            e.printStackTrace();
-        }
+        Materials aPTFE = Materials.get("Polytetrafluoroethylene");
+        generateFluidMultiPipes(aPTFE, MaterialUtils.getMaterialName(aPTFE), "PTFE", BasePipeHexadecupleID++, 480, 600);
     }
 
-    private static void generateFluidMultiPipes(Constructor<MTEFluid> aClazz, Materials aMaterial, String name,
-        String displayName, int startID, int transferRatePerSec, int heatCapacity, boolean gasProof) {
-        MTEFluid aPipe;
+    private static void generateFluidMultiPipes(Materials aMaterial, String name, String displayName, int startID,
+        int transferRatePerSec, int heatCapacity) {
         final int transferRatePerTick = transferRatePerSec / 20;
-        try {
-            aPipe = aClazz.newInstance(
-                startID,
-                "GT_Pipe_" + name + "_Hexadecuple",
-                "Hexadecuple " + displayName + " Fluid Pipe",
-                1.0F,
-                aMaterial,
-                transferRatePerTick,
-                heatCapacity,
-                gasProof,
-                16);
-            if (aPipe == null) {
-                Logger.INFO("Failed to Generate " + aMaterial + " Hexadecuple pipes.");
-            } else {
-                Logger.INFO("Generated " + aMaterial + " Hexadecuple pipes.");
-                GTOreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
-            }
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-            | InvocationTargetException e) {
-            Logger.INFO("Failed to Generate " + aMaterial + " Hexadecuple pipes. [Ecx]");
-            e.printStackTrace();
-        }
+        MTEFluid aPipe = new MTEFluid(
+            startID,
+            "GT_Pipe_" + name + "_Hexadecuple",
+            "Hexadecuple " + displayName + " Fluid Pipe",
+            1.0F,
+            aMaterial,
+            transferRatePerTick,
+            heatCapacity,
+            true,
+            16);
+        GTOreDictUnificator.registerOre("pipeHexadecuple" + aMaterial, aPipe.getStackForm(1L));
     }
 
     private static void run1() {
-
         wireFactory("RedstoneAlloy", 32, BaseWireID + 45, 0, 2, 1, new short[] { 178, 34, 34, 0 });
-
         // need to go back id because fluid pipes already occupy
         makeCustomWires(MaterialsElements.STANDALONE.HYPOGEN, BaseWireID - 15, 0, 0, 8, GTValues.V[11], false, true);
-
     }
 
     private static void run2() {
@@ -734,7 +665,6 @@ public class GregtechConduits {
     private static void generateNonGTFluidPipes(final GT_Materials material, final Material GGMaterial,
         final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof) {
         final int transferRatePerTick = transferRatePerSec / 20;
-
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeTiny.get(material),
             new GTPPMTEFluid(
@@ -922,28 +852,23 @@ public class GregtechConduits {
         }
 
         if ((eut < 512) && !output.equals("Void")) {
-            try {
-                final ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble" + output, 1)
-                    .copy();
-                if (pipePlateDouble != null) {
-                    RecipeUtils.addShapedRecipe(
-                        pipePlateDouble,
-                        "craftingToolHardHammer",
-                        pipePlateDouble,
-                        pipePlateDouble,
-                        null,
-                        pipePlateDouble,
-                        pipePlateDouble,
-                        "craftingToolWrench",
-                        pipePlateDouble,
-                        ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1));
-                } else {
-                    Logger.INFO(
-                        "Failed to add a recipe for " + materialName
-                            + " Huge pipes. Double plates probably do not exist.");
-                }
-            } catch (Throwable t) {
-                t.printStackTrace();
+            ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble" + output, 1);
+            if (pipePlateDouble != null) {
+                pipePlateDouble = pipePlateDouble.copy();
+                RecipeUtils.addShapedRecipe(
+                    pipePlateDouble,
+                    "craftingToolHardHammer",
+                    pipePlateDouble,
+                    pipePlateDouble,
+                    null,
+                    pipePlateDouble,
+                    pipePlateDouble,
+                    "craftingToolWrench",
+                    pipePlateDouble,
+                    ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1));
+            } else {
+                Logger.INFO(
+                    "Failed to add a recipe for " + materialName + " Huge pipes. Double plates probably do not exist.");
             }
         }
     }

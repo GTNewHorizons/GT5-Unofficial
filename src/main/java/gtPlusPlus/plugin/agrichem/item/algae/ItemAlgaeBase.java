@@ -2,6 +2,7 @@ package gtPlusPlus.plugin.agrichem.item.algae;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,7 +18,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.AlgaeDefinition;
 import gtPlusPlus.plugin.agrichem.IAlgalItem;
@@ -213,7 +213,7 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                     aSpeed,
                     aLifespan,
                     0,
-                    new AutoMap<>());
+                    new ArrayList<>());
                 aTag = aGenes.writeToNBT();
             }
         } else {

@@ -25,7 +25,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -41,7 +40,7 @@ public class RecipeGenOre extends RecipeGenBase {
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
 
     static {
-        MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+        MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
     }
 
     public RecipeGenOre(final Material M) {
@@ -100,12 +99,12 @@ public class RecipeGenOre extends RecipeGenBase {
             }
         }
 
-        AutoMap<Material> amJ = new AutoMap<>();
+        ArrayList<Material> amJ = new ArrayList<>();
         int aIndexCounter = 0;
         for (Material g : aMatComp) {
             if (g.hasSolidForm()) {
                 if (getDust(g) != null && getTinyDust(g) != null) {
-                    amJ.put(g);
+                    amJ.add(g);
                 }
             }
         }
@@ -167,10 +166,10 @@ public class RecipeGenOre extends RecipeGenBase {
             bonusB = tVoltageMultiplier > 100 ? material : mStone;
         }
 
-        AutoMap<Pair<Integer, Material>> componentMap = new AutoMap<>();
+        ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
         for (MaterialStack r : material.getComposites()) {
             if (r != null) {
-                componentMap.put(new Pair<>(r.getPartsPerOneHundred(), r.getStackMaterial()));
+                componentMap.add(new Pair<>(r.getPartsPerOneHundred(), r.getStackMaterial()));
             }
         }
 

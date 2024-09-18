@@ -809,11 +809,11 @@ public enum GregtechItemList implements IGregtechItemContainer {
      */
 
     // Fluid Void Covers
-    Cover_Overflow_LV,
-    Cover_Overflow_MV,
-    Cover_Overflow_HV,
-    Cover_Overflow_EV,
-    Cover_Overflow_IV,
+    Cover_Overflow_Valve_LV,
+    Cover_Overflow_Valve_MV,
+    Cover_Overflow_Valve_HV,
+    Cover_Overflow_Valve_EV,
+    Cover_Overflow_Valve_IV,
 
     // Item Void Covers
     Cover_Overflow_Item_ULV,

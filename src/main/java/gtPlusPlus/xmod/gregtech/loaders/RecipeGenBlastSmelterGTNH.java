@@ -11,12 +11,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
-import gtPlusPlus.api.recipe.GTPPRecipeCategories;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -215,7 +215,7 @@ public class RecipeGenBlastSmelterGTNH {
                         .duration(MathUtils.roundToClosestInt(time * 0.8))
                         .eut(voltage)
                         .recipeCategory(
-                            inputLength <= 2 ? GTPPRecipeCategories.absNonAlloyRecipes
+                            inputLength <= 2 ? RecipeCategories.absNonAlloyRecipes
                                 : GTPPRecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory())
                         .addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
                 } else {

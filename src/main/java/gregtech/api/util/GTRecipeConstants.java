@@ -125,6 +125,12 @@ public class GTRecipeConstants {
         .create(Integer.class, "fog_plasma_tier");
 
     /**
+     * FOG Plasma multistep requirement.
+     */
+    public static final RecipeMetadataKey<Boolean> FOG_PLASMA_MULTISTEP = SimpleRecipeMetadataKey
+        .create(Boolean.class, "fog_plasma_multistep");
+
+    /**
      * DEFC Casing tier.
      */
     public static final RecipeMetadataKey<Integer> DEFC_CASING_TIER = SimpleRecipeMetadataKey
@@ -215,6 +221,9 @@ public class GTRecipeConstants {
         .create(Boolean.class, "anaerobe_gases");
 
     public static final RecipeMetadataKey<Boolean> NO_GAS = SimpleRecipeMetadataKey.create(Boolean.class, "no_gas");
+
+    public static final RecipeMetadataKey<Integer> EU_MULTIPLIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "eu_multiplier");
 
     /**
      * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.

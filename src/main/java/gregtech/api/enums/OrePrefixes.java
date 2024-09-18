@@ -654,10 +654,18 @@ public enum OrePrefixes {
         ingot.addFamiliarPrefix(nugget);
         nugget.addFamiliarPrefix(ingot);
 
-        for (OrePrefixes tPrefix1 : values()) if (tPrefix1.name()
-            .startsWith("ore"))
-            for (OrePrefixes tPrefix2 : values()) if (tPrefix2.name()
-                .startsWith("ore")) tPrefix1.addFamiliarPrefix(tPrefix2);
+        final OrePrefixes[] THIS_VALUES = values();
+        for (OrePrefixes tPrefix1 : THIS_VALUES) {
+            if (tPrefix1.name()
+                .startsWith("ore")) {
+                for (OrePrefixes tPrefix2 : THIS_VALUES) {
+                    if (tPrefix2.name()
+                        .startsWith("ore")) {
+                        tPrefix1.addFamiliarPrefix(tPrefix2);
+                    }
+                }
+            }
+        }
 
         // These are only the important ones.
         gem.mNotGeneratedItems.add(Materials.Coal);
@@ -693,7 +701,6 @@ public enum OrePrefixes {
         plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateSuperdense.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         cell.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
         ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
@@ -860,6 +867,7 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(Materials.Glowstone);
         nanite.mGeneratedItems.add(MaterialsUEVplus.Eternity);
         nanite.mGeneratedItems.add(MaterialsUEVplus.SixPhasedCopper);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.MagMatter);
         // -----
 
         gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);

@@ -37,7 +37,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import bartworks.system.oregen.BWWordGenerator;
 import bartworks.system.worldgen.MapGenRuins;
 import bwcrossmod.thaumcraft.util.ThaumcraftHandler;
@@ -82,7 +82,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             if (Thaumcraft.isModLoaded()) {
                 if (ThaumcraftHandler.isTaintBiome(biomeGenBase.biomeID))
                     this.biomesForGeneration[i] = BiomeGenBase.taiga;
-                else if (ConfigHandler.disableMagicalForest
+                else if (Configuration.crossModInteractions.disableMagicalForest
                     && ThaumcraftHandler.isMagicalForestBiome(biomeGenBase.biomeID))
                     this.biomesForGeneration[i] = BiomeGenBase.birchForest;
             }
@@ -134,7 +134,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             && biomegenbase != BiomeGenBase.river
             && biomegenbase != BiomeGenBase.frozenOcean
             && biomegenbase != BiomeGenBase.frozenRiver
-            && this.rand.nextInt(ConfigHandler.ross128bRuinChance) == 0) {
+            && this.rand.nextInt(Configuration.crossModInteractions.ross128bRuinChance) == 0) {
             x1 = k + this.rand.nextInt(16) + 3;
             y1 = this.rand.nextInt(256);
             z1 = l + this.rand.nextInt(16) + 3;

@@ -4,13 +4,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.fixes.interfaces.IBugFix;
 import gtPlusPlus.preloader.PreloaderCore;
@@ -37,7 +37,7 @@ public class VanillaBedHeightFix implements IBugFix {
         if (m != null) {
             mSleepInBedAt = m;
             mParent.log("Registering Bed Height Fix.");
-            Utils.registerEvent(this);
+            MinecraftForge.EVENT_BUS.register(this);
         } else {
             mSleepInBedAt = null;
         }

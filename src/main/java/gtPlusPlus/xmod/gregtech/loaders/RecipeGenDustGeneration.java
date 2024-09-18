@@ -36,7 +36,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
 
     static {
-        MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+        MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
     }
 
     public RecipeGenDustGeneration(final Material M) {
@@ -392,7 +392,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
 
         // Tiny Dust
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(4, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
+            .itemInputs(GTUtility.copyAmount(9, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
             .itemOutputs(aMatInfo.getDust(1))
             .duration(5 * SECONDS)
             .eut(4)
