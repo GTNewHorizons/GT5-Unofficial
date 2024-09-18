@@ -510,9 +510,9 @@ class NBTState {
                 }
             } else {
                 target = new Vector3i(
-                    (int) modifiedPosVec.xCoord,
-                    (int) modifiedPosVec.yCoord,
-                    (int) modifiedPosVec.zCoord - 1);
+                    (int) (modifiedPosVec.xCoord - 1),
+                    (int) (modifiedPosVec.yCoord),
+                    (int) (modifiedPosVec.zCoord));
             }
 
             return target;
