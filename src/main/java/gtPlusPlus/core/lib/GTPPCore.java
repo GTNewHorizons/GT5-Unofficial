@@ -78,7 +78,6 @@ public class GTPPCore {
         public static int boilerSteamPerSecond = 750;
 
         // Feature Related
-        public static boolean enableCustomCapes = false;
         public static int enableWatchdogBGM = PreloaderCore.enableWatchdogBGM;
         public static boolean hideUniversalCells = true;
 

@@ -104,7 +104,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchParam;
 import tectech.thing.metaTileEntity.hatch.MTEHatchUncertainty;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -1717,12 +1716,12 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     // new Method
     public final int getMaxEnergyInputTier_EM() {
-        return TTUtility.getTier(maxEUinputMax);
+        return GTUtility.getTier(maxEUinputMax);
     }
 
     // new Method
     public final int getMinEnergyInputTier_EM() {
-        return TTUtility.getTier(maxEUinputMin);
+        return GTUtility.getTier(maxEUinputMin);
     }
 
     public final long getMaxAmpereFlowAtMinTierOfEnergyHatches() {

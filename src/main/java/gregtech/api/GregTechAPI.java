@@ -269,8 +269,6 @@ public class GregTechAPI {
         sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false,
         sFullLoadFinished = false;
 
-    private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
-
     @SuppressWarnings("unchecked")
     private static final IntFunction<TileEntity>[] teCreators = new IntFunction[16];
 
@@ -391,16 +389,8 @@ public class GregTechAPI {
      * Electricity) we have to use invocation at the constructor of the BaseMetaTileEntity.
      */
     public static BaseMetaTileEntity constructBaseMetaTileEntity() {
-        if (sBaseMetaTileEntityClass == null) {
-            try {
-                return (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).getDeclaredConstructor()
-                    .newInstance();
-            } catch (Throwable ignored) {}
-        }
-
         try {
-            return sBaseMetaTileEntityClass.getDeclaredConstructor()
-                .newInstance();
+            return new BaseMetaTileEntity();
         } catch (Throwable e) {
             GTLog.err.println("GTMod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
             e.printStackTrace(GTLog.err);

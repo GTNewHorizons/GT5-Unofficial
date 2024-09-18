@@ -524,7 +524,6 @@ public class GTValues {
     public static boolean alwaysReloadChunkloaders = false;
 
     public static boolean debugChunkloaders = false;
-    public static boolean cls_enabled;
     public static final Set<String> mCTMEnabledBlock = new HashSet<>();
     public static final Set<String> mCTMDisabledBlock = new HashSet<>();
 

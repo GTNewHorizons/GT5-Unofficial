@@ -1652,7 +1652,9 @@ public class WerkstoffLoader {
             DebugLog.log("Loading Recipes" + (System.nanoTime() - timepre));
             Integer[] clsArr = {};
             int size = 0;
-            if (BetterLoadingScreen.isModLoaded()) clsArr = CLSCompat.initCls();
+            if (BetterLoadingScreen.isModLoaded()) {
+                clsArr = CLSCompat.initCls();
+            }
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
                 new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new OreLoader(), new RawOreLoader(),
@@ -1670,7 +1672,9 @@ public class WerkstoffLoader {
                     progressBar.step("");
                     continue;
                 }
-                if (BetterLoadingScreen.isModLoaded()) size = CLSCompat.invokeStepSize(werkstoff, clsArr, size);
+                if (BetterLoadingScreen.isModLoaded()) {
+                    size = CLSCompat.invokeStepSize(werkstoff, clsArr, size);
+                }
                 DebugLog.log("Werkstoff: " + werkstoff.getDefaultName() + " " + (System.nanoTime() - timepreone));
                 for (IWerkstoffRunnable runnable : werkstoffRunnables) {
                     String loaderName = runnable.getClass()
@@ -2002,38 +2006,25 @@ public class WerkstoffLoader {
     }
 
     /**
-     * very hacky way to make my ores/blocks/smallores detectable by gt assosication in world, well at least the prefix.
+     * very hacky way to make my ores/blocks/small ores detectable by gt association in world, well at least the prefix.
      * used for the miners mostly removing this hacky material from the materials map instantly. we only need the item
      * data.
      */
-    @SuppressWarnings("unchecked")
     private static void addFakeItemDataToInWorldBlocksAndCleanUpFakeData() {
-
-        Map<String, Materials> MATERIALS_MAP = null;
-
-        try {
-            Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
-            f.setAccessible(true);
-            MATERIALS_MAP = (Map<String, Materials>) f.get(null);
-        } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
-            e.printStackTrace();
-        }
-
-        if (MATERIALS_MAP == null) throw new NullPointerException("MATERIALS_MAP null!");
-
         Materials oreMat = new Materials(-1, null, 0, 0, 0, false, "bwores", "bwores", null, true, null);
         Materials smallOreMat = new Materials(-1, null, 0, 0, 0, false, "bwsmallores", "bwsmallores", null, true, null);
         Materials blockMat = new Materials(-1, null, 0, 0, 0, false, "bwblocks", "bwblocks", null, true, null);
-
         for (int i = 0; i < 16; i++) {
             GTOreDictUnificator.addAssociation(ore, oreMat, new ItemStack(BWOres, 1, i), true);
             GTOreDictUnificator.addAssociation(oreSmall, smallOreMat, new ItemStack(BWSmallOres, 1, i), true);
             GTOreDictUnificator.addAssociation(block, blockMat, new ItemStack(BWBlocks, 1, i), true);
         }
-
-        MATERIALS_MAP.remove("bwores");
-        MATERIALS_MAP.remove("bwsmallores");
-        MATERIALS_MAP.remove("bwblocks");
+        Materials.getMaterialsMap()
+            .remove("bwores");
+        Materials.getMaterialsMap()
+            .remove("bwsmallores");
+        Materials.getMaterialsMap()
+            .remove("bwblocks");
     }
 
     public static void removeIC2Recipes() {

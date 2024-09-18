@@ -104,7 +104,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                         c.xPosition * 16 + x,
                                         y,
                                         c.zPosition * 16 + z,
-                                        GTppHelper.getGTppMeta(tBlock));
+                                        GTppHelper.getMetaFromBlock(tBlock));
                                 } else if (BartWorksHelper.isOre(tBlock)) {
                                     if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
                                     packet.addBlock(

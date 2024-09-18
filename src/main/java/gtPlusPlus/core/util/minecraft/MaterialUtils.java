@@ -234,8 +234,7 @@ public class MaterialUtils {
     private static Materials getMaterialByName(String materialName) {
         for (Materials m : Materials.values()) {
             if (MaterialUtils.getMaterialName(m)
-                .toLowerCase()
-                .equals(materialName.toLowerCase())) {
+                .equalsIgnoreCase(materialName)) {
                 return m;
             }
         }
@@ -244,7 +243,7 @@ public class MaterialUtils {
 
     public static String getMaterialName(Materials mat) {
         String mName = mat.mDefaultLocalName;
-        if (mName == null || mName.equals("")) {
+        if (mName == null || mName.isEmpty()) {
             mName = mat.mName;
         }
         return mName;

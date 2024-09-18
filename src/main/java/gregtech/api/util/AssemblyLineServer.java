@@ -16,15 +16,14 @@ import gregtech.api.enums.MaterialsBotania;
 public class AssemblyLineServer {
 
     public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap<>();
-    private static LinkedHashMap<String, String> internal2 = new LinkedHashMap<>(), internal3 = new LinkedHashMap<>(),
-        internal4 = new LinkedHashMap<>();
-    private static HashMap<String, Property> internal = new HashMap<>();
 
     public static void fillMap(FMLPreInitializationEvent aEvent) {
-        Configuration conf = GTLanguageManager.sEnglishFile;
-
-        ConfigCategory cat = conf.getCategory("languagefile");
-        internal.putAll(cat.getValues());
+        final Configuration conf = GTLanguageManager.sEnglishFile;
+        final ConfigCategory cat = conf.getCategory("languagefile");
+        final HashMap<String, Property> internal = new HashMap<>(cat.getValues());
+        final LinkedHashMap<String, String> internal2 = new LinkedHashMap<>();
+        final LinkedHashMap<String, String> internal3 = new LinkedHashMap<>();
+        final LinkedHashMap<String, String> internal4 = new LinkedHashMap<>();
         for (Map.Entry<String, Property> entry : internal.entrySet()) {
             try {
                 String s = entry.getValue()
@@ -253,7 +252,6 @@ public class AssemblyLineServer {
                                     .length() - ".name".length());
                         i = Integer.parseInt(t);
                         lServerNames.put(entry.getKey(), "Block of " + mMats[i].toString());
-                        mMats = null;
                     } else if (entry.getKey()
                         .contains("blockgem")) {
                             Materials[] mMats = null;
@@ -284,14 +282,8 @@ public class AssemblyLineServer {
                                         .length() - ".name".length());
                             i = Integer.parseInt(t);
                             lServerNames.put(entry.getKey(), "Block of " + mMats[i].toString());
-                            mMats = null;
                         }
             } catch (Exception ignored) {}
         }
-
-        internal = null;
-        internal2 = null;
-        internal3 = null;
-        internal4 = null;
     }
 }

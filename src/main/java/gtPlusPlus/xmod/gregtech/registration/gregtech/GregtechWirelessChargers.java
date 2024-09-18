@@ -10,8 +10,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.Charger_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.Charger_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Charger_ZPM;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEWirelessCharger;
@@ -22,7 +22,9 @@ public class GregtechWirelessChargers {
 
         Logger.INFO("Gregtech5u Content | Registering Wireless Chargers.");
 
-        Utils.registerEvent(new ChargingHelper());
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new ChargingHelper());
 
         GregtechItemList.Charger_LV.set(
             new MTEWirelessCharger(

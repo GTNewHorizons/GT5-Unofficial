@@ -103,11 +103,12 @@ public class TGSFrontend extends RecipeMapFrontend {
 
         // Inputs
         int slot = 0;
-        for (int mode = 0; mode < Mode.values().length; ++mode) {
+        final Mode[] MODE_VALUES = Mode.values();
+        for (int mode = 0; mode < MODE_VALUES.length; ++mode) {
             if (mode < recipe.mOreDictAlt.length && recipe.mOreDictAlt[mode] != null) {
                 // There is a valid input in this mode.
                 if (slot < neiCachedRecipe.mInputs.size() && stack == neiCachedRecipe.mInputs.get(slot).item) {
-                    int toolMultiplier = MTETreeFarm.getToolMultiplier(stack, Mode.values()[mode]);
+                    int toolMultiplier = MTETreeFarm.getToolMultiplier(stack, MODE_VALUES[mode]);
                     currentTip.add(EnumChatFormatting.YELLOW + tooltipInputs[mode]);
                     if (toolMultiplier > 0) {
                         currentTip.add(EnumChatFormatting.YELLOW + tooltipMultiplier + " " + toolMultiplier + "x");
@@ -120,7 +121,7 @@ public class TGSFrontend extends RecipeMapFrontend {
 
         // Outputs
         slot = 0;
-        for (int mode = 0; mode < Mode.values().length; ++mode) {
+        for (int mode = 0; mode < MODE_VALUES.length; ++mode) {
             if (mode < recipe.mOutputs.length && recipe.mOutputs[mode] != null) {
                 // There is a valid output in this mode.
                 if (slot < neiCachedRecipe.mOutputs.size() && stack == neiCachedRecipe.mOutputs.get(slot).item) {
