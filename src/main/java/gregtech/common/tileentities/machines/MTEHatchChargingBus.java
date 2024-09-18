@@ -34,7 +34,7 @@ public class MTEHatchChargingBus extends MTEHatchInputBus {
     @Override
     public String[] getDescription() {
         return new String[] { "Item Charger Bus for Tree Growth Simulator", getSlots(this.mTier) + " Slots",
-            "Transfer EU : MaxInputEU - ActualUsage","Author: " + AuthorEvgenWarGold };
+            "Transfer EU : MaxInputEU - ActualUsage", "Author: " + AuthorEvgenWarGold };
     }
 
     @Override
