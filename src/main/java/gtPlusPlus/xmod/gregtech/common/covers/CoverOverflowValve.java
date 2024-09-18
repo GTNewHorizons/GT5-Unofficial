@@ -66,7 +66,7 @@ public class CoverOverflowValve extends CoverBehaviorBase<CoverOverflowValve.Ove
         OverflowValveData data, ICoverable aTileEntity, long aTimer) {
         if (data == null) return new OverflowValveData(maxOverflowPoint, maxOverflowPoint / 10, true, true);
 
-        if (data.overflowPoint == 0) return data;
+        if (data.voidingRate == 0 || data.overflowPoint == 0) return data;
 
         if (aTileEntity instanceof CommonMetaTileEntity common) {
             IMetaTileEntity tile = common.getMetaTileEntity();
