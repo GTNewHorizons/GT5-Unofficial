@@ -8,30 +8,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.joml.Vector3i;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
-import appeng.api.AEApi;
-import appeng.api.config.SecurityPermissions;
-import appeng.api.features.ILocatable;
-import appeng.api.implementations.tiles.IWirelessAccessPoint;
-import appeng.api.networking.IGrid;
-import appeng.api.networking.IGridNode;
-import appeng.api.networking.energy.IEnergyGrid;
-import appeng.api.networking.security.ISecurityGrid;
-import appeng.api.networking.storage.IStorageGrid;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.util.DimensionalCoord;
-import appeng.tile.misc.TileSecurity;
-import appeng.tile.networking.TileWireless;
-import gregtech.api.util.GTUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,6 +36,31 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.joml.Vector3i;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import appeng.api.AEApi;
+import appeng.api.config.SecurityPermissions;
+import appeng.api.features.ILocatable;
+import appeng.api.implementations.tiles.IWirelessAccessPoint;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.security.ISecurityGrid;
+import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.util.DimensionalCoord;
+import appeng.tile.misc.TileSecurity;
+import appeng.tile.networking.TileWireless;
+import gregtech.api.util.GTUtility;
+
 class NBTState {
 
     static final Gson GSON = new GsonBuilder().create();
@@ -78,26 +79,30 @@ class NBTState {
     public static NBTState load(NBTTagCompound tag) {
         NBTState state = GSON.fromJson(toJsonObject(tag), NBTState.class);
 
-        if(state == null) state = new NBTState();
-        if(state.config == null) state.config = new NBTState.Config();
+        if (state == null) state = new NBTState();
+        if (state.config == null) state.config = new NBTState.Config();
 
         return state;
     }
 
     public NBTTagCompound save() {
-        return (NBTTagCompound)toNbt(GSON.toJsonTree(this));
+        return (NBTTagCompound) toNbt(GSON.toJsonTree(this));
     }
 
     public boolean hasMEConnection() {
-        return encKey != null && securityTerminal != null && gridNode != null && grid != null && storageGrid != null && itemStorage != null;
+        return encKey != null && securityTerminal != null
+            && gridNode != null
+            && grid != null
+            && storageGrid != null
+            && itemStorage != null;
     }
 
     public boolean connectToMESystem() {
         grid = null;
         storageGrid = null;
         itemStorage = null;
-        
-        if(encKey == null) return false;
+
+        if (encKey == null) return false;
 
         long addr = 0;
 
@@ -107,15 +112,18 @@ class NBTState {
             return false;
         }
 
-        ILocatable grid = AEApi.instance().registries().locatable().getLocatableBy(addr);
+        ILocatable grid = AEApi.instance()
+            .registries()
+            .locatable()
+            .getLocatableBy(addr);
 
-        if(grid instanceof TileSecurity security) {
+        if (grid instanceof TileSecurity security) {
             this.securityTerminal = security;
             this.gridNode = security.getGridNode(ForgeDirection.UNKNOWN);
-            if(this.gridNode != null) {
+            if (this.gridNode != null) {
                 this.grid = this.gridNode.getGrid();
                 this.storageGrid = this.grid.getCache(IStorageGrid.class);
-                if(this.storageGrid != null) {
+                if (this.storageGrid != null) {
                     this.itemStorage = this.storageGrid.getItemInventory();
                 }
             }
@@ -137,7 +145,8 @@ class NBTState {
         }
 
         ISecurityGrid sec = grid.getCache(ISecurityGrid.class);
-        if (!sec.hasPermission(player, SecurityPermissions.EXTRACT) || !sec.hasPermission(player, SecurityPermissions.INJECT)) {
+        if (!sec.hasPermission(player, SecurityPermissions.EXTRACT)
+            || !sec.hasPermission(player, SecurityPermissions.INJECT)) {
             return false;
         }
 
@@ -173,12 +182,12 @@ class NBTState {
         }
     }
 
-    //#region Pending blocks
+    // #region Pending blocks
 
     public List<PendingBlock> getPendingBlocks() {
         ArrayList<PendingBlock> pending = new ArrayList<>();
 
-        if(config.coordA == null || config.coordB == null) {
+        if (config.coordA == null || config.coordB == null) {
             return pending;
         }
 
@@ -196,7 +205,7 @@ class NBTState {
         int maxY = Math.max(y1, y2);
         int maxZ = Math.max(z1, z2);
 
-        switch(config.shape) {
+        switch (config.shape) {
             case LINE: {
                 iterateLine(pending, x1, y1, z1, x2, y2, z2);
                 break;
@@ -223,34 +232,28 @@ class NBTState {
         int dx = Math.abs(x1 - x2), dy = Math.abs(y1 - y2), dz = Math.abs(z1 - z2);
         int sx = x1 < x2 ? 1 : -1, sy = y1 < y2 ? 1 : -1, sz = z1 < z2 ? 1 : -1;
 
-        pending.add(new PendingBlock(
-            config.coordA.worldId, x1, y1, z1,
-            edges
-        ));
+        pending.add(new PendingBlock(config.coordA.worldId, x1, y1, z1, edges));
 
-        if(dx >= dy && dx >= dz) {
+        if (dx >= dy && dx >= dz) {
             int p1 = 2 * dy - dx;
             int p2 = 2 * dz - dx;
 
-            while(x1 != x2) {
+            while (x1 != x2) {
                 x1 += sx;
 
                 if (p1 >= 0) {
-                  y1 += sy;
-                  p1 -= 2 * dx;
+                    y1 += sy;
+                    p1 -= 2 * dx;
                 }
                 if (p2 >= 0) {
-                  z1 += sz;
-                  p2 -= 2 * dx;
+                    z1 += sz;
+                    p2 -= 2 * dx;
                 }
 
                 p1 += 2 * dy;
                 p2 += 2 * dz;
 
-                pending.add(new PendingBlock(
-                    config.coordA.worldId, x1, y1, z1,
-                    edges
-                ));
+                pending.add(new PendingBlock(config.coordA.worldId, x1, y1, z1, edges));
             }
         } else if (dy >= dx && dy >= dz) {
             int p1 = 2 * dx - dy;
@@ -260,21 +263,18 @@ class NBTState {
                 y1 += sy;
 
                 if (p1 >= 0) {
-                x1 += sx;
-                p1 -= 2 * dy;
+                    x1 += sx;
+                    p1 -= 2 * dy;
                 }
                 if (p2 >= 0) {
-                z1 += sz;
-                p2 -= 2 * dy;
+                    z1 += sz;
+                    p2 -= 2 * dy;
                 }
 
                 p1 += 2 * dx;
                 p2 += 2 * dz;
-                
-                pending.add(new PendingBlock(
-                    config.coordA.worldId, x1, y1, z1,
-                    edges
-                ));
+
+                pending.add(new PendingBlock(config.coordA.worldId, x1, y1, z1, edges));
             }
         } else {
             int p1 = 2 * dy - dz;
@@ -294,31 +294,28 @@ class NBTState {
 
                 p1 += 2 * dy;
                 p2 += 2 * dx;
-                
-                pending.add(new PendingBlock(
-                    config.coordA.worldId, x1, y1, z1,
-                    edges
-                ));
+
+                pending.add(new PendingBlock(config.coordA.worldId, x1, y1, z1, edges));
             }
         }
     }
 
     private void iterateCube(ArrayList<PendingBlock> pending, int minX, int minY, int minZ, int maxX, int maxY,
-            int maxZ) {
+        int maxZ) {
         ItemStack corners = config.getCorners();
         ItemStack edges = config.getEdges();
         ItemStack faces = config.getFaces();
         ItemStack volumes = config.getVolumes();
-        for(int x = minX; x <= maxX; x++) {
-            for(int y = minY; y <= maxY; y++) {
-                for(int z = minZ; z <= maxZ; z++) {
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
                     int insideCount = 0;
 
-                    if(x > minX && x < maxX) insideCount++;
-                    if(y > minY && y < maxY) insideCount++;
-                    if(z > minZ && z < maxZ) insideCount++;
+                    if (x > minX && x < maxX) insideCount++;
+                    if (y > minY && y < maxY) insideCount++;
+                    if (z > minZ && z < maxZ) insideCount++;
 
-                    ItemStack selection = switch(insideCount) {
+                    ItemStack selection = switch (insideCount) {
                         case 0 -> corners;
                         case 1 -> edges;
                         case 2 -> faces;
@@ -326,21 +323,17 @@ class NBTState {
                         default -> null;
                     };
 
-                    pending.add(new PendingBlock(
-                        config.coordA.worldId, x, y, z,
-                        selection,
-                        insideCount,
-                        insideCount
-                    ));
+                    pending.add(new PendingBlock(config.coordA.worldId, x, y, z, selection, insideCount, insideCount));
                 }
             }
         }
     }
 
-    private void iterateSphere(ArrayList<PendingBlock> pending, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+    private void iterateSphere(ArrayList<PendingBlock> pending, int minX, int minY, int minZ, int maxX, int maxY,
+        int maxZ) {
         ItemStack faces = config.getFaces();
         ItemStack volumes = config.getVolumes();
-        
+
         int sx = maxX - minX + 1;
         int sy = maxY - minY + 1;
         int sz = maxZ - minZ + 1;
@@ -351,21 +344,28 @@ class NBTState {
 
         boolean[][][] present = new boolean[sx + 2][sy + 2][sz + 2];
 
-        for(int x = 0; x < sx; x++) {
-            for(int y = 0; y < sy; y++) {
-                for(int z = 0; z < sz; z++) {
+        for (int x = 0; x < sx; x++) {
+            for (int y = 0; y < sy; y++) {
+                for (int z = 0; z < sz; z++) {
+                    // the ternaries here check whether the given axis is 1, in which case this is a circle and not a
+                    // sphere
+                    // spotless:off
                     double distance = Math.sqrt(
                         (rx > 1 ? Math.pow((x - rx + 0.5) / rx, 2.0) : 0) +
                         (ry > 1 ? Math.pow((y - ry + 0.5) / ry, 2.0) : 0) +
                         (rz > 1 ? Math.pow((z - rz + 0.5) / rz, 2.0) : 0)
                     );
+                    // spotless:on
 
-                    if(distance <= 1) {
+                    if (distance <= 1) {
                         PendingBlock block = new PendingBlock(
-                            config.coordA.worldId, x + minX, y + minY, z + minZ,
+                            config.coordA.worldId,
+                            x + minX,
+                            y + minY,
+                            z + minZ,
                             volumes,
-                            1, 1
-                        );
+                            1,
+                            1);
 
                         present[x + 1][y + 1][z + 1] = true;
                         pending.add(block);
@@ -376,24 +376,26 @@ class NBTState {
 
         ArrayList<ForgeDirection> directions = new ArrayList<>();
 
-        if(rx > 1) {
+        if (rx > 1) {
             directions.add(ForgeDirection.EAST);
             directions.add(ForgeDirection.WEST);
         }
 
-        if(ry > 1) {
+        if (ry > 1) {
             directions.add(ForgeDirection.UP);
             directions.add(ForgeDirection.DOWN);
         }
 
-        if(rz > 1) {
+        if (rz > 1) {
             directions.add(ForgeDirection.NORTH);
             directions.add(ForgeDirection.SOUTH);
         }
 
-        for(PendingBlock block : pending) {
-            for(ForgeDirection dir : directions) {
-                if(!present[block.x - minX + 1 + dir.offsetX][block.y - minY + 1 + dir.offsetY][block.z - minZ + 1 + dir.offsetZ]) {
+        for (PendingBlock block : pending) {
+            for (ForgeDirection dir : directions) {
+                if (!present[block.x - minX + 1 + dir.offsetX][block.y - minY + 1 + dir.offsetY][block.z - minZ
+                    + 1
+                    + dir.offsetZ]) {
                     block.setBlock(faces);
                     block.buildOrder = 0;
                     block.renderOrder = 0;
@@ -403,19 +405,20 @@ class NBTState {
         }
     }
 
-    //#endregion
+    // #endregion
 
     static class Config {
+
         public PendingAction action;
         public CoordMode coordMode = CoordMode.SET_INTERLEAVED;
         public BlockSelectMode blockSelectMode = BlockSelectMode.ALL;
         public BlockRemoveMode removeMode = BlockRemoveMode.NONE;
         public PlaceMode placeMode = PlaceMode.GEOMETRY;
         public Shape shape = Shape.LINE;
-    
+
         public Location coordA, coordB;
         public Vector3i coordAOffset, coordBOffset;
-        
+
         public JsonElement corners, edges, faces, volumes;
 
         private static JsonElement saveStack(ItemStack stack) {
@@ -425,39 +428,39 @@ class NBTState {
 
             return stack == null ? null : toJsonObject(stack.writeToNBT(new NBTTagCompound()));
         }
-    
+
         private static ItemStack loadStack(JsonElement stack) {
-            return stack == null ? null : ItemStack.loadItemStackFromNBT((NBTTagCompound)toNbt(stack));
+            return stack == null ? null : ItemStack.loadItemStackFromNBT((NBTTagCompound) toNbt(stack));
         }
-    
+
         public void setCorners(ItemStack corners) {
             this.corners = saveStack(corners);
         }
-    
+
         public ItemStack getCorners() {
             return loadStack(corners);
         }
-        
+
         public void setEdges(ItemStack edges) {
             this.edges = saveStack(edges);
         }
-    
+
         public ItemStack getEdges() {
             return loadStack(edges);
         }
-        
+
         public void setFaces(ItemStack faces) {
             this.faces = saveStack(faces);
         }
-    
+
         public ItemStack getFaces() {
             return loadStack(faces);
         }
-        
+
         public void setVolumes(ItemStack volumes) {
             this.volumes = saveStack(volumes);
         }
-    
+
         public ItemStack getVolumes() {
             return loadStack(volumes);
         }
@@ -467,12 +470,15 @@ class NBTState {
                 ? mp.theItemInWorldManager.getBlockReachDistance()
                 : GTUtility.getClientReachDistance();
 
-            Vec3 posVec = player.getPosition(0).addVector(0, player.getEyeHeight(), 0);
+            Vec3 posVec = player.getPosition(0)
+                .addVector(0, player.getEyeHeight(), 0);
 
             Vec3 lookVec = player.getLook(0);
 
-            Vec3 modifiedPosVec = posVec
-                .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
+            Vec3 modifiedPosVec = posVec.addVector(
+                lookVec.xCoord * reachDistance,
+                lookVec.yCoord * reachDistance,
+                lookVec.zCoord * reachDistance);
 
             return player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
         }
@@ -486,8 +492,10 @@ class NBTState {
 
             Vec3 lookVec = player.getLook(0);
 
-            Vec3 modifiedPosVec = posVec
-                .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
+            Vec3 modifiedPosVec = posVec.addVector(
+                lookVec.xCoord * reachDistance,
+                lookVec.yCoord * reachDistance,
+                lookVec.zCoord * reachDistance);
 
             MovingObjectPosition hit = player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
 
@@ -501,7 +509,10 @@ class NBTState {
                     target.add(dir.offsetX, dir.offsetY, dir.offsetZ);
                 }
             } else {
-                target = new Vector3i((int) modifiedPosVec.xCoord, (int) modifiedPosVec.yCoord, (int) modifiedPosVec.zCoord - 1);
+                target = new Vector3i(
+                    (int) modifiedPosVec.xCoord,
+                    (int) modifiedPosVec.yCoord,
+                    (int) modifiedPosVec.zCoord - 1);
             }
 
             return target;
@@ -513,7 +524,7 @@ class NBTState {
             } else {
                 Vector3i lookingAt = getLookingAtLocation(player);
                 lookingAt.add(coordAOffset);
-    
+
                 return new Location(player.worldObj, lookingAt);
             }
         }
@@ -524,7 +535,7 @@ class NBTState {
             } else {
                 Vector3i lookingAt = getLookingAtLocation(player);
                 lookingAt.add(coordBOffset);
-    
+
                 return new Location(player.worldObj, lookingAt);
             }
         }
@@ -552,65 +563,40 @@ class NBTState {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
             Config other = (Config) obj;
-            if (action != other.action)
-                return false;
-            if (coordMode != other.coordMode)
-                return false;
-            if (blockSelectMode != other.blockSelectMode)
-                return false;
-            if (removeMode != other.removeMode)
-                return false;
-            if (placeMode != other.placeMode)
-                return false;
-            if (shape != other.shape)
-                return false;
+            if (action != other.action) return false;
+            if (coordMode != other.coordMode) return false;
+            if (blockSelectMode != other.blockSelectMode) return false;
+            if (removeMode != other.removeMode) return false;
+            if (placeMode != other.placeMode) return false;
+            if (shape != other.shape) return false;
             if (coordA == null) {
-                if (other.coordA != null)
-                    return false;
-            } else if (!coordA.equals(other.coordA))
-                return false;
+                if (other.coordA != null) return false;
+            } else if (!coordA.equals(other.coordA)) return false;
             if (coordB == null) {
-                if (other.coordB != null)
-                    return false;
-            } else if (!coordB.equals(other.coordB))
-                return false;
+                if (other.coordB != null) return false;
+            } else if (!coordB.equals(other.coordB)) return false;
             if (coordAOffset == null) {
-                if (other.coordAOffset != null)
-                    return false;
-            } else if (!coordAOffset.equals(other.coordAOffset))
-                return false;
+                if (other.coordAOffset != null) return false;
+            } else if (!coordAOffset.equals(other.coordAOffset)) return false;
             if (coordBOffset == null) {
-                if (other.coordBOffset != null)
-                    return false;
-            } else if (!coordBOffset.equals(other.coordBOffset))
-                return false;
+                if (other.coordBOffset != null) return false;
+            } else if (!coordBOffset.equals(other.coordBOffset)) return false;
             if (corners == null) {
-                if (other.corners != null)
-                    return false;
-            } else if (!corners.equals(other.corners))
-                return false;
+                if (other.corners != null) return false;
+            } else if (!corners.equals(other.corners)) return false;
             if (edges == null) {
-                if (other.edges != null)
-                    return false;
-            } else if (!edges.equals(other.edges))
-                return false;
+                if (other.edges != null) return false;
+            } else if (!edges.equals(other.edges)) return false;
             if (faces == null) {
-                if (other.faces != null)
-                    return false;
-            } else if (!faces.equals(other.faces))
-                return false;
+                if (other.faces != null) return false;
+            } else if (!faces.equals(other.faces)) return false;
             if (volumes == null) {
-                if (other.volumes != null)
-                    return false;
-            } else if (!volumes.equals(other.volumes))
-                return false;
+                if (other.volumes != null) return false;
+            } else if (!volumes.equals(other.volumes)) return false;
             return true;
         }
 
@@ -656,13 +642,14 @@ class NBTState {
     }
 
     static class PendingBlock extends Location {
+
         @Nullable
         public ItemBlock block;
         public int metadata;
         @Nullable
         public NBTTagCompound nbt;
         public int renderOrder, buildOrder;
-        
+
         @SuppressWarnings("null")
         public PendingBlock(int worldId, int x, int y, int z, ItemStack block) {
             super(worldId, x, y, z);
@@ -676,7 +663,7 @@ class NBTState {
         }
 
         public void setBlock(ItemStack block) {
-            if(block != null && block.getItem() instanceof ItemBlock item) {
+            if (block != null && block.getItem() instanceof ItemBlock item) {
                 this.block = item;
                 this.metadata = block.getItemDamage();
                 this.nbt = block.getTagCompound();
@@ -689,8 +676,14 @@ class NBTState {
 
         @Override
         public String toString() {
-            return "PendingBlock [location=" + super.toString() + ", block=" + block + ", renderOrder=" + renderOrder
-                    + ", buildOrder=" + buildOrder + "]";
+            return "PendingBlock [location=" + super.toString()
+                + ", block="
+                + block
+                + ", renderOrder="
+                + renderOrder
+                + ", buildOrder="
+                + buildOrder
+                + "]";
         }
     }
 
@@ -782,30 +775,24 @@ class NBTState {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
             Location other = (Location) obj;
-            if (worldId != other.worldId)
-                return false;
-            if (x != other.x)
-                return false;
-            if (y != other.y)
-                return false;
-            if (z != other.z)
-                return false;
+            if (worldId != other.worldId) return false;
+            if (x != other.x) return false;
+            if (y != other.y) return false;
+            if (z != other.z) return false;
             return true;
         }
     }
 
     static class Region {
+
         public Location a, b;
 
         public Region() {
-        
+
         }
 
         public Region(Location a, Location b) {
@@ -890,19 +877,21 @@ class NBTState {
         if (jsonElement instanceof JsonPrimitive) {
             final JsonPrimitive jsonPrimitive = (JsonPrimitive) jsonElement;
 
-            if(jsonPrimitive.isNumber()) {
-                if (jsonPrimitive.getAsBigDecimal().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO)) {
+            if (jsonPrimitive.isNumber()) {
+                if (jsonPrimitive.getAsBigDecimal()
+                    .remainder(BigDecimal.ONE)
+                    .equals(BigDecimal.ZERO)) {
                     long lval = jsonPrimitive.getAsLong();
 
-                    if(lval >= Byte.MIN_VALUE && lval <= Byte.MAX_VALUE) {
+                    if (lval >= Byte.MIN_VALUE && lval <= Byte.MAX_VALUE) {
                         return new NBTTagByte((byte) lval);
                     }
 
-                    if(lval >= Short.MIN_VALUE && lval <= Short.MAX_VALUE) {
+                    if (lval >= Short.MIN_VALUE && lval <= Short.MAX_VALUE) {
                         return new NBTTagShort((short) lval);
                     }
 
-                    if(lval >= Integer.MIN_VALUE && lval <= Integer.MAX_VALUE) {
+                    if (lval >= Integer.MIN_VALUE && lval <= Integer.MAX_VALUE) {
                         return new NBTTagInt((int) lval);
                     }
 
@@ -911,7 +900,7 @@ class NBTState {
                     double dval = jsonPrimitive.getAsDouble();
                     float fval = (float) dval;
 
-                    if(Math.abs(dval - fval) < 0.0001) {
+                    if (Math.abs(dval - fval) < 0.0001) {
                         return new NBTTagFloat(fval);
                     }
 
@@ -929,6 +918,7 @@ class NBTState {
                 nbtList.add(toNbt(element));
             }
 
+            // spotless:off
             if (nbtList.stream().allMatch(n -> n instanceof NBTTagInt)) {
                 return new NBTTagIntArray(nbtList.stream().mapToInt(i -> ((NBTTagInt) i).func_150287_d()).toArray());
             } else if (nbtList.stream().allMatch(n -> n instanceof NBTTagByte)) {
@@ -945,6 +935,7 @@ class NBTState {
 
                 return nbtTagList;
             }
+            // spotless:on
         } else if (jsonElement instanceof JsonObject) {
             // NBTTagCompound
             final JsonObject jsonObject = (JsonObject) jsonElement;
