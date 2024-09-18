@@ -1,4 +1,4 @@
-package gtPlusPlus.core.item.general.matterManipulator;
+package gregtech.common.items.matterManipulator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-import gtPlusPlus.core.item.general.matterManipulator.RadialMenu.RadialMenuClickHandler;
-import gtPlusPlus.core.item.general.matterManipulator.RadialMenu.RadialMenuOption;
+import gregtech.common.items.matterManipulator.RadialMenu.RadialMenuClickHandler;
+import gregtech.common.items.matterManipulator.RadialMenu.RadialMenuOption;
 
 public class RadialMenuBuilder {
 

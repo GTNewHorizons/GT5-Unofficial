@@ -57,7 +57,6 @@ item.itemBufferCore.name=Energy Core
 item.itemStaballoyPickaxe.name=Tunnel Digger
 item.itemStaballoyAxe.name=Tree Feller
 item.itemSandstoneHammer.name=Cobblestone Breaker
-item.itemMatterManipulator.name=Matter Manipulator
 
 # Tooltips
 GTPP.machines.chisel_slot.tooltip=Target Slot
