@@ -317,7 +317,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
             if (stackSize.stackSize < 3) {
                 built = survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
-                if(built >= 0) return built;
+                if (built >= 0) return built;
                 if (stackSize.stackSize == 2) {
                     built = survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
                 }
