@@ -63,10 +63,13 @@ public class BehaviourSprayColor extends BehaviourNone {
 
     @Override
     // Included for Ring of Loki support.
-    public boolean onItemUse(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer, final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
+    public boolean onItemUse(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer,
+        final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX,
+        final float hitY, final float hitZ) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
 
-        if (ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, aPlayer).isValid()) {
+        if (ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, aPlayer)
+            .isValid()) {
             return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
         }
 
@@ -149,8 +152,10 @@ public class BehaviourSprayColor extends BehaviourNone {
     }
 
     @Override
-    public boolean shouldInterruptBlockActivation(final EntityPlayer player, final TileEntity tileEntity, final ForgeDirection side) {
-        return ColoredBlockContainer.getInstance(player, tileEntity, side).isValid();
+    public boolean shouldInterruptBlockActivation(final EntityPlayer player, final TileEntity tileEntity,
+        final ForgeDirection side) {
+        return ColoredBlockContainer.getInstance(player, tileEntity, side)
+            .isValid();
     }
 
     protected long getUses(ItemStack aStack, NBTTagCompound tNBT) {

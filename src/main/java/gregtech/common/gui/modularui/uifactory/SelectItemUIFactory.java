@@ -220,7 +220,6 @@ public class SelectItemUIFactory {
         return GuiHelper.getItemTooltip(stacks.get(index));
     }
 
-
     private ItemStack getCandidate(int listIndex) {
         return listIndex < 0 || listIndex >= stacks.size() ? null : stacks.get(listIndex);
     }

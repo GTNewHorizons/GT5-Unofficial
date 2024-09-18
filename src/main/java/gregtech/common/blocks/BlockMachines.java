@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import gregtech.api.items.MetaBaseItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -43,6 +42,7 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericBlock;
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -374,7 +374,9 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
         // Used for Ring of Loki support
         if (tCurrentItem != null && tCurrentItem.getItem() instanceof MetaBaseItem mbItem) {
-            if (mbItem.forEachBehavior(tCurrentItem, behavior -> behavior.shouldInterruptBlockActivation(aPlayer, tTileEntity, side))) {
+            if (mbItem.forEachBehavior(
+                tCurrentItem,
+                behavior -> behavior.shouldInterruptBlockActivation(aPlayer, tTileEntity, side))) {
                 return false;
             }
         }
@@ -386,8 +388,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             if ((!aWorld.isRemote) && !gtTE.isUseableByPlayer(aPlayer)) {
                 return true;
             }
-            return ((IGregTechTileEntity) tTileEntity)
-                .onRightclick(aPlayer, side, aOffsetX, aOffsetY, aOffsetZ);
+            return ((IGregTechTileEntity) tTileEntity).onRightclick(aPlayer, side, aOffsetX, aOffsetY, aOffsetZ);
         }
         return false;
     }

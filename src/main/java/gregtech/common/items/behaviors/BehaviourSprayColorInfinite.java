@@ -26,7 +26,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.net.GTPacketInfiniteSpraycan;
 import gregtech.api.util.ColoredBlockContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
@@ -38,12 +37,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     private static final List<ItemStack> COLOR_SELECTIONS;
     public static final String COLOR_NBT_TAG = "current_color";
     public static final String LOCK_NBT_TAG = "is_locked";
-
-    private final String tooltipInfinite = GTLanguageManager
-        .addStringLocalization("gt.behaviour.paintspray.infinite.tooltip", "Infinite uses");
-    private final String tooltipSwitchHint = GTLanguageManager.addStringLocalization(
-        "gt.behaviour.paintspray.infinite.hint.tooltip",
-        "Left click to change color (sneak to reverse direction)");
+    public static final String SEPARATOR = "-----------------------------------------";
 
     private byte mCurrentColor;
 
@@ -64,7 +58,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         mCurrentColor = 0;
     }
 
-    //region Base Method Overrides
+    // region Base Method Overrides
     @Override
     protected long getUses(ItemStack itemStack, NBTTagCompound tNBT) {
         return Other.sprayCanChainRange;
@@ -108,19 +102,36 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         }
         return block.setColor(getColor());
     }
+
     @Override
     public List<String> getAdditionalToolTips(final MetaBaseItem aItem, final List<String> aList,
-                                              final ItemStack itemStack) {
-        aList.add(tooltipInfinite);
-        aList.add(tooltipSwitchHint);
+        final ItemStack itemStack) {
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
+        aList.add(SEPARATOR);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.more_info"));
+        aList.add(SEPARATOR);
         aList.add(AuthorQuerns);
 
         return aList;
     }
-    //endregion
 
-    //region Raw Mouse Event Handlers
+    @Override
+    public List<String> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
+        final ItemStack aStack) {
+        aList.add(SEPARATOR);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.switch"));
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.pick"));
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
+        aList.add(SEPARATOR);
+        aList.add(AuthorQuerns);
+
+        return aList;
+    }
+    // endregion
+
+    // region Raw Mouse Event Handlers
     @Override
     public boolean onLeftClick(MetaBaseItem item, ItemStack itemStack, EntityPlayer aPlayer) {
         if (isLocked(itemStack)) {
@@ -157,9 +168,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         return true;
     }
-    //endregion
+    // endregion
 
-    //region GUI
+    // region GUI
     private void openGUI(final EntityPlayer player, final ItemStack itemStack) {
         UIInfos.openClientUI(
             player,
@@ -192,9 +203,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
             true,
             true);
     }
-    //endregion
+    // endregion
 
-    //region Networking
+    // region Networking
     private static void sendPacket(GTPacketInfiniteSpraycan.Action action) {
         GTValues.NW.sendToServer(new GTPacketInfiniteSpraycan(action));
     }
@@ -203,9 +214,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         int newColor) {
         GTValues.NW.sendToServer(new GTPacketInfiniteSpraycan(action, newColor));
     }
-    //endregion
+    // endregion
 
-    //region Server Actions
+    // region Server Actions
     public void incrementColor(final ItemStack itemStack, final boolean wasSneaking) {
         if (isLocked(itemStack)) {
             return;
@@ -249,6 +260,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         itemStack.setTagCompound(tag);
         setItemStackName(itemStack);
     }
+
     private void setItemStackName(final ItemStack itemStack) {
         final boolean isLocked = isLocked(itemStack);
         final char lBracket = isLocked ? '[' : '(';
@@ -261,7 +273,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 String.format("Infinite Spray Can %c" + Dyes.get(mCurrentColor).mName + "%c", lBracket, rBracket));
         }
     }
-    //endregion
+    // endregion
 
     public static Dyes getDye(ItemStack itemStack) {
         if (itemStack.hasTagCompound()) {
@@ -283,7 +295,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     private static class DyeSelectGUI extends SelectItemUIFactory {
 
         public DyeSelectGUI(final String header, final ItemStack headerItem, final Consumer<ItemStack> selectedCallback,
-                            final List<ItemStack> stacks, final int selected, final boolean noDeselect) {
+            final List<ItemStack> stacks, final int selected, final boolean noDeselect) {
             super(header, headerItem, selectedCallback, stacks, selected, noDeselect);
         }
 
@@ -296,8 +308,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         @Override
         protected List<String> getItemTooltips(final int index) {
-            return ImmutableList.of(index == REMOVE_COLOR ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
-                : Dyes.getDyeFromIndex((short) index).mName);
+            return ImmutableList.of(
+                index == REMOVE_COLOR ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
+                    : Dyes.getDyeFromIndex((short) index).mName);
         }
     }
 }
