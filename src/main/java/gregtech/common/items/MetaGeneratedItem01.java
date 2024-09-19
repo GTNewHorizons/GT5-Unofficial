@@ -3462,6 +3462,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         setAllFluidContainerStats();
         setAllElectricStats();
         registerTieredTooltips();
+        registerSubIcons();
 
         craftingShapedRecipes();
         craftingShapelessRecipes();
@@ -4632,6 +4633,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         setElectricStats(32000 + BatteryHull_UIV_Full.ID, 104857600000L, GTValues.V[11], 11L, -3L, true);
         setElectricStats(32000 + BatteryHull_UMV_Full.ID, 419430400000L, GTValues.V[12], 12L, -3L, true);
         setElectricStats(32000 + BatteryHull_UxV_Full.ID, 1677721600000L, GTValues.V[13], 13L, -3L, true);
+    }
+
+    private void registerSubIcons() {
+        setSubIcons(Spray_Color_Infinite.ID, 3);
     }
 
     private void registerTieredTooltips() {

@@ -857,9 +857,9 @@ public class RecipesMachines {
     }
 
     private static void overflowValveCovers() {
-        ItemStack aOutputs[] = new ItemStack[] { GregtechItemList.Cover_Overflow_LV.get(1L),
-            GregtechItemList.Cover_Overflow_MV.get(1L), GregtechItemList.Cover_Overflow_HV.get(1L),
-            GregtechItemList.Cover_Overflow_EV.get(1L), GregtechItemList.Cover_Overflow_IV.get(1L), };
+        ItemStack[] aOutputs = new ItemStack[] { GregtechItemList.Cover_Overflow_Valve_LV.get(1L),
+            GregtechItemList.Cover_Overflow_Valve_MV.get(1L), GregtechItemList.Cover_Overflow_Valve_HV.get(1L),
+            GregtechItemList.Cover_Overflow_Valve_EV.get(1L), GregtechItemList.Cover_Overflow_Valve_IV.get(1L), };
         long[] voltageTiers = new long[] { TierEU.RECIPE_LV, TierEU.RECIPE_MV, TierEU.RECIPE_HV, TierEU.RECIPE_EV,
             TierEU.RECIPE_IV };
 

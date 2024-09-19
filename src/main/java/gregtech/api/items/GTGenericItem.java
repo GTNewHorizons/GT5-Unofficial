@@ -151,7 +151,11 @@ public class GTGenericItem extends Item implements IProjectileItem {
 
         @Override
         public ItemStack dispenseStack(IBlockSource aSource, ItemStack aStack) {
-            return ((GTGenericItem) aStack.getItem()).onDispense(aSource, aStack);
+            final GTGenericItem item = (GTGenericItem) aStack.getItem();
+            if (item != null) {
+                return item.onDispense(aSource, aStack);
+            }
+            return aStack;
         }
 
         @Override

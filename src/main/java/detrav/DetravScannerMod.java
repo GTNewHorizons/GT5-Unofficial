@@ -1,7 +1,6 @@
 package detrav;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.config.Configuration;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -44,13 +43,6 @@ public class DetravScannerMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        Configuration Config = new Configuration(event.getSuggestedConfigurationFile());
-        Config.load();
-
-        if (Config.hasChanged()) {
-            Config.save();
-        }
-
         proxy.onPreInit();
     }
 
