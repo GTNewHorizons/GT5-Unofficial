@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -23,7 +24,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -31,7 +31,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
@@ -130,41 +129,39 @@ public class RecipesGeneral {
             Logger.INFO("Added shapeless recipe for Tumbaga Dust.");
         }
 
-        if (GTPPCore.ConfigSwitches.enableMachine_Pollution) {
-            RecipeUtils.addShapedRecipe(
-                CI.craftingToolFile,
-                "plateIron",
-                "stickIron",
-                "plateIron",
-                "ringIron",
-                "plateIron",
-                "stickIron",
-                "plateIron",
-                CI.craftingToolHammer_Hard,
-                ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 0, 1));
-            RecipeUtils.addShapedRecipe(
-                CI.craftingToolFile,
-                "plateBronze",
-                "stickBronze",
-                "plateBronze",
-                "ringBronze",
-                "plateBronze",
-                "stickBronze",
-                "plateBronze",
-                CI.craftingToolHammer_Hard,
-                ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 1, 1));
-            RecipeUtils.addShapedRecipe(
-                CI.craftingToolFile,
-                "plateSteel",
-                "stickSteel",
-                "plateSteel",
-                "ringSteel",
-                "plateSteel",
-                "stickSteel",
-                "plateSteel",
-                CI.craftingToolHammer_Hard,
-                ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 2, 1));
-        }
+        RecipeUtils.addShapedRecipe(
+            CI.craftingToolFile,
+            "plateIron",
+            "stickIron",
+            "plateIron",
+            "ringIron",
+            "plateIron",
+            "stickIron",
+            "plateIron",
+            CI.craftingToolHammer_Hard,
+            ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 0, 1));
+        RecipeUtils.addShapedRecipe(
+            CI.craftingToolFile,
+            "plateBronze",
+            "stickBronze",
+            "plateBronze",
+            "ringBronze",
+            "plateBronze",
+            "stickBronze",
+            "plateBronze",
+            CI.craftingToolHammer_Hard,
+            ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 1, 1));
+        RecipeUtils.addShapedRecipe(
+            CI.craftingToolFile,
+            "plateSteel",
+            "stickSteel",
+            "plateSteel",
+            "ringSteel",
+            "plateSteel",
+            "stickSteel",
+            "plateSteel",
+            CI.craftingToolHammer_Hard,
+            ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 2, 1));
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -426,7 +423,7 @@ public class RecipesGeneral {
             CI.component_Plate[8],
             GregtechItemList.Hatch_Input_Naquadah.get(1L, new Object[0]));
 
-        if (PollutionUtils.isPollutionEnabled()) {
+        if (GTMod.gregtechproxy.mPollution) {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_LV.get(1L, new Object[0]),
                 bitsd,
