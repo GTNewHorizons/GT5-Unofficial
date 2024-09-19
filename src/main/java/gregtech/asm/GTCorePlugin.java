@@ -35,6 +35,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     public static File minecraftDir;
     private static Boolean islwjgl3Present = null;
+    private static Boolean isThaumcraftPresent = null;
 
     public GTCorePlugin() {
         // Injection Code taken from CodeChickenLib
@@ -94,6 +95,19 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
             }
         }
         return islwjgl3Present;
+    }
+
+    public static boolean isThaumcraftPresent() {
+        if (isThaumcraftPresent == null) {
+            try {
+                final String className = "thaumcraft/common/Thaumcraft.class";
+                isThaumcraftPresent = ClassLoader.getSystemClassLoader()
+                    .getResource(className) != null;
+            } catch (Exception e) {
+                isThaumcraftPresent = Boolean.FALSE;
+            }
+        }
+        return isThaumcraftPresent;
     }
 
 }

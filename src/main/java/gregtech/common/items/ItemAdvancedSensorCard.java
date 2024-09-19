@@ -33,6 +33,7 @@ import com.google.common.collect.ImmutableList;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.GlobalMetricsCoverDatabase.State;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
@@ -41,7 +42,9 @@ import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
-@SuppressWarnings("unused")
+@cpw.mods.fml.common.Optional.Interface(
+    iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
+    modid = Mods.Names.I_C2_NUCLEAR_CONTROL)
 public class ItemAdvancedSensorCard extends Item implements IPanelDataSource {
 
     public static final UUID CARD_TYPE_ID = UUID.fromString("ff952e84-7608-4c4a-85af-dd6e1aa27fc7");

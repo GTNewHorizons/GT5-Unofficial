@@ -136,7 +136,6 @@ import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.internal.IGTMod;
-import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
@@ -161,6 +160,7 @@ import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTShapelessRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.asm.GTCorePlugin;
 import gregtech.common.config.OPStuff;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedItem98;
@@ -796,8 +796,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
-        GregTechAPI.sThaumcraftCompat = (IThaumcraftCompat) GTUtility
-            .callConstructor("gregtech.common.GTThaumcraftCompat", 0, null, GTValues.D1, new Object[0]);
+        if (GTCorePlugin.isThaumcraftPresent()) {
+            GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
+        }
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
