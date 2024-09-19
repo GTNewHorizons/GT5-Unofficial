@@ -887,8 +887,11 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_MV_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UHV_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
@@ -932,6 +935,14 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
+import goodgenerator.util.CrackRecipeAdder;
+import gregtech.api.enums.MetaTileEntityIDs;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluid;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -12455,6 +12466,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         makeWires(Materials.Ichorium, 2600, 2L, 2L, 12L, GTValues.V[9], false, true);
         makeWires(MaterialsUEVplus.SpaceTime, 2606, 0L, 0L, 1_000_000L, GTValues.V[14], false, true);
 
+        // ULV Pipes
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(Materials.Wood),
             new MTEFluid(5101, "GT_Pipe_Wood_Small", "Small Wooden Fluid Pipe", 0.375F, Materials.Wood, 10, 350, false)
@@ -12467,24 +12479,120 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             OrePrefixes.pipeLarge.get(Materials.Wood),
             new MTEFluid(5103, "GT_Pipe_Wood_Large", "Large Wooden Fluid Pipe", 0.75F, Materials.Wood, 60, 350, false)
                 .getStackForm(1L));
+        generateFluidPipes(Materials.Clay, Materials.Clay.mName, 5120, 60, 500, false);
+        generateFluidMultiPipes(Materials.Clay, Materials.Clay.mName, 5125, 60, 500, false);
+        generateFluidPipes(Materials.Copper, Materials.Copper.mName, 5130, 20, 1000, true);
+        generateFluidMultiPipes(Materials.Copper, Materials.Copper.mName, 5135, 20, 1000, true);
+        generateFluidPipes(Materials.Bronze, Materials.Bronze.mName, 5140, 120, 2000, true);
+        generateFluidMultiPipes(Materials.Bronze, Materials.Bronze.mName, 5145, 120, 2000, true);
+        generateFluidPipes(Materials.WroughtIron, Materials.WroughtIron.mName, 5150, 180, 2250, true);
+        generateFluidMultiPipes(Materials.WroughtIron, Materials.WroughtIron.mName, 5155, 180, 2250, true);
+        generateFluidPipes(Materials.Lead, Materials.Lead.mName, 5160, 350, 1200, true);
+        generateFluidMultiPipes(Materials.Lead, Materials.Lead.mName, 5165, 350, 1200, true);
 
-        generateFluidPipes(Materials.Copper, Materials.Copper.mName, 5110, 20, 1000, true);
-        generateFluidMultiPipes(Materials.Copper, Materials.Copper.mName, 5115, 20, 1000, true);
-        generateFluidPipes(Materials.Bronze, Materials.Bronze.mName, 5120, 120, 2000, true);
-        generateFluidMultiPipes(Materials.Bronze, Materials.Bronze.mName, 5125, 120, 2000, true);
-        generateFluidPipes(Materials.Steel, Materials.Steel.mName, 5130, 240, 2500, true);
-        generateFluidMultiPipes(Materials.Steel, Materials.Steel.mName, 5135, 240, 2500, true);
-        generateFluidPipes(Materials.StainlessSteel, Materials.StainlessSteel.mName, 5140, 360, 3000, true);
-        generateFluidMultiPipes(Materials.StainlessSteel, Materials.StainlessSteel.mName, 5145, 360, 3000, true);
-        generateFluidPipes(Materials.Titanium, Materials.Titanium.mName, 5150, 480, 5000, true);
-        generateFluidMultiPipes(Materials.Titanium, Materials.Titanium.mName, 5155, 480, 5000, true);
-        generateFluidPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5160, 600, 7500, true);
-        generateFluidMultiPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5270, 600, 7500, true);
+
+        // LV Pipes
+        generateFluidPipes(Materials.Steel, Materials.Steel.mName, 5200, 240, 2500, true);
+        generateFluidMultiPipes(Materials.Steel, Materials.Steel.mName, 5205, 240, 2500, true);
+        generateFluidPipes(GregtechOrePrefixes.GT_Materials.Potin, GregtechOrePrefixes.GT_Materials.Potin.mDefaultLocalName, 5210, 500, 2000, true);
+        generateFluidMultiPipes(GregtechOrePrefixes.GT_Materials.Potin, GregtechOrePrefixes.GT_Materials.Potin.mDefaultLocalName, 5215, 500, 2000, true);
+
+        // MV Pipes
+        if (EnderIO.isModLoaded()) {
+            generateFluidPipes(Materials.DarkSteel, Materials.DarkSteel.mName, 5300, 2320, 2750, true);
+            generateFluidMultiPipes(Materials.DarkSteel, Materials.DarkSteel.mName, 5305, 2320, 2750, true);
+        }
+        generateFluidPipes(Materials.Plastic, Materials.Plastic.mName, "Plastic", 5310, 360, 350, true);
+        generateFluidMultiPipes(Materials.Plastic, Materials.Plastic.mName, "Plastic", 5315, 360, 350, true);
+
+        // HV Pipes
+        generateFluidPipes(Materials.StainlessSteel, Materials.StainlessSteel.mName, 5400, 360, 3000, true);
+        generateFluidMultiPipes(Materials.StainlessSteel, Materials.StainlessSteel.mName, 5405, 360, 3000, true);
+        generateFluidPipes(
+            Materials.Polytetrafluoroethylene,
+            Materials.Polytetrafluoroethylene.mName,
+            "PTFE",
+            5410,
+            480,
+            600,
+            true);
+        generateFluidMultiPipes(
+            Materials.Polytetrafluoroethylene,
+            Materials.Polytetrafluoroethylene.mName,
+            "PTFE",
+            5415,
+            480,
+            600,
+            true);
+        if (Thaumcraft.isModLoaded()) {
+            generateFluidPipes(Materials.Void, Materials.Void.mName, 5420, 1600, 25000, true);
+            generateFluidMultiPipes(Materials.Void, Materials.Void.mName, 5425, 1600, 25000, true);
+        }
+        generateFluidPipes(GregtechOrePrefixes.GT_Materials.Tantalloy60, GregtechOrePrefixes.GT_Materials.Tantalloy60.mDefaultLocalName, 5430, 10000, 4250, true);
+        generateFluidMultiPipes(GregtechOrePrefixes.GT_Materials.Tantalloy60, GregtechOrePrefixes.GT_Materials.Tantalloy60.mDefaultLocalName, 5435, 10000, 4250, true);
+
+        // EV Pipes
+        generateFluidPipes(Materials.Titanium, Materials.Titanium.mName, 5500, 480, 5000, true);
+        generateFluidMultiPipes(Materials.Titanium, Materials.Titanium.mName, 5505, 480, 5000, true);
+        generateFluidPipes(Materials.NiobiumTitanium, Materials.NiobiumTitanium.mName, 5510, 900, 2900, true);
+        generateFluidMultiPipes(Materials.NiobiumTitanium, Materials.NiobiumTitanium.mName, 5515, 900, 2900, true);
+        generateFluidPipes(
+            GregtechOrePrefixes.GT_Materials.Inconel690,
+            GregtechOrePrefixes.GT_Materials.Inconel690.mDefaultLocalName,
+            5520,
+            15000,
+            4800,
+            true);
+        generateFluidMultiPipes(
+            GregtechOrePrefixes.GT_Materials.Inconel690,
+            GregtechOrePrefixes.GT_Materials.Inconel690.mDefaultLocalName,
+            5525,
+            15000,
+            4800,
+            true);
+        generateFluidPipes(
+            GregtechOrePrefixes.GT_Materials.Inconel792,
+            GregtechOrePrefixes.GT_Materials.Inconel792.mDefaultLocalName,
+            5530,
+            16000,
+            5500,
+            true);
+        generateFluidMultiPipes(
+            GregtechOrePrefixes.GT_Materials.Inconel792,
+            GregtechOrePrefixes.GT_Materials.Inconel792.mDefaultLocalName,
+            5535,
+            16000,
+            5500,
+            true);
+        generateFluidPipes(
+            GregtechOrePrefixes.GT_Materials.Tantalloy61,
+            GregtechOrePrefixes.GT_Materials.Tantalloy61.mDefaultLocalName,
+            5540,
+            12000,
+            5800,
+            true);
+        generateFluidMultiPipes(
+            GregtechOrePrefixes.GT_Materials.Tantalloy61,
+            GregtechOrePrefixes.GT_Materials.Tantalloy61.mDefaultLocalName,
+            5545,
+            12000,
+            5800,
+            true);
+        generateFluidPipes(GregtechOrePrefixes.GT_Materials.Staballoy, GregtechOrePrefixes.GT_Materials.Staballoy.mDefaultLocalName, 5550, 12500, 7500, true);
+        generateFluidMultiPipes(GregtechOrePrefixes.GT_Materials.Staballoy, GregtechOrePrefixes.GT_Materials.Staballoy.mDefaultLocalName, 5555, 12500, 7500, true);
+        generateFluidPipes(GGMaterial.incoloy903, 5560, 15000, 8000, true);
+        generateFluidMultiPipes(GGMaterial.incoloy903, 5565, 15000, 8000, true);
+        generateFluidPipes(Materials.Enderium, Materials.Enderium.mName, 5570, 1800, 15000, true);
+        generateFluidMultiPipes(Materials.Enderium, Materials.Enderium.mName, 5575, 1800, 15000, true);
+
+        // IV Pipes
+        generateFluidPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5600, 600, 7500, true);
+        generateFluidMultiPipes(Materials.TungstenSteel, Materials.TungstenSteel.mName, 5605, 600, 7500, true);
         generateFluidPipes(
             Materials.Polybenzimidazole,
             Materials.Polybenzimidazole.mName,
             "PBI",
-            5280,
+            5610,
             600,
             1000,
             true);
@@ -12492,14 +12600,58 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             Materials.Polybenzimidazole,
             Materials.Polybenzimidazole.mName,
             "PBI",
-            5290,
+            5615,
             600,
             1000,
             true);
+        generateFluidPipes(
+            GregtechOrePrefixes.GT_Materials.HastelloyX,
+            GregtechOrePrefixes.GT_Materials.HastelloyX.mDefaultLocalName,
+            5620,
+            20000,
+            4200,
+            true);
+        generateFluidMultiPipes(
+            GregtechOrePrefixes.GT_Materials.HastelloyX,
+            GregtechOrePrefixes.GT_Materials.HastelloyX.mDefaultLocalName,
+            5625,
+            20000,
+            4200,
+            true);
+        generateFluidPipes(
+            GregtechOrePrefixes.GT_Materials.MaragingSteel350,
+            GregtechOrePrefixes.GT_Materials.MaragingSteel350.mDefaultLocalName,
+            5630,
+            16000,
+            2500,
+            true);
+        generateFluidMultiPipes(
+            GregtechOrePrefixes.GT_Materials.MaragingSteel350,
+            GregtechOrePrefixes.GT_Materials.MaragingSteel350.mDefaultLocalName,
+            5635,
+            16000,
+            2500,
+            true);
+        generateFluidPipes(
+            GregtechOrePrefixes.GT_Materials.MaragingSteel300,
+            GregtechOrePrefixes.GT_Materials.MaragingSteel300.mDefaultLocalName,
+            5640,
+            14000,
+            2500,
+            true);
+        generateFluidMultiPipes(
+            GregtechOrePrefixes.GT_Materials.MaragingSteel300,
+            GregtechOrePrefixes.GT_Materials.MaragingSteel300.mDefaultLocalName,
+            5645,
+            14000,
+            2500,
+            true);
+        generateFluidPipes(Materials.Naquadah, Materials.Naquadah.mName, 5650, 9000, 19000, true);
+        generateFluidMultiPipes(Materials.Naquadah, Materials.Naquadah.mName, 5655, 9000, 19000, true);
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeSmall.get(Materials.Ultimate),
             new MTEFluid(
-                5165,
+                5661,
                 "GT_Pipe_HighPressure_Small",
                 "Small High Pressure Fluid Pipe",
                 0.375F,
@@ -12510,7 +12662,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeMedium.get(Materials.Ultimate),
             new MTEFluid(
-                5166,
+                5662,
                 "GT_Pipe_HighPressure",
                 "High Pressure Fluid Pipe",
                 0.5F,
@@ -12521,7 +12673,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         GTOreDictUnificator.registerOre(
             OrePrefixes.pipeLarge.get(Materials.Ultimate),
             new MTEFluid(
-                5167,
+                5663,
                 "GT_Pipe_HighPressure_Large",
                 "Large High Pressure Fluid Pipe",
                 0.75F,
@@ -12529,94 +12681,118 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 9600,
                 1500,
                 true).getStackForm(1L));
-        generateFluidPipes(Materials.Plastic, Materials.Plastic.mName, "Plastic", 5170, 360, 350, true);
-        generateFluidMultiPipes(Materials.Plastic, Materials.Plastic.mName, "Plastic", 5175, 360, 350, true);
-        generateFluidPipes(Materials.NiobiumTitanium, Materials.NiobiumTitanium.mName, 5180, 900, 2900, true);
-        generateFluidMultiPipes(Materials.NiobiumTitanium, Materials.NiobiumTitanium.mName, 5185, 900, 2900, true);
-        generateFluidPipes(Materials.Enderium, Materials.Enderium.mName, 5190, 1800, 15000, true);
-        generateFluidMultiPipes(Materials.Enderium, Materials.Enderium.mName, 5195, 1800, 15000, true);
-        generateFluidPipes(Materials.Naquadah, Materials.Naquadah.mName, 5200, 9000, 19000, true);
-        generateFluidMultiPipes(Materials.Naquadah, Materials.Naquadah.mName, 5205, 9000, 19000, true);
-        generateFluidPipes(Materials.Neutronium, Materials.Neutronium.mName, 5210, 16800, 1000000, true);
-        generateFluidMultiPipes(Materials.Neutronium, Materials.Neutronium.mName, 5215, 16800, 1000000, true);
-        generateFluidPipes(Materials.NetherStar, Materials.NetherStar.mName, 5220, 19200, 1000000, true);
-        generateFluidMultiPipes(Materials.NetherStar, Materials.NetherStar.mName, 5225, 19200, 1000000, true);
-        generateFluidPipes(Materials.MysteriousCrystal, Materials.MysteriousCrystal.mName, 5230, 24000, 1000000, true);
+
+        // LuV Pipes
+        generateFluidPipes(WerkstoffLoader.LuVTierMaterial, 5700, 9000, 19000, true);
+        generateFluidMultiPipes(WerkstoffLoader.LuVTierMaterial, 5705, 9000, 19000, true);
+        generateFluidPipes(
+            GregtechOrePrefixes.GT_Materials.TriniumNaquadahCarbonite,
+            GregtechOrePrefixes.GT_Materials.TriniumNaquadahCarbonite.mDefaultLocalName,
+            5710,
+            20,
+            250000,
+            true);
+        generateFluidMultiPipes(
+            GregtechOrePrefixes.GT_Materials.TriniumNaquadahCarbonite,
+            GregtechOrePrefixes.GT_Materials.TriniumNaquadahCarbonite.mDefaultLocalName,
+            5715,
+            20,
+            250000,
+            true);
+        generateFluidPipes(Materials.MysteriousCrystal, Materials.MysteriousCrystal.mName, 5720, 24000, 1000000, true);
         generateFluidMultiPipes(
             Materials.MysteriousCrystal,
             Materials.MysteriousCrystal.mName,
-            5235,
+            5725,
             24000,
             1000000,
             true);
-        generateFluidPipes(Materials.DraconiumAwakened, Materials.DraconiumAwakened.mName, 5240, 45000, 10000000, true);
+        generateFluidPipes(Materials.Europium, Materials.Europium.mName, 5730, 12000, 7500, true);
+        generateFluidMultiPipes(Materials.Europium, Materials.Europium.mName, 5735, 12000, 7500, true);
+
+        // ZPM Pipes
+        generateFluidPipes(Materials.Americium, Materials.Americium.mName, 5800, 12000, 7500, true);
+        generateFluidMultiPipes(Materials.Americium, Materials.Americium.mName, 5805, 12000, 7500, true);
+
+        // UV Pipes
+        generateFluidPipes(Materials.NetherStar, Materials.NetherStar.mName, 5900, 19200, 1000000, true);
+        generateFluidMultiPipes(Materials.NetherStar, Materials.NetherStar.mName, 5905, 19200, 1000000, true);
+
+        // UHV Pipes
+        generateFluidPipes(Materials.Neutronium, Materials.Neutronium.mName, 6000, 16800, 1000000, true);
+        generateFluidMultiPipes(Materials.Neutronium, Materials.Neutronium.mName, 6005, 16800, 1000000, true);
+        if (NewHorizonsCoreMod.isModLoaded()) {
+            generateFluidPipes(Materials.get("RadoxPoly"), "RadoxPoly", 6010, 5000, 1500, true);
+            generateFluidPipes(Materials.get("RadoxPoly"), "RadoxPoly", 6015, 5000, 1500, true);
+        }
+        generateFluidPipes(Materials.DraconiumAwakened, Materials.DraconiumAwakened.mName, 6020, 45000, 10000000, true);
         generateFluidMultiPipes(
             Materials.DraconiumAwakened,
             Materials.DraconiumAwakened.mName,
-            5245,
+            6025,
             45000,
             10000000,
             true);
-        generateFluidPipes(Materials.Infinity, Materials.Infinity.mName, 5250, 60000, 10000000, true);
-        generateFluidMultiPipes(Materials.Infinity, Materials.Infinity.mName, 5255, 60000, 10000000, true);
-        generateFluidPipes(Materials.WroughtIron, Materials.WroughtIron.mName, 5260, 180, 2250, true);
-        generateFluidMultiPipes(Materials.WroughtIron, Materials.WroughtIron.mName, 5265, 180, 2250, true);
-        generateFluidPipes(
-            Materials.Polytetrafluoroethylene,
-            Materials.Polytetrafluoroethylene.mName,
-            "PTFE",
-            5680,
-            480,
-            600,
-            true);
-        generateFluidMultiPipes(
-            Materials.Polytetrafluoroethylene,
-            Materials.Polytetrafluoroethylene.mName,
-            "PTFE",
-            5685,
-            480,
-            600,
-            true);
-        generateFluidPipes(
-            MaterialsUEVplus.SpaceTime,
-            MaterialsUEVplus.SpaceTime.mName,
-            5300,
-            250000,
-            2147483647,
-            true);
-        generateFluidMultiPipes(
-            MaterialsUEVplus.SpaceTime,
-            MaterialsUEVplus.SpaceTime.mName,
-            5305,
-            250000,
-            2147483647,
-            true);
+        generateFluidPipes(Materials.Infinity, Materials.Infinity.mName, 6030, 60000, 10000000, true);
+        generateFluidMultiPipes(Materials.Infinity, Materials.Infinity.mName, 6035, 60000, 10000000, true);
+
+        // UEV Pipes
         generateFluidPipes(
             MaterialsUEVplus.TranscendentMetal,
             MaterialsUEVplus.TranscendentMetal.mName,
-            5310,
+            6100,
             220000,
             2147483647,
             true);
         generateFluidMultiPipes(
             MaterialsUEVplus.TranscendentMetal,
             MaterialsUEVplus.TranscendentMetal.mName,
-            5315,
+            6105,
+            220000,
+            2147483647,
+            true);
+        // UIV Pipes
+        generateFluidPipes(
+            MaterialsUEVplus.ProtoHalkonite,
+            MaterialsUEVplus.TranscendentMetal.mName,
+            6200,
+            220000,
+            2147483647,
+            true);
+        generateFluidMultiPipes(
+            MaterialsUEVplus.ProtoHalkonite,
+            MaterialsUEVplus.TranscendentMetal.mName,
+            6205,
             220000,
             2147483647,
             true);
 
-        generateItemPipes(Materials.Brass, Materials.Brass.mName, 5602, 1);
-        generateItemPipes(Materials.Electrum, Materials.Electrum.mName, 5612, 2);
-        generateItemPipes(Materials.Platinum, Materials.Platinum.mName, 5622, 4);
-        generateItemPipes(Materials.Osmium, Materials.Osmium.mName, 5632, 8);
-        generateItemPipes(Materials.PolyvinylChloride, Materials.PolyvinylChloride.mName, "PVC", 5690, 4);
-        generateItemPipes(Materials.Nickel, Materials.Nickel.mName, 5700, 1);
-        generateItemPipes(Materials.Cobalt, Materials.Cobalt.mName, 5710, 2);
-        generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 5720, 2);
-        if (NewHorizonsCoreMod.isModLoaded()) {
-            generateFluidPipes(Materials.get("RadoxPoly"), "RadoxPoly", 5760, 5000, 1500, true);
-        }
+        // UMV Pipes
+        generateFluidPipes(
+            MaterialsUEVplus.SpaceTime,
+            MaterialsUEVplus.SpaceTime.mName,
+            6300,
+            250000,
+            2147483647,
+            true);
+        generateFluidMultiPipes(
+            MaterialsUEVplus.SpaceTime,
+            MaterialsUEVplus.SpaceTime.mName,
+            6305,
+            250000,
+            2147483647,
+            true);
+
+
+//        generateItemPipes(Materials.Brass, Materials.Brass.mName, 5602, 1);
+//        generateItemPipes(Materials.Electrum, Materials.Electrum.mName, 5612, 2);
+//        generateItemPipes(Materials.Platinum, Materials.Platinum.mName, 5622, 4);
+//        generateItemPipes(Materials.Osmium, Materials.Osmium.mName, 5632, 8);
+//        generateItemPipes(Materials.PolyvinylChloride, Materials.PolyvinylChloride.mName, "PVC", 5690, 4);
+//        generateItemPipes(Materials.Nickel, Materials.Nickel.mName, 5700, 1);
+//        generateItemPipes(Materials.Cobalt, Materials.Cobalt.mName, 5710, 2);
+//        generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 5720, 2);
+
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
@@ -13041,6 +13217,34 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             gasProof);
     }
 
+    private static void generateFluidPipes(GregtechOrePrefixes.GT_Materials aMaterial, String name, int startID, int baseCapacity,
+                                           int heatCapacity, boolean gasProof) {
+        generateFluidPipes(
+            aMaterial,
+            name,
+            GTLanguageManager.i18nPlaceholder ? "%material" : aMaterial.mDefaultLocalName,
+            startID,
+            baseCapacity,
+            heatCapacity,
+            gasProof);
+    }
+
+    private static void generateFluidPipes(Werkstoff aMaterial, int startID, int baseCapacity,
+                                           int heatCapacity, boolean gasProof) {
+        Materials material = aMaterial.getBridgeMaterial();
+        if(material == null) {
+            return;
+        }
+        generateFluidPipes(
+            material,
+            material.mName,
+            GTLanguageManager.i18nPlaceholder ? "%material" : material.mName,
+            startID,
+            baseCapacity,
+            heatCapacity,
+            gasProof);
+    }
+
     private static void generateFluidPipes(Materials aMaterial, String name, String displayName, int startID,
         int baseCapacity, int heatCapacity, boolean gasProof) {
         GTOreDictUnificator.registerOre(
@@ -13100,10 +13304,84 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 gasProof).getStackForm(1L));
     }
 
+    private static void generateFluidPipes(GregtechOrePrefixes.GT_Materials aMaterial, String name, String displayName, int startID,
+                                           int baseCapacity, int heatCapacity, boolean gasProof) {
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.pipeTiny.get(aMaterial),
+            new GTPPMTEFluid(
+                startID,
+                "GT_Pipe_" + name + "_Tiny",
+                "Tiny " + name + " Fluid Pipe",
+                0.25F,
+                aMaterial,
+                baseCapacity / 6,
+                heatCapacity,
+                gasProof).getStackForm(1L));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.pipeSmall.get(aMaterial),
+            new GTPPMTEFluid(
+                startID + 1,
+                "GT_Pipe_" + name + "_Small",
+                "Small " + name + " Fluid Pipe",
+                0.375F,
+                aMaterial,
+                baseCapacity / 3,
+                heatCapacity,
+                gasProof).getStackForm(1L));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.pipeMedium.get(aMaterial),
+            new GTPPMTEFluid(
+                startID + 2,
+                "GT_Pipe_" + name,
+                name + " Fluid Pipe",
+                0.5F,
+                aMaterial,
+                baseCapacity,
+                heatCapacity,
+                gasProof).getStackForm(1L));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.pipeLarge.get(aMaterial),
+            new GTPPMTEFluid(
+                startID + 3,
+                "GT_Pipe_" + name + "_Large",
+                "Large " + name + " Fluid Pipe",
+                0.75F,
+                aMaterial,
+                baseCapacity * 2,
+                heatCapacity,
+                gasProof).getStackForm(1L));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.pipeHuge.get(aMaterial),
+            new GTPPMTEFluid(
+                startID + 4,
+                "GT_Pipe_" + name + "_Huge",
+                "Huge " + name + " Fluid Pipe",
+                0.875F,
+                aMaterial,
+                baseCapacity * 4,
+                heatCapacity,
+                gasProof).getStackForm(1L));
+    }
+
+
     @SuppressWarnings("SameParameterValue")
     private static void generateFluidMultiPipes(Materials aMaterial, String name, int startID, int baseCapacity,
         int heatCapacity, boolean gasProof) {
         generateFluidMultiPipes(aMaterial, name, "%material", startID, baseCapacity, heatCapacity, gasProof);
+    }
+
+    private static void generateFluidMultiPipes(GregtechOrePrefixes.GT_Materials aMaterial, String name, int startID, int baseCapacity,
+                                                int heatCapacity, boolean gasProof) {
+        generateFluidMultiPipes(aMaterial, name, "%material", startID, baseCapacity, heatCapacity, gasProof);
+    }
+
+    private static void generateFluidMultiPipes(Werkstoff aMaterial, int startID, int baseCapacity,
+                                                int heatCapacity, boolean gasProof) {
+        Materials material = aMaterial.getBridgeMaterial();
+        if(material == null) {
+            return;
+        }
+        generateFluidMultiPipes(material, material.mName, "%material", startID, baseCapacity, heatCapacity, gasProof);
     }
 
     private static void generateFluidMultiPipes(Materials aMaterial, String name, String displayName, int startID,
@@ -13126,6 +13404,34 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 startID + 1,
                 "GT_Pipe_" + name + "_Nonuple",
                 "Nonuple " + displayName + " Fluid Pipe",
+                1.0F,
+                aMaterial,
+                baseCapacity / 3,
+                heatCapacity,
+                gasProof,
+                9).getStackForm(1L));
+    }
+
+    private static void generateFluidMultiPipes(GregtechOrePrefixes.GT_Materials aMaterial, String name, String displayName, int startID,
+                                                int baseCapacity, int heatCapacity, boolean gasProof) {
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.pipeQuadruple.get(aMaterial),
+            new GTPPMTEFluid(
+                startID,
+                "GT_Pipe_" + name + "_Quadruple",
+                "Quadruple " + name + " Fluid Pipe",
+                1.0F,
+                aMaterial,
+                baseCapacity,
+                heatCapacity,
+                gasProof,
+                4).getStackForm(1L));
+        GTOreDictUnificator.registerOre(
+            OrePrefixes.pipeNonuple.get(aMaterial),
+            new GTPPMTEFluid(
+                startID + 1,
+                "GT_Pipe_" + name + "_Nonuple",
+                "Nonuple " + name + " Fluid Pipe",
                 1.0F,
                 aMaterial,
                 baseCapacity / 3,
