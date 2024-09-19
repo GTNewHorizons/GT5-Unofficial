@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+import ggfab.ConfigurationHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -65,7 +66,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import ggfab.ConfigurationHandler;
 import ggfab.GGConstants;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
@@ -107,7 +107,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine> implements ISurvivalConstructable {
 
     private static final ItemStack NOT_CHECKED = new ItemStack(Blocks.dirt);
-    public static final double LASER_OVERCLOCK_PENALTY_FACTOR = ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor();
+    public static final double LASER_OVERCLOCK_PENALTY_FACTOR = ConfigurationHandler.laserOCPenaltyFactor;
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";

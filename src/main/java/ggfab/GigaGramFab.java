@@ -4,6 +4,8 @@ import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.IDMetaTool01.*;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.Mod;
@@ -27,9 +29,20 @@ import gregtech.api.util.ProcessingArrayManager;
     modid = GGConstants.MODID,
     version = GGConstants.VERSION,
     name = GGConstants.MODNAME,
+    guiFactory = "ggfab.ConfigurationHandler",
     acceptedMinecraftVersions = "[1.7.10]",
     dependencies = "required-after:IC2;required-before:gregtech")
 public class GigaGramFab {
+
+
+    static {
+        try {
+            ConfigurationManager.registerConfig(ConfigurationHandler.class);
+
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public GigaGramFab() {
         // initialize the textures
@@ -126,7 +139,6 @@ public class GigaGramFab {
         });
         GregTechAPI.sBeforeGTPostload.add(new ComponentRecipeLoader());
         GregTechAPI.sBeforeGTPostload.add(new SingleUseToolRecipeLoader());
-        ConfigurationHandler.INSTANCE.init(event.getSuggestedConfigurationFile());
 
         initDumbItem1();
     }
