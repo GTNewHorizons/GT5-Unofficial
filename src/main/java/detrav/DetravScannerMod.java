@@ -44,13 +44,6 @@ public class DetravScannerMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        Configuration Config = new Configuration(event.getSuggestedConfigurationFile());
-        Config.load();
-
-        if (Config.hasChanged()) {
-            Config.save();
-        }
-
         proxy.onPreInit();
     }
 
