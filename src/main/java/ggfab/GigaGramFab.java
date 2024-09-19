@@ -29,7 +29,7 @@ import gregtech.api.util.ProcessingArrayManager;
     modid = GGConstants.MODID,
     version = GGConstants.VERSION,
     name = GGConstants.MODNAME,
-    guiFactory = "ggfab.ConfigurationHandler",
+    guiFactory = "ggfab.GGFabGUIFactory",
     acceptedMinecraftVersions = "[1.7.10]",
     dependencies = "required-after:IC2;required-before:gregtech")
 public class GigaGramFab {
