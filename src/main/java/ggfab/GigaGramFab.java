@@ -4,9 +4,10 @@ import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.IDMetaTool01.*;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
-import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -33,7 +34,6 @@ import gregtech.api.util.ProcessingArrayManager;
     acceptedMinecraftVersions = "[1.7.10]",
     dependencies = "required-after:IC2;required-before:gregtech")
 public class GigaGramFab {
-
 
     static {
         try {
