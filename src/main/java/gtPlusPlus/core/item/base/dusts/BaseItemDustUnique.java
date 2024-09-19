@@ -17,6 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.StringUtils;
@@ -120,7 +121,7 @@ public class BaseItemDustUnique extends Item {
     }
 
     private String getCorrectTexture(final String pileSize) {
-        if (!GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (!Configuration.visual.useGregtechTextures) {
             if ((pileSize.equals("dust")) || (pileSize.equals("Dust"))) {
                 this.setTextureName(GTPlusPlus.ID + ":" + "dust");
             } else {

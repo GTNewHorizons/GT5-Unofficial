@@ -12,9 +12,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.everglades.dimension.DimensionEverglades;
 
 public class BiomeEverglades {
@@ -38,11 +38,9 @@ public class BiomeEverglades {
 
         @SuppressWarnings("unchecked")
         public BiomeGenEverglades() {
-            super(GTPPCore.EVERGLADESBIOME_ID);
-            // this.setBiomeID();
+            super(Configuration.worldgen.EVERGLADESBIOME_ID);
             this.theBiomeDecorator = new CustomBiomeGenerator();
             this.theBiomeDecorator.treesPerChunk = 10;
-            // Logger.INFO("Dark World Temperature Category: "+getTempCategory());
             this.setBiomeName("Toxic Everglades");
             this.topBlock = DimensionEverglades.blockTopLayer;
             this.fillerBlock = DimensionEverglades.blockSecondLayer;

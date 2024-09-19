@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Level;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem03;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class PreloaderGTOreDict {
@@ -54,7 +54,7 @@ public class PreloaderGTOreDict {
             }
 
         } catch (final Throwable e) {
-            if (GTPPCore.ConfigSwitches.showHiddenNEIItems) {
+            if (Configuration.debug.showHiddenNEIItems) {
                 FMLRelaunchLog.log(
                     "[GT++ ASM] OreDictTransformer",
                     Level.INFO,

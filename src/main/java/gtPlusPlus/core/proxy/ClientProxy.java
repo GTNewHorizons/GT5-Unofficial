@@ -31,12 +31,12 @@ import gtPlusPlus.core.client.renderer.RenderSickBlaze;
 import gtPlusPlus.core.client.renderer.RenderStaballoyConstruct;
 import gtPlusPlus.core.client.renderer.RenderToxinball;
 import gtPlusPlus.core.common.CommonProxy;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.nei.NEIGTPPConfig;
 import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
@@ -92,7 +92,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void onLoadComplete(FMLLoadCompleteEvent event) {
-        if (GTPPCore.ConfigSwitches.hideUniversalCells) {
+        if (Configuration.features.hideUniversalCells) {
             hideUniversalCells();
         }
         super.onLoadComplete(event);
