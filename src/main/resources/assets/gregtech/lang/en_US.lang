@@ -621,6 +621,17 @@ GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
 GT5U.item.tank.locked_to=Content locked to %s
 
+gt.behaviour.paintspray.infinite.gui.header=Select a Color
+gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
+gt.behaviour.paintspray.infinite.gui.solvent=Solvent
+
+gt.behaviour.paintspray.infinite.tooltip.infinite=Infinite uses
+gt.behaviour.paintspray.infinite.tooltip.more_info=Hold SHIFT for more information
+gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
+gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
+gt.behaviour.paintspray.infinite.tooltip.lock=Sneak Middle Click: Lock or unlock spray can
+gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
+
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
 GT5U.hatch.disableMultiStack.true=Multi Stack Input §cOff§r
