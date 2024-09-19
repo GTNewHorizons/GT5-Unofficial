@@ -363,21 +363,6 @@ public class GTUtility {
         return null;
     }
 
-    public static Object callConstructor(String aClass, int aConstructorIndex, Object aReplacementObject,
-        boolean aLogErrors, Object... aParameters) {
-        try {
-            return callConstructor(
-                Class.forName(aClass),
-                aConstructorIndex,
-                aReplacementObject,
-                aLogErrors,
-                aParameters);
-        } catch (Throwable e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
-        }
-        return aReplacementObject;
-    }
-
     public static Object callConstructor(Class<?> aClass, int aConstructorIndex, Object aReplacementObject,
         boolean aLogErrors, Object... aParameters) {
         if (aConstructorIndex < 0) {
