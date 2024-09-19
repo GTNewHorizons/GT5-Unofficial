@@ -62,7 +62,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
@@ -401,31 +400,12 @@ public class GTUtility {
         return aReplacementObject;
     }
 
-    public static String capitalizeString(String aString) {
-        if (aString != null && aString.length() > 0) return aString.substring(0, 1)
-            .toUpperCase() + aString.substring(1);
-        return E;
-    }
-
-    public static boolean getPotion(EntityLivingBase aPlayer, int aPotionIndex) {
-        try {
-            Field tPotionHashmap = null;
-
-            Field[] fields = EntityLiving.class.getDeclaredFields();
-
-            for (Field field : fields) {
-                if (field.getType() == HashMap.class) {
-                    tPotionHashmap = field;
-                    tPotionHashmap.setAccessible(true);
-                    break;
-                }
-            }
-
-            if (tPotionHashmap != null) return ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).get(aPotionIndex) != null;
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
+    public static String capitalizeString(String s) {
+        if (s != null && !s.isEmpty()) {
+            return s.substring(0, 1)
+                .toUpperCase() + s.substring(1);
         }
-        return false;
+        return "";
     }
 
     public static String getClassName(Object aObject) {
@@ -436,26 +416,6 @@ public class GTUtility {
                 aObject.getClass()
                     .getName()
                     .lastIndexOf(".") + 1);
-    }
-
-    public static void removePotion(EntityLivingBase aPlayer, int aPotionIndex) {
-        try {
-            Field tPotionHashmap = null;
-
-            Field[] fields = EntityLiving.class.getDeclaredFields();
-
-            for (Field field : fields) {
-                if (field.getType() == HashMap.class) {
-                    tPotionHashmap = field;
-                    tPotionHashmap.setAccessible(true);
-                    break;
-                }
-            }
-
-            if (tPotionHashmap != null) ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).remove(aPotionIndex);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
     }
 
     public static boolean getFullInvisibility(EntityPlayer aPlayer) {

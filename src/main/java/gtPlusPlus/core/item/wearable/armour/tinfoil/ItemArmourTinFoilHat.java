@@ -28,7 +28,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.wearable.armour.ArmourLoader;
 import gtPlusPlus.core.item.wearable.armour.base.BaseArmourHelm;
 
@@ -120,55 +119,39 @@ public class ItemArmourTinFoilHat extends BaseArmourHelm {
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
         if (itemStack != null && player != null && world != null && !world.isRemote) {
             if (player instanceof EntityPlayer) {
-
                 // Apply Slow
-                if (!GTUtility.getPotion(player, Potion.moveSlowdown.id)) {
+                if (!player.isPotionActive(Potion.moveSlowdown.id)) {
                     player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 2, 1, true));
                 }
-
                 // Move Xp orbs away
-                try {
-                    AxisAlignedBB box = player.boundingBox;
-                    box.maxX = player.posX + 5;
-                    box.maxY = player.posY + 5;
-                    box.maxZ = player.posZ + 5;
-                    box.minX = player.posX - 5;
-                    box.minY = player.posY - 5;
-                    box.minZ = player.posZ - 5;
-                    @SuppressWarnings("unchecked")
-                    List<Entity> g = world.getEntitiesWithinAABBExcludingEntity(player, box);
-                    if (g.size() > 0) {
-                        for (Entity e : g) {
-                            if (e != null) {
-                                if (!EntityXPOrb.class.isInstance(e) && !EntityBoat.class.isInstance(e)
-                                    && !EntitySnowball.class.isInstance(e)
-                                    && !EntityFireball.class.isInstance(e)
-                                    && !EntityEgg.class.isInstance(e)
-                                    && !EntityExpBottle.class.isInstance(e)
-                                    && !EntityEnderEye.class.isInstance(e)
-                                    && !EntityEnderPearl.class.isInstance(e)) {
-                                    continue;
-                                } else {
-                                    // Logger.INFO("Found "+e.getClass().getName());
-                                    double distX = player.posX - e.posX;
-                                    double distZ = player.posZ - e.posZ;
-                                    double distY = e.posY + 1.5D - player.posY;
-                                    double dir = Math.atan2(distZ, distX);
-                                    double speed = 1F / e.getDistanceToEntity(player) * 0.5;
-                                    speed = -speed;
-                                    if (distY < 0) {
-                                        e.motionY += speed;
-                                    }
-                                    e.motionX = Math.cos(dir) * speed;
-                                    e.motionZ = Math.sin(dir) * speed;
-                                }
-                            }
+                final AxisAlignedBB box = player.getBoundingBox();
+                if (box != null) {
+                    List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(
+                        player,
+                        box.expand(5, 5, 5),
+                        e -> e instanceof EntityXPOrb || e instanceof EntityBoat
+                            || e instanceof EntitySnowball
+                            || e instanceof EntityFireball
+                            || e instanceof EntityEgg
+                            || e instanceof EntityExpBottle
+                            || e instanceof EntityEnderEye
+                            || e instanceof EntityEnderPearl);
+                    for (Entity e : list) {
+                        double distX = player.posX - e.posX;
+                        double distZ = player.posZ - e.posZ;
+                        double distY = e.posY + 1.5D - player.posY;
+                        double dir = Math.atan2(distZ, distX);
+                        double speed = 1F / e.getDistanceToEntity(player) * 0.5;
+                        speed = -speed;
+                        if (distY < 0) {
+                            e.motionY += speed;
                         }
+                        e.motionX = Math.cos(dir) * speed;
+                        e.motionZ = Math.sin(dir) * speed;
                     }
-                } catch (Throwable t) {}
+                }
             }
         }
-
         super.onArmorTick(world, player, itemStack);
     }
 
