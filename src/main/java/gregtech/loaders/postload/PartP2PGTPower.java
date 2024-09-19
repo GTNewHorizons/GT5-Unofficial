@@ -1,7 +1,5 @@
 package gregtech.loaders.postload;
 
-import java.lang.reflect.Field;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -11,10 +9,8 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.ticking.IGridTickable;
 import appeng.api.networking.ticking.TickRateModulation;
 import appeng.api.networking.ticking.TickingRequest;
-import appeng.parts.AEBasePart;
 import appeng.parts.p2p.PartP2PIC2Power;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.util.GTLog;
 
 public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
 
@@ -87,18 +83,5 @@ public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
     @Override
     public TickRateModulation tickingRequest(IGridNode iGridNode, int i) {
         return outputEnergy() ? TickRateModulation.FASTER : TickRateModulation.SLOWER;
-    }
-
-    @Override
-    public ForgeDirection getSide() {
-        try {
-            Field fSide = AEBasePart.class.getDeclaredField("side");
-            fSide.setAccessible(true);
-            return (ForgeDirection) fSide.get(this);
-        } catch (Exception e) {
-            GTLog.out.println("A fatal error occured at the P2P tunnel for GT electricity");
-            e.printStackTrace(GTLog.out);
-            throw new RuntimeException(e);
-        }
     }
 }

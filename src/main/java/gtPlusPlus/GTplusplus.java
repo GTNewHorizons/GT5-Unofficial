@@ -3,7 +3,6 @@ package gtPlusPlus;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gtPlusPlus.core.lib.GTPPCore.ConfigSwitches.enableCustomCapes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +34,6 @@ import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
-import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.config.ConfigHandler;
 import gtPlusPlus.core.handler.BookHandler;
@@ -43,7 +41,6 @@ import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.plugin.manager.CoreManager;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
@@ -111,15 +108,12 @@ public class GTplusplus implements ActionListener {
 
     public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
-    // Mod Instance
     @Mod.Instance(Names.G_T_PLUS_PLUS)
     public static GTplusplus instance;
 
-    // GT++ Proxy Instances
-    @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.proxy.ServerProxy")
+    @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")
     public static CommonProxy proxy;
 
-    // Loads Textures
     @SideOnly(value = Side.CLIENT)
     public static void loadTextures() {
         Logger.INFO("Loading some textures on the client.");
@@ -142,17 +136,12 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.SUPER.setPhaseActive(true);
     }
 
-    // Pre-Init
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         INIT_PHASE.PRE_INIT.setPhaseActive(true);
         // Load all class objects within the plugin package.
         CoreManager.veryEarlyInit();
         PacketHandler.init();
-
-        if (!Utils.isServer()) {
-            enableCustomCapes = true;
-        }
 
         // Give this a go mate.
         setupMaterialBlacklist();
@@ -169,7 +158,6 @@ public class GTplusplus implements ActionListener {
         CoreManager.preInit();
     }
 
-    // Init
     @Mod.EventHandler
     public void init(final FMLInitializationEvent event) {
         INIT_PHASE.INIT.setPhaseActive(true);
@@ -183,7 +171,6 @@ public class GTplusplus implements ActionListener {
         }
     }
 
-    // Post-Init
     @Mod.EventHandler
     public void postInit(final FMLPostInitializationEvent event) {
         INIT_PHASE.POST_INIT.setPhaseActive(true);
@@ -221,7 +208,6 @@ public class GTplusplus implements ActionListener {
     @EventHandler
     public synchronized void serverStarting(final FMLServerStartingEvent event) {
         INIT_PHASE.SERVER_START.setPhaseActive(true);
-        event.registerServerCommand(new CommandMath());
         event.registerServerCommand(new CommandEnableDebugWhileRunning());
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());

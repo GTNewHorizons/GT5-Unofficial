@@ -4,10 +4,13 @@ import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -29,25 +32,23 @@ import gtPlusPlus.core.handler.CompatIntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
-import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
+import gtPlusPlus.core.handler.events.MolecularTransformerTooltipNotice;
 import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy {
 
     public CommonProxy() {
         // Should Register Gregtech Materials I've Made
-        Utils.registerEvent(this);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public void preInit(final FMLPreInitializationEvent e) {
@@ -79,16 +80,18 @@ public class CommonProxy {
     public void init(final FMLInitializationEvent e) {
         CI.init();
 
-        Utils.registerEvent(new GeneralTooltipEventHandler());
-        // Handles Tooltips for items giving custom multiblock behaviour
-        Utils.registerEvent(new SpecialBehaviourTooltipHandler());
+        if (Mods.AdvancedSolarPanel.isModLoaded()) {
+            MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
+        }
         // Handles Sleep Benefits
         PlayerSleepEventHandler.init();
         // Handles Magic Feather
-        Utils.registerEvent(ModItems.itemMagicFeather);
-
-        Utils.registerEvent(new EnderDragonDeathHandler());
-        Utils.registerEvent(new EntityDeathHandler());
+        MinecraftForge.EVENT_BUS.register(ModItems.itemMagicFeather);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(ModItems.itemMagicFeather);
+        MinecraftForge.EVENT_BUS.register(new EnderDragonDeathHandler());
+        MinecraftForge.EVENT_BUS.register(new EntityDeathHandler());
 
         // Compat Handling
         CompatHandler.registerMyModsOreDictEntries();
@@ -204,38 +207,28 @@ public class CommonProxy {
         return ctx.getServerHandler().playerEntity;
     }
 
-    @SuppressWarnings("unused") // used by the event bus
+    @Optional.Method(modid = Mods.Names.BAUBLES)
     @SubscribeEvent
     public void onPlayerAttacked(LivingAttackEvent event) {
-        if (Mods.Baubles.isModLoaded()) {
-            BaubleAttackHandler.run(event);
+        if (!(event.entityLiving instanceof EntityPlayer player)) {
+            return;
         }
-    }
-
-    // Prevent class loading errors if Baubles are missing
-    private static final class BaubleAttackHandler {
-
-        public static void run(LivingAttackEvent event) {
-            if (!(event.entityLiving instanceof EntityPlayer player)) {
-                return;
-            }
-            InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
-            if (baubles == null) {
-                return;
-            }
-            final ItemStack bauble1 = baubles.getStackInSlot(1);
-            if (bauble1 != null && bauble1.getItem() instanceof BaseBauble gtBauble
-                && gtBauble.getDamageNegations()
-                    .contains(event.source.damageType)) {
-                event.setCanceled(true);
-                return;
-            }
-            final ItemStack bauble2 = baubles.getStackInSlot(2);
-            if (bauble2 != null && bauble2.getItem() instanceof BaseBauble gtBauble
-                && gtBauble.getDamageNegations()
-                    .contains(event.source.damageType)) {
-                event.setCanceled(true);
-            }
+        InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
+        if (baubles == null) {
+            return;
+        }
+        final ItemStack bauble1 = baubles.getStackInSlot(1);
+        if (bauble1 != null && bauble1.getItem() instanceof BaseBauble gtBauble
+            && gtBauble.getDamageNegations()
+                .contains(event.source.damageType)) {
+            event.setCanceled(true);
+            return;
+        }
+        final ItemStack bauble2 = baubles.getStackInSlot(2);
+        if (bauble2 != null && bauble2.getItem() instanceof BaseBauble gtBauble
+            && gtBauble.getDamageNegations()
+                .contains(event.source.damageType)) {
+            event.setCanceled(true);
         }
     }
 }

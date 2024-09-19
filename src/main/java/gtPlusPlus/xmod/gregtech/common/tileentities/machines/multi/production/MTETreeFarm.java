@@ -348,7 +348,8 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 int tierMultiplier = getTierMultiplier(tier);
 
                 List<ItemStack> outputs = new ArrayList<>();
-                for (Mode mode : Mode.values()) {
+                final Mode[] MODE_VALUES = Mode.values();
+                for (Mode mode : MODE_VALUES) {
                     ItemStack output = outputPerMode.get(mode);
                     if (output == null) continue; // This sapling has no output in this mode.
 
@@ -379,7 +380,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 duration = TICKS_PER_OPERATION;
                 calculatedEut = GTValues.VP[tier];
 
-                for (Mode mode : Mode.values()) {
+                for (Mode mode : MODE_VALUES) {
                     if (outputPerMode.get(mode) != null) {
                         useToolForMode(mode, true);
                     }
@@ -780,10 +781,11 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
          * the mode multiplier, but not tool/tier multipliers as those can change dynamically. If the sapling has an
          * output in this mode, also add the tools usable for this mode as inputs.
          */
-        ItemStack[][] inputStacks = new ItemStack[Mode.values().length][];
-        ItemStack[] outputStacks = new ItemStack[Mode.values().length];
+        final Mode[] MODE_VALUES = Mode.values();
+        ItemStack[][] inputStacks = new ItemStack[MODE_VALUES.length][];
+        ItemStack[] outputStacks = new ItemStack[MODE_VALUES.length];
 
-        for (Mode mode : Mode.values()) {
+        for (Mode mode : MODE_VALUES) {
             ItemStack output = switch (mode) {
                 case LOG -> log;
                 case SAPLING -> saplingOut;
