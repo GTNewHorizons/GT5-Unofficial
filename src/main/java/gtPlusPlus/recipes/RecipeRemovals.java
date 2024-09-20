@@ -17,7 +17,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
@@ -36,7 +36,7 @@ public class RecipeRemovals {
     // Doesn't actually remove recipes, just hide them
     private static void removeCrudeTurbineRotors() {
         int aRemoved = 0;
-        int CUT = GTPPCore.turbineCutoffBase;
+        int CUT = Configuration.gregtech.turbineCutoffBase;
         Item aU;
         Collection<GTRecipe> aAssRecipes = RecipeMaps.assemblerRecipes.getAllRecipes();
         // 170, 172, 174, 176
