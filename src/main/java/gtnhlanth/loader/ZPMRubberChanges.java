@@ -43,16 +43,6 @@ public class ZPMRubberChanges implements Runnable {
     @SuppressWarnings("unchecked")
     public void run() {
 
-        List<IRecipe> bufferedRecipeList = null;
-
-        try {
-            bufferedRecipeList = (List<IRecipe>) FieldUtils
-                .getDeclaredField(GTModHandler.class, "sBufferRecipeList", true)
-                .get(null);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
         HashSet<ItemStack> ZPMPlusComponents = new HashSet<>();
         OrePrefixes[] RubberGenerated = { plate };
 
@@ -77,7 +67,7 @@ public class ZPMRubberChanges implements Runnable {
             GTLog.out.print(component.getDisplayName() + " ");
         }
 
-        replaceAllRecipes(ZPMPlusComponents, RubberGenerated, bufferedRecipeList);
+        replaceAllRecipes(ZPMPlusComponents, RubberGenerated, GTModHandler.sBufferRecipeList);
     }
 
     private static void replaceAllRecipes(Collection<ItemStack> ZPMPlusComponents, OrePrefixes[] RubberGenerated,

@@ -282,14 +282,7 @@ public class CircuitImprintLoader {
         BWCoreStaticReplacementMethodes.clearRecentlyUsedRecipes();
         RecipeMaps.slicerRecipes.getBackend()
             .removeRecipes(gtrecipeWorldCache);
-        recipeWorldCache.forEach(r -> {
-            try {
-                BWUtil.getGTBufferedRecipeList()
-                    .remove(r);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        GTModHandler.sBufferRecipeList.removeAll(recipeWorldCache);
         recipeWorldCache.clear();
         gtrecipeWorldCache.clear();
     }

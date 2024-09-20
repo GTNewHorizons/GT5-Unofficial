@@ -22,7 +22,7 @@ import gtPlusPlus.preloader.PreloaderCore;
 
 public class FireProtectionBauble extends BaseBauble {
 
-    private static Field isImmuneToFire;
+    private static final Field isImmuneToFire;
 
     static {
         isImmuneToFire = ReflectionUtils
