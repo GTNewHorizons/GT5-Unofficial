@@ -43,6 +43,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.ReflectionUtil;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
@@ -50,7 +51,6 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -73,7 +73,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     private static final Class<?> cofhWater;
 
     static {
-        cofhWater = ReflectionUtils.getClass("cofh.asmhooks.block.BlockWater");
+        cofhWater = ReflectionUtil.getClass("cofh.asmhooks.block.BlockWater");
     }
 
     public MTEIndustrialFishingPond(final int aID, final String aName, final String aNameRegional) {
