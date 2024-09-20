@@ -12,8 +12,6 @@ import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import gregtech.mixin.Mixin;
 import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.preloader.asm.PreloaderDummyContainer;
 import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 
 @IFMLLoadingPlugin.SortingIndex(Integer.MAX_VALUE) // Load as late as possible (after fastcraft/OptiFine).
@@ -32,6 +30,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
     }
 
     private static Boolean islwjgl3Present = null;
+    private static boolean DEV_ENVIRONMENT;
 
     @Override
     public String[] getASMTransformerClass() {
@@ -40,7 +39,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String getModContainerClass() {
-        return PreloaderDummyContainer.class.getName();
+        return null;
     }
 
     @Override
@@ -50,9 +49,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        // GT++
-        PreloaderCore.DEV_ENVIRONMENT = !(boolean) data.get("runtimeDeobfuscationEnabled");
-        PreloaderCore.DEBUG_MODE = ASMConfiguration.debug.debugMode;
+        DEV_ENVIRONMENT = !(boolean) data.get("runtimeDeobfuscationEnabled");
     }
 
     @Override
@@ -68,6 +65,10 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
     @Override
     public List<String> getMixins(Set<String> loadedCoreMods) {
         return Mixin.getEarlyMixins(loadedCoreMods);
+    }
+
+    public static boolean isDevEnv() {
+        return DEV_ENVIRONMENT;
     }
 
     public static boolean islwjgl3Present() {

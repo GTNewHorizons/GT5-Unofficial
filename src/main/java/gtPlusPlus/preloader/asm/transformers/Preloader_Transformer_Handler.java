@@ -10,7 +10,6 @@ import org.objectweb.asm.ClassWriter;
 
 import gregtech.asm.GTCorePlugin;
 import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.preloader.PreloaderLogger;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 
@@ -65,7 +64,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
         // Fix the OreDictionary COFH
         if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER)
-            && (ASMConfiguration.debug.enableCofhPatch || PreloaderCore.DEV_ENVIRONMENT)) {
+            && (ASMConfiguration.debug.enableCofhPatch || GTCorePlugin.isDevEnv())) {
             PreloaderLogger.INFO("COFH", "Transforming " + transformedName);
             return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter()
                 .toByteArray();
@@ -73,7 +72,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
         if (IC2_WRENCH_PATCH_CLASS_NAMES.contains(transformedName)) {
             PreloaderLogger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);
-            return new ClassTransformer_IC2_GetHarvestTool(basicClass, !PreloaderCore.DEV_ENVIRONMENT, transformedName)
+            return new ClassTransformer_IC2_GetHarvestTool(basicClass, !GTCorePlugin.isDevEnv(), transformedName)
                 .getWriter()
                 .toByteArray();
         }
@@ -82,7 +81,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         // Patching ItemWispEssence to allow invalid item handling
         if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && ASMConfiguration.general.enableTcAspectSafety) {
             PreloaderLogger.INFO("Thaumcraft WispEssence_Patch", "Transforming " + transformedName);
-            return new ClassTransformer_TC_ItemWispEssence(basicClass, !PreloaderCore.DEV_ENVIRONMENT).getWriter()
+            return new ClassTransformer_TC_ItemWispEssence(basicClass, !GTCorePlugin.isDevEnv()).getWriter()
                 .toByteArray();
         }
 

@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Level;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem03;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -18,12 +19,12 @@ public class PreloaderGTOreDict {
 
         if (bannedItem == null) {
             return false;
-        } else if (!PreloaderCore.enableOldGTcircuits) {
+        } else if (!ASMConfiguration.general.enableOldGTcircuits) {
             return false;
         }
 
         try {
-            if (PreloaderCore.enableOldGTcircuits) {
+            if (ASMConfiguration.general.enableOldGTcircuits) {
                 if ((bannedItem != null) && ItemUtils.getModId(bannedItem)
                     .toLowerCase()
                     .equals(GregTech.ID)) {
