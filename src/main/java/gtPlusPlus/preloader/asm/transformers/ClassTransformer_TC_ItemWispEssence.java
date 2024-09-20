@@ -44,48 +44,30 @@ import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 public class ClassTransformer_TC_ItemWispEssence {
 
-    private final boolean isValid;
-    private final ClassReader reader;
     private final ClassWriter writer;
 
     public ClassTransformer_TC_ItemWispEssence(byte[] basicClass, boolean obfuscated2) {
-        ClassReader aTempReader = null;
-        ClassWriter aTempWriter = null;
         FMLRelaunchLog.log(
             "[GT++ ASM] Thaumcraft WispEssence_Patch",
             Level.INFO,
             "Are we patching obfuscated methods? " + obfuscated2);
         String aGetColour = obfuscated2 ? "func_82790_a" : "getColorFromItemStack";
-        aTempReader = new ClassReader(basicClass);
-        aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
+        ClassReader aTempReader = new ClassReader(basicClass);
+        ClassWriter aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
         aTempReader.accept(new AddAdapter(aTempWriter, new String[] { "getAspects", aGetColour }), 0);
         injectMethod("getAspects", aTempWriter, obfuscated2);
         injectMethod(aGetColour, aTempWriter, obfuscated2);
-        if (aTempReader != null && aTempWriter != null) {
-            isValid = true;
-        } else {
-            isValid = false;
-        }
+        boolean isValid = true;
         FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Valid? " + isValid + ".");
-        reader = aTempReader;
         writer = aTempWriter;
-    }
-
-    public boolean isValidTransformer() {
-        return isValid;
-    }
-
-    public ClassReader getReader() {
-        return reader;
     }
 
     public ClassWriter getWriter() {
         return writer;
     }
 
-    public boolean injectMethod(String aMethodName, ClassWriter cw, boolean obfuscated) {
+    public void injectMethod(String aMethodName, ClassWriter cw, boolean obfuscated) {
         MethodVisitor mv;
-        boolean didInject = false;
         FMLRelaunchLog.log("[GT++ ASM] Thaumcraft WispEssence_Patch", Level.INFO, "Injecting " + aMethodName + ".");
 
         String aGetColour = obfuscated ? "func_82790_a" : "getColorFromItemStack";
@@ -176,7 +158,6 @@ public class ClassTransformer_TC_ItemWispEssence {
             mv.visitLocalVariable("aspects", "Lthaumcraft/api/aspects/AspectList;", null, l5, l3, 2);
             mv.visitMaxs(2, 3);
             mv.visitEnd();
-            didInject = true;
         } else if (aMethodName.equals(aGetColour)) {
 
             // thaumcraft/common/items/ItemWispEssence
@@ -269,17 +250,15 @@ public class ClassTransformer_TC_ItemWispEssence {
             mv.visitLocalVariable("idx", "I", null, l5, l6, 3);
             mv.visitMaxs(4, 4);
             mv.visitEnd();
-            didInject = true;
         }
 
         FMLRelaunchLog.log(
             "[GT++ ASM] Thaumcraft WispEssence_Patch",
             Level.INFO,
             "Method injection complete. " + (obfuscated ? "Obfuscated" : "Non-Obfuscated"));
-        return didInject;
     }
 
-    public class AddAdapter extends ClassVisitor {
+    public static class AddAdapter extends ClassVisitor {
 
         public AddAdapter(ClassVisitor cv, String[] aMethods) {
             super(ASM5, cv);

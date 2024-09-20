@@ -1,6 +1,5 @@
 package gregtech.asm;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,7 +9,6 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 
 import bartworks.common.configs.Configuration;
-import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import gregtech.mixin.Mixin;
 import gtPlusPlus.core.config.ASMConfiguration;
@@ -33,14 +31,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
         }
     }
 
-    public static File minecraftDir;
     private static Boolean islwjgl3Present = null;
-
-    public GTCorePlugin() {
-        // Injection Code taken from CodeChickenLib
-        if (minecraftDir != null) return; // get called twice, once for IFMLCallHook
-        minecraftDir = (File) FMLInjectionData.data()[6];
-    }
 
     @Override
     public String[] getASMTransformerClass() {
@@ -61,10 +52,6 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
     public void injectData(Map<String, Object> data) {
         // GT++
         PreloaderCore.DEV_ENVIRONMENT = !(boolean) data.get("runtimeDeobfuscationEnabled");
-        File mcDir = (File) data.get("mcLocation");
-        if (mcDir != null && mcDir.exists()) {
-            PreloaderCore.setMinecraftDirectory(mcDir);
-        }
         PreloaderCore.DEBUG_MODE = ASMConfiguration.debug.debugMode;
     }
 

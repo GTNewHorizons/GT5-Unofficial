@@ -28,8 +28,6 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ClassTransformer_LWJGL_Keyboard {
 
-    private final boolean isValid;
-    private final ClassReader reader;
     private final ClassWriter writer;
 
     private static final HashMap<String, String> mBadKeyCache = new HashMap<>();
@@ -119,10 +117,8 @@ public class ClassTransformer_LWJGL_Keyboard {
     }
 
     public ClassTransformer_LWJGL_Keyboard(byte[] basicClass, boolean isClientSettings) {
-        ClassReader aTempReader = null;
-        ClassWriter aTempWriter = null;
-        aTempReader = new ClassReader(basicClass);
-        aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
+        ClassReader aTempReader = new ClassReader(basicClass);
+        ClassWriter aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
         if (!isClientSettings) {
             // gtPlusPlus.preloader.keyboard.BetterKeyboard.init();
             aTempReader.accept(new PatchLWJGL(aTempWriter), 0);
@@ -132,23 +128,7 @@ public class ClassTransformer_LWJGL_Keyboard {
             aTempReader.accept(new PatchClientSettings(aTempWriter), 0);
             injectClientSettingPatch(aTempWriter);
         }
-        if (aTempReader != null && aTempWriter != null) {
-            isValid = true;
-        } else {
-            isValid = false;
-        }
-        FMLRelaunchLog
-            .log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Valid? " + isValid + ".");
-        reader = aTempReader;
         writer = aTempWriter;
-    }
-
-    public boolean isValidTransformer() {
-        return isValid;
-    }
-
-    public ClassReader getReader() {
-        return reader;
     }
 
     public ClassWriter getWriter() {
@@ -157,9 +137,8 @@ public class ClassTransformer_LWJGL_Keyboard {
 
     private boolean isClientSettingsObfuscated = false;
 
-    public boolean injectLWJGLPatch(ClassWriter cw) {
+    private void injectLWJGLPatch(ClassWriter cw) {
         MethodVisitor mv;
-        boolean didInject = false;
         FMLRelaunchLog
             .log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Injecting " + "getKeyName" + ".");
         mv = cw
@@ -181,16 +160,13 @@ public class ClassTransformer_LWJGL_Keyboard {
         mv.visitLocalVariable("key", "I", null, l0, l1, 0);
         mv.visitMaxs(1, 1);
         mv.visitEnd();
-        didInject = true;
 
         FMLRelaunchLog
             .log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Method injection complete.");
-        return didInject;
     }
 
-    public boolean injectClientSettingPatch(ClassWriter cw) {
+    private void injectClientSettingPatch(ClassWriter cw) {
         MethodVisitor mv;
-        boolean didInject = false;
         String aMethodName = this.isClientSettingsObfuscated ? "func_74298_c" : "getKeyDisplayString";
         FMLRelaunchLog
             .log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Injecting " + aMethodName + ".");
@@ -212,10 +188,8 @@ public class ClassTransformer_LWJGL_Keyboard {
         mv.visitLocalVariable("p_74298_0_", "I", null, l0, l1, 0);
         mv.visitMaxs(1, 1);
         mv.visitEnd();
-        didInject = true;
         FMLRelaunchLog
             .log("[GT++ ASM] LWJGL Keybinding index out of bounds fix", Level.INFO, "Method injection complete.");
-        return didInject;
     }
 
     public class PatchClientSettings extends ClassVisitor {

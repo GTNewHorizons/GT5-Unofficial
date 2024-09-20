@@ -24,8 +24,6 @@ import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
 public class ClassTransformer_IC2_GetHarvestTool {
 
-    private final boolean isValid;
-    private final ClassReader reader;
     private final ClassWriter writer;
     private final String className;
 
@@ -46,8 +44,6 @@ public class ClassTransformer_IC2_GetHarvestTool {
 
     public ClassTransformer_IC2_GetHarvestTool(byte[] basicClass, boolean obfuscated, String aClassName) {
         className = aClassName;
-        ClassReader aTempReader = null;
-        ClassWriter aTempWriter = null;
 
         aName_getItemDropped = obfuscated ? "func_149650_a" : "getItemDropped";
         aName_damageDropped = obfuscated ? "func_149692_a" : "damageDropped";
@@ -57,50 +53,31 @@ public class ClassTransformer_IC2_GetHarvestTool {
             Level.INFO,
             "Attempting to patch in mode " + className + ". Obfuscated? " + obfuscated);
 
-        aTempReader = new ClassReader(basicClass);
-        aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
+        ClassReader aTempReader = new ClassReader(basicClass);
+        ClassWriter aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
         aTempReader.accept(new localClassVisitor(aTempWriter, className), 0);
 
-        if (aTempReader != null && aTempWriter != null) {
-            isValid = true;
-        } else {
-            isValid = false;
-        }
-
-        FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Valid patch? " + isValid + ".");
-        reader = aTempReader;
         writer = aTempWriter;
 
-        if (reader != null && writer != null) {
-            FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Attempting Method Injection.");
-            injectMethod("getHarvestTool");
-            if (aClassName.equals("ic2.core.block.machine.BlockMachine2")
-                || aClassName.equals("ic2.core.block.machine.BlockMachine3")
-                || aClassName.equals("ic2.core.block.wiring.BlockElectric")) {
-                injectMethod(aName_getItemDropped);
+        FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Attempting Method Injection.");
+        injectMethod("getHarvestTool");
+        if (aClassName.equals("ic2.core.block.machine.BlockMachine2")
+            || aClassName.equals("ic2.core.block.machine.BlockMachine3")
+            || aClassName.equals("ic2.core.block.wiring.BlockElectric")) {
+            injectMethod(aName_getItemDropped);
+            injectMethod(aName_damageDropped);
+        } else if (aClassName.equals("ic2.core.block.generator.block.BlockGenerator")
+            || aClassName.equals("ic2.core.block.machine.BlockMachine")) {
                 injectMethod(aName_damageDropped);
-            } else if (aClassName.equals("ic2.core.block.generator.block.BlockGenerator")
-                || aClassName.equals("ic2.core.block.machine.BlockMachine")) {
-                    injectMethod(aName_damageDropped);
-                }
-        }
-    }
-
-    public boolean isValidTransformer() {
-        return isValid;
-    }
-
-    public ClassReader getReader() {
-        return reader;
+            }
     }
 
     public ClassWriter getWriter() {
         return writer;
     }
 
-    public boolean injectMethod(String aMethodName) {
+    public void injectMethod(String aMethodName) {
         MethodVisitor mv;
-        boolean didInject = false;
         String aFormattedClassName = className.replace('.', '/');
         ClassWriter cw = getWriter();
 
@@ -125,7 +102,6 @@ public class ClassTransformer_IC2_GetHarvestTool {
             mv.visitLocalVariable("aMeta", "I", null, l0, l1, 1);
             mv.visitMaxs(1, 2);
             mv.visitEnd();
-            didInject = true;
         } else if (aMethodName.equals(aName_getItemDropped)) {
             mv = cw.visitMethod(
                 ACC_PUBLIC,
@@ -156,7 +132,6 @@ public class ClassTransformer_IC2_GetHarvestTool {
             mv.visitLocalVariable("fortune", "I", null, l0, l1, 3);
             mv.visitMaxs(4, 4);
             mv.visitEnd();
-            didInject = true;
         } else if (aMethodName.equals(aName_damageDropped)) {
             mv = cw.visitMethod(ACC_PUBLIC, aName_damageDropped, "(I)I", null, null);
             mv.visitCode();
@@ -177,10 +152,8 @@ public class ClassTransformer_IC2_GetHarvestTool {
             mv.visitLocalVariable("meta", "I", null, l0, l1, 1);
             mv.visitMaxs(1, 2);
             mv.visitEnd();
-            didInject = true;
         }
         FMLRelaunchLog.log("[GT++ ASM] IC2 getHarvestTool Patch", Level.INFO, "Method injection complete.");
-        return didInject;
     }
 
     public final class localClassVisitor extends ClassVisitor {

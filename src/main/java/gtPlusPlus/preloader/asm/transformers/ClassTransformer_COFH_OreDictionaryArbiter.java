@@ -36,36 +36,14 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
     private static final String className = "cofh.core.util.oredict.OreDictionaryArbiter";
     // cofh/core/util/oredict/OreDictionaryArbiter
 
-    private final boolean isValid;
-    private final ClassReader reader;
     private final ClassWriter writer;
 
     public ClassTransformer_COFH_OreDictionaryArbiter(byte[] basicClass) {
-        ClassReader aTempReader = null;
-        ClassWriter aTempWriter = null;
-        aTempReader = new ClassReader(basicClass);
-        aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
+        ClassReader aTempReader = new ClassReader(basicClass);
+        ClassWriter aTempWriter = new ClassWriter(aTempReader, ClassWriter.COMPUTE_FRAMES);
         aTempReader.accept(new localClassVisitor(aTempWriter), 0);
-
-        if (aTempReader != null && aTempWriter != null) {
-            isValid = true;
-        } else {
-            isValid = false;
-        }
-        reader = aTempReader;
         writer = aTempWriter;
-
-        if (reader != null && writer != null) {
-            injectMethod("registerOreDictionaryEntry");
-        }
-    }
-
-    public boolean isValidTransformer() {
-        return isValid;
-    }
-
-    public ClassReader getReader() {
-        return reader;
+        injectMethod("registerOreDictionaryEntry");
     }
 
     public ClassWriter getWriter() {
@@ -125,8 +103,7 @@ public class ClassTransformer_COFH_OreDictionaryArbiter {
                 FMLRelaunchLog.log("[GT++ ASM] COFH OreDictionaryArbiter Patch", Level.INFO, "Removing method " + name);
                 return null;
             }
-            MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
-            return methodVisitor;
+            return super.visitMethod(access, name, desc, signature, exceptions);
         }
     }
 
