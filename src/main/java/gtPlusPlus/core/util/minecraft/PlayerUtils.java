@@ -19,21 +19,14 @@ import net.minecraftforge.common.util.FakePlayer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ReflectionUtil;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class PlayerUtils {
 
     public static final Map<String, EntityPlayer> mCachedFakePlayers = new WeakHashMap<>();
-    private static final Class mThaumcraftFakePlayer;
-
-    static {
-        if (ReflectionUtils.doesClassExist("thaumcraft.common.lib.FakeThaumcraftPlayer")) {
-            mThaumcraftFakePlayer = ReflectionUtils.getClass("thaumcraft.common.lib.FakeThaumcraftPlayer");
-        } else {
-            mThaumcraftFakePlayer = null;
-        }
-    }
+    private static final Class<?> mThaumcraftFakePlayer = ReflectionUtil
+        .getClass("thaumcraft.common.lib.FakeThaumcraftPlayer");
 
     public static List<EntityPlayerMP> getOnlinePlayers() {
         final List<EntityPlayerMP> onlinePlayers = MinecraftServer.getServer()
