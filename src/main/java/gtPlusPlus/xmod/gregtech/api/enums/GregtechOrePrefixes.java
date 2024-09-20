@@ -581,6 +581,38 @@ public enum GregtechOrePrefixes {
                 new MaterialStack(Materials.Titanium, 1)),
             Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
 
+        TantalumCarbide(49, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 134, 131, 116, 0,
+            "Tantalum Carbide", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
+
+        HG1223(50, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 38, 82, 153, 0, "HG-1223", 0, 0,
+            3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
+
+        BlackTitanium(51, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 124, 142, 119, 0,
+            "Black Titanium", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
+
+        AbyssalAlloy(52, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 148, 127, 140, 0,
+            "Abyssal Steel", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2,
+            Arrays.asList(
+                new MaterialStack(Materials.Tungsten, 1),
+                new MaterialStack(Materials.Tantalum, 9),
+                new MaterialStack(Materials.Titanium, 1)),
+            Arrays.asList(getTcAspectStack(TCAspects.METALLUM, 8), getTcAspectStack(TCAspects.STRONTIO, 3))),
+
         // Radioactive Materials
         HydrofluoricAcid(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 200, 200, 200, 0, "Hydrofluoric Acid", 0, 0,
             -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2,
