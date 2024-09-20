@@ -40,9 +40,10 @@ public class BlockPestKiller extends BlockContainer implements ITileTooltip {
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
+    private final int mTooltipID = 4;
     @Override
     public int getTooltipID() {
-        return 6;
+        return this.mTooltipID;
     }
 
     public BlockPestKiller() {
@@ -85,7 +86,7 @@ public class BlockPestKiller extends BlockContainer implements ITileTooltip {
         }
 
         final TileEntity te = world.getTileEntity(x, y, z);
-        if ((te instanceof TileEntityPestKiller)) {
+        if (te instanceof TileEntityPestKiller) {
             player.openGui(GTplusplus.instance, GuiHandler.GUI15, world, x, y, z);
             return true;
         }

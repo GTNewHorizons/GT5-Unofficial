@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -62,6 +63,12 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+        final int z) {
+        return false;
     }
 
     public Material getMaterialEx() {

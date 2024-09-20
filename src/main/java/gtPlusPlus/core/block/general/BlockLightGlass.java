@@ -26,6 +26,7 @@ public class BlockLightGlass extends BlockAir {
     private int r = 255;
     private int g = 0;
     private int b = 0;
+    private final int a = 255;
 
     public BlockLightGlass(final boolean bool) {
         super();
@@ -118,8 +119,7 @@ public class BlockLightGlass extends BlockAir {
                 this.state = 0;
             }
         }
-        int a = 255;
-        return (a << 24) + (this.r << 16) + (this.g << 8) + (this.b);
+        return (this.r << 16) + (this.g << 8) + (this.b) + (this.a << 24);
     }
 
     /**

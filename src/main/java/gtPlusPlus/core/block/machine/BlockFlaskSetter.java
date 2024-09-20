@@ -2,14 +2,17 @@ package gtPlusPlus.core.block.machine;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import gregtech.api.util.GTLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gregtech.common.items.MetaGeneratedTool01;
@@ -27,9 +30,10 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
+    private final int mTooltipID = 5;
     @Override
     public int getTooltipID() {
-        return 8;
+        return this.mTooltipID;
     }
 
     @Override
@@ -64,11 +68,12 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
                         mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
                     }
                 }
-            } catch (final Throwable ignored) {}
-
+            } catch (Exception e) {
+                e.printStackTrace(GTLog.err);
+            }
             if (!mDidScrewDriver) {
                 final TileEntity te = world.getTileEntity(x, y, z);
-                if ((te instanceof TileEntityVolumetricFlaskSetter)) {
+                if (te instanceof TileEntityVolumetricFlaskSetter) {
                     player.openGui(GTplusplus.instance, GuiHandler.GUI18, world, x, y, z);
                     // new Packet_VolumetricFlaskGui2(aTile, aTile.getCustomValue());
                     return true;
@@ -101,6 +106,12 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
         if (stack.hasDisplayName()) {
             ((TileEntityVolumetricFlaskSetter) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
         }
+    }
+
+    @Override
+    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
+        final int z) {
+        return false;
     }
 
     @Override

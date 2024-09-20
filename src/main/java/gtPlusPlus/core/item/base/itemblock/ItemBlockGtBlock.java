@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.base.itemblock;
 
 import java.util.List;
 
+import gregtech.api.util.GTLog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +40,6 @@ public class ItemBlockGtBlock extends ItemBlock {
         } else if (block instanceof BlockBaseModular) {
             this.isModular = true;
         }
-        assert block instanceof BlockBaseModular;
         final BlockBaseModular baseBlock = (BlockBaseModular) block;
         if (isModular) {
             this.blockColour = baseBlock.getRenderColor(0);
@@ -48,7 +48,6 @@ public class ItemBlockGtBlock extends ItemBlock {
         } else {
             this.blockColour = block.getBlockColor();
         }
-
         if (block instanceof BlockBaseModular g) {
             this.mMaterial = g.getMaterialEx();
             this.thisBlockType = g.thisBlock;
@@ -72,7 +71,9 @@ public class ItemBlockGtBlock extends ItemBlock {
             try {
                 BlockBaseModular g = (BlockBaseModular) thisBlock;
                 this.mMaterial = g.getMaterialEx();
-            } catch (Throwable ignored) {}
+            } catch (Exception e) {
+                e.printStackTrace(GTLog.err);
+            }
             // list.add("Material is Null.");
         }
 

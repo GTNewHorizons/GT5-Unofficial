@@ -12,6 +12,7 @@ import java.util.IdentityHashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import gregtech.api.util.GTLog;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.material.MapColor;
@@ -68,8 +69,8 @@ public class BlockHellFire extends BlockFire {
                     }
                 }
 
-            } catch (Throwable t) {
-                t.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace(GTLog.err);
             }
         }
 
@@ -428,13 +429,13 @@ public class BlockHellFire extends BlockFire {
     private static class FireInfo {
 
         private int encouragement = 0;
-        private int flammibility = 0;
+        private int flammability = 0;
     }
 
     private final IdentityHashMap<Block, FireInfo> blockInfo = Maps.newIdentityHashMap();
 
     @Override
-    public void setFireInfo(final Block block, final int encouragement, final int flammibility) {
+    public void setFireInfo(final Block block, final int encouragement, final int flammability) {
         try {
             if (block == Blocks.air) {
                 throw new IllegalArgumentException("Tried to set air on fire... This is bad.");
@@ -444,12 +445,14 @@ public class BlockHellFire extends BlockFire {
                 return;
             }
             this.field_149849_a[id] = encouragement;
-            this.field_149848_b[id] = flammibility;
+            this.field_149848_b[id] = flammability;
 
             final FireInfo info = this.getInfo(block);
             info.encouragement = encouragement;
-            info.flammibility = flammibility;
-        } catch (Throwable ignored) {}
+            info.flammability = flammability;
+        } catch (Exception e) {
+            e.printStackTrace(GTLog.err);
+        }
     }
 
     private FireInfo getInfo(final Block block) {
@@ -476,7 +479,7 @@ public class BlockHellFire extends BlockFire {
             final int id = Block.getIdFromBlock(e.getKey());
             if ((id >= 0) && (id < 4096)) {
                 this.field_149849_a[id] = e.getValue().encouragement;
-                this.field_149848_b[id] = e.getValue().flammibility;
+                this.field_149848_b[id] = e.getValue().flammability;
             }
         }
     }
@@ -526,7 +529,7 @@ public class BlockHellFire extends BlockFire {
         final int oldChance, final ForgeDirection face) {
         final int newChance = world.getBlock(x, y, z)
             .getFireSpreadSpeed(world, x, y, z, face);
-        return (Math.max(newChance, oldChance));
+        return Math.max(newChance, oldChance);
     }
     /*
      * ================================= Forge Start ======================================

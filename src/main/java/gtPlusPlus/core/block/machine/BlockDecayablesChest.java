@@ -41,9 +41,10 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
+    private final int mTooltipID = 3;
     @Override
     public int getTooltipID() {
-        return 5;
+        return this.mTooltipID;
     }
 
     public BlockDecayablesChest() {

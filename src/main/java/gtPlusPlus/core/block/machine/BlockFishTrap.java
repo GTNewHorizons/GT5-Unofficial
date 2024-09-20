@@ -30,9 +30,10 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
+    private final int mTooltipID = 1;
     @Override
     public int getTooltipID() {
-        return 0;
+        return this.mTooltipID;
     }
 
     public BlockFishTrap() {

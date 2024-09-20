@@ -44,7 +44,7 @@ public class BlockProjectTable extends BlockContainer implements ITileTooltip {
      */
     @Override
     public int getTooltipID() {
-        return 3;
+        return 0;
     }
 
     public BlockProjectTable() {

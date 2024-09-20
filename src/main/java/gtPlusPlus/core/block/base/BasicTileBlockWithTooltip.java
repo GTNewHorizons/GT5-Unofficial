@@ -148,22 +148,18 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     public IIcon getIcon(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         return super.getIcon(aWorld, aX, aY, aZ, ordinalSide);
     }
-
+    /**
+     * Holds the data for the six sides, each side holds an array of data for each respective meta.
+     */
     @SideOnly(Side.CLIENT)
+    // Init on the Client side only, to prevent Field initialisers existing in the Server side bytecode.
     private void handleTextures() {
 
         Logger.INFO("[TeTexture] Building Texture Maps for " + getTileEntityName() + ".");
-
-        // Init on the Client side only, to prevent Field initialisers existing in the Server side bytecode.
         mSidedTextureArray = new ArrayList<>();
-        /*
-         * Holds the data for the six sides, each side holds an array of data for each respective meta.
-         */
         ArrayList<CubicObject<String>> sidedTexturePathArray = new ArrayList<>();
-
         // Store them in forge order
         // DOWN, UP, NORTH, SOUTH, WEST, EAST
-
         // Default Path Name, this will make us look inside 'miscutils\textures\blocks'
         String aTexPathBuilt = GTPlusPlus.ID + ":TileEntities/" + getTileEntityNameForTexturePathing() + "/";
         // File Name Suffixes, without meta tags
