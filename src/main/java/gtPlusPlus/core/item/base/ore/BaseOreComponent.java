@@ -21,6 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
@@ -180,7 +181,7 @@ public class BaseOreComponent extends Item {
                 this.overlay = par1IconRegister
                     .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
-        } else if (GTPPCore.ConfigSwitches.useGregtechTextures) {
+        } else if (Configuration.visual.useGregtechTextures) {
             // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
             // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
             // layer 0 texture path.");
@@ -210,10 +211,10 @@ public class BaseOreComponent extends Item {
             }
             return this.componentColour;
         } else {
-            if (renderPass == 0 && !GTPPCore.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
                 return this.componentColour;
             }
-            if (renderPass == 1 && GTPPCore.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
                 return Utils.rgbtoHexValue(230, 230, 230);
             }
             return this.componentColour;
