@@ -12,7 +12,6 @@ import java.util.IdentityHashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import gregtech.api.util.GTLog;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.material.MapColor;
@@ -31,6 +30,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.GTLog;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 

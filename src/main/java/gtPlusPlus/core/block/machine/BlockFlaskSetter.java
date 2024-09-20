@@ -2,7 +2,6 @@ package gtPlusPlus.core.block.machine;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import gregtech.api.util.GTLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import gregtech.api.util.GTLog;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
@@ -31,6 +31,7 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
      * Determines which tooltip is displayed within the itemblock.
      */
     private final int mTooltipID = 5;
+
     @Override
     public int getTooltipID() {
         return this.mTooltipID;

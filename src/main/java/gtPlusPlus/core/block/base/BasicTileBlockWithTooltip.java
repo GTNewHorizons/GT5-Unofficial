@@ -148,6 +148,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     public IIcon getIcon(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         return super.getIcon(aWorld, aX, aY, aZ, ordinalSide);
     }
+
     /**
      * Holds the data for the six sides, each side holds an array of data for each respective meta.
      */

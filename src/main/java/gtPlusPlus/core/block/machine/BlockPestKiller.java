@@ -41,6 +41,7 @@ public class BlockPestKiller extends BlockContainer implements ITileTooltip {
      * Determines which tooltip is displayed within the itemblock.
      */
     private final int mTooltipID = 4;
+
     @Override
     public int getTooltipID() {
         return this.mTooltipID;
