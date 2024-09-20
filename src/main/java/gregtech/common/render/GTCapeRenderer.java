@@ -6,7 +6,6 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -19,14 +18,19 @@ import gregtech.api.util.GTUtility;
 
 public class GTCapeRenderer extends RenderPlayer {
 
-    private final ResourceLocation[] mCapes = { new ResourceLocation("gregtech:textures/BrainTechCape.png"),
+    // spotless:off
+    private final ResourceLocation[] mCapes = {
+        new ResourceLocation("gregtech:textures/BrainTechCape.png"),
         new ResourceLocation("gregtech:textures/GregTechCape.png"),
         new ResourceLocation("gregtech:textures/MrBrainCape.png"),
         new ResourceLocation("gregtech:textures/GregoriusCape.png"),
-        new ResourceLocation("gregtech:textures/DonorCape.png"), new ResourceLocation("gregtech:textures/DevCape.png"),
-        new ResourceLocation("gregtech:textures/Steam.png"), new ResourceLocation("gregtech:textures/Titanium.png"),
+        new ResourceLocation("gregtech:textures/DonorCape.png"),
+        new ResourceLocation("gregtech:textures/DevCape.png"),
+        new ResourceLocation("gregtech:textures/Steam.png"),
+        new ResourceLocation("gregtech:textures/Titanium.png"),
         new ResourceLocation("gregtech:textures/Neutronium.png"),
         new ResourceLocation("gregtech:textures/Stargate.png") };
+    // spotless:on
     private final Collection<String> mCapeList;
 
     public GTCapeRenderer(Collection<String> aCapeList) {
@@ -40,11 +44,7 @@ public class GTCapeRenderer extends RenderPlayer {
             aEvent.setCanceled(true);
             return;
         }
-        float aPartialTicks = aEvent.partialRenderTick;
         if (aPlayer.isInvisible()) {
-            return;
-        }
-        if (GTUtility.getPotion(aPlayer, Potion.invisibility.id)) {
             return;
         }
         try {
@@ -101,6 +101,7 @@ public class GTCapeRenderer extends RenderPlayer {
                 bindTexture(tResource);
                 GL11.glPushMatrix();
                 GL11.glTranslatef(0.0F, 0.0F, 0.125F);
+                float aPartialTicks = aEvent.partialRenderTick;
                 double d0 = aPlayer.field_71091_bM + (aPlayer.field_71094_bP - aPlayer.field_71091_bM) * aPartialTicks
                     - (aPlayer.prevPosX + (aPlayer.posX - aPlayer.prevPosX) * aPartialTicks);
                 double d1 = aPlayer.field_71096_bN + (aPlayer.field_71095_bQ - aPlayer.field_71096_bN) * aPartialTicks
