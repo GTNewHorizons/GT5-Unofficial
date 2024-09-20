@@ -510,6 +510,7 @@ public class TexturesGtBlock {
         "TileEntities/adv_machine_matterfab_active_animated");
     public static final CustomIcon Overlay_Water = new CustomIcon("TileEntities/adv_machine_water");
     public static final CustomIcon Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");
+    public static final CustomIcon Overlay_Charging = new CustomIcon("TileEntities/adv_machine_charging");
 
     // GT++ Tiered Hulls
     public static final CustomIcon TEXTURE_CASING_TIERED_ULV = new CustomIcon("iconsets/TieredHulls/CASING_ULV");
