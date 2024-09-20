@@ -42,11 +42,9 @@ public class BlockProjectTable extends BlockContainer implements ITileTooltip {
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 3;
-
     @Override
     public int getTooltipID() {
-        return this.mTooltipID;
+        return 3;
     }
 
     public BlockProjectTable() {
@@ -70,10 +68,10 @@ public class BlockProjectTable extends BlockContainer implements ITileTooltip {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "machine_top");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "cover_crafting");
-        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "machine_top");
-        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "machine_top");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/machine_top");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/cover_crafting");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/machine_top");
+        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/machine_top");
     }
 
     /**

@@ -23,11 +23,9 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 public class BlockLightGlass extends BlockAir {
 
     private int state = 0;
-    private final int a = 255;
     private int r = 255;
     private int g = 0;
     private int b = 0;
-    private int hex;
 
     public BlockLightGlass(final boolean bool) {
         super();
@@ -35,7 +33,7 @@ public class BlockLightGlass extends BlockAir {
         this.setBlockName("blockMFEffect");
         this.setLightLevel(12F);
         setHardness(0.1F);
-        setBlockTextureName(GTPlusPlus.ID + ":" + "blockMFEffect");
+        setBlockTextureName(GTPlusPlus.ID + ":blockMFEffect");
         setStepSound(Block.soundTypeGlass);
         GameRegistry.registerBlock(this, "blockMFEffect");
 
@@ -78,7 +76,7 @@ public class BlockLightGlass extends BlockAir {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + "blockMFEffect");
+        this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":blockMFEffect");
     }
 
     @Override
@@ -120,8 +118,8 @@ public class BlockLightGlass extends BlockAir {
                 this.state = 0;
             }
         }
-        this.hex = (this.a << 24) + (this.r << 16) + (this.g << 8) + (this.b);
-        return this.hex;
+        int a = 255;
+        return (a << 24) + (this.r << 16) + (this.g << 8) + (this.b);
     }
 
     /**

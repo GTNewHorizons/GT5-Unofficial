@@ -5,12 +5,10 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gregtech.common.items.MetaGeneratedTool01;
@@ -27,11 +25,9 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 4;
-
     @Override
     public int getTooltipID() {
-        return this.mTooltipID;
+        return 4;
     }
 
     public BlockCircuitProgrammer() {
@@ -39,7 +35,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     }
 
     /**
-     * Called upon block activation (right click on the block.)
+     * Called upon block activation (right-click on the block.)
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
@@ -60,11 +56,11 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
                         mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
                     }
                 }
-            } catch (final Throwable t) {}
+            } catch (final Throwable ignored) {}
 
             if (!mDidScrewDriver) {
                 final TileEntity te = world.getTileEntity(x, y, z);
-                if ((te != null) && (te instanceof TileEntityCircuitProgrammer)) {
+                if ((te instanceof TileEntityCircuitProgrammer)) {
                     player.openGui(GTplusplus.instance, GuiHandler.GUI8, world, x, y, z);
                     return true;
                 }
@@ -104,12 +100,6 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     }
 
     @Override
-    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
-        return false;
-    }
-
-    @Override
     public int getMetaCount() {
         return 0;
     }
@@ -141,12 +131,10 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
 
     @Override
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
-        String[] aTexData = new String[] { GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_G",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I" };
+        String[] aTexData = new String[] { GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
+            GTPlusPlus.ID + ":metro/TEXTURE_TECH_PANEL_B", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
+            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
+            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I" };
         CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<>(aTexData) };
         return aTextureData;
     }

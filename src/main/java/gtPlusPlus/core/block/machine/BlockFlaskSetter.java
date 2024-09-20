@@ -5,13 +5,11 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gregtech.common.items.MetaGeneratedTool01;
@@ -29,11 +27,9 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 8;
-
     @Override
     public int getTooltipID() {
-        return this.mTooltipID;
+        return 8;
     }
 
     @Override
@@ -68,11 +64,11 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
                         mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
                     }
                 }
-            } catch (final Throwable t) {}
+            } catch (final Throwable ignored) {}
 
             if (!mDidScrewDriver) {
                 final TileEntity te = world.getTileEntity(x, y, z);
-                if ((te != null) && (te instanceof TileEntityVolumetricFlaskSetter aTile)) {
+                if ((te instanceof TileEntityVolumetricFlaskSetter)) {
                     player.openGui(GTplusplus.instance, GuiHandler.GUI18, world, x, y, z);
                     // new Packet_VolumetricFlaskGui2(aTile, aTile.getCustomValue());
                     return true;
@@ -108,12 +104,6 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
     }
 
     @Override
-    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
-        return false;
-    }
-
-    @Override
     public int getMetaCount() {
         return 0;
     }
@@ -145,12 +135,10 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
 
     @Override
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
-        String[] aTexData = new String[] { GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_A",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_TECH_PANEL_C",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H" };
+        String[] aTexData = new String[] { GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
+            GTPlusPlus.ID + ":metro/TEXTURE_TECH_PANEL_C", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
+            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
+            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H" };
         CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<>(aTexData) };
         return aTextureData;
     }

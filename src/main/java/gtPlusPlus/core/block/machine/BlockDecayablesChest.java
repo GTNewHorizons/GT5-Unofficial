@@ -36,16 +36,14 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
     private IIcon textureBottom;
 
     @SideOnly(Side.CLIENT)
-    private IIcon textureFront;
+    private IIcon textureSide;
 
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 5;
-
     @Override
     public int getTooltipID() {
-        return this.mTooltipID;
+        return 5;
     }
 
     public BlockDecayablesChest() {
@@ -118,17 +116,17 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
         return switch (ordinalSide) {
             case 0 -> textureBottom;
             case 1 -> textureTop;
-            default -> textureFront;
+            default -> textureSide;
         };
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "DecayablesChest_top");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "DecayablesChest_top");
-        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "DecayablesChest_side");
-        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "DecayablesChest_bottom");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_top");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_top");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_bottom");
+        this.textureSide = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_Side");
     }
 
     @Override

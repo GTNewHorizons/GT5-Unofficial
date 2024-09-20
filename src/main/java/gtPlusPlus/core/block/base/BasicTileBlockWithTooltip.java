@@ -29,7 +29,6 @@ import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.api.objects.minecraft.SafeTexture;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -157,7 +156,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
         // Init on the Client side only, to prevent Field initialisers existing in the Server side bytecode.
         mSidedTextureArray = new ArrayList<>();
-        /**
+        /*
          * Holds the data for the six sides, each side holds an array of data for each respective meta.
          */
         ArrayList<CubicObject<String>> sidedTexturePathArray = new ArrayList<>();
@@ -166,13 +165,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         // DOWN, UP, NORTH, SOUTH, WEST, EAST
 
         // Default Path Name, this will make us look inside 'miscutils\textures\blocks'
-        final String aPrefixTexPath = GTPlusPlus.ID + ":";
-        // Default Path Name, this will make us look in the subdirectory for this Tile Entity.
-        final String aTexPathMid = "TileEntities" + GTPPCore.SEPERATOR
-            + getTileEntityNameForTexturePathing()
-            + GTPPCore.SEPERATOR;
-        // Construct a full path
-        String aTexPathBuilt = aPrefixTexPath + aTexPathMid;
+        String aTexPathBuilt = GTPlusPlus.ID + ":TileEntities/" + getTileEntityNameForTexturePathing() + "/";
         // File Name Suffixes, without meta tags
         String aStringBot;
         String aStringTop;

@@ -40,11 +40,9 @@ public class BlockPestKiller extends BlockContainer implements ITileTooltip {
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 6;
-
     @Override
     public int getTooltipID() {
-        return this.mTooltipID;
+        return 6;
     }
 
     public BlockPestKiller() {
@@ -69,11 +67,11 @@ public class BlockPestKiller extends BlockContainer implements ITileTooltip {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
         this.blockIcon = p_149651_1_
-            .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "MACHINE_PESTKILLER_TOP");
+            .registerIcon(GTPlusPlus.ID + ":TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/MACHINE_PESTKILLER_TOP");
         this.textureBottom = p_149651_1_.registerIcon("planks_acacia");
         this.textureFront = p_149651_1_
-            .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
+            .registerIcon(GTPlusPlus.ID + ":TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
     }
 
     /**
@@ -87,7 +85,7 @@ public class BlockPestKiller extends BlockContainer implements ITileTooltip {
         }
 
         final TileEntity te = world.getTileEntity(x, y, z);
-        if ((te != null) && (te instanceof TileEntityPestKiller)) {
+        if ((te instanceof TileEntityPestKiller)) {
             player.openGui(GTplusplus.instance, GuiHandler.GUI15, world, x, y, z);
             return true;
         }

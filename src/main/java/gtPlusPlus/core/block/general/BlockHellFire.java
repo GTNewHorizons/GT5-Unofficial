@@ -398,9 +398,8 @@ public class BlockHellFire extends BlockFire {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister IIconRegister) {
-        this.IIconArray = new IIcon[] {
-            IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
-            IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_1") };
+        this.IIconArray = new IIcon[] { IIconRegister.registerIcon(GTPlusPlus.ID + ":hellfire/blockHellFire_layer_0"),
+            IIconRegister.registerIcon(GTPlusPlus.ID + ":hellfire/blockHellFire_layer_1") };
     }
 
     @Override
@@ -447,15 +446,15 @@ public class BlockHellFire extends BlockFire {
             this.field_149849_a[id] = encouragement;
             this.field_149848_b[id] = flammibility;
 
-            final FireInfo info = this.getInfo(block, true);
+            final FireInfo info = this.getInfo(block);
             info.encouragement = encouragement;
             info.flammibility = flammibility;
-        } catch (Throwable t) {}
+        } catch (Throwable ignored) {}
     }
 
-    private FireInfo getInfo(final Block block, final boolean garentee) {
+    private FireInfo getInfo(final Block block) {
         FireInfo ret = this.blockInfo.get(block);
-        if ((ret == null) && garentee) {
+        if ((ret == null)) {
             ret = new FireInfo();
             this.blockInfo.put(block, ret);
         }
@@ -527,7 +526,7 @@ public class BlockHellFire extends BlockFire {
         final int oldChance, final ForgeDirection face) {
         final int newChance = world.getBlock(x, y, z)
             .getFireSpreadSpeed(world, x, y, z, face);
-        return (newChance > oldChance ? newChance : oldChance);
+        return (Math.max(newChance, oldChance));
     }
     /*
      * ================================= Forge Start ======================================

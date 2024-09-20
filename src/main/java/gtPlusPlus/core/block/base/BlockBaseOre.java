@@ -6,7 +6,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -65,12 +64,6 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         }
     }
 
-    @Override
-    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
-        return false;
-    }
-
     public Material getMaterialEx() {
         return this.blockMaterial;
     }
@@ -122,7 +115,6 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         if (EnchantmentHelper.getSilkTouchModifier(player)) {
             shouldSilkTouch = true;
             super.harvestBlock(worldIn, player, x, y, z, meta);
-
             if (shouldSilkTouch) {
                 shouldSilkTouch = false;
             }
@@ -145,12 +137,9 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
             drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
         } else {
             switch (GTMod.gregtechproxy.oreDropSystem) {
-                case Item -> {
-                    drops.add(
-                        ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                            "oreRaw" + this.blockMaterial.getLocalizedName(),
-                            1));
-                }
+                case Item -> drops.add(
+                    ItemUtils
+                        .getItemStackOfAmountFromOreDictNoBroken("oreRaw" + this.blockMaterial.getLocalizedName(), 1));
                 case FortuneItem -> {
                     // if shouldFortune and isNatural then get fortune drops
                     // if not shouldFortune or not isNatural then get normal drops
@@ -174,18 +163,12 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                                 1));
                     }
                 }
-                case UnifiedBlock -> {
-                    // Unified ore
-                    drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                }
-                case PerDimBlock -> {
-                    // Per Dimension ore
-                    drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                }
-                case Block -> {
-                    // Regular ore
-                    drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                }
+                // Unified ore
+                case UnifiedBlock -> drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
+                // Per Dimension ore
+                case PerDimBlock -> drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
+                // Regular ore
+                case Block -> drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
             }
         }
         return drops;
