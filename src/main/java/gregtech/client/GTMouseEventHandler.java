@@ -30,5 +30,9 @@ public class GTMouseEventHandler {
         if (event.button == 0 && event.buttonstate && heldItem.getItem() instanceof MetaBaseItem mbItem) {
             event.setCanceled(mbItem.onLeftClick(heldItem, player));
         }
+
+        if (event.button == 2 && event.buttonstate && heldItem.getItem() instanceof MetaBaseItem mbItem) {
+            event.setCanceled(mbItem.onMiddleClick(heldItem, player));
+        }
     }
 }

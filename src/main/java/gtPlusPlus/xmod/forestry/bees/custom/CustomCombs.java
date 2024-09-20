@@ -69,7 +69,7 @@ public enum CustomCombs {
     public final int chance;
     private final String name;
 
-    private CustomCombs(String pName, boolean show, Materials material, int chance) {
+    CustomCombs(String pName, boolean show, Materials material, int chance) {
         this.name = pName;
         this.material = material;
         this.chance = chance;

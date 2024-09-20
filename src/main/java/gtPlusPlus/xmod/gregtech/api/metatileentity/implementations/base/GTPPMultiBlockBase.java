@@ -79,11 +79,11 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
@@ -383,7 +383,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public static Method aLogger = null;
 
     public void log(String s) {
-        if (!AsmConfig.disableAllLogging) {
+        if (!ASMConfiguration.debug.disableAllLogging) {
             if (PreloaderCore.DEBUG_MODE) {
                 Logger.INFO(s);
             } else {

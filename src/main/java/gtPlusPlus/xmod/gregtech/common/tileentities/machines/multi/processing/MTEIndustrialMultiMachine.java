@@ -63,6 +63,7 @@ import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
@@ -224,13 +225,13 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     public int getPollutionPerSecond(final ItemStack aStack) {
         switch (machineMode) {
             case MACHINEMODE_METAL -> {
-                return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
+                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
             }
             case MACHINEMODE_FLUID -> {
-                return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
+                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
             }
             default -> {
-                return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
+                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
             }
         }
     }

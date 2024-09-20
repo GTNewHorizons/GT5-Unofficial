@@ -69,12 +69,12 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.MovingAverageLong;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -174,7 +174,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     private void checkMachineProblem(String msg) {
-        if (!AsmConfig.disableAllLogging) {
+        if (!ASMConfiguration.debug.disableAllLogging) {
             Logger.INFO("Power Sub-Station problem: " + msg);
         }
     }

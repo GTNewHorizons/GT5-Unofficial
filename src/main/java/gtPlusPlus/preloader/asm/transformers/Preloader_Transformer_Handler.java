@@ -9,9 +9,9 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import gregtech.asm.GTCorePlugin;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.preloader.PreloaderLogger;
-import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 
 public class Preloader_Transformer_Handler implements IClassTransformer {
@@ -47,7 +47,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         // Fix LWJGL index array out of bounds on keybinding IDs
         if ((transformedName.equals(LWJGL_KEYBOARD) || transformedName.equals(MINECRAFT_GAMESETTINGS))
-            && AsmConfig.enabledLwjglKeybindingFix
+            && ASMConfiguration.general.enabledLwjglKeybindingFix
             && !GTCorePlugin.islwjgl3Present()) {
             boolean isClientSettingsClass = !transformedName.equals(LWJGL_KEYBOARD);
             PreloaderLogger.INFO("LWJGL Keybinding index out of bounds fix", "Transforming " + transformedName);
@@ -56,7 +56,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
         }
 
         // Fix the OreDictionary - Forge
-        if (transformedName.equals(FORGE_ORE_DICTIONARY) && AsmConfig.enableOreDictPatch) {
+        if (transformedName.equals(FORGE_ORE_DICTIONARY) && ASMConfiguration.debug.enableOreDictPatch) {
             PreloaderLogger.INFO("OreDictTransformer", "Transforming " + transformedName);
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
             new ClassReader(basicClass).accept(new OreDictionaryVisitor(classWriter), 0);
@@ -65,7 +65,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
         // Fix the OreDictionary COFH
         if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER)
-            && (AsmConfig.enableCofhPatch || PreloaderCore.DEV_ENVIRONMENT)) {
+            && (ASMConfiguration.debug.enableCofhPatch || PreloaderCore.DEV_ENVIRONMENT)) {
             PreloaderLogger.INFO("COFH", "Transforming " + transformedName);
             return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter()
                 .toByteArray();
@@ -80,7 +80,7 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
         // Fix Thaumcraft stuff
         // Patching ItemWispEssence to allow invalid item handling
-        if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && AsmConfig.enableTcAspectSafety) {
+        if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && ASMConfiguration.general.enableTcAspectSafety) {
             PreloaderLogger.INFO("Thaumcraft WispEssence_Patch", "Transforming " + transformedName);
             return new ClassTransformer_TC_ItemWispEssence(basicClass, !PreloaderCore.DEV_ENVIRONMENT).getWriter()
                 .toByteArray();
