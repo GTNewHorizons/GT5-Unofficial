@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -753,6 +754,17 @@ public class Godforge implements Runnable {
                     ItemList.Robot_Arm_UMV.get(64), ItemList.Conveyor_Module_UMV.get(64) });
         }
 
+    }
+
+    public static void runDevEnvironmentRecipes() {
+        // put something in here to not crash the game in dev environment when opening the manual insertion window
+        godforgeUpgradeMats.put(0, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(5, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(7, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(11, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(26, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(29, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(30, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
     }
 
     public static void initMoltenModuleRecipes() {
