@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.DimensionManager;
 
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.everglades.block.BlockEvergladesPortal;
 import gtPlusPlus.everglades.item.ItemEvergladesPortalTrigger;
 import gtPlusPlus.everglades.world.WorldProviderMod;
@@ -12,7 +12,7 @@ import gtPlusPlus.everglades.world.WorldProviderMod;
 public class DimensionEverglades {
 
     public Object instance;
-    public static int DIMID = GTPPCore.EVERGLADES_ID;
+    public static int DIMID = Configuration.worldgen.EVERGLADES_ID;
     public static BlockEvergladesPortal portalBlock;
     public static ItemEvergladesPortalTrigger portalItem;
     public static Block blockTopLayer;

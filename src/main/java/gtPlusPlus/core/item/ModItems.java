@@ -66,7 +66,6 @@ import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.ItemGregtechPump;
 import gtPlusPlus.core.item.wearable.WearableLoader;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -607,9 +606,7 @@ public final class ModItems {
             false,
             null);
 
-        if (GTPPCore.ConfigSwitches.enableMachine_Pollution) {
-            itemBasicTurbine = new ItemBasicScrubberTurbine();
-        }
+        itemBasicTurbine = new ItemBasicScrubberTurbine();
 
         // Zirconium
         // Cinter Pellet.
@@ -643,19 +640,16 @@ public final class ModItems {
         // //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 
         // Load Tree Farmer
-        if (GTPPCore.ConfigSwitches.enableMultiblock_TreeFarmer) { // https://en.wikipedia.org/wiki/UAN
-            dustFertUN18 = ItemUtils
-                .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
-            dustFertUN32 = ItemUtils
-                .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
+        // https://en.wikipedia.org/wiki/UAN
+        dustFertUN18 = ItemUtils
+            .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
+        dustFertUN32 = ItemUtils
+            .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
 
+        if (Forestry.isModLoaded()) {
             ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
-            ItemStack temp2 = null;
-
-            if (Forestry.isModLoaded()) {
-                temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
-            }
-            if (temp1 != null) {
+            ItemStack temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
+            if (temp1 != null && temp2 != null) {
                 fluidFertBasic = FluidUtils.generateFluidNonMolten(
                     "Fertiliser",
                     "Fertiliser",
@@ -671,29 +665,28 @@ public final class ModItems {
                     .eut(16)
                     .addTo(fluidExtractionRecipes);
             }
-            fluidFertUN32 = FluidUtils.generateFluidNonMolten(
-                "UN32Fertiliser",
-                "UN-32 Fertiliser",
-                24,
-                new short[] { 55, 190, 55, 100 },
-                null,
-                null,
-                true);
-            fluidFertUN18 = FluidUtils.generateFluidNonMolten(
-                "UN18Fertiliser",
-                "UN-18 Fertiliser",
-                22,
-                new short[] { 60, 155, 60, 100 },
-                null,
-                null,
-                true);
-
-            /*
-             * GT_Values.RA.addMixerRecipe( arg0, //Item In arg1, arg2, arg3, arg4, //Fluid in arg5, //Fluid Out arg6,
-             * //Item out arg7, //Eu arg8); //Time
-             */
-
         }
+        fluidFertUN32 = FluidUtils.generateFluidNonMolten(
+            "UN32Fertiliser",
+            "UN-32 Fertiliser",
+            24,
+            new short[] { 55, 190, 55, 100 },
+            null,
+            null,
+            true);
+        fluidFertUN18 = FluidUtils.generateFluidNonMolten(
+            "UN18Fertiliser",
+            "UN-18 Fertiliser",
+            22,
+            new short[] { 60, 155, 60, 100 },
+            null,
+            null,
+            true);
+
+        /*
+         * GT_Values.RA.addMixerRecipe( arg0, //Item In arg1, arg2, arg3, arg4, //Fluid in arg5, //Fluid Out arg6,
+         * //Item out arg7, //Eu arg8); //Time
+         */
 
         // Juice
         FluidUtils.generateFluidNonMolten(
@@ -986,12 +979,10 @@ public final class ModItems {
         }
 
         // A plate of Europium.
-        if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null)
-            && GTPPCore.ConfigSwitches.enableCustom_Pipes) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null) {
             itemPlateEuropium = new BaseItemPlate(MaterialsElements.getInstance().EUROPIUM);
         }
-        if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null)
-            && GTPPCore.ConfigSwitches.enableCustom_Pipes) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) {
             itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialsElements.getInstance().EUROPIUM);
         }
 

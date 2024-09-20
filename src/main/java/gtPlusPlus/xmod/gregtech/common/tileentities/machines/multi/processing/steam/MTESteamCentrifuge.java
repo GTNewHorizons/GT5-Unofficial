@@ -260,7 +260,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierFireBoxCasing == 1
             && tierMachineCasing == 1
-            && tCountCasing > 60
+            && tCountCasing >= 60
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -269,7 +269,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
             && tierFireBoxCasing == 2
             && tierMachineCasing == 2
-            && tCountCasing > 60
+            && tCountCasing >= 60
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;

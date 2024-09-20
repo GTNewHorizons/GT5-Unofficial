@@ -267,7 +267,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
-            && tCountCasing > 55
+            && tCountCasing >= 55
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -275,7 +275,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
             && tierMachineCasing == 2
-            && tCountCasing > 55
+            && tCountCasing >= 55
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;

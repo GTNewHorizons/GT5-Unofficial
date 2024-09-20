@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -192,7 +193,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     private boolean requiresMufflers() {
-        if (!PollutionUtils.isPollutionEnabled()) {
+        if (!GTMod.gregtechproxy.mPollution) {
             return false;
         }
         return getPollutionPerSecond(null) > 0;

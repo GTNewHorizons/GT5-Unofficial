@@ -17,7 +17,6 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -124,14 +123,6 @@ public class Utils {
         }
 
         return returnValue;
-    }
-
-    // Register an event to both busses.
-    public static void registerEvent(Object o) {
-        MinecraftForge.EVENT_BUS.register(o);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(o);
     }
 
     // Send a message to all players on the server

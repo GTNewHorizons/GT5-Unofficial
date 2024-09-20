@@ -101,7 +101,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import tectech.TecTech;
-import tectech.loader.TecTechConfig;
+import tectech.loader.ConfigHandler;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.TileEntityForgeOfGods;
 import tectech.thing.gui.TecTechUITextures;
@@ -183,8 +183,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         + "--------------------------------------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
         : GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
-
-    private final boolean debugMode = TecTechConfig.DEBUG_MODE;
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
@@ -454,7 +452,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 determineCompositionMilestoneLevel();
                 checkInversionStatus();
                 determineMilestoneProgress();
-                if (!debugMode) {
+                if (!ConfigHandler.debug.DEBUG_MODE) {
                     determineGravitonShardAmount();
                 }
                 if (upgrades[30] && gravitonShardEjection) {
@@ -696,7 +694,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!debugMode) return;
+        if (!ConfigHandler.debug.DEBUG_MODE) return;
         if (isRenderActive) {
             destroyRenderer();
             isRenderActive = false;
@@ -1873,7 +1871,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         }
                     })
                     .setPos(282, 4));
-        if (debugMode) {
+        if (ConfigHandler.debug.DEBUG_MODE) {
             builder.widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
                 upgrades = new boolean[31];
                 materialPaidUpgrades = new boolean[7];
@@ -2027,75 +2025,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setSize(WIDTH, HEIGHT)
 
             .widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
-                int unlockedPrereqUpgrades = 0;
-                int unlockedSplitUpgrades = 0;
                 if (!upgrades[currentUpgradeID]) {
-                    for (int prereqUpgrade : prereqUpgrades[currentUpgradeID]) {
-                        if (upgrades[prereqUpgrade]) {
-                            unlockedPrereqUpgrades++;
-                        }
-                    }
-                    if (!doesCurrentUpgradeRequireExtraMats
-                        || materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
-                            .indexOf(currentUpgradeID)]) {
-                        if (allPrereqRequired[currentUpgradeID]) {
-                            if (unlockedPrereqUpgrades == prereqUpgrades[currentUpgradeID].length
-                                && gravitonShardsAvailable >= gravitonShardCost) {
-                                gravitonShardsAvailable -= gravitonShardCost;
-                                gravitonShardsSpent += gravitonShardCost;
-                                upgrades[currentUpgradeID] = true;
-                            }
-                        } else if (unlockedPrereqUpgrades > 0 || prereqUpgrades[currentUpgradeID].length == 0) {
-                            if (isUpradeSplitStart) {
-                                for (int splitUpgrade : FIRST_SPLIT_UPGRADES) {
-                                    if (upgrades[splitUpgrade]) {
-                                        unlockedSplitUpgrades++;
-                                    }
-                                }
-                                unlockedSplitUpgrades -= (ringAmount - 1);
-                            }
-                            if (unlockedSplitUpgrades <= 0 && gravitonShardsAvailable >= gravitonShardCost) {
-                                gravitonShardsAvailable -= gravitonShardCost;
-                                gravitonShardsSpent += gravitonShardCost;
-                                upgrades[currentUpgradeID] = true;
-                            }
-                        }
-                    }
+                    completeUpgrade();
                 } else {
-                    int unlockedFollowupUpgrades = 0;
-                    int unlockedNeighboringUpgrades = 0;
-                    boolean doesFollowupRequireAllPrereqs = false;
-                    boolean canFollowupSpareAConnection = true;
-
-                    for (int followupUpgrade : followupUpgrades) {
-                        if (upgrades[followupUpgrade]) {
-                            unlockedFollowupUpgrades++;
-                            if (allPrereqRequired[followupUpgrade]) {
-                                doesFollowupRequireAllPrereqs = true;
-                            }
-                            int[] currentPrereqs = prereqUpgrades[followupUpgrade];
-                            for (int prereqUpgrade : currentPrereqs) {
-                                if (upgrades[prereqUpgrade]) {
-                                    unlockedNeighboringUpgrades++;
-                                }
-                            }
-                            if (unlockedNeighboringUpgrades <= 1) {
-                                canFollowupSpareAConnection = false;
-                            }
-                        }
-
-                        unlockedNeighboringUpgrades = 0;
-                    }
-
-                    if (!doesFollowupRequireAllPrereqs && followupUpgrades.length > 0 && canFollowupSpareAConnection) {
-                        unlockedFollowupUpgrades = 0;
-                    }
-
-                    if (unlockedFollowupUpgrades == 0) {
-                        gravitonShardsAvailable += gravitonShardCost;
-                        gravitonShardsSpent -= gravitonShardCost;
-                        upgrades[currentUpgradeID] = false;
-                    }
+                    respecUpgrade();
                 }
             })
                 .setSize(40, 15)
@@ -2122,15 +2055,88 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return builder.build();
     }
 
+    private void completeUpgrade() {
+        int unlockedPrereqUpgrades = 0;
+        int unlockedSplitUpgrades = 0;
+        if (!upgrades[currentUpgradeID]) {
+            for (int prereqUpgrade : prereqUpgrades[currentUpgradeID]) {
+                if (upgrades[prereqUpgrade]) {
+                    unlockedPrereqUpgrades++;
+                }
+            }
+            if (!doesCurrentUpgradeRequireExtraMats
+                || materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
+                    .indexOf(currentUpgradeID)]) {
+                if (allPrereqRequired[currentUpgradeID]) {
+                    if (unlockedPrereqUpgrades == prereqUpgrades[currentUpgradeID].length
+                        && gravitonShardsAvailable >= gravitonShardCost) {
+                        gravitonShardsAvailable -= gravitonShardCost;
+                        gravitonShardsSpent += gravitonShardCost;
+                        upgrades[currentUpgradeID] = true;
+                    }
+                } else if (unlockedPrereqUpgrades > 0 || prereqUpgrades[currentUpgradeID].length == 0) {
+                    if (isUpradeSplitStart) {
+                        for (int splitUpgrade : FIRST_SPLIT_UPGRADES) {
+                            if (upgrades[splitUpgrade]) {
+                                unlockedSplitUpgrades++;
+                            }
+                        }
+                        unlockedSplitUpgrades -= (ringAmount - 1);
+                    }
+                    if (unlockedSplitUpgrades <= 0 && gravitonShardsAvailable >= gravitonShardCost) {
+                        gravitonShardsAvailable -= gravitonShardCost;
+                        gravitonShardsSpent += gravitonShardCost;
+                        upgrades[currentUpgradeID] = true;
+                    }
+                }
+            }
+        }
+    }
+
+    private void respecUpgrade() {
+        int unlockedFollowupUpgrades = 0;
+        int unlockedNeighboringUpgrades = 0;
+        boolean doesFollowupRequireAllPrereqs = false;
+        boolean canFollowupSpareAConnection = true;
+
+                    for (int followupUpgrade : followupUpgrades) {
+                        if (upgrades[followupUpgrade]) {
+                            unlockedFollowupUpgrades++;
+                            if (allPrereqRequired[followupUpgrade]) {
+                                doesFollowupRequireAllPrereqs = true;
+                            }
+                            int[] currentPrereqs = prereqUpgrades[followupUpgrade];
+                            for (int prereqUpgrade : currentPrereqs) {
+                                if (upgrades[prereqUpgrade]) {
+                                    unlockedNeighboringUpgrades++;
+                                }
+                            }
+                            if (unlockedNeighboringUpgrades <= 1) {
+                                canFollowupSpareAConnection = false;
+                            }
+                        }
+
+            unlockedNeighboringUpgrades = 0;
+        }
+
+        if (!doesFollowupRequireAllPrereqs && followupUpgrades.length > 0 && canFollowupSpareAConnection) {
+            unlockedFollowupUpgrades = 0;
+        }
+
+        if (unlockedFollowupUpgrades == 0) {
+            gravitonShardsAvailable += gravitonShardCost;
+            gravitonShardsSpent -= gravitonShardCost;
+            upgrades[currentUpgradeID] = false;
+        }
+    }
+
     private Widget createMaterialInputButton(int upgradeID, int xCoord, int yCoord, IWidgetBuilder<?> builder) {
         return new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient() && doesCurrentUpgradeRequireExtraMats) {
-                widget.getContext()
-                    .openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
-                widget.getContext()
-                    .closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
-                widget.getContext()
-                    .closeWindow(UPGRADE_TREE_WINDOW_ID);
+                ModularUIContext ctx = widget.getContext();
+                ctx.openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
+                ctx.closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                ctx.closeWindow(UPGRADE_TREE_WINDOW_ID);
             }
         })
             .setPlayClickSound(doesCurrentUpgradeRequireExtraMats)
@@ -2187,7 +2193,24 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             followupUpgrades = followingUpgradeIDs;
             isUpradeSplitStart = isStartOfSplit;
             doesCurrentUpgradeRequireExtraMats = requiresExtraMaterials;
-            reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
+            if (clickData.mouseButton == 0) {
+                if (clickData.shift) {
+                    if (!doesCurrentUpgradeRequireExtraMats
+                        || materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
+                            .indexOf(currentUpgradeID)]) {
+                        completeUpgrade();
+                    } else if (!widget.isClient()) {
+                        ModularUIContext ctx = widget.getContext();
+                        ctx.openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
+                        ctx.closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                        ctx.closeWindow(UPGRADE_TREE_WINDOW_ID);
+                    }
+                } else {
+                    reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
+                }
+            } else if (clickData.mouseButton == 1) {
+                respecUpgrade();
+            }
         })
             .setSize(40, 15)
             .setBackground(() -> {

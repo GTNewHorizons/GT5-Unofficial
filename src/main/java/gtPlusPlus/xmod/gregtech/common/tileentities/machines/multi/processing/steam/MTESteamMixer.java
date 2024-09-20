@@ -258,7 +258,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
-            && tCountCasing > 90
+            && tCountCasing >= 90
             && !mSteamInputFluids.isEmpty()
             && !mSteamInputs.isEmpty()
             && !mSteamOutputs.isEmpty()
@@ -270,7 +270,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
             && tierMachineCasing == 2
-            && tCountCasing > 90
+            && tCountCasing >= 90
             && !mSteamInputFluids.isEmpty()
             && !mSteamInputs.isEmpty()
             && !mSteamOutputs.isEmpty()
