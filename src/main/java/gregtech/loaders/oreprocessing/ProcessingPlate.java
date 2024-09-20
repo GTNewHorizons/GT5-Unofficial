@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
@@ -44,7 +45,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -288,36 +288,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Block_Powderbarrel.get(4))
+                .itemInputs(GTUtility.copyAmount(1, aStack))
                 .itemOutputs(
                     GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
-                .addTo(implosionRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack), GTModHandler.getIC2Item("dynamite", 1, null))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(implosionRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.tnt, 2))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(implosionRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, aStack), GTModHandler.getIC2Item("industrialTnt", 1))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.compressed, aMaterial, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L))
-                .duration(1 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
+                .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(implosionRecipes);
         }
     }
@@ -446,7 +423,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 64))
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
-                .duration(Math.max(aMaterialMass * 64L, 1L))
+                .duration(Math.max(aMaterialMass * 16L, 1L))
                 .eut(calculateRecipeEU(aMaterial, 96))
                 .metadata(COMPRESSION_TIER, compression_tier)
                 .addTo(compressorRecipes);
@@ -550,7 +527,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(cutterRecipes);
         }
-        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
     }
 
     private void registerPlateAlloy(final String aOreDictName, final ItemStack aStack) {

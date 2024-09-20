@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -30,7 +29,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
 
     static {
-        MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+        MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
     }
 
     public RecipeGenMaterialProcessing(final Material M) {
@@ -63,11 +62,11 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                     partSizes[hu] = (int) material.vSmallestRatio[hu];
                 }
             }
-            AutoMap<Pair<Integer, Material>> componentMap = new AutoMap<>();
+            ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
             int alnsnfds = 0;
             for (MaterialStack r : material.getComposites()) {
                 if (r != null) {
-                    componentMap.put(new Pair<>(partSizes[alnsnfds], r.getStackMaterial()));
+                    componentMap.add(new Pair<>(partSizes[alnsnfds], r.getStackMaterial()));
                 }
                 alnsnfds++;
             }

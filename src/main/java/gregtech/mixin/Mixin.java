@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 
 public enum Mixin {
@@ -43,15 +43,16 @@ public enum Mixin {
     CacheCraftingManagerRecipes(
         new Builder("Cache CraftingManager recipes").addMixinClasses("minecraft.CraftingManagerMixin")
             .addTargetedMod(VANILLA)
-            .setApplyIf(() -> ConfigHandler.enabledPatches[3])
+            .setApplyIf(() -> Configuration.mixins.enableCraftingManagerRecipeCaching)
             .setPhase(Phase.EARLY)
             .setSide(Side.BOTH)),
-    CraftingRecipeAccessorMixin(new Builder("Add accessors to crafting recipe types")
+    VanillaAccessors(new Builder("Adds various accessors")
         .addMixinClasses(
             "minecraft.VanillaShapedRecipeMixin",
             "minecraft.VanillaShapelessRecipeMixin",
             "minecraft.ForgeShapedRecipeMixin",
-            "minecraft.ForgeShapelessRecipeMixin")
+            "minecraft.ForgeShapelessRecipeMixin",
+            "minecraft.PotionMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)

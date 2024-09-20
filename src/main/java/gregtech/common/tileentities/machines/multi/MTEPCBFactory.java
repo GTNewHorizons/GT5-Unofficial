@@ -16,7 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -313,19 +313,21 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
         int built = 0;
         if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
             if (stackSize.stackSize < 3) {
-                built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, false);
+                built = survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
+                if (built >= 0) return built;
                 if (stackSize.stackSize == 2) {
-                    built += survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, false);
+                    built = survivialBuildPiece(tier2, stackSize, 7, 6, 2, elementBudget, env, false, true);
                 }
             } else {
-                built += survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, false);
+                built = survivialBuildPiece(tier3, stackSize, 3, 21, 0, elementBudget, env, false, true);
             }
             return built;
         }
+
+        if (mMachine) return -1;
         if (mSetTier < 3) {
             built += survivialBuildPiece(tier1, stackSize, 3, 5, 0, elementBudget, env, false, true);
             if (mSetTier == 2) {
@@ -758,7 +760,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 

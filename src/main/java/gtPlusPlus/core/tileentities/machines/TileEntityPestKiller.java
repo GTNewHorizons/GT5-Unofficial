@@ -28,7 +28,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import forestry.lepidopterology.entities.EntityButterfly;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.core.inventories.InventoryPestKiller;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -51,12 +50,12 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
     private boolean mNeedsUpdate = false;
     private String mCustomName;
 
-    private static final AutoMap<Class<?>> mEntityMap = new AutoMap<>();
+    private static final ArrayList<Class<?>> mEntityMap = new ArrayList<>();
 
     static {
-        mEntityMap.put(EntityBat.class);
+        mEntityMap.add(EntityBat.class);
         if (Mods.Forestry.isModLoaded()) {
-            mEntityMap.put(EntityButterfly.class);
+            mEntityMap.add(EntityButterfly.class);
         }
     }
 
@@ -102,7 +101,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
             // code block
         }
         int aChunkCount = 0;
-        AutoMap<Entity> entities = new AutoMap<>();
+        ArrayList<Entity> entities = new ArrayList<>();
         if (min != 0 && max != 0) {
             for (int x = min; x < max; x++) {
                 for (int z = min; z < max; z++) {
@@ -117,7 +116,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
                                         for (Class<?> C : mEntityMap) {
                                             if (e.getClass()
                                                 .equals(C) || C.isAssignableFrom(e.getClass())) {
-                                                entities.put((Entity) e);
+                                                entities.add((Entity) e);
                                             }
                                         }
                                     }
@@ -138,7 +137,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
                                 for (Class<?> C : mEntityMap) {
                                     if (e.getClass()
                                         .equals(C) || C.isAssignableFrom(e.getClass())) {
-                                        entities.put((Entity) e);
+                                        entities.add((Entity) e);
                                     }
                                 }
                             }

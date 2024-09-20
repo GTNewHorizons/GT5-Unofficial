@@ -27,9 +27,11 @@ import static gregtech.api.enums.Materials.Uraninite;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import bartworks.system.material.WerkstoffLoader;
+import bwcrossmod.galacticraft.planets.ross128b.WorldProviderRoss128b;
 import gregtech.api.interfaces.ISubTagContainer;
 
 public class BWWorldGenRoss128b extends BWOreLayer {
@@ -47,6 +49,18 @@ public class BWWorldGenRoss128b extends BWOreLayer {
     @Override
     public String getDimName() {
         return StatCollector.translateToLocal("planet.Ross128b");
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public boolean isGenerationAllowed(World aWorld, Class... aAllowedDimensionTypes) {
+        for (Class<?> clazz : aAllowedDimensionTypes) {
+            if (clazz == WorldProviderRoss128b.class) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public BWWorldGenRoss128b(String aName, boolean aDefault, int aMinY, int aMaxY, int aWeight, int aDensity,
@@ -169,6 +183,6 @@ public class BWWorldGenRoss128b extends BWOreLayer {
 
     @Override
     public boolean isGenerationAllowed(String aDimName, int aDimensionType, int aAllowedDimensionType) {
-        return aDimensionType == ConfigHandler.ross128BID;
+        return aDimensionType == Configuration.crossModInteractions.ross128BID;
     }
 }

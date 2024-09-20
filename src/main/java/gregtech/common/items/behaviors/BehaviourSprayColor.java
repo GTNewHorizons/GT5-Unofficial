@@ -1,13 +1,9 @@
 package gregtech.common.items.behaviors;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,16 +12,14 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import appeng.api.implementations.tiles.IColorableTile;
-import appeng.api.util.AEColor;
-import appeng.block.networking.BlockCableBus;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.other.ConfigGeneral;
+import gregtech.common.config.Other;
 
 public class BehaviourSprayColor extends BehaviourNone {
 
@@ -34,23 +28,16 @@ public class BehaviourSprayColor extends BehaviourNone {
     private final ItemStack mFull;
     private final long mUses;
     private final byte mColor;
-    private final Collection<Block> mAllowedVanillaBlocks = Arrays.asList(
-        Blocks.glass,
-        Blocks.glass_pane,
-        Blocks.stained_glass,
-        Blocks.stained_glass_pane,
-        Blocks.carpet,
-        Blocks.hardened_clay);
     protected String mTooltip;
     private final String mTooltipUses = GTLanguageManager
         .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
     private final String mTooltipUnstackable = GTLanguageManager
         .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
-    private final String mTooltipChain = GTLanguageManager.addStringLocalization(
+    protected final String mTooltipChain = GTLanguageManager.addStringLocalization(
         "gt.behaviour.paintspray.chain",
         "If used while sneaking it will spray a chain of blocks");
 
-    private final String mTooltipChainAmount = GTLanguageManager.addStringLocalization(
+    protected final String mTooltipChainAmount = GTLanguageManager.addStringLocalization(
         "gt.behaviour.paintspray.chain_amount",
         "Sprays up to %d blocks, in the direction you're looking at");
 
@@ -75,6 +62,21 @@ public class BehaviourSprayColor extends BehaviourNone {
     }
 
     @Override
+    // Included for Ring of Loki support.
+    public boolean onItemUse(final MetaBaseItem aItem, final ItemStack aStack, final EntityPlayer aPlayer,
+        final World aWorld, final int aX, final int aY, final int aZ, final int ordinalSide, final float hitX,
+        final float hitY, final float hitZ) {
+        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+
+        if (ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, aPlayer)
+            .isValid()) {
+            return onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ);
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
@@ -88,14 +90,10 @@ public class BehaviourSprayColor extends BehaviourNone {
         if (tNBT == null) {
             tNBT = new NBTTagCompound();
         }
-        long tUses = tNBT.getLong("GT.RemainingPaint");
-        if (GTUtility.areStacksEqual(aStack, this.mFull, true)) {
-            aStack.func_150996_a(this.mUsed.getItem());
-            Items.feather.setDamage(aStack, Items.feather.getDamage(this.mUsed));
-            tUses = this.mUses;
-        }
+        long tUses = getUses(aStack, tNBT);
+
         int painted = 0;
-        int maxPainted = ConfigGeneral.sprayCanChainRange;
+        int maxPainted = Other.sprayCanChainRange;
         ForgeDirection lookSide;
         Vec3 look = aPlayer.getLookVec();
         double absX = Math.abs(look.xCoord);
@@ -134,8 +132,8 @@ public class BehaviourSprayColor extends BehaviourNone {
             if (aWorld.getBlockMetadata(aX, aY, aZ) != initialBlockMeta) break;
 
             /*
-             * Check if the initial block had a TE and if the next one does, check if its the same kind.
-             * else one does and the other doesnt, thus stop checking.
+             * Check if the initial block had a TE and if the next one does, check if it's the same kind.
+             * else one does and the other doesn't, thus stop checking.
              */
             TileEntity targetTE = aWorld.getTileEntity(aX, aY, aZ);
             if (initialTE == null ^ targetTE == null) break;
@@ -149,6 +147,28 @@ public class BehaviourSprayColor extends BehaviourNone {
                 }
             }
         }
+        setRemainingUses(aStack, tNBT, tUses);
+        return rOutput;
+    }
+
+    @Override
+    public boolean shouldInterruptBlockActivation(final EntityPlayer player, final TileEntity tileEntity,
+        final ForgeDirection side) {
+        return ColoredBlockContainer.getInstance(player, tileEntity, side)
+            .isValid();
+    }
+
+    protected long getUses(ItemStack aStack, NBTTagCompound tNBT) {
+        long tUses = tNBT.getLong("GT.RemainingPaint");
+        if (GTUtility.areStacksEqual(aStack, this.mFull, true)) {
+            aStack.func_150996_a(this.mUsed.getItem());
+            Items.feather.setDamage(aStack, Items.feather.getDamage(this.mUsed));
+            tUses = this.mUses;
+        }
+        return tUses;
+    }
+
+    protected void setRemainingUses(ItemStack aStack, NBTTagCompound tNBT, long tUses) {
         tNBT.removeTag("GT.RemainingPaint");
         if (tUses > 0L) {
             tNBT.setLong("GT.RemainingPaint", tUses);
@@ -166,48 +186,22 @@ public class BehaviourSprayColor extends BehaviourNone {
                 Items.feather.setDamage(aStack, Items.feather.getDamage(this.mEmpty));
             }
         }
-        return rOutput;
     }
 
     protected boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side, EntityPlayer player) {
-        final Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if (aBlock != Blocks.air) {
-            if (this.mAllowedVanillaBlocks.contains(aBlock) || aBlock instanceof BlockColored) {
-                if (aBlock == Blocks.hardened_clay) {
-                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_hardened_clay, (~this.mColor) & 0xF, 3);
-                    return true;
-                }
-                if (aBlock == Blocks.glass_pane) {
-                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass_pane, (~this.mColor) & 0xF, 3);
-                    return true;
-                }
-                if (aBlock == Blocks.glass) {
-                    aWorld.setBlock(aX, aY, aZ, Blocks.stained_glass, (~this.mColor) & 0xF, 3);
-                    return true;
-                }
-                if (aWorld.getBlockMetadata(aX, aY, aZ) == ((~this.mColor) & 0xF)) {
-                    return false;
-                }
-                aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (~this.mColor) & 0xF, 3);
-                return true;
-            }
+        return ColoredBlockContainer.getInstance(aWorld, aX, aY, aZ, side, player)
+            .setColor(getColor());
+    }
 
-            if (aBlock instanceof IColorableTile) {
-                return ((IColorableTile) aBlock).recolourBlock(side, AEColor.values()[(~this.mColor) & 0xF], player);
-            }
-
-            if (aBlock instanceof BlockCableBus) {
-                return ((BlockCableBus) aBlock).recolourBlock(aWorld, aX, aY, aZ, side, (~this.mColor) & 0xF, player);
-            }
-        }
-        return aBlock.recolourBlock(aWorld, aX, aY, aZ, side, (~this.mColor) & 0xF);
+    protected byte getColor() {
+        return this.mColor;
     }
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         aList.add(this.mTooltipChain);
-        aList.add(String.format(this.mTooltipChainAmount, ConfigGeneral.sprayCanChainRange));
+        aList.add(String.format(this.mTooltipChainAmount, Other.sprayCanChainRange));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
             : GTUtility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");

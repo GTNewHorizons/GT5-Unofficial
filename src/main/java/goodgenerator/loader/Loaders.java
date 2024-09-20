@@ -10,11 +10,15 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.blocks.myFluids.FluidsBuilder;
+import goodgenerator.blocks.regularBlock.AntimatterRenderBlock;
 import goodgenerator.blocks.regularBlock.BlockCasing;
 import goodgenerator.blocks.regularBlock.BlockComplexTextureCasing;
 import goodgenerator.blocks.regularBlock.BlockFrame;
 import goodgenerator.blocks.regularBlock.BlockTEContainer;
 import goodgenerator.blocks.regularBlock.BlockTurbineCasing;
+import goodgenerator.blocks.tileEntity.AntimatterForge;
+import goodgenerator.blocks.tileEntity.AntimatterGenerator;
+import goodgenerator.blocks.tileEntity.AntimatterOutputHatch;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEDieselGenerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
@@ -39,6 +43,7 @@ import goodgenerator.blocks.tileEntity.MTEPreciseAssembler;
 import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
 import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngine;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
+import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.client.render.BlockRenderHandler;
 import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEIConfig;
@@ -222,6 +227,22 @@ public class Loaders {
         new String[] { GoodGenerator.MOD_ID + ":fuison/1", GoodGenerator.MOD_ID + ":fuison/2",
             GoodGenerator.MOD_ID + ":fuison/3", GoodGenerator.MOD_ID + ":fuison/4",
             GoodGenerator.MOD_ID + ":fuison/5" });
+    public static final Block antimatterContainmentCasing = new BlockFrame(
+        "antimatterContainmentCasing",
+        new String[] { GoodGenerator.MOD_ID + ":antimatterContainmentCasing" });
+    public static final Block magneticFluxCasing = new BlockCasing(
+        "magneticFluxCasing",
+        new String[] { GoodGenerator.MOD_ID + ":magneticFluxCasing" });
+    public static final Block gravityStabilizationCasing = new BlockCasing(
+        "gravityStabilizationCasing",
+        new String[] { GoodGenerator.MOD_ID + ":gravityStabilizationCasing" });
+    public static final Block protomatterActivationCoil = new BlockCasing(
+        "protomatterActivationCoil",
+        new String[] { GoodGenerator.MOD_ID + ":protomatterActivationCoil" });
+    public static final Block antimatterAnnihilationMatrix = new BlockCasing(
+        "antimatterAnnihilationMatrix",
+        new String[] { GoodGenerator.MOD_ID + ":antimatterAnnihilationMatrix" });
+    public static final Block antimatterRenderBlock = new AntimatterRenderBlock();
     public static final Block essentiaFilterCasing = new BlockCasing(
         "essentiaFilterCasing",
         new String[] { GoodGenerator.MOD_ID + ":essentiaFilterCasing" });
@@ -264,6 +285,9 @@ public class Loaders {
     public static ItemStack[] Generator_Diesel = new ItemStack[2];
 
     public static ItemStack CompAssline;
+    public static ItemStack AMForge;
+    public static ItemStack AMGenerator;
+    public static ItemStack AMHatch;
     // public static Item Isotope = new NuclearMetaItemGenerator();
 
     public static void GTMetaTileRegister() {
@@ -297,10 +321,14 @@ public class Loaders {
             .getStackForm(1L);
         Loaders.YFH = new MTEYOTTAHatch(MetaTileEntityIDs.YottaHatch.ID, "YottaFluidTankHatch", "YOTHatch", 5)
             .getStackForm(1L);
+        Loaders.AMHatch = new AntimatterOutputHatch(
+            IDs_GoodGenerator.AntimatterHatch.ID,
+            "AntimatterHatch",
+            "Antimatter Hatch").getStackForm(1L);
         Loaders.SCTurbine = new MTESupercriticalFluidTurbine(
-            MetaTileEntityIDs.SupercriticalFluidTurbine.ID,
+            IDs_GoodGenerator.SupercriticalFluidTurbine.ID,
             "SupercriticalSteamTurbine",
-            "SC Steam Turbine").getStackForm(1L);
+            "Large Supercritical Steam Turbine").getStackForm(1L);
         Loaders.XHE = new MTEExtremeHeatExchanger(
             MetaTileEntityIDs.ExtremeHeatExchanger.ID,
             "ExtremeHeatExchanger",
@@ -348,6 +376,14 @@ public class Loaders {
         CrackRecipeAdder.registerPipe(MetaTileEntityIDs.PipeIncoloy903.ID, GGMaterial.incoloy903, 15000, 8000, true);
         CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireSignalium.ID, GGMaterial.signalium, 12, 131072, 16, true);
         CrackRecipeAdder.registerWire(MetaTileEntityIDs.WireLumiium.ID, GGMaterial.lumiium, 8, 524288, 64, true);
+        Loaders.AMForge = new AntimatterForge(
+            IDs_GoodGenerator.AntimatterForge.ID,
+            "AntimatterForge",
+            "Semi-Stable Antimatter Stabilization Sequencer").getStackForm(1L);
+        Loaders.AMGenerator = new AntimatterGenerator(
+            IDs_GoodGenerator.AntimatterGenerator.ID,
+            "AntimatterGenerator",
+            "Shielded Lagrangian Annihilation Matrix").getStackForm(1L);
     }
 
     public static void Register() {
@@ -375,6 +411,12 @@ public class Loaders {
         GameRegistry.registerBlock(impreciseUnitCasing, GGItemBlocks.class, "impreciseUnitCasing");
         GameRegistry.registerBlock(preciseUnitCasing, GGItemBlocks.class, "preciseUnitCasing");
         GameRegistry.registerBlock(compactFusionCoil, GGItemBlocks.class, "compactFusionCoil");
+        GameRegistry.registerBlock(antimatterContainmentCasing, GGItemBlocks.class, "antimatterContainmentCasing");
+        GameRegistry.registerBlock(magneticFluxCasing, GGItemBlocks.class, "magneticFluxCasing");
+        GameRegistry.registerBlock(protomatterActivationCoil, GGItemBlocks.class, "protomatterActivationCoil");
+        GameRegistry.registerBlock(antimatterAnnihilationMatrix, GGItemBlocks.class, "antimatterAnnihilationMatrix");
+        GameRegistry.registerBlock(gravityStabilizationCasing, GGItemBlocks.class, "gravityStabilizationCasing");
+        GameRegistry.registerBlock(antimatterRenderBlock, "antimatterRenderBlock");
         GameRegistry.registerItem(radiationProtectionPlate, "radiationProtectionPlate", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(wrappedUraniumIngot, "wrappedUraniumIngot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(highDensityUraniumNugget, "highDensityUraniumNugget", GoodGenerator.MOD_ID);
@@ -407,6 +449,7 @@ public class Loaders {
         GameRegistry.registerItem(saltyRoot, "saltyRoot", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(huiCircuit, "huiCircuit", GoodGenerator.MOD_ID);
         GameRegistry.registerItem(circuitWrap, "circuitWrap", GoodGenerator.MOD_ID);
+        GameRegistry.registerTileEntity(TileAntimatter.class, "AntimatterRender");
     }
 
     public static void compactMod() {
@@ -469,6 +512,10 @@ public class Loaders {
                 .of(preciseUnitCasing, 2);
             Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][8] = TextureFactory
                 .of(preciseUnitCasing, 3);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][9] = TextureFactory
+                .of(magneticFluxCasing, 0);
+            Textures.BlockIcons.casingTexturePages[GoodGeneratorTexturePage][10] = TextureFactory
+                .of(gravityStabilizationCasing, 0);
         }
     }
 

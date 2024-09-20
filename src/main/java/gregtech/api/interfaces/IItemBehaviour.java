@@ -9,13 +9,47 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.SubTag;
 import gregtech.api.items.MetaBaseItem;
 
 public interface IItemBehaviour<E extends Item> {
+
+    default boolean onLeftClick(E aItem, ItemStack aStack, EntityPlayer aPlayer) {
+        return false;
+    }
+
+    default boolean onMiddleClick(E aItem, ItemStack aStack, EntityPlayer aPlayer) {
+        return false;
+    }
+
+    /**
+     * Suppresses standard block activation for a {@link gregtech.common.blocks.BlockMachines GT machine block}. Put
+     * your item's right click activation in
+     * {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float) onItemUse}
+     * for best results.
+     * <p>
+     * Typically used when the item needs support for the Ring of Loki (from Botania.) If you don't care about that,
+     * using
+     * {@link #onItemUseFirst(Item, ItemStack, EntityPlayer, World, int, int, int, ForgeDirection, float, float, float)
+     * onItemUseFirst}
+     * instead of {@link #onItemUse(Item, ItemStack, EntityPlayer, World, int, int, int, int, float, float, float)
+     * onItemUse}
+     * will act before block activation with a little less overhead.
+     *
+     * @param player     the player making the request
+     * @param tileEntity the tile entity that is attempting to be activated
+     * @param side       the side of the tile entity that the player clicked on
+     * @return true if standard block activation should be suppressed
+     */
+    default boolean shouldInterruptBlockActivation(EntityPlayer player, TileEntity tileEntity, ForgeDirection side) {
+        return false;
+    }
 
     boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
@@ -28,6 +62,10 @@ public interface IItemBehaviour<E extends Item> {
     ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer);
 
     List<String> getAdditionalToolTips(E aItem, List<String> aList, ItemStack aStack);
+
+    default List<String> getAdditionalToolTipsWhileSneaking(E aItem, List<String> aList, ItemStack aStack) {
+        return ImmutableList.of();
+    }
 
     void onUpdate(E aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand);
 

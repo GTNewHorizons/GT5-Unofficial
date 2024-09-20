@@ -82,11 +82,18 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
                         GregTechAPI.sGeneratedMaterials[i].getToolTip());
                     if ((GregTechAPI.sGeneratedMaterials[i].mTypes & 0x8) != 0
                         && !aBlockedOres.contains(GregTechAPI.sGeneratedMaterials[i])) {
-                        GTOreDictUnificator.registerOre(
-                            this.getProcessingPrefix()[j] != null
-                                ? this.getProcessingPrefix()[j].get(GregTechAPI.sGeneratedMaterials[i])
-                                : "",
-                            new ItemStack(this, 1, i + (j * 1000)));
+                        if (this.getProcessingPrefix()[j] != null && this.getProcessingPrefix()[j].mIsUnificatable) {
+                            GTOreDictUnificator.set(
+                                this.getProcessingPrefix()[j],
+                                GregTechAPI.sGeneratedMaterials[i],
+                                new ItemStack(this, 1, i + (j * 1000)));
+                        } else {
+                            GTOreDictUnificator.registerOre(
+                                this.getProcessingPrefix()[j] != null
+                                    ? this.getProcessingPrefix()[j].get(GregTechAPI.sGeneratedMaterials[i])
+                                    : "",
+                                new ItemStack(this, 1, i + (j * 1000)));
+                        }
                         if (tHideOres) {
                             if (!(j == 0 && !aHideFirstMeta)) {
                                 codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + (j * 1000)));

@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import kubatech.api.IBlockStemAccesor;
+import gregtech.mixin.interfaces.IBlockStemAccesor;
 
 @Mixin(value = BlockStem.class)
 public class BlockStemMixin implements IBlockStemAccesor {

@@ -251,8 +251,14 @@ import static gregtech.common.items.IDMetaItem01.FluidRegulator_HV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_IV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_LV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_LuV;
+import static gregtech.common.items.IDMetaItem01.FluidRegulator_MAX;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_MV;
+import static gregtech.common.items.IDMetaItem01.FluidRegulator_UEV;
+import static gregtech.common.items.IDMetaItem01.FluidRegulator_UHV;
+import static gregtech.common.items.IDMetaItem01.FluidRegulator_UIV;
+import static gregtech.common.items.IDMetaItem01.FluidRegulator_UMV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_UV;
+import static gregtech.common.items.IDMetaItem01.FluidRegulator_UXV;
 import static gregtech.common.items.IDMetaItem01.FluidRegulator_ZPM;
 import static gregtech.common.items.IDMetaItem01.Fuel_Can_Plastic_Empty;
 import static gregtech.common.items.IDMetaItem01.Fuel_Can_Plastic_Filled;
@@ -396,6 +402,7 @@ import static gregtech.common.items.IDMetaItem01.Spray_Color_6;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_7;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_8;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_9;
+import static gregtech.common.items.IDMetaItem01.Spray_Color_Infinite;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_Remover;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_Remover_Empty;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_Used_0;
@@ -493,7 +500,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.other.ConfigGeneral;
+import gregtech.common.config.Other;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;
@@ -530,6 +537,7 @@ import gregtech.common.items.behaviors.BehaviourScanner;
 import gregtech.common.items.behaviors.BehaviourSensorKit;
 import gregtech.common.items.behaviors.BehaviourSonictron;
 import gregtech.common.items.behaviors.BehaviourSprayColor;
+import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
@@ -1024,7 +1032,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         ItemList.Spray_Color_Remover_Empty.set(
             addItem(
                 Spray_Color_Remover_Empty.ID,
-                "Empty Spray Can Solvent Cannister",
+                "Empty Spray Can Solvent Canister",
                 "Used for making Spray Can Solvent",
                 new ItemData(
                     Materials.Aluminium,
@@ -1033,6 +1041,16 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                     OrePrefixes.dust.mMaterialAmount),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+
+        ItemList.Spray_Color_Infinite.set(
+            addItem(
+                Spray_Color_Infinite.ID,
+                "Infinite Spray Can",
+                "Contains all sixteen colors, as well as solvent!",
+                new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
+                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
+                new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 4)));
 
         ItemList.Tool_Matches.set(
             addItem(
@@ -2040,30 +2058,59 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 16L)));
 
         ItemList.FluidRegulator_LV.set(
-            addItem(FluidRegulator_LV.ID, "Fluid Regulator (LV)", FRText1 + GTUtility.formatNumbers(640) + FRText2));
+            addItem(
+                FluidRegulator_LV.ID,
+                "Fluid Regulator (LV)",
+                FRText1 + GTUtility.formatNumbers(32 * 20) + FRText2));
         ItemList.FluidRegulator_MV.set(
-            addItem(FluidRegulator_MV.ID, "Fluid Regulator (MV)", FRText1 + GTUtility.formatNumbers(2560) + FRText2));
+            addItem(
+                FluidRegulator_MV.ID,
+                "Fluid Regulator (MV)",
+                FRText1 + GTUtility.formatNumbers(128 * 20) + FRText2));
         ItemList.FluidRegulator_HV.set(
-            addItem(FluidRegulator_HV.ID, "Fluid Regulator (HV)", FRText1 + GTUtility.formatNumbers(10240) + FRText2));
+            addItem(
+                FluidRegulator_HV.ID,
+                "Fluid Regulator (HV)",
+                FRText1 + GTUtility.formatNumbers(512 * 20) + FRText2));
         ItemList.FluidRegulator_EV.set(
-            addItem(FluidRegulator_EV.ID, "Fluid Regulator (EV)", FRText1 + GTUtility.formatNumbers(40960) + FRText2));
+            addItem(
+                FluidRegulator_EV.ID,
+                "Fluid Regulator (EV)",
+                FRText1 + GTUtility.formatNumbers(2048 * 20) + FRText2));
         ItemList.FluidRegulator_IV.set(
-            addItem(FluidRegulator_IV.ID, "Fluid Regulator (IV)", FRText1 + GTUtility.formatNumbers(163840) + FRText2));
+            addItem(
+                FluidRegulator_IV.ID,
+                "Fluid Regulator (IV)",
+                FRText1 + GTUtility.formatNumbers(8192 * 20) + FRText2));
         ItemList.FluidRegulator_LuV.set(
             addItem(
                 FluidRegulator_LuV.ID,
                 "Fluid Regulator (LuV)",
-                FRText1 + GTUtility.formatNumbers(655360) + FRText2));
+                FRText1 + GTUtility.formatNumbers(32768 * 20) + FRText2));
         ItemList.FluidRegulator_ZPM.set(
             addItem(
                 FluidRegulator_ZPM.ID,
                 "Fluid Regulator (ZPM)",
-                FRText1 + GTUtility.formatNumbers(2621440) + FRText2));
+                FRText1 + GTUtility.formatNumbers(131072 * 20) + FRText2));
         ItemList.FluidRegulator_UV.set(
             addItem(
                 FluidRegulator_UV.ID,
                 "Fluid Regulator (UV)",
-                FRText1 + GTUtility.formatNumbers(10485760) + FRText2));
+                FRText1 + GTUtility.formatNumbers(524288 * 20) + FRText2));
+        ItemList.FluidRegulator_UHV.set(
+            addItem(
+                FluidRegulator_UHV.ID,
+                "Fluid Regulator (UHV)",
+                FRText1 + GTUtility.formatNumbers(1048576 * 20) + FRText2));
+        ItemList.FluidRegulator_UEV.set(
+            addItem(
+                FluidRegulator_UEV.ID,
+                "Fluid Regulator (UEV)",
+                FRText1 + GTUtility.formatNumbers(2097152 * 20) + FRText2));
+        ItemList.FluidRegulator_UIV.set(addItem(FluidRegulator_UIV.ID, "Fluid Regulator (UIV)", PartNotCoverText));
+        ItemList.FluidRegulator_UMV.set(addItem(FluidRegulator_UMV.ID, "Fluid Regulator (UMV)", PartNotCoverText));
+        ItemList.FluidRegulator_UXV.set(addItem(FluidRegulator_UXV.ID, "Fluid Regulator (UXV)", PartNotCoverText));
+        ItemList.Electric_Pump_MAX.set(addItem(FluidRegulator_MAX.ID, "Fluid Regulator (MAX)", PartNotCoverText));
 
         ItemList.FluidFilter.set(
             addItem(FluidFilter.ID, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
@@ -3204,14 +3251,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Black_Hole_Opener.ID,
                 "Black Hole Seed",
-                "Opens a semi-stable black hole",
+                "Opens a pseudostable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 64)));
         ItemList.Black_Hole_Closer.set(
             addItem(
                 Black_Hole_Closer.ID,
                 "Black Hole Collapser",
-                "Safely closes a semi-stable black hole",
+                "Safely closes a pseudostable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 64)));
 
@@ -3415,6 +3462,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         setAllFluidContainerStats();
         setAllElectricStats();
         registerTieredTooltips();
+        registerSubIcons();
 
         craftingShapedRecipes();
         craftingShapelessRecipes();
@@ -3684,6 +3732,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.FluidRegulator_UV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_PUMP)),
             new CoverFluidRegulator(524288, TextureFactory.of(OVERLAY_PUMP)));
+        GregTechAPI.registerCover(
+            ItemList.FluidRegulator_UHV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_PUMP)),
+            new CoverFluidRegulator(1048576, TextureFactory.of(OVERLAY_PUMP)));
+        GregTechAPI.registerCover(
+            ItemList.FluidRegulator_UEV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
+            new CoverFluidRegulator(2097152, TextureFactory.of(OVERLAY_PUMP)));
 
         GregTechAPI.registerCover(
             ItemList.FluidFilter.get(1L),
@@ -4491,6 +4547,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         addItemBehavior(32000 + Spray_Color_Remover.ID, behaviourSprayColorRemover);
         addItemBehavior(32000 + Spray_Color_Used_Remover.ID, behaviourSprayColorRemover);
 
+        addItemBehavior(
+            32000 + Spray_Color_Infinite.ID,
+            new BehaviourSprayColorInfinite(ItemList.Spray_Color_Infinite.get(1L)));
+
         IItemBehaviour<MetaBaseItem> behaviourMatches = new BehaviourLighter(
             null,
             ItemList.Tool_Matches.get(1L),
@@ -4526,7 +4586,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 ItemList.Spray_Empty.get(1L),
                 ItemList.SPRAY_CAN_DYES_USED[i].get(1L),
                 ItemList.SPRAY_CAN_DYES[i].get(1L),
-                ConfigGeneral.sprayCanUses,
+                Other.sprayCanUses,
                 i);
             addItemBehavior(32000 + Spray_Colors[i], behaviourSprayColor);
             addItemBehavior(32000 + Spray_Colors_Used[i], behaviourSprayColor);
@@ -4573,6 +4633,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         setElectricStats(32000 + BatteryHull_UIV_Full.ID, 104857600000L, GTValues.V[11], 11L, -3L, true);
         setElectricStats(32000 + BatteryHull_UMV_Full.ID, 419430400000L, GTValues.V[12], 12L, -3L, true);
         setElectricStats(32000 + BatteryHull_UxV_Full.ID, 1677721600000L, GTValues.V[13], 13L, -3L, true);
+    }
+
+    private void registerSubIcons() {
+        setSubIcons(Spray_Color_Infinite.ID, 3);
     }
 
     private void registerTieredTooltips() {

@@ -267,11 +267,11 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
             .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Wooden Casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
             .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "10 " + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "9 " + EnumChatFormatting.GRAY + " Wooden Casing")
             .addStructureInfo("")
             .toolTipFinisher(AuthorEvgenWarGold);
         return tt;
@@ -321,10 +321,20 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
 
+        int tierMachine = tag.getInteger("mSetTier");
+        String tierMachineText;
+        if (tierMachine == 1) {
+            tierMachineText = "Bronze";
+        } else if (tierMachine == 2) {
+            tierMachineText = "Steel";
+        } else {
+            tierMachineText = String.valueOf(tierMachine);
+        }
+
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+            StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.BLUE
-                + tag.getInteger("mSetTier")
+                + tierMachineText
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GT5U.biomes.humidity") + " "

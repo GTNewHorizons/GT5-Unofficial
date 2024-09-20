@@ -215,35 +215,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         1L))
                 .eut(45)
                 .addTo(extruderRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(stickLong))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(stick))
-                .itemOutputs(werkstoff.get(dustSmall, 2))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
         }
     }
 }
