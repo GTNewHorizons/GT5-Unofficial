@@ -39,7 +39,15 @@ public class ItemBlockGtBlock extends ItemBlock {
         } else if (block instanceof BlockBaseModular) {
             this.isModular = true;
         }
-        this.blockColour = block.getBlockColor();
+        assert block instanceof BlockBaseModular;
+        final BlockBaseModular baseBlock = (BlockBaseModular) block;
+        if (isModular) {
+            this.blockColour = baseBlock.getRenderColor(0);
+        } else if (isOre) {
+            this.blockColour = block.getBlockColor();
+        } else {
+            this.blockColour = block.getBlockColor();
+        }
 
         if (block instanceof BlockBaseModular g) {
             this.mMaterial = g.getMaterialEx();
