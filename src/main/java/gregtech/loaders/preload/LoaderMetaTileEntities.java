@@ -12816,60 +12816,60 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         // Item Pipes
 
         // ULV Pipes
-        generateItemPipes(Materials.Tin, Materials.Tin.mName, 6700, 1);
-        generateItemPipes(Materials.Nickel, Materials.Nickel.mName, 6710, 1);
+        generateItemPipes(Materials.Tin, Materials.Tin.mName, 6700, 1/2);
+        generateItemPipes(Materials.Nickel, Materials.Nickel.mName, 6710, 1/2);
         generateItemPipes(Materials.Brass, Materials.Brass.mName, 6720, 1);
 
         // LV Pipes
         generateItemPipes(Materials.Electrum, Materials.Electrum.mName, 6750, 2);
 
         // MV Pipes
-        generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 6800, 2);
-        generateItemPipes(Materials.Cobalt, Materials.Cobalt.mName, 6810, 2);
-        generateItemPipes(Materials.PolyvinylChloride, Materials.PolyvinylChloride.mName, "PVC", 6820, 4);
+        generateItemPipes(Materials.Aluminium, Materials.Aluminium.mName, 6800, 4);
+        generateItemPipes(Materials.PolyvinylChloride, Materials.PolyvinylChloride.mName, "PVC", 6810, 4);
+        generateItemPipes(Materials.Cobalt, Materials.Cobalt.mName, 6820, 5);
 
         // HV Pipes
         generateItemPipes(
             GregtechOrePrefixes.GT_Materials.TantalumCarbide,
             GregtechOrePrefixes.GT_Materials.TantalumCarbide.mDefaultLocalName,
             6850,
-            4);
+            6);
 
         // EV Pipes
-        generateItemPipes(Materials.Platinum, Materials.Platinum.mName, 6900, 4);
+        generateItemPipes(Materials.Platinum, Materials.Platinum.mName, 6900, 8);
 
         // IV Pipes
-        generateItemPipes(Materials.Osmium, Materials.Osmium.mName, 6950, 8);
-        generateItemPipes(Materials.Quantium, Materials.Quantium.mName, 6960, 128);
+        generateItemPipes(Materials.Osmium, Materials.Osmium.mName, 6950, 16);
+        generateItemPipes(Materials.Quantium, Materials.Quantium.mName, 6960, 24);
 
         // LuV Pipes
         generateItemPipes(
             GregtechOrePrefixes.GT_Materials.HG1223,
             GregtechOrePrefixes.GT_Materials.HG1223.mDefaultLocalName,
             7000,
-            256);
+            32);
 
         // ZPM Pipes
-        generateItemPipes(Materials.ElectrumFlux, Materials.ElectrumFlux.mName, 7050, 16);
-        generateItemPipes(Materials.BlackPlutonium, Materials.BlackPlutonium.mName, 7060, 32);
+        generateItemPipes(Materials.ElectrumFlux, Materials.ElectrumFlux.mName, 7050, 64);
+        generateItemPipes(Materials.BlackPlutonium, Materials.BlackPlutonium.mName, 7060, 96);
 
         // UV Pipes
         generateItemPipes(
             GregtechOrePrefixes.GT_Materials.BlackTitanium,
             GregtechOrePrefixes.GT_Materials.BlackTitanium.mDefaultLocalName,
             7100,
-            64);
-        generateItemPipes(Materials.Bedrockium, Materials.Bedrockium.mName, 7110, 64);
+            128);
+        generateItemPipes(Materials.Bedrockium, Materials.Bedrockium.mName, 7110, 192);
 
         // UHV Pipes
         generateItemPipes(
             GregtechOrePrefixes.GT_Materials.AbyssalAlloy,
             GregtechOrePrefixes.GT_Materials.AbyssalAlloy.mDefaultLocalName,
             7150,
-            64);
+            256);
 
         // UEV Pipes
-        generateItemPipes(Materials.TengamPurified, Materials.TengamPurified.mName, 7200, 64);
+        generateItemPipes(Materials.TengamPurified, Materials.TengamPurified.mName, 7200, 512);
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
