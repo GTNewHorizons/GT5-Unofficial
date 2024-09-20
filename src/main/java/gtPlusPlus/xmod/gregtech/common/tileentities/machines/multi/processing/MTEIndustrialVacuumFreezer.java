@@ -35,6 +35,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -215,7 +216,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialVacuumFreezer;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialVacuumFreezer;
     }
 
     @Override

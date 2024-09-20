@@ -1,7 +1,6 @@
 package detrav;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.config.Configuration;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -15,7 +14,6 @@ import detrav.items.processing.ProcessingDetravToolProspector;
 import detrav.net.DetravNetwork;
 import detrav.proxies.CommonProxy;
 import detrav.utils.DetravCreativeTab;
-import detrav.utils.GTppHelper;
 import gregtech.GT_Version;
 import gregtech.api.GregTechAPI;
 
@@ -45,13 +43,6 @@ public class DetravScannerMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        Configuration Config = new Configuration(event.getSuggestedConfigurationFile());
-        Config.load();
-
-        if (Config.hasChanged()) {
-            Config.save();
-        }
-
         proxy.onPreInit();
     }
 
@@ -64,6 +55,5 @@ public class DetravScannerMod {
     @EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
         proxy.onPostLoad();
-        GTppHelper.generate_OreIDs();
     }
 }

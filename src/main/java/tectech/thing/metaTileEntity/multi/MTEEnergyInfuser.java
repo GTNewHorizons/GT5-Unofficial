@@ -32,7 +32,7 @@ import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import tectech.Reference;
 import tectech.TecTech;
-import tectech.loader.TecTechConfig;
+import tectech.loader.ConfigHandler;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -120,7 +120,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements IConstructable
             }
             return remove;
         } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE) {
+            if (ConfigHandler.debug.DEBUG_MODE) {
                 e.printStackTrace();
             }
         }
@@ -139,7 +139,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements IConstructable
             }
             return RF;
         } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE) {
+            if (ConfigHandler.debug.DEBUG_MODE) {
                 e.printStackTrace();
             }
         }

@@ -39,6 +39,7 @@ public class DynamicDimensionConfig {
 
     public static boolean InitDynamicConfig() {
         try {
+            final Asteroids[] ASTEROIDS_VALUES = Asteroids.values();
             for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
                 if (!mc.isModLoaded()) continue;
 
@@ -56,7 +57,7 @@ public class DynamicDimensionConfig {
                     }
 
                     Asteroids AsteroidProperties = null;
-                    for (Asteroids asteroidsConfig : Asteroids.values()) {
+                    for (Asteroids asteroidsConfig : ASTEROIDS_VALUES) {
                         if (!asteroidsConfig.modContainers.modContainer.getModName()
                             .equals(mc.getModName())) {
                             continue;

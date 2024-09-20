@@ -1587,6 +1587,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .setByProductMultiplier(2);
         Cryolite.setOreMultiplier(4)
             .setByProductMultiplier(4);
+        Coal.setOreMultiplier(2)
+            .setByProductMultiplier(2);
     }
 
     private static void setEnchantmentKnockbackTools() {

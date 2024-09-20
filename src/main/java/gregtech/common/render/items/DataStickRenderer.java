@@ -9,18 +9,25 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.util.AssemblyLineUtils;
 
 // borrow form ae2
-
 public class DataStickRenderer implements IItemRenderer {
 
     private final RenderItem ri = new RenderItem();
 
+    public DataStickRenderer() {
+        MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, this);
+    }
+
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         final boolean isShiftHeld = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-        return type == ItemRenderType.INVENTORY && isShiftHeld;
+        final boolean shouldSwitch = item.hasTagCompound() && item.getTagCompound()
+            .hasKey("output");
+
+        return type == ItemRenderType.INVENTORY && isShiftHeld && shouldSwitch;
     }
 
     @Override
