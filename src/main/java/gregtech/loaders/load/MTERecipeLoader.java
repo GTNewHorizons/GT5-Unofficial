@@ -1,5 +1,6 @@
 package gregtech.loaders.load;
 
+import static bartworks.common.loaders.ItemRegistry.bw_realglas;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
@@ -14,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -33,6 +35,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
 import gregtech.loaders.postload.ProcessingArrayRecipeLoader;
 import ic2.core.Ic2Items;
+import tectech.thing.CustomItemList;
 
 public class MTERecipeLoader implements Runnable {
 
@@ -3770,6 +3773,24 @@ public class MTERecipeLoader implements Runnable {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.MeteorMiner.get(1L),
+            bitsd,
+            new Object[] { "ABA", "CDC", "ECE", 'A', OrePrefixes.circuit.get(Materials.LuV), 'B',
+                CustomItemList.eM_dynamoTunnel1_LuV, 'C', ItemList.Casing_Coil_Superconductor, 'D', ItemList.OreDrill3,
+                'E', ItemList.LuV_Coil });
+
+        GTModHandler.addCraftingRecipe(
+            ItemList.Laser_Beacon.get(1L),
+            bitsd,
+            new Object[] { "AAA", "BCB", "DED", 'A', new ItemStack(bw_realglas, 1, 3), 'B',
+                new ItemStack(
+                    ItemRegistry.TecTechPipeEnergyLowPower.getItem(),
+                    1,
+                    ItemRegistry.TecTechPipeEnergyLowPower.getItemDamage()),
+                'C', OrePrefixes.lens.get(Materials.NetherStar), 'D', OrePrefixes.circuit.get(Materials.LuV), 'E',
+                ItemList.Casing_Coil_Superconductor });
     }
 
     private static void registerShapelessCraftingRecipes() {
