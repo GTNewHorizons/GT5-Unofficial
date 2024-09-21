@@ -74,18 +74,6 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
             Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getHotIngot(1))) {
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(material.getHotIngot(1))
-                .itemOutputs(material.getIngot(1))
-                .duration((int) Math.max(material.getMass() * 3L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(vacuumFreezerRecipes);
-            Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Success");
-        }
-
         if (ItemUtils.checkForInvalidItems(material.getRod(1))
             && ItemUtils.checkForInvalidItems(material.getLongRod(1))) {
             GTValues.RA.stdBuilder()
