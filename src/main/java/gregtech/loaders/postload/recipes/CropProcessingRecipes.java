@@ -32,7 +32,7 @@ public class CropProcessingRecipes implements Runnable {
         tCrop = ItemList.Crop_Drop_Tine.get(1);
         this.addProcess(tCrop, Materials.Tin, 100, true);
         this.addProcess(tCrop, Materials.Cassiterite, 100, false);
-        this.addProcess(tCrop, Materials.CassiteriteSand, 100, true);
+        this.addProcess(tCrop, Materials.CassiteriteSand, 100, false);
         tCrop = ItemList.Crop_Drop_Plumbilia.get(1);
         this.addProcess(tCrop, Materials.Lead, 100, true);
         this.addProcess(tCrop, Materials.Galena, 100, false); //
