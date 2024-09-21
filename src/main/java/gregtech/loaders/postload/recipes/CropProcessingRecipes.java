@@ -142,13 +142,15 @@ public class CropProcessingRecipes implements Runnable {
             .eut(24)
             .addTo(UniversalChemical);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(16, tCrop))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
-            .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
-            .duration((int) (aMaterial.getMass() * 128))
-            .eut(384)
-            .addTo(autoclaveRecipes);
+        if (aMainOutput) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(16, tCrop))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
+                .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
+                .duration((int) (aMaterial.getMass() * 128))
+                .eut(384)
+                .addTo(autoclaveRecipes);
+        }
     }
 
     public void addProcess(ItemStack tCrop, Materials aMaterial, int chance) {
