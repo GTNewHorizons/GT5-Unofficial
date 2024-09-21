@@ -104,7 +104,7 @@ public class ChemicalBathRecipes implements Runnable {
 
             // carpet cleaning recipes
             GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(Blocks.carpet, 1, 32767))
+                .itemInputs(new ItemStack(Blocks.carpet, 1, i))
                 .itemOutputs(new ItemStack(Blocks.carpet, 1, 0))
                 .fluidInputs(Materials.Chlorine.getGas(25))
                 .duration(20 * SECONDS)
