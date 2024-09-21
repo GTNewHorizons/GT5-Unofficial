@@ -25,10 +25,6 @@ public class ASMConfiguration {
         @Config.DefaultBoolean(false)
         public boolean debugMode;
 
-        @Config.Comment("Enable/Disable COFH OreDictionaryArbiter Patch (Useful for Development)")
-        @Config.DefaultBoolean(true)
-        public boolean enableCofhPatch;
-
         @Config.Comment("Enable/Disable Forge OreDictionary Patch (Useful for Development)")
         @Config.DefaultBoolean(false)
         public boolean enableOreDictPatch;

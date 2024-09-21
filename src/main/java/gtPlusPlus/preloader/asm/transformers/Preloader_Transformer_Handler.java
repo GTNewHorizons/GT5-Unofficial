@@ -17,7 +17,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
     private static final Set<String> IC2_WRENCH_PATCH_CLASS_NAMES = new HashSet<>();
     private static final String FORGE_ORE_DICTIONARY = "net.minecraftforge.oredict.OreDictionary";
-    private static final String COFH_ORE_DICTIONARY_ARBITER = "cofh.core.util.oredict.OreDictionaryArbiter";
 
     static {
         IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.BlockTileEntity");
@@ -47,14 +46,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
             ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
             new ClassReader(basicClass).accept(new OreDictionaryVisitor(classWriter), 0);
             return classWriter.toByteArray();
-        }
-
-        // Fix the OreDictionary COFH
-        if (transformedName.equals(COFH_ORE_DICTIONARY_ARBITER)
-            && (ASMConfiguration.debug.enableCofhPatch || GTCorePlugin.isDevEnv())) {
-            PreloaderLogger.INFO("COFH", "Transforming " + transformedName);
-            return new ClassTransformer_COFH_OreDictionaryArbiter(basicClass).getWriter()
-                .toByteArray();
         }
 
         if (IC2_WRENCH_PATCH_CLASS_NAMES.contains(transformedName)) {
