@@ -9,14 +9,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -79,11 +77,10 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
@@ -383,7 +380,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public static Method aLogger = null;
 
     public void log(String s) {
-        if (!AsmConfig.disableAllLogging) {
+        if (!ASMConfiguration.debug.disableAllLogging) {
             if (PreloaderCore.DEBUG_MODE) {
                 Logger.INFO(s);
             } else {
@@ -1591,12 +1588,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             public long count(GTPPMultiBlockBase<?> t) {
                 return t.mTecTechEnergyHatches.size();
             }
-        },;
-
-        @SuppressWarnings("unchecked")
-        private static <T> Class<T> retype(Class<?> clazz) {
-            return (Class<T>) clazz;
-        }
+        };
 
         private final List<? extends Class<? extends IMetaTileEntity>> mMteClasses;
         private final IGTHatchAdder<? super GTPPMultiBlockBase<?>> mAdder;
@@ -1605,15 +1597,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         GTPPHatchElement(IGTHatchAdder<? super GTPPMultiBlockBase<?>> aAdder,
             Class<? extends IMetaTileEntity>... aMteClasses) {
             this.mMteClasses = Arrays.asList(aMteClasses);
-            this.mAdder = aAdder;
-        }
-
-        GTPPHatchElement(IGTHatchAdder<? super GTPPMultiBlockBase<?>> aAdder, String... aClassNames) {
-            this.mMteClasses = Arrays.stream(aClassNames)
-                .map(ReflectionUtils::getClass)
-                .filter(Objects::nonNull)
-                .<Class<? extends IMetaTileEntity>>map(GTPPHatchElement::retype)
-                .collect(Collectors.toList());
             this.mAdder = aAdder;
         }
 

@@ -583,4 +583,8 @@ public class GTOreDictUnificator {
         return GTUtility.isStringValid(aName) ? Collections.unmodifiableList(OreDictionary.getOres(aName))
             : Collections.emptyList();
     }
+
+    public static Map<String, ItemStack> getName2StackMap() {
+        return sName2StackMap;
+    }
 }

@@ -53,6 +53,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -304,8 +305,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         if (this.mMode == Mode.Distillery)
-            return GTPPCore.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
+            return Configuration.pollution.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
+        return Configuration.pollution.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
     }
 
     @Override
