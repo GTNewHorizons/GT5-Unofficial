@@ -156,112 +156,185 @@
           "license_url": "https://creativecommons.org/licenses/by/3.0/",
           "license_name": "Attribution 3.0"
         }
+      }
      ]
   },
-  "machines.MultiPreciseLoop": {
+  "machines.MTEPreciseAssembler": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiPreciseLoop",
+        "name": "MTEPreciseAssembler",
         "stream": false
       }
     ]
   },
-  "machines.MultiOreWasherPlantLoop": {
+  "machines.MTEIndustrialWashPlant": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiOreWasherPlantLoop",
+        "name": "MTEIndustrialWashPlant",
         "stream": false
       }
     ]
   },
-  "machines.MultiMegaVacuumFreezerLoop": {
+  "machines.MTEMegaVacuumFreezer": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiMegaVacuumFreezerLoop",
+        "name": "MTEMegaVacuumFreezer",
         "stream": false
       }
     ]
   },
-  "machines.MultiVacuumFreezerFLoop": {
+  "machines.MTEVacuumFreezer": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiVacuumFreezerLoop",
+        "name": "MTEVacuumFreezer",
         "stream": false
       }
     ]
   },
-  "machines.MultiExtremeEntityCrusherFLoop": {
+  "machines.MTEExtremeEntityCrusher": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiExtremeEntityCrusherFLoop",
+        "name": "MTEExtremeEntityCrusher",
         "stream": false
       }
     ]
   },
-  "machines.MultiCuttingMachineFLoop": {
+  "machines.MTEIndustrialCuttingMachine": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiCuttingMachineFLoop",
+        "name": "MTEIndustrialCuttingMachine",
         "stream": false
       }
     ]
   },
-  "machines.MultiArcFurnaceFLoop": {
+  "machines.MTEIndustrialArcFurnace": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiArcFurnaceFLoop",
+        "name": "MTEIndustrialArcFurnace",
         "stream": false
       }
     ]
   },
-  "machines.MultiMegaIndustrialApiaryFLoop": {
+  "machines.MTEMegaIndustrialApiary": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiMegaIndustrialApiaryFLoop",
+        "name": "MTEMegaIndustrialApiary",
         "stream": false
       }
     ]
   },
-  "machines.MultiAlgaeFLoop": {
+  "machines.MTEAlgaePondBase": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiAlgaeFLoop",
+        "name": "MTEAlgaePondBase",
         "stream": false
       }
     ]
   },
-  "machines.MultiThermalCentrifugeFLoop": {
+  "machines.MTEIndustrialThermalCentrifuge": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiThermalCentrifugeFLoop",
+        "name": "MTEIndustrialThermalCentrifuge",
         "stream": false
       }
     ]
   },
-  "machines.MultiSifterFLoop": {
+  "machines.MTEIndustrialSifter": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiSifterFLoop",
+        "name": "MTEIndustrialSifter",
         "stream": false
       }
     ]
   },
-  "machines.MultiEyeOfHarmonyFLoop": {
+  "machines.MTEElectricBlastFurnace": {
     "category": "block",
     "sounds": [
       {
-        "name": "MultiEyeOfHarmonyFLoop",
+        "name": "MTEElectricBlastFurnace",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEIndustrialVacuumFreezer": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEIndustrialVacuumFreezer",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEForgeOfGods": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEForgeOfGods",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEMegaBlastFurnace": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEMegaBlastFurnace",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEOilDrillBase": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEOilDrillBase",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEQuantumForceTransformer": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEQuantumForceTransformer",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEAdvEBF": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEAdvEBF",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTELargeTurbine": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTELargeTurbine",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEEyeOfHarmony": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEEyeOfHarmony",
         "stream": false
       }
     ]
