@@ -144,6 +144,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private boolean gravitonShardEjection = false;
     private boolean noFormatting = false;
     private boolean isRenderActive = false;
+    private boolean secretUpgrade = false;
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
 
@@ -1851,6 +1852,31 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     12,
                     new Pos2d(126, 798),
                     scrollable))
+            .widget(
+                new MultiChildWidget().addChild(
+                    new ButtonWidget().setOnClick(((clickData, widget) -> secretUpgrade = !secretUpgrade))
+                        .setSize(40, 15)
+                        .setBackground(() -> {
+                            if (secretUpgrade) {
+                                return new IDrawable[] { TecTechUITextures.BUTTON_SPACE_PRESSED_32x16 };
+                            }
+                            return new IDrawable[0];
+                        })
+                        .addTooltip(translateToLocal("fog.upgrade.tt.secret"))
+                        .setTooltipShowUpDelay(20))
+                    .addChild(
+                        new TextWidget(translateToLocal("fog.upgrade.tt.short.secret")).setScale(0.8f)
+                            .setDefaultColor(EnumChatFormatting.GOLD)
+                            .setTextAlignment(Alignment.Center)
+                            .setSize(34, 9)
+                            .setPos(3, 4)
+                            .setEnabled((widget -> secretUpgrade)))
+                    .addChild(
+                        new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE)
+                            .setEnabled(widget -> secretUpgrade)
+                            .setPos(40, 4)
+                            .setSize(20, 6))
+                    .setPos(new Pos2d(66, 56)))
             .widget(new TextWidget("").setPos(0, 945));
 
         builder.widget(
@@ -3339,6 +3365,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setLong("totalFuelConsumed", totalFuelConsumed);
         NBT.setInteger("starFuelStored", stellarFuelAmount);
         NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
+        NBT.setBoolean("secretUpgrde", secretUpgrade);
 
         // Store booleanArrays of all upgrades
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
@@ -3379,6 +3406,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
         NBT.setBoolean("isRenderActive", isRenderActive);
         NBT.setInteger("ringAmount", ringAmount);
+        NBT.setBoolean("secretUpgrade", secretUpgrade);
 
         // Store booleanArray of all upgrades
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
@@ -3419,6 +3447,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         gravitonShardEjection = NBT.getBoolean("gravitonShardEjection");
         isRenderActive = NBT.getBoolean("isRenderActive");
         ringAmount = NBT.getInteger("ringAmount");
+        secretUpgrade = NBT.getBoolean("secretUpgrade");
 
         NBTTagCompound tempBooleanTag = NBT.getCompoundTag("upgrades");
 
