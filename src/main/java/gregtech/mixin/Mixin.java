@@ -61,6 +61,12 @@ public enum Mixin {
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
+        .setSide(Side.BOTH)),
+    IC2_MACHINE_WRENCHING(new Builder("Changes the behavior of the wrenching mechanic for IC2 machines")
+        .addMixinClasses("ic2.MixinDamageDropped", "ic2.MixinHarvestTool", "ic2.MixinItemDropped")
+        .addTargetedMod(TargetedMod.IC2)
+        .setApplyIf(() -> true)
+        .setPhase(Phase.LATE)
         .setSide(Side.BOTH));
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");

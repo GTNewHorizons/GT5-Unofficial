@@ -12,10 +12,9 @@ import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import gregtech.mixin.Mixin;
 import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.preloader.asm.transformers.Preloader_Transformer_Handler;
 
 @IFMLLoadingPlugin.MCVersion("1.7.10")
-@IFMLLoadingPlugin.TransformerExclusions({ "gtPlusPlus.preloader", "gregtech.asm" })
+@IFMLLoadingPlugin.TransformerExclusions({ "gregtech.asm" })
 @IFMLLoadingPlugin.Name("GregTech 5 Unofficial core plugin")
 public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
@@ -32,7 +31,7 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] { Preloader_Transformer_Handler.class.getName() };
+        return null;
     }
 
     @Override
