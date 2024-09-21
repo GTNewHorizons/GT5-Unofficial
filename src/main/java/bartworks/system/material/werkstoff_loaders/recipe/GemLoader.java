@@ -89,41 +89,6 @@ public class GemLoader implements IWerkstoffRunnable {
 
             }
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gemExquisite))
-                .itemOutputs(werkstoff.get(dust, 4))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gemFlawless))
-                .itemOutputs(werkstoff.get(dust, 2))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gem))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gemFlawed))
-                .itemOutputs(werkstoff.get(dustSmall, 2))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gemChipped))
-                .itemOutputs(werkstoff.get(dustSmall))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawless, 2),
                 0,
