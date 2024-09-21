@@ -1,21 +1,23 @@
-package gregtech.mixin.mixins.early.minecraft;
+package gregtech.mixin.mixins.early.minecraft.accessors;
+
+import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import gregtech.api.interfaces.IRecipeMutableAccess;
+import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 
-@Mixin(value = ShapedOreRecipe.class, remap = false)
-public class ForgeShapedRecipeMixin implements IRecipeMutableAccess {
+@Mixin(value = ShapelessOreRecipe.class, remap = false)
+public class ForgeShapelessRecipeMixin implements IRecipeMutableAccess {
 
     @Shadow
     private ItemStack output;
 
     @Shadow
-    private Object[] input;
+    private ArrayList<Object> input;
 
     @Override
     public ItemStack gt5u$getRecipeOutputItem() {
