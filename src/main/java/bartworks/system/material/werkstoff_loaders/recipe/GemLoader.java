@@ -30,7 +30,6 @@ import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -65,13 +64,6 @@ public class GemLoader implements IWerkstoffRunnable {
                     .duration(15 * SECONDS)
                     .eut(2)
                     .addTo(compressorRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(block))
-                    .itemOutputs(werkstoff.get(gem, 9))
-                    .duration(5 * SECONDS)
-                    .eut(24)
-                    .addTo(hammerRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(crushedPurified))
@@ -166,13 +158,6 @@ public class GemLoader implements IWerkstoffRunnable {
                 werkstoff.get(lens),
                 texture,
                 new CoverLens(BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex, texture));
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(lens))
-                .itemOutputs(werkstoff.get(dustSmall, 3))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
 
             for (ItemStack is : OreDictionary
                 .getOres("craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {
