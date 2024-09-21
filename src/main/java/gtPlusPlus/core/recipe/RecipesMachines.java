@@ -3294,7 +3294,7 @@ public class RecipesMachines {
         // Add recipes for new ones
         for (int i = 0; i < aMaxTier; i++) {
             GTValues.RA.stdBuilder()
-                .itemInputs(CI.getTieredMachineCasing(i))
+                .itemInputs(CI.getTieredMachineCasing(i), GTUtility.getIntegratedCircuit(i))
                 .itemOutputs(aTier[i])
                 .duration(i * 5 * SECONDS)
                 .eut(GTValues.VP[i])
