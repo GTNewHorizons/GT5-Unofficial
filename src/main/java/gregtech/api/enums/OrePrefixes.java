@@ -1297,9 +1297,16 @@ public enum OrePrefixes {
         return mOreProcessing.add(aRegistrator);
     }
 
+    // Hack to prevent duplicate registry of oredicted materials
+    final HashSet<Materials> used = new HashSet<>();
+
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
         if (aMaterial == null) {
+            return;
+        }
+
+        if (!used.add(aMaterial)) {
             return;
         }
 
