@@ -215,11 +215,6 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
-    protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
-    }
-
-    @Override
     protected IIconContainer getActiveOverlay() {
         return TexturesGtBlock.oMCDIndustrialArcFurnaceActive;
     }
