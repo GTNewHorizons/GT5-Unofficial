@@ -19,7 +19,6 @@ import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.W;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,8 +37,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -360,20 +357,6 @@ public class BWUtil {
                 return this.placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
             }
         };
-    }
-
-    private static Field sBufferedRecipeList;
-
-    @SuppressWarnings("unchecked")
-    public static List<IRecipe> getGTBufferedRecipeList()
-        throws SecurityException, IllegalArgumentException, IllegalAccessException {
-        if (sBufferedRecipeList == null) {
-            sBufferedRecipeList = FieldUtils.getDeclaredField(GTModHandler.class, "sBufferRecipeList", true);
-        }
-        if (sBufferedRecipeList == null) {
-            sBufferedRecipeList = FieldUtils.getField(GTModHandler.class, "sBufferRecipeList", true);
-        }
-        return (List<IRecipe>) sBufferedRecipeList.get(null);
     }
 
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
