@@ -13,8 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableList;
-
 import gregtech.api.enums.SubTag;
 import gregtech.api.items.MetaBaseItem;
 
@@ -64,7 +62,7 @@ public interface IItemBehaviour<E extends Item> {
     List<String> getAdditionalToolTips(E aItem, List<String> aList, ItemStack aStack);
 
     default List<String> getAdditionalToolTipsWhileSneaking(E aItem, List<String> aList, ItemStack aStack) {
-        return ImmutableList.of();
+        return aList;
     }
 
     void onUpdate(E aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand);
