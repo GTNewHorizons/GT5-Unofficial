@@ -319,6 +319,8 @@ public class WerkstoffLoader {
     public static final Werkstoff Ferberite = new Werkstoff(
         new short[] { 0xB0, 0xB0, 0xB0, 0 },
         "Ferberite",
+        Werkstoff.Types.getDefaultStatForType(Werkstoff.Types.COMPOUND)
+            .setElektrolysis(false),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures(),
         11,
@@ -383,6 +385,8 @@ public class WerkstoffLoader {
     public static final Werkstoff Huebnerit = new Werkstoff(
         new short[] { 0x80, 0x60, 0x60, 0 },
         "Huebnerite",
+        Werkstoff.Types.getDefaultStatForType(Werkstoff.Types.COMPOUND)
+            .setElektrolysis(false),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures(),
         17,
