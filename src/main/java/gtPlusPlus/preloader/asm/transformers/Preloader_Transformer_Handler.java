@@ -9,14 +9,11 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import gregtech.asm.GTCorePlugin;
-import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.preloader.PreloaderLogger;
-import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDictionaryVisitor;
 
 public class Preloader_Transformer_Handler implements IClassTransformer {
 
     private static final Set<String> IC2_WRENCH_PATCH_CLASS_NAMES = new HashSet<>();
-    private static final String FORGE_ORE_DICTIONARY = "net.minecraftforge.oredict.OreDictionary";
 
     static {
         IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.BlockTileEntity");
@@ -39,14 +36,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-
-        // Fix the OreDictionary - Forge
-        if (transformedName.equals(FORGE_ORE_DICTIONARY) && ASMConfiguration.debug.enableOreDictPatch) {
-            PreloaderLogger.INFO("OreDictTransformer", "Transforming " + transformedName);
-            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-            new ClassReader(basicClass).accept(new OreDictionaryVisitor(classWriter), 0);
-            return classWriter.toByteArray();
-        }
 
         if (IC2_WRENCH_PATCH_CLASS_NAMES.contains(transformedName)) {
             PreloaderLogger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);

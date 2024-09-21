@@ -25,9 +25,6 @@ public class ASMConfiguration {
         @Config.DefaultBoolean(false)
         public boolean debugMode;
 
-        @Config.Comment("Enable/Disable Forge OreDictionary Patch (Useful for Development)")
-        @Config.DefaultBoolean(false)
-        public boolean enableOreDictPatch;
     }
 
     @Config.Comment("General section")
@@ -39,8 +36,5 @@ public class ASMConfiguration {
         @Config.RangeInt(min = 0, max = Short.MAX_VALUE)
         public int enableWatchdogBGM;
 
-        @Config.Comment("Restores circuits and their recipes from Pre-5.09.28 times.")
-        @Config.DefaultBoolean(false)
-        public boolean enableOldGTcircuits;
     }
 }
