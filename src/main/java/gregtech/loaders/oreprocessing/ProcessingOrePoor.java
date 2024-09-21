@@ -43,6 +43,10 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 break;
         }
         if (aMaterial != null) {
+            if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+                return;
+            }
+
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier))
