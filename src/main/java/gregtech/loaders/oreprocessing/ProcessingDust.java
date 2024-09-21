@@ -358,6 +358,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case dustPure, dustImpure, dustRefined -> {
+                if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+                    return;
+                }
+
                 Materials tByProduct = GTUtility.selectItemInList(
                     aPrefix == OrePrefixes.dustRefined ? 2 : aPrefix == OrePrefixes.dustPure ? 1 : 0,
                     aMaterial,
