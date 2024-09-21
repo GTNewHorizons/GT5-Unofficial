@@ -313,7 +313,8 @@ public class GGMaterial implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addMultipleIngotMetalWorkingItems()
-            .addMetaSolidifierRecipes(),
+            .addMetaSolidifierRecipes()
+            .addMetalCraftingSolidifierRecipes(),
         OffsetID + 23,
         TextureSet.SET_SHINY);
 
@@ -1464,7 +1465,8 @@ public class GGMaterial implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addMultipleIngotMetalWorkingItems()
-            .addMetaSolidifierRecipes(),
+            .addMetaSolidifierRecipes()
+            .addMetalCraftingSolidifierRecipes(),
         OffsetID + 110,
         TextureSet.SET_SHINY);
 
@@ -1485,7 +1487,8 @@ public class GGMaterial implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addMultipleIngotMetalWorkingItems()
-            .addMetaSolidifierRecipes(),
+            .addMetaSolidifierRecipes()
+            .addMetalCraftingSolidifierRecipes(),
         OffsetID + 111,
         TextureSet.SET_SHINY);
 
