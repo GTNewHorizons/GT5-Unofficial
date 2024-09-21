@@ -33,12 +33,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import gregtech.api.enums.SoundResource;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -3055,5 +3057,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_GOD_FORGE_LOOP.resourceLocation;
     }
 }
