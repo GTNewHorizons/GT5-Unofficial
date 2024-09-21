@@ -17,11 +17,11 @@ import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_RE_EV_Lithium;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Battery_RE_EV_Sodium;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Compressed_Fusion_Reactor;
-import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_EV;
-import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_HV;
-import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_IV;
-import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_LV;
-import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_MV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_Valve_EV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_Valve_HV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_Valve_IV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_Valve_LV;
+import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Cover_Overflow_Valve_MV;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Distillus_Upgrade_Chip;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Gregtech_Computer_Cube;
 import static gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedItemIDs.Laser_Lens_Special;
@@ -184,9 +184,9 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 getTcAspectStack(TCAspects.METALLUM, 8L),
                 getTcAspectStack(TCAspects.POTENTIA, 8L)));
 
-        GregtechItemList.Cover_Overflow_LV.set(
+        GregtechItemList.Cover_Overflow_Valve_LV.set(
             this.addItem(
-                Cover_Overflow_LV.ID,
+                Cover_Overflow_Valve_LV.ID,
                 "Overflow Valve (LV)",
                 "Maximum void amount: 64,000",
                 getTcAspectStack(TCAspects.ELECTRUM, 1L),
@@ -194,9 +194,9 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 getTcAspectStack(TCAspects.ITER, 1L),
                 getTcAspectStack(TCAspects.AQUA, 1L)));
 
-        GregtechItemList.Cover_Overflow_MV.set(
+        GregtechItemList.Cover_Overflow_Valve_MV.set(
             this.addItem(
-                Cover_Overflow_MV.ID,
+                Cover_Overflow_Valve_MV.ID,
                 "Overflow Valve (MV)",
                 "Maximum void amount: 512,000",
                 getTcAspectStack(TCAspects.ELECTRUM, 1L),
@@ -204,9 +204,9 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 getTcAspectStack(TCAspects.ITER, 1L),
                 getTcAspectStack(TCAspects.AQUA, 1L)));
 
-        GregtechItemList.Cover_Overflow_HV.set(
+        GregtechItemList.Cover_Overflow_Valve_HV.set(
             this.addItem(
-                Cover_Overflow_HV.ID,
+                Cover_Overflow_Valve_HV.ID,
                 "Overflow Valve (HV)",
                 "Maximum void amount: 4,096,000",
                 getTcAspectStack(TCAspects.ELECTRUM, 1L),
@@ -214,9 +214,9 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 getTcAspectStack(TCAspects.ITER, 1L),
                 getTcAspectStack(TCAspects.AQUA, 1L)));
 
-        GregtechItemList.Cover_Overflow_EV.set(
+        GregtechItemList.Cover_Overflow_Valve_EV.set(
             this.addItem(
-                Cover_Overflow_EV.ID,
+                Cover_Overflow_Valve_EV.ID,
                 "Overflow Valve (EV)",
                 "Maximum void amount: 32,768,000",
                 getTcAspectStack(TCAspects.ELECTRUM, 1L),
@@ -224,9 +224,9 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
                 getTcAspectStack(TCAspects.ITER, 1L),
                 getTcAspectStack(TCAspects.AQUA, 1L)));
 
-        GregtechItemList.Cover_Overflow_IV.set(
+        GregtechItemList.Cover_Overflow_Valve_IV.set(
             this.addItem(
-                Cover_Overflow_IV.ID,
+                Cover_Overflow_Valve_IV.ID,
                 "Overflow Valve (IV)",
                 "Maximum void amount: 262,144,000",
                 getTcAspectStack(TCAspects.ELECTRUM, 1L),
@@ -369,31 +369,31 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
 
     private void registerCovers() {
         GregTechAPI.registerCover(
-            GregtechItemList.Cover_Overflow_LV.get(1L),
+            GregtechItemList.Cover_Overflow_Valve_LV.get(1L),
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[4][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(64_000));
         GregTechAPI.registerCover(
-            GregtechItemList.Cover_Overflow_MV.get(1L),
+            GregtechItemList.Cover_Overflow_Valve_MV.get(1L),
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(512_000));
         GregTechAPI.registerCover(
-            GregtechItemList.Cover_Overflow_HV.get(1L),
+            GregtechItemList.Cover_Overflow_Valve_HV.get(1L),
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[5][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(4_096_000));
         GregTechAPI.registerCover(
-            GregtechItemList.Cover_Overflow_EV.get(1L),
+            GregtechItemList.Cover_Overflow_Valve_EV.get(1L),
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),
             new CoverOverflowValve(32_768_000));
         GregTechAPI.registerCover(
-            GregtechItemList.Cover_Overflow_IV.get(1L),
+            GregtechItemList.Cover_Overflow_Valve_IV.get(1L),
             new GTMultiTexture(
                 Textures.BlockIcons.MACHINE_CASINGS[8][0],
                 new GTRenderedTexture(TexturesGtBlock.Overlay_Overflow_Valve)),

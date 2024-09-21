@@ -4,9 +4,9 @@ import org.apache.logging.log4j.LogManager;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.config.ASMConfiguration;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.preloader.asm.AsmConfig;
 
 public class Logger {
 
@@ -21,7 +21,7 @@ public class Logger {
         return gtPlusPlusLogger;
     }
 
-    private static final boolean enabled = !AsmConfig.disableAllLogging;
+    private static final boolean enabled = !ASMConfiguration.debug.disableAllLogging;
 
     public static final org.apache.logging.log4j.Logger getLogger() {
         return modLogger;
@@ -38,7 +38,7 @@ public class Logger {
     public static void MACHINE_INFO(String s, Object... args) {
         if (enabled) {
             boolean localPlayer = PreloaderCore.DEV_ENVIRONMENT;
-            if (GTPPCore.ConfigSwitches.MACHINE_INFO || localPlayer) {
+            if (Configuration.debug.MachineInfo || localPlayer) {
                 final String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
                 modLogger.info("Machine Info: " + s + " | " + name1, args);
             }

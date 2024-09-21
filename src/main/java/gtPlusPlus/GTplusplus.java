@@ -3,7 +3,6 @@ package gtPlusPlus;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gtPlusPlus.core.lib.GTPPCore.ConfigSwitches.enableCustomCapes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +11,9 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
+
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -34,16 +36,13 @@ import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
-import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
-import gtPlusPlus.core.config.ConfigHandler;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.plugin.manager.CoreManager;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
@@ -57,6 +56,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
     modid = Names.G_T_PLUS_PLUS,
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
+    guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
     dependencies = "required-after:Forge;" + " after:TConstruct;"
         + " after:dreamcraft;"
         + " after:IC2;"
@@ -109,17 +109,21 @@ public class GTplusplus implements ActionListener {
         }
     }
 
+    static {
+        try {
+            ConfigurationManager.registerConfig(Configuration.class);
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
-    // Mod Instance
     @Mod.Instance(Names.G_T_PLUS_PLUS)
     public static GTplusplus instance;
 
-    // GT++ Proxy Instances
-    @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.proxy.ServerProxy")
+    @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")
     public static CommonProxy proxy;
 
-    // Loads Textures
     @SideOnly(value = Side.CLIENT)
     public static void loadTextures() {
         Logger.INFO("Loading some textures on the client.");
@@ -142,23 +146,15 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.SUPER.setPhaseActive(true);
     }
 
-    // Pre-Init
-    @Mod.EventHandler
+    @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         INIT_PHASE.PRE_INIT.setPhaseActive(true);
         // Load all class objects within the plugin package.
         CoreManager.veryEarlyInit();
         PacketHandler.init();
 
-        if (!Utils.isServer()) {
-            enableCustomCapes = true;
-        }
-
         // Give this a go mate.
         setupMaterialBlacklist();
-
-        // Handle GT++ Config
-        ConfigHandler.handleConfigFile(event);
 
         // Check for Dev
         GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
@@ -169,8 +165,7 @@ public class GTplusplus implements ActionListener {
         CoreManager.preInit();
     }
 
-    // Init
-    @Mod.EventHandler
+    @EventHandler
     public void init(final FMLInitializationEvent event) {
         INIT_PHASE.INIT.setPhaseActive(true);
         proxy.init(event);
@@ -178,13 +173,12 @@ public class GTplusplus implements ActionListener {
         MetaGTProxy.init();
         CoreManager.init();
         // Used by foreign players to generate .lang files for translation.
-        if (GTPPCore.ConfigSwitches.dumpItemAndBlockData) {
+        if (Configuration.debug.dumpItemAndBlockData) {
             LocaleUtils.generateFakeLocaleFile();
         }
     }
 
-    // Post-Init
-    @Mod.EventHandler
+    @EventHandler
     public void postInit(final FMLPostInitializationEvent event) {
         INIT_PHASE.POST_INIT.setPhaseActive(true);
         proxy.postInit(event);
@@ -221,8 +215,6 @@ public class GTplusplus implements ActionListener {
     @EventHandler
     public synchronized void serverStarting(final FMLServerStartingEvent event) {
         INIT_PHASE.SERVER_START.setPhaseActive(true);
-        event.registerServerCommand(new CommandMath());
-        event.registerServerCommand(new CommandEnableDebugWhileRunning());
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
@@ -230,7 +222,7 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.STARTED.setPhaseActive(true);
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public synchronized void serverStopping(final FMLServerStoppingEvent event) {
         CoreManager.serverStop();
     }
@@ -246,7 +238,7 @@ public class GTplusplus implements ActionListener {
      * @param event - The {@link EventHandler} object passed through from FML to {@link #GTplusplus()}'s
      *              {@link #instance}.
      */
-    @Mod.EventHandler
+    @EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         proxy.onLoadComplete(event);
         generateGregtechRecipeMaps();
@@ -254,27 +246,25 @@ public class GTplusplus implements ActionListener {
 
     protected void generateGregtechRecipeMaps() {
 
-        int[] mInvalidCount = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-
         RecipeGenBlastSmelterGTNH.generateGTNHBlastSmelterRecipesFromEBFList();
         FishPondFakeRecipe.generateFishPondRecipes();
         SemiFluidFuelHandler.generateFuels();
 
-        mInvalidCount[0] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
-        mInvalidCount[1] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, GTPPRecipeMaps.electrolyzerNonCellRecipes);
-        mInvalidCount[2] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.vacuumFreezerRecipes, GTPPRecipeMaps.advancedFreezerRecipes);
-        mInvalidCount[3] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
-        mInvalidCount[4] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.chemicalDehydratorRecipes,
             GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
-        mInvalidCount[5] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.coldTrapRecipes,
             GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
-        mInvalidCount[6] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.reactorProcessingUnitRecipes,
             GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
     }
@@ -360,7 +350,7 @@ public class GTplusplus implements ActionListener {
         sMissingItemMappings.put("miscutils:oreFluorite", GameRegistry.findItem(GTPlusPlus.ID, "oreFluoriteF"));
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void missingMapping(FMLMissingMappingsEvent event) {
         processMissingMappings();
         for (MissingMapping mapping : event.getAll()) {

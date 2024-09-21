@@ -72,16 +72,16 @@ public class ItemUtils {
         return simpleMetaStack(Item.getItemFromBlock(x), meta, i);
     }
 
-    public static ItemStack getSimpleStack(final Item x, final int i) {
-        return new ItemStack(x, i);
+    public static ItemStack getSimpleStack(final Item item, final int stackSize) {
+        return new ItemStack(item, stackSize);
     }
 
-    public static ItemStack getSimpleStack(final ItemStack x, final int i) {
-        if (x == null) {
+    public static ItemStack getSimpleStack(final ItemStack stack, final int stackSize) {
+        if (stack == null) {
             return null;
         }
-        final ItemStack r = x.copy();
-        r.stackSize = i;
+        final ItemStack r = stack.copy();
+        r.stackSize = stackSize;
         return r;
     }
 
@@ -860,7 +860,7 @@ public class ItemUtils {
                 aCleanedItems.add(checkStack);
             }
         }
-        for (int i = 0; i < aArraySize; i++) {
+        for (int i = 0; i < aCleanedItems.size(); i++) {
             ItemStack aMappedStack = aCleanedItems.get(i);
             if (aMappedStack != null) {
                 aOutput[i] = aMappedStack;

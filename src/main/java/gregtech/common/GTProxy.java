@@ -135,7 +135,6 @@ import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.internal.IGTMod;
-import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
@@ -793,8 +792,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
-        GregTechAPI.sThaumcraftCompat = (IThaumcraftCompat) GTUtility
-            .callConstructor("gregtech.common.GTThaumcraftCompat", 0, null, GTValues.D1, new Object[0]);
+        if (Thaumcraft.isModLoaded()) {
+            GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
+        }
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
@@ -2695,15 +2695,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
         ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
-
         if (BetterLoadingScreen.isModLoaded()) {
-            GTValues.cls_enabled = true;
-            try {
-                GTCLSCompat.stepMaterialsCLS(mEvents, progressBar);
-            } catch (IllegalAccessException e) {
-                GT_FML_LOGGER.catching(e);
-            }
-        } else GTProxy.stepMaterialsVanilla(this.mEvents, progressBar);
+            GTCLSCompat.stepMaterialsCLS(mEvents, progressBar);
+        } else {
+            GTProxy.stepMaterialsVanilla(this.mEvents, progressBar);
+        }
     }
 
     @Deprecated

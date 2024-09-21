@@ -621,6 +621,17 @@ GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
 GT5U.item.tank.locked_to=Content locked to %s
 
+gt.behaviour.paintspray.infinite.gui.header=Select a Color
+gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
+gt.behaviour.paintspray.infinite.gui.solvent=Solvent
+
+gt.behaviour.paintspray.infinite.tooltip.infinite=Infinite uses
+gt.behaviour.paintspray.infinite.tooltip.more_info=Hold SHIFT for more information
+gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
+gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
+gt.behaviour.paintspray.infinite.tooltip.lock=Sneak Middle Click: Lock or unlock spray can
+gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
+
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
 GT5U.hatch.disableMultiStack.true=Multi Stack Input §cOff§r
@@ -1664,14 +1675,15 @@ GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
 GT5U.gui.text.no_tools=§7Missing applicable tools
 
 # Cover Overflow Valve
-GTPP.gui.text.cover_overflow_valve_overflow_point=§7Overflow Point
-GTPP.gui.text.cover_overflow_valve_voiding_rate=§7Voiding Rate
-GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§7Allow Fluid Input
-GTPP.gui.text.cover_overflow_valve_block_fluid_input=§7Block Fluid Input
-GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§7Allow Fluid Output
-GTPP.gui.text.cover_overflow_valve_block_fluid_output=§7Block Fluid Output
-GTPP.gui.text.cover_overflow_valve_l_per_second=§7L/s
-GTPP.gui.text.cover_overflow_valve_l_per_update=§7L/update
+GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L
+GTPP.gui.text.cover_overflow_valve_overflow_point=Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_liter=L
+GTPP.gui.text.cover_overflow_valve_l_per_update=L/update
 
 GTPP.EBF.heat=Heat capacity
 

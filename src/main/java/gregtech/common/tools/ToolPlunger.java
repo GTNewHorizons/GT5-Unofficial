@@ -7,14 +7,13 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
-import gregtech.api.util.GTUtility;
+import gregtech.common.items.behaviors.BehaviourPlungerEssentia;
 import gregtech.common.items.behaviors.BehaviourPlungerFluid;
 import gregtech.common.items.behaviors.BehaviourPlungerItem;
 
@@ -62,21 +61,12 @@ public class ToolPlunger extends GTTool {
     }
 
     @Override
-    @SuppressWarnings("unchecked") // the IItemBehaviour cast cannot be expressed strictly via generics
     public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
         aItem.addItemBehavior(aID, new BehaviourPlungerItem(getToolDamagePerDropConversion()));
         aItem.addItemBehavior(aID, new BehaviourPlungerFluid(getToolDamagePerDropConversion()));
-        try {
-            Object tObject = GTUtility.callConstructor(
-                "gregtech.common.items.behaviors.BehaviourPlungerEssentia",
-                0,
-                null,
-                false,
-                getToolDamagePerDropConversion());
-            if ((tObject instanceof IItemBehaviour)) {
-                aItem.addItemBehavior(aID, (IItemBehaviour<MetaBaseItem>) tObject);
-            }
-        } catch (Throwable ignored) {}
+        if (Mods.Thaumcraft.isModLoaded()) {
+            aItem.addItemBehavior(aID, new BehaviourPlungerEssentia(getToolDamagePerDropConversion()));
+        }
     }
 
     @Override

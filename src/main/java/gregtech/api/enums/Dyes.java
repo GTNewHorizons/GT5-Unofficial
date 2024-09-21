@@ -6,6 +6,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Contract;
+
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.objects.GTArrayList;
 import gregtech.api.util.GTUtility;
@@ -122,5 +124,20 @@ public enum Dyes implements IColorModulationContainer {
 
     public static Dyes getDyeFromIndex(short index) {
         return index != -1 ? Dyes.get(index) : Dyes.MACHINE_METAL;
+    }
+
+    /**
+     * Transforms a dye index between the GT index for this color and the vanilla index for this color.
+     *
+     * @param color an integer between 0 and 15
+     * @return the transformed color
+     */
+    @Contract(pure = true)
+    public static int transformDyeIndex(final int color) {
+        if (color < 0 || color > 15) {
+            throw new IllegalArgumentException("Color passed to transformColor must be between 0 and 15");
+        }
+
+        return (~(byte) color) & 0xF;
     }
 }

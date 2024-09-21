@@ -1,5 +1,6 @@
 package gregtech.loaders.postload;
 
+import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
@@ -13,7 +14,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -410,13 +410,9 @@ public class GTPostLoad {
 
         ProgressManager.ProgressBar progressBar = ProgressManager
             .push("Register materials", replaceVanillaItemsSet.size());
-        if (GTValues.cls_enabled) {
-            try {
-                GTCLSCompat.doActualRegistrationCLS(progressBar, replaceVanillaItemsSet);
-                GTCLSCompat.pushToDisplayProgress();
-            } catch (InvocationTargetException | IllegalAccessException e) {
-                GTMod.GT_FML_LOGGER.catching(e);
-            }
+        if (BetterLoadingScreen.isModLoaded()) {
+            GTCLSCompat.doActualRegistrationCLS(progressBar, replaceVanillaItemsSet);
+            GTCLSCompat.pushToDisplayProgress();
         } else {
             replaceVanillaItemsSet.forEach(m -> {
                 progressBar.step(m.mDefaultLocalName);

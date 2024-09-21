@@ -28,7 +28,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 
 public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
 
@@ -126,11 +125,11 @@ public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
 
         if ((mSpecials & 8) != 0) {
             if (GTModHandler.canUseElectricItem(aStack, 10000) && aPlayer.isPotionActive(Potion.poison)) {
-                GTUtility.removePotion(aPlayer, Potion.poison.id);
+                aPlayer.removePotionEffect(Potion.poison.id);
                 GTModHandler.useElectricItem(aStack, 10000, aPlayer);
             }
             if (GTModHandler.canUseElectricItem(aStack, 100000) && aPlayer.isPotionActive(Potion.wither)) {
-                GTUtility.removePotion(aPlayer, Potion.wither.id);
+                aPlayer.removePotionEffect(Potion.wither.id);
                 GTModHandler.useElectricItem(aStack, 100000, aPlayer);
             }
         }
