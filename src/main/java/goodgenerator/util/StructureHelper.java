@@ -43,6 +43,11 @@ public class StructureHelper {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 if (mIcons == null) {
                     mIcons = new IIcon[6];

@@ -1109,6 +1109,18 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                Block tBlock = world.getBlock(x, y, z);
+                if (aBlock == tBlock) {
+                    int expectedMeta = getMeta(trigger);
+                    int blockMeta = tBlock.getDamageValue(world, x, y, z) + 1;
+                    if (blockMeta > maxMeta || blockMeta < minMeta + 1) return false;
+                    return expectedMeta == blockMeta;
+                }
+                return false;
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, aBlock, getMeta(trigger));
                 return true;

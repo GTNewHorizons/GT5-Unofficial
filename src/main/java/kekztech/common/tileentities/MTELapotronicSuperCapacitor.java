@@ -1,6 +1,7 @@
 package kekztech.common.tileentities;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
@@ -222,6 +223,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                 return true;
                             }
 
+                            @Override
+                            public boolean couldBeValid(MTELapotronicSuperCapacitor mteLapotronicSuperCapacitor,
+                                World world, int x, int y, int z, ItemStack trigger) {
+                                Block worldBlock = world.getBlock(x, y, z);
+                                int meta = worldBlock.getDamageValue(world, x, y, z);
+                                return LSC_PART == worldBlock && meta != 0;
+                            }
+
                             private int getHint(ItemStack stack) {
                                 return Capacitor.VALUES_BY_TIER[Math.min(
                                     Capacitor.VALUES_BY_TIER.length,
@@ -271,7 +280,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                     chatter);
                             }
                         }))))
-        .addElement('C', ofBlock(LSC_PART, 1))
+        .addElement('C', ofBlockAnyMeta(LSC_PART, 1))
         .build();
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
