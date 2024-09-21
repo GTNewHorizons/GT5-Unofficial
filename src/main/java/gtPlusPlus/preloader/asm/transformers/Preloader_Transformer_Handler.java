@@ -16,10 +16,8 @@ import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDicti
 public class Preloader_Transformer_Handler implements IClassTransformer {
 
     private static final Set<String> IC2_WRENCH_PATCH_CLASS_NAMES = new HashSet<>();
-    private static final String FORGE_CHUNK_MANAGER = "net.minecraftforge.common.ForgeChunkManager";
     private static final String FORGE_ORE_DICTIONARY = "net.minecraftforge.oredict.OreDictionary";
     private static final String COFH_ORE_DICTIONARY_ARBITER = "cofh.core.util.oredict.OreDictionaryArbiter";
-    private static final String THAUMCRAFT_ITEM_WISP_ESSENCE = "thaumcraft.common.items.ItemWispEssence";
 
     static {
         IC2_WRENCH_PATCH_CLASS_NAMES.add("ic2.core.block.BlockTileEntity");
@@ -63,14 +61,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
             PreloaderLogger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);
             return new ClassTransformer_IC2_GetHarvestTool(basicClass, !GTCorePlugin.isDevEnv(), transformedName)
                 .getWriter()
-                .toByteArray();
-        }
-
-        // Fix Thaumcraft stuff
-        // Patching ItemWispEssence to allow invalid item handling
-        if (transformedName.equals(THAUMCRAFT_ITEM_WISP_ESSENCE) && ASMConfiguration.general.enableTcAspectSafety) {
-            PreloaderLogger.INFO("Thaumcraft WispEssence_Patch", "Transforming " + transformedName);
-            return new ClassTransformer_TC_ItemWispEssence(basicClass, !GTCorePlugin.isDevEnv()).getWriter()
                 .toByteArray();
         }
 
