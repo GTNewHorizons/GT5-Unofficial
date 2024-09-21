@@ -23,7 +23,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.core.util.Utils;
+import gregtech.api.util.ReflectionUtil;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ClassTransformer_LWJGL_Keyboard {
@@ -66,23 +66,21 @@ public class ClassTransformer_LWJGL_Keyboard {
     }
 
     public static void trySetClientKey(int aKey) {
-        if (Utils.isClient() && ReflectionUtils.doesClassExist("net.minecraft.client.Minecraft")) {
-            FMLRelaunchLog.log(
-                "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
-                Level.INFO,
-                "Trying to set key value to be empty.");
-            GameSettings options = Minecraft.getMinecraft().gameSettings;
-            KeyBinding[] akeybinding = Minecraft.getMinecraft().gameSettings.keyBindings;
-            int i = akeybinding.length;
-            for (KeyBinding keybinding : akeybinding) {
-                if (keybinding != null && keybinding.getKeyCode() == aKey) {
-                    options.setOptionKeyBinding(keybinding, 0);
-                    FMLRelaunchLog.log(
-                        "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
-                        Level.INFO,
-                        "Set keybind " + aKey + " to 0.");
-                    break;
-                }
+        FMLRelaunchLog.log(
+            "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
+            Level.INFO,
+            "Trying to set key value to be empty.");
+        GameSettings options = Minecraft.getMinecraft().gameSettings;
+        KeyBinding[] akeybinding = Minecraft.getMinecraft().gameSettings.keyBindings;
+        int i = akeybinding.length;
+        for (KeyBinding keybinding : akeybinding) {
+            if (keybinding != null && keybinding.getKeyCode() == aKey) {
+                options.setOptionKeyBinding(keybinding, 0);
+                FMLRelaunchLog.log(
+                    "[GT++ ASM] LWJGL Keybinding index out of bounds fix",
+                    Level.INFO,
+                    "Set keybind " + aKey + " to 0.");
+                break;
             }
         }
     }
@@ -97,7 +95,7 @@ public class ClassTransformer_LWJGL_Keyboard {
         if (mKeyName != null) {
             return true;
         }
-        Class aKeyboard = ReflectionUtils.getClass("org.lwjgl.input.Keyboard");
+        Class aKeyboard = ReflectionUtil.getClass("org.lwjgl.input.Keyboard");
         if (aKeyboard != null) {
             mKeyboard = aKeyboard;
             Field aKeyName = ReflectionUtils.getField(mKeyboard, "keyName");

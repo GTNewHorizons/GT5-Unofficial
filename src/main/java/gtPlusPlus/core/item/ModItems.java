@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item;
 
+import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
@@ -80,7 +81,6 @@ import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTPPEverglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
@@ -784,19 +784,9 @@ public final class ModItems {
         // Milled Ore Processing
         new MilledOreProcessing();
 
-        // IC2 Exp
-        Logger.INFO("IndustrialCraft2 Found - Loading Resources.");
-
-        // Baubles Mod Test
-        try {
-            final Class<?> baublesTest = ReflectionUtils.getClass("baubles.api.IBauble");
-            if (baublesTest != null) {
-                CompatBaubles.run();
-            } else {
-                Logger.INFO("Baubles Not Found - Skipping Resources.");
-            }
-        } catch (final Throwable T) {
-            Logger.INFO("Baubles Not Found - Skipping Resources.");
+        // Baubles
+        if (Baubles.isModLoaded()) {
+            CompatBaubles.run();
         }
 
         // Buffer Cores!
