@@ -38,10 +38,6 @@ public class ASMConfiguration {
     public static class General {
         // General Features
 
-        @Config.Comment("Prevents the game crashing from having invalid keybinds. https://github.com/alkcorp/GTplusplus/issues/544")
-        @Config.DefaultBoolean(true)
-        public boolean enabledLwjglKeybindingFix;
-
         @Config.Comment("Fixes small oversights in Thaumcraft 4.")
         @Config.DefaultBoolean(true)
         public boolean enableTcAspectSafety;

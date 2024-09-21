@@ -28,7 +28,6 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
         }
     }
 
-    private static Boolean islwjgl3Present = null;
     private static boolean DEV_ENVIRONMENT;
 
     @Override
@@ -68,19 +67,6 @@ public class GTCorePlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     public static boolean isDevEnv() {
         return DEV_ENVIRONMENT;
-    }
-
-    public static boolean islwjgl3Present() {
-        if (islwjgl3Present == null) {
-            try {
-                final String className = "org/lwjgl/system/Platform.class";
-                islwjgl3Present = ClassLoader.getSystemClassLoader()
-                    .getResource(className) != null;
-            } catch (Exception e) {
-                islwjgl3Present = Boolean.FALSE;
-            }
-        }
-        return islwjgl3Present;
     }
 
 }

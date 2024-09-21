@@ -16,8 +16,6 @@ import gtPlusPlus.preloader.asm.transformers.Preloader_ClassTransformer.OreDicti
 public class Preloader_Transformer_Handler implements IClassTransformer {
 
     private static final Set<String> IC2_WRENCH_PATCH_CLASS_NAMES = new HashSet<>();
-    private static final String LWJGL_KEYBOARD = "org.lwjgl.input.Keyboard";
-    private static final String MINECRAFT_GAMESETTINGS = "net.minecraft.client.settings.GameSettings";
     private static final String FORGE_CHUNK_MANAGER = "net.minecraftforge.common.ForgeChunkManager";
     private static final String FORGE_ORE_DICTIONARY = "net.minecraftforge.oredict.OreDictionary";
     private static final String COFH_ORE_DICTIONARY_ARBITER = "cofh.core.util.oredict.OreDictionaryArbiter";
@@ -44,15 +42,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        // Fix LWJGL index array out of bounds on keybinding IDs
-        if ((transformedName.equals(LWJGL_KEYBOARD) || transformedName.equals(MINECRAFT_GAMESETTINGS))
-            && ASMConfiguration.general.enabledLwjglKeybindingFix
-            && !GTCorePlugin.islwjgl3Present()) {
-            boolean isClientSettingsClass = !transformedName.equals(LWJGL_KEYBOARD);
-            PreloaderLogger.INFO("LWJGL Keybinding index out of bounds fix", "Transforming " + transformedName);
-            return new ClassTransformer_LWJGL_Keyboard(basicClass, isClientSettingsClass).getWriter()
-                .toByteArray();
-        }
 
         // Fix the OreDictionary - Forge
         if (transformedName.equals(FORGE_ORE_DICTIONARY) && ASMConfiguration.debug.enableOreDictPatch) {
