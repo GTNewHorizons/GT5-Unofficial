@@ -588,6 +588,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 storedFluids[i] = GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i));
             }
         }
+        updateValidGridProxySides();
         return true;
     }
 
@@ -625,7 +626,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) return false;
 
-        updateValidGridProxySides();
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.loaded"));
         return true;
     }
