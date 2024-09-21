@@ -5,11 +5,7 @@ import java.util.Set;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-
 import gregtech.asm.GTCorePlugin;
-import gtPlusPlus.preloader.PreloaderLogger;
 
 public class Preloader_Transformer_Handler implements IClassTransformer {
 
@@ -38,7 +34,6 @@ public class Preloader_Transformer_Handler implements IClassTransformer {
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
 
         if (IC2_WRENCH_PATCH_CLASS_NAMES.contains(transformedName)) {
-            PreloaderLogger.INFO("IC2 getHarvestTool Patch", "Transforming " + transformedName);
             return new ClassTransformer_IC2_GetHarvestTool(basicClass, !GTCorePlugin.isDevEnv(), transformedName)
                 .getWriter()
                 .toByteArray();
