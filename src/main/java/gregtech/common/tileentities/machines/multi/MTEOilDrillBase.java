@@ -20,11 +20,14 @@ import java.util.List;
 
 import javax.annotation.Nonnegative;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
@@ -485,5 +488,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_OIL_DRILL_LOOP.resourceLocation;
     }
 }
