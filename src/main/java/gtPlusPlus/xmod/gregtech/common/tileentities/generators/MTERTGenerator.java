@@ -45,13 +45,11 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     // Generates fuel value based on MC days
     public static int convertDaysToTicks(float days) {
-        int value = 0;
-        value = MathUtils.roundToClosestInt(20 * 86400 * days);
-        return value;
+        return MathUtils.roundToClosestInt(20 * 86400 * days);
     }
 
     public static long getTotalEUGenerated(int ticks, int voltage) {
-        return ticks * voltage;
+        return (long) ticks * voltage;
     }
 
     @Override
@@ -111,7 +109,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mDayTick < 24000) {
                 this.mDayTick++;
-            } else if (this.mDayTick >= 24000) {
+            } else {
                 this.mDayTick = 0;
                 this.mDaysRemaining = this.removeDayOfTime();
             }

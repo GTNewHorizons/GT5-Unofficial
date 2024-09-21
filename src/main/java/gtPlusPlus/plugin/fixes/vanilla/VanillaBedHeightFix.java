@@ -12,26 +12,25 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.asm.GTCorePlugin;
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.fixes.interfaces.IBugFix;
 
 // TODO move this as a mixin in hodgepodge
 public class VanillaBedHeightFix implements IBugFix {
 
     private final Method mSleepInBedAt;
-    private final IPlugin mParent;
 
     public VanillaBedHeightFix(IPlugin minstance) {
-        mParent = minstance;
-        Method m = ReflectionUtils.getMethod(
-            EntityPlayer.class,
-            GTCorePlugin.isDevEnv() ? "sleepInBedAt" : "func_71018_a",
-            int.class,
-            int.class,
-            int.class);
+        Method m = null;
+        try {
+            m = EntityPlayer.class.getDeclaredMethod(
+                GTCorePlugin.isDevEnv() ? "sleepInBedAt" : "func_71018_a",
+                int.class,
+                int.class,
+                int.class);
+        } catch (NoSuchMethodException ignored) {}
         if (m != null) {
             mSleepInBedAt = m;
-            mParent.log("Registering Bed Height Fix.");
+            minstance.log("Registering Bed Height Fix.");
             MinecraftForge.EVENT_BUS.register(this);
         } else {
             mSleepInBedAt = null;
