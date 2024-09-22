@@ -65,7 +65,7 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
     }
 
     /**
-     * Called upon block activation (right click on the block.)
+     * Called upon block activation (right-click on the block.)
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
@@ -75,7 +75,7 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
         }
 
         final TileEntity te = world.getTileEntity(x, y, z);
-        if ((te instanceof TileEntityFishTrap)) {
+        if (te instanceof TileEntityFishTrap) {
             player.openGui(GTplusplus.instance, 5, world, x, y, z);
             return true;
         }

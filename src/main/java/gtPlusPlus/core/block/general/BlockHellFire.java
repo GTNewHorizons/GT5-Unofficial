@@ -251,7 +251,7 @@ public class BlockHellFire extends BlockFire {
     }
 
     /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
+     * Checks to see if it is valid to put this block at the specified coordinates. Args: world, x, y, z
      */
     @Override
     public boolean canPlaceBlockAt(final World worldObj, final int x, final int y, final int z) {
@@ -457,7 +457,7 @@ public class BlockHellFire extends BlockFire {
 
     private FireInfo getInfo(final Block block) {
         FireInfo ret = this.blockInfo.get(block);
-        if ((ret == null)) {
+        if (ret == null) {
             ret = new FireInfo();
             this.blockInfo.put(block, ret);
         }
@@ -467,10 +467,10 @@ public class BlockHellFire extends BlockFire {
     @Override
     public void rebuildFireInfo() {
         for (int x = 0; x < 4096; x++) {
-            // If we care.. we could detect changes in here and make sure we
+            // If we care... we could detect changes in here and make sure we
             // keep them, however
             // it's my thinking that anyone who hacks into the private variables
-            // should DIAF and we don't care about them.
+            // should reconsider, and we don't care about them.
             this.field_149849_a[x] = 0;
             this.field_149848_b[x] = 0;
         }

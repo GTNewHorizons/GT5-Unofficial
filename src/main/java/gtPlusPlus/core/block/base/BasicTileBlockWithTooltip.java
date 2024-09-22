@@ -153,7 +153,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
      * Holds the data for the six sides, each side holds an array of data for each respective meta.
      */
     @SideOnly(Side.CLIENT)
-    // Init on the Client side only, to prevent Field initialisers existing in the Server side bytecode.
+    // Init on the Client side only, to prevent Field initializers existing in the Server side bytecode.
     private void handleTextures() {
 
         Logger.INFO("[TeTexture] Building Texture Maps for " + getTileEntityName() + ".");
