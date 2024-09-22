@@ -18,6 +18,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.lib.GTPPCore.Everglades;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -28,7 +29,6 @@ import gtPlusPlus.everglades.dimension.DimensionEverglades;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Base;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Ore_Layer;
 import gtPlusPlus.everglades.gen.gt.WorldGen_Ores;
-import gtPlusPlus.preloader.PreloaderCore;
 
 @Mod(
     modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,
@@ -134,7 +134,7 @@ public class GTPPEverglades implements ActionListener {
         WorldGen_GT_Base.oreveinPercentage = 64;
         WorldGen_GT_Base.oreveinAttempts = 16;
         WorldGen_GT_Base.oreveinMaxPlacementAttempts = 4;
-        if (PreloaderCore.DEBUG_MODE || GTPPCore.DEVENV) {
+        if (ASMConfiguration.debug.debugMode || GTPPCore.DEVENV) {
             WorldGen_GT_Base.debugWorldGen = true;
         }
         DarkWorldContentLoader.run();
