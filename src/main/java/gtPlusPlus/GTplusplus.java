@@ -146,7 +146,7 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.SUPER.setPhaseActive(true);
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         INIT_PHASE.PRE_INIT.setPhaseActive(true);
         // Load all class objects within the plugin package.
@@ -165,7 +165,7 @@ public class GTplusplus implements ActionListener {
         CoreManager.preInit();
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void init(final FMLInitializationEvent event) {
         INIT_PHASE.INIT.setPhaseActive(true);
         proxy.init(event);
@@ -178,7 +178,7 @@ public class GTplusplus implements ActionListener {
         }
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void postInit(final FMLPostInitializationEvent event) {
         INIT_PHASE.POST_INIT.setPhaseActive(true);
         proxy.postInit(event);
@@ -222,7 +222,7 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.STARTED.setPhaseActive(true);
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public synchronized void serverStopping(final FMLServerStoppingEvent event) {
         CoreManager.serverStop();
     }
@@ -238,7 +238,7 @@ public class GTplusplus implements ActionListener {
      * @param event - The {@link EventHandler} object passed through from FML to {@link #GTplusplus()}'s
      *              {@link #instance}.
      */
-    @Mod.EventHandler
+    @EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         proxy.onLoadComplete(event);
         generateGregtechRecipeMaps();
@@ -246,27 +246,25 @@ public class GTplusplus implements ActionListener {
 
     protected void generateGregtechRecipeMaps() {
 
-        int[] mInvalidCount = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-
         RecipeGenBlastSmelterGTNH.generateGTNHBlastSmelterRecipesFromEBFList();
         FishPondFakeRecipe.generateFishPondRecipes();
         SemiFluidFuelHandler.generateFuels();
 
-        mInvalidCount[0] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
-        mInvalidCount[1] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, GTPPRecipeMaps.electrolyzerNonCellRecipes);
-        mInvalidCount[2] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.vacuumFreezerRecipes, GTPPRecipeMaps.advancedFreezerRecipes);
-        mInvalidCount[3] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
-        mInvalidCount[4] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.chemicalDehydratorRecipes,
             GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
-        mInvalidCount[5] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.coldTrapRecipes,
             GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
-        mInvalidCount[6] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.reactorProcessingUnitRecipes,
             GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
     }
@@ -352,7 +350,7 @@ public class GTplusplus implements ActionListener {
         sMissingItemMappings.put("miscutils:oreFluorite", GameRegistry.findItem(GTPlusPlus.ID, "oreFluoriteF"));
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void missingMapping(FMLMissingMappingsEvent event) {
         processMissingMappings();
         for (MissingMapping mapping : event.getAll()) {

@@ -891,7 +891,7 @@ achievement.gt.stabilisation_field_generator.8=Gallifreyan Stabilisation Field G
 fog.upgrade.confirm=Construct
 fog.upgrade.respec=Respec
 
-fog.upgrade.tt.0=Stellar Confinement
+fog.upgrade.tt.0=Forge of the Gods
 fog.upgrade.tt.1=Improved Gravitational Convection Coils
 fog.upgrade.tt.2=Spacetime Topology Expansion Modulator
 fog.upgrade.tt.3=Cosmic Fuel Chamber Expansion
@@ -922,6 +922,7 @@ fog.upgrade.tt.27=Transfinite Stellar Existence
 fog.upgrade.tt.28=The Boundless Flow
 fog.upgrade.tt.29=Effortless Existence
 fog.upgrade.tt.30=Orion’s Arm Genesis Schema
+fog.upgrade.tt.secret=Secret Upgrade
 
 fog.upgrade.tt.short.0=START
 fog.upgrade.tt.short.1=IGCC
@@ -954,6 +955,7 @@ fog.upgrade.tt.short.27=TSE
 fog.upgrade.tt.short.28=TBF
 fog.upgrade.tt.short.29=EE
 fog.upgrade.tt.short.30=END
+fog.upgrade.tt.short.secret=SECRET
 
 fog.upgrade.lore.0=The Forge of the Gods is an immensely powerful structure constructed around a stabilized neutron star – it is so advanced that its full capabilities are not yet understood. However, through continued use, one can slowly upgrade and expand the range of abilities of the Forge, and learn the power hidden in the most extreme parts of the universe: graviton shards. This esoteric material can only be found where conventional matter and degenerate neutronium crust matter on the surface of a neutron star meet. At this point in space, gravitons are far more common and irradiate this material mixture to create highly unstable graviton shards, which can be used to internally upgrade the Forge. While these shards cannot yet exist outside the extreme conditions of the Forge, with continued research and utilization it may be possible to eventually isolate and extract them outside the Forge – but for what purpose?
 fog.upgrade.lore.1=The first major upgrade of the Forge of the Gods has allowed for greater processing speeds as the heat increases, thanks to the gravitational warping effects of graviton shards. This is the first of many applications of the shards, which will be discovered through continuous use of the Forge.
