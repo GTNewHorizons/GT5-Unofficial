@@ -25,25 +25,16 @@ public class ASMConfiguration {
         @Config.DefaultBoolean(false)
         public boolean debugMode;
 
-        @Config.Comment("Enable/Disable COFH OreDictionaryArbiter Patch (Useful for Development)")
-        @Config.DefaultBoolean(true)
-        public boolean enableCofhPatch;
-
-        @Config.Comment("Enable/Disable Forge OreDictionary Patch (Useful for Development)")
-        @Config.DefaultBoolean(false)
-        public boolean enableOreDictPatch;
     }
 
     @Config.Comment("General section")
     public static class General {
         // General Features
 
-        @Config.Comment("Prevents the game crashing from having invalid keybinds. https://github.com/alkcorp/GTplusplus/issues/544")
-        @Config.DefaultBoolean(true)
-        public boolean enabledLwjglKeybindingFix;
+        @Config.Comment("Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.")
+        @Config.DefaultInt(0)
+        @Config.RangeInt(min = 0, max = Short.MAX_VALUE)
+        public int enableWatchdogBGM;
 
-        @Config.Comment("Fixes small oversights in Thaumcraft 4.")
-        @Config.DefaultBoolean(true)
-        public boolean enableTcAspectSafety;
     }
 }

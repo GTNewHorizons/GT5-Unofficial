@@ -11,7 +11,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package bartworks.ASM;
+package bartworks.hooks;
 
 import java.util.HashSet;
 import java.util.Iterator;
