@@ -17,7 +17,6 @@ import java.util.function.ToIntFunction;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -44,6 +43,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCyclotronCoils;
@@ -656,8 +656,8 @@ public class GTStructureUtility {
         return is -> {
             IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
 
-            if(tile instanceof MTEHatch hatch){
-                if(hatch.getTierForStructure() <= aMaxTier && hatch.getTierForStructure() >= aMinTier) return true;
+            if (tile instanceof MTEHatch hatch) {
+                if (hatch.getTierForStructure() <= aMaxTier && hatch.getTierForStructure() >= aMinTier) return true;
             }
 
             return tile instanceof MTETieredMachineBlock && ((MTETieredMachineBlock) tile).mTier <= aMaxTier
