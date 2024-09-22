@@ -1,17 +1,18 @@
 package gtPlusPlus.xmod.tinkers;
 
+import java.util.ArrayList;
+
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.enums.Mods;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 import gtPlusPlus.xmod.tinkers.util.TinkersDryingRecipe;
 import gtPlusPlus.xmod.tinkers.util.TinkersUtils;
 
 public class HandlerTinkers {
 
-    public static AutoMap<BaseTinkersMaterial> mTinkerMaterials = new AutoMap<>();
+    public static ArrayList<BaseTinkersMaterial> mTinkerMaterials = new ArrayList<>();
 
     public static void postInit() {
         if (Mods.TinkerConstruct.isModLoaded()) {

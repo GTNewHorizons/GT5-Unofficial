@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-import bartworks.ASM.BWCoreStaticReplacementMethodes;
+import bartworks.hooks.BWCoreStaticReplacementMethodes;
 
 @Mixin(CraftingManager.class)
 public abstract class CraftingManagerMixin {

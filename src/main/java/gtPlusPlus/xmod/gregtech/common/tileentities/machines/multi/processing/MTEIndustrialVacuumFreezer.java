@@ -12,7 +12,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -39,6 +39,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -172,7 +173,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     public void updateSlots() {
-        for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mCryotheumHatches)) tHatch.updateSlots();
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mCryotheumHatches)) tHatch.updateSlots();
         super.updateSlots();
     }
 
@@ -219,7 +220,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialVacuumFreezer;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialVacuumFreezer;
     }
 
     @Override

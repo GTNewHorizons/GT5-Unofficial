@@ -5,26 +5,27 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.liquidFluorineThoriumReactorRecipes;
 
+import java.util.ArrayList;
+
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GasSpargingRecipeMap;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 
 public class RecipeLoaderLFTR {
 
-    private static AutoMap<Fluid> mNobleGases;
-    private static AutoMap<Fluid> mFluorideGases;
-    private static AutoMap<Fluid> mSpargeGases;
+    private static ArrayList<Fluid> mNobleGases;
+    private static ArrayList<Fluid> mFluorideGases;
+    private static ArrayList<Fluid> mSpargeGases;
 
     private static void configureSparging() {
         if (mSpargeGases == null) {
-            mSpargeGases = new AutoMap<>();
+            mSpargeGases = new ArrayList<>();
             mSpargeGases.add(
                 Materials.Helium.getGas(1)
                     .getFluid());
@@ -33,7 +34,7 @@ public class RecipeLoaderLFTR {
                     .getFluid());
         }
         if (mNobleGases == null) {
-            mNobleGases = new AutoMap<>();
+            mNobleGases = new ArrayList<>();
             mNobleGases.add(mSpargeGases.get(0));
             mNobleGases.add(MaterialsElements.getInstance().XENON.getFluid());
             mNobleGases.add(MaterialsElements.getInstance().NEON.getFluid());
@@ -42,7 +43,7 @@ public class RecipeLoaderLFTR {
             mNobleGases.add(MaterialsElements.getInstance().RADON.getFluid());
         }
         if (mFluorideGases == null) {
-            mFluorideGases = new AutoMap<>();
+            mFluorideGases = new ArrayList<>();
             mFluorideGases.add(mSpargeGases.get(1));
             mFluorideGases.add(MaterialsFluorides.LITHIUM_FLUORIDE.getFluid());
             mFluorideGases.add(MaterialsFluorides.NEPTUNIUM_HEXAFLUORIDE.getFluid());

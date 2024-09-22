@@ -52,7 +52,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
         System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
         System.arraycopy(hatchTierString, 0, desc, mDescriptionArray.length, 1);
         System.arraycopy(aCustomTips, 0, desc, mDescriptionArray.length + 1, aCustomTips.length);
-        desc[mDescriptionArray.length + aCustomTips.length] = GTPPCore.GT_Tooltip.get();
+        desc[mDescriptionArray.length + aCustomTips.length + 1] = GTPPCore.GT_Tooltip.get();
         return desc;
     }
 

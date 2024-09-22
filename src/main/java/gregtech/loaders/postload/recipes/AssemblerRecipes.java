@@ -35,6 +35,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -3600,6 +3601,28 @@ public class AssemblerRecipes implements Runnable {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_UV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Americium, 2),
+                ItemList.Field_Generator_UV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Longasssuperconductornameforuhvwire, 2),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2))
+            .itemOutputs(ItemList.Generator_Plasma_UV.get(1))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_UIV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.NetherStar, 4))
+            .itemOutputs(ItemRegistry.energyDistributor[11])
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
     }
 
     /**
@@ -6083,7 +6106,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.springSmall, Materials.Copper, 4),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(tRailES)
                 .duration(20 * SECONDS)
                 .eut(16)
@@ -6093,7 +6116,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.springSmall, Materials.Gold, 2),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(2, tRailES))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -6103,7 +6126,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.springSmall, Materials.Electrum, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(4, tRailES))
                 .duration(20 * SECONDS)
                 .eut(48)
@@ -6113,7 +6136,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.springSmall, Materials.Titanium, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(8, tRailES))
                 .duration(20 * SECONDS)
                 .eut(64)
@@ -6123,7 +6146,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.springSmall, Materials.Platinum, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(16, tRailES))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
@@ -6133,7 +6156,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.springSmall, Materials.VanadiumGallium, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(32, tRailES))
                 .duration(20 * SECONDS)
                 .eut(256)
@@ -6143,7 +6166,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.springSmall, Materials.Naquadah, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(64, tRailES))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
@@ -6160,7 +6183,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Copper, 4),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(tRailEw)
                 .duration(20 * SECONDS)
                 .eut(16)
@@ -6170,7 +6193,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Gold, 2),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(2, tRailEw))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -6180,7 +6203,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Electrum, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(4, tRailEw))
                 .duration(20 * SECONDS)
                 .eut(48)
@@ -6190,7 +6213,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Titanium, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(8, tRailEw))
                 .duration(20 * SECONDS)
                 .eut(64)
@@ -6200,7 +6223,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Platinum, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(16, tRailEw))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
@@ -6210,7 +6233,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.VanadiumGallium, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(32, tRailEw))
                 .duration(20 * SECONDS)
                 .eut(256)
@@ -6220,7 +6243,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Naquadah, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(64, tRailEw))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
@@ -6237,7 +6260,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Copper, 4),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(tRailEJ)
                 .duration(20 * SECONDS)
                 .eut(16)
@@ -6247,7 +6270,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Gold, 2),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(2, tRailEJ))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -6257,7 +6280,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Electrum, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(4, tRailEJ))
                 .duration(20 * SECONDS)
                 .eut(48)
@@ -6267,7 +6290,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(8, tRailEJ))
                 .duration(20 * SECONDS)
                 .eut(64)
@@ -6277,7 +6300,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Platinum, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(16, tRailEJ))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
@@ -6287,7 +6310,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.VanadiumGallium, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(32, tRailEJ))
                 .duration(20 * SECONDS)
                 .eut(256)
@@ -6297,7 +6320,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Naquadah, 1),
-                    GTUtility.getIntegratedCircuit(1))
+                    GTUtility.getIntegratedCircuit(17))
                 .itemOutputs(GTUtility.copyAmount(64, tRailEJ))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
@@ -7114,18 +7137,6 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 28000))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMVBase, 33),
-                GTOreDictUnificator.get(OrePrefixes.pipeTiny, MaterialsUEVplus.SpaceTime, 22),
-                ItemList.Electric_Pump_UMV.get(1),
-                GTUtility.getIntegratedCircuit(9))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 33))
-            .fluidInputs(new FluidStack(FluidRegistry.getFluid("liquid helium"), 36000))
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
     }
 

@@ -34,8 +34,7 @@ import com.google.common.collect.HashBiMap;
 
 import bartworks.API.recipe.BWNBTDependantCraftingRecipe;
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.ASM.BWCoreStaticReplacementMethodes;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.hooks.BWCoreStaticReplacementMethodes;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import bartworks.util.Pair;
@@ -43,6 +42,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -65,14 +65,10 @@ public class CircuitImprintLoader {
     public static void run() {
         HashSet<GTRecipe> toRem = new HashSet<>();
         HashSet<GTRecipe> toAdd = new HashSet<>();
-
         deleteCALRecipesAndTags();
         rebuildCircuitAssemblerMap(toRem, toAdd);
         exchangeRecipesInList(toRem, toAdd);
         makeCircuitImprintRecipes();
-
-        toRem = null;
-        toAdd = null;
     }
 
     private static void reAddOriginalRecipes() {
@@ -113,7 +109,7 @@ public class CircuitImprintLoader {
                 GTRecipe newRecipe = CircuitImprintLoader.reBuildRecipe(circuitRecipe);
                 if (newRecipe != null) BartWorksRecipeMaps.circuitAssemblyLineRecipes.addRecipe(newRecipe);
                 addCutoffRecipeToSets(toRem, toAdd, circuitRecipe);
-            } else if (circuitRecipe.mEUt > BWUtil.getTierVoltage(ConfigHandler.cutoffTier)) toRem.add(circuitRecipe);
+            } else if (circuitRecipe.mEUt > TierEU.IV) toRem.add(circuitRecipe);
         }
     }
 
@@ -133,7 +129,7 @@ public class CircuitImprintLoader {
 
     private static void addCutoffRecipeToSets(HashSet<GTRecipe> toRem, HashSet<GTRecipe> toAdd,
         GTRecipe circuitRecipe) {
-        if (circuitRecipe.mEUt > BWUtil.getTierVoltage(ConfigHandler.cutoffTier)) {
+        if (circuitRecipe.mEUt > TierEU.IV) {
             toRem.add(circuitRecipe);
             toAdd.add(CircuitImprintLoader.makeMoreExpensive(circuitRecipe));
         }
@@ -282,14 +278,7 @@ public class CircuitImprintLoader {
         BWCoreStaticReplacementMethodes.clearRecentlyUsedRecipes();
         RecipeMaps.slicerRecipes.getBackend()
             .removeRecipes(gtrecipeWorldCache);
-        recipeWorldCache.forEach(r -> {
-            try {
-                BWUtil.getGTBufferedRecipeList()
-                    .remove(r);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        GTModHandler.sBufferRecipeList.removeAll(recipeWorldCache);
         recipeWorldCache.clear();
         gtrecipeWorldCache.clear();
     }

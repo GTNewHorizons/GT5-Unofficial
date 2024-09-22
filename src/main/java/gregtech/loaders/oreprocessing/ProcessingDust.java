@@ -120,6 +120,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(compressorRecipes);
                     }
                     // This is so disgustingly bad.
+                    // It really is.
                     if (((OrePrefixes.block.isIgnored(aMaterial))
                         || (null == GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L)))
                         && (aMaterial != Materials.GraniteRed)
@@ -131,7 +132,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && (aMaterial != Materials.Glowstone)
                         && (aMaterial != Materials.Paper)
                         && (aMaterial != MaterialsUEVplus.TranscendentMetal)
-                        && (aMaterial != Materials.Clay)) {
+                        && (aMaterial != Materials.Clay && (aMaterial != Materials.Wood))) {
                         // compressor recipe
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
@@ -357,6 +358,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case dustPure, dustImpure, dustRefined -> {
+                if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+                    return;
+                }
+
                 Materials tByProduct = GTUtility.selectItemInList(
                     aPrefix == OrePrefixes.dustRefined ? 2 : aPrefix == OrePrefixes.dustPure ? 1 : 0,
                     aMaterial,

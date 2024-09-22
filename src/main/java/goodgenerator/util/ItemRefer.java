@@ -172,6 +172,14 @@ public final class ItemRefer {
     public static ItemRefer Compassline_Casing_UXV = getItemStack(componentAssemblylineCasing, 12);
     public static ItemRefer Compassline_Casing_MAX = getItemStack(componentAssemblylineCasing, 13);
 
+    public static ItemRefer AntimatterForge = getItemStack(AMForge);
+    public static ItemRefer AntimatterGenerator = getItemStack(AMGenerator);
+    public static ItemRefer AntimatterContainmentCasing = getItemStack(antimatterContainmentCasing);
+    public static ItemRefer GravityStabilizationCasing = getItemStack(gravityStabilizationCasing);
+    public static ItemRefer MagneticFluxCasing = getItemStack(magneticFluxCasing);
+    public static ItemRefer ProtomatterActivationCoil = getItemStack(protomatterActivationCoil);
+    public static ItemRefer AntimatterAnnihilationMatrix = getItemStack(antimatterAnnihilationMatrix);
+
     private Item mItem = null;
     private Block mBlock = null;
     private ItemStack mItemStack = null;

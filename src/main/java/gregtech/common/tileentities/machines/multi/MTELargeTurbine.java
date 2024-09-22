@@ -14,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_EMPTY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 
@@ -286,7 +286,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 || this.getBaseMetaTileEntity()
                     .hasInventoryBeenModified()) {
                 counter = 0;
-                baseEff = (int) turbine.getEfficiency();
+                baseEff = (int) (100 * turbine.getEfficiency());
                 optFlow = (int) turbine.getOptimalFlow();
 
                 overflowMultiplier = turbine.getOverflowEfficiency();
@@ -336,7 +336,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     // Gets the maximum output that the turbine currently can handle. Going above this will cause the turbine to explode
     public long getMaximumOutput() {
         long aTotal = 0;
-        for (MTEHatchDynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             aTotal = aDynamo.maxAmperesOut() * aVoltage;
         }
@@ -367,7 +367,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
@@ -391,7 +391,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
 
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (MTEHatchDynamo tHatch : filterValidMTEs(mDynamoHatches)) {
+        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -442,14 +442,6 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + EnumChatFormatting.RESET
                 + " %" /* 8 */
         };
-        if (!this.getClass()
-            .getName()
-            .contains("Steam"))
-            ret[4] = StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.safeInt((long) realOptFlow)
-                + EnumChatFormatting.RESET
-                + " L/t";
         return ret;
     }
 
@@ -458,6 +450,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             : this.getMaxEfficiency(mInventory[1]) > 0;
     }
 
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;

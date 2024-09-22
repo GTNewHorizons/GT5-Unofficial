@@ -4,7 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -148,7 +148,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
         this.mMaxProgresstime = 20;
         int steam = 0;
 
-        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             steam += maybeDrainHatch(tHatch);
         }
         addOutput(GTModHandler.getDistilledWater(steam / 160));

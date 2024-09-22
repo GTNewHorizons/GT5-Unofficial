@@ -8,7 +8,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -179,7 +179,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (MTEHatchObjectHolder rack : filterValidMTEs(eHolders)) {
+        for (MTEHatchObjectHolder rack : validMTEList(eHolders)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
         }
@@ -189,7 +189,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             return false;
         }
 
-        for (MTEHatchObjectHolder rack : filterValidMTEs(eHolders)) {
+        for (MTEHatchObjectHolder rack : validMTEList(eHolders)) {
             rack.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
@@ -322,13 +322,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
-        for (MTEHatchEnergyMulti tHatch : filterValidMTEs(eEnergyMulti)) {
+        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()

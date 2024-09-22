@@ -34,7 +34,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.gregtech.ConfigHarvestLevel;
+import gregtech.common.config.Gregtech;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
@@ -420,6 +420,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * Not possible to determine exact Components
      */
     public static Materials Antimatter;
+    public static Materials Protomatter;
     public static Materials AdvancedGlue;
     public static Materials BioFuel;
     public static Materials Biomass;
@@ -1586,6 +1587,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             .setByProductMultiplier(2);
         Cryolite.setOreMultiplier(4)
             .setByProductMultiplier(4);
+        Coal.setOreMultiplier(2)
+            .setByProductMultiplier(2);
     }
 
     private static void setEnchantmentKnockbackTools() {
@@ -2669,9 +2672,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     private static void addHarvestLevels() {
-        GTMod.gregtechproxy.mChangeHarvestLevels = ConfigHarvestLevel.activateHarvestLevelChange;
-        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, ConfigHarvestLevel.maxHarvestLevel);
-        GTMod.gregtechproxy.mGraniteHavestLevel = ConfigHarvestLevel.graniteHarvestLevel;
+        GTMod.gregtechproxy.mChangeHarvestLevels = Gregtech.harvestLevel.activateHarvestLevelChange;
+        GTMod.gregtechproxy.mMaxHarvestLevel = Math.min(15, Gregtech.harvestLevel.maxHarvestLevel);
+        GTMod.gregtechproxy.mGraniteHavestLevel = Gregtech.harvestLevel.graniteHarvestLevel;
     }
 
     public static void initMaterialProperties() {

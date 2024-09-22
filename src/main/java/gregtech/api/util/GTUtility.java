@@ -62,7 +62,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
@@ -364,21 +363,6 @@ public class GTUtility {
         return null;
     }
 
-    public static Object callConstructor(String aClass, int aConstructorIndex, Object aReplacementObject,
-        boolean aLogErrors, Object... aParameters) {
-        try {
-            return callConstructor(
-                Class.forName(aClass),
-                aConstructorIndex,
-                aReplacementObject,
-                aLogErrors,
-                aParameters);
-        } catch (Throwable e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
-        }
-        return aReplacementObject;
-    }
-
     public static Object callConstructor(Class<?> aClass, int aConstructorIndex, Object aReplacementObject,
         boolean aLogErrors, Object... aParameters) {
         if (aConstructorIndex < 0) {
@@ -401,31 +385,12 @@ public class GTUtility {
         return aReplacementObject;
     }
 
-    public static String capitalizeString(String aString) {
-        if (aString != null && aString.length() > 0) return aString.substring(0, 1)
-            .toUpperCase() + aString.substring(1);
-        return E;
-    }
-
-    public static boolean getPotion(EntityLivingBase aPlayer, int aPotionIndex) {
-        try {
-            Field tPotionHashmap = null;
-
-            Field[] fields = EntityLiving.class.getDeclaredFields();
-
-            for (Field field : fields) {
-                if (field.getType() == HashMap.class) {
-                    tPotionHashmap = field;
-                    tPotionHashmap.setAccessible(true);
-                    break;
-                }
-            }
-
-            if (tPotionHashmap != null) return ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).get(aPotionIndex) != null;
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
+    public static String capitalizeString(String s) {
+        if (s != null && !s.isEmpty()) {
+            return s.substring(0, 1)
+                .toUpperCase() + s.substring(1);
         }
-        return false;
+        return "";
     }
 
     public static String getClassName(Object aObject) {
@@ -436,26 +401,6 @@ public class GTUtility {
                 aObject.getClass()
                     .getName()
                     .lastIndexOf(".") + 1);
-    }
-
-    public static void removePotion(EntityLivingBase aPlayer, int aPotionIndex) {
-        try {
-            Field tPotionHashmap = null;
-
-            Field[] fields = EntityLiving.class.getDeclaredFields();
-
-            for (Field field : fields) {
-                if (field.getType() == HashMap.class) {
-                    tPotionHashmap = field;
-                    tPotionHashmap.setAccessible(true);
-                    break;
-                }
-            }
-
-            if (tPotionHashmap != null) ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).remove(aPotionIndex);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
     }
 
     public static boolean getFullInvisibility(EntityPlayer aPlayer) {
@@ -500,9 +445,15 @@ public class GTUtility {
     }
 
     public static byte getTier(long l) {
-        byte i = -1;
-        while (++i < V.length) if (l <= V[i]) return i;
-        return (byte) (V.length - 1);
+        if (l > V[14]) return 15;
+        if (l <= V[0]) return 0;
+
+        // numberOfLeadingZeros is implemented in hardware by x86 LZCNT
+        // and is extremely efficient (takes only a couple of hardware cycles)
+        // (64 - numberOfLeadingZeros(l - 1)) = ceil(log_2(l))
+        int log2L = 64 - Long.numberOfLeadingZeros(l - 1);
+
+        return (byte) ((log2L - 2) / 2);
     }
 
     public static long getAmperageForTier(long voltage, byte tier) {
@@ -4022,11 +3973,19 @@ public class GTUtility {
     }
 
     /**
-     * @return Supplied collection that doesn't contain invalid MetaTileEntities
+     * @return Supplied collection that doesn't contain invalid MetaTileEntities.
      */
     public static <T extends Collection<E>, E extends MetaTileEntity> T filterValidMTEs(T metaTileEntities) {
         metaTileEntities.removeIf(mte -> mte == null || !mte.isValid());
         return metaTileEntities;
+    }
+
+    /**
+     * @return Supplied collection that removes invalid MTEs from the collection while it is being iterated
+     */
+    public static <T extends Collection<E>, E extends MetaTileEntity> ValidMTEList<T, E> validMTEList(
+        T metaTileEntities) {
+        return new ValidMTEList<>(metaTileEntities);
     }
 
     public static ForgeDirection getSideFromPlayerFacing(Entity player) {

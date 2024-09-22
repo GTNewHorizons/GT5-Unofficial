@@ -12,23 +12,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.objects.GTRenderedTexture;
-import gregtech.api.util.GTUtility;
 
 public class GTPPMTECable extends MTECable implements IMetaTileEntityCable {
 
-    private static Textures.BlockIcons INSULATION_MEDIUM_PLUS;
-
-    static {
-        try {
-            INSULATION_MEDIUM_PLUS = (Textures.BlockIcons) GTUtility
-                .getField(Textures.BlockIcons.class, "INSULATION_MEDIUM_PLUS")
-                .get(null);
-        } catch (IllegalAccessException | NullPointerException e) {
-            throw new Error(e);
-        }
-    }
-
-    private short[] vRGB = null;
+    private final short[] vRGB;
 
     public GTPPMTECable(final int aID, final String aName, final String aNameRegional, final float aThickNess,
         final Materials aMaterial, final long aCableLossPerMeter, final long aAmperage, final long aVoltage,
@@ -134,7 +121,7 @@ public class GTPPMTECable extends MTECable implements IMetaTileEntityCable {
                 return new ITexture[] {
                     new GTRenderedTexture(wireMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], vRGB),
                     new GTRenderedTexture(
-                        INSULATION_MEDIUM_PLUS,
+                        Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
             if (tThickNess < 0.874F) // 0.825 x12
                 return new ITexture[] {

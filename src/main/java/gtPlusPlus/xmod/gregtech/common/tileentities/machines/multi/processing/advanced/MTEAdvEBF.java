@@ -13,7 +13,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -53,6 +53,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -193,7 +194,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
 
     @Override
     public void updateSlots() {
-        for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mPyrotheumHatches)) tHatch.updateSlots();
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mPyrotheumHatches)) tHatch.updateSlots();
         super.updateSlots();
     }
 
@@ -258,7 +259,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiAdvEBF;
+        return Configuration.pollution.pollutionPerSecondMultiAdvEBF;
     }
 
     @Override

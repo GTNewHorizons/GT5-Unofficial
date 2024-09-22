@@ -14,7 +14,6 @@
 package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.capsuleMolten;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
@@ -32,11 +31,9 @@ import static gregtech.api.enums.OrePrefixes.rotor;
 import static gregtech.api.enums.OrePrefixes.screw;
 import static gregtech.api.enums.OrePrefixes.stick;
 import static gregtech.api.enums.OrePrefixes.stickLong;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.Objects;
 
@@ -127,18 +124,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) ((double) werkstoff.getStats()
                         .getMass() / 9D))
-                .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Block.get(0))
-                .itemOutputs(werkstoff.get(block))
-                .fluidInputs(werkstoff.getMolten(1296))
-                .duration(
-                    (int) werkstoff.getStats()
-                        .getMass() * 9)
                 .eut(
                     werkstoff.getStats()
                         .getMass() > 128 ? 64 : 30)
@@ -331,22 +316,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
             .registerFluidContainer(werkstoff.getMolten(144), werkstoff.get(cellMolten), Materials.Empty.getCells(1));
         GTUtility.addFluidContainerData(data);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1))
-            .itemOutputs(werkstoff.get(cellMolten))
-            .fluidInputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144))
-            .duration(2 * TICKS)
-            .eut(2)
-            .addTo(fluidCannerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(cellMolten))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidOutputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144))
-            .duration(2 * TICKS)
-            .eut(2)
-            .addTo(fluidCannerRecipes);
-
         if (!Forestry.isModLoaded()) return;
 
         final FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
@@ -358,13 +327,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
             werkstoff.get(capsuleMolten),
             GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
         GTUtility.addFluidContainerData(emptyData);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(werkstoff.get(capsuleMolten))
-            .fluidOutputs(new FluidStack(Objects.requireNonNull(WerkstoffLoader.molten.get(werkstoff)), 144))
-            .duration(2 * TICKS)
-            .eut(2)
-            .addTo(fluidCannerRecipes);
 
     }
 }

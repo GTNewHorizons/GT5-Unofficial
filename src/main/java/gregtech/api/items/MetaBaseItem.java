@@ -24,6 +24,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizons.modularui.api.KeyboardUtil;
+
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GTLanguageManager;
@@ -121,6 +123,10 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     public boolean onLeftClick(ItemStack aStack, EntityPlayer aPlayer) {
         return forEachBehavior(aStack, behavior -> behavior.onLeftClick(this, aStack, aPlayer));
+    }
+
+    public boolean onMiddleClick(ItemStack aStack, EntityPlayer aPlayer) {
+        return forEachBehavior(aStack, behavior -> behavior.onMiddleClick(this, aStack, aPlayer));
     }
 
     @Override
@@ -260,9 +266,13 @@ public abstract class MetaBaseItem extends GTGenericItem
                     "" + formatNumbers(tStats[0])) + EnumChatFormatting.GRAY);
         }
 
-        ArrayList<IItemBehaviour<MetaBaseItem>> tList = mItemBehaviors.get((short) getDamage(aStack));
-        if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
-            aList = tBehavior.getAdditionalToolTips(this, aList, aStack);
+        ArrayList<IItemBehaviour<MetaBaseItem>> behaviours = mItemBehaviors.get((short) getDamage(aStack));
+        if (behaviours != null) {
+            for (IItemBehaviour<MetaBaseItem> behavior : behaviours) {
+                aList = !KeyboardUtil.isShiftKeyDown() ? behavior.getAdditionalToolTips(this, aList, aStack)
+                    : behavior.getAdditionalToolTipsWhileSneaking(this, aList, aStack);
+            }
+        }
 
         addAdditionalToolTips(aList, aStack, aPlayer);
     }

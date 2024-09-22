@@ -19,7 +19,7 @@ import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -725,7 +725,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         if (GTUtility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
             rList.add(mInventory[1]);
         }
-        for (MTEHatchDataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
+        for (MTEHatchDataAccess tHatch : validMTEList(mDataAccessHatches)) {
             for (int i = 0; i < tHatch.getBaseMetaTileEntity()
                 .getSizeInventory(); i++) {
                 if (tHatch.getBaseMetaTileEntity()

@@ -32,7 +32,7 @@ public class CropProcessingRecipes implements Runnable {
         tCrop = ItemList.Crop_Drop_Tine.get(1);
         this.addProcess(tCrop, Materials.Tin, 100, true);
         this.addProcess(tCrop, Materials.Cassiterite, 100, false);
-        this.addProcess(tCrop, Materials.CassiteriteSand, 100, true);
+        this.addProcess(tCrop, Materials.CassiteriteSand, 100, false);
         tCrop = ItemList.Crop_Drop_Plumbilia.get(1);
         this.addProcess(tCrop, Materials.Lead, 100, true);
         this.addProcess(tCrop, Materials.Galena, 100, false); //
@@ -142,13 +142,15 @@ public class CropProcessingRecipes implements Runnable {
             .eut(24)
             .addTo(UniversalChemical);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(16, tCrop))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
-            .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
-            .duration((int) (aMaterial.getMass() * 128))
-            .eut(384)
-            .addTo(autoclaveRecipes);
+        if (aMainOutput) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(16, tCrop))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
+                .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
+                .duration((int) (aMaterial.getMass() * 128))
+                .eut(384)
+                .addTo(autoclaveRecipes);
+        }
     }
 
     public void addProcess(ItemStack tCrop, Materials aMaterial, int chance) {

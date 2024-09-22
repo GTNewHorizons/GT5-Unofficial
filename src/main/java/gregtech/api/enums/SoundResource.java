@@ -74,7 +74,9 @@ public enum SoundResource {
     GT_MACHINES_MULTI_LATHE_LOOP(241, GregTech.ID, "machines.MultiLatheLoop"),
     GT_MACHINES_MULTI_AUTOCLAVE_LOOP(242, GregTech.ID, "machines.MultiAutoclaveLoop"),
 
-    GT_SPRAYCAN_SHAKE(243, GregTech.ID, "items.spraycan"),
+    GT_SPRAYCAN_SHAKE(243, GregTech.ID, "items.spraycan_shake"),
+    GT_SPRAYCAN_LOCK(244, GregTech.ID, "items.spraycan_lock"),
+    GT_SPRAYCAN_UNLOCK(245, GregTech.ID, "items.spraycan_unlock"),
 
     GT_MACHINES_MULTI_PRECISE_LOOP(244, GregTech.ID, "machines.MTEPreciseAssembler"),
     GT_MACHINES_MULTI_ORE_WASHER_PLANT_LOOP(245, GregTech.ID, "machines.MTEIndustrialWashPlant"),

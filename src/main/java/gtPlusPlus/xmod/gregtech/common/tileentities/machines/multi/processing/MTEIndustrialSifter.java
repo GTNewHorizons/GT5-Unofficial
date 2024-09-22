@@ -36,6 +36,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -197,7 +198,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialSifter;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialSifter;
     }
 
     @Override
