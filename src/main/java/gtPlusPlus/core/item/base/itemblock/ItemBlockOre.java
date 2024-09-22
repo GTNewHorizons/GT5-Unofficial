@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.base.itemblock;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
@@ -40,27 +40,26 @@ public class ItemBlockOre extends ItemBlock {
         }
     }
 
-    private static Map<String, AutoMap<String>> mMapOreBlockItemToDimName = new LinkedHashMap<>();
+    private static final Map<String, HashSet<String>> mMapOreBlockItemToDimName = new LinkedHashMap<>();
     private static boolean mInitOres_Everglades = false;
-    private AutoMap<String> mDimsForThisOre = new AutoMap<>();
+    private HashSet<String> mDimsForThisOre = new HashSet<>();
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean bool) {
 
         if (!mInitOres_Everglades) {
             for (WorldGen_GT_Ore_Layer f : gtPlusPlus.everglades.gen.gt.WorldGen_Ores.validOreveins.values()) {
                 Material[] m2 = new Material[] { f.mPrimary, f.mSecondary, f.mBetween, f.mSporadic };
                 for (Material m1 : m2) {
-                    AutoMap<String> aMap = mMapOreBlockItemToDimName.get(
+                    HashSet<String> aMap = mMapOreBlockItemToDimName.get(
                         m1.getUnlocalizedName()
                             .toLowerCase());
                     if (aMap == null) {
-                        aMap = new AutoMap<>();
+                        aMap = new HashSet<>();
                     }
                     String aDimName = "Everglades";
-                    if (!aMap.containsValue(aDimName)) {
-                        aMap.put(aDimName);
-                    }
+                    aMap.add(aDimName);
                     mMapOreBlockItemToDimName.put(
                         m1.getUnlocalizedName()
                             .toLowerCase(),
@@ -104,7 +103,7 @@ public class ItemBlockOre extends ItemBlock {
             }
 
             if (mDimsForThisOre.isEmpty()) {
-                AutoMap<String> A = mMapOreBlockItemToDimName.get(
+                HashSet<String> A = mMapOreBlockItemToDimName.get(
                     this.mThisMaterial.getUnlocalizedName()
                         .toLowerCase());
                 if (A != null) {

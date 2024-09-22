@@ -43,7 +43,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import tectech.loader.TecTechConfig;
+import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.util.CommonValues;
 
@@ -51,7 +51,6 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
     private long EUt = 0;
     private int currentParallel = 0;
-    private boolean debug = TecTechConfig.DEBUG_MODE;
     private int inputMaxParallel = 0;
 
     public MTEPlasmaModule(int aID, String aName, String aNameRegional) {
@@ -126,7 +125,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        if (debug) {
+        if (ConfigHandler.debug.DEBUG_MODE) {
             builder.widget(createTestButton(builder))
                 .widget(createTestButton2())
                 .widget(createTestButton3());

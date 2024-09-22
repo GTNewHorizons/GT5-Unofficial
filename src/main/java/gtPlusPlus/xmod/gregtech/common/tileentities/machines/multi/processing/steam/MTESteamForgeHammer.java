@@ -249,7 +249,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         if (tierPipeCasing < 0 && tierMachineCasing < 0 && tierSimpleBlock < 0) return false;
         if (tierPipeCasing == 1 && tierMachineCasing == 1
             && tierSimpleBlock == 1
-            && tCountCasing > 35
+            && tCountCasing >= 35
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -257,7 +257,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
         }
         if (tierPipeCasing == 2 && tierMachineCasing == 2
             && tierSimpleBlock == 2
-            && tCountCasing > 35
+            && tCountCasing >= 35
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;

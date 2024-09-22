@@ -48,10 +48,10 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -225,7 +225,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
-    private final AutoMap<BlockPos> mFrontBlockPosCache = new AutoMap<>();
+    private final ArrayList<BlockPos> mFrontBlockPosCache = new ArrayList<>();
 
     public void checkForEntities(IGregTechTileEntity aBaseMetaTileEntity, long aTime) {
 
@@ -252,7 +252,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             }
         }
 
-        AutoMap<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
+        ArrayList<EntityLivingBase> aEntities = getEntities(mFrontBlockPosCache, aBaseMetaTileEntity.getWorld());
         if (!aEntities.isEmpty()) {
             for (EntityLivingBase aFoundEntity : aEntities) {
                 if (aFoundEntity instanceof EntityPlayer aPlayer) {
@@ -286,8 +286,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         return Math.max(reducedDamage, 0);
     }
 
-    private static AutoMap<EntityLivingBase> getEntities(AutoMap<BlockPos> aPositionsToCheck, World aWorld) {
-        AutoMap<EntityLivingBase> aEntities = new AutoMap<>();
+    private static ArrayList<EntityLivingBase> getEntities(ArrayList<BlockPos> aPositionsToCheck, World aWorld) {
+        ArrayList<EntityLivingBase> aEntities = new ArrayList<>();
         HashSet<Chunk> aChunksToCheck = new HashSet<>();
         if (!aPositionsToCheck.isEmpty()) {
             Chunk aLocalChunk;
@@ -297,7 +297,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             }
         }
         if (!aChunksToCheck.isEmpty()) {
-            AutoMap<EntityLivingBase> aEntitiesFound = new AutoMap<>();
+            ArrayList<EntityLivingBase> aEntitiesFound = new ArrayList<>();
             for (Chunk aChunk : aChunksToCheck) {
                 if (aChunk.isChunkLoaded) {
                     List[] aEntityLists = aChunk.entityLists;
@@ -327,7 +327,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     private static void generateParticles(EntityLivingBase aEntity) {
         BlockPos aPlayerPosBottom = EntityUtils.findBlockPosOfEntity(aEntity);
         BlockPos aPlayerPosTop = aPlayerPosBottom.getUp();
-        AutoMap<BlockPos> aEntityPositions = new AutoMap<>();
+        ArrayList<BlockPos> aEntityPositions = new ArrayList<>();
         aEntityPositions.add(aPlayerPosBottom);
         aEntityPositions.add(aPlayerPosTop);
         for (int i = 0; i < 64; i++) {
@@ -401,7 +401,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIsaMill;
+        return Configuration.pollution.pollutionPerSecondMultiIsaMill;
     }
 
     @Override
@@ -438,7 +438,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     public ArrayList<ItemStack> getStoredInputs() {
         ArrayList<ItemStack> tItems = super.getStoredInputs();
         for (MTEHatchMillingBalls tHatch : validMTEList(mMillingBallBuses)) {
-            AutoMap<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
+            ArrayList<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
             if (!aHatchContent.isEmpty()) {
                 tItems.addAll(aHatchContent);
             }
@@ -456,7 +456,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         } else {
             MTEHatchMillingBalls aBus = mMillingBallBuses.get(0);
             if (aBus != null) {
-                AutoMap<ItemStack> aAvailableItems = aBus.getContentUsageSlots();
+                ArrayList<ItemStack> aAvailableItems = aBus.getContentUsageSlots();
                 if (!aAvailableItems.isEmpty()) {
                     for (final ItemStack aInput : aItemInputs) {
                         if (ItemUtils.isMillingBall(aInput)) {

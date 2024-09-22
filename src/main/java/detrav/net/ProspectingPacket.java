@@ -74,9 +74,9 @@ public class ProspectingPacket extends DetravPacket {
                         rgba = werkstoff.getRGBA();
                     }
                 } else {
-                    gtPlusPlus.core.material.Material pMaterial = GTppHelper.decodeoresGTpp.get((short) (meta - 7000));
-                    rgba = pMaterial.getRGBA();
-                    name = pMaterial.getLocalizedName() + " Ore";
+                    gtPlusPlus.core.material.Material mat = GTppHelper.getMatFromMeta(meta);
+                    rgba = mat.getRGBA();
+                    name = mat.getLocalizedName() + " Ore";
                 }
             } else if (packet.ptype == 2) {
                 // Fluid

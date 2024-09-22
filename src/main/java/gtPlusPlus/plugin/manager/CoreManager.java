@@ -1,20 +1,21 @@
 package gtPlusPlus.plugin.manager;
 
+import java.util.ArrayList;
+
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class CoreManager {
 
-    public static AutoMap<IPlugin> mPlugins = new AutoMap<>();
+    public static ArrayList<IPlugin> mPlugins = new ArrayList<>();
 
     /**
      * @param plugin - Dynamically registers the plugin for loading.
      */
     public static void registerPlugin(IPlugin plugin) {
         Logger.INFO("[Plugin] " + "Registered " + plugin.getPluginName() + ".");
-        mPlugins.put(plugin);
+        mPlugins.add(plugin);
     }
 
     /**

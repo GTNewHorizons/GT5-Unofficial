@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -49,7 +50,6 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -193,7 +193,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     private boolean requiresMufflers() {
-        if (!PollutionUtils.isPollutionEnabled()) {
+        if (!GTMod.gregtechproxy.mPollution) {
             return false;
         }
         return getPollutionPerSecond(null) > 0;
@@ -334,8 +334,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             log("Found " + aTurbineAssemblies.size() + ", expected 12.");
             return false;
         }
-        AutoMap<Materials> aTurbineMats = new AutoMap<>();
-        AutoMap<Integer> aTurbineSizes = new AutoMap<>();
+        ArrayList<Materials> aTurbineMats = new ArrayList<>();
+        ArrayList<Integer> aTurbineSizes = new ArrayList<>();
         for (MTEHatchTurbine aHatch : aTurbineAssemblies) {
             aTurbineMats.add(MetaGeneratedTool.getPrimaryMaterial(aHatch.getTurbine()));
             aTurbineSizes.add(getTurbineSize(aHatch.getTurbine()));

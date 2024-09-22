@@ -1,8 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -36,7 +34,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
 
     static {
-        MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+        MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
     }
 
     public RecipeGenDustGeneration(final Material M) {
@@ -116,28 +114,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack[] inputStacks = material.getMaterialComposites();
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 
-        // Macerate blocks back to dusts.
-        final ItemStack materialBlock = material.getBlock(1);
-        final ItemStack materialFrameBox = material.getFrameBox(1);
-
-        if (ItemUtils.checkForInvalidItems(materialBlock)) {
-            RA.stdBuilder()
-                .itemInputs(materialBlock)
-                .itemOutputs(material.getDust(9))
-                .eut(2)
-                .duration(20 * SECONDS)
-                .addTo(maceratorRecipes);
-        }
-
-        if (ItemUtils.checkForInvalidItems(materialFrameBox)) {
-            RA.stdBuilder()
-                .itemInputs(materialFrameBox)
-                .itemOutputs(material.getDust(2))
-                .eut(2)
-                .duration(20 * SECONDS)
-                .addTo(maceratorRecipes);
-        }
-
         if (ItemUtils.checkForInvalidItems(smallDust) && ItemUtils.checkForInvalidItems(tinyDust)) {
             generatePackagerRecipes(material);
         }
@@ -145,7 +121,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         ItemStack ingot = material.getIngot(1);
         if (ItemUtils.checkForInvalidItems(normalDust) && ItemUtils.checkForInvalidItems(ingot)) {
             addFurnaceRecipe(material);
-            addMacerationRecipe(material);
         }
 
         // Is this a composite?
@@ -398,20 +373,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             .eut(4)
             .addTo(packagerRecipes);
         return true;
-    }
-
-    private void addMacerationRecipe(Material aMatInfo) {
-        try {
-            Logger.MATERIALS("Adding Maceration recipe for " + aMatInfo.getLocalizedName() + " Ingot -> Dusts");
-            RA.stdBuilder()
-                .itemInputs(aMatInfo.getIngot(1))
-                .itemOutputs(aMatInfo.getDust(1))
-                .eut(2)
-                .duration(20 * SECONDS)
-                .addTo(maceratorRecipes);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
     }
 
     private void addFurnaceRecipe(Material aMatInfo) {

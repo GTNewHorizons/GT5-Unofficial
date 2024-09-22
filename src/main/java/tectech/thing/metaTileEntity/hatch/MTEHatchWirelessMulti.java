@@ -16,6 +16,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.google.common.math.LongMath;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
@@ -25,9 +27,21 @@ import tectech.util.TTUtility;
 
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirelessEnergyHatchInformation {
 
-    private final BigInteger eu_transferred_per_operation = BigInteger
-        .valueOf(Amperes * V[mTier] * ticks_between_energy_addition);
-    private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
+    private final long precisionMultiplier = LongMath.pow(10, 15);
+    private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
+        .multiply(BigInteger.valueOf(ticks_between_energy_addition));
+
+    private final double overflowDivisor = getOverflowDivisor(eu_transferred_per_operation);
+
+    private final long actualTicksBetweenEnergyAddition = overflowDivisor > 1
+        ? (long) (ticks_between_energy_addition / (overflowDivisor * 2))
+        : ticks_between_energy_addition;
+
+    private final long eu_transferred_per_operation_long = overflowDivisor > 1
+        ? eu_transferred_per_operation.divide(BigInteger.valueOf((long) (overflowDivisor * precisionMultiplier * 2)))
+            .multiply(BigInteger.valueOf(precisionMultiplier))
+            .longValue()
+        : eu_transferred_per_operation.longValue();
 
     private UUID owner_uuid;
 
@@ -47,6 +61,13 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
 
     public MTEHatchWirelessMulti(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
+    }
+
+    private double getOverflowDivisor(BigInteger euTransferredPerOperation) {
+        if (euTransferredPerOperation.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
+            return euTransferredPerOperation.doubleValue() / Long.MAX_VALUE;
+        }
+        return 1d;
     }
 
     private ITexture[] TEXTURE_OVERLAY;
@@ -131,7 +152,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
 
     @Override
     public long maxEUStore() {
-        return totalStorage(V[mTier]) * Amperes / 2;
+        return (long) (totalStorage(V[mTier]) / (2 * overflowDivisor) * Amperes);
     }
 
     @Override
@@ -191,8 +212,9 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
             // network
             // it should make no difference to them. Minimising the number of operations on BigInteger is essential.
 
-            // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
-            if (aTick % ticks_between_energy_addition == 0L) {
+            // Every actualTicksBetweenEnergyAddition add eu_transferred_per_operation to internal EU storage from
+            // network.
+            if (aTick % actualTicksBetweenEnergyAddition == 0L) {
                 tryFetchingEnergy();
             }
         }

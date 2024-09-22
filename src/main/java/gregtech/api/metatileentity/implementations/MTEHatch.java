@@ -198,6 +198,14 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
         return (byte) (mTexturePage & 0x7F);
     }
 
+    public final byte getmTexturePage() {
+        return mTexturePage;
+    }
+
+    public final byte getActualTexture() {
+        return actualTexture;
+    }
+
     @Override
     public boolean doesFillContainers() {
         return false;
