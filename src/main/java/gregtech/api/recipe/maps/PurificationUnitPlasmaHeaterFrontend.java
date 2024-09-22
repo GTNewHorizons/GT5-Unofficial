@@ -49,7 +49,11 @@ public class PurificationUnitPlasmaHeaterFrontend extends PurificationUnitRecipe
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (neiCachedRecipe.mInputs.size() == 1) {
             neiCachedRecipe.mInputs.add(
-                new PositionedStack(GTUtility.getFluidDisplayStack(Materials.Helium.getPlasma(10L), true), 26, 53, false));
+                new PositionedStack(
+                    GTUtility.getFluidDisplayStack(Materials.Helium.getPlasma(10L), true),
+                    26,
+                    53,
+                    false));
             neiCachedRecipe.mInputs.add(
                 new PositionedStack(
                     GTUtility.getFluidDisplayStack(Materials.SuperCoolant.getFluid(100L), true),
