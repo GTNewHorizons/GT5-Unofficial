@@ -1043,7 +1043,10 @@ fog.button.exoticinputs.tooltip=Click to display expected inputs
 fog.button.reciperefresh.tooltip=Click to reset recipe
 fog.button.refreshtimer.tooltip=Reset ready in
 fog.button.seconds=Seconds
-fog.button.thanks.tooltip=Open List of Contributors
+fog.button.thanks.tooltip=List of Contributors
+fog.button.color.tooltip=Cosmetics Menu
+fog.button.updaterenderer.tooltip=Apply Changes
+fog.button.resetcosmetics.tooltip=Reset Values
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1124,6 +1127,16 @@ gt.blockmachines.multimachine.FOG.bucket=BucketBrigade
 gt.blockmachines.multimachine.FOG.playtesting=Playtesting
 gt.blockmachines.multimachine.FOG.misi=Misi
 gt.blockmachines.multimachine.FOG.thanks=A huge thank you to these incredible people for helping to make this a reality! -Cloud
+gt.blockmachines.multimachine.FOG.cosmetics=Star Cosmetics
+gt.blockmachines.multimachine.FOG.color=Color
+gt.blockmachines.multimachine.FOG.misc=Miscellaneous
+gt.blockmachines.multimachine.FOG.red=Red
+gt.blockmachines.multimachine.FOG.green=Green
+gt.blockmachines.multimachine.FOG.blue=Blue
+gt.blockmachines.multimachine.FOG.gamma=Gamma
+gt.blockmachines.multimachine.FOG.spin=Spin
+gt.blockmachines.multimachine.FOG.size=Size
+gt.blockmachines.multimachine.FOG.apply=Apply
 
 gt.blockmachines.multimachine.FOG.hint.0=1 - Classic Hatches or Transcendentally Amplified Magnetic Confinement Casing
 gt.blockmachines.multimachine.FOG.hint.1=2 - Module Controllers or Singularity Reinforced Stellar Shielding Casing

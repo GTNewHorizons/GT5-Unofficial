@@ -84,6 +84,8 @@ public class TecTechUITextures {
         .fullImage(MODID, "gui/overlay_button/battery_off");
     public static final UITexture OVERLAY_BUTTON_FLAG = UITexture.fullImage(MODID, "gui/overlay_button/flag");
     public static final UITexture OVERLAY_BUTTON_HEART = UITexture.fullImage(MODID, "gui/overlay_button/heart");
+    public static final UITexture OVERLAY_BUTTON_RAINBOW_SPIRAL = UITexture
+        .fullImage(MODID, "gui/overlay_button/rainbow_spiral");
     public static final UITexture OVERLAY_CYCLIC_BLUE = UITexture.fullImage(MODID, "gui/overlay_button/cyclic_blue");
     public static final UITexture OVERLAY_EJECTION_LOCKED = UITexture
         .fullImage(MODID, "gui/overlay_button/eject_disabled");
