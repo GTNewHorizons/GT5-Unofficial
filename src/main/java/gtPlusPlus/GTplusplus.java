@@ -218,13 +218,7 @@ public class GTplusplus implements ActionListener {
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
-        CoreManager.serverStart();
         INIT_PHASE.STARTED.setPhaseActive(true);
-    }
-
-    @EventHandler
-    public synchronized void serverStopping(final FMLServerStoppingEvent event) {
-        CoreManager.serverStop();
     }
 
     @Override

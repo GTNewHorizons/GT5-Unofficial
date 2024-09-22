@@ -35,16 +35,6 @@ public class AgrichemCore implements IPlugin {
     }
 
     @Override
-    public boolean serverStart() {
-        return true;
-    }
-
-    @Override
-    public boolean serverStop() {
-        return true;
-    }
-
-    @Override
     public String getPluginName() {
         return "GT++ Agrichemistry Module";
     }

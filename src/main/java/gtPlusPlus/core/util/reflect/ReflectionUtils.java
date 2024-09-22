@@ -3,7 +3,7 @@ package gtPlusPlus.core.util.reflect;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.reflect.ClassPath;
@@ -14,8 +14,8 @@ import gtPlusPlus.api.objects.Logger;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ReflectionUtils {
 
-    public static Map<String, CachedField> mCachedFields = new LinkedHashMap<>();
-    public static Map<Field, Fields.ClassFields.Field> mCachedFieldAccessors = new LinkedHashMap<>();
+    public static Map<String, CachedField> mCachedFields = new HashMap<>();
+    public static Map<Field, Fields.ClassFields.Field> mCachedFieldAccessors = new HashMap<>();
 
     private static class CachedField {
 
@@ -131,31 +131,6 @@ public class ReflectionUtils {
         return loaded > 0;
     }
 
-    public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {
-        Class<?> clazz;
-        if (object instanceof Class) {
-            clazz = (Class<?>) object;
-        } else {
-            clazz = object.getClass();
-        }
-        while (clazz != null) {
-            try {
-                final Field field = getField(clazz, fieldName);
-                if (field != null) {
-                    setFieldValue_Internal(object, field, fieldValue);
-                    return true;
-                }
-            } catch (final NoSuchFieldException e) {
-                Logger.REFLECTION("setField(" + object + ", " + fieldName + ") failed.");
-                clazz = clazz.getSuperclass();
-            } catch (final Exception e) {
-                Logger.REFLECTION("setField(" + object + ", " + fieldName + ") failed.");
-                throw new IllegalStateException(e);
-            }
-        }
-        return false;
-    }
-
     public static boolean setField(final Object object, final Field field, final Object fieldValue) {
         if (field == null) return false;
         Class<?> clazz;
@@ -214,15 +189,6 @@ public class ReflectionUtils {
      */
     private static void setFieldValue_Internal(Object owner, Field field, Object value) throws Exception {
         cacheAccessor(field).setValue(owner, value);
-    }
-
-    public static boolean doesFieldExist(Class<?> clazz, String string) {
-        if (clazz != null) {
-            if (ReflectionUtils.getField(clazz, string) != null) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static <T> T getFieldValue(Field field, Object instance) {

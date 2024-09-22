@@ -14,12 +14,10 @@ public class VanillaFixesCore implements IPlugin {
 
     static final VanillaFixesCore mInstance;
     static final VanillaBedHeightFix mBedFixInstance;
-    static final VanillaBackgroundMusicFix mMusicFixInstance;
 
     static {
         mInstance = new VanillaFixesCore();
         mBedFixInstance = new VanillaBedHeightFix(mInstance);
-        mMusicFixInstance = new VanillaBackgroundMusicFix(mInstance);
         mInstance.log("Preparing " + mInstance.getPluginName() + " for use.");
     }
 
@@ -39,17 +37,6 @@ public class VanillaFixesCore implements IPlugin {
 
     @Override
     public boolean postInit() {
-        return true;
-    }
-
-    @Override
-    public boolean serverStart() {
-        mMusicFixInstance.manage();
-        return true;
-    }
-
-    @Override
-    public boolean serverStop() {
         return true;
     }
 

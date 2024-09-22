@@ -7,13 +7,13 @@ public interface IPlugin {
     /**
      * @return A {@link String} object which returns the {@link IPlugin}'s name.
      */
-    public String getPluginName();
+    String getPluginName();
 
     /**
      * @return A {@link String} object which returns the {@link IPlugin}'s short name. This String should only contain 4
      *         Characters.
      */
-    public String getPluginAbbreviation();
+    String getPluginAbbreviation();
 
     /**
      * @param message - A {@link String} object which holds a message to be logged to console.
@@ -22,20 +22,9 @@ public interface IPlugin {
         Logger.INFO("[" + getPluginAbbreviation() + "] " + message);
     }
 
-    /**
-     * @param message - A {@link String} object which holds a warning/error message to be logged to console.
-     */
-    default void logDebug(String message) {
-        Logger.WARNING("[" + getPluginAbbreviation() + "] " + message);
-    }
+    boolean preInit();
 
-    public boolean preInit();
+    boolean init();
 
-    public boolean init();
-
-    public boolean postInit();
-
-    public boolean serverStart();
-
-    public boolean serverStop();
+    boolean postInit();
 }

@@ -69,27 +69,4 @@ public class CoreManager {
         return false;
     }
 
-    public static void serverStart() {
-        try {
-            for (IPlugin h : mPlugins) {
-                if (h.serverStart()) {
-                    Logger.INFO("[Plugin] Completed Server Start Phase for " + h.getPluginName() + ".");
-                } else {
-                    Logger.INFO("[Plugin] Failed during Server Start Phase for " + h.getPluginName() + ".");
-                }
-            }
-        } catch (Throwable ignored) {}
-    }
-
-    public static void serverStop() {
-        try {
-            for (IPlugin h : mPlugins) {
-                if (h.serverStop()) {
-                    Logger.INFO("[Plugin] Completed Server Stop Phase for " + h.getPluginName() + ".");
-                } else {
-                    Logger.INFO("[Plugin] Failed during Server Stop Phase for " + h.getPluginName() + ".");
-                }
-            }
-        } catch (Throwable ignored) {}
-    }
 }
