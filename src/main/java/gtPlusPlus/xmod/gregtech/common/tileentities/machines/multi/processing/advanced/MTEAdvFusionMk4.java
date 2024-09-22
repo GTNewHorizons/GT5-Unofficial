@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
-import java.lang.reflect.Method;
-
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -13,7 +11,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -25,16 +22,9 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAdvFusionMk4 extends MTEFusionComputer {
-
-    public static final Method mUpdateHatchTexture;
-
-    static {
-        mUpdateHatchTexture = ReflectionUtils.getMethod(MTEHatch.class, "updateTexture", int.class);
-    }
 
     public MTEAdvFusionMk4(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -160,24 +150,20 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
 
     @Override
     public boolean turnCasingActive(final boolean status) {
-        try {
-            if (this.mEnergyHatches != null) {
-                for (final MTEHatchEnergy hatch : this.mEnergyHatches) {
-                    mUpdateHatchTexture.invoke(hatch, (status ? TAE.getIndexFromPage(2, 14) : 53));
-                }
+        if (this.mEnergyHatches != null) {
+            for (final MTEHatchEnergy hatch : this.mEnergyHatches) {
+                hatch.updateTexture((status ? TAE.getIndexFromPage(2, 14) : 53));
             }
-            if (this.mOutputHatches != null) {
-                for (final MTEHatchOutput hatch2 : this.mOutputHatches) {
-                    mUpdateHatchTexture.invoke(hatch2, (status ? TAE.getIndexFromPage(2, 14) : 53));
-                }
+        }
+        if (this.mOutputHatches != null) {
+            for (final MTEHatchOutput hatch : this.mOutputHatches) {
+                hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
             }
-            if (this.mInputHatches != null) {
-                for (final MTEHatchInput hatch3 : this.mInputHatches) {
-                    mUpdateHatchTexture.invoke(hatch3, (status ? TAE.getIndexFromPage(2, 14) : 53));
-                }
+        }
+        if (this.mInputHatches != null) {
+            for (final MTEHatchInput hatch : this.mInputHatches) {
+                hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
             }
-        } catch (Throwable t) {
-            return false;
         }
         return true;
     }

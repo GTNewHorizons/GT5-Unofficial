@@ -19,32 +19,24 @@ import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.W;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -63,7 +55,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
 
@@ -94,22 +85,6 @@ public class BWUtil {
     public static Object get2DCoordFrom1DArray(int indexX, int indexY, int sizeY, Object[] array) {
         int index = indexX * sizeY + indexY;
         return array[index];
-    }
-
-    public static GTRecipe copyAndSetTierToNewRecipe(GTRecipe recipe, byte tier) {
-        byte oldTier = GTUtility.getTier(recipe.mEUt);
-        int newTime = recipe.mDuration;
-        int newVoltage = recipe.mEUt;
-        if (tier < oldTier) {
-            newTime <<= oldTier - tier;
-            newVoltage >>= 2 * (oldTier - tier);
-        } else {
-            newTime >>= tier - oldTier;
-            newVoltage <<= 2 * (tier - oldTier);
-        }
-        recipe.mEUt = newVoltage;
-        recipe.mDuration = newTime;
-        return recipe;
     }
 
     public static String subscriptNumbers(String b) {
@@ -176,46 +151,6 @@ public class BWUtil {
         return new String(nu);
     }
 
-    public static String superscriptNumber(Number b) {
-        char[] chars = Long.toString(b.longValue())
-            .toCharArray();
-        char[] nu = new char[chars.length];
-        for (int i = 0; i < chars.length; i++) {
-            nu[i] = switch (chars[i]) {
-                case '0' -> '\u2070';
-                case '1' -> '\u2071';
-                case '2' -> '\u00B2';
-                case '3' -> '\u00B3';
-                case '4' -> '\u2074';
-                case '5' -> '\u2075';
-                case '6' -> '\u2076';
-                case '7' -> '\u2077';
-                case '8' -> '\u2078';
-                case '9' -> '\u2079';
-                default -> chars[i];
-            };
-        }
-        return new String(nu);
-    }
-
-    public static byte specialToByte(int aSpecialValue) {
-        byte special = 0;
-        switch (aSpecialValue) {
-            case LOWGRAVITY:
-                special = 1;
-                break;
-            case CLEANROOM:
-                special = 2;
-                break;
-            case LOWGRAVITY | CLEANROOM:
-                special = 3;
-                break;
-            default:
-                break;
-        }
-        return special;
-    }
-
     public static int calculateSv(Materials materials) {
         for (BioVatLogicAdder.MaterialSvPair pair : BioVatLogicAdder.RadioHatch.getMaSv()) {
             if (pair.getMaterials()
@@ -237,57 +172,6 @@ public class BWUtil {
             && GTOreDictUnificator.getAssociation(itemStack).mPrefix != null
             && GTOreDictUnificator.getAssociation(itemStack).mMaterial != null
             && GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial != null;
-    }
-
-    public static int abstractHashGTRecipe(GTRecipe recipe) {
-        int hash = 31;
-        hash += recipe.mDuration / 20 * 31;
-        hash += GTUtility.getTier(recipe.mEUt) * 31;
-        hash += BWUtil.specialToByte(recipe.mSpecialValue) * 31;
-        hash += recipe.mInputs.length * 31;
-        for (ItemStack mInput : recipe.mInputs) {
-            if (mInput != null) {
-                hash += mInput.stackSize * 31;
-                hash += Item.getIdFromItem(mInput.getItem()) * 31;
-            }
-        }
-        hash += recipe.mOutputs.length * 31;
-        for (ItemStack mOutput : recipe.mOutputs) {
-            if (mOutput != null) {
-                hash += mOutput.stackSize * 31;
-                hash += Item.getIdFromItem(mOutput.getItem()) * 31;
-            }
-        }
-        hash += recipe.mFluidInputs.length * 31;
-        for (FluidStack mInput : recipe.mFluidInputs) {
-            if (mInput != null) {
-                hash += mInput.amount * 31;
-                hash += mInput.getFluidID() * 31;
-            }
-        }
-        hash += recipe.mFluidOutputs.length * 31;
-        for (FluidStack mOutput : recipe.mFluidOutputs) {
-            if (mOutput != null) {
-                hash += mOutput.amount * 31;
-                hash += mOutput.getFluidID() * 31;
-            }
-        }
-        return hash;
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    public static <T> T[] copyAndRemoveNulls(T[] input, Class<T> clazz) {
-        List<T> ret = Arrays.stream(input)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
-
-        if (ret.size() <= 0) return (T[]) Array.newInstance(clazz, 0);
-
-        T[] retArr = (T[]) Array.newInstance(clazz, ret.size());
-
-        for (int i = 0; i < ret.size(); i++) retArr[i] = ret.get(i);
-
-        return retArr;
     }
 
     @Deprecated
@@ -490,20 +374,6 @@ public class BWUtil {
                 return this.placementDelegate.survivalPlaceBlock(t, world, x, y, z, trigger, env);
             }
         };
-    }
-
-    private static Field sBufferedRecipeList;
-
-    @SuppressWarnings("unchecked")
-    public static List<IRecipe> getGTBufferedRecipeList()
-        throws SecurityException, IllegalArgumentException, IllegalAccessException {
-        if (sBufferedRecipeList == null) {
-            sBufferedRecipeList = FieldUtils.getDeclaredField(GTModHandler.class, "sBufferRecipeList", true);
-        }
-        if (sBufferedRecipeList == null) {
-            sBufferedRecipeList = FieldUtils.getField(GTModHandler.class, "sBufferRecipeList", true);
-        }
-        return (List<IRecipe>) sBufferedRecipeList.get(null);
     }
 
     public static ShapedOreRecipe createGTCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {

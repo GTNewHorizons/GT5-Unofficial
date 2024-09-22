@@ -18,6 +18,7 @@ import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -160,7 +161,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
     @Override
     public int getPollution() {
-        return (int) (GTPPCore.ConfigSwitches.basePollutionPerSecondGeothermalGenerator
-            * GTPPCore.ConfigSwitches.pollutionReleasedByTierGeothermalGenerator[mTier]);
+        return (int) (Configuration.pollution.basePollutionPerSecondGeothermalGenerator
+            * Configuration.pollution.pollutionReleasedByTierGeothermalGenerator[mTier]);
     }
 }

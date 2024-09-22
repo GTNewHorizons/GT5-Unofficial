@@ -140,8 +140,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
 
         public static int getIndexFromGlassTier(int glassTier) {
-            for (int index = 0; index < values().length; index++) {
-                if (values()[index].getMinimalGlassTier() == glassTier) {
+            for (int index = 0; index < VALUES.length; index++) {
+                if (VALUES[index].getMinimalGlassTier() == glassTier) {
                     return index;
                 }
             }

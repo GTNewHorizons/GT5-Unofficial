@@ -35,7 +35,7 @@ public class InternalEntityRegistry {
             mEntityID++,
             GTplusplus.instance,
             64,
-            20,
+            3,
             true);
         ItemCustomSpawnEgg.registerEntityForSpawnEgg(
             0,
@@ -44,7 +44,7 @@ public class InternalEntityRegistry {
             Utils.rgbtoHexValue(20, 20, 20));
 
         EntityRegistry
-            .registerModEntity(EntitySickBlaze.class, "sickBlaze", mEntityID++, GTplusplus.instance, 64, 20, true);
+            .registerModEntity(EntitySickBlaze.class, "sickBlaze", mEntityID++, GTplusplus.instance, 64, 3, true);
         ItemCustomSpawnEgg.registerEntityForSpawnEgg(
             1,
             "sickBlaze",

@@ -31,6 +31,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -198,7 +199,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiRefinery;
+        return Configuration.pollution.pollutionPerSecondMultiRefinery;
     }
 
     @Override

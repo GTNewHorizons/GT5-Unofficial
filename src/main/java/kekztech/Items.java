@@ -1,7 +1,5 @@
 package kekztech;
 
-import java.util.Arrays;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -45,9 +43,11 @@ public enum Items {
     }
 
     public static void registerOreDictNames() {
-        Arrays.stream(Items.values())
-            .filter(e -> e.getOreDictName() != null)
-            .forEach(Items::registerOreDict);
+        for (Items e : Items.values()) {
+            if (e.getOreDictName() != null) {
+                e.registerOreDict();
+            }
+        }
     }
 
     public ItemStack getNonOreDictedItemStack(int amount) {

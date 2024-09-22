@@ -107,7 +107,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine> implements ISurvivalConstructable {
 
     private static final ItemStack NOT_CHECKED = new ItemStack(Blocks.dirt);
-    public static final double LASER_OVERCLOCK_PENALTY_FACTOR = ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor();
+    public static final double LASER_OVERCLOCK_PENALTY_FACTOR = ConfigurationHandler.laserOCPenaltyFactor;
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";

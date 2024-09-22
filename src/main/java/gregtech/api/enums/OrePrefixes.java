@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableList;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
@@ -654,10 +655,18 @@ public enum OrePrefixes {
         ingot.addFamiliarPrefix(nugget);
         nugget.addFamiliarPrefix(ingot);
 
-        for (OrePrefixes tPrefix1 : values()) if (tPrefix1.name()
-            .startsWith("ore"))
-            for (OrePrefixes tPrefix2 : values()) if (tPrefix2.name()
-                .startsWith("ore")) tPrefix1.addFamiliarPrefix(tPrefix2);
+        final OrePrefixes[] THIS_VALUES = values();
+        for (OrePrefixes tPrefix1 : THIS_VALUES) {
+            if (tPrefix1.name()
+                .startsWith("ore")) {
+                for (OrePrefixes tPrefix2 : THIS_VALUES) {
+                    if (tPrefix2.name()
+                        .startsWith("ore")) {
+                        tPrefix1.addFamiliarPrefix(tPrefix2);
+                    }
+                }
+            }
+        }
 
         // These are only the important ones.
         gem.mNotGeneratedItems.add(Materials.Coal);
@@ -1171,6 +1180,8 @@ public enum OrePrefixes {
         } else if (name().startsWith("battery")) {
             new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
         }
+
+        GregTechAPI.sGTCompleteLoad.add(this::onLoadComplete);
     }
 
     public static boolean isInstanceOf(String aName, OrePrefixes aPrefix) {
@@ -1289,9 +1300,17 @@ public enum OrePrefixes {
         return mOreProcessing.add(aRegistrator);
     }
 
+    // Hack to prevent duplicate registry of oredicted materials
+    HashSet<Materials> used = new HashSet<>();
+
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
         if (aMaterial == null) {
+            return;
+        }
+
+        if (aMaterial != Materials._NULL && !used.add(aMaterial)) {
+            GTLog.out.println("Duplicate material registry attempted by " + aModName + " for " + aOreDictName);
             return;
         }
 
@@ -1315,6 +1334,10 @@ public enum OrePrefixes {
                     + GTUtility.getClassName(tRegistrator));
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }
+    }
+
+    public void onLoadComplete() {
+        used = null;
     }
 
     public Object get(Object aMaterial) {

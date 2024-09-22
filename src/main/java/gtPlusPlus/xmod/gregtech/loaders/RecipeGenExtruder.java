@@ -21,7 +21,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
 
     static {
-        MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+        MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
     }
 
     public RecipeGenExtruder(final Material M) {

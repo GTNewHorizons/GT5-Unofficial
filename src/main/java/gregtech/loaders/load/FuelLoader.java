@@ -2,7 +2,6 @@ package gregtech.loaders.load;
 
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.extremeNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.hugeNaquadahReactorFuels;
 import static gregtech.api.recipe.RecipeMaps.largeNaquadahReactorFuels;
@@ -20,6 +19,7 @@ import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.util.GTLog;
@@ -85,43 +85,47 @@ public class FuelLoader implements Runnable {
             .addTo(ultraHugeNaquadahReactorFuels);
 
         // BloodMagic
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
-            .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "blankSlate", 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 400)
-            .addTo(magicFuels);
+        if (BloodMagic.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
+                .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "blankSlate", 1L))
+                .duration(0)
+                .eut(0)
+                .metadata(FUEL_VALUE, 400)
+                .addTo(magicFuels);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
-            .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 1000)
-            .addTo(magicFuels);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
+                .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L))
+                .duration(0)
+                .eut(0)
+                .metadata(FUEL_VALUE, 1000)
+                .addTo(magicFuels);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
-            .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 8000)
-            .addTo(magicFuels);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
+                .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L))
+                .duration(0)
+                .eut(0)
+                .metadata(FUEL_VALUE, 8000)
+                .addTo(magicFuels);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "bloodMagicBaseItems", 1L, 27))
-            .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 20000)
-            .addTo(magicFuels);
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(BloodMagic.ID, "bloodMagicBaseItems", 1L, 27))
+                .itemOutputs(GTModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L))
+                .duration(0)
+                .eut(0)
+                .metadata(FUEL_VALUE, 20000)
+                .addTo(magicFuels);
+        }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 4))
-            .metadata(FUEL_VALUE, 4)
-            .metadata(FUEL_TYPE, 5)
-            .addTo(GTRecipeConstants.Fuel);
+        if (Mods.Thaumcraft.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Mods.Thaumcraft.ID, "ItemResource", 1L, 4))
+                .metadata(FUEL_VALUE, 4)
+                .metadata(FUEL_TYPE, 5)
+                .addTo(GTRecipeConstants.Fuel);
+        }
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.experience_bottle, 1))
             .metadata(FUEL_VALUE, 10)
@@ -137,10 +141,12 @@ public class FuelLoader implements Runnable {
             .metadata(FUEL_VALUE, Materials.NetherStar.mFuelPower * 2)
             .metadata(FUEL_TYPE, Materials.NetherStar.mFuelType)
             .addTo(GTRecipeConstants.Fuel);
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(EnderIO.ID, "bucketRocket_fuel", 1))
-            .metadata(FUEL_VALUE, 250)
-            .metadata(FUEL_TYPE, 1)
-            .addTo(GTRecipeConstants.Fuel);
+        if (Mods.EnderIO.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(EnderIO.ID, "bucketRocket_fuel", 1))
+                .metadata(FUEL_VALUE, 250)
+                .metadata(FUEL_TYPE, 1)
+                .addTo(GTRecipeConstants.Fuel);
+        }
     }
 }

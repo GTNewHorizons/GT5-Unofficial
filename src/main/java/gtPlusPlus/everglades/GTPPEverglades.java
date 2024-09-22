@@ -4,11 +4,9 @@ import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.config.Configuration;
 
 import bwcrossmod.galacticgreg.MTEVoidMinerBase;
 import cpw.mods.fml.common.Mod;
@@ -20,6 +18,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.lib.GTPPCore.Everglades;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -30,9 +29,6 @@ import gtPlusPlus.everglades.dimension.DimensionEverglades;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Base;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Ore_Layer;
 import gtPlusPlus.everglades.gen.gt.WorldGen_Ores;
-import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.xmod.gregtech.HandlerGT;
-import gtPlusPlus.xmod.gregtech.api.util.GTPPConfig;
 
 @Mod(
     modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,
@@ -64,11 +60,6 @@ public class GTPPEverglades implements ActionListener {
         getEvergladesBiome().instance = instance;
         Everglades_Dimension.instance = instance;
         getEvergladesBiome().preInit(event);
-
-        // Load/Set Custom Ore Gen
-        HandlerGT.sCustomWorldgenFile = new GTPPConfig(
-            new Configuration(
-                new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
     }
 
     @EventHandler
@@ -132,11 +123,6 @@ public class GTPPEverglades implements ActionListener {
     }
 
     protected synchronized void setVars(FMLPreInitializationEvent event) {
-        // Init WorldGen config.
-        HandlerGT.sCustomWorldgenFile = new GTPPConfig(
-            new Configuration(
-                new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
-
         if (DimensionManager.isDimensionRegistered(DimensionEverglades.DIMID)) {
             DimensionEverglades.DIMID = DimensionManager.getNextFreeDimId();
         }
@@ -148,7 +134,7 @@ public class GTPPEverglades implements ActionListener {
         WorldGen_GT_Base.oreveinPercentage = 64;
         WorldGen_GT_Base.oreveinAttempts = 16;
         WorldGen_GT_Base.oreveinMaxPlacementAttempts = 4;
-        if (PreloaderCore.DEBUG_MODE || GTPPCore.DEVENV) {
+        if (ASMConfiguration.debug.debugMode || GTPPCore.DEVENV) {
             WorldGen_GT_Base.debugWorldGen = true;
         }
         DarkWorldContentLoader.run();
@@ -164,7 +150,8 @@ public class GTPPEverglades implements ActionListener {
     }
 
     public void addVMDrop(Block block, int meta, float weight) {
-        MTEVoidMinerBase.addBlockToDimensionList(GTPPCore.EVERGLADES_ID, block, meta, weight);
+        MTEVoidMinerBase
+            .addBlockToDimensionList(gtPlusPlus.core.config.Configuration.worldgen.EVERGLADES_ID, block, meta, weight);
     }
 
     @EventHandler

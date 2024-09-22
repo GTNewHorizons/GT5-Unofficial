@@ -12,14 +12,12 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtPlusPlus.core.util.data.ArrayUtils.removeNulls;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -45,14 +43,14 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
-import gtPlusPlus.api.objects.data.AutoMap;
+import gregtech.api.util.ReflectionUtil;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
@@ -60,15 +58,22 @@ import ic2.core.init.InternalName;
 public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFishingPond>
     implements ISurvivalConstructable {
 
-    private boolean isUsingControllerCircuit = false;
-    private static final Item circuit = GTUtility.getIntegratedCircuit(0)
+    public static final int FISH_MODE = 14;
+    public static final int JUNK_MODE = 15;
+    public static final int TREASURE_MODE = 16;
+    private static final Item CONTROL_CIRCUIT = GTUtility.getIntegratedCircuit(0)
         .getItem();
+    private static IStructureDefinition<MTEIndustrialFishingPond> STRUCTURE_DEFINITION;
+
+    private boolean isUsingControllerCircuit = false;
     private int mCasing;
-    private static IStructureDefinition<MTEIndustrialFishingPond> STRUCTURE_DEFINITION = null;
+    private int mMode = FISH_MODE;
+    private int mMax = 8;
+
     private static final Class<?> cofhWater;
 
     static {
-        cofhWater = ReflectionUtils.getClass("cofh.asmhooks.block.BlockWater");
+        cofhWater = ReflectionUtil.getClass("cofh.asmhooks.block.BlockWater");
     }
 
     public MTEIndustrialFishingPond(final int aID, final String aName, final String aNameRegional) {
@@ -96,9 +101,9 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             .addInfo("Controller Block for the Fishing Pond")
             .addInfo("Can process (Tier + 1) * 2 recipes")
             .addInfo("Put a numbered circuit into the input bus.")
-            .addInfo("Circuit 14 for Fish")
-            .addInfo("Circuit 15 for Junk")
-            .addInfo("Circuit 16 for Treasure")
+            .addInfo("Circuit " + FISH_MODE + " for Fish")
+            .addInfo("Circuit " + JUNK_MODE + " for Junk")
+            .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
             .addInfo("Need to be filled with water.")
             .addInfo("Will automatically fill water from input hatch.")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -193,7 +198,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     public @NotNull CheckRecipeResult checkProcessing() {
         ItemStack controllerStack = getControllerSlot();
         if (controllerStack != null) {
-            if (controllerStack.getItem() == circuit) {
+            if (controllerStack.getItem() == CONTROL_CIRCUIT) {
                 this.isUsingControllerCircuit = true;
                 this.mMode = controllerStack.getItemDamage();
             } else {
@@ -201,9 +206,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             }
         } else {
             this.isUsingControllerCircuit = false;
-        }
-        if (!hasGenerateRecipes) {
-            generateRecipes();
         }
         if (!checkForWater()) {
             return SimpleCheckRecipeResult.ofFailure("no_water");
@@ -217,9 +219,9 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
         long tEnergy = getMaxInputEnergy();
 
-        getCircuit(tItemInputs);
+        setModeFromInputStacks(tItemInputs);
 
-        ItemStack[] mFishOutput = generateLoot(this.mMode);
+        ItemStack[] mFishOutput = generateLoot();
         mFishOutput = removeNulls(mFishOutput);
         GTRecipe g = new GTRecipe(
             true,
@@ -277,48 +279,31 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialFishingPond;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialFishingPond;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
-    }
-
-    public Block getCasingBlock() {
+    private Block getCasingBlock() {
         return ModBlocks.blockCasings3Misc;
     }
 
-    public byte getCasingMeta() {
+    private byte getCasingMeta() {
         return 0;
     }
 
-    public int getCasingTextureIndex() {
+    private int getCasingTextureIndex() {
         return TAE.GTPP_INDEX(32);
     }
 
-    public boolean checkForWater() {
+    private boolean checkForWater() {
 
         // Get Facing direction
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-        int mDirectionX = aBaseMetaTileEntity.getBackFacing().offsetX;
-        int mCurrentDirectionX;
-        int mCurrentDirectionZ;
-        int mOffsetX_Lower = 0;
-        int mOffsetX_Upper = 0;
-        int mOffsetZ_Lower = 0;
-        int mOffsetZ_Upper = 0;
-
-        mCurrentDirectionX = 4;
-        mCurrentDirectionZ = 4;
-
-        mOffsetX_Lower = -4;
-        mOffsetX_Upper = 4;
-        mOffsetZ_Lower = -4;
-        mOffsetZ_Upper = 4;
-
-        // if (aBaseMetaTileEntity.fac)
-
+        final int mCurrentDirectionX = 4;
+        final int mCurrentDirectionZ = 4;
+        final int mOffsetX_Lower = -4;
+        final int mOffsetX_Upper = 4;
+        final int mOffsetZ_Lower = -4;
+        final int mOffsetZ_Upper = 4;
         final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * mCurrentDirectionX;
         final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * mCurrentDirectionZ;
 
@@ -335,13 +320,12 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
                                     if (stored.amount >= 1000) {
                                         // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
                                         stored.amount -= 1000;
-                                        Block fluidUsed = Blocks.water;
                                         aBaseMetaTileEntity.getWorld()
                                             .setBlock(
                                                 aBaseMetaTileEntity.getXCoord() + xDir + i,
                                                 aBaseMetaTileEntity.getYCoord() + h,
                                                 aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                                fluidUsed);
+                                                Blocks.water);
                                     }
                                 }
                             }
@@ -364,125 +348,57 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
     }
 
-    private static AutoMap<AutoMap<WeightedRandomFishable>> categories = new AutoMap<>();
-    private static AutoMap<WeightedRandomFishable> categoryFish = new AutoMap<>();
-    private static AutoMap<WeightedRandomFishable> categoryJunk = new AutoMap<>();
-    private static AutoMap<WeightedRandomFishable> categoryLoot = new AutoMap<>();
-    private static boolean hasGenerateRecipes = false;
-    private int mMode = 14;
-    private int mMax = 8;
-
-    private void generateRecipes() {
-        if (hasGenerateRecipes) return;
-
-        categories.put(categoryFish);
-        categories.put(categoryJunk);
-        categories.put(categoryLoot);
-        for (WeightedRandomFishable h : FishPondFakeRecipe.fish) {
-            categoryFish.put(h);
+    private void setModeFromInputStacks(ItemStack[] stacks) {
+        if (this.isUsingControllerCircuit) return;
+        for (ItemStack stack : stacks) {
+            if (stack.getItem() == CONTROL_CIRCUIT) {
+                if (stack.getItemDamage() == FISH_MODE) {
+                    mMode = FISH_MODE;
+                    mMax = 8 + (this.getMaxParallelRecipes() - 2);
+                    return;
+                } else if (stack.getItemDamage() == JUNK_MODE) {
+                    mMode = JUNK_MODE;
+                    mMax = 4;
+                    return;
+                } else if (stack.getItemDamage() == TREASURE_MODE) {
+                    mMode = TREASURE_MODE;
+                    mMax = 4;
+                    return;
+                } else {
+                    mMode = 0;
+                    mMax = 0;
+                    return;
+                }
+            } else {
+                mMode = 0;
+                mMax = 0;
+                break;
+            }
         }
-        for (WeightedRandomFishable h : FishPondFakeRecipe.junk) {
-            categoryJunk.put(h);
-        }
-        for (WeightedRandomFishable h : FishPondFakeRecipe.treasure) {
-            categoryLoot.put(h);
-        }
-        hasGenerateRecipes = true;
     }
 
-    private int getCircuit(ItemStack[] t) {
-        if (!this.isUsingControllerCircuit) {
-            for (ItemStack j : t) {
-                if (j.getItem() == GTUtility.getIntegratedCircuit(0)
-                    .getItem()) {
-                    // Fish
-                    if (j.getItemDamage() == 14) {
-                        mMax = 8 + (this.getMaxParallelRecipes() - 2);
-                        this.mMode = 14;
-                        break;
-                    }
-                    // Junk
-                    else if (j.getItemDamage() == 15) {
-                        this.mMode = 15;
-                        mMax = 4;
-                        break;
-                    }
-                    // Loot
-                    else if (j.getItemDamage() == 16) {
-                        this.mMode = 16;
-                        mMax = 4;
-                        break;
-                    } else {
-                        this.mMode = 0;
-                        mMax = 0;
-                        break;
-                    }
-                } else {
-                    this.mMode = 0;
-                    mMax = 0;
+    private ItemStack[] generateLoot() {
+        if (this.mMode == FISH_MODE) {
+            return getLootFromList(FishPondFakeRecipe.fish, (65 - getMaxParallelRecipes()));
+        } else if (this.mMode == JUNK_MODE) {
+            return getLootFromList(FishPondFakeRecipe.junk, 200);
+        } else if (this.mMode == TREASURE_MODE) {
+            return getLootFromList(FishPondFakeRecipe.treasure, 100);
+        } else {
+            return null;
+        }
+    }
+
+    private ItemStack[] getLootFromList(ArrayList<ItemStack> list, int max) {
+        ItemStack[] out = new ItemStack[this.mMax];
+        for (int i = 0; i < this.mMax; i++) {
+            for (ItemStack stack : list) {
+                if (MathUtils.randInt(0, max) <= 2) {
+                    out[i] = ItemUtils.getSimpleStack(stack, 1);
                     break;
                 }
             }
         }
-        return this.mMode;
-    }
-
-    // reflection map
-    private static Map<WeightedRandomFishable, ItemStack> reflectiveFishMap = new HashMap<>();
-
-    private ItemStack reflectiveFish(WeightedRandomFishable y) {
-        if (reflectiveFishMap.containsKey(y)) {
-            return reflectiveFishMap.get(y);
-        }
-        ItemStack t;
-        try {
-            t = (ItemStack) ReflectionUtils.getField(WeightedRandomFishable.class, "field_150711_b")
-                .get(y);
-            ItemStack k = ItemUtils.getSimpleStack(t, 1);
-            reflectiveFishMap.put(y, k);
-            return t;
-        } catch (IllegalArgumentException | IllegalAccessException e) {}
-        return null;
-    }
-
-    private ItemStack[] generateLoot(int mode) {
-        ItemStack[] mFishOutput = new ItemStack[this.mMax];
-        if (this.mMode == 14) {
-            for (int k = 0; k < this.mMax; k++) {
-                if (mFishOutput[k] == null) for (WeightedRandomFishable g : categoryFish.values()) {
-                    if (MathUtils.randInt(0, (65 - getMaxParallelRecipes())) <= 2) {
-                        ItemStack t = reflectiveFish(g);
-                        if (t != null) {
-                            mFishOutput[k] = ItemUtils.getSimpleStack(t, 1);
-                        }
-                    }
-                }
-            }
-        } else if (this.mMode == 15) {
-            for (int k = 0; k < this.mMax; k++) {
-                if (mFishOutput[k] == null) for (WeightedRandomFishable g : categoryJunk.values()) {
-                    if (MathUtils.randInt(0, 100) <= 1) {
-                        ItemStack t = reflectiveFish(g);
-                        if (t != null) {
-                            mFishOutput[k] = ItemUtils.getSimpleStack(t, 1);
-                        }
-                    }
-                }
-            }
-        } else if (this.mMode == 16) {
-            for (int k = 0; k < this.mMax; k++) {
-                if (mFishOutput[k] == null) for (WeightedRandomFishable g : categoryLoot.values()) {
-                    if (MathUtils.randInt(0, 1000) <= 2) {
-                        ItemStack t = reflectiveFish(g);
-                        if (t != null) {
-                            mFishOutput[k] = ItemUtils.getSimpleStack(t, 1);
-                        }
-                    }
-                }
-            }
-        } else {
-            mFishOutput = null;
-        }
-        return mFishOutput;
+        return out;
     }
 }

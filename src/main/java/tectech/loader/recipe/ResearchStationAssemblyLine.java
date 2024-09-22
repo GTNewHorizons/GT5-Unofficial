@@ -2421,7 +2421,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 16_384, // comp/s
                 (int) TierEU.RECIPE_MAX, // eu/t
                 32, // amperage
-                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(64),
+                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
                     // Cosmic neutronium block.
                     getModItem(Avaritia.ID, "Resource_Block", 64, 0),
                     GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
@@ -2892,7 +2892,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 16_384, // comp/s
                 (int) TierEU.RECIPE_MAX, // eu/t
                 32, // amperage
-                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(64),
+                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
                     // Cosmic neutronium block.
                     getModItem(Avaritia.ID, "Resource_Block", 64, 0),
                     GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
@@ -3525,10 +3525,8 @@ public class ResearchStationAssemblyLine implements Runnable {
         for (int i = 0; i < wirelessLasers.length; i++) {
 
             TTRecipeAdder.addResearchableAssemblylineRecipe(
-                i != 8 ? laserTargets_UXV[i] : wirelessLasers[i - 1], // If current laser registered is UXV 4MA switch
-                                                                      // research item to avoid duplicate qc result from
-                                                                      // normal UXV 4MA laser, see this:
-                                                                      // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/17188
+                i != 7 ? laserTargets_UXV[i] : CustomItemList.eM_energyWirelessTunnel7_UXV.get(1),
+                // If current laser registered is UXV 4MA, switch research item to avoid research conflict
                 totalComputation * 64,
                 compPerSecond * 64,
                 researchEuPerTick * 4,
