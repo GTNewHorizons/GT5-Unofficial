@@ -4,8 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
@@ -25,7 +23,6 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -76,7 +73,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
         + " after:TGregworks;"
         + " after:StevesCarts;"
         + " required-after:gtnhlib@[0.0.10,);")
-public class GTplusplus implements ActionListener {
+public class GTplusplus {
 
     public enum INIT_PHASE {
 
@@ -220,9 +217,6 @@ public class GTplusplus implements ActionListener {
         }
         INIT_PHASE.STARTED.setPhaseActive(true);
     }
-
-    @Override
-    public void actionPerformed(final ActionEvent arg0) {}
 
     /**
      * This {@link EventHandler} is called after the {@link FMLPostInitializationEvent} stages of all loaded mods
