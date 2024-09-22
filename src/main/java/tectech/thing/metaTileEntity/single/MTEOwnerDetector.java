@@ -121,8 +121,8 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == CommonValues.RECIPE_AT) {
-            boolean detected = TecTech.proxy.isOnlineUUID(uuid) || (uuid != null && !uuid.isEmpty()
-                && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
+            boolean detected = TecTech.proxy.isOnlineUUID(uuid)
+                || (uuid != null && !uuid.isEmpty() && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
             aBaseMetaTileEntity.setActive(detected);
             aBaseMetaTileEntity.setGenericRedstoneOutput(detected);
             byte value = (byte) (detected ? 15 : 0);
