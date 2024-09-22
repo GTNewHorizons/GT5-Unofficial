@@ -6,7 +6,6 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
-import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -14,8 +13,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtnhlanth.common.register.BotWerkstoffMaterialPool.*;
-
-import java.util.HashSet;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,7 +23,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import ic2.core.Ic2Items;
@@ -231,32 +227,5 @@ public class BotRecipes {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(crackingRecipes);
-    }
-
-    public static void removeRecipes() {
-        BotRecipes.removeTungstenElectro();
-    }
-
-    public static void removeTungstenElectro() {
-        HashSet<GTRecipe> toDel = new HashSet<>();
-        ItemStack[] toRemove = { Materials.Scheelite.getDust(1), Materials.Tungstate.getDust(1),
-            WerkstoffLoader.Ferberite.get(dust, 1), WerkstoffLoader.Huebnerit.get(dust, 1) };
-        for (GTRecipe tRecipe : electrolyzerRecipes.getAllRecipes()) {
-            if (tRecipe.mFakeRecipe) continue;
-            for (int i = 0; i < tRecipe.mInputs.length; i++) {
-                ItemStack tItem = tRecipe.mInputs[i];
-                if (item == null || !GTUtility.isStackValid(tItem)) continue;
-                for (ItemStack tStack : toRemove) {
-                    if (GTUtility.areStacksEqual(tItem, tStack)) {
-                        toDel.add(tRecipe);
-                        continue;
-                    }
-                }
-            }
-        }
-        electrolyzerRecipes.getBackend()
-            .removeRecipes(toDel);
-        electrolyzerRecipes.getBackend()
-            .reInit();
     }
 }

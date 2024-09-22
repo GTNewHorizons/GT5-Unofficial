@@ -34,6 +34,10 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         GTModHandler.removeFurnaceSmelting(aStack);
         if (!aMaterial.contains(SubTag.NO_SMELTING)) {
             if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {

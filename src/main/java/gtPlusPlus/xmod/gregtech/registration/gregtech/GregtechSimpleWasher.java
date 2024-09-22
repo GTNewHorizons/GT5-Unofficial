@@ -23,6 +23,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SubTag;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
 import gregtech.api.util.GTOreDictUnificator;
@@ -133,6 +134,9 @@ public class GregtechSimpleWasher {
         ItemStack dustDirty;
         ItemStack dustPure;
         for (Materials v : Materials.values()) {
+            if (v.contains(SubTag.NO_ORE_PROCESSING)) {
+                continue;
+            }
             if (v == Materials.Platinum || v == Materials.Osmium
                 || v == Materials.Iridium
                 || v == Materials.Palladium) {
@@ -165,6 +169,9 @@ public class GregtechSimpleWasher {
         ItemStack crushedClean;
         ItemStack crushedDirty;
         for (Materials v : Materials.values()) {
+            if (v.contains(SubTag.NO_ORE_PROCESSING)) {
+                continue;
+            }
             crushedClean = GTOreDictUnificator.get(OrePrefixes.crushedPurified, v, 1L);
             crushedDirty = GTOreDictUnificator.get(OrePrefixes.crushed, v, 1L);
             addSimpleWashRecipe(crushedDirty, crushedClean);
