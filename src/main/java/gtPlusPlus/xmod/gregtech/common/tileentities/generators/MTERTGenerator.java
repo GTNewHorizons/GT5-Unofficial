@@ -23,8 +23,8 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import tectech.util.TTUtility;
 
 public class MTERTGenerator extends MTEBasicGenerator {
 
@@ -82,18 +82,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
         this.mDaysRemaining = aNBT.getInteger("mDaysRemaining");
         this.mDayTick = aNBT.getInteger("mDayTick");
         this.mNewTier = aNBT.getByte("mNewTier");
-
-        try {
-            ReflectionUtils.setByte(this, "mTier", this.mNewTier);
-        } catch (Exception e) {
-            if (this.getBaseMetaTileEntity() != null) {
-                IGregTechTileEntity thisTile = this.getBaseMetaTileEntity();
-                if (thisTile.isAllowedToWork() || thisTile.isActive()) {
-                    thisTile.setActive(false);
-                }
-            }
-        }
-
+        TTUtility.setTier(this.mNewTier, this);
         final NBTTagList list = aNBT.getTagList("mRecipeItem", 10);
         final NBTTagCompound data = list.getCompoundTagAt(0);
         ItemStack lastUsedFuel = ItemStack.loadItemStackFromNBT(data);
@@ -325,7 +314,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
                 } else {
                     mTier2 = 0;
                 }
-                ReflectionUtils.setByte(this, "mTier", mTier2);
+                TTUtility.setTier(mTier2, this);
                 this.mNewTier = mTier2;
             } catch (Exception e) {
                 Logger.WARNING("Failed setting mTier.");

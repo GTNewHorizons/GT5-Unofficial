@@ -182,11 +182,6 @@ public class ReflectionUtils {
         return false;
     }
 
-    public static void setByte(Object clazz, String fieldName, byte newValue) {
-        Field nameField = getField(clazz.getClass(), fieldName);
-        cacheAccessor(nameField).setValue(null, newValue);
-    }
-
     /*
      * Below Code block is used for determining generic types associated with type<E>
      */
