@@ -17,6 +17,7 @@ import java.util.function.ToIntFunction;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -654,6 +655,11 @@ public class GTStructureUtility {
     public static Predicate<ItemStack> filterByMTETier(int aMinTier, int aMaxTier) {
         return is -> {
             IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
+
+            if(tile instanceof MTEHatch hatch){
+                if(hatch.getTierForStructure() <= aMaxTier && hatch.getTierForStructure() >= aMinTier) return true;
+            }
+
             return tile instanceof MTETieredMachineBlock && ((MTETieredMachineBlock) tile).mTier <= aMaxTier
                 && ((MTETieredMachineBlock) tile).mTier >= aMinTier;
         };
