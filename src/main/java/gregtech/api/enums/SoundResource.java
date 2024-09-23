@@ -78,6 +78,8 @@ public enum SoundResource {
     GT_SPRAYCAN_LOCK(244, GregTech.ID, "items.spraycan_lock"),
     GT_SPRAYCAN_UNLOCK(245, GregTech.ID, "items.spraycan_unlock"),
 
+    GT_MACHINES_BLACK_HOLE_COMPRESSOR(246, GregTech.ID, "machines.BlackHoleCompressorLoop"),
+
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
 

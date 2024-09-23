@@ -28,6 +28,8 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -48,9 +50,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -76,6 +81,7 @@ import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable {
@@ -153,6 +159,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
      */
     private byte blackHoleStatus = 1;
 
+    @SideOnly(Side.CLIENT)
+    private SoundLoopAnyBlock blackholeSoundLoop;
+
     private final FluidStack blackholeCatalyzingCost = (MaterialsUEVplus.SpaceTime).getMolten(1);
     private int catalyzingCostModifier = 1;
 
@@ -214,6 +223,43 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         byte oBlackHoleStatus = blackHoleStatus;
         blackHoleStatus = aValue;
         if (oBlackHoleStatus != blackHoleStatus) getBaseMetaTileEntity().issueTextureUpdate();
+    }
+
+    public void playBlackHoleSounds() {
+        if (blackHoleStatus > 1) {
+            if (blackholeSoundLoop == null) {
+                ForgeDirection oppositeDirection = getDirection().getOpposite();
+                int offsetX = 7 * oppositeDirection.offsetX;
+                int offsetY = 11;
+                int offsetZ = 7 * oppositeDirection.offsetZ;
+
+                World world = Minecraft.getMinecraft().thePlayer.worldObj;
+                IGregTechTileEntity base = getBaseMetaTileEntity();
+
+                int x = base.getXCoord() + offsetX;
+                int y = base.getYCoord() + offsetY;
+                int z = base.getZCoord() + offsetZ;
+
+                Block blockAtSoundLocation = world.getBlock(x, y, z);
+                if (blockAtSoundLocation == Blocks.air) return;
+
+                int[] offset = { offsetX, offsetY, offsetZ };
+                blackholeSoundLoop = new SoundLoopAnyBlock(
+                    SoundResource.GT_MACHINES_BLACK_HOLE_COMPRESSOR.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    false,
+                    offset,
+                    Blocks.air);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(blackholeSoundLoop);
+            }
+        } else {
+            if (blackholeSoundLoop != null) {
+                blackholeSoundLoop = null;
+            }
+        }
     }
 
     @Override
@@ -544,13 +590,16 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             mOutputItems = null;
             mOutputFluids = null;
         }
+
         return super.onRunningTick(aStack);
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-
+        if (!aBaseMetaTileEntity.isServerSide()) {
+            playBlackHoleSounds();
+        }
         if (aTick % 20 == 0) {
             if (blackHoleStatus == 2) {
                 if (blackHoleStability >= 0) {
