@@ -357,6 +357,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
      * @param progressTime Current progress time
      */
     public void startCycle(int cycleTime, int progressTime) {
+        startRecipeProcessing();
         // Important to calculate this before depleting inputs, otherwise we may get issues with boost items
         // disappearing.
         this.currentRecipeChance = this.calculateBoostedSuccessChance();
@@ -390,6 +391,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // specifically overridden so setting this value does not actually drain power.
         // Instead, power is drained by the main purification plant controller.
         this.lEUt = -this.getActualPowerUsage();
+        endRecipeProcessing();
     }
 
     public void addRecipeOutputs() {
