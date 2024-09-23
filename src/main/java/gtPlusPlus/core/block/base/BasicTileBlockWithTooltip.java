@@ -29,7 +29,6 @@ import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.api.objects.minecraft.SafeTexture;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -64,28 +63,28 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     }
 
     /**
-     * A lazy way to declare the unlocal name for the block, makes boilerplating easy.
+     * A lazy way to declare the unlocal name for the block, makes boilerplate easy.
      *
      * @return The internal name for this block.
      */
     public abstract String getUnlocalBlockName();
 
     /**
-     * Lazy Boilerplating.
+     * Lazy Boilerplate.
      *
      * @return Block Hardness.
      */
     protected abstract float initBlockHardness();
 
     /**
-     * Lazy Boilerplating.
+     * Lazy Boilerplate.
      *
      * @return Block Resistance.
      */
     protected abstract float initBlockResistance();
 
     /**
-     * Lazy Boilerplating.
+     * Lazy Boilerplate.
      *
      * @return The {@link CreativeTab} this Block is shown on.
      */
@@ -131,7 +130,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     /**
      * An array of CubicObjects, one for each meta, else just a single cell array. Expected to be null regularly, as the
      * default texture handling should suffice. Handy if re-using textures or using a non-standard structure for them.
-     * FULL texture path must be used, inclusive of the MODID and a colon.
+     * FULL texture path must be used, inclusive of the MOD ID and a colon.
      */
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
         return null;
@@ -155,24 +154,14 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
         Logger.INFO("[TeTexture] Building Texture Maps for " + getTileEntityName() + ".");
 
-        // Init on the Client side only, to prevent Field initialisers existing in the Server side bytecode.
+        // Init on the Client side only, to prevent Field initializers existing in the Server side bytecode.
         mSidedTextureArray = new ArrayList<>();
-        /**
-         * Holds the data for the six sides, each side holds an array of data for each respective meta.
-         */
+        // Holds the data for the six sides, each side holds an array of data for each respective meta.
         ArrayList<CubicObject<String>> sidedTexturePathArray = new ArrayList<>();
-
         // Store them in forge order
         // DOWN, UP, NORTH, SOUTH, WEST, EAST
-
         // Default Path Name, this will make us look inside 'miscutils\textures\blocks'
-        final String aPrefixTexPath = GTPlusPlus.ID + ":";
-        // Default Path Name, this will make us look in the subdirectory for this Tile Entity.
-        final String aTexPathMid = "TileEntities" + GTPPCore.SEPERATOR
-            + getTileEntityNameForTexturePathing()
-            + GTPPCore.SEPERATOR;
-        // Construct a full path
-        String aTexPathBuilt = aPrefixTexPath + aTexPathMid;
+        String aTexPathBuilt = GTPlusPlus.ID + ":TileEntities/" + getTileEntityNameForTexturePathing() + "/";
         // File Name Suffixes, without meta tags
         String aStringBot;
         String aStringTop;
