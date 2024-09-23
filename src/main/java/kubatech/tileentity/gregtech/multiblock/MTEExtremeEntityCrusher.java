@@ -63,6 +63,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderHell;
@@ -108,6 +109,7 @@ import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -774,6 +776,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 .withFixedSize(16, 16)
                 .withOffset(1, 1));
         slotWidgets.add(weaponSlot);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EXTREME_ENTITY_CRUSHER_LOOP.resourceLocation;
     }
 
     private static class EECFakePlayer extends FakePlayer {
