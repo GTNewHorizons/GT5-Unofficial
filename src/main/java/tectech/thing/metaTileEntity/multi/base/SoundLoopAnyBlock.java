@@ -21,17 +21,17 @@ public class SoundLoopAnyBlock extends MovingSound {
     private int tileX;
     private int tileY;
     private int tileZ;
-    private Block blockToTriggerEnd  = null;
+    private Block blockToTriggerEnd = null;
 
     /**
      * Constructs a SoundLoopAnyBlock.
      *
-     * @param soundResource     the sound file location
-     * @param tileEntity        the tile entity associated with this sound
-     * @param stopWhenActive    flag to stop the sound when the block is active
-     * @param stopWhenInactive  flag to stop the sound when the block is inactive
-     * @param offset            positional offset for sound origin from the tile entity [x, y, z]
-     * @param blockCheck        block that ends the sound when matched at the sound location
+     * @param soundResource    the sound file location
+     * @param tileEntity       the tile entity associated with this sound
+     * @param stopWhenActive   flag to stop the sound when the block is active
+     * @param stopWhenInactive flag to stop the sound when the block is inactive
+     * @param offset           positional offset for sound origin from the tile entity [x, y, z]
+     * @param blockCheck       block that ends the sound when matched at the sound location
      */
     public SoundLoopAnyBlock(ResourceLocation soundResource, IGregTechTileEntity tileEntity, boolean stopWhenActive,
         boolean stopWhenInactive, int[] offset, Block blockCheck) {
@@ -73,7 +73,7 @@ public class SoundLoopAnyBlock extends MovingSound {
         if (donePlaying) return;
 
         Block blockAtSoundLocation = world.getBlock((int) xPosF, (int) yPosF, (int) zPosF);
-        if (blockToTriggerEnd  != null) {
+        if (blockToTriggerEnd != null) {
             donePlaying = blockAtSoundLocation == blockToTriggerEnd;
         }
 
