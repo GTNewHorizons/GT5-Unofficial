@@ -45,6 +45,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3i;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.libraries.com.google.common.collect.MapMaker;
+import org.spongepowered.libraries.com.google.gson.Gson;
 
 import com.gtnewhorizon.gtnhlib.util.AboveHotbarHUD;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -61,10 +62,14 @@ import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
+import gregtech.common.items.matterManipulator.BlockAnalyzer.BlockActionContext;
+import gregtech.common.items.matterManipulator.BlockAnalyzer.TileAnalysisResult;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
 import gregtech.common.items.matterManipulator.NBTState.Config;
@@ -277,6 +282,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         }
     }
 
+    private TileAnalysisResult result;
+
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
         if (player.getItemInUse() != null && player.getItemInUse()
@@ -307,6 +314,43 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
             if (!player.isSneaking()) {
                 location.offset(ForgeDirection.getOrientation(hit.sideHit));
+            }
+
+            if (state.config.placeMode == PlaceMode.DEBUGGING) {
+                if (!world.isRemote) {
+                    BlockActionContext bac = new BlockActionContext();
+                    bac.world = world;
+                    bac.x = location.x;
+                    bac.y = location.y;
+                    bac.z = location.z;
+                    bac.player = player;
+                    bac.build = null;
+                    bac.manipulator = itemStack;
+
+                    if (result == null) {
+                        try {
+                            result = BlockAnalyzer.analyze(bac);
+
+                            GTUtility.sendChatToPlayer(player, "analysis: " + new Gson().toJson(result));
+                        } catch (Throwable t) {
+                            GTMod.GT_FML_LOGGER.error("analysis error", t);
+
+                            GTUtility.sendChatToPlayer(player, "analysis error: " + t.getMessage());
+                        }
+                    } else {
+                        try {
+                            GTUtility.sendChatToPlayer(player, "apply: " + result.apply(bac));
+
+                            result = null;
+                        } catch (Throwable t) {
+                            GTMod.GT_FML_LOGGER.error("apply error", t);
+
+                            GTUtility.sendChatToPlayer(player, "apply error: " + t.getMessage());
+                        }
+                    }
+                }
+
+                return itemStack;
             }
 
             switch (state.config.coordMode) {
@@ -664,7 +708,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .done()
                 .option()
                     .label("Debugging")
-                    .hidden(true)
                     .onClicked(() -> {
                         withState(buildContext, state -> {
                             state.config.placeMode = PlaceMode.DEBUGGING;

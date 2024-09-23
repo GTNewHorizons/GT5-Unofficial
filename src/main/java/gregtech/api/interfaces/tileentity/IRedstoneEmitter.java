@@ -39,10 +39,23 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
     void setStrongOutputRedstoneSignal(ForgeDirection side, byte aStrength);
 
     /**
-     * Works the same as {@link #setStrongOutputRedstoneSignal(ForgeDirection, byte)}, except it sets the output on the
-     * given side to be a weak signal.
+     * Sets the strength of the redstone signal on the given side to strong or weak.
+     * Does not change the actual signal.
+     * 
+     * @param side     Must not be UNKNOWN
+     * @param isStrong True = strong, false = weak
      */
-    default void setWeakOutputRedstoneSignal(ForgeDirection side, byte aStrength) {}
+    default void setRedstoneOutputStrength(ForgeDirection side, boolean isStrong) {}
+
+    /**
+     * Checks if the given side will output a strong redstone signal when emitting a redstone signal.
+     * 
+     * @param side Must not be UNKNOWN
+     * @return True = strong signal, false = weak signal
+     */
+    default boolean getRedstoneOutputStrength(ForgeDirection side) {
+        return false;
+    }
 
     /**
      * Gets the Output for the comparator on the given Side
