@@ -12,10 +12,9 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.asm.GTCorePlugin;
 import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.plugin.fixes.interfaces.IBugFix;
 
 // TODO move this as a mixin in hodgepodge
-public class VanillaBedHeightFix implements IBugFix {
+public class VanillaBedHeightFix {
 
     private final Method mSleepInBedAt;
 
@@ -37,11 +36,6 @@ public class VanillaBedHeightFix implements IBugFix {
         }
     }
 
-    @Override
-    public boolean isFixValid() {
-        return mSleepInBedAt != null;
-    }
-
     /**
      * Fix created by deNULL -
      * https://github.com/deNULL/BugPatch/blob/master/src/main/java/ru/denull/BugPatch/mod/ClientEvents.java#L45
@@ -51,7 +45,7 @@ public class VanillaBedHeightFix implements IBugFix {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerSleepInBed(PlayerSleepInBedEvent evt) {
         Logger.WARNING("Sleep Event Detected. Player is sleeping at Y: " + evt.y);
-        if (evt.y <= 0 && isFixValid()) {
+        if (evt.y <= 0) {
             int correctY = 256 + evt.y;
             if (correctY <= 0) {
                 Logger.WARNING(
@@ -72,9 +66,6 @@ public class VanillaBedHeightFix implements IBugFix {
                     Logger.WARNING("Encountered an error trying to sleep.");
                 }
             }
-        } else if (!isFixValid()) {
-            Logger.WARNING(
-                "Method sleepInBedAt was not found in EntityPlayer (wrong MC and/or Forge version?), unable to fix");
         }
     }
 }
