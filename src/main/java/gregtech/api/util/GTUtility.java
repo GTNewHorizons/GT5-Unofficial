@@ -120,6 +120,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
@@ -1774,6 +1775,59 @@ public class GTUtility {
             GTOreDictUnificator.get_nocopy(aStack1),
             GTOreDictUnificator.get_nocopy(aStack2),
             aIgnoreNBT);
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(ItemStack[] stacks) {
+        return getItemStackHistogram(stacks, true);
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(ItemStack[] stacks, boolean NBTSensitive) {
+        ItemStackMap<Long> histogram = new ItemStackMap<>(NBTSensitive);
+
+        if (stacks == null) return histogram;
+
+        for (ItemStack stack : stacks) {
+            if (stack == null) continue;
+            histogram.merge(stack, (long) stack.stackSize, (Long a, Long b) -> a + b);
+        }
+
+        return histogram;
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(Iterable<ItemStack> stacks) {
+        return getItemStackHistogram(stacks, true);
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(Iterable<ItemStack> stacks, boolean NBTSensitive) {
+        ItemStackMap<Long> histogram = new ItemStackMap<>(NBTSensitive);
+
+        if (stacks == null) return histogram;
+
+        for (ItemStack stack : stacks) {
+            if (stack == null) continue;
+            histogram.merge(stack, (long) stack.stackSize, (Long a, Long b) -> a + b);
+        }
+
+        return histogram;
+    }
+
+    public static ArrayList<ItemStack> getStacksOfSize(ItemStackMap<Long> map, int maxStackSize) {
+        ArrayList<ItemStack> list = new ArrayList<>();
+
+        map.forEach((item, amount) -> {
+            while (amount > 0) {
+                int toRemove = Math
+                    .min(amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue(), maxStackSize);
+
+                ItemStack copy = item.copy();
+                copy.stackSize = toRemove;
+                list.add(copy);
+
+                amount -= toRemove;
+            }
+        });
+
+        return list;
     }
 
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
@@ -4633,6 +4687,11 @@ public class GTUtility {
         if (list == null) return Stream.empty();
         return IntStream.range(0, list.tagCount())
             .mapToObj(list::getCompoundTagAt);
+    }
+
+    public static Stream<ItemStack> streamInventory(IInventory inv) {
+        return IntStream.range(0, inv.getSizeInventory())
+            .mapToObj(inv::getStackInSlot);
     }
 
     public static boolean equals(ItemStack[] a, ItemStack[] b) {
