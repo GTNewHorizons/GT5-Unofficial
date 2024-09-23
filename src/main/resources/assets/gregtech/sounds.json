@@ -191,6 +191,186 @@
           "license_name": "Attribution 3.0"
         }
       }
+     ]
+  },
+  "machines.MTEPreciseAssembler": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEPreciseAssembler",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEIndustrialWashPlant": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEIndustrialWashPlant",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEMegaVacuumFreezer": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEMegaVacuumFreezer",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEVacuumFreezer": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEVacuumFreezer",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEExtremeEntityCrusher": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEExtremeEntityCrusher",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEIndustrialCuttingMachine": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEIndustrialCuttingMachine",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEIndustrialArcFurnace": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEIndustrialArcFurnace",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEMegaIndustrialApiary": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEMegaIndustrialApiary",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEAlgaePondBase": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEAlgaePondBase",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEIndustrialThermalCentrifuge": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEIndustrialThermalCentrifuge",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEIndustrialSifter": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEIndustrialSifter",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEElectricBlastFurnace": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEElectricBlastFurnace",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEIndustrialVacuumFreezer": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEIndustrialVacuumFreezer",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEForgeOfGods": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEForgeOfGods",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEMegaBlastFurnace": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEMegaBlastFurnace",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEOilDrillBase": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEOilDrillBase",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEQuantumForceTransformer": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEQuantumForceTransformer",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEAdvEBF": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEAdvEBF",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTELargeTurbine": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTELargeTurbine",
+        "stream": false
+      }
+    ]
+  },
+  "machines.MTEEyeOfHarmony": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEEyeOfHarmony",
+        "stream": false
+      }
     ]
   }
 }
