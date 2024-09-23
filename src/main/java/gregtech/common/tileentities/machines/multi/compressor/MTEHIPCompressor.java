@@ -368,7 +368,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 doingHIP = false;
-                setSpeedBonus(1F / 1.25F);
+                setSpeedBonus(1F / 3.5F);
                 setEuModifier(0.75F);
 
                 if (cooling) {
