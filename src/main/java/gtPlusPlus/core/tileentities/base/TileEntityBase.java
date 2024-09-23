@@ -1113,9 +1113,14 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     }
 
     @Override
-    public void setWeakOutputRedstoneSignal(ForgeDirection side, byte aStrength) {
+    public void setRedstoneOutputStrength(ForgeDirection side, boolean isStrong) {
         mStrongRedstone &= ~side.flag;
-        setOutputRedstoneSignal(side, aStrength);
+        setOutputRedstoneSignal(side, mSidedRedstone[side.ordinal()]);
+    }
+
+    @Override
+    public boolean getRedstoneOutputStrength(ForgeDirection side) {
+        return (mStrongRedstone & side.flag) != 0;
     }
 
     @Override
