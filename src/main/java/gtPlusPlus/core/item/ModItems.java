@@ -276,11 +276,8 @@ public final class ModItems {
             MaterialGenerator.generate(MaterialsElements.getInstance().BROMINE);
             MaterialGenerator.generate(MaterialsElements.getInstance().KRYPTON); // LFTR byproduct
             MaterialGenerator.generate(MaterialsElements.getInstance().ZIRCONIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().RUTHENIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().IODINE); // LFTR byproduct
             MaterialGenerator.generate(MaterialsElements.getInstance().HAFNIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().DYSPROSIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().RHODIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
