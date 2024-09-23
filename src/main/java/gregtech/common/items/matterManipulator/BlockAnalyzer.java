@@ -41,6 +41,7 @@ import appeng.parts.AEBasePart;
 import appeng.parts.automation.UpgradeInventory;
 import appeng.parts.p2p.PartP2PTunnel;
 import appeng.tile.AEBaseTile;
+import appeng.tile.networking.TileCableBus;
 import appeng.util.SettingsFrom;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
@@ -231,7 +232,7 @@ public class BlockAnalyzer {
                 mAEUp = nullIfUnknown(ae.getUp());
                 mAEForward = nullIfUnknown(ae.getForward());
                 mAEConfig = ae.downloadSettings(SettingsFrom.MEMORY_CARD);
-                mAECustomName = ae.getCustomName();
+                mAECustomName = !(ae instanceof TileCableBus) && ae.hasCustomName() ? ae.getCustomName() : null;
 
                 if (ae instanceof IPartHost partHost) {
                     mAEParts = new AEPartData[ALL_DIRECTIONS.length];
@@ -336,7 +337,7 @@ public class BlockAnalyzer {
                     ae.uploadSettings(SettingsFrom.MEMORY_CARD, mAEConfig);
                 }
 
-                if (mAECustomName != null) {
+                if (mAECustomName != null && !(ae instanceof TileCableBus)) {
                     ae.setCustomName(mAECustomName);
                 }
 
@@ -513,20 +514,22 @@ public class BlockAnalyzer {
 
         public PortableItemStack mPart;
         public String mP2PConfigName = null;
-        public NBTTagCompound mAESettings = null, mP2PSettings = null;
-        public PortableItemStack[] mAEUpgrades = null;
-        public String mAEOreDict = null;
-        public String mAECustomName = null;
+        public NBTTagCompound mSettings = null, mP2PSettings = null;
+        public PortableItemStack[] mAEUpgrades = null, mConfig = null;
+        public String mOreDict = null;
+        public String mCustomName = null;
 
         public transient ItemStack partStack;
 
         public AEPartData(Lazy<FakePlayer> fakePlayer, AEBasePart part) {
             mPart = new PortableItemStack(part.getItemStack(PartItemStack.Break));
 
-            mAECustomName = part.hasCustomName() ? part.getCustomName() : null;
+            mCustomName = part.hasCustomName() ? part.getCustomName() : null;
 
             if (part instanceof IOreFilterable filterable) {
-                mAEOreDict = filterable.getFilter();
+                mOreDict = filterable.getFilter();
+
+                if ("".equals(mOreDict)) mOreDict = null;
             }
 
             if (part instanceof PartP2PTunnel tunnel) {
@@ -546,9 +549,10 @@ public class BlockAnalyzer {
 
                 mP2PSettings = memoryCard.getData(cardStack);
             } else {
-                if (part.getConfigManager() != null && mAESettings != null) {
+                if (part.getConfigManager() != null) {
+                    mSettings = new NBTTagCompound();
                     part.getConfigManager()
-                        .writeToNBT(mAESettings);
+                        .writeToNBT(mSettings);
                 }
 
                 IInventory upgrades = part.getInventoryByName("upgrades");
@@ -559,12 +563,22 @@ public class BlockAnalyzer {
                         .map(PortableItemStack::new)
                         .toArray(PortableItemStack[]::new);
                 }
+
+                IInventory config = part.getInventoryByName("config");
+
+                if (config != null) {
+                    mConfig = GTUtility.streamInventory(config)
+                        .filter(x -> x != null)
+                        .map(PortableItemStack::withoutStackSize)
+                        .distinct()
+                        .toArray(PortableItemStack[]::new);
+                }
             }
         }
 
         public boolean updatePart(BlockActionContext context, IPartHost partHost, ForgeDirection side) {
             if (partHost.getPart(side) instanceof AEBasePart part) {
-                if (mAECustomName != null) part.setCustomName(mAECustomName);
+                if (mCustomName != null) part.setCustomName(mCustomName);
 
                 if (part instanceof PartP2PTunnel tunnel) {
                     if (mP2PSettings != null) {
@@ -578,7 +592,7 @@ public class BlockAnalyzer {
                             .maybeStack(1)
                             .get();
 
-                        memoryCard.setMemoryCardContents(cardStack, mAECustomName, mP2PSettings);
+                        memoryCard.setMemoryCardContents(cardStack, mCustomName, mP2PSettings);
                         player.inventory.mainInventory[0] = cardStack;
 
                         tunnel.onPartActivate(player, Vec3.createVectorHelper(0, 0, 0));
@@ -625,13 +639,30 @@ public class BlockAnalyzer {
                         }
                     }
 
-                    if (part.getConfigManager() != null && mAESettings != null) {
+                    IInventory config = part.getInventoryByName("config");
+
+                    if (config != null) {
+                        for (int i = 0; i < config.getSizeInventory(); i++) {
+                            config.setInventorySlotContents(i, null);
+                        }
+
+                        if (mConfig != null) {
+                            int n = Math.min(config.getSizeInventory(), mConfig.length);
+                            for (int i = 0; i < n; i++) {
+                                config.setInventorySlotContents(i, mConfig[i] == null ? null : mConfig[i].toStack());
+                            }
+                        }
+
+                        config.markDirty();
+                    }
+
+                    if (part.getConfigManager() != null && mSettings != null) {
                         part.getConfigManager()
-                            .readFromNBT(mAESettings);
+                            .readFromNBT(mSettings);
                     }
 
                     if (part instanceof IOreFilterable filterable) {
-                        filterable.setFilter(mAEOreDict);
+                        filterable.setFilter(mOreDict == null ? "" : mOreDict);
                     }
                 }
             }
@@ -682,15 +713,53 @@ public class BlockAnalyzer {
             amount = stack.stackSize == 1 ? null : stack.stackSize;
         }
 
+        public static PortableItemStack withoutStackSize(ItemStack stack) {
+            stack = stack.copy();
+            stack.stackSize = 1;
+            return new PortableItemStack(stack);
+        }
+
         public ItemStack toStack() {
             if (itemStack == null) {
                 itemStack = new ItemStack(
                     GameRegistry.findItem(item.modId, item.name),
                     amount == null ? 1 : amount,
-                    metadata);
+                    metadata == null ? 0 : metadata);
             }
 
             return itemStack;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((item == null) ? 0 : item.hashCode());
+            result = prime * result + ((metadata == null) ? 0 : metadata.hashCode());
+            result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+            result = prime * result + ((itemStack == null) ? 0 : itemStack.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
+            PortableItemStack other = (PortableItemStack) obj;
+            if (item == null) {
+                if (other.item != null) return false;
+            } else if (!item.equals(other.item)) return false;
+            if (metadata == null) {
+                if (other.metadata != null) return false;
+            } else if (!metadata.equals(other.metadata)) return false;
+            if (amount == null) {
+                if (other.amount != null) return false;
+            } else if (!amount.equals(other.amount)) return false;
+            if (itemStack == null) {
+                if (other.itemStack != null) return false;
+            } else if (!itemStack.equals(other.itemStack)) return false;
+            return true;
         }
     }
 }
