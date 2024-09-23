@@ -1,6 +1,5 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -11,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
+import gregtech.api.util.GTLog;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -21,8 +21,6 @@ import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class ItemBlockGtBlock extends ItemBlock {
-
-    public static HashMap<String, String> sNameCache = new HashMap<>();
 
     protected final int blockColour;
     private int sRadiation;
@@ -50,7 +48,6 @@ public class ItemBlockGtBlock extends ItemBlock {
         } else {
             this.blockColour = block.getBlockColor();
         }
-
         if (block instanceof BlockBaseModular g) {
             this.mMaterial = g.getMaterialEx();
             this.thisBlockType = g.thisBlock;
@@ -60,39 +57,9 @@ public class ItemBlockGtBlock extends ItemBlock {
         }
     }
 
-    public int getBlockTypeMeta() {
-        if (this.thisBlockType.equals(BlockTypes.STANDARD)) {
-            return 0;
-        } else if (this.thisBlockType.equals(BlockTypes.FRAME)) {
-            return 1;
-        } else if (this.thisBlockType.equals(BlockTypes.ORE)) {
-            return 2;
-        }
-        return 0;
-    }
-
-    public String getUnlocalizedBlockName() {
-        return "block." + mMaterial.getUnlocalizedName()
-            + "."
-            + this.thisBlockType.name()
-                .toLowerCase();
-    }
-
-    public String GetProperName() {
-        String tempIngot = sNameCache.get(getUnlocalizedBlockName());
-        if (tempIngot == null) {
-            tempIngot = "BAD.UNLOCAL.NAME";
-        }
-        return tempIngot;
-    }
-
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return this.thisBlock.getLocalizedName();
-    }
-
-    public int getRenderColor(final int aMeta) {
-        return this.blockColour;
     }
 
     @Override
@@ -101,14 +68,12 @@ public class ItemBlockGtBlock extends ItemBlock {
         if (this.mMaterial != null) {
             list.add(this.mMaterial.vChemicalFormula);
         } else {
-
             try {
                 BlockBaseModular g = (BlockBaseModular) thisBlock;
                 this.mMaterial = g.getMaterialEx();
-            } catch (Throwable t) {
-
+            } catch (Exception e) {
+                e.printStackTrace(GTLog.err);
             }
-
             // list.add("Material is Null.");
         }
 
@@ -116,10 +81,7 @@ public class ItemBlockGtBlock extends ItemBlock {
             if (KeyboardUtils.isCtrlKeyDown()) {
                 Block b = Block.getBlockFromItem(stack.getItem());
                 if (b != null) {
-
-                    String aTool = b.getHarvestTool(stack.getItemDamage());
                     int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
-
                     if (this.mMaterial != null) {
                         list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
                         list.add("Contains:    ");
@@ -141,7 +103,6 @@ public class ItemBlockGtBlock extends ItemBlock {
         } else {
             Block b = Block.getBlockFromItem(stack.getItem());
             if (b != null) {
-                String aTool = b.getHarvestTool(stack.getItemDamage());
                 int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
                 list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
             }

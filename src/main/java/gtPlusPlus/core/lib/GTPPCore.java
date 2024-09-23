@@ -40,8 +40,6 @@ public class GTPPCore {
     public static final Supplier<String> GT_Tooltip_Radioactive = () -> StatCollector
         .translateToLocal("GTPP.core.GT_Tooltip_Radioactive");
 
-    public static final String SEPERATOR = "/";
-
     /**
      * Lists/Maps
      */
