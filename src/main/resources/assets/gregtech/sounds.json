@@ -142,6 +142,15 @@
       }
     ]
   },
+  "machines.BlackHoleCompressorLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "BlackHoleCompressorLoop",
+        "stream": false
+      }
+    ]
+  },
   "items.spraycan_shake": {
     "category": "player",
     "sounds": [
