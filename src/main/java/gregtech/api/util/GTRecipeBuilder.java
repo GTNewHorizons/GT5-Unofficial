@@ -211,6 +211,30 @@ public class GTRecipeBuilder {
         }
     }
 
+    public static void handleInvalidRecipeLowFluids() {
+        if (!DEBUG_MODE_INVALID && !PANIC_MODE_INVALID) {
+            return;
+        }
+        // place a breakpoint here to catch all these issues
+        GTLog.err.print("invalid recipe: not enough input fluids");
+        new IllegalArgumentException().printStackTrace(GTLog.err);
+        if (PANIC_MODE_INVALID) {
+            throw new IllegalArgumentException("invalid recipe");
+        }
+    }
+
+    public static void handleInvalidRecipeLowItems() {
+        if (!DEBUG_MODE_INVALID && !PANIC_MODE_INVALID) {
+            return;
+        }
+        // place a breakpoint here to catch all these issues
+        GTLog.err.print("invalid recipe: not enough input items");
+        new IllegalArgumentException().printStackTrace(GTLog.err);
+        if (PANIC_MODE_INVALID) {
+            throw new IllegalArgumentException("invalid recipe");
+        }
+    }
+
     public static void handleRecipeCollision(String details) {
         if (!DEBUG_MODE_COLLISION && !PANIC_MODE_COLLISION) {
             return;
