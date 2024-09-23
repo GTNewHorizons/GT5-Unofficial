@@ -248,11 +248,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     }
 
     @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
