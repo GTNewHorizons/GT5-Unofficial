@@ -23,7 +23,7 @@ import gtPlusPlus.core.util.minecraft.OreDictUtils;
 
 public class ItemAgrichemBase extends Item {
 
-    protected final IIcon base[];
+    protected final IIcon[] base;
 
     /*
      * 0 - Algae Biomass 1 - Green Algae Biomass 2 - Brown Algae Biomass 3 - Golden-Brown Algae Biomass 4 - Red Algae
