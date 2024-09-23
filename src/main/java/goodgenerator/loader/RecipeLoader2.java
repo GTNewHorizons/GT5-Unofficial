@@ -108,7 +108,7 @@ public class RecipeLoader2 {
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.zircaloy2, 513, 480, 2800, false);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.zircaloy4, 500, 480, 2800, true);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.zircaloy4, 513, 480, 2800, false);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.incoloy903, 2400, 1920, 3700, true);
+        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.incoloy903, 600, 1920, 3700, true);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.adamantiumAlloy, 2500, 1920, 5500, true);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.marM200, 200, 7680, 5000, true);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.marM200, 220, 7680, 5000, false);
