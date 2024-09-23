@@ -109,7 +109,6 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.SamariumChlorideSo
 import static gtnhlanth.common.register.WerkstoffMaterialPool.SamariumExtractingNanoResin;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.SamariumOreConcentrate;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.SamariumOxalate;
-import static gtnhlanth.common.register.WerkstoffMaterialPool.SamariumOxide;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.SamariumRareEarthMud;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.TerbiumChlorideConcentrate;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.TerbiumExtractingNanoResin;
@@ -3309,23 +3308,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_EV)
             .duration(5 * SECONDS)
             .addTo(centrifugeRecipes);
-
-        /**
-         * DephosphatedSamariumConcentrate has a simple and not shit process. Just burn in furnace, then use
-         * electolyzer.
-         */
-        GameRegistry.addSmelting(
-            DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1),
-            SamariumOxide.get(OrePrefixes.dustTiny, 2),
-            114);
-        GTValues.RA.stdBuilder()
-            .itemInputs(DephosphatedSamariumConcentrate.get(OrePrefixes.dust, 1))
-            .itemOutputs(SamariumOxide.get(OrePrefixes.dust, 1))
-            .metadata(COIL_HEAT, 1200)
-            .eut(514)
-            .duration(2 * SECONDS)
-            .addTo(blastFurnaceRecipes);
-
     }
 
     public static void addRandomChemCrafting() {

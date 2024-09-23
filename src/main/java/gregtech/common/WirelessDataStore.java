@@ -12,17 +12,28 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class WirelessDataStore {
 
+    public static final long UPLOAD_TICK = 200;
+    public static final long DOWNLOAD_TICK = UPLOAD_TICK + 1;
+
+    private long lastUploadTick = -1;
+    private long lastDownloadTick = -1;
+    private final ArrayList<ItemStack> uploadedSticks = new ArrayList<>();
     private final ArrayList<ItemStack> dataSticks = new ArrayList<>();
 
-    public void clearData() {
-        dataSticks.clear();
+    public void uploadData(List<ItemStack> sticks, long tick) {
+        if (lastUploadTick < tick) {
+            uploadedSticks.clear();
+            lastUploadTick = tick;
+        }
+        uploadedSticks.addAll(sticks);
     }
 
-    public void uploadData(List<ItemStack> sticks) {
-        dataSticks.addAll(sticks);
-    }
-
-    public List<ItemStack> downloadData() {
+    public List<ItemStack> downloadData(long tick) {
+        if (lastDownloadTick < tick) {
+            dataSticks.clear();
+            dataSticks.addAll(uploadedSticks);
+            lastDownloadTick = tick;
+        }
         return dataSticks;
     }
 
