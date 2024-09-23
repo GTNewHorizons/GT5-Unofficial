@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.ItemFluidContainer;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -55,12 +54,10 @@ public class BlockFluidTankInfinite extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
-        this.textureBottom = p_149651_1_
-            .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
-        this.textureFront = p_149651_1_
-            .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
+        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/Generic_Creative_Texture");
     }
 
     /**
@@ -81,9 +78,8 @@ public class BlockFluidTankInfinite extends BlockContainer {
                 } catch (Throwable t) {
                     handItem = null;
                 }
-                if (handItem != null
-                    && (handItem instanceof IFluidContainerItem || handItem instanceof ItemFluidContainer
-                        || FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) {
+                if (handItem != null && (handItem instanceof IFluidContainerItem
+                    || FluidContainerRegistry.isFilledContainer(player.getHeldItem()))) {
                     if (tank.tank.getFluid() == null) {
                         try {
                             if (!FluidContainerRegistry.isFilledContainer(player.getHeldItem())) {
