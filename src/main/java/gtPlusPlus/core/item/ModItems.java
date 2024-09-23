@@ -281,8 +281,6 @@ public final class ModItems {
             MaterialGenerator.generate(MaterialsElements.getInstance().IODINE); // LFTR byproduct
             MaterialGenerator.generate(MaterialsElements.getInstance().HAFNIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().DYSPROSIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().PRASEODYMIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().TELLURIUM); // LFTR byproduct
             MaterialGenerator.generate(MaterialsElements.getInstance().RHODIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
