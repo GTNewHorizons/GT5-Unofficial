@@ -275,21 +275,16 @@ public final class ModItems {
             MaterialGenerator.generate(MaterialsElements.getInstance().SELENIUM); // LFTR byproduct
             MaterialGenerator.generate(MaterialsElements.getInstance().BROMINE);
             MaterialGenerator.generate(MaterialsElements.getInstance().KRYPTON); // LFTR byproduct
-            MaterialGenerator.generate(MaterialsElements.getInstance().ZIRCONIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().IODINE); // LFTR byproduct
-            MaterialGenerator.generate(MaterialsElements.getInstance().HAFNIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
 
             // RADIOACTIVE ELEMENTS
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
-            // MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADON, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().RADIUM, false);
-            MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().PROMETHIUM, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().PROTACTINIUM, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().CURIUM, false);
-            MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().CALIFORNIUM, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().NEPTUNIUM, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().FERMIUM, false);
 
@@ -303,8 +298,6 @@ public final class ModItems {
             // lithium a
             // strong requirement for the possible use in lithium fluoride reactors.
             MaterialGenerator.generate(MaterialsElements.getInstance().LITHIUM7, false);
-            // Thorium-232 is the most stable isotope of Thorium, purified for nuclear fuel use in this case.
-            MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().THORIUM232);
             // Production of 233U (through the neutron irradiation of 232Th) invariably produces small amounts of 232U
             // as an impurity
             // because of parasitic (n,2n) reactions on uranium-233 itself, or on protactinium-233, or on thorium-232:
