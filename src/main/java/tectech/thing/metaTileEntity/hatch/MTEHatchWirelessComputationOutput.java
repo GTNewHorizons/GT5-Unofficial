@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
@@ -9,6 +10,7 @@ import gregtech.common.WirelessComputationPacket;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 
 public class MTEHatchWirelessComputationOutput extends MTEHatchDataOutput {
+
     private int clearDelay = 0;
 
     public MTEHatchWirelessComputationOutput(int aID, String aName, String aNameRegional, int aTier) {
@@ -42,9 +44,24 @@ public class MTEHatchWirelessComputationOutput extends MTEHatchDataOutput {
     }
 
     @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("clearDelay")) {
+            this.clearDelay = aNBT.getInteger("clearDelay");
+        }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("clearDelay", this.clearDelay);
+    }
+
+    @Override
     public void providePacket(QuantumDataPacket packet) {
         super.providePacket(packet);
-        // Keep providing to wireless net for 21 ticks, because after this time a new packet from the computer should have arrived
+        // Keep providing to wireless net for 21 ticks, because after this time a new packet from the computer should
+        // have arrived
         this.clearDelay = 21;
     }
 
