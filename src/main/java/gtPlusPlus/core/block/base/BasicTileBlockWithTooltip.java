@@ -63,28 +63,28 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     }
 
     /**
-     * A lazy way to declare the unlocal name for the block, makes boilerplating easy.
+     * A lazy way to declare the unlocal name for the block, makes boilerplate easy.
      *
      * @return The internal name for this block.
      */
     public abstract String getUnlocalBlockName();
 
     /**
-     * Lazy Boilerplating.
+     * Lazy Boilerplate.
      *
      * @return Block Hardness.
      */
     protected abstract float initBlockHardness();
 
     /**
-     * Lazy Boilerplating.
+     * Lazy Boilerplate.
      *
      * @return Block Resistance.
      */
     protected abstract float initBlockResistance();
 
     /**
-     * Lazy Boilerplating.
+     * Lazy Boilerplate.
      *
      * @return The {@link CreativeTab} this Block is shown on.
      */
@@ -130,7 +130,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     /**
      * An array of CubicObjects, one for each meta, else just a single cell array. Expected to be null regularly, as the
      * default texture handling should suffice. Handy if re-using textures or using a non-standard structure for them.
-     * FULL texture path must be used, inclusive of the MODID and a colon.
+     * FULL texture path must be used, inclusive of the MOD ID and a colon.
      */
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
         return null;
@@ -149,15 +149,14 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         return super.getIcon(aWorld, aX, aY, aZ, ordinalSide);
     }
 
-    /**
-     * Holds the data for the six sides, each side holds an array of data for each respective meta.
-     */
     @SideOnly(Side.CLIENT)
-    // Init on the Client side only, to prevent Field initializers existing in the Server side bytecode.
     private void handleTextures() {
 
         Logger.INFO("[TeTexture] Building Texture Maps for " + getTileEntityName() + ".");
+
+        // Init on the Client side only, to prevent Field initializers existing in the Server side bytecode.
         mSidedTextureArray = new ArrayList<>();
+        // Holds the data for the six sides, each side holds an array of data for each respective meta.
         ArrayList<CubicObject<String>> sidedTexturePathArray = new ArrayList<>();
         // Store them in forge order
         // DOWN, UP, NORTH, SOUTH, WEST, EAST
