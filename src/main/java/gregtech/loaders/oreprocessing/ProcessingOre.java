@@ -36,6 +36,10 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         boolean tIsRich = false;
 
         // For Sake of god of balance!
@@ -75,8 +79,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         Materials tMaterial = aMaterial.mOreReplacement;
         Materials tPrimaryByMaterial = null;
         aMultiplier = Math.max(1, aMultiplier);
-        aOreStack = GTUtility.copyAmount(1, aOreStack);
-        aOreStack.stackSize = 1;
+        aOreStack = GTOreDictUnificator.get(aPrefix, aMaterial, 1L);
 
         ItemStack tIngot = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
         ItemStack tGem = GTOreDictUnificator.get(OrePrefixes.gem, tMaterial, 1L);

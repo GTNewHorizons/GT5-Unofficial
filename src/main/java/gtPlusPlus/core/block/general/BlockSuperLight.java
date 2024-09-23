@@ -47,7 +47,7 @@ public class BlockSuperLight extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "SwirlBigBlue");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":SwirlBigBlue");
     }
 
     /**

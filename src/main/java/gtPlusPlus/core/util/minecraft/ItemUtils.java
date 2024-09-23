@@ -36,6 +36,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
@@ -45,7 +46,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
@@ -72,16 +72,16 @@ public class ItemUtils {
         return simpleMetaStack(Item.getItemFromBlock(x), meta, i);
     }
 
-    public static ItemStack getSimpleStack(final Item x, final int i) {
-        return new ItemStack(x, i);
+    public static ItemStack getSimpleStack(final Item item, final int stackSize) {
+        return new ItemStack(item, stackSize);
     }
 
-    public static ItemStack getSimpleStack(final ItemStack x, final int i) {
-        if (x == null) {
+    public static ItemStack getSimpleStack(final ItemStack stack, final int stackSize) {
+        if (stack == null) {
             return null;
         }
-        final ItemStack r = x.copy();
-        r.stackSize = i;
+        final ItemStack r = stack.copy();
+        r.stackSize = stackSize;
         return r;
     }
 
@@ -306,7 +306,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
-        if (PreloaderCore.DEBUG_MODE) {
+        if (ASMConfiguration.debug.debugMode) {
             Logger.modLogger.warn("Looking up: " + oredictName + " - from : ", new Exception());
         }
 

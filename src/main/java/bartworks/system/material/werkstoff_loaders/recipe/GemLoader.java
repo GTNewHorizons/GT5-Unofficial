@@ -30,7 +30,6 @@ import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -67,13 +66,6 @@ public class GemLoader implements IWerkstoffRunnable {
                     .addTo(compressorRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(block))
-                    .itemOutputs(werkstoff.get(gem, 9))
-                    .duration(5 * SECONDS)
-                    .eut(24)
-                    .addTo(hammerRecipes);
-
-                GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(crushedPurified))
                     .itemOutputs(
                         werkstoff.get(gemExquisite),
@@ -88,41 +80,6 @@ public class GemLoader implements IWerkstoffRunnable {
                     .addTo(sifterRecipes);
 
             }
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gemExquisite))
-                .itemOutputs(werkstoff.get(dust, 4))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gemFlawless))
-                .itemOutputs(werkstoff.get(dust, 2))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gem))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gemFlawed))
-                .itemOutputs(werkstoff.get(dustSmall, 2))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(gemChipped))
-                .itemOutputs(werkstoff.get(dustSmall))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawless, 2),
@@ -201,13 +158,6 @@ public class GemLoader implements IWerkstoffRunnable {
                 werkstoff.get(lens),
                 texture,
                 new CoverLens(BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mIndex, texture));
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(lens))
-                .itemOutputs(werkstoff.get(dustSmall, 3))
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
 
             for (ItemStack is : OreDictionary
                 .getOres("craftingLens" + BWColorUtil.getDyeFromColor(werkstoff.getRGBA()).mName.replace(" ", ""))) {
