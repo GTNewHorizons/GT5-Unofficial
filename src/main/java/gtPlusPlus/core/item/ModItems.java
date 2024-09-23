@@ -275,7 +275,6 @@ public final class ModItems {
             MaterialGenerator.generate(MaterialsElements.getInstance().SELENIUM); // LFTR byproduct
             MaterialGenerator.generate(MaterialsElements.getInstance().BROMINE);
             MaterialGenerator.generate(MaterialsElements.getInstance().KRYPTON); // LFTR byproduct
-            MaterialGenerator.generate(MaterialsElements.getInstance().STRONTIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().ZIRCONIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().RUTHENIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().IODINE); // LFTR byproduct
