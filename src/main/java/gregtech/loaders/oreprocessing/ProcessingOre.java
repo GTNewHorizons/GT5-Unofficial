@@ -79,8 +79,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         Materials tMaterial = aMaterial.mOreReplacement;
         Materials tPrimaryByMaterial = null;
         aMultiplier = Math.max(1, aMultiplier);
-        aOreStack = GTUtility.copyAmount(1, aOreStack);
-        aOreStack.stackSize = 1;
+        aOreStack = GTOreDictUnificator.get(aPrefix, aMaterial, 1L);
 
         ItemStack tIngot = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
         ItemStack tGem = GTOreDictUnificator.get(OrePrefixes.gem, tMaterial, 1L);
