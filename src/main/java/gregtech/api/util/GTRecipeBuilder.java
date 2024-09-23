@@ -216,7 +216,7 @@ public class GTRecipeBuilder {
             return;
         }
         // place a breakpoint here to catch all these issues
-        GTLog.err.print("invalid recipe: not enough input fluids");
+        GTLog.err.println("invalid recipe: not enough input fluids");
         new IllegalArgumentException().printStackTrace(GTLog.err);
         if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
@@ -228,7 +228,7 @@ public class GTRecipeBuilder {
             return;
         }
         // place a breakpoint here to catch all these issues
-        GTLog.err.print("invalid recipe: not enough input items");
+        GTLog.err.println("invalid recipe: not enough input items");
         new IllegalArgumentException().printStackTrace(GTLog.err);
         if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
