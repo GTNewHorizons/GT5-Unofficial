@@ -27,19 +27,10 @@ import gtPlusPlus.core.util.minecraft.InventoryUtils;
 
 public class BlockFishTrap extends BlockContainer implements ITileTooltip {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon textureTop;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon textureBottom;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon textureFront;
-
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 0;
+    private final int mTooltipID = 1;
 
     @Override
     public int getTooltipID() {
@@ -61,22 +52,20 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int ordinalSide, final int meta) {
-        return ordinalSide == 1 ? this.textureTop
-            : (ordinalSide == 0 ? this.textureBottom
-                : ((ordinalSide != 2) && (ordinalSide != 4) ? this.blockIcon : this.textureFront));
+        return this.blockIcon;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "fishtrap");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "fishtrap");
-        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "fishtrap");
-        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "fishtrap");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
+        p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
+        p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
+        p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/fishtrap");
     }
 
     /**
-     * Called upon block activation (right click on the block.)
+     * Called upon block activation (right-click on the block.)
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
@@ -86,7 +75,7 @@ public class BlockFishTrap extends BlockContainer implements ITileTooltip {
         }
 
         final TileEntity te = world.getTileEntity(x, y, z);
-        if ((te != null) && (te instanceof TileEntityFishTrap)) {
+        if (te instanceof TileEntityFishTrap) {
             player.openGui(GTplusplus.instance, 5, world, x, y, z);
             return true;
         }
