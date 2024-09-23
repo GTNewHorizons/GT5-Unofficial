@@ -225,6 +225,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (oBlackHoleStatus != blackHoleStatus) getBaseMetaTileEntity().issueTextureUpdate();
     }
 
+    @SideOnly(Side.CLIENT)
     public void playBlackHoleSounds() {
         if (blackHoleStatus > 1) {
             if (blackholeSoundLoop == null) {
