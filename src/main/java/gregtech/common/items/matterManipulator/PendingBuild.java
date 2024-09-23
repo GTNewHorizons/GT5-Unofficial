@@ -12,8 +12,6 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -34,6 +32,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
 import appeng.api.config.Actionable;
 import appeng.api.implementations.tiles.ISegmentedInventory;
@@ -294,19 +294,23 @@ public class PendingBuild {
         if (placingPlayer.capabilities.isCreativeMode) {
             return true;
         } else {
-            if (consumeItemsFromPlayer(items, true)) {
-                consumeItemsFromPlayer(items, false);
+            ItemStackMap<Long> itemMap = GTUtility.getItemStackHistogram(items);
 
-                return true;
-            }
+            consumeItemsFromPending(itemMap, true);
+            consumeItemsFromPlayer(itemMap, true);
+            consumeItemsFromAE(itemMap, true);
 
-            if (consumeItemsFromAE(items, true)) {
-                consumeItemsFromAE(items, false);
+            if (itemMap.values()
+                .stream()
+                .anyMatch(a -> a > 0)) return false;
 
-                return true;
-            }
+            itemMap = GTUtility.getItemStackHistogram(items);
 
-            return false;
+            consumeItemsFromPending(itemMap, false);
+            consumeItemsFromPlayer(itemMap, false);
+            consumeItemsFromAE(itemMap, false);
+
+            return true;
         }
     }
 
@@ -421,7 +425,7 @@ public class PendingBuild {
                 .getFluidStack(amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue());
 
             // spotless:off
-            ItemStack idealCell = inventoryStream(placingPlayer.inventory)
+            ItemStack idealCell = GTUtility.streamInventory(placingPlayer.inventory)
                 .sorted(Comparator.comparingInt((ItemStack x) -> (
                     x != null && x.getItem() instanceof IFluidContainerItem container ? container.getCapacity(x) : 0
                 )))
@@ -445,7 +449,7 @@ public class PendingBuild {
             fluid.amount = amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue();
 
             // spotless:off
-            List<ItemStack> validCells = inventoryStream(placingPlayer.inventory)
+            List<ItemStack> validCells = GTUtility.streamInventory(placingPlayer.inventory)
                 .filter(x -> (
                     x != null &&
                     x.getItem() instanceof IFluidContainerItem container &&
@@ -476,78 +480,87 @@ public class PendingBuild {
         pendingFluids.clear();
     }
 
-    private Stream<ItemStack> inventoryStream(IInventory inv) {
-        return IntStream.range(0, inv.getSizeInventory())
-            .mapToObj(inv::getStackInSlot);
+    private void consumeItemsFromPending(ItemStackMap<Long> requestedItems, boolean simulate) {
+        requestedItems.replaceAll((item, amount) -> {
+            if (amount == 0) return 0l;
+
+            long available = pendingItems.get(ItemId.create(item));
+
+            long toRemove = Math.min(available, amount);
+
+            available -= toRemove;
+            amount -= toRemove;
+
+            if (!simulate) {
+                if (available == 0) {
+                    pendingItems.remove(ItemId.create(item));
+                } else {
+                    pendingItems.put(ItemId.create(item), available);
+                }
+            }
+
+            return amount;
+        });
     }
 
-    private boolean consumeItemsFromPlayer(ItemStack[] items, boolean simulate) {
-        for (int i = 0; i < items.length; i++) {
-            items[i] = items[i].copy();
-        }
-
+    private void consumeItemsFromPlayer(ItemStackMap<Long> requestedItems, boolean simulate) {
         ItemStack[] inv = placingPlayer.inventory.mainInventory;
 
-        if (simulate) {
-            inv = GTUtility.copyItemArray(inv);
-        }
+        requestedItems.replaceAll((item, amountLong) -> {
+            if (amountLong == 0) return 0l;
 
-        for (ItemStack item : items) {
+            int remaining = amountLong > Integer.MAX_VALUE ? Integer.MAX_VALUE : amountLong.intValue();
+            int initial = remaining;
+
             for (int i = 0; i < inv.length; i++) {
                 ItemStack slot = inv[i];
 
                 if (slot != null && areStacksBasicallyEqual(item, slot)) {
-                    int toRemove = Math.min(slot.stackSize, item.stackSize);
+                    int toRemove = Math.min(slot.stackSize, remaining);
 
-                    slot.stackSize -= toRemove;
-                    item.stackSize -= toRemove;
+                    remaining -= toRemove;
 
-                    if (slot.stackSize == 0) {
-                        inv[i] = null;
+                    if (!simulate) {
+                        slot.stackSize -= toRemove;
+                        if (slot.stackSize == 0) {
+                            inv[i] = null;
+                        }
                     }
                 }
-
-                if (item.stackSize == 0) {
-                    break;
-                }
             }
 
-            if (item.stackSize > 0) {
-                return false;
-            }
-        }
-
-        return true;
+            int provided = initial - remaining;
+            return amountLong - provided;
+        });
     }
 
-    private boolean consumeItemsFromAE(ItemStack[] items, boolean simulate) {
+    private void consumeItemsFromAE(ItemStackMap<Long> requestedItems, boolean simulate) {
         if (manipulator.encKey == null) {
-            return false;
+            return;
         }
 
         if (!manipulator.hasMEConnection()) {
             if (!manipulator.connectToMESystem()) {
-                return false;
+                return;
             }
         }
 
         if (!manipulator.canInteractWithAE(placingPlayer)) {
-            return false;
+            return;
         }
 
-        for (ItemStack item : items) {
+        requestedItems.replaceAll((item, amount) -> {
+            if (amount == 0) return 0l;
+
             IAEItemStack result = manipulator.storageGrid.getItemInventory()
                 .extractItems(
-                    AEItemStack.create(item),
+                    Objects.requireNonNull(AEItemStack.create(item))
+                        .setStackSize(amount),
                     simulate ? Actionable.SIMULATE : Actionable.MODULATE,
                     new PlayerSource(placingPlayer, manipulator.securityTerminal));
 
-            if (result == null || result.getStackSize() == 0) {
-                return false;
-            }
-        }
-
-        return true;
+            return result == null ? amount : (amount - result.getStackSize());
+        });
     }
 
     private static boolean areBlocksBasicallyEqual(PendingBlock a, PendingBlock b) {
@@ -613,8 +626,7 @@ public class PendingBuild {
 
         if (existing instanceof IFluidBlock fluidBlock && fluidBlock.canDrain(world, x, y, z)) {
             givePlayerFluids(fluidBlock.drain(world, x, y, z, true));
-        }
-        if (existing == Blocks.water || existing == Blocks.lava) {
+        } else if (existing == Blocks.water || existing == Blocks.lava) {
             givePlayerFluids(new FluidStack(existing == Blocks.water ? FluidRegistry.WATER : FluidRegistry.LAVA, 1000));
         } else {
             givePlayerItems(
@@ -736,7 +748,7 @@ public class PendingBuild {
     private void resetKeptSettings(TileEntity te) {
         if (te instanceof IRedstoneEmitter emitter) {
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                emitter.setWeakOutputRedstoneSignal(side, (byte) 0);
+                emitter.setRedstoneOutputStrength(side, false);
             }
         }
     }
