@@ -41,7 +41,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.WirelessComputationPacket;
-import gregtech.common.WirelessDataStore;
 import tectech.Reference;
 import tectech.mechanics.dataTransport.InventoryDataPacket;
 import tectech.recipe.TTRecipeAdder;
@@ -246,23 +245,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 return eDataAccessHatches.add(aMetaTileEntity);
             }
         return false;
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-        // Every 200 ticks, clear wireless data store so hatches need to provide their data again in
-        // their onPostTick() call. This also happens every 200 ticks
-        if (mMachine && aBaseMetaTileEntity.isActive() && wirelessModeEnabled && aTick % 200 == 0) {
-            WirelessDataStore wirelessStore = WirelessDataStore
-                .getWirelessDataSticks(aBaseMetaTileEntity.getOwnerUuid());
-            wirelessStore.clearData();
-
-            // After reset, clear uploadedSinceReset of all connected hatches
-            for (MTEHatchWirelessDataItemsOutput hatch : eWirelessStacksDataOutputs) {
-                hatch.uploadedSinceReset = false;
-            }
-        }
     }
 
     @Override
