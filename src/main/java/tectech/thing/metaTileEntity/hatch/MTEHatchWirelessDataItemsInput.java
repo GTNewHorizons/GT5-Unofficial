@@ -18,6 +18,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import com.google.common.collect.ImmutableList;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,6 +33,8 @@ import tectech.util.TTUtility;
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     private String clientLocale = "en_US";
+
+    private List<ItemStack> dataItems = null;
 
     public MTEHatchWirelessDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -118,12 +122,23 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     @Override
     public List<ItemStack> getInventoryItems(Predicate<ItemStack> filter) {
-        WirelessDataStore wirelessData = WirelessDataStore
-            .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-        return wirelessData.downloadData()
-            .stream()
+        if (this.dataItems == null) return ImmutableList.of();
+        return this.dataItems.stream()
             .filter(stack -> stack != null && filter.test(stack))
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // Upload data packet and mark it as uploaded, so it will not be uploaded again
+            // until the data bank resets the wireless network
+            if (aTick % WirelessDataStore.DOWNLOAD_TICK == 0) {
+                WirelessDataStore wirelessDataStore = WirelessDataStore
+                    .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
+                this.dataItems = wirelessDataStore.downloadData(aTick);
+            }
+        }
     }
 
     @Override
