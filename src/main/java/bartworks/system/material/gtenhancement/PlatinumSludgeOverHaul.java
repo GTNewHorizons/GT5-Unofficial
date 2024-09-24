@@ -80,6 +80,7 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 import static gtPlusPlus.core.material.MaterialsAlloy.HELICOPTER;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.WHITE_METAL;
 import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
@@ -744,7 +745,8 @@ public class PlatinumSludgeOverHaul {
             || map == eyeOfHarmonyRecipes
             || map == quantumForceTransformerRecipes
             || map == fluidExtractionRecipes
-            || map == alloyBlastSmelterRecipes;
+            || map == alloyBlastSmelterRecipes
+            || map == vacuumFurnaceRecipes;
     }
 
     public static String displayRecipe(GTRecipe recipe) {
