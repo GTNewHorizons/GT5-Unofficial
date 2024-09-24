@@ -317,12 +317,5 @@ public class MaterialFix {
                     .addTo(benderRecipes);
             }
         }
-        Materials tUHV = Materials.Longasssuperconductornameforuhvwire;
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, tUHV, 2))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stickLong, tUHV, 1))
-            .duration(Math.max(tUHV.getMass(), 1L) * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(hammerRecipes);
     }
 }
