@@ -257,7 +257,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             if (built >= 0) return built;
         }
         if (mWidth == tTotalWidth - 1) {
-           built += survivialBuildPiece(
+            built += survivialBuildPiece(
                 MS_END,
                 stackSize,
                 (3 + tTotalWidth) * 2 - 4,
@@ -267,7 +267,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                 env,
                 false,
                 true);
-           built += survivialBuildPiece(
+            built += survivialBuildPiece(
                 MS_END,
                 stackSize,
                 (-3 - tTotalWidth) * 2 + 4,
