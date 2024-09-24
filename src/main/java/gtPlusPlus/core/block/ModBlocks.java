@@ -1,13 +1,13 @@
 package gtPlusPlus.core.block;
 
-import gtPlusPlus.core.block.fuel.BlockCactusCharcoal;
-import gtPlusPlus.core.block.fuel.BlockCactusCoke;
-import gtPlusPlus.core.block.fuel.BlockSugarCharcoal;
-import gtPlusPlus.core.block.fuel.BlockSugarCoke;
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
 
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.block.fuel.BlockCactusCharcoal;
+import gtPlusPlus.core.block.fuel.BlockCactusCoke;
+import gtPlusPlus.core.block.fuel.BlockSugarCharcoal;
+import gtPlusPlus.core.block.fuel.BlockSugarCoke;
 import gtPlusPlus.core.block.general.BlockCompressedObsidian;
 import gtPlusPlus.core.block.general.BlockFluidTankInfinite;
 import gtPlusPlus.core.block.general.BlockHellFire;
