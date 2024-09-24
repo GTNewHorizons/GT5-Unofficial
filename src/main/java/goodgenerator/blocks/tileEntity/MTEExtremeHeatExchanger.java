@@ -265,7 +265,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
 
         this.mMaxProgresstime = 20;
         this.mEUt = (int) (tRecipe.getEUt() * efficiency * ((double) tRealConsume / (double) tMaxConsume));
-        mHotFluidHatch.drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), tRealConsume), true);
+        // the 3-arg drain will work on both normal hatch and ME hatch
+		mHotFluidHatch.drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), tRealConsume), true);
         mCooledFluidHatch.fill(new FluidStack(tRecipe.getCooledFluid(), tRealConsume), true);
         this.mEfficiencyIncrease = 160;
 

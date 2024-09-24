@@ -230,7 +230,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
 
         // Don't consume too much hot fluid per second
         fluidAmountToConsume = Math.min(fluidAmountToConsume, superheated_threshold * 2);
-
+		// the 3-arg drain will work on both normal hatch and ME hatch
         mInputHotFluidHatch
             .drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), fluidAmountToConsume), true);
         mOutputColdFluidHatch.fill(coolant.getColdFluid(fluidAmountToConsume), true);
