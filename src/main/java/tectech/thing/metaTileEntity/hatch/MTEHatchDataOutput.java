@@ -72,6 +72,10 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
         return isOutputFacing(side);
     }
 
+    public void providePacket(QuantumDataPacket packet) {
+        this.q = packet;
+    }
+
     @Override
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
         IConnectsToDataPipe current = this, source = this, next;

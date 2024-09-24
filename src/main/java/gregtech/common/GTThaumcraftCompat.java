@@ -193,7 +193,7 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
         if (aParentResearches != null) {
             ArrayList<String> tParentResearches = new ArrayList<>();
             Collections.addAll(tParentResearches, aParentResearches);
-            if (tParentResearches.size() > 0) {
+            if (!tParentResearches.isEmpty()) {
                 rResearch.setParents(tParentResearches.toArray(new String[0]));
                 rResearch.setConcealed();
             }

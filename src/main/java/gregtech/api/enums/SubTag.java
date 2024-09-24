@@ -104,6 +104,10 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      */
     public static final SubTag NO_SMELTING = getNewSubTag("NO_SMELTING");
     /**
+     * This Material cannot have its Ore and associated prefixes processed, and must be handled manually.
+     */
+    public static final SubTag NO_ORE_PROCESSING = getNewSubTag("NO_ORE_PROCESSING");
+    /**
      * This Material can be molten into a Fluid
      */
     public static final SubTag SMELTING_TO_FLUID = getNewSubTag("SMELTING_TO_FLUID");

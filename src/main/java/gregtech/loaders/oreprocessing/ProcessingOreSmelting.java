@@ -34,6 +34,10 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         GTModHandler.removeFurnaceSmelting(aStack);
         if (!aMaterial.contains(SubTag.NO_SMELTING)) {
             if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
@@ -187,7 +191,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     1L);
                 if ((tStack == null) && (!aMaterial.contains(SubTag.SMELTING_TO_GEM)))
                     tStack = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
-                GTModHandler.addSmeltingRecipe(aStack, tStack);
+                GTModHandler.addSmeltingRecipe(GTOreDictUnificator.get(aPrefix, aMaterial, 1L), tStack);
             }
         }
     }
