@@ -674,10 +674,6 @@ public final class RecipeMaps {
                         .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
                         .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
                         .setDuration(aDuration * 10);
-                    coll.derive()
-                        .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
-                        .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
-                        .setDuration(aDuration * 10);
                 }
                 if (Railcraft.isModLoaded()) {
                     coll.derive()
