@@ -122,7 +122,6 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         if (EnchantmentHelper.getSilkTouchModifier(player)) {
             shouldSilkTouch = true;
             super.harvestBlock(worldIn, player, x, y, z, meta);
-
             if (shouldSilkTouch) {
                 shouldSilkTouch = false;
             }
@@ -145,12 +144,9 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
             drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
         } else {
             switch (GTMod.gregtechproxy.oreDropSystem) {
-                case Item -> {
-                    drops.add(
-                        ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                            "oreRaw" + this.blockMaterial.getLocalizedName(),
-                            1));
-                }
+                case Item -> drops.add(
+                    ItemUtils
+                        .getItemStackOfAmountFromOreDictNoBroken("oreRaw" + this.blockMaterial.getLocalizedName(), 1));
                 case FortuneItem -> {
                     // if shouldFortune and isNatural then get fortune drops
                     // if not shouldFortune or not isNatural then get normal drops
@@ -174,18 +170,12 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
                                 1));
                     }
                 }
-                case UnifiedBlock -> {
-                    // Unified ore
-                    drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                }
-                case PerDimBlock -> {
-                    // Per Dimension ore
-                    drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                }
-                case Block -> {
-                    // Regular ore
-                    drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
-                }
+                // Unified ore
+                case UnifiedBlock -> drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
+                // Per Dimension ore
+                case PerDimBlock -> drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
+                // Regular ore
+                case Block -> drops.add(ItemUtils.simpleMetaStack(this, metadata, 1));
             }
         }
         return drops;

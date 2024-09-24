@@ -23,6 +23,7 @@ import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
 import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
 import gtPlusPlus.core.handler.BookHandler;
@@ -41,7 +42,6 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy {
@@ -53,7 +53,7 @@ public class CommonProxy {
 
     public void preInit(final FMLPreInitializationEvent e) {
         Logger.INFO("Doing some house cleaning.");
-        if (PreloaderCore.DEBUG_MODE) {
+        if (ASMConfiguration.debug.debugMode) {
             Logger.INFO("Development mode enabled.");
         } else {
             Logger.WARNING("Development mode not enabled.");

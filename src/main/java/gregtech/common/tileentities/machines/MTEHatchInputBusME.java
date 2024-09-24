@@ -322,7 +322,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
 
         if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) return false;
 
-        updateValidGridProxySides();
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.loaded"));
         return true;
     }
@@ -368,6 +367,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
             }
         }
         setInventorySlotContents(getCircuitSlot(), circuit);
+        updateValidGridProxySides();
         return true;
     }
 
