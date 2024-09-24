@@ -202,6 +202,32 @@ tile.blockCompressedObsidian.9.name=Quadruple Compressed Glowstone (6561)
 tile.blockCompressedObsidian.10.name=Quintuple Compressed Glowstone (59049)
 tile.blockNet.name=Net
 
+# Fuel Blocks
+tile.blockCactusCharcoal.0.name=Cactus Charcoal
+tile.blockCactusCharcoal.1.name=Compressed Cactus Charcoal
+tile.blockCactusCharcoal.2.name=Double Compressed Cactus Charcoal
+tile.blockCactusCharcoal.3.name=Triple Compressed Cactus Charcoal
+tile.blockCactusCharcoal.4.name=Quadruple Compressed Cactus Charcoal
+tile.blockCactusCharcoal.5.name=Quintuple Compressed Cactus Charcoal
+tile.blockCactusCoke.0.name=Cactus Coke
+tile.blockCactusCoke.1.name=Compressed Cactus Coke
+tile.blockCactusCoke.2.name=Double Compressed Cactus Coke
+tile.blockCactusCoke.3.name=Triple Compressed Cactus Coke
+tile.blockCactusCoke.4.name=Quadruple Compressed Cactus Coke
+tile.blockCactusCoke.5.name=Quintuple Compressed Cactus Coke
+tile.blockSugarCharcoal.0.name=Sugar Charcoal
+tile.blockSugarCharcoal.1.name=Compressed Sugar Charcoal
+tile.blockSugarCharcoal.2.name=Double Compressed Sugar Charcoal
+tile.blockSugarCharcoal.3.name=Triple Compressed Sugar Charcoal
+tile.blockSugarCharcoal.4.name=Quadruple Compressed Sugar Charcoal
+tile.blockSugarCharcoal.5.name=Quintuple Compressed Sugar Charcoal
+tile.blockSugarCoke.0.name=Sugar Coke
+tile.blockSugarCoke.1.name=Compressed Sugar Coke
+tile.blockSugarCoke.2.name=Double Compressed Sugar Coke
+tile.blockSugarCoke.3.name=Triple Compressed Sugar Coke
+tile.blockSugarCoke.4.name=Quadruple Compressed Sugar Coke
+tile.blockSugarCoke.5.name=Quintuple Compressed Sugar Coke
+
 
 # GT++ Items
 
