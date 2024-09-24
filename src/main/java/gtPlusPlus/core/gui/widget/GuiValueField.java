@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 
+import gregtech.asm.GTCorePlugin;
 import gtPlusPlus.core.gui.machine.GUIVolumetricFlaskSetter;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.PreloaderCore;
 
 public class GuiValueField extends GuiTextField {
 
@@ -36,9 +36,9 @@ public class GuiValueField extends GuiTextField {
 
     public int getLineScrollOffset() {
         Field lineScrollOffset = ReflectionUtils
-            .getField(GuiTextField.class, !PreloaderCore.DEV_ENVIRONMENT ? "field_146225_q" : "lineScrollOffset");
+            .getField(GuiTextField.class, GTCorePlugin.isDevEnv() ? "lineScrollOffset" : "field_146225_q");
         if (lineScrollOffset != null) {
-            return (int) ReflectionUtils.getFieldValue(lineScrollOffset, this);
+            return ReflectionUtils.getFieldValue(lineScrollOffset, this);
         }
         return 0;
     }

@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator.sapling_Rainforest;
@@ -306,7 +307,7 @@ public class CompressorRecipes implements Runnable {
                     .get(OrePrefixes.plateSuperdense, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1))
             // Require stabilized black hole
             .metadata(CompressionTierKey.INSTANCE, 2)
-            .duration(15 * MINUTES)
+            .duration(1 * HOURS + 15 * MINUTES)
             .eut(TierEU.RECIPE_UXV)
             .addTo(compressorRecipes);
 

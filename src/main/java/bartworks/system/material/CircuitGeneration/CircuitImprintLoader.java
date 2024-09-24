@@ -34,7 +34,7 @@ import com.google.common.collect.HashBiMap;
 
 import bartworks.API.recipe.BWNBTDependantCraftingRecipe;
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.ASM.BWCoreStaticReplacementMethodes;
+import bartworks.hooks.BWCoreStaticReplacementMethodes;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import bartworks.util.Pair;
@@ -65,14 +65,10 @@ public class CircuitImprintLoader {
     public static void run() {
         HashSet<GTRecipe> toRem = new HashSet<>();
         HashSet<GTRecipe> toAdd = new HashSet<>();
-
         deleteCALRecipesAndTags();
         rebuildCircuitAssemblerMap(toRem, toAdd);
         exchangeRecipesInList(toRem, toAdd);
         makeCircuitImprintRecipes();
-
-        toRem = null;
-        toAdd = null;
     }
 
     private static void reAddOriginalRecipes() {

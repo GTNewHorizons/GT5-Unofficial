@@ -1489,6 +1489,8 @@ public enum ItemList implements IItemContainer {
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
 
+    Casing_Reinforced_Wood,
+
     Machine_Multi_IndustrialCompressor,
     Machine_Multi_HIPCompressor,
     Machine_Multi_NeutroniumCompressor,
@@ -1505,6 +1507,8 @@ public enum ItemList implements IItemContainer {
     Hawking_Glass,
     Black_Hole_Opener,
     Black_Hole_Closer,
+
+    Machine_Multi_IndustrialBrewery,
 
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,

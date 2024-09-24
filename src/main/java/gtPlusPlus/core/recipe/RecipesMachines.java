@@ -3292,9 +3292,9 @@ public class RecipesMachines {
             aTier[i] = ItemUtils.simpleMetaStack(CoverManager.Cover_Gt_Machine_Casing, i, 7);
         }
         // Add recipes for new ones
-        for (int i = 0; i < aMaxTier; i++) {
+        for (int i = 0; i < aMaxTier - 1; i++) {
             GTValues.RA.stdBuilder()
-                .itemInputs(CI.getTieredMachineCasing(i))
+                .itemInputs(CI.getTieredMachineCasing(i), GTUtility.getIntegratedCircuit(i))
                 .itemOutputs(aTier[i])
                 .duration(i * 5 * SECONDS)
                 .eut(GTValues.VP[i])
