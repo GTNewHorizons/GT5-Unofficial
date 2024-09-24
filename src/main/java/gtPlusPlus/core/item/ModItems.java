@@ -874,9 +874,7 @@ public final class ModItems {
 
         // Small Springs
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.MARAGING250);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.NICHROME);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.STABALLOY);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.STEEL_BLACK);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.BLACK_TITANIUM);
 
         // Fine Wire
