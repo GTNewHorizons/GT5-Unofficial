@@ -139,7 +139,9 @@ public class GregtechSimpleWasher {
             }
             if (v == Materials.Platinum || v == Materials.Osmium
                 || v == Materials.Iridium
-                || v == Materials.Palladium || v == Materials.AnyCopper || v == Materials.AnyIron) {
+                || v == Materials.Palladium
+                || v == Materials.AnyCopper
+                || v == Materials.AnyIron) {
                 continue;
             }
 
