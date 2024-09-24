@@ -635,16 +635,6 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1))
-            .itemOutputs(ItemList.Block_Plascrete.get(1))
-            .fluidInputs(Materials.Concrete.getMolten(144))
-            .duration(10 * SECONDS)
-            .eut(48)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TungstenSteel, 16),
                 GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.EV), 4),
                 ItemList.Electric_Motor_IV.get(16),
