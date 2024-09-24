@@ -1,7 +1,6 @@
 package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.enums.Mods.BiomesOPlenty;
-import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
@@ -12,7 +11,6 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,21 +21,24 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import cpw.mods.fml.common.Optional;
+import forestry.core.items.ItemForestryBonemeal;
+import forestry.core.items.ItemRegistryCore;
+import forestry.plugins.PluginCore;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
@@ -48,7 +49,7 @@ public class AgriculturalChem extends ItemPackage {
     private static boolean aBOP;
     private static boolean aTiCon;
 
-    private static AutoMap<FluidStack> mBloodFluids = new AutoMap<>();
+    private static ArrayList<FluidStack> mBloodFluids = new ArrayList<>();
 
     /**
      * Fluids
@@ -304,7 +305,7 @@ public class AgriculturalChem extends ItemPackage {
             if (aBlood != null) {
                 Logger.INFO("Found Biome's o Plenty, enabled Blood support.");
                 CustomBlood = aBlood.getFluid();
-                mBloodFluids.put(aBlood);
+                mBloodFluids.add(aBlood);
             }
         }
 
@@ -313,7 +314,7 @@ public class AgriculturalChem extends ItemPackage {
             if (aBlood != null) {
                 Logger.INFO("Found Tinker's Construct, enabled Blood support.");
                 CustomBlood = aBlood.getFluid();
-                mBloodFluids.put(FluidUtils.getFluidStack("blood", 100));
+                mBloodFluids.add(FluidUtils.getFluidStack("blood", 100));
             }
         }
 
@@ -334,24 +335,24 @@ public class AgriculturalChem extends ItemPackage {
                 }
             }
             Logger.INFO("Using " + CustomBlood.getName());
-            mBloodFluids.put(FluidUtils.getFluidStack(CustomBlood, 100));
+            mBloodFluids.add(FluidUtils.getFluidStack(CustomBlood, 100));
         }
     }
 
-    private static final AutoMap<ItemStack> mMeats = new AutoMap<>();
-    private static final AutoMap<ItemStack> mFish = new AutoMap<>();
-    private static final AutoMap<ItemStack> mFruits = new AutoMap<>();
-    private static final AutoMap<ItemStack> mVege = new AutoMap<>();
-    private static final AutoMap<ItemStack> mNuts = new AutoMap<>();
-    private static final AutoMap<ItemStack> mSeeds = new AutoMap<>();
-    private static final AutoMap<ItemStack> mPeat = new AutoMap<>();
-    private static final AutoMap<ItemStack> mBones = new AutoMap<>();
-    private static final AutoMap<ItemStack> mBoneMeal = new AutoMap<>();
+    private static final ArrayList<ItemStack> mMeats = new ArrayList<>();
+    private static final ArrayList<ItemStack> mFish = new ArrayList<>();
+    private static final ArrayList<ItemStack> mFruits = new ArrayList<>();
+    private static final ArrayList<ItemStack> mVege = new ArrayList<>();
+    private static final ArrayList<ItemStack> mNuts = new ArrayList<>();
+    private static final ArrayList<ItemStack> mSeeds = new ArrayList<>();
+    private static final ArrayList<ItemStack> mPeat = new ArrayList<>();
+    private static final ArrayList<ItemStack> mBones = new ArrayList<>();
+    private static final ArrayList<ItemStack> mBoneMeal = new ArrayList<>();
 
-    private static final AutoMap<ItemStack> mList_Master_Meats = new AutoMap<>();
-    private static final AutoMap<ItemStack> mList_Master_FruitVege = new AutoMap<>();
-    private static final AutoMap<ItemStack> mList_Master_Seeds = new AutoMap<>();
-    private static final AutoMap<ItemStack> mList_Master_Bones = new AutoMap<>();
+    private static final ArrayList<ItemStack> mList_Master_Meats = new ArrayList<>();
+    private static final ArrayList<ItemStack> mList_Master_FruitVege = new ArrayList<>();
+    private static final ArrayList<ItemStack> mList_Master_Seeds = new ArrayList<>();
+    private static final ArrayList<ItemStack> mList_Master_Bones = new ArrayList<>();
 
     private static void processAllOreDict() {
         processOreDict("listAllmeatraw", mMeats);
@@ -365,53 +366,55 @@ public class AgriculturalChem extends ItemPackage {
         processOreDict("dustBone", mBoneMeal);
         // Just make a mega list, makes life easier.
         if (!mMeats.isEmpty()) {
-            for (ItemStack g : mMeats) {
-                mList_Master_Meats.put(g);
-            }
+            mList_Master_Meats.addAll(mMeats);
         }
         if (!mFish.isEmpty()) {
             for (ItemStack g : mFish) {
-                mList_Master_Meats.put(g);
+                boolean foundDupe = false;
+                for (ItemStack old : mList_Master_Meats) {
+                    if (GTUtility.areStacksEqual(g, old)) {
+                        foundDupe = true;
+                        break;
+                    }
+                }
+                if (foundDupe) continue;
+                mList_Master_Meats.add(g);
             }
         }
         if (!mFruits.isEmpty()) {
-            for (ItemStack g : mFruits) {
-                mList_Master_FruitVege.put(g);
-            }
+            mList_Master_FruitVege.addAll(mFruits);
         }
         if (!mVege.isEmpty()) {
-            for (ItemStack g : mVege) {
-                mList_Master_FruitVege.put(g);
-            }
+            mList_Master_FruitVege.addAll(mVege);
         }
         if (!mNuts.isEmpty()) {
-            for (ItemStack g : mNuts) {
-                mList_Master_FruitVege.put(g);
-            }
+            mList_Master_FruitVege.addAll(mNuts);
         }
         if (!mSeeds.isEmpty()) {
-            for (ItemStack g : mSeeds) {
-                mList_Master_Seeds.put(g);
-            }
+            mList_Master_Seeds.addAll(mSeeds);
         }
         if (!mBoneMeal.isEmpty()) {
-            for (ItemStack g : mBoneMeal) {
-                mList_Master_Bones.put(g);
-            }
+            mList_Master_Bones.addAll(mBoneMeal);
         }
         if (!mBones.isEmpty()) {
             for (ItemStack g : mBones) {
-                mList_Master_Bones.put(g);
+                boolean foundDupe = false;
+                for (ItemStack old : mList_Master_Bones) {
+                    if (GTUtility.areStacksEqual(g, old)) {
+                        foundDupe = true;
+                        break;
+                    }
+                }
+                if (foundDupe) continue;
+                mList_Master_Bones.add(g);
             }
         }
     }
 
-    private static void processOreDict(String aOreName, AutoMap<ItemStack> aMap) {
+    private static void processOreDict(String aOreName, ArrayList<ItemStack> aMap) {
         ArrayList<ItemStack> aTemp = OreDictionary.getOres(aOreName);
         if (!aTemp.isEmpty()) {
-            for (ItemStack stack : aTemp) {
-                aMap.put(stack);
-            }
+            aMap.addAll(aTemp);
         }
     }
 
@@ -543,35 +546,8 @@ public class AgriculturalChem extends ItemPackage {
         ItemStack aManureByprod = ItemUtils.getSimpleStack(dustManureByproducts, 1);
 
         // Dehydrate Organise Fert to Normal Fert.
-
-        /*
-         * Forestry Support
-         */
-        if (Forestry.isModLoaded()) {
-            Field aItemField = ReflectionUtils
-                .getField(ReflectionUtils.getClass("forestry.plugins.PluginCore"), "items");
-            try {
-                Object aItemRegInstance = aItemField != null ? aItemField.get(aItemField) : null;
-                if (aItemRegInstance != null) {
-                    Field aFertField = ReflectionUtils.getField(aItemRegInstance.getClass(), "fertilizerCompound");
-                    Object aItemInstance = aFertField.get(aItemRegInstance);
-                    if (aItemInstance instanceof Item aForestryFert) {
-                        aFertForestry = ItemUtils.getSimpleStack((Item) aItemInstance);
-
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(
-                                GTUtility.getIntegratedCircuit(11),
-                                ItemUtils.getSimpleStack(aDustOrganicFert, 4))
-                            .itemOutputs(ItemUtils.getSimpleStack(aForestryFert, 3), aManureByprod, aManureByprod)
-                            .outputChances(100_00, 20_00, 20_00)
-                            .eut(240)
-                            .duration(20 * SECONDS)
-                            .addTo(chemicalDehydratorRecipes);
-                    }
-                }
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-
-            }
+        if (Mods.Forestry.isModLoaded()) {
+            addMiscForestryRecipes();
         }
 
         /*
@@ -651,6 +627,26 @@ public class AgriculturalChem extends ItemPackage {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
+    }
+
+    @Optional.Method(modid = Mods.Names.FORESTRY)
+    private static void addMiscForestryRecipes() {
+        ItemStack aDustOrganicFert = ItemUtils.getSimpleStack(dustOrganicFertilizer, 1);
+        ItemStack aManureByprod = ItemUtils.getSimpleStack(dustManureByproducts, 1);
+
+        ItemRegistryCore aItemRegInstance = PluginCore.items;
+        if (aItemRegInstance != null) {
+            ItemForestryBonemeal fertilizerCompound = aItemRegInstance.fertilizerCompound;
+            aFertForestry = ItemUtils.getSimpleStack(fertilizerCompound);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.getIntegratedCircuit(11), ItemUtils.getSimpleStack(aDustOrganicFert, 4))
+                .itemOutputs(ItemUtils.getSimpleStack(fertilizerCompound, 3), aManureByprod, aManureByprod)
+                .outputChances(100_00, 20_00, 20_00)
+                .eut(240)
+                .duration(20 * SECONDS)
+                .addTo(chemicalDehydratorRecipes);
+        }
     }
 
     @Override

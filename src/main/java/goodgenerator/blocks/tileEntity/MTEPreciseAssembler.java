@@ -7,7 +7,7 @@ import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -41,6 +42,8 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
@@ -48,6 +51,7 @@ import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
@@ -389,10 +393,10 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     private int checkEnergyHatchTier() {
         int tier = 0;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             tier = Math.max(tHatch.mTier, tier);
         }
-        for (MTEHatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
             tier = Math.max(tHatch.mTier, tier);
         }
         return tier;
@@ -420,28 +424,28 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 hatch.updateTexture(texture);
             }
         }
-        for (MTEHatch hatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatch hatch : validMTEList(mInputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mInputBusses)) {
+        for (MTEHatch hatch : validMTEList(mInputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mOutputHatches)) {
+        for (MTEHatch hatch : validMTEList(mOutputHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mOutputBusses)) {
+        for (MTEHatch hatch : validMTEList(mOutputBusses)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatch hatch : validMTEList(mEnergyHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mMaintenanceHatches)) {
+        for (MTEHatch hatch : validMTEList(mMaintenanceHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatch hatch : validMTEList(mMufflerHatches)) {
             hatch.updateTexture(texture);
         }
-        for (MTEHatch hatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (MTEHatch hatch : validMTEList(mExoticEnergyHatches)) {
             hatch.updateTexture(texture);
         }
     }
@@ -526,6 +530,12 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + tag.getInteger("mode"))
                 + EnumChatFormatting.RESET);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_MULTI_PRECISE_LOOP.resourceLocation;
     }
 
 }

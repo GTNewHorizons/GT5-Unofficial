@@ -15,7 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import com.cleanroommc.modularui.factory.TileEntityGuiFactory;
+import com.cleanroommc.modularui.factory.GuiFactories;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -36,12 +36,12 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
     private IIcon textureBottom;
 
     @SideOnly(Side.CLIENT)
-    private IIcon textureFront;
+    private IIcon textureSide;
 
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 5;
+    private final int mTooltipID = 3;
 
     @Override
     public int getTooltipID() {
@@ -118,17 +118,17 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
         return switch (ordinalSide) {
             case 0 -> textureBottom;
             case 1 -> textureTop;
-            default -> textureFront;
+            default -> textureSide;
         };
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "DecayablesChest_top");
-        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "DecayablesChest_top");
-        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "DecayablesChest_side");
-        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "DecayablesChest_bottom");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_top");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_top");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_bottom");
+        this.textureSide = p_149651_1_.registerIcon(GTPlusPlus.ID + ":TileEntities/DecayablesChest_Side");
     }
 
     @Override
@@ -140,7 +140,8 @@ public class BlockDecayablesChest extends BlockContainer implements ITileTooltip
 
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityDecayablesChest) {
-            TileEntityGuiFactory.open(player, x, y, z);
+            GuiFactories.tileEntity()
+                .open(player, x, y, z);
             return true;
         }
         return false;

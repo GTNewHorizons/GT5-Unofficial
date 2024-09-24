@@ -1,6 +1,6 @@
 package bartworks.common.tileentities.multis.mega;
 
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
 
@@ -52,7 +52,7 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
     public String[] getInfoData() {
         int mPollutionReduction = 0;
 
-        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
             mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
         }
 
@@ -60,7 +60,7 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
         long storedEnergy = ttHatches[0];
         long maxEnergy = ttHatches[1];
 
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()

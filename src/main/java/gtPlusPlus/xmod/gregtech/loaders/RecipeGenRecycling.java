@@ -7,14 +7,11 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -22,42 +19,34 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class RecipeGenRecycling implements Runnable {
 
-    public static AutoMap<Runnable> mQueuedRecyclingGenerators = new AutoMap<>();
+    public static ArrayList<Runnable> mQueuedRecyclingGenerators = new ArrayList<>();
 
     public static void executeGenerators() {
-        if (mQueuedRecyclingGenerators.size() > 0) {
-            for (Runnable R : mQueuedRecyclingGenerators.values()) {
+        if (!mQueuedRecyclingGenerators.isEmpty()) {
+            for (Runnable R : mQueuedRecyclingGenerators) {
                 R.run();
             }
         }
     }
 
     final Material toGenerate;
-    public static Map<String, ItemStack> mNameMap;
 
     public RecipeGenRecycling(final Material M) {
         this.toGenerate = M;
-        if (mNameMap == null) {
-            mNameMap = this.getNameMap();
-        }
-        mQueuedRecyclingGenerators.put(this);
+        mQueuedRecyclingGenerators.add(this);
     }
 
     @Override
     public void run() {
-        if (mNameMap != null) {
-            generateRecipes(this.toGenerate);
-        }
+        generateRecipes(this.toGenerate);
     }
 
     public static void generateRecipes(final Material material) {
@@ -252,31 +241,26 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final Object aName, final ItemStack aReplacement, final long aAmount,
         final boolean aMentionPossibleTypos, final boolean aNoInvalidAmounts) {
         if (aNoInvalidAmounts && (aAmount < 1L)) {
-            Logger.WARNING("Returning Null. Method: " + ReflectionUtils.getMethodName(0));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(1));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(2));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(3));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(4));
+            Logger.modLogger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
-        if (!mNameMap.containsKey(aName.toString()) && aMentionPossibleTypos) {
+        if (!GTOreDictUnificator.getName2StackMap()
+            .containsKey(aName.toString()) && aMentionPossibleTypos) {
             Logger.WARNING("Unknown Key for Unification, Typo? " + aName);
         }
         return GTUtility.copyAmount(
             aAmount,
-            new Object[] { mNameMap.get(aName.toString()), getFirstOre(aName, aAmount), aReplacement });
+            new Object[] { GTOreDictUnificator.getName2StackMap()
+                .get(aName.toString()), getFirstOre(aName, aAmount), aReplacement });
     }
 
     public static ItemStack getFirstOre(final Object aName, final long aAmount) {
         if (GTUtility.isStringInvalid(aName)) {
-            Logger.WARNING("Returning Null. Method: " + ReflectionUtils.getMethodName(0));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(1));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(2));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(3));
-            Logger.WARNING("Called from method: " + ReflectionUtils.getMethodName(4));
+            Logger.modLogger.warn("Returning Null. Method: ", new Exception());
             return null;
         }
-        final ItemStack tStack = mNameMap.get(aName.toString());
+        final ItemStack tStack = GTOreDictUnificator.getName2StackMap()
+            .get(aName.toString());
         if (GTUtility.isStackValid(tStack)) {
             Logger.WARNING("Found valid stack.");
             return GTUtility.copyAmount(aAmount, new Object[] { tStack });
@@ -297,23 +281,6 @@ public class RecipeGenRecycling implements Runnable {
             }
         }
         return rList;
-    }
-
-    @SuppressWarnings("unchecked")
-    public Map<String, ItemStack> getNameMap() {
-        Map<String, ItemStack> tempMap;
-        try {
-            tempMap = (Map<String, ItemStack>) FieldUtils
-                .readStaticField(GTOreDictUnificator.class, "sName2StackMap", true);
-            if (tempMap != null) {
-                Logger.WARNING("Found 'sName2StackMap' in GTOreDictUnificator.class.");
-                return tempMap;
-            }
-        } catch (final IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        Logger.WARNING("Invalid map stored in GTOreDictUnificator.class, unable to find sName2StackMap field.");
-        return null;
     }
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {

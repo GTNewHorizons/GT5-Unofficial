@@ -318,7 +318,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     public FluidStack getWaterBoostAmount(GTRecipe recipe) {
         // Recipes should always be constructed so that output water is always the first fluid output
         FluidStack outputWater = recipe.mFluidOutputs[0];
-        int amount = Math.round(outputWater.amount * WATER_BOOST_NEEDED_FLUID);
+        int amount = Math.round(outputWater.amount * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
         return new FluidStack(outputWater.getFluid(), amount);
     }
 
@@ -337,11 +337,15 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     /**
      * Consumes all <b>fluid</b> inputs of the current recipe.
+     * Should only scale the first fluid input with water
      */
     public void depleteRecipeInputs() {
-        for (FluidStack input : this.currentRecipe.mFluidInputs) {
+        for (int i = 0; i < this.currentRecipe.mFluidInputs.length; ++i) {
+            FluidStack input = this.currentRecipe.mFluidInputs[i];
             FluidStack copyWithParallel = input.copy();
-            copyWithParallel.amount = input.amount * effectiveParallel;
+            if (i == 0) {
+                copyWithParallel.amount = input.amount * effectiveParallel;
+            }
             this.depleteInput(copyWithParallel);
         }
     }
@@ -353,6 +357,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
      * @param progressTime Current progress time
      */
     public void startCycle(int cycleTime, int progressTime) {
+        startRecipeProcessing();
         // Important to calculate this before depleting inputs, otherwise we may get issues with boost items
         // disappearing.
         this.currentRecipeChance = this.calculateBoostedSuccessChance();
@@ -363,8 +368,10 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             this.depleteInput(inputWater);
         }
 
-        // Consume inputs
-        this.depleteRecipeInputs();
+        // Consume inputs, only if debug mode is off
+        if (!getController().debugModeOn()) {
+            this.depleteRecipeInputs();
+        }
         // Initialize recipe and progress information.
         this.mMaxProgresstime = cycleTime;
         this.mProgresstime = progressTime;
@@ -384,6 +391,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // specifically overridden so setting this value does not actually drain power.
         // Instead, power is drained by the main purification plant controller.
         this.lEUt = -this.getActualPowerUsage();
+        endRecipeProcessing();
     }
 
     public void addRecipeOutputs() {
@@ -410,13 +418,16 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     public void endCycle() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        // First see if the recipe succeeded. For some reason random.nextFloat does not compile, so we use this
-        // hack instead.
-        float successRoll = random.nextInt(0, 10000) / 100.0f;
-        if (successRoll <= calculateFinalSuccessChance()) {
-            addRecipeOutputs();
-        } else {
-            onRecipeFail();
+        // Only add output if debug mode was not on
+        if (!getController().debugModeOn()) {
+            // First see if the recipe succeeded. For some reason random.nextFloat does not compile, so we use this
+            // hack instead.
+            float successRoll = random.nextInt(0, 10000) / 100.0f;
+            if (successRoll <= calculateFinalSuccessChance()) {
+                addRecipeOutputs();
+            } else {
+                onRecipeFail();
+            }
         }
 
         // Reset recipe values for next iteration

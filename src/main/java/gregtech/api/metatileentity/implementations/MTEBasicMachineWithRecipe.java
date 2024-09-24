@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
@@ -576,16 +575,15 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                 if (this.getFillableStack() == null) return this.getRecipeMap()
                     .containsInput(aStack);
                 else return this.getRecipeMap()
-                    .findRecipe(
-                        this.getBaseMetaTileEntity(),
-                        this.mLastRecipe,
-                        true,
-                        true,
-                        V[this.mTier],
-                        new FluidStack[] { this.getFillableStack() },
-                        this.getSpecialSlot(),
-                        appendSelectedCircuit(aStack))
-                    != null;
+                    .findRecipeQuery()
+                    .items(appendSelectedCircuit(aStack))
+                    .fluids(this.getFillableStack())
+                    .specialSlot(this.getSpecialSlot())
+                    .voltage(V[this.mTier])
+                    .cachedRecipe(this.mLastRecipe)
+                    .dontCheckStackSizes(true)
+                    .notUnificated(true)
+                    .find() != null;
             }
             case 2 -> {
                 return ((this.getInputAt(0) != null && this.getInputAt(1) != null)
@@ -594,17 +592,17 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
                         : (this.getRecipeMap()
                             .containsInput(aStack)
                             && this.getRecipeMap()
-                                .findRecipe(
-                                    this.getBaseMetaTileEntity(),
-                                    this.mLastRecipe,
-                                    true,
-                                    true,
-                                    V[this.mTier],
-                                    new FluidStack[] { this.getFillableStack() },
-                                    this.getSpecialSlot(),
+                                .findRecipeQuery()
+                                .items(
                                     aIndex == this.getInputSlot() ? appendSelectedCircuit(aStack, this.getInputAt(1))
                                         : appendSelectedCircuit(this.getInputAt(0), aStack))
-                                != null)));
+                                .fluids(this.getFillableStack())
+                                .specialSlot(this.getSpecialSlot())
+                                .voltage(V[this.mTier])
+                                .cachedRecipe(this.mLastRecipe)
+                                .dontCheckStackSizes(true)
+                                .notUnificated(true)
+                                .find() != null)));
             }
             default -> {
                 int tID = this.getBaseMetaTileEntity()

@@ -24,6 +24,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.TurbineStatCalculator;
 
 public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
 
@@ -42,27 +43,14 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     }
 
     @Override
-    public int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff) {
-        if (looseFit) {
-            aOptFlow *= 4;
-            double pow = Math.pow(1.1f, ((aBaseEff - 7500) / 10000F) * 20f);
-            if (aBaseEff > 10000) {
-                aOptFlow *= pow;
-                aBaseEff = 7500;
-            } else if (aBaseEff > 7500) {
-                aOptFlow *= pow;
-                aBaseEff *= 0.75f;
-            } else {
-                aBaseEff *= 0.75f;
-            }
-        }
+    public int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
+
         int tEU = 0;
         int totalFlow = 0; // Byproducts are based on actual flow
         int flow = 0;
-        int remainingFlow = GTUtility.safeInt((long) (aOptFlow * 1.25f)); // Allowed to use up to 125% of optimal flow.
-                                                                          // Variable required outside of loop for
-        // multi-hatch scenarios.
-        this.realOptFlow = aOptFlow;
+        this.realOptFlow = looseFit ? turbine.getOptimalLooseSteamFlow() : turbine.getOptimalSteamFlow();
+        int remainingFlow = GTUtility.safeInt((long) (realOptFlow * 1.25f)); // Allowed to use up to 125% of optimal
+                                                                             // flow.
 
         storedFluid = 0;
         FluidStack tSCSteam = FluidRegistry.getFluidStack("supercriticalsteam", 1);
@@ -80,20 +68,24 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GTModHandler.getSteam(totalFlow * 100));
-        if (totalFlow == aOptFlow) {
-            tEU = GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L);
+        addOutput(GTModHandler.getSteam(totalFlow));
+        if (totalFlow == realOptFlow) {
+            tEU = GTUtility
+                .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         } else {
-            float efficiency = 1.0f - Math.abs((totalFlow - aOptFlow) / (float) aOptFlow);
+            float efficiency = 1.0f - (float) Math.abs((totalFlow - realOptFlow) / (float) realOptFlow);
             tEU *= efficiency;
-            tEU = Math.max(1, GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L));
+            tEU = Math.max(
+                1,
+                GTUtility.safeInt(
+                    (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()))));
         }
 
         if (tEU > maxPower) {
             tEU = GTUtility.safeInt(maxPower);
         }
 
-        return tEU * 100;
+        return tEU;
     }
 
     @Override
@@ -150,12 +142,10 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Supercritical Steam Turbine")
-            .addInfo("Controller block for Supercritical Fluid Turbine")
+            .addInfo("Controller block for Large Supercritical Fluid Turbine")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Use Supercritical Steam to generate power.")
-            .addInfo("Outputs 100L of Steam per 1L of SC Steam as well as producing power")
-            .addInfo("1L Supercritical Steam = 100 EU")
-            .addInfo("Extreme Heated Steam will cause more damage to the turbine.")
+            .addInfo("Outputs 1L of Steam per 1L of SC Steam as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
             .addSeparator()
@@ -165,6 +155,7 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
             .addDynamoHatch("Back center", 1)
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Supercritical Fluid, Side centered", 2)
+            .addOutputHatch("Superheated Steam, Side centered", 3)
             .toolTipFinisher("Good Generator");
         return tt;
     }

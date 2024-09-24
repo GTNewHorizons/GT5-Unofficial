@@ -18,7 +18,6 @@ import com.kuba6000.mobsinfo.api.MobRecipe;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Triplet;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -28,7 +27,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = "mobsinfo")
 public class EntityDeathHandler implements IMobExtraInfoProvider {
 
-    private static final HashMap<Class, AutoMap<Triplet<ItemStack, Integer, Integer>>> mMobDropMap = new HashMap<>();
+    private static final HashMap<Class, ArrayList<Triplet<ItemStack, Integer, Integer>>> mMobDropMap = new HashMap<>();
     private static final HashSet<Class> mInternalClassKeyCache = new HashSet<>();
 
     /**
@@ -41,11 +40,11 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
      */
     public static void registerDropsForMob(Class aMobClass, ItemStack aStack, int aMaxAmount, int aChance) {
         Triplet<ItemStack, Integer, Integer> aData = new Triplet<>(aStack, aMaxAmount, aChance);
-        AutoMap<Triplet<ItemStack, Integer, Integer>> aDataMap = mMobDropMap.get(aMobClass);
+        ArrayList<Triplet<ItemStack, Integer, Integer>> aDataMap = mMobDropMap.get(aMobClass);
         if (aDataMap == null) {
-            aDataMap = new AutoMap<>();
+            aDataMap = new ArrayList<>();
         }
-        aDataMap.put(aData);
+        aDataMap.add(aData);
         mMobDropMap.put(aMobClass, aDataMap);
 
         Logger.INFO(
@@ -69,7 +68,7 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
     }
 
     private static boolean processDropsForMob(EntityLivingBase entityLiving) {
-        AutoMap<Triplet<ItemStack, Integer, Integer>> aMobData = mMobDropMap.get(entityLiving.getClass());
+        ArrayList<Triplet<ItemStack, Integer, Integer>> aMobData = mMobDropMap.get(entityLiving.getClass());
         boolean aDidDrop = false;
         if (aMobData != null) {
             if (!aMobData.isEmpty()) {
@@ -137,7 +136,7 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
     @Override
     public void provideExtraDropsInformation(@NotNull String entityString, @NotNull ArrayList<MobDrop> drops,
         @NotNull MobRecipe recipe) {
-        AutoMap<Triplet<ItemStack, Integer, Integer>> dropEntry = mMobDropMap.get(recipe.entity.getClass());
+        ArrayList<Triplet<ItemStack, Integer, Integer>> dropEntry = mMobDropMap.get(recipe.entity.getClass());
 
         if (dropEntry != null && !dropEntry.isEmpty()) {
             for (Triplet<ItemStack, Integer, Integer> data : dropEntry) {

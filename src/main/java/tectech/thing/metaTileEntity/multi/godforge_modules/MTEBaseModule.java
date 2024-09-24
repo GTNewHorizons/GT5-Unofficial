@@ -36,6 +36,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
@@ -263,7 +264,21 @@ public class MTEBaseModule extends TTMultiblockBase {
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0);
+
+        if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 3, 3, 0)) {
+            return false;
+        }
+
+        if (this instanceof MTEExoticModule) {
+            if (mOutputHatches.size() < 1) {
+                return false;
+            }
+            if (mOutputBusses.size() < 1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -288,7 +303,11 @@ public class MTEBaseModule extends TTMultiblockBase {
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
-        builder.widget(screenElements);
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(screenElements.setPos(10, 0))
+                .setPos(0, 7)
+                .setSize(190, 79));
 
         buildContext.addSyncedWindow(VOLTAGE_WINDOW_ID, this::createVoltageWindow);
 

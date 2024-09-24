@@ -4,9 +4,9 @@ import org.apache.logging.log4j.LogManager;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.preloader.asm.AsmConfig;
+import gregtech.asm.GTCorePlugin;
+import gtPlusPlus.core.config.ASMConfiguration;
+import gtPlusPlus.core.config.Configuration;
 
 public class Logger {
 
@@ -21,7 +21,7 @@ public class Logger {
         return gtPlusPlusLogger;
     }
 
-    private static final boolean enabled = !AsmConfig.disableAllLogging;
+    private static final boolean enabled = !ASMConfiguration.debug.disableAllLogging;
 
     public static final org.apache.logging.log4j.Logger getLogger() {
         return modLogger;
@@ -37,8 +37,7 @@ public class Logger {
     // Non-Dev Comments
     public static void MACHINE_INFO(String s, Object... args) {
         if (enabled) {
-            boolean localPlayer = PreloaderCore.DEV_ENVIRONMENT;
-            if (GTPPCore.ConfigSwitches.MACHINE_INFO || localPlayer) {
+            if (Configuration.debug.MachineInfo || GTCorePlugin.isDevEnv()) {
                 final String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
                 modLogger.info("Machine Info: " + s + " | " + name1, args);
             }
@@ -48,7 +47,7 @@ public class Logger {
     // Developer Comments
     public static void WARNING(final String s) {
         if (enabled) {
-            if (PreloaderCore.DEBUG_MODE) {
+            if (ASMConfiguration.debug.debugMode) {
                 modLogger.warn(s);
             }
         }
@@ -57,7 +56,7 @@ public class Logger {
     // Errors
     public static void ERROR(final String s) {
         if (enabled) {
-            if (PreloaderCore.DEBUG_MODE) {
+            if (ASMConfiguration.debug.debugMode) {
                 modLogger.fatal(s);
             }
         }
@@ -95,7 +94,7 @@ public class Logger {
      */
     public static void DEBUG_BEES(final String s) {
         if (enabled) {
-            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
+            if (GTCorePlugin.isDevEnv() || ASMConfiguration.debug.debugMode) {
                 modLogger.info("[Debug][Bees] " + s);
             }
         }
@@ -106,7 +105,7 @@ public class Logger {
      */
     public static void MATERIALS(final String s) {
         if (enabled) {
-            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
+            if (GTCorePlugin.isDevEnv() || ASMConfiguration.debug.debugMode) {
                 modLogger.info("[Materials] " + s);
             }
         }
@@ -117,7 +116,7 @@ public class Logger {
      */
     public static void DEBUG_MATERIALS(final String s) {
         if (enabled) {
-            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
+            if (GTCorePlugin.isDevEnv() || ASMConfiguration.debug.debugMode) {
                 modLogger.info("[Debug][Materials] " + s);
             }
         }
@@ -128,7 +127,7 @@ public class Logger {
      */
     public static void REFLECTION(final String s) {
         if (enabled) {
-            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
+            if (GTCorePlugin.isDevEnv() || ASMConfiguration.debug.debugMode) {
                 modLogger.info("[Reflection] " + s);
             }
         }
@@ -139,7 +138,7 @@ public class Logger {
      */
     public static void WORLD(final String s) {
         if (enabled) {
-            if (PreloaderCore.DEV_ENVIRONMENT || PreloaderCore.DEBUG_MODE) {
+            if (GTCorePlugin.isDevEnv() || ASMConfiguration.debug.debugMode) {
                 modLogger.info("[WorldGen] " + s);
             }
         }
@@ -148,7 +147,7 @@ public class Logger {
     public static void RECIPE(String string) {
         if (enabled) {
             if (
-            /* CORE_Preloader.DEV_ENVIRONMENT || */ PreloaderCore.DEBUG_MODE) {
+            /* GTCorePlugin.isDevEnv() || */ ASMConfiguration.debug.debugMode) {
                 modLogger.info("[Recipe] " + string);
             }
         }

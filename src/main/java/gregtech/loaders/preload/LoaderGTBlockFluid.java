@@ -3,6 +3,7 @@ package gregtech.loaders.preload;
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
+import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
@@ -21,7 +22,6 @@ import java.util.Locale;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -53,6 +53,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockBlackholeRenderer;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
@@ -78,10 +79,12 @@ import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
 import gregtech.common.blocks.BlockWormholeRender;
 import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.items.ItemAdvancedSensorCard;
 import gregtech.common.items.ItemDepletedCell;
 import gregtech.common.items.ItemFluidDisplay;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.ItemNeutronReflector;
+import gregtech.common.items.ItemSensorCard;
 import gregtech.common.items.ItemTierDrone;
 import gregtech.common.items.ItemVolumetricFlask;
 import gregtech.common.items.ItemWirelessHeadphones;
@@ -91,6 +94,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
 import gregtech.common.tileentities.render.TileEntityLaser;
 import gregtech.common.tileentities.render.TileEntityWormhole;
@@ -176,25 +180,18 @@ public class LoaderGTBlockFluid implements Runnable {
 
         ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", "Volumetric flask", 1000));
 
-        Item tItem = (Item) GTUtility.callConstructor(
-            "gregtech.common.items.ItemSensorCard",
-            0,
-            null,
-            false,
-            new Object[] { "sensorcard", "GregTech Sensor Card" });
-        ItemList.NC_SensorCard.set(
-            tItem == null ? new GTGenericItem("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed")
-                : tItem);
-
-        Item advSensorCard = (Item) GTUtility
-            .callConstructor("gregtech.common.items.ItemAdvancedSensorCard", 0, null, false);
-        ItemList.NC_AdvancedSensorCard.set(
-            advSensorCard == null
-                ? new GTGenericItem(
+        if (Mods.IC2NuclearControl.isModLoaded()) {
+            ItemList.NC_SensorCard.set(new ItemSensorCard("sensorcard", "GregTech Sensor Card"));
+            ItemList.NC_AdvancedSensorCard.set(new ItemAdvancedSensorCard());
+        } else {
+            ItemList.NC_SensorCard
+                .set(new GTGenericItem("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed"));
+            ItemList.NC_AdvancedSensorCard.set(
+                new GTGenericItem(
                     "advancedsensorcard",
                     "GregTech Advanced Sensor Card",
-                    "Nuclear Control not installed")
-                : advSensorCard);
+                    "Nuclear Control not installed"));
+        }
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
@@ -238,12 +235,12 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Depleted_Thorium_1.set(new ItemDepletedCell("ThoriumcellDep", "Fuel Rod (Depleted Thorium)", 1));
         ItemList.Depleted_Thorium_2
             .set(new ItemDepletedCell("Double_ThoriumcellDep", "Dual Fuel Rod (Depleted Thorium)", 1)); // TODO
-                                                                                                        // CHECK
-                                                                                                        // num
+        // CHECK
+        // num
         ItemList.Depleted_Thorium_4
             .set(new ItemDepletedCell("Quad_ThoriumcellDep", "Quad Fuel Rod (Depleted Thorium)", 1)); // TODO
-                                                                                                      // CHECK
-                                                                                                      // num
+        // CHECK
+        // num
         ItemList.ThoriumCell_1.set(
             new ItemRadioactiveCellIC(
                 "Thoriumcell",
@@ -558,6 +555,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockTintedGlass = new BlockTintedIndustrialGlass();
         GregTechAPI.sLaserRender = new BlockLaser();
         GregTechAPI.sWormholeRender = new BlockWormholeRender();
+        GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
 
         // meta ID order, DO NOT CHANGE ORDER
 
@@ -690,6 +688,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTLog.out.println("GTMod: Registering the WormholeRender.");
         GameRegistry.registerTileEntity(TileEntityWormhole.class, "WormholeRender");
+
+        GTLog.out.println("GTMod: Registering the BlackholeRender.");
+        GameRegistry.registerTileEntity(TileEntityBlackhole.class, "BlackholeRender");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
@@ -1289,6 +1290,33 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(MaterialsUEVplus.PhononCrystalSolution)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.PhononCrystalSolution, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("antimatter")
+            .withLocalizedName(MaterialsUEVplus.Antimatter.mLocalizedName)
+            .withStateAndTemperature(LIQUID, -1)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.Antimatter)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Antimatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("protomatter")
+            .withLocalizedName(MaterialsUEVplus.Protomatter.mLocalizedName)
+            .withStateAndTemperature(LIQUID, 1)
+            .buildAndRegister()
+            .configureMaterials(MaterialsUEVplus.Protomatter)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("InfinityPlasma")
+            .withLocalizedName("Infinity Plasma")
+            .withStateAndTemperature(PLASMA, 10000)
+            .buildAndRegister()
+            .configureMaterials(Materials.Infinity)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Infinity, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("fieryblood")
@@ -1921,33 +1949,33 @@ public class LoaderGTBlockFluid implements Runnable {
             .buildAndRegister()
             .registerPContainers(ItemList.Bottle_Cave_Johnsons_Grenade_Juice.get(1L), ItemList.Bottle_Empty.get(1L));
 
-        GTFluidFactory.builder("potion.darkcoffee")
-            .withLocalizedName("Dark Coffee")
-            .withStateAndTemperature(LIQUID, 295)
-            .buildAndRegister()
-            .registerPContainers(ItemList.ThermosCan_Dark_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
-        GTFluidFactory.builder("potion.darkcafeaulait")
-            .withLocalizedName("Dark Cafe au lait")
-            .withStateAndTemperature(LIQUID, 295)
-            .buildAndRegister()
-            .registerPContainers(ItemList.ThermosCan_Dark_Cafe_au_lait.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.coffee")
             .withLocalizedName("Coffee")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .registerPContainers(ItemList.ThermosCan_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
-        GTFluidFactory.builder("potion.cafeaulait")
-            .withLocalizedName("Cafe au lait")
+        GTFluidFactory.builder("potion.sweetcoffee")
+            .withLocalizedName("Sweet Coffee")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .registerPContainers(ItemList.ThermosCan_Cafe_au_lait.get(1L), ItemList.ThermosCan_Empty.get(1L));
-        GTFluidFactory.builder("potion.laitaucafe")
-            .withLocalizedName("Lait au cafe")
+            .registerPContainers(ItemList.ThermosCan_Sweet_Coffee.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GTFluidFactory.builder("potion.Latte")
+            .withLocalizedName("Latte")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .registerPContainers(ItemList.ThermosCan_Lait_au_cafe.get(1L), ItemList.ThermosCan_Empty.get(1L));
+            .registerPContainers(ItemList.ThermosCan_Latte.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GTFluidFactory.builder("potion.sweetlatte")
+            .withLocalizedName("Sweet Latte")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .registerPContainers(ItemList.ThermosCan_Sweet_Latte.get(1L), ItemList.ThermosCan_Empty.get(1L));
+        GTFluidFactory.builder("potion.sweetjesuslatte")
+            .withLocalizedName("Sweet Jesus Latte")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .registerPContainers(ItemList.ThermosCan_Sweet_Jesus_Latte.get(1L), ItemList.ThermosCan_Empty.get(1L));
         GTFluidFactory.builder("potion.darkchocolatemilk")
-            .withLocalizedName("Bitter Chocolate Milk")
+            .withLocalizedName("Dark Chocolate Milk")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
             .registerPContainers(ItemList.ThermosCan_Dark_Chocolate_Milk.get(1L), ItemList.ThermosCan_Empty.get(1L));
@@ -2067,34 +2095,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .set(OrePrefixes.nugget, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
         GTOreDictUnificator
             .set(OrePrefixes.ingot, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.Iron,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.Steel,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.TinAlloy,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
-            false,
-            false);
-
-        GTOreDictUnificator.set(
-            OrePrefixes.plate,
-            Materials.Copper,
-            GTModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
-            false,
-            false);
 
         GTOreDictUnificator.set(
             OrePrefixes.dust,

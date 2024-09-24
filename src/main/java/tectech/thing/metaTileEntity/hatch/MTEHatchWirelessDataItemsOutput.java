@@ -27,8 +27,6 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
     public InventoryDataPacket dataPacket = null;
 
-    public boolean uploadedSinceReset = false;
-
     public MTEHatchWirelessDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -94,7 +92,6 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
         if (dataPacket != null) {
             aNBT.setTag("eDATA", dataPacket.toNbt());
         }
-        aNBT.setBoolean("uploadedSinceReset", uploadedSinceReset);
     }
 
     @Override
@@ -103,9 +100,6 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
         if (aNBT.hasKey("eDATA")) {
             dataPacket = new InventoryDataPacket(aNBT.getCompoundTag("eDATA"));
         }
-        if (aNBT.hasKey("uploadedSinceReset")) {
-            uploadedSinceReset = aNBT.getBoolean("uploadedSinceReset");
-        }
     }
 
     @Override
@@ -113,11 +107,10 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Upload data packet and mark it as uploaded, so it will not be uploaded again
             // until the data bank resets the wireless network
-            if (dataPacket != null && !uploadedSinceReset) {
+            if (dataPacket != null && (aTick % WirelessDataStore.UPLOAD_TICK) == 0) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-                wirelessDataStore.uploadData(Arrays.asList(dataPacket.getContent()));
-                uploadedSinceReset = true;
+                wirelessDataStore.uploadData(Arrays.asList(dataPacket.getContent()), aTick);
             }
         }
     }

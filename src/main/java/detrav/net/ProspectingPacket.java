@@ -20,6 +20,7 @@ import bartworks.system.material.Werkstoff;
 import detrav.DetravScannerMod;
 import detrav.gui.DetravScannerGUI;
 import detrav.gui.textures.DetravMapTexture;
+import detrav.utils.FluidColors;
 import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -39,7 +40,6 @@ public class ProspectingPacket extends DetravPacket {
     public final HashMap<Byte, Short>[][] map;
     public final HashMap<String, Integer> ores;
     public final HashMap<Short, String> metaMap;
-    public static final HashMap<Integer, short[]> fluidColors = new HashMap<>();
 
     public int level = -1;
 
@@ -56,9 +56,8 @@ public class ProspectingPacket extends DetravPacket {
     }
 
     private static void addOre(ProspectingPacket packet, byte y, int i, int j, short meta) {
+        final short[] rgba;
         final String name;
-        short[] rgba;
-
         try {
             if (packet.ptype == 0 || packet.ptype == 1) {
                 // Ore or Small Ore
@@ -72,22 +71,16 @@ public class ProspectingPacket extends DetravPacket {
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
                         String translated = GTLanguageManager.getTranslation("bw.blocktype.ore");
                         name = translated.replace("%material", werkstoff.getLocalizedName());
-                        rgba = werkstoff != null ? werkstoff.getRGBA() : new short[] { 0, 0, 0, 0 };
+                        rgba = werkstoff.getRGBA();
                     }
                 } else {
-                    gtPlusPlus.core.material.Material pMaterial = GTppHelper.decodeoresGTpp.get((short) (meta - 7000));
-                    rgba = pMaterial.getRGBA();
-                    name = pMaterial.getLocalizedName() + " Ore";
+                    gtPlusPlus.core.material.Material mat = GTppHelper.getMatFromMeta(meta);
+                    rgba = mat.getRGBA();
+                    name = mat.getLocalizedName() + " Ore";
                 }
             } else if (packet.ptype == 2) {
                 // Fluid
-                rgba = fluidColors.get((int) meta);
-                if (rgba == null) {
-                    DetravScannerMod.proxy
-                        .sendPlayerExeption("Unknown fluid ID = " + meta + " Please add to FluidColors.java!");
-                    rgba = new short[] { 0, 0, 0, 0 };
-                }
-
+                rgba = FluidColors.getColor(meta);
                 name = Objects.firstNonNull(
                     FluidRegistry.getFluid(meta)
                         .getLocalizedName(new FluidStack(FluidRegistry.getFluid(meta), 0)),

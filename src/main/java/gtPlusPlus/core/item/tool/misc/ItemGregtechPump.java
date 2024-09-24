@@ -51,7 +51,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -1140,9 +1139,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return getStoredFluidOfVanillaTank((IFluidTank) aTileEntity);
         }
         FluidStack f;
-        AutoMap<FluidTankInfo[]> m = new AutoMap<>();
+        ArrayList<FluidTankInfo[]> m = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            m.put(aTileEntity.getTankInfo(ForgeDirection.getOrientation(i)));
+            m.add(aTileEntity.getTankInfo(ForgeDirection.getOrientation(i)));
         }
         if (m.get(0) != null && m.get(0)[0] != null && m.get(0)[0].fluid != null) {
             return m.get(0)[0].fluid;
@@ -1238,7 +1237,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (aTileEntity == null) {
             return null;
         }
-        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
+        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null || aMetaTileEntity instanceof MTEHatchMultiInput) {
             // blacklist multiinput hatch as it's too complex
             return null;

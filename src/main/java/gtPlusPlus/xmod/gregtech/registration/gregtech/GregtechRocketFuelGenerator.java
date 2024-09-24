@@ -12,7 +12,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -23,9 +22,8 @@ public class GregtechRocketFuelGenerator {
 
     public static void run() {
         Logger.INFO("Gregtech5u Content | Registering Industrial Rocket Engines.");
-        if (GTPPCore.ConfigSwitches.enableMachine_RocketEngines) {
-            run1();
-        }
+        run1();
+
     }
 
     private static void run1() {

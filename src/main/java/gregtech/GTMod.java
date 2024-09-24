@@ -81,24 +81,12 @@ import gregtech.common.GTDummyWorld;
 import gregtech.common.GTNetwork;
 import gregtech.common.GTProxy;
 import gregtech.common.RecipeAdder;
-import gregtech.common.config.client.ConfigColorModulation;
-import gregtech.common.config.client.ConfigInterface;
-import gregtech.common.config.client.ConfigPreference;
-import gregtech.common.config.client.ConfigRender;
-import gregtech.common.config.client.ConfigWaila;
-import gregtech.common.config.gregtech.ConfigDebug;
-import gregtech.common.config.gregtech.ConfigFeatures;
-import gregtech.common.config.gregtech.ConfigGeneral;
-import gregtech.common.config.gregtech.ConfigHarvestLevel;
-import gregtech.common.config.gregtech.ConfigMachines;
-import gregtech.common.config.gregtech.ConfigOreDropBehavior;
-import gregtech.common.config.gregtech.ConfigPollution;
-import gregtech.common.config.machinestats.ConfigBronzeSolarBoiler;
-import gregtech.common.config.machinestats.ConfigMassFabricator;
-import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
-import gregtech.common.config.machinestats.ConfigSteelSolarBoiler;
-import gregtech.common.config.machinestats.ConfigTeleporter;
-import gregtech.common.config.worldgen.ConfigEndAsteroids;
+import gregtech.common.config.Client;
+import gregtech.common.config.Gregtech;
+import gregtech.common.config.MachineStats;
+import gregtech.common.config.OPStuff;
+import gregtech.common.config.Other;
+import gregtech.common.config.Worldgen;
 import gregtech.common.covers.CoverFacadeAE;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
@@ -190,38 +178,22 @@ public class GTMod implements IGTMod {
     static {
         try {
             // Client
-            ConfigurationManager.registerConfig(ConfigColorModulation.class);
-            ConfigurationManager.registerConfig(ConfigInterface.class);
-            ConfigurationManager.registerConfig(ConfigPreference.class);
-            ConfigurationManager.registerConfig(ConfigRender.class);
-            ConfigurationManager.registerConfig(ConfigWaila.class);
+            ConfigurationManager.registerConfig(Client.class);
 
             // GregTech.cfg
-            ConfigurationManager.registerConfig(ConfigDebug.class);
-            ConfigurationManager.registerConfig(ConfigFeatures.class);
-            ConfigurationManager.registerConfig(ConfigGeneral.class);
-            ConfigurationManager.registerConfig(ConfigHarvestLevel.class);
-            ConfigurationManager.registerConfig(ConfigMachines.class);
-            ConfigurationManager.registerConfig(ConfigOreDropBehavior.class);
-            ConfigurationManager.registerConfig(ConfigPollution.class);
+            ConfigurationManager.registerConfig(Gregtech.class);
 
             // MachineStats.cfg
-            ConfigurationManager.registerConfig(ConfigBronzeSolarBoiler.class);
-            ConfigurationManager.registerConfig(gregtech.common.config.machinestats.ConfigMachines.class);
-            ConfigurationManager.registerConfig(ConfigMassFabricator.class);
-            ConfigurationManager.registerConfig(ConfigMicrowaveEnergyTransmitter.class);
-            ConfigurationManager.registerConfig(ConfigSteelSolarBoiler.class);
-            ConfigurationManager.registerConfig(ConfigTeleporter.class);
+            ConfigurationManager.registerConfig(MachineStats.class);
 
             // OverPoweredStuff
-            ConfigurationManager.registerConfig(gregtech.common.config.opstuff.ConfigGeneral.class);
+            ConfigurationManager.registerConfig(OPStuff.class);
 
             // Other
-            ConfigurationManager.registerConfig(gregtech.common.config.other.ConfigGeneral.class);
+            ConfigurationManager.registerConfig(Other.class);
 
             // WorldGeneration
-            ConfigurationManager.registerConfig(ConfigEndAsteroids.class);
-            ConfigurationManager.registerConfig(gregtech.common.config.worldgen.ConfigGeneral.class);
+            ConfigurationManager.registerConfig(Worldgen.class);
 
         } catch (ConfigException e) {
             throw new RuntimeException(e);
@@ -238,9 +210,8 @@ public class GTMod implements IGTMod {
         clientSide = "gregtech.common.GTClient",
         serverSide = "gregtech.common.GTServer")
     public static GTProxy gregtechproxy;
-    public static final boolean DEBUG = Boolean.getBoolean("gt.debug");;
+    public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
-    public static int MAX_IC2 = 2147483647;
     public static GTAchievements achievements;
     @Deprecated
     public static final String aTextGeneral = "general";

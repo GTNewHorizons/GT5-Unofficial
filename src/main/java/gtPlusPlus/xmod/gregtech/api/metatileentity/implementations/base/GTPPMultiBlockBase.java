@@ -1,8 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,14 +9,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -80,11 +77,9 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.PreloaderCore;
-import gtPlusPlus.preloader.asm.AsmConfig;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
@@ -208,7 +203,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                         + ": "
                         + EnumChatFormatting.YELLOW
                         + GTValues.VN[GTUtility.getTier(getMaxInputVoltage())]
-                        + EnumChatFormatting.RESET));;
+                        + EnumChatFormatting.RESET));
         }
         if (!this.mAllDynamoHatches.isEmpty()) {
             long storedEnergy = getStoredEnergyInAllDynamoHatches();
@@ -302,7 +297,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public int getPollutionReductionForAllMufflers() {
         int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
             mPollutionReduction = Math.max(calculatePollutionReductionForHatch(tHatch, 100), mPollutionReduction);
         }
         return mPollutionReduction;
@@ -310,7 +305,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public long getStoredEnergyInAllEnergyHatches() {
         long storedEnergy = 0;
-        for (MTEHatch tHatch : filterValidMTEs(mAllEnergyHatches)) {
+        for (MTEHatch tHatch : validMTEList(mAllEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
         }
@@ -319,7 +314,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public long getMaxEnergyStorageOfAllEnergyHatches() {
         long maxEnergy = 0;
-        for (MTEHatch tHatch : filterValidMTEs(mAllEnergyHatches)) {
+        for (MTEHatch tHatch : validMTEList(mAllEnergyHatches)) {
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
@@ -328,7 +323,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public long getStoredEnergyInAllDynamoHatches() {
         long storedEnergy = 0;
-        for (MTEHatch tHatch : filterValidMTEs(mAllDynamoHatches)) {
+        for (MTEHatch tHatch : validMTEList(mAllDynamoHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
         }
@@ -337,7 +332,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public long getMaxEnergyStorageOfAllDynamoHatches() {
         long maxEnergy = 0;
-        for (MTEHatch tHatch : filterValidMTEs(mAllDynamoHatches)) {
+        for (MTEHatch tHatch : validMTEList(mAllDynamoHatches)) {
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
@@ -384,8 +379,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     public static Method aLogger = null;
 
     public void log(String s) {
-        if (!AsmConfig.disableAllLogging) {
-            if (PreloaderCore.DEBUG_MODE) {
+        if (!ASMConfiguration.debug.disableAllLogging) {
+            if (ASMConfiguration.debug.debugMode) {
                 Logger.INFO(s);
             } else {
                 Logger.MACHINE_INFO(s);
@@ -406,7 +401,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             return mEnergyHatches.get(0)
                 .getBaseMetaTileEntity()
                 .getInputVoltage();
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) rEnergy += tHatch.getBaseMetaTileEntity()
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) rEnergy += tHatch.getBaseMetaTileEntity()
             .getInputVoltage()
             * tHatch.getBaseMetaTileEntity()
                 .getInputAmperage();
@@ -492,7 +487,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
      * expected fluid
      */
     protected boolean depleteInputFromRestrictedHatches(Collection<MTEHatchCustomFluidBase> aHatches, int aAmount) {
-        for (final MTEHatchCustomFluidBase tHatch : filterValidMTEs(aHatches)) {
+        for (final MTEHatchCustomFluidBase tHatch : validMTEList(aHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
             if (tLiquid == null || tLiquid.amount < aAmount) {
                 continue;
@@ -508,10 +503,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     @Override
     public void updateSlots() {
-        for (final MTEHatchInputBattery tHatch : filterValidMTEs(this.mChargeHatches)) {
+        for (final MTEHatchInputBattery tHatch : validMTEList(this.mChargeHatches)) {
             tHatch.updateSlots();
         }
-        for (final MTEHatchOutputBattery tHatch : filterValidMTEs(this.mDischargeHatches)) {
+        for (final MTEHatchOutputBattery tHatch : validMTEList(this.mDischargeHatches)) {
             tHatch.updateSlots();
         }
         super.updateSlots();
@@ -843,43 +838,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
      * Enable Texture Casing Support if found in GT 5.09
      */
     public boolean updateTexture(final IMetaTileEntity aTileEntity, int aCasingID) {
-        try { // gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch.updateTexture(int)
-
-            final IMetaTileEntity aMetaTileEntity = aTileEntity;
-            if (aMetaTileEntity == null) {
-                return false;
-            }
-            Method mProper = ReflectionUtils.getMethod(MTEHatch.class, "updateTexture", int.class);
-            if (mProper != null) {
-                if (MTEHatch.class.isInstance(aMetaTileEntity)) {
-                    mProper.setAccessible(true);
-                    mProper.invoke(aMetaTileEntity, aCasingID);
-                    // log("Good Method Call for updateTexture.");
-                    return true;
-                }
-            } else {
-                log("Bad Method Call for updateTexture.");
-                if (MTEHatch.class.isInstance(aMetaTileEntity)) {
-                    if (aCasingID <= Byte.MAX_VALUE) {
-                        ((MTEHatch) aTileEntity).updateTexture(aCasingID);
-                        log(
-                            "Good Method Call for updateTexture. Used fallback method of setting mMachineBlock as casing id was <= 128.");
-                        return true;
-                    } else {
-                        log("updateTexture returning false. 1.2");
-                    }
-                } else {
-                    log("updateTexture returning false. 1.3");
-                }
-            }
-            log("updateTexture returning false. 1");
-            return false;
-        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            log("updateTexture returning false.");
-            log("updateTexture returning false. 2");
-            e.printStackTrace();
-            return false;
+        if (aTileEntity instanceof MTEHatch mteHatch) {
+            mteHatch.updateTexture(aCasingID);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -1624,12 +1587,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             public long count(GTPPMultiBlockBase<?> t) {
                 return t.mTecTechEnergyHatches.size();
             }
-        },;
-
-        @SuppressWarnings("unchecked")
-        private static <T> Class<T> retype(Class<?> clazz) {
-            return (Class<T>) clazz;
-        }
+        };
 
         private final List<? extends Class<? extends IMetaTileEntity>> mMteClasses;
         private final IGTHatchAdder<? super GTPPMultiBlockBase<?>> mAdder;
@@ -1638,15 +1596,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         GTPPHatchElement(IGTHatchAdder<? super GTPPMultiBlockBase<?>> aAdder,
             Class<? extends IMetaTileEntity>... aMteClasses) {
             this.mMteClasses = Arrays.asList(aMteClasses);
-            this.mAdder = aAdder;
-        }
-
-        GTPPHatchElement(IGTHatchAdder<? super GTPPMultiBlockBase<?>> aAdder, String... aClassNames) {
-            this.mMteClasses = Arrays.stream(aClassNames)
-                .map(ReflectionUtils::getClass)
-                .filter(Objects::nonNull)
-                .<Class<? extends IMetaTileEntity>>map(GTPPHatchElement::retype)
-                .collect(Collectors.toList());
             this.mAdder = aAdder;
         }
 

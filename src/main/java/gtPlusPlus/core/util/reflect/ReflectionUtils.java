@@ -20,7 +20,6 @@ import gtPlusPlus.core.util.data.StringUtils;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ReflectionUtils {
 
-    public static Map<String, Class<?>> mCachedClasses = new LinkedHashMap<>();
     public static Map<String, CachedMethod> mCachedMethods = new LinkedHashMap<>();
     public static Map<String, CachedField> mCachedFields = new LinkedHashMap<>();
     public static Map<String, CachedConstructor> mCachedConstructors = new LinkedHashMap<>();
@@ -74,18 +73,6 @@ public class ReflectionUtils {
                 .getUntypedField(Fields.LookupType.DECLARED_IN_HIERARCHY, field.getName()));
     }
 
-    private static boolean cacheClass(Class<?> aClass) {
-        if (aClass == null) {
-            return false;
-        }
-        Class<?> y = mCachedClasses.get(aClass.getCanonicalName());
-        if (y == null) {
-            mCachedClasses.put(aClass.getCanonicalName(), aClass);
-            return true;
-        }
-        return false;
-    }
-
     private static boolean cacheMethod(Class<?> aClass, Method aMethod) {
         if (aMethod == null) {
             return false;
@@ -126,7 +113,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Constructor} object.
-     * 
+     *
      * @param aClass - Class containing the Constructor.
      * @param aTypes - Varags Class Types for objects constructor.
      * @return - Valid, non-final, {@link Method} object, or {@link null}.
@@ -154,29 +141,8 @@ public class ReflectionUtils {
     }
 
     /**
-     * Returns a cached {@link Class} object.
-     * 
-     * @param aClassCanonicalName - The canonical name of the underlying class.
-     * @return - Valid, {@link Class} object, or {@link null}.
-     */
-    public static Class<?> getClass(String aClassCanonicalName) {
-        if (aClassCanonicalName == null || aClassCanonicalName.length() <= 0) {
-            return null;
-        }
-        Class<?> y = mCachedClasses.get(aClassCanonicalName);
-        if (y == null) {
-            y = getClass_Internal(aClassCanonicalName);
-            if (y != null) {
-                Logger.REFLECTION("Caching Class: " + aClassCanonicalName);
-                cacheClass(y);
-            }
-        }
-        return y;
-    }
-
-    /**
      * Returns a cached {@link Method} object. Wraps {@link #getMethod(Class, String, Class...)}.
-     * 
+     *
      * @param aObject     - Object containing the Method.
      * @param aMethodName - Method's name in {@link String} form.
      * @param aTypes      - Class Array of Types for {@link Method}'s constructor.
@@ -188,7 +154,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Method} object.
-     * 
+     *
      * @param aClass      - Class containing the Method.
      * @param aMethodName - Method's name in {@link String} form.
      * @param aTypes      - Varags Class Types for {@link Method}'s constructor.
@@ -217,7 +183,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Field} object.
-     * 
+     *
      * @param aClass     - Class containing the Method.
      * @param aFieldName - Field name in {@link String} form.
      * @return - Valid, non-final, {@link Field} object, or {@link null}.
@@ -246,7 +212,7 @@ public class ReflectionUtils {
 
     /**
      * Returns a cached {@link Field} object.
-     * 
+     *
      * @param aInstance  - {@link Object} to get the field instance from.
      * @param aFieldName - Field name in {@link String} form.
      * @return - Valid, non-final, {@link Field} object, or {@link null}.
@@ -262,10 +228,6 @@ public class ReflectionUtils {
     /*
      * Utility Functions
      */
-
-    public static boolean doesClassExist(final String classname) {
-        return isClassPresent(classname);
-    }
 
     public static void makeFieldAccessible(final Field field) {
         if (!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(
@@ -286,7 +248,7 @@ public class ReflectionUtils {
     /**
      * Get the method name for a depth in call stack. <br />
      * Utility function
-     * 
+     *
      * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
      * @return Method name
      */
@@ -321,14 +283,6 @@ public class ReflectionUtils {
         }
 
         return loaded > 0;
-    }
-
-    public static void loadClass(String aClassName) {
-        try {
-            Class.forName(aClassName, true, ReflectionUtils.class.getClassLoader());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     public static boolean setField(final Object object, final String fieldName, final Object fieldValue) {
@@ -453,20 +407,6 @@ public class ReflectionUtils {
         }
     }
 
-    /**
-     * if (isPresent("com.optionaldependency.DependencyClass")) || This block will never execute when the dependency is
-     * not present. There is therefore no more risk of code throwing NoClassDefFoundException.
-     */
-    private static boolean isClassPresent(final String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (final Throwable ex) {
-            // Class or one of its dependencies is not present...
-            return false;
-        }
-    }
-
     private static Method getMethod_Internal(Class<?> aClass, String aMethodName, Class<?>... aTypes) {
         Method m = null;
         try {
@@ -569,106 +509,6 @@ public class ReflectionUtils {
         }
     }
 
-    private static Class<?> getNonPublicClass(final String className) {
-        Class<?> c = null;
-        try {
-            c = Class.forName(className);
-        } catch (final ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        // full package name --------^^^^^^^^^^
-        // or simpler without Class.forName:
-        // Class<package1.A> c = package1.A.class;
-
-        if (null != c) {
-            // In our case we need to use
-            Constructor<?> constructor = null;
-            try {
-                constructor = c.getDeclaredConstructor();
-            } catch (NoSuchMethodException | SecurityException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            // note: getConstructor() can return only public constructors
-            // so we needed to search for any Declared constructor
-
-            // now we need to make this constructor accessible
-            if (null != constructor) {
-                constructor.setAccessible(true); // ABRACADABRA!
-
-                try {
-                    final Object o = constructor.newInstance();
-                    return (Class<?>) o;
-                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
-
-    private static Class<?> getClass_Internal(String string) {
-        Class<?> aClass = null;
-        if (ReflectionUtils.doesClassExist(string)) {
-            try {
-                aClass = Class.forName(string);
-            } catch (ClassNotFoundException e) {
-                aClass = getNonPublicClass(string);
-            }
-        }
-
-        if (aClass == null) {
-            String aClassName = "";
-            Logger.REFLECTION("Splitting " + string + " to try look for hidden classes.");
-            String[] aData = string.split("\\.");
-            Logger.REFLECTION("Obtained " + aData.length + " pieces.");
-            for (int i = 0; i < (aData.length - 1); i++) {
-                aClassName += (i > 0) ? "." + aData[i] : "" + aData[i];
-                Logger.REFLECTION("Building: " + aClassName);
-            }
-            if (aClassName != null && aClassName.length() > 0) {
-                Logger.REFLECTION("Trying to search '" + aClassName + "' for inner classes.");
-                Class<?> clazz = ReflectionUtils.getClass(aClassName);
-                if (clazz != null) {
-                    Class[] y = clazz.getDeclaredClasses();
-                    if (y == null || y.length <= 0) {
-                        Logger.REFLECTION("No hidden inner classes found.");
-                        return null;
-                    } else {
-                        boolean found = false;
-                        for (Class<?> h : y) {
-                            Logger.REFLECTION("Found hidden inner class: " + h.getCanonicalName());
-                            if (h.getSimpleName()
-                                .toLowerCase()
-                                .equals(aData[aData.length - 1].toLowerCase())) {
-                                Logger.REFLECTION(
-                                    "Found correct class. [" + aData[aData.length - 1]
-                                        + "] Caching at correct location: "
-                                        + string);
-                                Logger.REFLECTION("Found at location: " + h.getCanonicalName());
-                                ReflectionUtils.mCachedClasses.put(string, h);
-                                aClass = h;
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            return null;
-                        }
-                    }
-                } else {
-                    return null;
-                }
-            } else {
-                return null;
-            }
-        }
-        return aClass;
-    }
-
     /**
      *
      * Set the value of a field reflectively.
@@ -701,9 +541,7 @@ public class ReflectionUtils {
         T aInstance;
         try {
             aInstance = (T) aConstructor.newInstance(aArgs);
-            if (aInstance != null) {
-                return aInstance;
-            }
+            return aInstance;
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
             | InvocationTargetException e) {
             e.printStackTrace();

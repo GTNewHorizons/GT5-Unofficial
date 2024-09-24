@@ -56,7 +56,6 @@ import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.CoverBehavior;
 import gregtech.api.util.CoverBehaviorBase;
-import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTCreativeTab;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -221,10 +220,6 @@ public class GregTechAPI {
      */
     @SideOnly(Side.CLIENT)
     public static IIconRegister sBlockIcons, sItemIcons;
-    /**
-     * The Configuration Objects
-     */
-    public static GTConfig NEIClientFIle;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
@@ -246,6 +241,7 @@ public class GregTechAPI {
     public static Block sBlockTintedGlass;
     public static Block sLaserRender;
     public static Block sWormholeRender;
+    public static Block sBlackholeRender;
     /**
      * Getting assigned by the Config
      */
@@ -271,8 +267,6 @@ public class GregTechAPI {
     public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false,
         sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false,
         sFullLoadFinished = false;
-
-    private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
 
     @SuppressWarnings("unchecked")
     private static final IntFunction<TileEntity>[] teCreators = new IntFunction[16];
@@ -394,16 +388,8 @@ public class GregTechAPI {
      * Electricity) we have to use invocation at the constructor of the BaseMetaTileEntity.
      */
     public static BaseMetaTileEntity constructBaseMetaTileEntity() {
-        if (sBaseMetaTileEntityClass == null) {
-            try {
-                return (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).getDeclaredConstructor()
-                    .newInstance();
-            } catch (Throwable ignored) {}
-        }
-
         try {
-            return sBaseMetaTileEntityClass.getDeclaredConstructor()
-                .newInstance();
+            return new BaseMetaTileEntity();
         } catch (Throwable e) {
             GTLog.err.println("GTMod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
             e.printStackTrace(GTLog.err);

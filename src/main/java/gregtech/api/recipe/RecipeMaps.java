@@ -4,9 +4,11 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.TickTime.TICK;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
+import static gregtech.api.util.GTRecipeConstants.SIEVERTS;
 import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
@@ -32,10 +34,14 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
+import bartworks.API.recipe.BartWorksRecipeMaps;
+import bartworks.common.loaders.BioCultureLoader;
+import bartworks.common.loaders.BioItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.ItemData;
@@ -174,7 +180,7 @@ public final class RecipeMaps {
         .disableRegisterNEI()
         .build();
     public static final RecipeMap<FurnaceBackend> furnaceRecipes = RecipeMapBuilder
-        .of("mc.recipe.furnace", FurnaceBackend::new)
+        .of("gt.recipe.furnace", FurnaceBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 9)
         .slotOverlays(
@@ -1143,6 +1149,7 @@ public final class RecipeMaps {
                     recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
                 .thenComparing(GTRecipe::compareTo))
         .frontend(PurificationUnitOzonationFrontend::new)
+        .neiHandlerInfo(builder -> builder.setMaxRecipesPerPage(1))
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationFlocculationRecipes = RecipeMapBuilder
@@ -1178,7 +1185,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationUVTreatmentRecipes = RecipeMapBuilder
         .of("gt.recipe.purificationplantuvtreatment")
-        .maxIO(9, 0, 1, 1)
+        .maxIO(0, 0, 1, 1)
         .minInputs(0, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .frontend(PurificationUnitLaserFrontend::new)
@@ -1233,5 +1240,17 @@ public final class RecipeMaps {
                             .addDenseLiquidRecipe(r))
                     .map(Collections::singletonList)
                     .orElse(Collections.emptyList())));
+        RecipeMaps.fermentingRecipes.addDownstream(
+            IRecipeMap.newRecipeMap(
+                b -> BartWorksRecipeMaps.bacterialVatRecipes.doAdd(
+                    b.copy()
+                        .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
+                        .metadata(SIEVERTS, (int) GTUtility.getTier(b.getEUt())))));
+        RecipeMaps.implosionRecipes.addDownstream(
+            IRecipeMap.newRecipeMap(
+                b -> BartWorksRecipeMaps.electricImplosionCompressorRecipes.doAdd(
+                    b.copy()
+                        .duration(1 * TICK)
+                        .eut(TierEU.RECIPE_UEV))));
     }
 }

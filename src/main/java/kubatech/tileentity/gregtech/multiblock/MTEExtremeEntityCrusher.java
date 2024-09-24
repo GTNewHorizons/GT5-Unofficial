@@ -63,6 +63,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderHell;
@@ -108,6 +109,7 @@ import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -122,7 +124,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.Tags;
-import kubatech.api.helpers.ReflectionHelper;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.ModUtils;
@@ -433,8 +434,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (this.mMaxProgresstime == 0) return;
         if (event.mrs.equals(masterStoneRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
             Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
-            if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering) {
-                RitualEffectWellOfSuffering effect = (RitualEffectWellOfSuffering) ritual.effect;
+            if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
                 event.setCanceled(true); // we will handle that
                 String owner = event.mrs.getOwner();
                 int currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
@@ -463,12 +463,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                         * (effect.canDrainReagent(
                             event.mrs,
                             ReagentRegistry.offensaReagent,
-                            ReflectionHelper.getField(effect, "offensaDrain", 3),
+                            RitualEffectWellOfSuffering.offensaDrain,
                             true) ? 2 : 1)
                         * (effect.canDrainReagent(
                             event.mrs,
                             ReagentRegistry.tenebraeReagent,
-                            ReflectionHelper.getField(effect, "tennebraeDrain", 5),
+                            RitualEffectWellOfSuffering.tennebraeDrain,
                             true) ? 2 : 1),
                     true);
 
@@ -776,6 +776,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 .withFixedSize(16, 16)
                 .withOffset(1, 1));
         slotWidgets.add(weaponSlot);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EXTREME_ENTITY_CRUSHER_LOOP.resourceLocation;
     }
 
     private static class EECFakePlayer extends FakePlayer {

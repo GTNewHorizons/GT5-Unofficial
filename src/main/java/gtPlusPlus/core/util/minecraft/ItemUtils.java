@@ -35,8 +35,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
+import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
@@ -46,8 +46,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.PreloaderCore;
 import gtPlusPlus.xmod.gregtech.api.items.GTMetaTool;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
@@ -74,16 +72,16 @@ public class ItemUtils {
         return simpleMetaStack(Item.getItemFromBlock(x), meta, i);
     }
 
-    public static ItemStack getSimpleStack(final Item x, final int i) {
-        return new ItemStack(x, i);
+    public static ItemStack getSimpleStack(final Item item, final int stackSize) {
+        return new ItemStack(item, stackSize);
     }
 
-    public static ItemStack getSimpleStack(final ItemStack x, final int i) {
-        if (x == null) {
+    public static ItemStack getSimpleStack(final ItemStack stack, final int stackSize) {
+        if (stack == null) {
             return null;
         }
-        final ItemStack r = x.copy();
-        r.stackSize = i;
+        final ItemStack r = stack.copy();
+        r.stackSize = stackSize;
         return r;
     }
 
@@ -308,12 +306,8 @@ public class ItemUtils {
     }
 
     public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, final int amount) {
-        if (PreloaderCore.DEBUG_MODE) {
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(1));
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(2));
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(3));
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(4));
-            Logger.WARNING("Looking up: " + oredictName + " - from method: " + ReflectionUtils.getMethodName(5));
+        if (ASMConfiguration.debug.debugMode) {
+            Logger.modLogger.warn("Looking up: " + oredictName + " - from : ", new Exception());
         }
 
         try {
@@ -860,13 +854,13 @@ public class ItemUtils {
     public static ItemStack[] cleanItemStackArray(ItemStack[] input) {
         int aArraySize = input.length;
         ItemStack[] aOutput = new ItemStack[aArraySize];
-        AutoMap<ItemStack> aCleanedItems = new AutoMap<>();
+        ArrayList<ItemStack> aCleanedItems = new ArrayList<>();
         for (ItemStack checkStack : input) {
             if (ItemUtils.checkForInvalidItems(checkStack)) {
-                aCleanedItems.put(checkStack);
+                aCleanedItems.add(checkStack);
             }
         }
-        for (int i = 0; i < aArraySize; i++) {
+        for (int i = 0; i < aCleanedItems.size(); i++) {
             ItemStack aMappedStack = aCleanedItems.get(i);
             if (aMappedStack != null) {
                 aOutput[i] = aMappedStack;
