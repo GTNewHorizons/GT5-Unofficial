@@ -1538,18 +1538,6 @@ public class MixerRecipes implements Runnable {
                 .addTo(mixerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    EnumCube.COKE_BLOCK.getItem(4),
-                    ItemList.SFMixture.get(8),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1),
-                    GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Block_SSFUEL.get(4))
-                .fluidInputs(Materials.NitroFuel.getFluid(1200))
-                .duration(10 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(mixerRecipes);
-
-            GTValues.RA.stdBuilder()
                 .itemInputs(EnumCube.COKE_BLOCK.getItem(), ItemList.SFMixture.get(2), GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(ItemList.Block_SSFUEL.get(1))
                 .fluidInputs(Materials.GasolinePremium.getFluid(120))
