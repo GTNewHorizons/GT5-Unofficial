@@ -14,7 +14,6 @@
 package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.OrePrefixes.block;
-import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
 import static gregtech.api.enums.OrePrefixes.foil;
 import static gregtech.api.enums.OrePrefixes.gem;
@@ -26,8 +25,6 @@ import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
@@ -90,13 +87,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     werkstoff.getRGBA(),
                     false) : TextureFactory.of(texSet.mTextures[block.mTextureIndex], werkstoff.getRGBA(), false);
                 GregTechAPI.registerCover(werkstoff.get(plate), texture, null);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(plate))
-                    .itemOutputs(werkstoff.get(dust))
-                    .duration(2 * TICKS)
-                    .eut(8)
-                    .addTo(maceratorRecipes);
 
                 return;
             }

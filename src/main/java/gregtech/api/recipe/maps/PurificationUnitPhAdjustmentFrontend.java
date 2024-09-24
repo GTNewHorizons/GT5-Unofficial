@@ -67,12 +67,14 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
 
     @Override
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        neiCachedRecipe.mInputs.add(new PositionedStack(Materials.SodiumHydroxide.getDust(64), 3, 1, false));
-        neiCachedRecipe.mInputs.add(
-            new PositionedStack(
-                GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1000L), true),
-                147,
-                1,
-                false));
+        if (neiCachedRecipe.mInputs.size() == 1) {
+            neiCachedRecipe.mInputs.add(new PositionedStack(Materials.SodiumHydroxide.getDust(64), 3, 1, false));
+            neiCachedRecipe.mInputs.add(
+                new PositionedStack(
+                    GTUtility.getFluidDisplayStack(Materials.HydrochloricAcid.getFluid(1000L), true),
+                    147,
+                    1,
+                    false));
+        }
     }
 }
