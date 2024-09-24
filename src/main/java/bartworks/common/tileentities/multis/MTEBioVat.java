@@ -33,6 +33,7 @@ import java.util.HashSet;
 
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -83,8 +84,11 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
-public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
+public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
+    implements ISurvivalConstructable{
 
     public static final HashMap<Coords, Integer> staticColorMap = new HashMap<>();
 
@@ -782,7 +786,11 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
     public void construct(ItemStack itemStack, boolean b) {
         this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 3, 0);
     }
-
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 3, 0, elementBudget, env, false, true);
+    }
     @Override
     public String[] getInfoData() {
         final String[] baseInfoData = super.getInfoData();
