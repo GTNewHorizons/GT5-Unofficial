@@ -1,5 +1,9 @@
 package gtPlusPlus.core.block;
 
+import gtPlusPlus.core.block.fuel.BlockCactusCharcoal;
+import gtPlusPlus.core.block.fuel.BlockCactusCoke;
+import gtPlusPlus.core.block.fuel.BlockSugarCharcoal;
+import gtPlusPlus.core.block.fuel.BlockSugarCoke;
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
 
@@ -53,6 +57,11 @@ public final class ModBlocks {
     public static Block blockWitherGuard;
     public static Block blockCompressedObsidian;
 
+    public static Block blockCactusCharcoal;
+    public static Block blockCactusCoke;
+    public static Block blockSugarCharcoal;
+    public static Block blockSugarCoke;
+
     public static Block blockCustomJukebox;
 
     public static Block blockPooCollector;
@@ -81,6 +90,11 @@ public final class ModBlocks {
         blockProjectTable = new BlockProjectTable();
         blockWitherGuard = new BlockWitherProof();
         blockCompressedObsidian = new BlockCompressedObsidian();
+
+        blockCactusCharcoal = new BlockCactusCharcoal();
+        blockCactusCoke = new BlockCactusCoke();
+        blockSugarCharcoal = new BlockSugarCharcoal();
+        blockSugarCoke = new BlockSugarCoke();
 
         blockCircuitProgrammer = new BlockCircuitProgrammer();
 

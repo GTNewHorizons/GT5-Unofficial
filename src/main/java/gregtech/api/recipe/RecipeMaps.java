@@ -25,7 +25,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
+import gtPlusPlus.core.block.ModBlocks;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -685,6 +687,16 @@ public final class RecipeMaps {
                         .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount / 2))
                         .setDuration(aDuration * 20 / 3);
                 }
+                ItemStack cactusCokeBlock = new ItemStack(Item.getItemFromBlock(ModBlocks.blockCactusCoke), aCoalAmount * 2, 0);
+                ItemStack sugarCokeBlock = new ItemStack(Item.getItemFromBlock(ModBlocks.blockSugarCoke), aCoalAmount * 2, 0);
+                coll.derive()
+                    .setInputs(aInput1, aInput2, cactusCokeBlock)
+                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                    .setDuration(aDuration * 20 / 3);
+                coll.derive()
+                    .setInputs(aInput1, aInput2, sugarCokeBlock)
+                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                    .setDuration(aDuration * 20 / 3);
             }
             return coll.getAll();
         })
