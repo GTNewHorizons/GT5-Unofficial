@@ -1049,6 +1049,7 @@ public class WerkstoffLoader {
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
             .addMetalItems()
+            .addCraftingMetalWorkingItems()
             .enforceUnification(),
         64,
         TextureSet.SET_METALLIC
@@ -1236,6 +1237,7 @@ public class WerkstoffLoader {
             .onlyDust()
             .addMetalItems()
             .addMolten()
+            .addCraftingMetalWorkingItems()
             .enforceUnification(),
         78,
         TextureSet.SET_METALLIC);
