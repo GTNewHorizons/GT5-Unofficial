@@ -3,6 +3,7 @@ package gtPlusPlus.core.recipe;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
@@ -58,6 +59,7 @@ public class RecipesGeneral {
         OUTPUT_Blueprint = ItemUtils.getSimpleStack(ModItems.itemBlueprintBase, 2);
         run();
         addCompressedObsidian();
+        addFuelBlocks();
         migratedRecipes();
     }
 
@@ -271,6 +273,65 @@ public class RecipesGeneral {
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
+    }
+
+    private static void addFuelBlocks() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModItems.itemCactusCharcoal, 9, 0))
+            .itemOutputs(ItemUtils.simpleMetaStack(ModBlocks.blockCactusCharcoal, 0, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModItems.itemCactusCoke, 9, 0))
+            .itemOutputs(ItemUtils.simpleMetaStack(ModBlocks.blockCactusCoke, 0, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModItems.itemSugarCharcoal, 9, 0))
+            .itemOutputs(ItemUtils.simpleMetaStack(ModBlocks.blockSugarCharcoal, 0, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ModItems.itemSugarCoke, 9, 0))
+            .itemOutputs(ItemUtils.simpleMetaStack(ModBlocks.blockSugarCoke, 0, 1))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(compressorRecipes);
+        for (int i = 1; i < 6; i++) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemUtils.simpleMetaStack(ModBlocks.blockCactusCharcoal, i - 1, 9))
+                .itemOutputs(ItemUtils.simpleMetaStack(ModBlocks.blockCactusCharcoal, i, 1))
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(compressorRecipes);
+        }
+        for (int i = 1; i < 6; i++) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemUtils.simpleMetaStack(ModBlocks.blockCactusCoke, i - 1, 9))
+                .itemOutputs(ItemUtils.simpleMetaStack(ModBlocks.blockCactusCoke, i, 1))
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(compressorRecipes);
+        }
+        for (int i = 1; i < 6; i++) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemUtils.simpleMetaStack(ModBlocks.blockSugarCharcoal, i - 1, 9))
+                .itemOutputs(ItemUtils.simpleMetaStack(ModBlocks.blockSugarCharcoal, i, 1))
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(compressorRecipes);
+        }
+        for (int i = 1; i < 6; i++) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemUtils.simpleMetaStack(ModBlocks.blockSugarCoke, i - 1, 9))
+                .itemOutputs(ItemUtils.simpleMetaStack(ModBlocks.blockSugarCoke, i, 1))
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(compressorRecipes);
+        }
     }
 
     private static boolean addCompressedObsidian() {
