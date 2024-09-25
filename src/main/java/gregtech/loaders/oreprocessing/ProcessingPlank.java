@@ -29,7 +29,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aModName.equals("ExtraUtilities")) {
+        if (aModName != null && aModName.equals("ExtraUtilities")) {
             if (registeredEXU) return;
             else registeredEXU = true;
         }
