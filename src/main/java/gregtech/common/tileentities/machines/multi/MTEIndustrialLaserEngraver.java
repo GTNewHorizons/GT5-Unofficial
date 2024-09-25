@@ -211,12 +211,17 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (renderer != null) {
-            renderer.realism = !renderer.realism;
-            PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
-            return true;
+        if (aPlayer.isSneaking()) {
+            return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+        } else {
+            if (renderer != null) {
+                renderer.realism = !renderer.realism;
+                PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
+                return true;
+            } else {
+                return false;
+            }
         }
-        return false;
     }
 
     @Override
