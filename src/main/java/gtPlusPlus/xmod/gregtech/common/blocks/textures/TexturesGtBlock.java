@@ -310,10 +310,6 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Machine_Screen_Logo = new CustomIcon("TileEntities/adv_machine_screen_logo");
 
     // Machine Controller Overlays
-    // public static final CustomIcon Overlay_Machine_Controller_Default = new CustomIcon(
-    // "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED");
-    // public static final CustomIcon Overlay_Machine_Controller_Default_Active = new CustomIcon(
-    // "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED_ACTIVE");
 
     // oMCD = Overlay_Machine_Controller_Default
     public static final CustomIcon oMCDSolarTower = new CustomIcon("iconsets/controllerFaces/solarTower");
