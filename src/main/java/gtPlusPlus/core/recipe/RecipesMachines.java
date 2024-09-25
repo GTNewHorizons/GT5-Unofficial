@@ -980,6 +980,13 @@ public class RecipesMachines {
 
         // RTG
         GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackWithMeta(true, "IC2:blockGenerator:6", "IC2-RTG", 6, 1),
+                MaterialsAlloy.NITINOL_60.getPlate(8),
+                MaterialsAlloy.MARAGING350.getGear(4),
+                ItemList.Field_Generator_EV.get(8),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 32),
+                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 4))
             .itemOutputs(GregtechItemList.RTG.get(1))
             .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(144 * 16))
             .duration(10 * MINUTES)
@@ -1779,6 +1786,10 @@ public class RecipesMachines {
             "plateNiobiumCarbide",
             RECIPE_IndustrialMatterFabFrame);
         GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.NIOBIUM_CARBIDE.getPlate(4),
+                MaterialsAlloy.INCONEL_792.getRod(4),
+                MaterialsAlloy.INCONEL_690.getFrameBox(1))
             .itemOutputs(RECIPE_IndustrialMatterFabFrame)
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)

@@ -458,22 +458,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .duration((tAmount * 128) * TICKS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(extruderRecipes);
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingadviron", tAmount * 2))
-                                .duration((tAmount * 32) * TICKS)
-                                .eut(3 * tVoltageMultiplier)
-                                .addTo(extruderRecipes);
-                        }
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack), ItemList.Shape_Mold_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingadviron", tAmount * 3))
-                                .duration((tAmount * 128) * TICKS)
-                                .eut(1 * tVoltageMultiplier)
-                                .addTo(alloySmelterRecipes);
-                        }
                     }
                     case "Iron", "WroughtIron" -> {
                         GTValues.RA.stdBuilder()
@@ -482,22 +466,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .duration((tAmount * 128) * TICKS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(extruderRecipes);
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingiron", tAmount * 2))
-                                .duration((tAmount * 32) * TICKS)
-                                .eut(3 * tVoltageMultiplier)
-                                .addTo(extruderRecipes);
-                        }
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack), ItemList.Shape_Mold_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingiron", tAmount * 3))
-                                .duration((tAmount * 128) * TICKS)
-                                .eut(1 * tVoltageMultiplier)
-                                .addTo(alloySmelterRecipes);
-                        }
                         if (tAmount * 31 <= 64) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(31, aStack), ItemList.Shape_Mold_Anvil.get(0L))
@@ -514,94 +482,6 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .duration((tAmount * 128) * TICKS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(extruderRecipes);
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingtin", tAmount * 2))
-                                .duration((tAmount * 32) * TICKS)
-                                .eut(3 * tVoltageMultiplier)
-                                .addTo(extruderRecipes);
-                        }
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack), ItemList.Shape_Mold_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingtin", tAmount * 3))
-                                .duration((tAmount * 128) * TICKS)
-                                .eut(1 * tVoltageMultiplier)
-                                .addTo(alloySmelterRecipes);
-                        }
-                    }
-                    case "Lead" -> {
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casinglead", tAmount * 2))
-                                .duration((tAmount * 32) * TICKS)
-                                .eut(3 * tVoltageMultiplier)
-                                .addTo(extruderRecipes);
-                        }
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack), ItemList.Shape_Mold_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casinglead", tAmount * 3))
-                                .duration((tAmount * 128) * TICKS)
-                                .eut(1 * tVoltageMultiplier)
-                                .addTo(alloySmelterRecipes);
-                        }
-                    }
-                    case "Copper", "AnnealedCopper" -> {
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingcopper", tAmount * 2))
-                                .duration((tAmount * 32) * TICKS)
-                                .eut(3 * tVoltageMultiplier)
-                                .addTo(extruderRecipes);
-                        }
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack), ItemList.Shape_Mold_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingcopper", tAmount * 3))
-                                .duration((tAmount * 128) * TICKS)
-                                .eut(1 * tVoltageMultiplier)
-                                .addTo(alloySmelterRecipes);
-                        }
-                    }
-                    case "Bronze" -> {
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingbronze", tAmount * 2))
-                                .duration((tAmount * 32) * TICKS)
-                                .eut(3 * tVoltageMultiplier)
-                                .addTo(extruderRecipes);
-                        }
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack), ItemList.Shape_Mold_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casingbronze", tAmount * 3))
-                                .duration((tAmount * 128) * TICKS)
-                                .eut(1 * tVoltageMultiplier)
-                                .addTo(alloySmelterRecipes);
-                        }
-                    }
-                    case "Gold" -> {
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), ItemList.Shape_Extruder_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casinggold", tAmount * 2))
-                                .duration((tAmount * 32) * TICKS)
-                                .eut(3 * tVoltageMultiplier)
-                                .addTo(extruderRecipes);
-                        }
-                        if (tAmount * 2 <= 64) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack), ItemList.Shape_Mold_Casing.get(0L))
-                                .itemOutputs(GTModHandler.getIC2Item("casinggold", tAmount * 3))
-                                .duration((tAmount * 128) * TICKS)
-                                .eut(1 * tVoltageMultiplier)
-                                .addTo(alloySmelterRecipes);
-                        }
                     }
                     case "Polytetrafluoroethylene" -> {
                         GTValues.RA.stdBuilder()

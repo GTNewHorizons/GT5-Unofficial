@@ -676,10 +676,6 @@ public final class RecipeMaps {
                         .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
                         .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
                         .setDuration(aDuration * 10);
-                    coll.derive()
-                        .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
-                        .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
-                        .setDuration(aDuration * 10);
                 }
                 if (Railcraft.isModLoaded()) {
                     coll.derive()
@@ -794,7 +790,6 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> chemicalReactorRecipes = RecipeMapBuilder
         .of("gt.recipe.chemicalreactor")
         .maxIO(2, 2, 1, 1)
-        .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isFluid) {
                 if (isOutput) {

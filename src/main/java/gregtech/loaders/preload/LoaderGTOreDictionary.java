@@ -301,43 +301,6 @@ public class LoaderGTOreDictionary implements Runnable {
             Materials.Lead,
             GTModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 6));
 
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Osmium,
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.OsmiumItemCasing", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Aluminium,
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.AluminiumItemCasing", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.StainlessSteel,
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.StainlessSteelItemCasing", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Tungsten,
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TungstenItemCasing", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Neutronium,
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.NeutroniumItemCasing", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.TungstenSteel,
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TungstenSteelItemCasing", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Iridium,
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.IridiumItemCasing", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Titanium,
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TitaniumItemCasing", 1L, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.itemCasing,
-            Materials.Chrome,
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ChromeItemCasing", 1L, 0));
-
         // Fake Circuits
         GTOreDictUnificator.registerOre(
             OrePrefixes.circuit,
