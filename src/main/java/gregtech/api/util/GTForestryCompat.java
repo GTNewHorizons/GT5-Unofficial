@@ -173,10 +173,10 @@ public class GTForestryCompat {
         try {
             for (ISqueezerRecipe tRecipe : RecipeManagers.squeezerManager.recipes()) {
                 ItemStack[] resources = tRecipe.getResources();
-                if ((resources.length == 1) && (tRecipe.getFluidOutput() != null)
-                    && (resources[0] != null)) {
+                if ((resources.length == 1) && (tRecipe.getFluidOutput() != null) && (resources[0] != null)) {
                     Item input = resources[0].getItem();
-                    if (input == Items.pumpkin_seeds || input == Items.melon_seeds || input == Items.wheat_seeds) return;
+                    if (input == Items.pumpkin_seeds || input == Items.melon_seeds || input == Items.wheat_seeds)
+                        return;
                     GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
                     recipeBuilder.itemInputs(resources[0]);
                     if (tRecipe.getRemnants() != null) {
