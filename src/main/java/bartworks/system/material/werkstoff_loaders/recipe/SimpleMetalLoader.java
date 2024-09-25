@@ -26,13 +26,12 @@ import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 
-import bartworks.system.material.WerkstoffLoader;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 import net.minecraft.item.ItemStack;
 
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
