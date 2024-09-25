@@ -3032,6 +3032,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + EnumChatFormatting.GRAY
                     + "which utilize the star to energize materials")
             .addInfo("to varying degrees, ranging from regular smelting to matter degeneration.")
+            .addInfo("EU requirements for all modules are handled via wireless energy directly.")
             .addInfo(TOOLTIP_BAR)
             .addInfo(
                 "This multiblock has an " + EnumChatFormatting.GOLD
