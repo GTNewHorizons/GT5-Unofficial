@@ -120,14 +120,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(aMaterial.getDust(2), Materials.Quartzite.getDust(4))
-                                    .itemOutputs(
-                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                        Materials.Ferrosilite.getDustSmall(outputAmount))
-                                    .duration(2 * MINUTES)
-                                    .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(primitiveBlastRecipes);
-                                GTValues.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2), Materials.NetherQuartz.getDust(2))
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),

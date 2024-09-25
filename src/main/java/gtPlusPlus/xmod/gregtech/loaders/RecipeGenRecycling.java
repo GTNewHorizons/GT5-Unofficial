@@ -57,7 +57,7 @@ public class RecipeGenRecycling implements Runnable {
             OrePrefixes.plate, OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple,
             OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.stick, OrePrefixes.stickLong,
             OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.rotor, OrePrefixes.gearGt,
-            OrePrefixes.gearGtSmall, OrePrefixes.gear, OrePrefixes.block, OrePrefixes.cableGt01, OrePrefixes.cableGt02,
+            OrePrefixes.gearGtSmall, OrePrefixes.block, OrePrefixes.cableGt01, OrePrefixes.cableGt02,
             OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12, OrePrefixes.wireFine,
             OrePrefixes.wireGt01, OrePrefixes.wireGt02, OrePrefixes.wireGt04, OrePrefixes.wireGt08,
             OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.foil, OrePrefixes.frameGt, OrePrefixes.pipeHuge,
