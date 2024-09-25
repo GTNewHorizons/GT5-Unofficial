@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -153,14 +152,6 @@ public class FluidSolidifierRecipes implements Runnable {
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Glass, 1L))
-            .fluidInputs(Materials.Glass.getMolten(144L))
-            .duration(12 * TICKS)
-            .eut(4)
-            .addTo(fluidSolidifierRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Bottle.get(0L))
             .itemOutputs(ItemList.Bottle_Empty.get(1L))
             .fluidInputs(Materials.Glass.getMolten(144L))
@@ -230,14 +221,6 @@ public class FluidSolidifierRecipes implements Runnable {
             .fluidInputs(Materials.BorosilicateGlass.getMolten(72))
             .duration(8 * SECONDS)
             .eut(16)
-            .addTo(fluidSolidifierRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
-            .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassPlate", 1L, 0))
-            .fluidInputs(Materials.ReinforceGlass.getMolten(72))
-            .duration(8 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
