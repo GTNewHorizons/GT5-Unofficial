@@ -113,7 +113,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null) {
 
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(9, aStack))
+                            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 9))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                             .duration(15 * SECONDS)
                             .eut(2)
@@ -138,7 +138,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1))
                                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                                     .duration(15 * SECONDS)
                                     .eut(2)
