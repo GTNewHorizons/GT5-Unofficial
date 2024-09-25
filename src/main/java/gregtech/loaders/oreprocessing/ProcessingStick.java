@@ -29,6 +29,9 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        // Blacklist materials which are handled by Werkstoff loader
+        if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt || aMaterial == Materials.Spodumene) return;
+
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L),
