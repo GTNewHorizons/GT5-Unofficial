@@ -137,13 +137,6 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 3))
-            .fluidOutputs(Materials.Mercury.getFluid(1000L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
             .fluidOutputs(Materials.Mercury.getFluid(1000L))
             .duration(6 * SECONDS + 8 * TICKS)
