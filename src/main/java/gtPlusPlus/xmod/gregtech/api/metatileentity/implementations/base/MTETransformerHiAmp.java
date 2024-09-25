@@ -108,7 +108,8 @@ public class MTETransformerHiAmp extends MTETransformer {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         this.mHalfMode = !mHalfMode;
         if (this.mHalfMode) {
             PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 2A:8A in/out Ratio.");

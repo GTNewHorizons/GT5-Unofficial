@@ -209,9 +209,12 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ, ItemStack tool) {
-        if (aPlayer.getUniqueID().equals(this.mOwner)) {
-            if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
+    public boolean onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX,
+        final float aY, final float aZ, ItemStack tool) {
+        if (aPlayer.getUniqueID()
+            .equals(this.mOwner)) {
+            if (side == this.getBaseMetaTileEntity()
+                .getFrontFacing()) {
                 final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                     case 0 -> {
@@ -247,9 +250,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                     aPlayer,
                     "Frequency: ",
                     this.mFrequency,
-                    this.getTesseract(this.mFrequency, false) == null
-                        ? ""
-                        : EnumChatFormatting.GREEN + " (Connected)");
+                    this.getTesseract(this.mFrequency, false) == null ? "" : EnumChatFormatting.GREEN + " (Connected)");
             }
             return true;
         } else {

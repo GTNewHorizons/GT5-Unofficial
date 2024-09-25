@@ -907,7 +907,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
             GTUtility.sendChatToPlayer(
@@ -921,7 +922,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
+        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             mDisableMultiStack = !mDisableMultiStack;
             GTUtility.sendLocalizedChatToPlayer(entityPlayer, "GT5U.hatch.disableMultiStack." + mDisableMultiStack);
@@ -932,7 +934,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             mDisableFilter = !mDisableFilter;
             GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);

@@ -155,7 +155,8 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         GTUIInfos.openGTTileEntityUI(this.getBaseMetaTileEntity(), aPlayer);
         return true;
     }

@@ -135,7 +135,8 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         String clientLocale;
         try {
             EntityPlayerMP player = (EntityPlayerMP) aPlayer;

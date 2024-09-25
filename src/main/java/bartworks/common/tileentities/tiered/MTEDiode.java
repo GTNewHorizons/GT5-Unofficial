@@ -66,7 +66,8 @@ public class MTEDiode extends MTEBasicHull {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             if (!aPlayer.isSneaking()) {
                 --this.aAmps;

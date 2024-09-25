@@ -312,7 +312,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     }
 
     @Override
-    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY,
+        float aZ, ItemStack tool) {
         mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
         GTUtility.sendChatToPlayer(
             aPlayer,

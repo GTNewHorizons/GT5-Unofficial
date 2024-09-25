@@ -162,7 +162,8 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
         printStructure(aPlayer);
         aBaseMetaTileEntity.disableWorking();

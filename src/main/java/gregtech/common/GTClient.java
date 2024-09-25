@@ -834,7 +834,8 @@ public class GTClient extends GTProxy implements Runnable {
         if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSolderingToolList)
             || (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSoftHammerList)
                 && aTileEntity instanceof MultiBlockPart) && aEvent.player.isSneaking()) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0) {
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit))
+                == 0) {
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             }
             return;
@@ -844,7 +845,8 @@ public class GTClient extends GTProxy implements Runnable {
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sCrowbarList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sJackhammerList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sScrewdriverList)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0) {
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit))
+                == 0) {
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
                         drawGrid(aEvent, true, false, true);

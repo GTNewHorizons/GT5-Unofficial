@@ -555,10 +555,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (autoPullAvailable) {
             setAutoPullFluidList(!autoPullFluidList);
-            GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.stocking_hatch.auto_pull_toggle." + (autoPullFluidList ? "enabled" : "disabled"));
+            GTUtility.sendLocalizedChatToPlayer(
+                aPlayer,
+                "GT5U.machines.stocking_hatch.auto_pull_toggle." + (autoPullFluidList ? "enabled" : "disabled"));
 
             return true;
         } else {

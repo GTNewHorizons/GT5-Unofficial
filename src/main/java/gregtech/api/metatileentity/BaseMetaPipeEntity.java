@@ -14,7 +14,6 @@ import java.util.UUID;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -845,17 +844,18 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             // Configuration of delicate electronics calls for a tool with precision and subtlety.
                             final CoverInfo info = getCoverInfoAtSide(coverSide);
                             info.updateCoverBehavior();
-                            if (info.getCoverBehavior().allowsTickRateAddition()) {
+                            if (info.getCoverBehavior()
+                                .allowsTickRateAddition()) {
                                 info.onCoverJackhammer(aPlayer);
                                 usedTool = true;
                             } else {
-                                GTUtility.sendLocalizedChatToPlayer(
-                                    aPlayer,
-                                    "gt.cover.info.chat.tick_rate_not_allowed");
+                                GTUtility
+                                    .sendLocalizedChatToPlayer(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
                                 return true;
                             }
                         } else {
-                            usedTool = mMetaTileEntity.onJackHammerRightClick(coverSide, aPlayer, aX, aY, aZ, tCurrentItem);
+                            usedTool = mMetaTileEntity
+                                .onJackHammerRightClick(coverSide, aPlayer, aX, aY, aZ, tCurrentItem);
                         }
 
                         break;
@@ -891,7 +891,8 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                         break;
                     }
                     case SolderingIron: {
-                        if (mMetaTileEntity.onSolderingToolRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                        if (mMetaTileEntity
+                            .onSolderingToolRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             usedTool = true;
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                             mStrongRedstone ^= wrenchSide.flag;
@@ -911,7 +912,8 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                         break;
                     }
                     case WireCutter: {
-                        if (mMetaTileEntity.onWireCutterRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                        if (mMetaTileEntity
+                            .onWireCutterRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             usedTool = true;
 
                             doEnetUpdate();

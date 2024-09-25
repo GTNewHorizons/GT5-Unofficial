@@ -293,13 +293,16 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IConfigurati
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (!autoPullAvailable) {
             return false;
         }
 
         setAutoPullItemList(!autoPullItemList);
-        GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.stocking_bus.auto_pull_toggle." + (autoPullItemList ? "enabled" : "disabled"));
+        GTUtility.sendLocalizedChatToPlayer(
+            aPlayer,
+            "GT5U.machines.stocking_bus.auto_pull_toggle." + (autoPullItemList ? "enabled" : "disabled"));
         return true;
     }
 

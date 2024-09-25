@@ -210,8 +210,10 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side).isGUIClickable()) return false;
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
+            .isGUIClickable()) return false;
         if (aPlayer.isSneaking()) {
             if (disableSort) {
                 disableSort = false;

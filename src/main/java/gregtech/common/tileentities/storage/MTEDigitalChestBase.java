@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -269,9 +268,13 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY,
+        float aZ, ItemStack tool) {
         mVoidOverflow = !mVoidOverflow;
-        GTUtility.sendLocalizedChatToPlayer(aPlayer, mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled" : "GT5U.machines.digitalchest.voidoverflow.disabled");
+        GTUtility.sendLocalizedChatToPlayer(
+            aPlayer,
+            mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
+                : "GT5U.machines.digitalchest.voidoverflow.disabled");
         return true;
     }
 
@@ -280,8 +283,11 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         float aX, float aY, float aZ, ItemStack tool) {
         if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             mDisableFilter = !mDisableFilter;
-            GTUtility.sendLocalizedChatToPlayer(aPlayer, mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled" : "GT5U.machines.digitalchest.inputfilter.enabled");
-    
+            GTUtility.sendLocalizedChatToPlayer(
+                aPlayer,
+                mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
+                    : "GT5U.machines.digitalchest.inputfilter.enabled");
+
             return true;
         } else {
             return false;

@@ -455,8 +455,10 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
-        if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
+        if (side == this.getBaseMetaTileEntity()
+            .getFrontFacing()) {
             final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
             switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                 case 0 -> this.mRedstoneLevel -= 5000;

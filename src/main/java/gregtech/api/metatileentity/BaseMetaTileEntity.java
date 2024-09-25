@@ -29,7 +29,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -1494,9 +1493,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
                 return getCoverBehaviorAtSideNew(coverSide).hasCoverGUI();
-            } else if (getCoverBehaviorAtSideNew(coverSide).onCoverRightclickClient(coverSide, this, aPlayer, aX, aY, aZ)) {
-                return true;
-            }
+            } else if (getCoverBehaviorAtSideNew(coverSide)
+                .onCoverRightclickClient(coverSide, this, aPlayer, aX, aY, aZ)) {
+                    return true;
+                }
         }
 
         if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
@@ -1534,17 +1534,18 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                             // Configuration of delicate electronics calls for a tool with precision and subtlety.
                             final CoverInfo info = getCoverInfoAtSide(coverSide);
                             info.updateCoverBehavior();
-                            if (info.getCoverBehavior().allowsTickRateAddition()) {
+                            if (info.getCoverBehavior()
+                                .allowsTickRateAddition()) {
                                 info.onCoverJackhammer(aPlayer);
                                 usedTool = true;
                             } else {
-                                GTUtility.sendLocalizedChatToPlayer(
-                                    aPlayer,
-                                    "gt.cover.info.chat.tick_rate_not_allowed");
+                                GTUtility
+                                    .sendLocalizedChatToPlayer(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
                                 return true;
                             }
                         } else {
-                            usedTool = mMetaTileEntity.onJackHammerRightClick(coverSide, aPlayer, aX, aY, aZ, tCurrentItem);
+                            usedTool = mMetaTileEntity
+                                .onJackHammerRightClick(coverSide, aPlayer, aX, aY, aZ, tCurrentItem);
                         }
 
                         break;
@@ -1580,7 +1581,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         break;
                     }
                     case SolderingIron: {
-                        if (mMetaTileEntity.onSolderingToolRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                        if (mMetaTileEntity
+                            .onSolderingToolRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
                             usedTool = true;
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                             mStrongRedstone ^= wrenchSide.flag;
@@ -1611,13 +1613,15 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                         break;
                     }
                     case Wrench: {
-                        if (aPlayer.isSneaking() && mMetaTileEntity instanceof MTEBasicMachine basicMachine && basicMachine.setMainFacing(wrenchSide)) {
+                        if (aPlayer.isSneaking() && mMetaTileEntity instanceof MTEBasicMachine basicMachine
+                            && basicMachine.setMainFacing(wrenchSide)) {
                             usedTool = true;
                             cableUpdateDelay = 10;
-                        } else if (mMetaTileEntity.onWrenchRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
-                            usedTool = true;
-                            cableUpdateDelay = 10;
-                        }
+                        } else if (mMetaTileEntity
+                            .onWrenchRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                                usedTool = true;
+                                cableUpdateDelay = 10;
+                            }
                         break;
                     }
                 }

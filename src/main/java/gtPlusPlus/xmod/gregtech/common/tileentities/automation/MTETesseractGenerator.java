@@ -253,8 +253,10 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ, ItemStack tool) {
-        if (aPlayer.getUniqueID().equals(this.mOwner)) {
+    public boolean onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX,
+        final float aY, final float aZ, ItemStack tool) {
+        if (aPlayer.getUniqueID()
+            .equals(this.mOwner)) {
             if (side == this.getBaseMetaTileEntity()
                 .getFrontFacing()) {
                 final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);

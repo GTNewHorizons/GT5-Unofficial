@@ -105,7 +105,8 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (aPlayer.isSneaking()) {
             if (histSettingHigh < histHighLimit) {
                 histSettingHigh++;

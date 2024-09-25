@@ -150,7 +150,8 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
 
         if (aPlayer.isSneaking()) {
             mLocked = !mLocked;

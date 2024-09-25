@@ -258,7 +258,8 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (side != getBaseMetaTileEntity().getFrontFacing() && side != mMainFacing) {
             int max = getMaxPumpableDistance();
             if (aPlayer.isSneaking()) {
@@ -284,7 +285,8 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
+        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, tool)) return true;
         mDisallowRetract = !mDisallowRetract;
         GTUtility.sendChatToPlayer(

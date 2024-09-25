@@ -700,9 +700,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     @Override
     public boolean onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         looseFit ^= true;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
+        GTUtility
+            .sendChatToPlayer(aPlayer, looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
         return true;
     }
 

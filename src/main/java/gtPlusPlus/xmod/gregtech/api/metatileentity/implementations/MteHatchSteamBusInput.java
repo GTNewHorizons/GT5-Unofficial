@@ -140,12 +140,13 @@ public class MteHatchSteamBusInput extends MTEHatch {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (aPlayer.isSneaking()) {
             disableSort = !disableSort;
             GTUtility.sendChatToPlayer(
                 aPlayer,
-            GTUtility.trans("200.1", "Automatic Item Shuffling: "),
+                GTUtility.trans("200.1", "Automatic Item Shuffling: "),
                 disableSort ? GTUtility.trans("087", "Disabled") : GTUtility.trans("088", "Enabled"));
             return true;
         } else {

@@ -120,7 +120,8 @@ public class MTEPollutionCreator extends GTPPMetaTileEntity {
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (pollutionMultiplier > 99) {
             pollutionMultiplier = 1;
         } else {

@@ -426,7 +426,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY,
+        float aZ, ItemStack tool) {
         if (aPlayer.isSneaking()) {
             sVoidStone = !sVoidStone;
             GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.oreprocessor.void", sVoidStone);

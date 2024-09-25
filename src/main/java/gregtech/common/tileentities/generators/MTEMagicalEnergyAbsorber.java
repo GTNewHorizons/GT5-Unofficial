@@ -140,7 +140,8 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (aPlayer.isSneaking()) {
             mMagicalEnergyBB.decreaseTier();
         } else {

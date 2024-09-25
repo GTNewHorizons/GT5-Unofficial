@@ -141,7 +141,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     @Override
-    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
         if (getBaseMetaTileEntity().isActive()) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workarea_fail"));
         } else {
@@ -149,7 +150,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             if (mChunkLoadingEnabled) {
                 GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.workareaset.chunks", chunkRadiusConfig);
             } else {
-                GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.workareaset.blocks", chunkRadiusConfig << 4);
+                GTUtility
+                    .sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.workareaset.blocks", chunkRadiusConfig << 4);
             }
         }
 
