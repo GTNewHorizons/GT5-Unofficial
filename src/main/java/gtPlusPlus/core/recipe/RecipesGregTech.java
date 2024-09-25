@@ -1427,14 +1427,6 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(fluidExtractionRecipes);
 
-        // Ender Fluid
-        RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(Items.ender_pearl))
-            .fluidOutputs(FluidUtils.getFluidStack("ender", 250))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(fluidExtractionRecipes);
-
         // Blazing Pyrotheum
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L))
