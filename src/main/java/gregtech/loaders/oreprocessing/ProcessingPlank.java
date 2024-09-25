@@ -23,9 +23,16 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         OrePrefixes.plank.add(this);
     }
 
+    // Gross nasty hack to prevent spam registry of oredicted colored woods
+    private boolean registeredEXU = false;
+
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aModName.equals("ExtraUtilities")) {
+            if (registeredEXU) return;
+            else registeredEXU = true;
+        }
         if (aOreDictName.startsWith("plankWood")) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))
