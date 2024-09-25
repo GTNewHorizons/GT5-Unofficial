@@ -132,6 +132,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private int rendererColorBlue = 255;
     private int rotationSpeed = 5;
     private int starSize = 20;
+    private int rainbowCycleSpeed = 1;
     private long fuelConsumption = 0;
     private long totalRecipesProcessed = 0;
     private long totalFuelConsumed = 0;
@@ -152,6 +153,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private boolean noFormatting = false;
     private boolean isRenderActive = false;
     private boolean secretUpgrade = false;
+    private boolean rainbowMode = false;
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
 
@@ -597,6 +599,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         tile.setStarRadius(starSize);
         tile.setRotationSpeed(rotationSpeed);
         tile.setColor(rendererColorRed / 255f, rendererColorGreen / 255f, rendererColorBlue / 255f, rendererGamma);
+        tile.setRainbowMode(rainbowMode, rainbowCycleSpeed);
 
         tile.updateToClient();
     }
@@ -2775,6 +2778,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
                     .setPos(40, 45)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(() -> rendererColorRed, val -> rendererColorRed = val),
@@ -2794,6 +2799,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
                     .setPos(40, 65)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(() -> rendererColorGreen, val -> rendererColorGreen = val),
@@ -2813,6 +2820,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
                     .setPos(40, 85)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(() -> rendererColorBlue, val -> rendererColorBlue = val),
@@ -2833,6 +2842,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
                     .setPos(40, 105)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.decimals"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.FloatSyncer(() -> rendererGamma, val -> rendererGamma = val),
@@ -2842,6 +2853,51 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .asWidget()
                     .setSize(80, 80)
                     .setPos(100, 45))
+            .widget(
+                new DrawableWidget().setDrawable(() -> rainbowMode ? TecTechUITextures.PICTURE_RAINBOW_SQUARE : null)
+                    .setSize(80, 80)
+                    .setPos(100, 45))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (!widget.isClient()) {
+                    rainbowMode = !rainbowMode;
+                }
+            })
+                .setPlayClickSound(true)
+                .setBackground(() -> {
+                    if (rainbowMode) {
+                        return new IDrawable[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
+                            TecTechUITextures.OVERLAY_BUTTON_RAINBOW_SPIRAL };
+                    } else {
+                        return new IDrawable[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
+                            TecTechUITextures.OVERLAY_BUTTON_RAINBOW_SPIRAL_OFF };
+                    }
+                })
+                .addTooltip(translateToLocal("fog.button.rainbowmode.tooltip"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(100, 130)
+                .setSize(16, 16)
+                .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> rainbowMode, (val) -> rainbowMode = val), builder))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.speed"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(120, 129)
+                    .setSize(60, 18))
+            .widget(
+                new NumericWidget().setSetter(val -> rainbowCycleSpeed = (int) val)
+                    .setGetter(() -> rainbowCycleSpeed)
+                    .setBounds(0, 100)
+                    .setDefaultValue(1)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(28, 18)
+                    .setPos(152, 129)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(() -> rainbowCycleSpeed, val -> rainbowCycleSpeed = val),
+                        builder))
             .widget(
                 new TextWidget(
                     EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.misc"))
@@ -2864,6 +2920,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
                     .setPos(40, 150)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(() -> rotationSpeed, val -> rotationSpeed = val),
@@ -2883,6 +2941,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
                     .setPos(40, 170)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> starSize, val -> starSize = val), builder))
             .widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -2914,6 +2974,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     rendererGamma = 3f;
                     rotationSpeed = 5;
                     starSize = 20;
+                    rainbowMode = false;
+                    rainbowCycleSpeed = 1;
                 }
             })
                 .setSize(35, 15)
@@ -3633,6 +3695,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setFloat("rendererGamma", rendererGamma);
         NBT.setInteger("rotationSpeed", rotationSpeed);
         NBT.setInteger("starSize", starSize);
+        NBT.setBoolean("rainbowMode", rainbowMode);
+        NBT.setInteger("rainbowCycleSpeed", rainbowCycleSpeed);
 
         // Store booleanArray of all upgrades
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
@@ -3680,6 +3744,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         rendererGamma = NBT.getFloat("rendererGamma");
         rotationSpeed = NBT.getInteger("rotationSpeed");
         starSize = NBT.getInteger("starSize");
+        rainbowMode = NBT.getBoolean("rainbowMode");
+        rainbowCycleSpeed = NBT.getInteger("rainbowCycleSpeed");
 
         NBTTagCompound tempBooleanTag = NBT.getCompoundTag("upgrades");
 
