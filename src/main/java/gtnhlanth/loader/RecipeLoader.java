@@ -3474,13 +3474,6 @@ public class RecipeLoader {
         // PTMEG Manipulation
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-            .itemOutputs(WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.ingot, 1))
-            .fluidInputs(WerkstoffMaterialPool.PTMEGElastomer.getMolten(144))
-            .duration(2 * SECONDS)
-            .eut(64)
-            .addTo(fluidSolidifierRecipes);
-        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
             .itemOutputs(WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.plate, 1))
             .fluidInputs(WerkstoffMaterialPool.PTMEGElastomer.getMolten(144))
@@ -3627,12 +3620,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_UHV)
             .duration(5 * SECONDS)
             .addTo(vacuumFurnaceRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 1))
-            .fluidOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.getMolten(144))
-            .eut(TierEU.RECIPE_LuV)
-            .duration(1 * SECONDS)
-            .addTo(fluidExtractionRecipes);
 
         // 16 Adv Crystal SoC
         for (ItemStack itemStack : OreDictionary.getOres("craftingLensBlue")) {
