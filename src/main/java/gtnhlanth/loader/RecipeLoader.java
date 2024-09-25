@@ -982,15 +982,6 @@ public class RecipeLoader {
             .duration(30 * SECONDS)
             .eut(240)
             .addTo(mixerRecipes);
-        // SeaweedConcentrate * 4
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.SeaweedAsh.get(OrePrefixes.dust, 4))
-            .itemOutputs(Materials.Calcite.getDust(2))
-            .fluidInputs(Materials.DilutedSulfuricAcid.getFluid(2400))
-            .fluidOutputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2400))
-            .duration(60 * SECONDS)
-            .eut(240)
-            .addTo(mixerRecipes);
 
         // Iodine
         GTValues.RA.stdBuilder()
@@ -1158,16 +1149,6 @@ public class RecipeLoader {
             .duration(15 * SECONDS)
             .eut(450)
             .addTo(UniversalChemical);
-
-        // Cerium
-        // Ce2O3 = 2Ce + 3O
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.CeriumIIIOxide.get(OrePrefixes.dust, 5))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cerium, 2))
-            .fluidOutputs(Materials.Oxygen.getGas(3000))
-            .duration(7 * SECONDS + 10 * TICKS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(electrolyzerRecipes);
 
         // CHAIN BEGIN
         // MONAZITE
@@ -1645,7 +1626,8 @@ public class RecipeLoader {
 
         // Sm RE
         GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1))
+            .itemInputs(WerkstoffMaterialPool.SamaricRareEarthConcentrate.get(OrePrefixes.dust, 1),
+                GTUtility.getIntegratedCircuit(1))
             .itemOutputs(WerkstoffMaterialPool.FluorinatedSamaricConcentrate.get(OrePrefixes.dust, 1))
             .fluidInputs(Materials.HydrofluoricAcid.getFluid(2000))
             .duration(15 * SECONDS)
@@ -1843,38 +1825,6 @@ public class RecipeLoader {
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
 
-        // Neodymium Part
-        // Digester to produce Neodymium Chloride Concentrate
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Neodymium, 1))
-            .itemOutputs(Materials.SiliconDioxide.getDust(3))
-            .fluidInputs(Materials.Chlorine.getGas(36000))
-            .fluidOutputs(NeodymiumChlorideConcentrate.getFluidOrGas(3000))
-            .metadata(COIL_HEAT, 800)
-            .eut(TierEU.RECIPE_ZPM)
-            .duration(2 * SECONDS)
-            .addTo(digesterRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(NeodymiumOreConcentrate.get(OrePrefixes.dust, 1))
-            .itemOutputs(Materials.SiliconDioxide.getDust(1))
-            .fluidInputs(Materials.Chlorine.getGas(12000))
-            .fluidOutputs(NeodymiumChlorideConcentrate.getFluidOrGas(1000))
-            .metadata(COIL_HEAT, 800)
-            .eut(TierEU.RECIPE_ZPM)
-            .duration(2 * SECONDS)
-            .addTo(digesterRecipes);
-        // 1B oreChlorideConcentrate = 1 ore's rare earth metal + 3 any rare earth metal
-        GTValues.RA.stdBuilder()
-            .fluidInputs(
-                NeodymiumExtractingNanoResin.getFluidOrGas(1000),
-                NeodymiumChlorideConcentrate.getFluidOrGas(1000))
-            .fluidOutputs(
-                FilledNeodymiumExtractingNanoResin.getFluidOrGas(1000),
-                ChlorinatedRareEarthConcentrate.getFluidOrGas(1000))
-            .eut(TierEU.RECIPE_UV)
-            .duration(1 * SECONDS)
-            .addTo(multiblockChemicalReactorRecipes);
-
         // Promethium Part
         // Digester to produce Neodymium Chloride Concentrate
         GTValues.RA.stdBuilder()
@@ -1895,38 +1845,7 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_ZPM)
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
-        // 1B oreChlorideConcentrate = 1 ore's rare earth metal + 3 any rare earth metal
-        GTValues.RA.stdBuilder()
-            .fluidInputs(
-                PromethiumExtractingNanoResin.getFluidOrGas(1000),
-                PromethiumChlorideConcentrate.getFluidOrGas(1000))
-            .fluidOutputs(
-                FilledPromethiumExtractingNanoResin.getFluidOrGas(1000),
-                ChlorinatedRareEarthConcentrate.getFluidOrGas(1000))
-            .eut(TierEU.RECIPE_UV)
-            .duration(1 * SECONDS)
-            .addTo(multiblockChemicalReactorRecipes);
 
-        // Promethium Part
-        // Digester to produce Promethium Chloride Concentrate
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Promethium, 1))
-            .itemOutputs(Materials.SiliconDioxide.getDust(3))
-            .fluidInputs(Materials.Chlorine.getGas(36000))
-            .fluidOutputs(PromethiumChlorideConcentrate.getFluidOrGas(3000))
-            .metadata(COIL_HEAT, 800)
-            .eut(TierEU.RECIPE_ZPM)
-            .duration(2 * SECONDS)
-            .addTo(digesterRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(PromethiumOreConcentrate.get(OrePrefixes.dust, 1))
-            .itemOutputs(Materials.SiliconDioxide.getDust(1))
-            .fluidInputs(Materials.Chlorine.getGas(12000))
-            .fluidOutputs(PromethiumChlorideConcentrate.getFluidOrGas(1000))
-            .metadata(COIL_HEAT, 800)
-            .eut(TierEU.RECIPE_ZPM)
-            .duration(2 * SECONDS)
-            .addTo(digesterRecipes);
         // 1B oreChlorideConcentrate = 1 ore's rare earth metal + 3 any rare earth metal
         GTValues.RA.stdBuilder()
             .fluidInputs(
@@ -3279,16 +3198,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * SECONDS)
             .addTo(electrolyzerRecipes);
-
-        // ZPM molten distilling method
-
-        // melt ImpureSamariumChloride
-        GTValues.RA.stdBuilder()
-            .itemInputs(SamariumChloride.get(OrePrefixes.dust, 1))
-            .fluidOutputs(SamariumChloride.getMolten(144))
-            .eut(TierEU.RECIPE_EV)
-            .duration(24)
-            .addTo(fluidExtractionRecipes);
 
         // distill with LanthanumDust 36*144L moltenSmCl3 = 16*144L moltenSm + 27B Cl
         GTValues.RA.stdBuilder()
