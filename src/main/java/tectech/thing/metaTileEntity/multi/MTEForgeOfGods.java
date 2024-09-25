@@ -2851,8 +2851,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         new FakeSyncWidget.FloatSyncer(() -> rendererGamma, val -> rendererGamma = val),
                         builder))
             .widget(
-                new Rectangle().setColor(Color.rgb(rendererColorRed, rendererColorGreen, rendererColorBlue))
-                    .asWidget()
+                new DrawableWidget().setDrawable(
+                    () -> new Rectangle().setColor(Color.rgb(rendererColorRed, rendererColorGreen, rendererColorBlue)))
                     .setSize(80, 80)
                     .setPos(100, 45))
             .widget(
@@ -3699,6 +3699,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setInteger("starSize", starSize);
         NBT.setBoolean("rainbowMode", rainbowMode);
         NBT.setInteger("rainbowCycleSpeed", rainbowCycleSpeed);
+        NBT.setBoolean("isRenderActive", isRenderActive);
 
         // Store booleanArray of all upgrades
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
@@ -3748,6 +3749,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         starSize = NBT.getInteger("starSize");
         rainbowMode = NBT.getBoolean("rainbowMode");
         rainbowCycleSpeed = NBT.getInteger("rainbowCycleSpeed");
+        isRenderActive = NBT.getBoolean("isRenderActive");
 
         NBTTagCompound tempBooleanTag = NBT.getCompoundTag("upgrades");
 
