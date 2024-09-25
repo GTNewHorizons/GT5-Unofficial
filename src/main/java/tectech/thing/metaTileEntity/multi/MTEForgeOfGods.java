@@ -508,8 +508,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             return;
         }
 
-        FluidStack fuelToDrain = validFuelList.get(selectedFuelType)
-            .copy();
+        FluidStack fuelToDrain = new FluidStack(validFuelList.get(selectedFuelType), (int) fuelConsumption);
         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
             FluidStack drained = hatch.drain(ForgeDirection.UNKNOWN, fuelToDrain, true);
             if (drained == null) {
