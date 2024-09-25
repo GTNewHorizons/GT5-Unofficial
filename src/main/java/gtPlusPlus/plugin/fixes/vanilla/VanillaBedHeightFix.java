@@ -10,7 +10,6 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.asm.GTCorePlugin;
-import gtPlusPlus.api.interfaces.IPlugin;
 import gtPlusPlus.api.objects.Logger;
 
 // TODO move this as a mixin in hodgepodge
@@ -18,7 +17,7 @@ public class VanillaBedHeightFix {
 
     private final Method mSleepInBedAt;
 
-    public VanillaBedHeightFix(IPlugin minstance) {
+    public VanillaBedHeightFix() {
         Method m = null;
         try {
             m = EntityPlayer.class.getDeclaredMethod(
@@ -29,7 +28,7 @@ public class VanillaBedHeightFix {
         } catch (NoSuchMethodException ignored) {}
         if (m != null) {
             mSleepInBedAt = m;
-            minstance.log("Registering Bed Height Fix.");
+            Logger.INFO("Registering Bed Height Fix.");
             MinecraftForge.EVENT_BUS.register(this);
         } else {
             mSleepInBedAt = null;

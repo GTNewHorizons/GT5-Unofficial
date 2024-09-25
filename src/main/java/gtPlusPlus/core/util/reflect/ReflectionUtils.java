@@ -1,12 +1,10 @@
 package gtPlusPlus.core.util.reflect;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.reflect.ClassPath;
 import com.gtnewhorizon.gtnhlib.reflect.Fields;
 
 import gtPlusPlus.api.objects.Logger;
@@ -105,30 +103,6 @@ public class ReflectionUtils {
                 .getModifiers())) {
             field.setAccessible(true);
         }
-    }
-
-    /**
-     *
-     * @param aPackageName - The full {@link Package} name in {@link String} form.
-     * @return - {@link Boolean} object. True if loaded > 0 classes.
-     */
-    public static boolean dynamicallyLoadClassesInPackage(String aPackageName) {
-        ClassLoader classLoader = ReflectionUtils.class.getClassLoader();
-        int loaded = 0;
-        try {
-            ClassPath path = ClassPath.from(classLoader);
-            for (ClassPath.ClassInfo info : path.getTopLevelClassesRecursive(aPackageName)) {
-                Class<?> clazz = Class.forName(info.getName(), true, classLoader);
-                if (clazz != null) {
-                    loaded++;
-                    Logger.INFO("Found " + clazz.getCanonicalName() + ". [" + loaded + "]");
-                }
-            }
-        } catch (ClassNotFoundException | IOException e) {
-
-        }
-
-        return loaded > 0;
     }
 
     public static boolean setField(final Object object, final Field field, final Object fieldValue) {
