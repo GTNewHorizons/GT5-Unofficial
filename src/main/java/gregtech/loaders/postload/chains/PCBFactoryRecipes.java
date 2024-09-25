@@ -78,9 +78,7 @@ public class PCBFactoryRecipes {
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                CELESTIAL_TUNGSTEN.getFrameBox(1),
-                QUANTUM.getPlate(6))
+            .itemInputs(CELESTIAL_TUNGSTEN.getFrameBox(1), QUANTUM.getPlate(6))
             .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

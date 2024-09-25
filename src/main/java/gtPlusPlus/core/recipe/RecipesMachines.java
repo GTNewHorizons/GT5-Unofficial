@@ -982,11 +982,11 @@ public class RecipesMachines {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemUtils.getItemStackWithMeta(true, "IC2:blockGenerator:6", "IC2-RTG", 6, 1),
-                MaterialsAlloy.NITINOL_60.getPlate(8), MaterialsAlloy.MARAGING350.getGear(4),
+                MaterialsAlloy.NITINOL_60.getPlate(8),
+                MaterialsAlloy.MARAGING350.getGear(4),
                 ItemList.Field_Generator_EV.get(8),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 32),
-                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 4)
-            )
+                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 4))
             .itemOutputs(GregtechItemList.RTG.get(1))
             .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(144 * 16))
             .duration(10 * MINUTES)
