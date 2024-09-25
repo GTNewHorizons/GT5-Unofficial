@@ -58,6 +58,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -92,6 +93,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -161,6 +163,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
+import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.GTItemStack2;
 import gregtech.api.objects.ItemData;
@@ -494,10 +497,38 @@ public class GTUtility {
         return " (" + GTValues.VN[tier] + ")";
     }
 
+    public static String getEnabledText() {
+        return EnumChatFormatting.GREEN + GTUtility.trans("088", "Enabled") + EnumChatFormatting.RESET;
+    }
+
+    public static String getDisabledText() {
+        return EnumChatFormatting.RED + GTUtility.trans("087", "Disabled") + EnumChatFormatting.RESET;
+    }
+
     public static void sendChatToPlayer(EntityPlayer aPlayer, String aChatMessage) {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
             aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
         }
+    }
+
+    public static void sendLocalizedChatToPlayer(EntityPlayer aPlayer, String translationKey) {
+        sendChatToPlayer(aPlayer, StatCollector.translateToLocal(translationKey));
+    }
+
+    public static void sendLocalizedChatToPlayer(EntityPlayer aPlayer, String aChatMessage, Object... format) {
+        sendChatToPlayer(aPlayer, I18n.format(aChatMessage, format));
+    }
+
+    public static void sendChatToPlayer(EntityPlayer player, Object... chunks) {
+        StringBuilder builder = new StringBuilder();
+
+        for (Object obj : chunks) {
+            if (obj != null) {
+                builder.append(obj);
+            }
+        }
+
+        GTUtility.sendChatToPlayer(player, builder.toString());
     }
 
     public static void checkAvailabilities() {
@@ -1774,6 +1805,60 @@ public class GTUtility {
             GTOreDictUnificator.get_nocopy(aStack1),
             GTOreDictUnificator.get_nocopy(aStack2),
             aIgnoreNBT);
+    }
+
+    public static enum ToolType {
+
+        DyeEraser(null, null), // water bucket
+        Wrench(SoundResource.IC2_TOOLS_WRENCH, GregTechAPI.sWrenchList),
+        Screwdriver(SoundResource.IC2_TOOLS_WRENCH, GregTechAPI.sScrewdriverList),
+        HardHammer(SoundResource.RANDOM_ANVIL_USE, GregTechAPI.sHardHammerList),
+        SoftHammer(SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, GregTechAPI.sSoftHammerList),
+        SolderingIron(SoundResource.IC2_TOOLS_BATTERY_USE, GregTechAPI.sSolderingToolList),
+        WireCutter(SoundResource.IC2_TOOLS_WRENCH, GregTechAPI.sWireCutterList),
+        Crowbar(SoundResource.RANDOM_BREAK, GregTechAPI.sCrowbarList),
+        Jackhammer(SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT, GregTechAPI.sJackhammerList);
+
+        public final SoundResource useSound;
+        public final GTHashSet<GTItemStack> toolList;
+
+        public static final ToolType[] TOOL_TYPES = values();
+
+        private ToolType(SoundResource useSound, GTHashSet<GTItemStack> toolList) {
+            this.useSound = useSound;
+            this.toolList = toolList;
+        }
+
+        /**
+         * This only handles tool damage. It is assumed that the player's held item is the tool.
+         * Consuming solder for soldering irons must be done separately.
+         * 
+         * @return True if the tool had power or didn't need it.
+         */
+        public boolean onUse(EntityPlayer player) {
+            final ItemStack tool = player.inventory.getCurrentItem();
+
+            if (this == DyeEraser) {
+                tool.func_150996_a(Items.bucket);
+                return true;
+            }
+
+            return GTModHandler.damageOrDechargeItem(tool, 1, 1000, player);
+        }
+
+        public static @Nullable ToolType getToolType(ItemStack heldItem) {
+            if (areStacksEqual(new ItemStack(Items.water_bucket, 1), heldItem)) {
+                return DyeEraser;
+            }
+
+            for (ToolType tool : TOOL_TYPES) {
+                if (tool.toolList != null && isStackInList(heldItem, tool.toolList)) {
+                    return tool;
+                }
+            }
+
+            return null;
+        }
     }
 
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {

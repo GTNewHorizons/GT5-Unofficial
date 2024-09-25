@@ -205,7 +205,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         shouldRender = !shouldRender;
         if (!shouldRender) {
             PlayerUtils.messagePlayer(aPlayer, "Rendering off");
@@ -215,7 +215,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             if (blackHoleStatus != 1) createRenderBlock();
             PlayerUtils.messagePlayer(aPlayer, "Rendering on");
         }
-
+        return true;
     }
 
     @Override

@@ -216,9 +216,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
-            .isGUIClickable()) return;
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (aPlayer.isSneaking()) {
             mMode = (byte) ((mMode + 9) % 10);
         } else {
@@ -298,6 +296,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     String.format("%s (%s)", GTUtility.trans("151.2", "Outputs 1 specific Fluid"), inBrackets));
             }
         }
+        return true;
     }
 
     private boolean tryToLockHatch(EntityPlayer aPlayer, ForgeDirection side) {

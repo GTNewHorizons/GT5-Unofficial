@@ -140,9 +140,12 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) mMagicalEnergyBB.decreaseTier();
-        else mMagicalEnergyBB.increaseTier();
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (aPlayer.isSneaking()) {
+            mMagicalEnergyBB.decreaseTier();
+        } else {
+            mMagicalEnergyBB.increaseTier();
+        }
         GTUtility.sendChatToPlayer(
             aPlayer,
             String.format(
@@ -152,6 +155,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
                 mMagicalEnergyBB.getRange(),
                 true));
         mMagicalEnergyBB.update();
+        return true;
     }
 
     @Override

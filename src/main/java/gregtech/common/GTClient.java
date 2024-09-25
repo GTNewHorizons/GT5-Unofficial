@@ -824,25 +824,34 @@ public class GTClient extends GTProxy implements Runnable {
             }
         }
 
+        // always draw the grid for wire cutters and hard hammers because they ignore covers completely
         if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sWireCutterList)
-            || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSolderingToolList)
+            || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sHardHammerList)) {
+            drawGrid(aEvent, false, false, aEvent.player.isSneaking());
+            return;
+        }
+
+        if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSolderingToolList)
             || (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSoftHammerList)
                 && aTileEntity instanceof MultiBlockPart) && aEvent.player.isSneaking()) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0) {
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
+            }
             return;
         }
 
         if ((aEvent.currentItem == null && aEvent.player.isSneaking())
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sCrowbarList)
+            || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sJackhammerList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sScrewdriverList)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0) {
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
                         drawGrid(aEvent, true, false, true);
                         return;
                     }
                 }
+            }
             return;
         }
 

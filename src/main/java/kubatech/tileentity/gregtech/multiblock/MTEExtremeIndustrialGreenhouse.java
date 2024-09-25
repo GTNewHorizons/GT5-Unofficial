@@ -425,13 +425,14 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * Shift+Right Click = change EIG Mode
      */
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             tryChangeMode(aPlayer);
         } else {
             tryChangeSetupPhase(aPlayer);
         }
+        return true;
     }
 
     /**

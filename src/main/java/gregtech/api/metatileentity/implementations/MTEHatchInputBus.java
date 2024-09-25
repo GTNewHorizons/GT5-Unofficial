@@ -210,9 +210,8 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
-            .isGUIClickable()) return;
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side).isGUIClickable()) return false;
         if (aPlayer.isSneaking()) {
             if (disableSort) {
                 disableSort = false;
@@ -226,13 +225,14 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
             }
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableSort." + disableSort) + "   "
-                    + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
+                StatCollector.translateToLocal("GT5U.hatch.disableSort." + disableSort),
+                "   ",
+                StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
         } else {
             disableFilter = !disableFilter;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+            GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
         }
+        return true;
     }
 
     @Override

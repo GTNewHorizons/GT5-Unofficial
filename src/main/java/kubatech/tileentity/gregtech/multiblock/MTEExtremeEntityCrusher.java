@@ -392,19 +392,19 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (this.mMaxProgresstime > 0) {
             GTUtility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
-            return;
+            return false;
         }
         if (aPlayer.isSneaking()) {
-            if (!InfernalMobs.isModLoaded()) return;
+            if (!InfernalMobs.isModLoaded()) return false;
             mIsProducingInfernalDrops = !mIsProducingInfernalDrops;
             if (!mIsProducingInfernalDrops)
                 GTUtility.sendChatToPlayer(aPlayer, "Mobs will now be prevented from spawning infernal");
             else GTUtility.sendChatToPlayer(aPlayer, "Mobs can spawn infernal now");
         } else {
-            if (!BloodMagic.isModLoaded()) return;
+            if (!BloodMagic.isModLoaded()) return false;
             isInRitualMode = !isInRitualMode;
             if (!isInRitualMode) {
                 GTUtility.sendChatToPlayer(aPlayer, "Ritual mode disabled");
@@ -414,16 +414,18 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 else GTUtility.sendChatToPlayer(aPlayer, "Can't connect to the ritual");
             }
         }
+        return true;
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             mAnimationEnabled = !mAnimationEnabled;
             GTUtility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
             return true;
-        } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        } else {
+            return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
+        }
     }
 
     @SuppressWarnings("unused")

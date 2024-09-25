@@ -316,7 +316,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (!aPlayer.isSneaking()) {
             PlayerUtils.messagePlayer(aPlayer, "Using Animations? " + usingAnimations());
             PlayerUtils.messagePlayer(aPlayer, "Has Controller? " + this.mHasController);
@@ -346,59 +346,34 @@ public class MTEHatchTurbine extends MTEHatch {
                 PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture.");
             }
         }
+        return true;
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
-        if (this.getBaseMetaTileEntity()
-            .isServerSide() && !aPlayer.isSneaking()) {
-            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-            if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
-                }
-            }
-        }
-        return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
-    }
-
-    @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        if (this.getBaseMetaTileEntity()
-            .isServerSide()) {
-            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-            if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean onToolClick(ItemStack tCurrentItem, EntityPlayer aPlayer, ForgeDirection side) {
-        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)) {
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+        if (tCurrentItem != null && tCurrentItem.getItem() instanceof MetaGeneratedTool) {
             boolean aHasTurbine = this.hasTurbine();
             if (aPlayer.inventory.getFirstEmptyStack() >= 0 && aHasTurbine) {
-                if (PlayerUtils.isCreative(aPlayer)
-                    || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                    aPlayer.inventory.addItemStackToInventory((this.getTurbine()));
-                    this.mInventory[0] = null;
-                    GTUtility.sendChatToPlayer(aPlayer, "Removed turbine with wrench.");
-                    return true;
-                }
+                aPlayer.inventory.addItemStackToInventory(this.getTurbine());
+                this.mInventory[0] = null;
+                GTUtility.sendChatToPlayer(aPlayer, "Removed turbine with wrench.");
             } else {
                 GTUtility.sendChatToPlayer(
                     aPlayer,
                     aHasTurbine ? "Cannot remove turbine, no free inventory space." : "No turbine to remove.");
             }
-        } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
-            if (mControllerLocation != null && mControllerLocation.length() > 0) {
-                if (setController(BlockPos.generateBlockPos(mControllerLocation))) {
-                    if (PlayerUtils.isCreative(aPlayer)
-                        || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (this.getBaseMetaTileEntity().isServerSide()) {
+            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+            if (tCurrentItem != null && tCurrentItem.getItem() instanceof MetaGeneratedTool) {
+                if (mControllerLocation != null && mControllerLocation.length() > 0) {
+                    if (setController(BlockPos.generateBlockPos(mControllerLocation))) {
                         String tChat = "Trying to Reset linked Controller";
                         IGregTechTileEntity g = this.getBaseMetaTileEntity();
                         GTUtility.sendChatToPlayer(aPlayer, tChat);

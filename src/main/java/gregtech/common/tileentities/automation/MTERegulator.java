@@ -99,11 +99,6 @@ public class MTERegulator extends MTEBuffer {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        // Regulation per Screwdriver is overridden by GUI regulation.
-    }
-
-    @Override
     public void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         for (int i = 0, tCosts; i < 9; i++) {
             if (this.mInventory[(i + 9)] != null) {

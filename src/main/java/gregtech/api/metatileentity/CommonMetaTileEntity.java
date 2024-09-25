@@ -19,6 +19,7 @@ import appeng.parts.p2p.PartP2PSound;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -368,5 +369,9 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity
         if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof ISoundP2PHandler metaHandler) {
             metaHandler.onSoundP2POutputUpdate(p2p, outputs);
         }
+    }
+
+    protected void sendSoundToPlayers(SoundResource sound) {
+        GTUtility.sendSoundToPlayers(worldObj, sound, 1.0F, -1, xCoord, yCoord, zCoord);
     }
 }

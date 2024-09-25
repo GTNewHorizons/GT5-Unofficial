@@ -551,8 +551,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         switch (machineType) {
             case scanner -> machineType = assembly;
             case assembly -> machineType = scanner;
@@ -560,6 +559,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         aPlayer.addChatComponentMessage(
             new ChatComponentTranslation(
                 "gt.blockmachines.multimachine.em.research.mode." + machineType.replace(" ", "_")));
+        return true;
     }
 
     @Override

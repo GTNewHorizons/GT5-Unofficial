@@ -423,12 +423,13 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         byte aTest = (byte) (aCurrentOutputAmperage + 1);
         if (aTest > 16 || aTest <= 0) {
             aTest = 1;
         }
         aCurrentOutputAmperage = aTest;
         PlayerUtils.messagePlayer(aPlayer, "Now handling " + aCurrentOutputAmperage + " Amps.");
+        return true;
     }
 }

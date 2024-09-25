@@ -258,40 +258,34 @@ public class MTEPump extends MTEBasicMachine {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-
-        if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
-            // Configuring "input from output side allowed".
-            return;
-        }
-
-        int max = getMaxPumpableDistance();
-        if (aPlayer.isSneaking()) {
-            if (radiusConfig >= 0) {
-                radiusConfig--;
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (side != getBaseMetaTileEntity().getFrontFacing() && side != mMainFacing) {
+            int max = getMaxPumpableDistance();
+            if (aPlayer.isSneaking()) {
+                if (radiusConfig >= 0) {
+                    radiusConfig--;
+                }
+                if (radiusConfig < 0) radiusConfig = max;
+            } else {
+                if (radiusConfig <= max) {
+                    radiusConfig++;
+                }
+                if (radiusConfig > max) radiusConfig = 0;
             }
-            if (radiusConfig < 0) radiusConfig = max;
+
+            GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.workareaset.blocks", radiusConfig * 2 + 1);
+
+            clearQueue(false);
+
+            return true;
         } else {
-            if (radiusConfig <= max) {
-                radiusConfig++;
-            }
-            if (radiusConfig > max) radiusConfig = 0;
+            return super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tool);
         }
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                + (radiusConfig * 2 + 1)
-                + "x"
-                + (radiusConfig * 2 + 1)); // TODO Add translation support
-
-        clearQueue(false);
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
-        if (super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) return true;
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, tool)) return true;
         mDisallowRetract = !mDisallowRetract;
         GTUtility.sendChatToPlayer(
             entityPlayer,

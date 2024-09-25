@@ -325,7 +325,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack tool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -555,15 +555,15 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!autoPullAvailable) {
-            return;
-        }
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (autoPullAvailable) {
+            setAutoPullFluidList(!autoPullFluidList);
+            GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.stocking_hatch.auto_pull_toggle." + (autoPullFluidList ? "enabled" : "disabled"));
 
-        setAutoPullFluidList(!autoPullFluidList);
-        aPlayer.addChatMessage(
-            new ChatComponentTranslation(
-                "GT5U.machines.stocking_hatch.auto_pull_toggle." + (autoPullFluidList ? "enabled" : "disabled")));
+            return true;
+        } else {
+            return super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tool);
+        }
     }
 
     @Override

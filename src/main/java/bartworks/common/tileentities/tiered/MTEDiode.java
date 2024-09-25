@@ -25,6 +25,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_MAX;
 import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -65,19 +66,18 @@ public class MTEDiode extends MTEBasicHull {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-
-        if (this.getBaseMetaTileEntity()
-            .getWorld().isRemote) return;
-        if (!aPlayer.isSneaking()) {
-            --this.aAmps;
-            if (this.aAmps < 0) this.aAmps = this.maxAmps;
-        } else {
-            ++this.aAmps;
-            if (this.aAmps > this.maxAmps) this.aAmps = 0;
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (!aPlayer.isSneaking()) {
+                --this.aAmps;
+                if (this.aAmps < 0) this.aAmps = this.maxAmps;
+            } else {
+                ++this.aAmps;
+                if (this.aAmps > this.maxAmps) this.aAmps = 0;
+            }
+            GTUtility.sendChatToPlayer(aPlayer, "Max Amps: " + this.aAmps);
         }
-        GTUtility.sendChatToPlayer(aPlayer, "Max Amps: " + this.aAmps);
+        return true;
     }
 
     @Override

@@ -12,6 +12,8 @@ import static gregtech.api.enums.Textures.BlockIcons.ARROW_UP_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTUtility.getDisabledText;
+import static gregtech.api.util.GTUtility.getEnabledText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -302,7 +304,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (side == getBaseMetaTileEntity().getBackFacing()) {
 
             mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking() ? -1 : 1)) % 65);
@@ -316,12 +318,14 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                     aPlayer,
                     GTUtility.trans("099", "Regulate Item Stack Size to: ") + mTargetStackSize);
             }
+            return true;
+        } else {
+            return false;
         }
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
         wrenchingSide = wrenchingSide.getOpposite();
         if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
@@ -454,18 +458,14 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
-        if (entityPlayer.isSneaking()) {
-            // I was so proud of all this but I literally just copied code from OutputBus
-            bSortStacks = !bSortStacks;
-            GTUtility.sendChatToPlayer(
-                entityPlayer,
-                GTUtility.trans("200", "Sort mode: ")
-                    + (bSortStacks ? GTUtility.trans("088", "Enabled") : GTUtility.trans("087", "Disabled")));
-            return true;
-        }
-        return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        // I was so proud of all this but I literally just copied code from OutputBus
+        bSortStacks = !bSortStacks;
+        GTUtility.sendChatToPlayer(
+            entityPlayer,
+            GTUtility.trans("200", "Sort mode: "),
+            bSortStacks ? getEnabledText() : getDisabledText());
+        return true;
     }
 
     protected void addEmitEnergyButton(ModularWindow.Builder builder) {

@@ -455,10 +455,8 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-
-        if (side == this.getBaseMetaTileEntity()
-            .getFrontFacing()) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
             final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
             switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                 case 0 -> this.mRedstoneLevel -= 5000;
@@ -468,9 +466,10 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
             }
             this.markDirty();
             GTUtility.sendChatToPlayer(aPlayer, "Emit Redstone at Pollution Level: " + this.mRedstoneLevel);
+            return true;
+        } else {
+            return false;
         }
-
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
     }
 
     @Override

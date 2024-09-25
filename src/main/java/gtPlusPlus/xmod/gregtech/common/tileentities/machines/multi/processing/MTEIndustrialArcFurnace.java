@@ -285,7 +285,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.mSize > 5) {
             this.mPlasmaMode = !mPlasmaMode;
             if (mPlasmaMode) {
@@ -321,6 +321,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
                     + EnumChatFormatting.RESET);
         }
         mLastRecipe = null;
+        return true;
     }
 
     @Override

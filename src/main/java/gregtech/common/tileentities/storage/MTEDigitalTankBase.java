@@ -312,13 +312,12 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
-            mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                mAllowInputFromOutputSide ? GTUtility.getTrans("095") : GTUtility.getTrans("096"));
-        }
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            mAllowInputFromOutputSide ? GTUtility.getTrans("095") : GTUtility.getTrans("096"));
+        return true;
     }
 
     @Override

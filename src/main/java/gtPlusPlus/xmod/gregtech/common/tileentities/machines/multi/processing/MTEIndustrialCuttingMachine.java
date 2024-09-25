@@ -225,14 +225,6 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        PlayerUtils.messagePlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
-    }
-
-    @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_CUTTING);
@@ -242,6 +234,11 @@ public class MTEIndustrialCuttingMachine extends GTPPMultiBlockBase<MTEIndustria
     @Override
     public String getMachineModeName() {
         return StatCollector.translateToLocal("GT5U.GTPP_MULTI_CUTTING_MACHINE.mode." + machineMode);
+    }
+
+    @Override
+    public int nextMachineMode() {
+        return machineMode == 0 ? 1 : 0;
     }
 
     @Override

@@ -335,14 +335,6 @@ public class MTEIndustrialElectromagneticSeparator
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        PlayerUtils.messagePlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
-    }
-
-    @Override
     public void setMachineModeIcons() {
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SEPARATOR);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_POLARIZER);
@@ -351,6 +343,11 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     public String getMachineModeName() {
         return StatCollector.translateToLocal("GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode." + machineMode);
+    }
+
+    @Override
+    public int nextMachineMode() {
+        return machineMode == 0 ? 1 : 0;
     }
 
     @Override

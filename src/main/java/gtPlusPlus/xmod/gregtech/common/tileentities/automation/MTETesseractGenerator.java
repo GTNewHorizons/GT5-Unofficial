@@ -253,10 +253,8 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     @Override
-    public void onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX,
-        final float aY, final float aZ) {
-        if (aPlayer.getUniqueID()
-            .compareTo(this.mOwner) == 0) {
+    public boolean onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ, ItemStack tool) {
+        if (aPlayer.getUniqueID().equals(this.mOwner)) {
             if (side == this.getBaseMetaTileEntity()
                 .getFrontFacing()) {
                 final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
@@ -293,13 +291,18 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 if (getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this) {
                     GTUtility.sendChatToPlayer(
                         aPlayer,
-                        "Frequency: " + this.mFrequency + EnumChatFormatting.RED + " (Occupied)");
+                        "Frequency: ",
+                        this.mFrequency,
+                        EnumChatFormatting.RED,
+                        " (Occupied)");
                 } else {
                     GTUtility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
                 }
             }
+            return true;
         } else {
             GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Generator to configure.");
+            return false;
         }
     }
 

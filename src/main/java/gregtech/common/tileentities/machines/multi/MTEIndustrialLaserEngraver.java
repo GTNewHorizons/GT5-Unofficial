@@ -196,31 +196,23 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     private boolean stopAllRendering = false;
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering) {
             PlayerUtils.messagePlayer(aPlayer, "Rendering off");
             if (renderer != null) renderer.setShouldRender(false);
-        } else PlayerUtils.messagePlayer(aPlayer, "Rendering on");
+        } else {
+            PlayerUtils.messagePlayer(aPlayer, "Rendering on");
+        }
+        return true;
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+        if (renderer != null) {
+            renderer.realism = !renderer.realism;
+            PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
             return true;
-        } else {
-            if (renderer != null) {
-                renderer.realism = !renderer.realism;
-                PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
-                return true;
-            }
         }
         return false;
     }

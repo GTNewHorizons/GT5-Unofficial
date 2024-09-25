@@ -934,10 +934,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     private boolean animationsEnabled = true;
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         animationsEnabled = !animationsEnabled;
         aPlayer.addChatMessage(
             new ChatComponentText("Animations are now " + (animationsEnabled ? "enabled" : "disabled") + "."));
+        return true;
     }
 
     @Override

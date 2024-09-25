@@ -141,25 +141,24 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (getBaseMetaTileEntity().isActive()) {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workarea_fail"));
         } else {
             adjustChunkRadius(!aPlayer.isSneaking());
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                    + GTUtility.formatNumbers((long) chunkRadiusConfig << 4)
-                    + " "
-                    + StatCollector.translateToLocal("GT5U.machines.radius"));
+            if (mChunkLoadingEnabled) {
+                GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.workareaset.chunks", chunkRadiusConfig);
+            } else {
+                GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.workareaset.blocks", chunkRadiusConfig << 4);
+            }
         }
+
+        return true;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack tool) {
         replaceWithCobblestone = !replaceWithCobblestone;
         GTUtility.sendChatToPlayer(aPlayer, "Replace with cobblestone " + replaceWithCobblestone);
         return true;

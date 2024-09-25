@@ -120,14 +120,14 @@ public class MTEPollutionCreator extends GTPPMetaTileEntity {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (pollutionMultiplier > 99) {
             pollutionMultiplier = 1;
         } else {
             pollutionMultiplier++;
         }
-        PlayerUtils.messagePlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        PlayerUtils.messagePlayer(aPlayer, "Pollution Multiplier is now " + pollutionMultiplier + ".");
+        return true;
     }
 
     @Override

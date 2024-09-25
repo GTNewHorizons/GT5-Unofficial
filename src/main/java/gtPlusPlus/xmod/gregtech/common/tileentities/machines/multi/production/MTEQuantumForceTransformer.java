@@ -713,11 +713,12 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         mFluidMode = !mFluidMode;
         GTUtility.sendChatToPlayer(
             aPlayer,
             StatCollector.translateToLocal("miscutils.machines.QFTFluidMode") + " " + mFluidMode);
+        return true;
     }
 
     public boolean addNeptuniumHatch(IGregTechTileEntity aTileEntity, short aBaseCasingIndex) {

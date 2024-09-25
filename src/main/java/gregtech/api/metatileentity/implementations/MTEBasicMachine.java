@@ -907,35 +907,40 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
-            if (aPlayer.isSneaking()) {
-                mDisableFilter = !mDisableFilter;
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
-            } else {
-                mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
-                        : GTUtility.trans("096", "Input from Output Side forbidden"));
-            }
+            mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
+                    : GTUtility.trans("096", "Input from Output Side forbidden"));
+            return true;
+        } else {
+            return super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tool);
         }
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
-        if (!entityPlayer.isSneaking()) return false;
-        final boolean click = super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
-        if (click) return true;
-        if (wrenchingSide != mMainFacing) return false;
-        mDisableMultiStack = !mDisableMultiStack;
-        GTUtility.sendChatToPlayer(
-            entityPlayer,
-            StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
-        return true;
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
+            mDisableMultiStack = !mDisableMultiStack;
+            GTUtility.sendLocalizedChatToPlayer(entityPlayer, "GT5U.hatch.disableMultiStack." + mDisableMultiStack);
+            return true;
+        } else {
+            return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, tool);
+        }
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+        if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
+            mDisableFilter = !mDisableFilter;
+            GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
+
+            return true;
+        } else {
+            return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+        }
     }
 
     @Override

@@ -135,7 +135,7 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         String clientLocale;
         try {
             EntityPlayerMP player = (EntityPlayerMP) aPlayer;
@@ -148,6 +148,7 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
             aPlayer,
             interdimensional ? translateToLocalFormatted("tt.keyphrase.Running_interdimensional_scan", clientLocale)
                 : translateToLocalFormatted("tt.keyphrase.Running_local_dimension_scan", clientLocale));
+        return true;
     }
 
     @Override

@@ -145,8 +145,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     protected abstract int getRangeInChunks();
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         int oldChunkRange = chunkRangeConfig;
         if (aPlayer.isSneaking()) {
             if (chunkRangeConfig > 0) {
@@ -160,13 +159,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             if (chunkRangeConfig > getRangeInChunks()) chunkRangeConfig = 1;
         }
         if (oldChunkRange != chunkRangeConfig) mOilFieldChunks.clear();
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                + chunkRangeConfig
-                + "x"
-                + chunkRangeConfig
-                + StatCollector.translateToLocal("GT5U.machines.chunks")); // TODO Add translation support
+        GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.workareaset.chunks", chunkRangeConfig);
+        return true;
     }
 
     @Override

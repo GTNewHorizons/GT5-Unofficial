@@ -424,11 +424,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack tool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
-        aPlayer.addChatComponentMessage(
-            new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
+        GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.hatch.additionalConnection." + additionalConnection);
         return true;
     }
 

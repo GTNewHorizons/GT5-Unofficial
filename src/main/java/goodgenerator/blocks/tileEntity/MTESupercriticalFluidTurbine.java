@@ -89,13 +89,16 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 looseFit ? trans("500", "Fitting: Loose - More Flow")
                     : trans("501", "Fitting: Tight - More Efficiency"));
+            return true;
+        } else {
+            return false;
         }
     }
 

@@ -180,18 +180,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
-            .isGUIClickable()) return;
-    }
-
-    @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack tool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
-        aPlayer.addChatComponentMessage(
-            new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
+        GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.hatch.additionalConnection." + additionalConnection);
         return true;
     }
 

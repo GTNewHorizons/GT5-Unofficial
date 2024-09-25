@@ -197,13 +197,13 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (this.getBaseMetaTileEntity()
-            .getWorld().isRemote) return;
-        ++this.mMode;
-        if (this.mMode >= 4) this.mMode = 0;
-        GTUtility.sendChatToPlayer(aPlayer, "Mode: " + this.mMode);
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            this.mMode++;
+            if (this.mMode >= 4) this.mMode = 0;
+            GTUtility.sendChatToPlayer(aPlayer, "Mode: " + this.mMode);
+        }
+        return true;
     }
 
     @Override

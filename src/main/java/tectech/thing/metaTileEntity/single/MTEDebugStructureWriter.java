@@ -151,7 +151,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
 
         String pseudoJavaCode = StructureUtility.getPseudoJavaCode(
@@ -172,6 +172,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
         TecTech.LOGGER.info(pseudoJavaCode);
         result = pseudoJavaCode.split("\\n");
         aBaseMetaTileEntity.disableWorking();
+        return true;
     }
 
     @Override

@@ -298,14 +298,6 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        inputSeparation = !inputSeparation;
-        aPlayer.addChatMessage(
-            new ChatComponentTranslation(
-                inputSeparation ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {

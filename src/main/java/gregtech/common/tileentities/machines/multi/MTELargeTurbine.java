@@ -451,13 +451,16 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 looseFit ? GTUtility.trans("500", "Fitting: Loose - More Flow")
                     : GTUtility.trans("501", "Fitting: Tight - More Efficiency"));
+            return true;
+        } else {
+            return super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tool);
         }
     }
 

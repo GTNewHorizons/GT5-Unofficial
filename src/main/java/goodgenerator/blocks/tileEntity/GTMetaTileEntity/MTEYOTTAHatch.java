@@ -105,12 +105,15 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack toolStack) {
-        if (aPlayer.isSneaking()) this.priority -= 10;
-        else this.priority += 10;
-        GTUtility
-            .sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
+        if (aPlayer.isSneaking()) {
+            this.priority -= 10;
+        } else {
+            this.priority += 10;
+        }
+        GTUtility.sendLocalizedChatToPlayer(aPlayer, "yothatch.chat.0", this.priority);
+        return true;
     }
 
     @Override

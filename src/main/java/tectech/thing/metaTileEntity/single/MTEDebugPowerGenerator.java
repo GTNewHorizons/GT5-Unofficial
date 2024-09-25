@@ -81,11 +81,10 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         LASER = !LASER;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            String.format(StatCollector.translateToLocal("tt.chat.debug.generator"), LASER ? "ON" : "OFF"));
+        GTUtility.sendLocalizedChatToPlayer(aPlayer, "tt.chat.debug.generator", LASER ? "ON" : "OFF");
+        return true;
     }
 
     @Override

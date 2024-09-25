@@ -750,11 +750,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-    }
-
-    @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == -120) {
             GTUtility.doSoundAtClient(SoundResource.IC2_TOOLS_BATTERY_USE, MathUtils.randInt(5, 50), 0.05F, aX, aY, aZ);

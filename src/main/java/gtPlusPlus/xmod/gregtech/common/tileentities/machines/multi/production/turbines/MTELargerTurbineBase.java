@@ -698,13 +698,12 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
-            looseFit ^= true;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
-        }
+    public boolean onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        looseFit ^= true;
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
+        return true;
     }
 
     public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,

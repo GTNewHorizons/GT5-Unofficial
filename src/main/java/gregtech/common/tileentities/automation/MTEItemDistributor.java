@@ -168,12 +168,13 @@ public class MTEItemDistributor extends MTEBuffer {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         final int ordinalSide = side.ordinal();
         // Adjust items per side by 1 or -1, constrained to the cyclic interval [0, 127]
         itemsPerSide[ordinalSide] += aPlayer.isSneaking() ? -1 : 1;
         itemsPerSide[ordinalSide] = (byte) ((itemsPerSide[ordinalSide] + 128) % 128);
         GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("211", "Items per side: ") + itemsPerSide[ordinalSide]);
+        return true;
     }
 
     @Override

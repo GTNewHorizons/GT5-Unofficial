@@ -151,8 +151,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (side != getBaseMetaTileEntity().getFrontFacing() && side != mMainFacing) {
             if (aPlayer.isSneaking()) {
                 if (radiusConfig >= 0) {
@@ -170,16 +169,14 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
                 }
             }
 
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                String.format(
-                    "%s %dx%d",
-                    StatCollector.translateToLocal("GT5U.machines.workareaset"),
-                    (radiusConfig * 2 + 1),
-                    (radiusConfig * 2 + 1)));
+            GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.workareaset.blocks", radiusConfig * 2 + 1);
 
             // Rebuild ore cache after change config
             fillOreList(getBaseMetaTileEntity());
+
+            return true;
+        } else {
+            return super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tool);
         }
     }
 

@@ -1,6 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -51,14 +52,13 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
-            .isGUIClickable()) return;
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (aPlayer.isSneaking()) {
             mMode = (byte) ((mMode + 9) % 10);
         } else {
             mMode = (byte) ((mMode + 1) % 10);
         }
+        return true;
     }
 
     @Override

@@ -346,33 +346,15 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            // Lock to single recipe
-            super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-        } else {
-            inputSeparation = !inputSeparation;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
-        }
-    }
-
-    @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes");
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes");
-            }
-        } else {
+        float aX, float aY, float aZ, ItemStack tool) {
+        if (!aPlayer.isSneaking()) {
             downtierUEV = !downtierUEV;
             GTUtility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
+            return true;
+        } else {
+            return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
         }
-        return true;
     }
 
     @Override

@@ -336,18 +336,11 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverBehaviorAtSideNew(side)
-            .isGUIClickable(
-                side,
-                getBaseMetaTileEntity().getCoverIDAtSide(side),
-                getBaseMetaTileEntity().getComplexCoverDataAtSide(side),
-                getBaseMetaTileEntity()))
-            return;
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (aPlayer.isSneaking()) {
             if (this.mRealInventory == null) {
                 aPlayer.addChatMessage(new ChatComponentTranslation("ggfab.info.linked_input_bus.no_channel"));
-                return;
+                return false;
             }
             if (mRealInventory.disableSort) {
                 mRealInventory.disableSort = false;
@@ -369,6 +362,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.hatch.disableFilter." + this.disableFilter));
         }
+        return true;
     }
 
     @Override

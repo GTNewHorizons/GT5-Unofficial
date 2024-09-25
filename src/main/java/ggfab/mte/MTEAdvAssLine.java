@@ -992,20 +992,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         return true;
     }
 
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch mode enabled");
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch mode disabled");
-            }
-        }
-        return true;
-    }
-
     private class SliceStatusWidget extends TextWidget implements ISyncedWidget {
 
         private final Slice slice;

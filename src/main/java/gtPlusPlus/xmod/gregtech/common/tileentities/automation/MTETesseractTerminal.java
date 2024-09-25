@@ -209,12 +209,9 @@ public class MTETesseractTerminal extends MTEBasicTank {
     }
 
     @Override
-    public void onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX,
-        final float aY, final float aZ) {
-        if (aPlayer.getUniqueID()
-            .compareTo(this.mOwner) == 0) {
-            if (side == this.getBaseMetaTileEntity()
-                .getFrontFacing()) {
+    public boolean onScrewdriverRightClick(final ForgeDirection side, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ, ItemStack tool) {
+        if (aPlayer.getUniqueID().equals(this.mOwner)) {
+            if (side == this.getBaseMetaTileEntity().getFrontFacing()) {
                 final float[] tCoords = GTUtility.getClickedFacingCoords(side, aX, aY, aZ);
                 switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
                     case 0 -> {
@@ -248,16 +245,17 @@ public class MTETesseractTerminal extends MTEBasicTank {
                 }
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    "Frequency: " + this.mFrequency
-                        + (this.getTesseract(this.mFrequency, false) == null ? ""
-                            : new StringBuilder().append(EnumChatFormatting.GREEN)
-                                .append(" (Connected)")
-                                .toString()));
+                    "Frequency: ",
+                    this.mFrequency,
+                    this.getTesseract(this.mFrequency, false) == null
+                        ? ""
+                        : EnumChatFormatting.GREEN + " (Connected)");
             }
-        } else if (aPlayer.getUniqueID()
-            .compareTo(this.mOwner) != 0) {
-                GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
-            }
+            return true;
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
+            return false;
+        }
     }
 
     public boolean allowCoverOnSide(final ForgeDirection side, final int aCoverID) {

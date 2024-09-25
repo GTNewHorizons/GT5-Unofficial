@@ -564,20 +564,20 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack toolStack) {
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+        if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             voidExcessEnabled ^= true;
             aPlayer.addChatMessage(
                 new ChatComponentTranslation(
                     voidExcessEnabled ? "yottank.chat.voidExcessEnabled" : "yottank.chat.voidExcessDisabled"));
             return true;
         }
-        return false;
+        return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, toolStack);
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack toolStack) {
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+        if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             if (mLockedFluid == null) {
                 if (mFluid != null) {
                     mLockedFluid = mFluid;
@@ -593,7 +593,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             }
             return true;
         }
-        return false;
+        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, toolStack);
     }
 
     @Override

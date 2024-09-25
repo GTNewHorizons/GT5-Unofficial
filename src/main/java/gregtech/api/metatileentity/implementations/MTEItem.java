@@ -233,19 +233,20 @@ public class MTEItem extends MetaPipeEntity implements IMetaTileEntityItemPipe {
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (GTMod.gregtechproxy.gt6Pipe) {
-            final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
-            if (isConnectedAtSide(tSide)) {
-                disconnect(tSide);
+            if (isConnectedAtSide(wrenchingSide)) {
+                disconnect(wrenchingSide);
                 GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("215", "Disconnected"));
             } else {
-                if (connect(tSide) > 0) GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("214", "Connected"));
+                if (connect(wrenchingSide) > 0) {
+                    GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("214", "Connected"));
+                }
             }
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     @Override

@@ -324,14 +324,16 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (mHeight < 11) {
             PlayerUtils.messagePlayer(aPlayer, "Cannot switch mode if not in full height.");
-            return;
+            // return true so it doesn't open the ui
+            return true;
         }
         mMode = mMode.next();
         PlayerUtils.messagePlayer(aPlayer, "Now running in " + mMode + " Mode.");
         mLastRecipe = null;
+        return true;
     }
 
     @Override

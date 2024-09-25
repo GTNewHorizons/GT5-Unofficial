@@ -4,6 +4,8 @@ import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static gregtech.api.util.GTUtility.getDisabledText;
+import static gregtech.api.util.GTUtility.getEnabledText;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -21,7 +23,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -81,6 +82,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ToolType;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.Pollution;
@@ -113,8 +115,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     protected boolean mReleaseEnergy = false;
     protected final long[] mAverageEUInput = new long[] { 0, 0, 0, 0, 0 };
     protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
-    private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
-        mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
+    private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mMuffler = false, mLockUpgrade = false;
+    public boolean mInputDisabled = false, mOutputDisabled = false;
     private boolean mActive = false, mWorkUpdate = false, mSteamConverter = false, mWorks = true;
     private boolean oRedstone = false;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
@@ -1340,14 +1342,17 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         return false;
     }
 
-    public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
+    public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecisely) {
         if (!canAccessData()) return false;
-        if (aCheckPrecicely || privateAccess() || (mOwnerName.length() == 0))
-            if ((mOwnerName.length() == 0) && isServerSide()) {
+        if (aCheckPrecisely || privateAccess() || mOwnerName.length() == 0) {
+            if (mOwnerName.length() == 0 && isServerSide()) {
                 setOwnerName(aPlayer.getDisplayName());
                 setOwnerUuid(aPlayer.getUniqueID());
-            } else return !privateAccess() || aPlayer.getDisplayName()
-                .equals("Player") || mOwnerName.equals("Player") || mOwnerName.equals(aPlayer.getDisplayName());
+            } else {
+                return !privateAccess() || aPlayer.getDisplayName()
+                    .equals("Player") || mOwnerName.equals("Player") || mOwnerName.equals(aPlayer.getDisplayName());
+            }
+        }
         return true;
     }
 
@@ -1481,197 +1486,153 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
+    public boolean onRightclick(EntityPlayer aPlayer, final ForgeDirection side, float aX, float aY, float aZ) {
+        final ForgeDirection wrenchSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+        final ForgeDirection coverSide = getCoverIDAtSide(side) == 0 ? wrenchSide : side;
+
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                final ForgeDirection tSide = (getCoverIDAtSide(side) == 0)
-                    ? GTUtility.determineWrenchingSide(side, aX, aY, aZ)
-                    : side;
-                return (getCoverBehaviorAtSideNew(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
+                return getCoverBehaviorAtSideNew(coverSide).hasCoverGUI();
+            } else if (getCoverBehaviorAtSideNew(coverSide).onCoverRightclickClient(coverSide, this, aPlayer, aX, aY, aZ)) {
                 return true;
             }
-
-            if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
         }
 
-        if (isServerSide()) {
-            if (!privateAccess() || aPlayer.getDisplayName()
-                .equalsIgnoreCase(getOwnerName())) {
-                final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-                if (tCurrentItem != null) {
-                    if (getColorization() >= 0
-                        && GTUtility.areStacksEqual(new ItemStack(Items.water_bucket, 1), tCurrentItem)) {
-                        tCurrentItem.func_150996_a(Items.bucket);
+        if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
+
+        if (isServerSide() && playerOwnsThis(aPlayer, true)) {
+            final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
+
+            ToolType tool = ToolType.getToolType(tCurrentItem);
+
+            // don't use the water if there's no colour
+            if (tool == ToolType.DyeEraser && getColorization() < 0) tool = null;
+
+            if (tool != null) {
+                boolean usedTool = false;
+
+                switch (tool) {
+                    case Crowbar: {
+                        if (getCoverIDAtSide(coverSide) != 0) {
+                            dropCover(coverSide, side, false);
+                            usedTool = true;
+                        }
+                        break;
+                    }
+                    case DyeEraser: {
                         setColorization((byte) (getColorization() >= 16 ? -2 : -1));
-                        return true;
+                        usedTool = true;
+                        break;
                     }
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)) {
-                        if (aPlayer.isSneaking() && mMetaTileEntity instanceof MTEBasicMachine
-                            && ((MTEBasicMachine) mMetaTileEntity)
-                                .setMainFacing(GTUtility.determineWrenchingSide(side, aX, aY, aZ))) {
-                            GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
-                            cableUpdateDelay = 10;
-                        } else if (mMetaTileEntity.onWrenchRightClick(
-                            side,
-                            GTUtility.determineWrenchingSide(side, aX, aY, aZ),
-                            aPlayer,
-                            aX,
-                            aY,
-                            aZ,
-                            tCurrentItem)) {
-                                GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
-                                GTUtility.sendSoundToPlayers(
-                                    worldObj,
-                                    SoundResource.IC2_TOOLS_WRENCH,
-                                    1.0F,
-                                    -1,
-                                    xCoord,
-                                    yCoord,
-                                    zCoord);
-                                cableUpdateDelay = 10;
-                            }
-                        return true;
+                    case HardHammer: {
+                        usedTool = mMetaTileEntity.onHardHammerRightClick(coverSide, aPlayer, aX, aY, aZ, tCurrentItem);
+                        break;
                     }
-
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)) {
-                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
-                            setCoverDataAtSide(
-                                side,
-                                getCoverBehaviorAtSideNew(side).onCoverScrewdriverClick(
-                                    side,
-                                    getCoverIDAtSide(side),
-                                    getComplexCoverDataAtSide(side),
-                                    this,
+                    case Jackhammer: {
+                        if (getCoverIDAtSide(coverSide) != 0) {
+                            // Configuration of delicate electronics calls for a tool with precision and subtlety.
+                            final CoverInfo info = getCoverInfoAtSide(coverSide);
+                            info.updateCoverBehavior();
+                            if (info.getCoverBehavior().allowsTickRateAddition()) {
+                                info.onCoverJackhammer(aPlayer);
+                                usedTool = true;
+                            } else {
+                                GTUtility.sendLocalizedChatToPlayer(
                                     aPlayer,
-                                    aX,
-                                    aY,
-                                    aZ));
-                            mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
-                        }
-                        return true;
-                    }
-
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)) {
-                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            mInputDisabled = !mInputDisabled;
-                            if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
-                            GTUtility.sendChatToPlayer(
-                                aPlayer,
-                                GTUtility.trans("086", "Auto-Input: ")
-                                    + (mInputDisabled ? GTUtility.trans("087", "Disabled")
-                                        : GTUtility.trans("088", "Enabled") + GTUtility.trans("089", "  Auto-Output: ")
-                                            + (mOutputDisabled ? GTUtility.trans("087", "Disabled")
-                                                : GTUtility.trans("088", "Enabled"))));
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.RANDOM_ANVIL_USE,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
-                        }
-                        return true;
-                    }
-
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)) {
-                        if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            if (mWorks) disableWorking();
-                            else enableWorking();
-                            {
-                                String tChat = GTUtility.trans("090", "Machine Processing: ")
-                                    + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
-                                        : GTUtility.trans("087", "Disabled"));
-                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
-                                    tChat = getMetaTileEntity().getAlternativeModeText();
-                                GTUtility.sendChatToPlayer(aPlayer, tChat);
+                                    "gt.cover.info.chat.tick_rate_not_allowed");
+                                return true;
                             }
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
+                        } else {
+                            usedTool = mMetaTileEntity.onJackHammerRightClick(coverSide, aPlayer, aX, aY, aZ, tCurrentItem);
                         }
-                        return true;
-                    }
 
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
-                        final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
-                        if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
-                            // logic handled internally
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.IC2_TOOLS_BATTERY_USE,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
-                        } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
-                            mStrongRedstone ^= tSide.flag;
+                        break;
+                    }
+                    case Screwdriver: {
+                        if (getCoverIDAtSide(coverSide) != 0) {
+                            final CoverInfo info = getCoverInfoAtSide(coverSide);
+                            info.updateCoverBehavior();
+                            setCoverDataAtSide(side, info.onCoverScrewdriverClick(aPlayer, aX, aY, aZ));
+                            usedTool = true;
+                        } else {
+                            usedTool = mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tCurrentItem);
+                        }
+                        break;
+                    }
+                    case SoftHammer: {
+                        if (mWorks) {
+                            disableWorking();
+                        } else {
+                            enableWorking();
+                        }
+
+                        if (mMetaTileEntity.hasAlternativeModeText()) {
+                            GTUtility.sendChatToPlayer(aPlayer, mMetaTileEntity.getAlternativeModeText());
+                        } else {
                             GTUtility.sendChatToPlayer(
                                 aPlayer,
-                                GTUtility.trans("091", "Redstone Output at Side ") + tSide
-                                    + GTUtility.trans("092", " set to: ")
-                                    + ((mStrongRedstone & tSide.flag) != 0 ? GTUtility.trans("093", "Strong")
-                                        : GTUtility.trans("094", "Weak")));
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.IC2_TOOLS_BATTERY_USE,
-                                3.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
+                                GTUtility.trans("090", "Machine Processing: "),
+                                isAllowedToWork() ? getEnabledText() : getDisabledText());
+                        }
+
+                        usedTool = true;
+                        break;
+                    }
+                    case SolderingIron: {
+                        if (mMetaTileEntity.onSolderingToolRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                            usedTool = true;
+                        } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
+                            mStrongRedstone ^= wrenchSide.flag;
+                            usedTool = true;
+                            cableUpdateDelay = 10;
+
                             issueBlockUpdate();
+                            doEnetUpdate();
+
+                            GTUtility.sendChatToPlayer(
+                                aPlayer,
+                                GTUtility.trans("091", "Redstone Output at Side "),
+                                wrenchSide,
+                                GTUtility.trans("092", " set to: "),
+                                (mStrongRedstone & wrenchSide.flag) != 0 ? GTUtility.trans("093", "Strong")
+                                    : GTUtility.trans("094", "Weak"));
                         }
-                        doEnetUpdate();
-                        cableUpdateDelay = 10;
-                        return true;
+                        break;
                     }
+                    case WireCutter: {
+                        if (mMetaTileEntity
+                            .onWireCutterRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                            cableUpdateDelay = 10;
+                            usedTool = true;
 
-                    if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)) {
-                        final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
-                        if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
-                            // logic handled internally
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.IC2_TOOLS_WRENCH,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
+                            doEnetUpdate();
                         }
-                        doEnetUpdate();
-                        cableUpdateDelay = 10;
-                        return true;
+                        break;
                     }
+                    case Wrench: {
+                        if (aPlayer.isSneaking() && mMetaTileEntity instanceof MTEBasicMachine basicMachine && basicMachine.setMainFacing(wrenchSide)) {
+                            usedTool = true;
+                            cableUpdateDelay = 10;
+                        } else if (mMetaTileEntity.onWrenchRightClick(side, wrenchSide, aPlayer, aX, aY, aZ, tCurrentItem)) {
+                            usedTool = true;
+                            cableUpdateDelay = 10;
+                        }
+                        break;
+                    }
+                }
 
-                    ForgeDirection coverSide = side;
-                    if (getCoverIDAtSide(side) == 0) coverSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
-
+                if (usedTool) {
+                    if (tool.useSound != null) {
+                        sendSoundToPlayers(tool.useSound);
+                    }
+                    tool.onUse(aPlayer);
+                    return true;
+                }
+            } else {
+                if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
+                    return getCoverInfoAtSide(coverSide).onCoverShiftRightClick(aPlayer);
+                } else {
                     if (getCoverIDAtSide(coverSide) == 0) {
                         if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCovers.keySet())) {
                             final CoverBehaviorBase<?> coverBehavior = GregTechAPI.getCoverBehaviorNew(tCurrentItem);
@@ -1682,121 +1643,42 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, coverSide);
 
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
-                                GTUtility.sendSoundToPlayers(
-                                    worldObj,
-                                    SoundResource.IC2_TOOLS_WRENCH,
-                                    1.0F,
-                                    -1,
-                                    xCoord,
-                                    yCoord,
-                                    zCoord);
+                                sendSoundToPlayers(SoundResource.IC2_TOOLS_WRENCH);
                                 sendClientData();
                             }
                             return true;
                         }
-                    } else {
-                        if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sCrowbarList)) {
-                            if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                GTUtility.sendSoundToPlayers(
-                                    worldObj,
-                                    SoundResource.RANDOM_BREAK,
-                                    1.0F,
-                                    -1,
-                                    xCoord,
-                                    yCoord,
-                                    zCoord);
-                                dropCover(coverSide, side, false);
-                            }
-                            return true;
-                        } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) {
-                            // Configuration of delicate electronics calls for a tool with precision and subtlety.
-                            if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                                final CoverInfo info = getCoverInfoAtSide(coverSide);
-                                if (info != CoverInfo.EMPTY_INFO) {
-                                    final CoverBehaviorBase<?> behavior = info.getCoverBehavior();
-                                    if (behavior.allowsTickRateAddition()) {
-                                        info.onCoverJackhammer(aPlayer);
-                                        GTUtility.sendSoundToPlayers(
-                                            worldObj,
-                                            SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT,
-                                            1.0F,
-                                            1,
-                                            xCoord,
-                                            yCoord,
-                                            zCoord);
-
-                                    } else {
-                                        GTUtility.sendChatToPlayer(
-                                            aPlayer,
-                                            StatCollector.translateToLocal("gt.cover.info.chat.tick_rate_not_allowed"));
-                                    }
-                                    return true;
-                                }
-                            }
-                        }
                     }
-                    // End item != null
-                } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
-                    side = (getCoverIDAtSide(side) == 0) ? GTUtility.determineWrenchingSide(side, aX, aY, aZ) : side;
-                    return getCoverIDAtSide(side) > 0 && getCoverBehaviorAtSideNew(side).onCoverShiftRightClick(
-                        side,
-                        getCoverIDAtSide(side),
-                        getComplexCoverDataAtSide(side),
-                        this,
-                        aPlayer);
                 }
+            }
 
-                if (getCoverBehaviorAtSideNew(side).onCoverRightClick(
-                    side,
-                    getCoverIDAtSide(side),
-                    getComplexCoverDataAtSide(side),
-                    this,
-                    aPlayer,
-                    aX,
-                    aY,
-                    aZ)) return true;
+            if (getCoverInfoAtSide(coverSide).onCoverRightClick(aPlayer, aX, aY, aZ)) return true;
 
-                if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
-
-                if (isUpgradable() && tCurrentItem != null) {
-                    if (ItemList.Upgrade_Muffler.isStackEqual(aPlayer.inventory.getCurrentItem())) {
-                        if (addMufflerUpgrade()) {
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.RANDOM_CLICK,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
-                            if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
-                        }
-                        return true;
+            if (isUpgradable() && tCurrentItem != null) {
+                if (ItemList.Upgrade_Muffler.isStackEqual(aPlayer.inventory.getCurrentItem())) {
+                    if (addMufflerUpgrade()) {
+                        sendSoundToPlayers(SoundResource.RANDOM_CLICK);
+                        if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
                     }
-                    if (ItemList.Upgrade_Lock.isStackEqual(aPlayer.inventory.getCurrentItem())) {
-                        if (isUpgradable() && !mLockUpgrade) {
-                            mLockUpgrade = true;
-                            setOwnerName(aPlayer.getDisplayName());
-                            setOwnerUuid(aPlayer.getUniqueID());
-                            GTUtility.sendSoundToPlayers(
-                                worldObj,
-                                SoundResource.RANDOM_CLICK,
-                                1.0F,
-                                -1,
-                                xCoord,
-                                yCoord,
-                                zCoord);
-                            if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
-                        }
-                        return true;
+                    return true;
+                }
+                if (ItemList.Upgrade_Lock.isStackEqual(aPlayer.inventory.getCurrentItem())) {
+                    if (isUpgradable() && !mLockUpgrade) {
+                        mLockUpgrade = true;
+                        setOwnerName(aPlayer.getDisplayName());
+                        setOwnerUuid(aPlayer.getUniqueID());
+                        sendSoundToPlayers(SoundResource.RANDOM_CLICK);
+                        if (!aPlayer.capabilities.isCreativeMode) aPlayer.inventory.getCurrentItem().stackSize--;
                     }
+                    return true;
                 }
             }
         }
 
         try {
-            if (!aPlayer.isSneaking() && hasValidMetaTileEntity())
+            if (!aPlayer.isSneaking() && hasValidMetaTileEntity()) {
                 return mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);
+            }
         } catch (Throwable e) {
             GTLog.err.println(
                 "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");

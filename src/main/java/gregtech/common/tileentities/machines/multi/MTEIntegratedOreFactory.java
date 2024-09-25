@@ -426,17 +426,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ, ItemStack tool) {
         if (aPlayer.isSneaking()) {
             sVoidStone = !sVoidStone;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
-            return;
+            GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.oreprocessor.void", sVoidStone);
+            return true;
         }
         sMode = (sMode + 1) % 5;
         List<String> des = getDisplayMode(sMode);
         GTUtility.sendChatToPlayer(aPlayer, String.join("", des));
+        return true;
     }
 
     @Override
