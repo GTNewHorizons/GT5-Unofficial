@@ -348,13 +348,13 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack tool) {
-        if (!aPlayer.isSneaking()) {
-            downtierUEV = !downtierUEV;
-            GTUtility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
+        if (aPlayer.isSneaking() && super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool)) {
             return true;
-        } else {
-            return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
         }
+
+        downtierUEV = !downtierUEV;
+        GTUtility.sendChatToPlayer(aPlayer, "Treat UEV+ machines as multiple UHV " + downtierUEV);
+        return true;
     }
 
     @Override

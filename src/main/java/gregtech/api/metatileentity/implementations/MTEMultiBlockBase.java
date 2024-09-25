@@ -250,7 +250,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
             return true;
         } else {
-            // don't do any allow i/o because controllers can't interact with pipes
+            // don't do any "allow input"/"allow output" changes because controllers can't interact with pipes
             return false;
         }
     }
