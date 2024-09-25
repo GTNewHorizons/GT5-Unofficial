@@ -205,7 +205,6 @@ public class DustLoader implements IWerkstoffRunnable {
                             * 30,
                         0);
                     RecipeMaps.electrolyzerRecipes.add(tRecipe);
-                    RecipeMaps.electrolyzerNonCellRecipes.add(tRecipe);
                 }
                 if (werkstoffStats.isCentrifuge()) {
                     RecipeMaps.centrifugeRecipes.add(
@@ -230,28 +229,6 @@ public class DustLoader implements IWerkstoffRunnable {
                                     .size())
                                 * 5,
                             0));
-                    GTRecipe tRecipe = new GTRecipe(
-                        false,
-                        stOutputs.toArray(new ItemStack[0]),
-                        new ItemStack[] { input },
-                        null,
-                        null,
-                        new FluidStack[] { flOutputs.size() > 0 ? flOutputs.get(0) : null },
-                        null,
-                        (int) Math.max(
-                            1L,
-                            Math.abs(
-                                werkstoffStats.getProtons() / werkstoff.getContents()
-                                    .getValue()
-                                    .size())),
-                        Math.min(
-                            4,
-                            werkstoff.getContents()
-                                .getValue()
-                                .size())
-                            * 30,
-                        0);
-                    RecipeMaps.centrifugeNonCellRecipes.add(tRecipe);
                 }
                 if (werkstoff.getGenerationFeatures()
                     .hasChemicalRecipes()) {
@@ -304,28 +281,6 @@ public class DustLoader implements IWerkstoffRunnable {
                                     .size())
                                 * 5,
                             0));
-                    GTRecipe tRecipe = new GTRecipe(
-                        false,
-                        stOutputs.toArray(new ItemStack[0]),
-                        new ItemStack[] { input },
-                        null,
-                        null,
-                        new FluidStack[] { flOutputs.size() > 0 ? flOutputs.get(0) : null },
-                        null,
-                        (int) Math.max(
-                            1L,
-                            Math.abs(
-                                werkstoffStats.getProtons() / werkstoff.getContents()
-                                    .getValue()
-                                    .size())),
-                        Math.min(
-                            4,
-                            werkstoff.getContents()
-                                .getValue()
-                                .size())
-                            * 30,
-                        0);
-                    RecipeMaps.mixerNonCellRecipes.add(tRecipe);
                 }
             }
 
