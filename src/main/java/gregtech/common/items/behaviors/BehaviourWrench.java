@@ -16,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import appeng.api.parts.IPartHost;
 import appeng.api.util.IOrientable;
 import appeng.tile.misc.TileInterface;
+import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
@@ -61,7 +62,9 @@ public class BehaviourWrench extends BehaviourNone {
 
         try {
             return handler.handle() && !aWorld.isRemote;
-        } catch (Throwable ignored) {}
+        } catch (Throwable e) {
+            GTMod.GT_FML_LOGGER.error("Error wrenching", e);
+        }
         return false;
     }
 
