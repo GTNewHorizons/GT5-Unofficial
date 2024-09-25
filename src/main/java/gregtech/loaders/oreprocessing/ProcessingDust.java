@@ -133,7 +133,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && (aMaterial != Materials.Paper)
                         && (aMaterial != MaterialsUEVplus.TranscendentMetal)
                         && (aMaterial != Materials.Clay)
-                        && (aMaterial != Materials.Wood)) {
+                        && (aMaterial != Materials.Wood)
+                        && (aMaterial != Materials.Carbon)) {
                         // compressor recipe
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
