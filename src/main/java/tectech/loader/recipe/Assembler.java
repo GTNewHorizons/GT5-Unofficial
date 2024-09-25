@@ -2691,7 +2691,7 @@ public class Assembler implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemInputs(ItemList.Battery_Buffer_3by3_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_MV.get(1))
             .fluidInputs(Materials.Tin.getMolten(288))
             .duration(20 * SECONDS)
