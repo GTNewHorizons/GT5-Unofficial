@@ -420,11 +420,6 @@ public class RecipesGeneral {
         generateWireRecipes(MaterialsElements.STANDALONE.HYPOGEN);
         generateWireRecipes(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
 
-        // No Material for void, natch.
-        if (Thaumcraft.isModLoaded()) {
-            generatePipeRecipes(GT_Materials.Void.mDefaultLocalName, GT_Materials.Void.getMass(), 15);
-        }
-
         Material[] gtpp = new Material[] { MaterialsAlloy.STABALLOY, MaterialsAlloy.TANTALLOY_60,
             MaterialsAlloy.TANTALLOY_61, MaterialsAlloy.POTIN, MaterialsAlloy.MARAGING300, MaterialsAlloy.MARAGING350,
             MaterialsAlloy.INCONEL_690, MaterialsAlloy.INCONEL_792, MaterialsAlloy.HASTELLOY_X,
@@ -435,8 +430,7 @@ public class RecipesGeneral {
             generatePipeRecipes(mat.getLocalizedName(), mat.getMass(), mat.vVoltageMultiplier / 8);
         }
 
-        Materials[] h = new Materials[] { Materials.Europium, Materials.Tungsten, Materials.DarkSteel, Materials.Clay,
-            Materials.Lead, };
+        Materials[] h = new Materials[] { Materials.Clay };
 
         for (Materials e : h) {
             if (e == Materials.DarkSteel) {
