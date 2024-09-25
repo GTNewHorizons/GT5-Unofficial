@@ -30,6 +30,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.GTLog;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -68,8 +69,8 @@ public class BlockHellFire extends BlockFire {
                     }
                 }
 
-            } catch (Throwable t) {
-                t.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace(GTLog.err);
             }
         }
 
@@ -250,7 +251,7 @@ public class BlockHellFire extends BlockFire {
     }
 
     /**
-     * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
+     * Checks to see if it is valid to put this block at the specified coordinates. Args: world, x, y, z
      */
     @Override
     public boolean canPlaceBlockAt(final World worldObj, final int x, final int y, final int z) {
@@ -398,9 +399,8 @@ public class BlockHellFire extends BlockFire {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister IIconRegister) {
-        this.IIconArray = new IIcon[] {
-            IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
-            IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_1") };
+        this.IIconArray = new IIcon[] { IIconRegister.registerIcon(GTPlusPlus.ID + ":hellfire/blockHellFire_layer_0"),
+            IIconRegister.registerIcon(GTPlusPlus.ID + ":hellfire/blockHellFire_layer_1") };
     }
 
     @Override
@@ -429,13 +429,13 @@ public class BlockHellFire extends BlockFire {
     private static class FireInfo {
 
         private int encouragement = 0;
-        private int flammibility = 0;
+        private int flammability = 0;
     }
 
     private final IdentityHashMap<Block, FireInfo> blockInfo = Maps.newIdentityHashMap();
 
     @Override
-    public void setFireInfo(final Block block, final int encouragement, final int flammibility) {
+    public void setFireInfo(final Block block, final int encouragement, final int flammability) {
         try {
             if (block == Blocks.air) {
                 throw new IllegalArgumentException("Tried to set air on fire... This is bad.");
@@ -445,17 +445,19 @@ public class BlockHellFire extends BlockFire {
                 return;
             }
             this.field_149849_a[id] = encouragement;
-            this.field_149848_b[id] = flammibility;
+            this.field_149848_b[id] = flammability;
 
-            final FireInfo info = this.getInfo(block, true);
+            final FireInfo info = this.getInfo(block);
             info.encouragement = encouragement;
-            info.flammibility = flammibility;
-        } catch (Throwable t) {}
+            info.flammability = flammability;
+        } catch (Exception e) {
+            e.printStackTrace(GTLog.err);
+        }
     }
 
-    private FireInfo getInfo(final Block block, final boolean garentee) {
+    private FireInfo getInfo(final Block block) {
         FireInfo ret = this.blockInfo.get(block);
-        if ((ret == null) && garentee) {
+        if (ret == null) {
             ret = new FireInfo();
             this.blockInfo.put(block, ret);
         }
@@ -465,10 +467,10 @@ public class BlockHellFire extends BlockFire {
     @Override
     public void rebuildFireInfo() {
         for (int x = 0; x < 4096; x++) {
-            // If we care.. we could detect changes in here and make sure we
+            // If we care... we could detect changes in here and make sure we
             // keep them, however
             // it's my thinking that anyone who hacks into the private variables
-            // should DIAF and we don't care about them.
+            // should reconsider, and we don't care about them.
             this.field_149849_a[x] = 0;
             this.field_149848_b[x] = 0;
         }
@@ -477,7 +479,7 @@ public class BlockHellFire extends BlockFire {
             final int id = Block.getIdFromBlock(e.getKey());
             if ((id >= 0) && (id < 4096)) {
                 this.field_149849_a[id] = e.getValue().encouragement;
-                this.field_149848_b[id] = e.getValue().flammibility;
+                this.field_149848_b[id] = e.getValue().flammability;
             }
         }
     }
@@ -527,7 +529,7 @@ public class BlockHellFire extends BlockFire {
         final int oldChance, final ForgeDirection face) {
         final int newChance = world.getBlock(x, y, z)
             .getFireSpreadSpeed(world, x, y, z, face);
-        return (newChance > oldChance ? newChance : oldChance);
+        return Math.max(newChance, oldChance);
     }
     /*
      * ================================= Forge Start ======================================

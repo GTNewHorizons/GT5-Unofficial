@@ -126,33 +126,9 @@ public class GTItemIterator implements Runnable {
         GTLog.out.println(
             "GTMod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.rotten_flesh, 2, WILDCARD), ItemList.IC2_Food_Can_Empty.get(1L))
-            .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
-            .duration(10 * SECONDS)
-            .eut(1)
-            .addTo(cannerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.spider_eye, 2, WILDCARD), ItemList.IC2_Food_Can_Empty.get(1L))
-            .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
-            .duration(5 * SECONDS)
-            .eut(1)
-            .addTo(cannerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Food_Poisonous_Potato.get(2L), ItemList.IC2_Food_Can_Empty.get(1L))
-            .itemOutputs(ItemList.IC2_Food_Can_Spoiled.get(1L))
-            .duration(5 * SECONDS)
-            .eut(1)
-            .addTo(cannerRecipes);
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cake, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(12L))
             .itemOutputs(ItemList.IC2_Food_Can_Filled.get(12L))
             .duration(30 * SECONDS)
-            .eut(1)
-            .addTo(cannerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.mushroom_stew, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(6L))
-            .itemOutputs(ItemList.IC2_Food_Can_Filled.get(6L), new ItemStack(Items.bowl, 1))
-            .duration(15 * SECONDS)
             .eut(1)
             .addTo(cannerRecipes);
 

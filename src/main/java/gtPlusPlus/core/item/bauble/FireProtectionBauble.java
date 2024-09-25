@@ -16,9 +16,9 @@ import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.asm.GTCorePlugin;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.preloader.PreloaderCore;
 
 public class FireProtectionBauble extends BaseBauble {
 
@@ -26,7 +26,7 @@ public class FireProtectionBauble extends BaseBauble {
 
     static {
         isImmuneToFire = ReflectionUtils
-            .getField(Entity.class, !PreloaderCore.DEV_ENVIRONMENT ? "func_70045_F" : "isImmuneToFire");
+            .getField(Entity.class, !GTCorePlugin.isDevEnv() ? "func_70045_F" : "isImmuneToFire");
     }
 
     public static boolean fireImmune(Entity aEntity) {

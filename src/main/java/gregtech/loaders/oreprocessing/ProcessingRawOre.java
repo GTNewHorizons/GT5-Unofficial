@@ -30,6 +30,10 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         if (aMaterial == Materials.Oilsands) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))

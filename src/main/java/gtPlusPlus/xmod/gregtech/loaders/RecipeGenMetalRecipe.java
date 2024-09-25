@@ -4,7 +4,6 @@ import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.HashSet;
@@ -72,18 +71,6 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .addTo(cutterRecipes);
 
             Logger.WARNING("Cut Bolt Recipe: " + material.getLocalizedName() + " - Success");
-        }
-
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getHotIngot(1))) {
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(material.getHotIngot(1))
-                .itemOutputs(material.getIngot(1))
-                .duration((int) Math.max(material.getMass() * 3L, 1L))
-                .eut(material.vVoltageMultiplier)
-                .addTo(vacuumFreezerRecipes);
-            Logger.WARNING("Cool Hot Ingot Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         if (ItemUtils.checkForInvalidItems(material.getRod(1))

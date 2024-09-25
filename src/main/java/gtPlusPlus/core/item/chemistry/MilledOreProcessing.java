@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -276,8 +277,8 @@ public class MilledOreProcessing extends ItemPackage {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 64),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 64),
+                PTMetallicPowder.get(OrePrefixes.dust, 64),
+                PTMetallicPowder.get(OrePrefixes.dust, 64),
                 MaterialsElements.getInstance().RHODIUM.getDust(60),
                 MaterialsElements.getInstance().SELENIUM.getDust(40),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tellurium, 10))
