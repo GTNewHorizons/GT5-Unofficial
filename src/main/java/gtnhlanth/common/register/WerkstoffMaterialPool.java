@@ -824,7 +824,6 @@ public class WerkstoffMaterialPool implements Runnable {
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
-            .addMolten()
             .addCells(),
         offsetID2 + 24,
         TextureSet.SET_DULL,

@@ -2,7 +2,6 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -34,17 +33,17 @@ public class FluidSolidifierRecipes implements Runnable {
     @Override
     public void run() {
 
-            ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
-            NBTTagCompound nbtFlask = new NBTTagCompound();
-            nbtFlask.setInteger("Capacity", 1000);
-            flask.setTagCompound(nbtFlask);
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Ball.get(0))
-                .itemOutputs(flask)
-                .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144))
-                .duration(2 * SECONDS + 4 * TICKS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(fluidSolidifierRecipes);
+        ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
+        NBTTagCompound nbtFlask = new NBTTagCompound();
+        nbtFlask.setInteger("Capacity", 1000);
+        flask.setTagCompound(nbtFlask);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Shape_Mold_Ball.get(0))
+            .itemOutputs(flask)
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144))
+            .duration(2 * SECONDS + 4 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
