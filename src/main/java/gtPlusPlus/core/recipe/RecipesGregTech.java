@@ -1427,14 +1427,6 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(fluidExtractionRecipes);
 
-        // Ender Fluid
-        RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(Items.ender_pearl))
-            .fluidOutputs(FluidUtils.getFluidStack("ender", 250))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(fluidExtractionRecipes);
-
         // Blazing Pyrotheum
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L))
@@ -1574,13 +1566,6 @@ public class RecipesGregTech {
     }
 
     private static void macerationRecipes() {
-
-        RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.MeatRaw, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 9L))
-            .duration(44 * SECONDS)
-            .eut(4)
-            .addTo(maceratorRecipes);
 
         if (ItemUtils.simpleMetaStack("chisel:limestone", 0, 1) != null) {
             RA.stdBuilder()
