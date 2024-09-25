@@ -881,8 +881,6 @@ public final class ModItems {
         MaterialUtils
             .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.STANDALONE.WHITE_METAL);
         MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.getInstance().PALLADIUM);
-        MaterialUtils
             .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.getInstance().ZIRCONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.LEAGRISIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.BABBIT_ALLOY);
