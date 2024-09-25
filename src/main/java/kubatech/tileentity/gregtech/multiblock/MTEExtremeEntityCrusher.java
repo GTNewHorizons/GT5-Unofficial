@@ -421,13 +421,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack tool) {
-        if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
+        if (!aPlayer.isSneaking() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             mAnimationEnabled = !mAnimationEnabled;
             GTUtility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
             return true;
-        } else {
-            return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
         }
+        return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
     }
 
     @SuppressWarnings("unused")

@@ -1809,7 +1809,6 @@ public class GTUtility {
 
     public static enum ToolType {
 
-        DyeEraser(null, null), // water bucket
         Wrench(SoundResource.IC2_TOOLS_WRENCH, GregTechAPI.sWrenchList),
         Screwdriver(SoundResource.IC2_TOOLS_WRENCH, GregTechAPI.sScrewdriverList),
         HardHammer(SoundResource.RANDOM_ANVIL_USE, GregTechAPI.sHardHammerList),
@@ -1836,21 +1835,14 @@ public class GTUtility {
          * @return True if the tool had power or didn't need it.
          */
         public boolean onUse(EntityPlayer player) {
-            final ItemStack tool = player.inventory.getCurrentItem();
+            if (player.capabilities.isCreativeMode) return true;
 
-            if (this == DyeEraser) {
-                tool.func_150996_a(Items.bucket);
-                return true;
-            }
+            final ItemStack tool = player.inventory.getCurrentItem();
 
             return GTModHandler.damageOrDechargeItem(tool, 1, 1000, player);
         }
 
         public static @Nullable ToolType getToolType(ItemStack heldItem) {
-            if (areStacksEqual(new ItemStack(Items.water_bucket, 1), heldItem)) {
-                return DyeEraser;
-            }
-
             for (ToolType tool : TOOL_TYPES) {
                 if (tool.toolList != null && isStackInList(heldItem, tool.toolList)) {
                     return tool;

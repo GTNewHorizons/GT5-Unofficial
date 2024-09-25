@@ -92,16 +92,20 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack tool) {
-        if (overdriveToggle) {
-            overdriveToggle = false;
-            PlayerChatHelper
-                .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_disengaged", clientLocale));
-        } else {
-            overdriveToggle = true;
-            PlayerChatHelper
-                .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_engaged", clientLocale));
+        if (!aPlayer.isSneaking()) {
+            if (overdriveToggle) {
+                overdriveToggle = false;
+                PlayerChatHelper
+                    .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_disengaged", clientLocale));
+            } else {
+                overdriveToggle = true;
+                PlayerChatHelper
+                    .SendInfo(aPlayer, translateToLocalFormatted("tt.keyphrase.Overdrive_engaged", clientLocale));
+            }
+            return true;
         }
-        return true;
+
+        return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
     }
 
     @Override

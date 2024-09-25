@@ -816,9 +816,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
             ToolType tool = ToolType.getToolType(tCurrentItem);
 
-            // don't use the water if there's no colour
-            if (tool == ToolType.DyeEraser && getColorization() < 0) tool = null;
-
             if (tool != null) {
                 boolean usedTool = false;
 
@@ -828,11 +825,6 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             dropCover(coverSide, side, false);
                             usedTool = true;
                         }
-                        break;
-                    }
-                    case DyeEraser: {
-                        setColorization((byte) (getColorization() >= 16 ? -2 : -1));
-                        usedTool = true;
                         break;
                     }
                     case HardHammer: {

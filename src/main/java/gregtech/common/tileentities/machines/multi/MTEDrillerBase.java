@@ -258,7 +258,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
         EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack tool) {
-        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+        if (!entityPlayer.isSneaking() && side == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
             GTUtility.sendChatToPlayer(
                 entityPlayer,
@@ -266,7 +266,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                     : GTUtility.trans("503", "Mining chunk loading disabled"));
             return true;
         }
-        return true;
+        return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, tool);
     }
 
     @Override

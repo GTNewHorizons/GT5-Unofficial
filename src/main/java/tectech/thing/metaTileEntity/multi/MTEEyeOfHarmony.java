@@ -936,30 +936,39 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     @Override
     public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY,
         float aZ, ItemStack tool) {
-        animationsEnabled = !animationsEnabled;
-        aPlayer.addChatMessage(
-            new ChatComponentText("Animations are now " + (animationsEnabled ? "enabled" : "disabled") + "."));
-        return true;
+        if (!aPlayer.isSneaking()) {
+            animationsEnabled = !animationsEnabled;
+            aPlayer.addChatMessage(
+                new ChatComponentText("Animations are now " + (animationsEnabled ? "enabled" : "disabled") + "."));
+            return true;
+        }
+
+        return super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tool);
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (astralArrayAmount != 0) {
-            while (astralArrayAmount >= 64) {
+        if (!aPlayer.isSneaking()) {
+            if (astralArrayAmount != 0) {
+                while (astralArrayAmount >= 64) {
+                    if (aPlayer.inventory.getFirstEmptyStack() != -1) {
+                        aPlayer.inventory.addItemStackToInventory(CustomItemList.astralArrayFabricator.get(64));
+                        astralArrayAmount -= 64;
+                    } else {
+                        break;
+                    }
+                }
                 if (aPlayer.inventory.getFirstEmptyStack() != -1) {
-                    aPlayer.inventory.addItemStackToInventory(CustomItemList.astralArrayFabricator.get(64));
-                    astralArrayAmount -= 64;
-                } else {
-                    break;
+                    aPlayer.inventory
+                        .addItemStackToInventory(CustomItemList.astralArrayFabricator.get(astralArrayAmount));
+                    astralArrayAmount = 0;
                 }
             }
-            if (aPlayer.inventory.getFirstEmptyStack() != -1) {
-                aPlayer.inventory.addItemStackToInventory(CustomItemList.astralArrayFabricator.get(astralArrayAmount));
-                astralArrayAmount = 0;
-            }
+            return true;
         }
-        return true;
+
+        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override

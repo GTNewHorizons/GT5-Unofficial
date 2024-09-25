@@ -208,7 +208,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack tool) {
-        if (supportsVoidProtection() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
+        if (aPlayer.isSneaking() && supportsVoidProtection()
+            && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             Set<VoidingMode> allowed = getAllowedVoidingModes();
             setVoidingMode(getVoidingMode().nextInCollection(allowed));
             GTUtility.sendChatToPlayer(
@@ -217,15 +218,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 " ",
                 StatCollector.translateToLocal(getVoidingMode().getTransKey()));
             return true;
-        } else {
-            return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
         }
+        return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack tool) {
-        if (supportsBatchMode() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
+        if (aPlayer.isSneaking() && supportsBatchMode() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             batchMode = !batchMode;
             if (batchMode) {
                 GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.batchMode.on");
@@ -241,7 +241,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public boolean onHardHammerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack tool) {
-        if (supportsInputSeparation() && side == getBaseMetaTileEntity().getFrontFacing()) {
+        if (aPlayer.isSneaking() && supportsInputSeparation() && side == getBaseMetaTileEntity().getFrontFacing()) {
             this.inputSeparation = !this.inputSeparation;
             if (inputSeparation) {
                 GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.separateInputs.on");
@@ -258,7 +258,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public boolean onJackHammerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack tool) {
-        if (supportsSingleRecipeLocking()) {
+        if (aPlayer.isSneaking() && supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
                 GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.recipeLock.on");

@@ -245,14 +245,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (!aPlayer.isSneaking()) return false;
-        final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
-        final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
-        if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
+        if (aPlayer.isSneaking()) {
+            final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
+            final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
+            if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
 
-            // The tile entity we're facing is a cable, let's try to connect to it
-            return gtTE.getMetaTileEntity()
-                .onWireCutterRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
+                // The tile entity we're facing is a cable, let's try to connect to it
+                return gtTE.getMetaTileEntity()
+                    .onWireCutterRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
+            }
         }
         return false;
     }
@@ -260,15 +261,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
+            TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
+            if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
 
-        if (!aPlayer.isSneaking()) return false;
-        final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
-        TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
-        if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
-
-            // The tile entity we're facing is a cable, let's try to connect to it
-            return gtTE.getMetaTileEntity()
-                .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
+                // The tile entity we're facing is a cable, let's try to connect to it
+                return gtTE.getMetaTileEntity()
+                    .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
+            }
         }
         return false;
     }

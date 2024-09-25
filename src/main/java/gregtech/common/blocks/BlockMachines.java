@@ -49,7 +49,7 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.GTBaseCrop;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ToolType;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
@@ -363,11 +363,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
 
         if (aPlayer.isSneaking()) {
-            if (tCurrentItem != null && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)
-                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
-                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)
-                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)
-                && !GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) return false;
+            if (ToolType.getToolType(tCurrentItem) == null) return false;
         }
 
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
