@@ -1575,13 +1575,6 @@ public class RecipesGregTech {
 
     private static void macerationRecipes() {
 
-        RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.MeatRaw, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 9L))
-            .duration(44 * SECONDS)
-            .eut(4)
-            .addTo(maceratorRecipes);
-
         if (ItemUtils.simpleMetaStack("chisel:limestone", 0, 1) != null) {
             RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("limestone", 1))
