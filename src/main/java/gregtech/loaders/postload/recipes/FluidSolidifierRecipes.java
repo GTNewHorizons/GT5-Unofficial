@@ -33,31 +33,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
     @Override
     public void run() {
-        Materials[] materialArray = new Materials[] { Materials.Iron, Materials.WroughtIron, Materials.Gold,
-            Materials.Bronze, Materials.Copper, Materials.AnnealedCopper, Materials.Tin, Materials.Lead,
-            Materials.Steel };
 
-        ItemStack[] materialCasing = new ItemStack[] { ItemList.IC2_Item_Casing_Iron.get(1L),
-            ItemList.IC2_Item_Casing_Iron.get(1L), ItemList.IC2_Item_Casing_Gold.get(1L),
-            ItemList.IC2_Item_Casing_Bronze.get(1L), ItemList.IC2_Item_Casing_Copper.get(1L),
-            ItemList.IC2_Item_Casing_Copper.get(1L), ItemList.IC2_Item_Casing_Tin.get(1L),
-            ItemList.IC2_Item_Casing_Lead.get(1L), ItemList.IC2_Item_Casing_Steel.get(1L) };
-
-        for (int i = 0; i < materialArray.length; i++) {
-            if (materialArray[i].mStandardMoltenFluid == null) {
-                continue;
-            }
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Casing.get(0L))
-                .itemOutputs(materialCasing[i])
-                .fluidInputs(materialArray[i].getMolten(72L))
-                .duration(16 * TICKS)
-                .eut(8)
-                .addTo(fluidSolidifierRecipes);
-        }
-
-        {
             ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
             NBTTagCompound nbtFlask = new NBTTagCompound();
             nbtFlask.setInteger("Capacity", 1000);
@@ -69,15 +45,6 @@ public class FluidSolidifierRecipes implements Runnable {
                 .duration(2 * SECONDS + 4 * TICKS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(fluidSolidifierRecipes);
-        }
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
-            .itemOutputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 3))
-            .fluidInputs(Materials.Mercury.getFluid(1000L))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(4)
-            .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
