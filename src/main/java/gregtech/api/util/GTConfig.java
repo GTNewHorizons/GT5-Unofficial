@@ -48,11 +48,7 @@ public class GTConfig implements Runnable {
         if (GTUtility.isStackInvalid(aStack)) return E;
         Object rName = GTOreDictUnificator.getAssociation(aStack);
         if (rName != null) return rName.toString();
-        try {
-            if (GTUtility.isStringValid(rName = aStack.getUnlocalizedName())) return rName.toString();
-        } catch (Throwable e) {
-            /* Do nothing */
-        }
+        if (GTUtility.isStringValid(rName = aStack.getUnlocalizedName())) return rName.toString();
         String sName = aStack.getItem()
             .toString();
         String[] tmp = sName.split("@");

@@ -260,7 +260,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sBeforeGTPreload", e);
             }
         }
 
@@ -321,7 +321,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sAfterGTPreload", e);
             }
         }
 
@@ -340,7 +340,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sBeforeGTLoad", e);
             }
         }
 
@@ -392,7 +392,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sAfterGTLoad", e);
             }
         }
     }
@@ -408,7 +408,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sBeforeGTPostload", e);
             }
         }
 
@@ -563,7 +563,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sAfterGTPostload", e);
             }
         }
         GTPostLoad.addFakeRecipes();
@@ -600,7 +600,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sGTCompleteLoad", e);
             }
         }
         GregTechAPI.sGTCompleteLoad = null;
@@ -624,7 +624,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sBeforeGTServerstart", e);
             }
         }
 
@@ -759,7 +759,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sAfterGTServerstart", e);
             }
         }
 
@@ -817,7 +817,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sBeforeGTServerstop", e);
             }
         }
 
@@ -827,7 +827,7 @@ public class GTMod implements IGTMod {
             try {
                 tRunnable.run();
             } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Could not run Runnable in sAfterGTServerstop", e);
             }
         }
         // Interrupt IDLE Threads to close down cleanly

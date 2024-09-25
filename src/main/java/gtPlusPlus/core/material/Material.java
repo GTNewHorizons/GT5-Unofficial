@@ -1148,7 +1148,7 @@ public class Material {
                 return x;
             }
         } catch (Throwable t) {
-            // t.printStackTrace();
+            t.printStackTrace();
         }
         // Logger.MATERIALS("Failed getting the Ore Block for "+this.getLocalizedName()+".");
         return Blocks.stone;

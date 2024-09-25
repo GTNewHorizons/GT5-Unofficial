@@ -802,16 +802,15 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
         }
-        try {
-            for (String tOreName : OreDictionary.getOreNames()) {
-                ItemStack tOreStack;
-                for (Iterator<ItemStack> i$ = OreDictionary.getOres(tOreName)
-                    .iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
-                    tOreStack = i$.next();
+        for (String tOreName : OreDictionary.getOreNames()) {
+            for (ItemStack ore : OreDictionary.getOres(tOreName)) {
+                try {
+                    registerOre(new OreDictionary.OreRegisterEvent(tOreName, ore));
+                } catch (Throwable e) {
+                    GT_FML_LOGGER
+                        .error("Error registering ore (oredict name=" + tOreName + ", item stack=" + ore + ")", e);
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
     }
 
@@ -1245,14 +1244,14 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             }
         }
         GTLog.out.println("GTMod: Adding Configs specific for MetaTileEntities");
-        try {
-            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] != null) {
+        for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+            if (GregTechAPI.METATILEENTITIES[i] != null) {
+                try {
                     GregTechAPI.METATILEENTITIES[i].onConfigLoad();
+                } catch (Throwable e) {
+                    GT_FML_LOGGER.error("Could not load config for MTE " + GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
         GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
@@ -1341,14 +1340,14 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 break;
             }
         }
-        try {
-            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                if (GregTechAPI.METATILEENTITIES[i] != null) {
+        for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+            if (GregTechAPI.METATILEENTITIES[i] != null) {
+                try {
                     GregTechAPI.METATILEENTITIES[i].onServerStart();
+                } catch (Throwable e) {
+                    GT_FML_LOGGER.error("Could not call onServerStart MTE " + GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
     }
 
@@ -1384,19 +1383,17 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         File tSaveDirectory = getSaveDirectory();
         GregTechAPI.sWirelessRedstone.clear();
         if (tSaveDirectory != null) {
-            try {
-                for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                    if (GregTechAPI.METATILEENTITIES[i] != null) {
+            for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                if (GregTechAPI.METATILEENTITIES[i] != null) {
+                    try {
                         GregTechAPI.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
+                    } catch (Throwable e) {
+                        GT_FML_LOGGER.error("Could call onWorldSave for MTE " + GregTechAPI.METATILEENTITIES[i], e);
                     }
                 }
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
             }
         }
         this.mUniverse = null;
-        // GT_ChunkAssociatedData.saveAll(); todo: figure out if this is needed
-
     }
 
     @SubscribeEvent
@@ -2104,7 +2101,8 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 registerRecipes(tOre);
             }
         } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER
+                .error("Could not register ore (oredict name=" + aEvent.Name + ", item stack=" + aEvent.Ore + ")", e);
         }
     }
 
@@ -2182,14 +2180,15 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 File tSaveDiretory = getSaveDirectory();
                 if (tSaveDiretory != null) {
                     this.isFirstServerWorldTick = false;
-                    try {
-                        for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
-                            if (GregTechAPI.METATILEENTITIES[i] != null) {
+                    for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
+                        if (GregTechAPI.METATILEENTITIES[i] != null) {
+                            try {
                                 GregTechAPI.METATILEENTITIES[i].onWorldLoad(tSaveDiretory);
+                            } catch (Throwable e) {
+                                GT_FML_LOGGER
+                                    .error("Could call onWorldLoad for MTE " + GregTechAPI.METATILEENTITIES[i], e);
                             }
                         }
-                    } catch (Throwable e) {
-                        e.printStackTrace(GTLog.err);
                     }
                 }
             }

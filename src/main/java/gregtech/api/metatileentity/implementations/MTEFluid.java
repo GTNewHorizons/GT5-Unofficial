@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
-import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.metatileentity.implementations.MTEFluid.Border.BOTTOM;
@@ -358,38 +357,30 @@ public class MTEFluid extends MetaPipeEntity {
                 tFluid.amount -= 5;
                 sendSound((byte) 9);
                 if (tTemperature > 320) {
-                    try {
-                        for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
-                            .getEntitiesWithinAABB(
-                                EntityLivingBase.class,
-                                AxisAlignedBB.getBoundingBox(
-                                    getBaseMetaTileEntity().getXCoord() - 2,
-                                    getBaseMetaTileEntity().getYCoord() - 2,
-                                    getBaseMetaTileEntity().getZCoord() - 2,
-                                    getBaseMetaTileEntity().getXCoord() + 3,
-                                    getBaseMetaTileEntity().getYCoord() + 3,
-                                    getBaseMetaTileEntity().getZCoord() + 3))) {
-                            GTUtility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
-                        }
-                    } catch (Throwable e) {
-                        if (D1) e.printStackTrace(GTLog.err);
+                    for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
+                        .getEntitiesWithinAABB(
+                            EntityLivingBase.class,
+                            AxisAlignedBB.getBoundingBox(
+                                getBaseMetaTileEntity().getXCoord() - 2,
+                                getBaseMetaTileEntity().getYCoord() - 2,
+                                getBaseMetaTileEntity().getZCoord() - 2,
+                                getBaseMetaTileEntity().getXCoord() + 3,
+                                getBaseMetaTileEntity().getYCoord() + 3,
+                                getBaseMetaTileEntity().getZCoord() + 3))) {
+                        GTUtility.applyHeatDamage(tLiving, (tTemperature - 300) / 25.0F);
                     }
                 } else if (tTemperature < 260) {
-                    try {
-                        for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
-                            .getEntitiesWithinAABB(
-                                EntityLivingBase.class,
-                                AxisAlignedBB.getBoundingBox(
-                                    getBaseMetaTileEntity().getXCoord() - 2,
-                                    getBaseMetaTileEntity().getYCoord() - 2,
-                                    getBaseMetaTileEntity().getZCoord() - 2,
-                                    getBaseMetaTileEntity().getXCoord() + 3,
-                                    getBaseMetaTileEntity().getYCoord() + 3,
-                                    getBaseMetaTileEntity().getZCoord() + 3))) {
-                            GTUtility.applyFrostDamage(tLiving, (270 - tTemperature) / 12.5F);
-                        }
-                    } catch (Throwable e) {
-                        if (D1) e.printStackTrace(GTLog.err);
+                    for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
+                        .getEntitiesWithinAABB(
+                            EntityLivingBase.class,
+                            AxisAlignedBB.getBoundingBox(
+                                getBaseMetaTileEntity().getXCoord() - 2,
+                                getBaseMetaTileEntity().getYCoord() - 2,
+                                getBaseMetaTileEntity().getZCoord() - 2,
+                                getBaseMetaTileEntity().getXCoord() + 3,
+                                getBaseMetaTileEntity().getYCoord() + 3,
+                                getBaseMetaTileEntity().getZCoord() + 3))) {
+                        GTUtility.applyFrostDamage(tLiving, (270 - tTemperature) / 12.5F);
                     }
                 }
             }

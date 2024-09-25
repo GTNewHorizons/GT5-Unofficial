@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_SCANNER;
@@ -45,7 +44,6 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -130,32 +128,26 @@ public class MTEScanner extends MTEBasicMachine {
             this.mOutputBlocked += 1;
         } else if ((GTUtility.isStackValid(aStack)) && (aStack.stackSize > 0)) {
             if ((getFillableStack() != null) && (getFillableStack().containsFluid(Materials.Honey.getFluid(100L)))) {
-                try {
-                    IIndividual tIndividual = AlleleManager.alleleRegistry.getIndividual(aStack);
-                    if (tIndividual != null) {
-                        if (tIndividual.analyze()) {
-                            getFillableStack().amount -= 100;
-                            this.mOutputItems[0] = GTUtility.copyOrNull(aStack);
-                            aStack.stackSize = 0;
-                            NBTTagCompound tNBT = new NBTTagCompound();
-                            tIndividual.writeToNBT(tNBT);
-                            this.mOutputItems[0].setTagCompound(tNBT);
-                            calculateOverclockedNess(2, 500);
-                            // In case recipe is too OP for that machine
-                            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-                            return 2;
-                        }
+                IIndividual tIndividual = AlleleManager.alleleRegistry.getIndividual(aStack);
+                if (tIndividual != null) {
+                    if (tIndividual.analyze()) {
+                        getFillableStack().amount -= 100;
                         this.mOutputItems[0] = GTUtility.copyOrNull(aStack);
                         aStack.stackSize = 0;
-                        this.mMaxProgresstime = 1;
-                        this.mEUt = 1;
+                        NBTTagCompound tNBT = new NBTTagCompound();
+                        tIndividual.writeToNBT(tNBT);
+                        this.mOutputItems[0].setTagCompound(tNBT);
+                        calculateOverclockedNess(2, 500);
+                        // In case recipe is too OP for that machine
+                        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+                            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         return 2;
                     }
-                } catch (Throwable e) {
-                    if (D1) {
-                        e.printStackTrace(GTLog.err);
-                    }
+                    this.mOutputItems[0] = GTUtility.copyOrNull(aStack);
+                    aStack.stackSize = 0;
+                    this.mMaxProgresstime = 1;
+                    this.mEUt = 1;
+                    return 2;
                 }
             }
             if (ItemList.IC2_Crop_Seeds.isStackEqual(aStack, true, true)) {
