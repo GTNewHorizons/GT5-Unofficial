@@ -605,12 +605,6 @@ public class CrackRecipeAdder {
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(material.get(OrePrefixes.wireGt01, 1), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(material.get(OrePrefixes.wireFine, 4))
-            .duration(10 * SECONDS)
-            .eut(8)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
             .itemInputs(material.get(OrePrefixes.ingot, 1), ItemList.Shape_Extruder_Wire.get(0))
             .itemOutputs(material.get(OrePrefixes.wireGt01, 2))
             .duration(
