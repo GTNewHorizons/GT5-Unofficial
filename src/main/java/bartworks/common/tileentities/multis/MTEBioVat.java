@@ -50,7 +50,9 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.SideReference;
@@ -84,7 +86,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 
-public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
+public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements ISurvivalConstructable {
 
     public static final HashMap<Coords, Integer> staticColorMap = new HashMap<>();
 
@@ -781,6 +783,12 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 3, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
