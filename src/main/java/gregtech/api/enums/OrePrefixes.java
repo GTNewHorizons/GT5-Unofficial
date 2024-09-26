@@ -1325,7 +1325,8 @@ public enum OrePrefixes {
         if (aMaterial != Materials._NULL) {
             if (!used.add(aMaterial)) {
                 if (DEBUG_MODE_COLLISION) {
-                    GTLog.out.println("Attempted duplicate recipe registration by " + aModName + " for " + aOreDictName);
+                    GTLog.out
+                        .println("Attempted duplicate recipe registration by " + aModName + " for " + aOreDictName);
                 }
                 return;
             } else {
