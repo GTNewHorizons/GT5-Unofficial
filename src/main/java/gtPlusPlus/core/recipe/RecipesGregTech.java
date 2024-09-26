@@ -985,17 +985,6 @@ public class RecipesGregTech {
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
-
-        // Short-cut Styrene
-        // C6H6 + C2H4 = C8H8 + 2H
-        RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .itemOutputs()
-            .fluidInputs(Materials.Ethylene.getGas(500L), Materials.Benzene.getFluid(500L))
-            .fluidOutputs(Materials.Styrene.getFluid(500L), Materials.Hydrogen.getGas(1000))
-            .duration(12 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(multiblockChemicalReactorRecipes);
     }
 
     private static void assemblerRecipes() {
