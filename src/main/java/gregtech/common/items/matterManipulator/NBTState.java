@@ -29,6 +29,8 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
@@ -417,6 +419,7 @@ class NBTState {
         public Shape shape = Shape.LINE;
 
         public Location coordA, coordB;
+        public Region source;
         public Vector3i coordAOffset, coordBOffset;
 
         public JsonElement corners, edges, faces, volumes;
@@ -510,14 +513,74 @@ class NBTState {
                 }
             } else {
                 target = new Vector3i(
-                    (int) (modifiedPosVec.xCoord - 1),
-                    (int) (modifiedPosVec.yCoord),
-                    (int) (modifiedPosVec.zCoord));
+                    MathHelper.floor_double(modifiedPosVec.xCoord),
+                    MathHelper.floor_double(modifiedPosVec.yCoord),
+                    MathHelper.floor_double(modifiedPosVec.zCoord));
             }
 
             return target;
         }
 
+        public static Vector3i getRegionDeltas(Location a, Location b) {
+            if (a == null || b == null || a.worldId != b.worldId) return null;
+
+            int x1 = a.x;
+            int y1 = a.y;
+            int z1 = a.z;
+            int x2 = b.x;
+            int y2 = b.y;
+            int z2 = b.z;
+
+            int minX = Math.min(x1, x2);
+            int minY = Math.min(y1, y2);
+            int minZ = Math.min(z1, z2);
+            int maxX = Math.max(x1, x2);
+            int maxY = Math.max(y1, y2);
+            int maxZ = Math.max(z1, z2);
+
+            int dX = (maxX - minX) * (minX < x1 ? -1 : 1);
+            int dY = (maxY - minY) * (minY < y1 ? -1 : 1);
+            int dZ = (maxZ - minZ) * (minZ < z1 ? -1 : 1);
+
+            return new Vector3i(dX, dY, dZ);
+        }
+
+        public static AxisAlignedBB getBoundingBox(Location l, Vector3i deltas) {
+            int minX = Math.min(l.x, l.x + deltas.x);
+            int minY = Math.min(l.y, l.y + deltas.y);
+            int minZ = Math.min(l.z, l.z + deltas.z);
+            int maxX = Math.max(l.x, l.x + deltas.x) + 1;
+            int maxY = Math.max(l.y, l.y + deltas.y) + 1;
+            int maxZ = Math.max(l.z, l.z + deltas.z) + 1;
+    
+            return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+        }
+    
+        public static List<Vector3i> getBlocksInBB(Location l, Vector3i deltas) {
+            int minX = Math.min(l.x, l.x + deltas.x);
+            int minY = Math.min(l.y, l.y + deltas.y);
+            int minZ = Math.min(l.z, l.z + deltas.z);
+            int maxX = Math.max(l.x, l.x + deltas.x) + 1;
+            int maxY = Math.max(l.y, l.y + deltas.y) + 1;
+            int maxZ = Math.max(l.z, l.z + deltas.z) + 1;
+    
+            int dX = maxX - minX;
+            int dY = maxY - minY;
+            int dZ = maxZ - minZ;
+
+            List<Vector3i> blocks = new ArrayList<>();
+
+            for (int y = 0; y < dY; y++) {
+                for (int z = 0; z < dZ; z++) {
+                    for (int x = 0; x < dX; x++) {
+                        blocks.add(new Vector3i(minX + x, minY + y, minZ + z));
+                    }
+                }
+            }
+
+            return blocks;
+        }
+    
         public Location getCoordA(EntityPlayer player) {
             if (coordAOffset == null) {
                 return coordA;
@@ -611,6 +674,11 @@ class NBTState {
     static enum PendingAction {
         GEOM_MOVING_COORDS,
         GEOM_SELECTING_BLOCK,
+        MARK_COPY_A,
+        MARK_COPY_B,
+        MARK_CUT_A,
+        MARK_CUT_B,
+        MARK_PASTE,
     }
 
     static enum CoordMode {
@@ -787,7 +855,7 @@ class NBTState {
         }
     }
 
-    static class Region {
+    public static class Region {
 
         public Location a, b;
 
