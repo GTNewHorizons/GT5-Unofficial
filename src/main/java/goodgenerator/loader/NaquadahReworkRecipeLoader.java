@@ -178,14 +178,6 @@ public class NaquadahReworkRecipeLoader {
             .noOptimize()
             .addTo(neutronActivatorRecipes);
 
-        // Fix shit
-        GTValues.RA.stdBuilder()
-            .itemInputs(lowQualityNaquadriaSolution.get(OrePrefixes.cell, 1))
-            .itemOutputs(Materials.Tin.getDust(2))
-            .duration(16 * SECONDS + 14 * TICKS)
-            .eut(4)
-            .addTo(maceratorRecipes);
-
         // Naquadah Rework Line
         GTValues.RA.stdBuilder()
             .itemInputs(naquadahEarth.get(OrePrefixes.dust, 2), GTUtility.getIntegratedCircuit(1))
