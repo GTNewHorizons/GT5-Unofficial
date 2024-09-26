@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import org.joml.Vector3i;
+import gregtech.common.items.matterManipulator.NBTState.Config;
+import gregtech.common.items.matterManipulator.NBTState.Location;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -27,19 +33,19 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.mojang.authlib.GameProfile;
 
-import appeng.api.AEApi;
+import appeng.api.implementations.items.IMemoryCard;
 import appeng.api.implementations.items.IUpgradeModule;
+import appeng.api.implementations.items.MemoryCardMessages;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
 import appeng.api.parts.PartItemStack;
 import appeng.api.util.AEColor;
 import appeng.helpers.ICustomNameObject;
 import appeng.helpers.IOreFilterable;
-import appeng.items.tools.ToolMemoryCard;
 import appeng.parts.AEBasePart;
 import appeng.parts.automation.UpgradeInventory;
-import appeng.parts.p2p.PartP2PTunnel;
 import appeng.tile.AEBaseTile;
 import appeng.tile.networking.TileCableBus;
 import appeng.util.SettingsFrom;
@@ -59,32 +65,97 @@ import gregtech.common.covers.CoverInfo;
 
 public class BlockAnalyzer {
 
-    private static final ToolMemoryCard memoryCard = (ToolMemoryCard) AEApi.instance()
-        .definitions()
-        .items()
-        .memoryCard()
-        .maybeItem()
-        .get();
-
     private BlockAnalyzer() {}
 
-    public static @Nullable TileAnalysisResult analyze(BlockActionContext context) {
-        if (context.world.isRemote) {
-            throw new IllegalStateException("Cannot analyze a block on the client because it needs a fake player.");
-        }
-
+    public static @Nullable TileAnalysisResult analyze(IBlockAnalysisContext context) {
         TileEntity te = context.getTileEntity();
 
         if (te == null) {
             return null;
         }
 
-        TileAnalysisResult result = new TileAnalysisResult(context.getFakePlayerLazy(), te);
+        TileAnalysisResult result = new TileAnalysisResult(context.getFakePlayer(), te);
 
-        return result;
+        return result.doesAnything() ? result : null;
     }
 
-    public static class BlockActionContext {
+    public static RegionAnalysis analyzeRegion(World world, Location a, Location b) {
+        if (a == null || b == null || world.provider.dimensionId != a.worldId || a.worldId != b.worldId) return null;
+
+        RegionAnalysis analysis = new RegionAnalysis();
+
+        Vector3i deltas = Config.getRegionDeltas(a, b);
+        analysis.sX = Math.abs(deltas.x);
+        analysis.sY = Math.abs(deltas.y);
+        analysis.sZ = Math.abs(deltas.z);
+        
+        int count = analysis.sX * analysis.sY * analysis.sZ;
+
+        analysis.blocks = new Block[count];
+        analysis.meta = new int[count];
+        analysis.tiles = new TileAnalysisResult[count];
+
+        List<Vector3i> voxels = Config.getBlocksInBB(a, deltas);
+
+        BlockAnalysisContext context = new BlockAnalysisContext(world);
+
+        for (int i = 0; i < count; i++) {
+            Vector3i voxel = voxels.get(i);
+
+            analysis.blocks[i] = world.getBlock(voxel.x, voxel.y, voxel.z);
+            analysis.meta[i] = world.getBlockMetadata(voxel.x, voxel.y, voxel.z);
+            analysis.tiles[i] = analyze(context);
+        }
+        
+        return analysis;
+    }
+
+    public static class RegionAnalysis {
+        public int sX, sY, sZ;
+        public Block[] blocks;
+        public int[] meta;
+        public TileAnalysisResult[] tiles;
+    }
+
+    public static interface IBlockAnalysisContext {
+        public Supplier<EntityPlayer> getFakePlayer();
+
+        public TileEntity getTileEntity();
+    }
+
+    public static class BlockAnalysisContext implements IBlockAnalysisContext {
+
+        public World world;
+        public final Lazy<FakePlayer> fakePlayer;
+        public Vector3i voxel;
+
+        public BlockAnalysisContext(World world) {
+            this.world = world;
+            fakePlayer = new Lazy<>(() -> new FakePlayer((WorldServer) world, new GameProfile(UUID.randomUUID(), "BlockAnalyzer Fake Player")));
+        }
+
+        @Override
+        public Supplier<EntityPlayer> getFakePlayer() {
+            return fakePlayer::get;
+        }
+
+        @Override
+        public TileEntity getTileEntity() {
+            return world.getTileEntity(voxel.x, voxel.y, voxel.z);
+        }
+    }
+
+    public static interface IBlockApplyContext extends IBlockAnalysisContext {
+        public EntityPlayer getPlacingPlayer();
+
+        public boolean tryApplyAction(double complexity);
+
+        public boolean tryConsumeItems(ItemStack... items);
+        public void givePlayerItems(ItemStack... items);
+        public void givePlayerFluids(FluidStack... fluids);
+    }
+
+    public static class BlockActionContext implements IBlockApplyContext {
 
         public World world;
         public int x, y, z;
@@ -95,23 +166,32 @@ public class BlockAnalyzer {
 
         public static final double EU_PER_ACTION = 8192;
 
-        public Lazy<FakePlayer> getFakePlayerLazy() {
+        @Override
+        public Supplier<EntityPlayer> getFakePlayer() {
             if (fakePlayer == null) {
                 fakePlayer = new Lazy<>(
                     () -> new FakePlayer((WorldServer) player.getEntityWorld(), player.getGameProfile()));
             }
 
-            return fakePlayer;
+            return fakePlayer::get;
         }
 
+        @Override
         public TileEntity getTileEntity() {
             return world.getTileEntity(x, y, z);
         }
 
-        public boolean tryConsumePower(double mult) {
-            return build.tryConsumePower(manipulator, x, y, z, EU_PER_ACTION * mult);
+        @Override
+        public EntityPlayer getPlacingPlayer() {
+            return player;
         }
 
+        @Override
+        public boolean tryApplyAction(double complexity) {
+            return build.tryConsumePower(manipulator, x, y, z, EU_PER_ACTION * complexity);
+        }
+
+        @Override
         public boolean tryConsumeItems(ItemStack... items) {
             if (build == null) {
                 for (ItemStack item : items) System.out.println("consume: " + item);
@@ -121,6 +201,7 @@ public class BlockAnalyzer {
             }
         }
 
+        @Override
         public void givePlayerItems(ItemStack... items) {
             if (build == null) {
                 for (ItemStack item : items) System.out.println("give: " + item);
@@ -129,6 +210,7 @@ public class BlockAnalyzer {
             }
         }
 
+        @Override
         public void givePlayerFluids(FluidStack... fluids) {
             build.givePlayerFluids(fluids);
         }
@@ -136,6 +218,22 @@ public class BlockAnalyzer {
 
     private static ForgeDirection nullIfUnknown(ForgeDirection dir) {
         return dir == ForgeDirection.UNKNOWN ? null : dir;
+    }
+
+    private static void emptyInventory(IBlockApplyContext context, IInventory inv) {
+        int size = inv.getSizeInventory();
+
+        for (int i = 0; i < size; i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+
+            if (stack != null && stack.getItem() != null) {
+                inv.setInventorySlotContents(i, null);
+
+                context.givePlayerItems(stack);
+            }
+        }
+
+        inv.markDirty();
     }
 
     public static class TileAnalysisResult {
@@ -151,7 +249,7 @@ public class BlockAnalyzer {
 
         public AEColor mAEColour = null;
         public ForgeDirection mAEUp = null, mAEForward = null;
-        public NBTTagCompound mAEConfig = null;
+        public JsonElement mAEConfig = null;
         public UniqueIdentifier[] mAEUpgrades = null;
         public String mAECustomName = null;
         public AEPartData[] mAEParts = null;
@@ -165,7 +263,11 @@ public class BlockAnalyzer {
 
         private static final ForgeDirection[] ALL_DIRECTIONS = ForgeDirection.values();
 
-        public TileAnalysisResult(Lazy<FakePlayer> fakePlayer, TileEntity te) {
+        private TileAnalysisResult() {
+
+        }
+
+        public TileAnalysisResult(Supplier<EntityPlayer> fakePlayer, TileEntity te) {
             if (te instanceof IGregTechTileEntity gte) {
                 IMetaTileEntity mte = gte.getMetaTileEntity();
 
@@ -231,29 +333,29 @@ public class BlockAnalyzer {
             if (te instanceof AEBaseTile ae) {
                 mAEUp = nullIfUnknown(ae.getUp());
                 mAEForward = nullIfUnknown(ae.getForward());
-                mAEConfig = ae.downloadSettings(SettingsFrom.MEMORY_CARD);
+                mAEConfig = NBTState.toJsonObject(ae.downloadSettings(SettingsFrom.MEMORY_CARD));
                 mAECustomName = !(ae instanceof TileCableBus) && ae.hasCustomName() ? ae.getCustomName() : null;
 
                 if (ae instanceof IPartHost partHost) {
                     mAEParts = new AEPartData[ALL_DIRECTIONS.length];
 
                     for (ForgeDirection dir : ALL_DIRECTIONS) {
-                        IPart part = partHost.getPart(dir);
-
-                        if (part instanceof AEBasePart basePart) {
-                            mAEParts[dir.ordinal()] = new AEPartData(fakePlayer, basePart);
+                        if (partHost.getPart(dir) instanceof AEBasePart basePart) {
+                            mAEParts[dir.ordinal()] = new AEPartData(fakePlayer.get(), basePart);
                         }
                     }
                 }
             }
         }
 
+        private static final TileAnalysisResult NO_OP = new TileAnalysisResult();
+
         public boolean doesAnything() {
-            return true;
+            return !this.equals(NO_OP);
         }
 
         @SuppressWarnings("unused")
-        public boolean apply(BlockActionContext ctx) {
+        public boolean apply(IBlockApplyContext ctx) {
             TileEntity te = ctx.getTileEntity();
 
             if (te instanceof IGregTechTileEntity gte) {
@@ -334,7 +436,7 @@ public class BlockAnalyzer {
                 }
 
                 if (mAEConfig != null) {
-                    ae.uploadSettings(SettingsFrom.MEMORY_CARD, mAEConfig);
+                    ae.uploadSettings(SettingsFrom.MEMORY_CARD, (NBTTagCompound) NBTState.toNbt(mAEConfig));
                 }
 
                 if (mAECustomName != null && !(ae instanceof TileCableBus)) {
@@ -374,13 +476,13 @@ public class BlockAnalyzer {
             return true;
         }
 
-        private void removeCover(BlockActionContext context, IGregTechTileEntity gte, ForgeDirection side) {
+        private void removeCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side) {
             if (gte.getCoverIDAtSide(side) != 0) {
                 context.givePlayerItems(gte.removeCoverAtSide(side, true));
             }
         }
 
-        private void installCover(BlockActionContext context, IGregTechTileEntity gte, ForgeDirection side,
+        private void installCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side,
             CoverData cover) {
             if (gte.getCoverIDAtSide(side) == 0 && gte.canPlaceCoverItemAtSide(side, cover.getCover())
                 && context.tryConsumeItems(cover.getCover())) {
@@ -392,7 +494,7 @@ public class BlockAnalyzer {
             }
         }
 
-        private void updateCover(BlockActionContext context, IGregTechTileEntity gte, ForgeDirection side,
+        private void updateCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side,
             CoverData target) {
             if (gte.getCoverIDAtSide(side) == target.getCoverID() && gte.getCoverBehaviorAtSideNew(side)
                 .allowsCopyPasteTool()) {
@@ -400,7 +502,7 @@ public class BlockAnalyzer {
             }
         }
 
-        private void removePart(BlockActionContext context, IPartHost partHost, ForgeDirection side) {
+        private void removePart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side) {
             IPart part = partHost.getPart(side);
 
             if (part == null) return;
@@ -428,7 +530,7 @@ public class BlockAnalyzer {
             partHost.removePart(side, false);
         }
 
-        private boolean installPart(BlockActionContext context, IPartHost partHost, ForgeDirection side,
+        private boolean installPart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side,
             AEPartData partData) {
             ItemStack partStack = partData.getPartStack();
 
@@ -438,11 +540,99 @@ public class BlockAnalyzer {
 
             context.tryConsumeItems(partStack);
 
-            if (partHost.addPart(partStack, side, context.player) == null) {
+            if (partHost.addPart(partStack, side, context.getPlacingPlayer()) == null) {
                 context.givePlayerItems(partStack);
                 return false;
             }
 
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((mConnections == null) ? 0 : mConnections.hashCode());
+            result = prime * result + ((mGTColour == null) ? 0 : mGTColour.hashCode());
+            result = prime * result + ((mGTFront == null) ? 0 : mGTFront.hashCode());
+            result = prime * result + ((mGTMainFacing == null) ? 0 : mGTMainFacing.hashCode());
+            result = prime * result + ((mGTBasicIOFlags == null) ? 0 : mGTBasicIOFlags.hashCode());
+            result = prime * result + ((mGTFacing == null) ? 0 : mGTFacing.hashCode());
+            result = prime * result + Arrays.hashCode(mCovers);
+            result = prime * result + ((mStrongRedstone == null) ? 0 : mStrongRedstone.hashCode());
+            result = prime * result + ((mGTCustomName == null) ? 0 : mGTCustomName.hashCode());
+            result = prime * result + ((mAEColour == null) ? 0 : mAEColour.hashCode());
+            result = prime * result + ((mAEUp == null) ? 0 : mAEUp.hashCode());
+            result = prime * result + ((mAEForward == null) ? 0 : mAEForward.hashCode());
+            result = prime * result + ((mAEConfig == null) ? 0 : mAEConfig.hashCode());
+            result = prime * result + Arrays.hashCode(mAEUpgrades);
+            result = prime * result + ((mAECustomName == null) ? 0 : mAECustomName.hashCode());
+            result = prime * result + Arrays.hashCode(mAEParts);
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            TileAnalysisResult other = (TileAnalysisResult) obj;
+            if (mConnections == null) {
+                if (other.mConnections != null)
+                    return false;
+            } else if (!mConnections.equals(other.mConnections))
+                return false;
+            if (mGTColour == null) {
+                if (other.mGTColour != null)
+                    return false;
+            } else if (!mGTColour.equals(other.mGTColour))
+                return false;
+            if (mGTFront != other.mGTFront)
+                return false;
+            if (mGTMainFacing != other.mGTMainFacing)
+                return false;
+            if (mGTBasicIOFlags == null) {
+                if (other.mGTBasicIOFlags != null)
+                    return false;
+            } else if (!mGTBasicIOFlags.equals(other.mGTBasicIOFlags))
+                return false;
+            if (mGTFacing != other.mGTFacing)
+                return false;
+            if (!Arrays.equals(mCovers, other.mCovers))
+                return false;
+            if (mStrongRedstone == null) {
+                if (other.mStrongRedstone != null)
+                    return false;
+            } else if (!mStrongRedstone.equals(other.mStrongRedstone))
+                return false;
+            if (mGTCustomName == null) {
+                if (other.mGTCustomName != null)
+                    return false;
+            } else if (!mGTCustomName.equals(other.mGTCustomName))
+                return false;
+            if (mAEColour != other.mAEColour)
+                return false;
+            if (mAEUp != other.mAEUp)
+                return false;
+            if (mAEForward != other.mAEForward)
+                return false;
+            if (mAEConfig == null) {
+                if (other.mAEConfig != null)
+                    return false;
+            } else if (!mAEConfig.equals(other.mAEConfig))
+                return false;
+            if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades))
+                return false;
+            if (mAECustomName == null) {
+                if (other.mAECustomName != null)
+                    return false;
+            } else if (!mAECustomName.equals(other.mAECustomName))
+                return false;
+            if (!Arrays.equals(mAEParts, other.mAEParts))
+                return false;
             return true;
         }
     }
@@ -508,20 +698,58 @@ public class BlockAnalyzer {
                     .saveDataToNBT(),
                 info.getTickRateAddition());
         }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((cover == null) ? 0 : cover.hashCode());
+            result = prime * result + ((coverData == null) ? 0 : coverData.hashCode());
+            result = prime * result + ((tickRateAddition == null) ? 0 : tickRateAddition.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            CoverData other = (CoverData) obj;
+            if (cover == null) {
+                if (other.cover != null)
+                    return false;
+            } else if (!cover.equals(other.cover))
+                return false;
+            if (coverData == null) {
+                if (other.coverData != null)
+                    return false;
+            } else if (!coverData.equals(other.coverData))
+                return false;
+            if (tickRateAddition == null) {
+                if (other.tickRateAddition != null)
+                    return false;
+            } else if (!tickRateAddition.equals(other.tickRateAddition))
+                return false;
+            return true;
+        }
+
     }
 
     public static class AEPartData {
 
         public PortableItemStack mPart;
-        public String mP2PConfigName = null;
-        public NBTTagCompound mSettings = null, mP2PSettings = null;
+        public String mSettingsName = null;
+        public JsonElement mSettings = null, mMemoryCardData = null;
         public PortableItemStack[] mAEUpgrades = null, mConfig = null;
         public String mOreDict = null;
         public String mCustomName = null;
 
         public transient ItemStack partStack;
 
-        public AEPartData(Lazy<FakePlayer> fakePlayer, AEBasePart part) {
+        public AEPartData(EntityPlayer fakePlayer, AEBasePart part) {
             mPart = new PortableItemStack(part.getItemStack(PartItemStack.Break));
 
             mCustomName = part.hasCustomName() ? part.getCustomName() : null;
@@ -532,138 +760,102 @@ public class BlockAnalyzer {
                 if ("".equals(mOreDict)) mOreDict = null;
             }
 
-            if (part instanceof PartP2PTunnel tunnel) {
-                FakePlayer player = fakePlayer.get();
+            fakePlayer.inventory.mainInventory[0] = new ItemStack(new FakeMemoryCard(this));
 
-                ItemStack cardStack = AEApi.instance()
-                    .definitions()
-                    .items()
-                    .memoryCard()
-                    .maybeStack(1)
-                    .get();
-                player.inventory.mainInventory[0] = cardStack;
+            part.onShiftActivate(fakePlayer, Vec3.createVectorHelper(0, 0, 0));
 
-                tunnel.onPartShiftActivate(player, Vec3.createVectorHelper(0, 0, 0));
+            fakePlayer.inventory.mainInventory[0] = null;
 
-                player.inventory.mainInventory[0] = null;
+            IInventory upgrades = part.getInventoryByName("upgrades");
 
-                mP2PSettings = memoryCard.getData(cardStack);
-            } else {
-                if (part.getConfigManager() != null) {
-                    mSettings = new NBTTagCompound();
-                    part.getConfigManager()
-                        .writeToNBT(mSettings);
-                }
+            if (upgrades != null) {
+                mAEUpgrades = GTUtility.streamInventory(upgrades)
+                    .filter(x -> x != null)
+                    .map(PortableItemStack::new)
+                    .toArray(PortableItemStack[]::new);
+            }
 
-                IInventory upgrades = part.getInventoryByName("upgrades");
+            IInventory config = part.getInventoryByName("config");
 
-                if (upgrades != null) {
-                    mAEUpgrades = GTUtility.streamInventory(upgrades)
-                        .filter(x -> x != null)
-                        .map(PortableItemStack::new)
-                        .toArray(PortableItemStack[]::new);
+            if (config != null) {
+                mConfig = GTUtility.streamInventory(config)
+                    .filter(x -> x != null)
+                    .map(PortableItemStack::withoutStackSize)
+                    .distinct()
+                    .toArray(PortableItemStack[]::new);
+            }
+        }
+
+        public boolean updatePart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side) {
+            if (partHost.getPart(side) instanceof AEBasePart part) {
+                if (mCustomName != null) part.setCustomName(mCustomName);
+
+                EntityPlayer fakePlayer = context.getFakePlayer().get();
+
+                fakePlayer.inventory.mainInventory[0] = new ItemStack(new FakeMemoryCard(this));
+
+                part.onActivate(fakePlayer, Vec3.createVectorHelper(0, 0, 0));
+
+                fakePlayer.inventory.mainInventory[0] = null;
+                
+                UpgradeInventory upgradeInv = (UpgradeInventory) part.getInventoryByName("upgrades");
+
+                if (upgradeInv != null) {
+                    ItemStackMap<Long> targetMap = GTUtility.getItemStackHistogram(
+                        Arrays.stream(mAEUpgrades)
+                            .map(PortableItemStack::toStack)
+                            .toArray(ItemStack[]::new));
+                    ItemStackMap<Long> actualMap = GTUtility.getItemStackHistogram(
+                        GTUtility.streamInventory(upgradeInv)
+                            .filter(x -> x != null)
+                            .toArray(ItemStack[]::new));
+
+                    if (!targetMap.equals(actualMap)) {
+                        emptyInventory(context, upgradeInv);
+
+                        targetMap.replaceAll((item, amount) -> {
+                            if (item.getItem() instanceof IUpgradeModule upgrade) {
+                                int max = upgradeInv.getMaxInstalled(upgrade.getType(item));
+
+                                return Math.min(max, amount);
+                            } else {
+                                return 0l;
+                            }
+                        });
+
+                        List<ItemStack> upgradeList = GTUtility.getStacksOfSize(targetMap, 1);
+
+                        ItemStack[] upgrades = upgradeList
+                            .subList(0, Math.min(upgradeList.size(), upgradeInv.getSizeInventory()))
+                            .toArray(new ItemStack[0]);
+
+                        if (context.tryConsumeItems(upgrades)) {
+                            for (int i = 0; i < upgrades.length; i++) {
+                                upgradeInv.setInventorySlotContents(i, upgrades[i]);
+                            }
+                        }
+                    }
                 }
 
                 IInventory config = part.getInventoryByName("config");
 
                 if (config != null) {
-                    mConfig = GTUtility.streamInventory(config)
-                        .filter(x -> x != null)
-                        .map(PortableItemStack::withoutStackSize)
-                        .distinct()
-                        .toArray(PortableItemStack[]::new);
+                    for (int i = 0; i < config.getSizeInventory(); i++) {
+                        config.setInventorySlotContents(i, null);
+                    }
+
+                    if (mConfig != null) {
+                        int n = Math.min(config.getSizeInventory(), mConfig.length);
+                        for (int i = 0; i < n; i++) {
+                            config.setInventorySlotContents(i, mConfig[i] == null ? null : mConfig[i].toStack());
+                        }
+                    }
+
+                    config.markDirty();
                 }
-            }
-        }
 
-        public boolean updatePart(BlockActionContext context, IPartHost partHost, ForgeDirection side) {
-            if (partHost.getPart(side) instanceof AEBasePart part) {
-                if (mCustomName != null) part.setCustomName(mCustomName);
-
-                if (part instanceof PartP2PTunnel tunnel) {
-                    if (mP2PSettings != null) {
-                        FakePlayer player = context.getFakePlayerLazy()
-                            .get();
-
-                        ItemStack cardStack = AEApi.instance()
-                            .definitions()
-                            .items()
-                            .memoryCard()
-                            .maybeStack(1)
-                            .get();
-
-                        memoryCard.setMemoryCardContents(cardStack, mCustomName, mP2PSettings);
-                        player.inventory.mainInventory[0] = cardStack;
-
-                        tunnel.onPartActivate(player, Vec3.createVectorHelper(0, 0, 0));
-
-                        player.inventory.mainInventory[0] = null;
-                    }
-                } else {
-                    UpgradeInventory upgradeInv = (UpgradeInventory) part.getInventoryByName("upgrades");
-
-                    if (upgradeInv != null) {
-                        ItemStackMap<Long> targetMap = GTUtility.getItemStackHistogram(
-                            Arrays.stream(mAEUpgrades)
-                                .map(PortableItemStack::toStack)
-                                .toArray(ItemStack[]::new));
-                        ItemStackMap<Long> actualMap = GTUtility.getItemStackHistogram(
-                            GTUtility.streamInventory(upgradeInv)
-                                .filter(x -> x != null)
-                                .toArray(ItemStack[]::new));
-
-                        if (!targetMap.equals(actualMap)) {
-                            emptyInventory(context, upgradeInv);
-
-                            targetMap.replaceAll((item, amount) -> {
-                                if (item.getItem() instanceof IUpgradeModule upgrade) {
-                                    int max = upgradeInv.getMaxInstalled(upgrade.getType(item));
-
-                                    return Math.min(max, amount);
-                                } else {
-                                    return 0l;
-                                }
-                            });
-
-                            List<ItemStack> upgradeList = GTUtility.getStacksOfSize(targetMap, 1);
-
-                            ItemStack[] upgrades = upgradeList
-                                .subList(0, Math.min(upgradeList.size(), upgradeInv.getSizeInventory()))
-                                .toArray(new ItemStack[0]);
-
-                            if (context.tryConsumeItems(upgrades)) {
-                                for (int i = 0; i < upgrades.length; i++) {
-                                    upgradeInv.setInventorySlotContents(i, upgrades[i]);
-                                }
-                            }
-                        }
-                    }
-
-                    IInventory config = part.getInventoryByName("config");
-
-                    if (config != null) {
-                        for (int i = 0; i < config.getSizeInventory(); i++) {
-                            config.setInventorySlotContents(i, null);
-                        }
-
-                        if (mConfig != null) {
-                            int n = Math.min(config.getSizeInventory(), mConfig.length);
-                            for (int i = 0; i < n; i++) {
-                                config.setInventorySlotContents(i, mConfig[i] == null ? null : mConfig[i].toStack());
-                            }
-                        }
-
-                        config.markDirty();
-                    }
-
-                    if (part.getConfigManager() != null && mSettings != null) {
-                        part.getConfigManager()
-                            .readFromNBT(mSettings);
-                    }
-
-                    if (part instanceof IOreFilterable filterable) {
-                        filterable.setFilter(mOreDict == null ? "" : mOreDict);
-                    }
+                if (part instanceof IOreFilterable filterable) {
+                    filterable.setFilter(mOreDict == null ? "" : mOreDict);
                 }
             }
 
@@ -673,22 +865,67 @@ public class BlockAnalyzer {
         public ItemStack getPartStack() {
             return mPart.toStack();
         }
-    }
 
-    private static void emptyInventory(BlockActionContext context, IInventory inv) {
-        int size = inv.getSizeInventory();
-
-        for (int i = 0; i < size; i++) {
-            ItemStack stack = inv.getStackInSlot(i);
-
-            if (stack != null && stack.getItem() != null) {
-                inv.setInventorySlotContents(i, null);
-
-                context.givePlayerItems(stack);
-            }
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((mPart == null) ? 0 : mPart.hashCode());
+            result = prime * result + ((mSettingsName == null) ? 0 : mSettingsName.hashCode());
+            result = prime * result + ((mSettings == null) ? 0 : mSettings.hashCode());
+            result = prime * result + ((mMemoryCardData == null) ? 0 : mMemoryCardData.hashCode());
+            result = prime * result + Arrays.hashCode(mAEUpgrades);
+            result = prime * result + Arrays.hashCode(mConfig);
+            result = prime * result + ((mOreDict == null) ? 0 : mOreDict.hashCode());
+            result = prime * result + ((mCustomName == null) ? 0 : mCustomName.hashCode());
+            return result;
         }
 
-        inv.markDirty();
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            AEPartData other = (AEPartData) obj;
+            if (mPart == null) {
+                if (other.mPart != null)
+                    return false;
+            } else if (!mPart.equals(other.mPart))
+                return false;
+            if (mSettingsName == null) {
+                if (other.mSettingsName != null)
+                    return false;
+            } else if (!mSettingsName.equals(other.mSettingsName))
+                return false;
+            if (mSettings == null) {
+                if (other.mSettings != null)
+                    return false;
+            } else if (!mSettings.equals(other.mSettings))
+                return false;
+            if (mMemoryCardData == null) {
+                if (other.mMemoryCardData != null)
+                    return false;
+            } else if (!mMemoryCardData.equals(other.mMemoryCardData))
+                return false;
+            if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades))
+                return false;
+            if (!Arrays.equals(mConfig, other.mConfig))
+                return false;
+            if (mOreDict == null) {
+                if (other.mOreDict != null)
+                    return false;
+            } else if (!mOreDict.equals(other.mOreDict))
+                return false;
+            if (mCustomName == null) {
+                if (other.mCustomName != null)
+                    return false;
+            } else if (!mCustomName.equals(other.mCustomName))
+                return false;
+            return true;
+        }
     }
 
     public static class PortableItemStack {
@@ -760,6 +997,36 @@ public class BlockAnalyzer {
                 if (other.itemStack != null) return false;
             } else if (!itemStack.equals(other.itemStack)) return false;
             return true;
+        }
+    }
+
+    private static class FakeMemoryCard extends Item implements IMemoryCard {
+
+        private final AEPartData partData;
+
+        public FakeMemoryCard(AEPartData partData) {
+            this.partData = partData;
+        }
+
+        @Override
+        public void setMemoryCardContents(ItemStack is, String SettingsName, NBTTagCompound data) {
+            partData.mSettingsName = SettingsName;
+            partData.mMemoryCardData = NBTState.toJsonObject(data);
+        }
+
+        @Override
+        public String getSettingsName(ItemStack is) {
+            return partData.mSettingsName;
+        }
+
+        @Override
+        public NBTTagCompound getData(ItemStack is) {
+            return (NBTTagCompound) NBTState.toNbt(partData.mMemoryCardData);
+        }
+
+        @Override
+        public void notifyUser(EntityPlayer player, MemoryCardMessages msg) {
+            
         }
     }
 }
