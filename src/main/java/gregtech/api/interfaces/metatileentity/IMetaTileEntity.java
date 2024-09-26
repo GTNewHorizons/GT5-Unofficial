@@ -132,7 +132,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * When a Player right-clicks the Facing with a Screwdriver.
      */
-    void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+    boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool);
 
     /**
@@ -152,6 +152,18 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      */
     boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool);
+
+    /**
+     * When a player right-clicks a side with a hard hammer.
+     */
+    boolean onHardHammerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool);
+
+    /**
+     * When a player right-clicks a side with a jack hammer.
+     */
+    boolean onJackHammerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool);
 
     /**
      * Called right before this Machine explodes

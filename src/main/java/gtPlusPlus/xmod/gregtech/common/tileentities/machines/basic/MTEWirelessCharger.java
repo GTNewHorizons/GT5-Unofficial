@@ -150,12 +150,13 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
 
         if (aPlayer.isSneaking()) {
             mLocked = !mLocked;
             PlayerUtils.messagePlayer(aPlayer, mLocked ? "Locked to owner." : "Unlocked.");
-            return;
+            return true;
         }
 
         mWirelessChargingMap.clear();
@@ -183,7 +184,7 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
         } else {
             PlayerUtils.messagePlayer(aPlayer, "Now in Mixed Charge Mode.");
         }
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        return true;
     }
 
     @Override

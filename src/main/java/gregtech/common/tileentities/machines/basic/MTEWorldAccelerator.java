@@ -277,7 +277,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     // This uses the Wrench as second tool to cycle speeds
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer pPlayer, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack tool) {
         incSpeedTierOverride();
 
         markDirty();
@@ -289,7 +289,8 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ,
+        ItemStack tool) {
         if (pPlayer.isSneaking()) {
             if (mMode == 0) {
                 incRadiusTierOverride();
@@ -304,6 +305,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
             markDirty();
             PlayerChatHelper.SendInfo(pPlayer, String.format("Switched mode to: %s", mModeStr[mMode]));
         }
+        return true;
     }
 
     @Override

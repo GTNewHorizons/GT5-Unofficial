@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -269,26 +268,30 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY,
+        float aZ, ItemStack tool) {
         mVoidOverflow = !mVoidOverflow;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendLocalizedChatToPlayer(
             aPlayer,
-            StatCollector.translateToLocal(
-                mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
-                    : "GT5U.machines.digitalchest.voidoverflow.disabled"));
+            mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
+                : "GT5U.machines.digitalchest.voidoverflow.disabled");
+        return true;
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        if (super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) return true;
-        mDisableFilter = !mDisableFilter;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal(
+        float aX, float aY, float aZ, ItemStack tool) {
+        if (wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
+            mDisableFilter = !mDisableFilter;
+            GTUtility.sendLocalizedChatToPlayer(
+                aPlayer,
                 mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
-                    : "GT5U.machines.digitalchest.inputfilter.enabled"));
-        return true;
+                    : "GT5U.machines.digitalchest.inputfilter.enabled");
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

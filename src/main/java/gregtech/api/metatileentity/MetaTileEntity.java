@@ -1,5 +1,8 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.api.util.GTUtility.getDisabledText;
+import static gregtech.api.util.GTUtility.getEnabledText;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -224,19 +227,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        return false;
     }
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-
-        // glue
-        if (onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) {
-            return true;
-        }
         if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
@@ -247,18 +245,15 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        // glue
-        if (onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
-            return true;
-        }
-        if (!aPlayer.isSneaking()) return false;
-        final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
-        final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
-        if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
+        if (aPlayer.isSneaking()) {
+            final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
+            final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
+            if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
 
-            // The tile entity we're facing is a cable, let's try to connect to it
-            return gtTE.getMetaTileEntity()
-                .onWireCutterRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
+                // The tile entity we're facing is a cable, let's try to connect to it
+                return gtTE.getMetaTileEntity()
+                    .onWireCutterRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
+            }
         }
         return false;
     }
@@ -266,45 +261,43 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
+            TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
+            if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
 
-        // glue
-        if (onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
+                // The tile entity we're facing is a cable, let's try to connect to it
+                return gtTE.getMetaTileEntity()
+                    .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onHardHammerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        if (getBaseMetaTileEntity() instanceof BaseMetaTileEntity base) {
+            base.mInputDisabled = !base.mInputDisabled;
+            if (base.mInputDisabled) base.mOutputDisabled = !base.mOutputDisabled;
+
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                GTUtility.trans("086", "Allow Input: "),
+                base.mInputDisabled ? getDisabledText() : getEnabledText(),
+                GTUtility.trans("089", "  Allow Output: "),
+                base.mOutputDisabled ? getDisabledText() : getEnabledText());
+
             return true;
+        } else {
+            return false;
         }
-
-        if (!aPlayer.isSneaking()) return false;
-        final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
-        TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
-        if ((tTileEntity instanceof IGregTechTileEntity gtTE) && (gtTE.getMetaTileEntity() instanceof MTECable)) {
-
-            // The tile entity we're facing is a cable, let's try to connect to it
-            return gtTE.getMetaTileEntity()
-                .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ, aTool);
-        }
-        return false;
     }
 
-    @Deprecated
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+    @Override
+    public boolean onJackHammerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         return false;
-    }
-
-    @Deprecated
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-
     }
 
     @Override

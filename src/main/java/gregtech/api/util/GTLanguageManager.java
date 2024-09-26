@@ -282,10 +282,10 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_083", "Open if work disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_084", "Only Output allowed");
         addStringLocalization("Interaction_DESCRIPTION_Index_085", "Only Input allowed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_086", "Auto-Input: ");
+        addStringLocalization("Interaction_DESCRIPTION_Index_086", "Allow Input: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_087", "Disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_088", "Enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_089", "  Auto-Output: ");
+        addStringLocalization("Interaction_DESCRIPTION_Index_089", "  Allow Output: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_090", "Machine Processing: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_091", "Redstone Output at Side ");
         addStringLocalization("Interaction_DESCRIPTION_Index_092", " set to: ");

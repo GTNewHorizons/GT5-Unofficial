@@ -5,7 +5,6 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
 
 import java.util.Collections;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -96,11 +95,6 @@ public class MTERegulator extends MTEBuffer {
         this.mTargetSlots[6] = aNBT.getInteger("mTargetSlot7");
         this.mTargetSlots[7] = aNBT.getInteger("mTargetSlot8");
         this.mTargetSlots[8] = aNBT.getInteger("mTargetSlot9");
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        // Regulation per Screwdriver is overridden by GUI regulation.
     }
 
     @Override

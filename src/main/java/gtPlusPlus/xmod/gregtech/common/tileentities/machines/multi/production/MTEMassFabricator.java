@@ -313,7 +313,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public boolean onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int aMode = this.mMode + 1;
         if (aMode > 1) {
             this.mMode = MODE_UU;
@@ -326,6 +326,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
             PlayerUtils.messagePlayer(aPlayer, "Mode [" + this.mMode + "]: Recycler");
         }
         mLastRecipe = null;
+        return true;
     }
 
     @Override

@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.LongConsumer;
 
 import javax.annotation.Nonnull;
@@ -195,17 +196,79 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (supportsSingleRecipeLocking()) {
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
+        if (onModeChangeByScrewdriver(side, aPlayer, aX, aY, aZ)) {
+            return true;
+        } else {
+            return super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, tool);
+        }
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack tool) {
+        if (aPlayer.isSneaking() && supportsVoidProtection()
+            && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
+            Set<VoidingMode> allowed = getAllowedVoidingModes();
+            setVoidingMode(getVoidingMode().nextInCollection(allowed));
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.gui.button.voiding_mode"),
+                " ",
+                StatCollector.translateToLocal(getVoidingMode().getTransKey()));
+            return true;
+        }
+        return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack tool) {
+        if (aPlayer.isSneaking() && supportsBatchMode() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.batchMode.on");
+            } else {
+                GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.batchMode.off");
+            }
+            return true;
+        } else {
+            return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, tool);
+        }
+    }
+
+    @Override
+    public boolean onHardHammerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
+        if (aPlayer.isSneaking() && supportsInputSeparation() && side == getBaseMetaTileEntity().getFrontFacing()) {
+            this.inputSeparation = !this.inputSeparation;
+            if (inputSeparation) {
+                GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.separateInputs.on");
+            } else {
+                GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.separateInputs.off");
+            }
+            return true;
+        } else {
+            // don't do any "allow input"/"allow output" changes because controllers can't interact with pipes
+            return false;
+        }
+    }
+
+    @Override
+    public boolean onJackHammerRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack tool) {
+        if (aPlayer.isSneaking() && supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    GTUtility.trans("223", "Single recipe locking enabled. Will lock to next recipe."));
+                GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.recipeLock.on");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("220", "Single recipe locking disabled."));
+                GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.machines.recipeLock.off");
                 mSingleRecipeCheck = null;
             }
+            return true;
+        } else {
+            return super.onJackHammerRightClick(side, aPlayer, aX, aY, aZ, tool);
         }
     }
 
@@ -2303,8 +2366,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public int nextMachineMode() {
-        if (machineMode == 0) return 1;
-        else return 0;
+        return machineMode;
+    }
+
+    /**
+     * If you need to do anything fancy to change the machine mode, do it here.
+     */
+    public boolean onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (nextMachineMode() != machineMode) {
+            setMachineMode(nextMachineMode());
+            GTUtility.sendLocalizedChatToPlayer(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", getMachineModeName());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

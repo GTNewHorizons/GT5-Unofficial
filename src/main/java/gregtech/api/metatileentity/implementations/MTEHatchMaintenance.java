@@ -223,14 +223,15 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
-        if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing())
-            return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
-        if (!entityPlayer.isSneaking() && isRotationChangeAllowed()) {
+        float aX, float aY, float aZ, ItemStack tool) {
+        if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing()) {
+            return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, tool);
+        } else if (!entityPlayer.isSneaking() && isRotationChangeAllowed()) {
             toolSetRotation(null);
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     public boolean autoMaintainance() {

@@ -225,9 +225,6 @@ BW.NEI.display.radhatch.0=Sievert: %s Sv
 BW.NEI.display.radhatch.1=Mass: %s kg
 BW.NEI.display.radhatch.2=Time: %s s
 
-misc.BatchModeTextOn=Batch recipes
-misc.BatchModeTextOff=Don't batch recipes
-
 tooltip.cal.imprintedWith=Imprinted with:
 chat.cal.mode.0=Circuit Assembly Line Mode
 chat.cal.mode.1=Circuit Assembler Mode

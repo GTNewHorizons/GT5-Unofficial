@@ -425,13 +425,14 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * Shift+Right Click = change EIG Mode
      */
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+    public boolean onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             tryChangeMode(aPlayer);
         } else {
             tryChangeSetupPhase(aPlayer);
         }
+        return true;
     }
 
     /**
@@ -440,8 +441,12 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        this.tryChangeHumidityMode(aPlayer);
-        return true;
+        if (!aPlayer.isSneaking()) {
+            this.tryChangeHumidityMode(aPlayer);
+            return true;
+        }
+
+        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     // endregion tool interactions
