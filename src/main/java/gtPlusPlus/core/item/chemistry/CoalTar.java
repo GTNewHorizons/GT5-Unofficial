@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
@@ -101,7 +102,7 @@ public class CoalTar extends ItemPackage {
             .fluidOutputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
     }
 
     public static void recipeCoalToCoalTar() {
