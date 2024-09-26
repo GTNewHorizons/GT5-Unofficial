@@ -110,7 +110,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 } else if (!aMaterial.contains(SubTag.NO_WORKING)) {
                     if ((!OrePrefixes.block.isIgnored(aMaterial))
                         && (null == GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
-                        && GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null) {
+                        && GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null
+                        && (aMaterial != Materials.Clay)) {
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 9))
