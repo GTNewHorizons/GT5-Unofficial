@@ -2,6 +2,7 @@ package gregtech.common.items.matterManipulator;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
@@ -78,6 +80,7 @@ import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
+import gregtech.common.items.matterManipulator.NBTState.Region;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -230,6 +233,11 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 addInfoLine(desc, "Pending Action: %s", switch (state.config.action) {
                     case GEOM_MOVING_COORDS -> "Moving coordinates";
                     case GEOM_SELECTING_BLOCK -> "Selecting blocks to place";
+                    case MARK_COPY_A -> "Marking first copy corner";
+                    case MARK_COPY_B -> "Marking second copy corner";
+                    case MARK_CUT_A -> "Marking first cut corner";
+                    case MARK_CUT_B -> "Marking second cut corner";
+                    case MARK_PASTE -> "Marking paste location";
                 });
             }
 
@@ -353,32 +361,34 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 return itemStack;
             }
 
-            switch (state.config.coordMode) {
-                case SET_A: {
-                    state.config.coordA = location;
-                    break;
-                }
-                case SET_B: {
-                    state.config.coordB = location;
-                    break;
-                }
-                case SET_INTERLEAVED: {
-                    if (state.config.coordA == null) {
+            if (state.config.placeMode == PlaceMode.GEOMETRY) {
+                switch (state.config.coordMode) {
+                    case SET_A: {
                         state.config.coordA = location;
-                    } else {
-                        if (state.config.coordB == null) {
-                            state.config.coordB = location;
-                        } else {
-                            state.config.coordA = location;
-                            state.config.coordB = null;
-                        }
+                        break;
                     }
-
-                    break;
-                }
-                case SET_PASTE: {
-
-                    break;
+                    case SET_B: {
+                        state.config.coordB = location;
+                        break;
+                    }
+                    case SET_INTERLEAVED: {
+                        if (state.config.coordA == null) {
+                            state.config.coordA = location;
+                        } else {
+                            if (state.config.coordB == null) {
+                                state.config.coordB = location;
+                            } else {
+                                state.config.coordA = location;
+                                state.config.coordB = null;
+                            }
+                        }
+    
+                        break;
+                    }
+                    case SET_PASTE: {
+    
+                        break;
+                    }
                 }
             }
 
@@ -473,6 +483,22 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                                 selected == null ? "nothing" : selected.getDisplayName())));
                 }
 
+                return true;
+            }
+            case MARK_COPY_A: {
+                state.config.source = new Region();
+                state.config.source.a = new Location(world, Config.getLookingAtLocation(player));
+                state.config.action = PendingAction.MARK_COPY_B;
+                return true;
+            }
+            case MARK_COPY_B: {
+                state.config.source.b = new Location(world, Config.getLookingAtLocation(player));
+                state.config.action = null;
+                return true;
+            }
+            case MARK_PASTE: {
+                state.config.coordA = new Location(world, Config.getLookingAtLocation(player));
+                state.config.action = null;
                 return true;
             }
         }
@@ -690,7 +716,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .done()
                 .option()
                     .label("Moving")
-                    .hidden(true)
                     .onClicked(() -> {
                         withState(buildContext, state -> {
                             state.config.placeMode = PlaceMode.MOVING;
@@ -699,7 +724,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .done()
                 .option()
                     .label("Copying")
-                    .hidden(true)
                     .onClicked(() -> {
                         withState(buildContext, state -> {
                             state.config.placeMode = PlaceMode.COPYING;
@@ -881,7 +905,25 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     }
 
     private void addCopyingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
-
+        builder
+            .option()
+                .label("Mark Copy")
+                .onClicked(() -> {
+                    withState(buildContext, state -> {
+                        state.config.action = PendingAction.MARK_COPY_A;
+                        state.config.source = null;
+                    });
+                })
+            .done()
+            .option()
+                .label("Mark Paste")
+                .onClicked(() -> {
+                    withState(buildContext, state -> {
+                        state.config.action = PendingAction.MARK_PASTE;
+                        state.config.coordA = null;
+                    });
+                })
+            .done();
     }
 
     private void addMovingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
@@ -914,83 +956,16 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         if (held != null && held.getItem() == this) {
             NBTState state = getState(held);
 
-            Location coordA = state.config.getCoordA(player);
-            Location coordB = state.config.getCoordB(player);
-
-            // this state is never saved anywhere, so this is safe
-            state.config.coordA = coordA;
-            state.config.coordB = coordB;
-
-            boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
-            boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
-
-            if (isAValid) {
-                Objects.requireNonNull(coordA);
-                drawBox(player, player.worldObj, coordA.x, coordA.y, coordA.z, event.partialTicks);
-
-                if (state.config.coordAOffset != null) {
-                    drawRulers(player, coordA.x, coordA.y, coordA.z, event.partialTicks);
+            switch (state.config.placeMode) {
+                case GEOMETRY:
+                case DEBUGGING: {
+                    renderGeom(event, state, player);
+                    break;
                 }
-            }
-
-            if (isBValid) {
-                Objects.requireNonNull(coordB);
-                drawBox(player, player.worldObj, coordB.x, coordB.y, coordB.z, event.partialTicks);
-
-                if (state.config.coordBOffset != null) {
-                    drawRulers(player, coordB.x, coordB.y, coordB.z, event.partialTicks);
-                }
-            }
-
-            if (isAValid && isBValid) {
-                Objects.requireNonNull(coordA);
-                Objects.requireNonNull(coordB);
-
-                boolean spawn = (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS
-                    || !Objects.equals(DRAWN_CONFIG, state.config);
-
-                if (spawn) {
-                    LAST_SPAWN_MS_EPOCH = System.currentTimeMillis();
-                    DRAWN_CONFIG = state.config;
-
-                    StructureLibAPI.startHinting(player.worldObj);
-
-                    for (PendingBlock block : state.getPendingBlocks()) {
-                        ItemBlock blockItem = block.block;
-
-                        if (block.worldId == player.worldObj.provider.dimensionId && blockItem != null
-                            && blockItem.field_150939_a != Blocks.air) {
-                            StructureLibAPI.hintParticle(
-                                player.worldObj,
-                                block.x,
-                                block.y,
-                                block.z,
-                                blockItem.field_150939_a,
-                                block.metadata);
-                        }
-                    }
-
-                    StructureLibAPI.endHinting(player.worldObj);
-
-                    int x1 = coordA.x;
-                    int y1 = coordA.y;
-                    int z1 = coordA.z;
-                    int x2 = coordB.x;
-                    int y2 = coordB.y;
-                    int z2 = coordB.z;
-
-                    int minX = Math.min(x1, x2);
-                    int minY = Math.min(y1, y2);
-                    int minZ = Math.min(z1, z2);
-                    int maxX = Math.max(x1, x2);
-                    int maxY = Math.max(y1, y2);
-                    int maxZ = Math.max(z1, z2);
-
-                    AboveHotbarHUD.renderTextAboveHotbar(
-                        String.format("dX=%d dY=%d dZ=%d", maxX - minX + 1, maxY - minY + 1, maxZ - minZ + 1),
-                        (int) (SPAWN_INTERVAL_MS * 20 / 1000),
-                        false,
-                        false);
+                case COPYING:
+                case MOVING: {
+                    renderRegions(event, state, player);
+                    break;
                 }
             }
         } else {
@@ -998,22 +973,185 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         }
     }
 
-    private void drawBox(EntityPlayer player, World world, int x, int y, int z, float partialTickTime) {
+    private void renderGeom(RenderHandEvent event, NBTState state, EntityPlayer player) {
+        Location coordA = state.config.getCoordA(player);
+        Location coordB = state.config.getCoordB(player);
+
+        boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
+        boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
+
+        if (isAValid) {
+            Objects.requireNonNull(coordA);
+            drawBox(player, coordA, event.partialTicks);
+
+            if (state.config.coordAOffset != null) {
+                GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
+                drawRulers(player, coordA, true, event.partialTicks);
+            }
+        }
+
+        if (isBValid) {
+            Objects.requireNonNull(coordB);
+            drawBox(player, coordB, event.partialTicks);
+
+            if (state.config.coordBOffset != null) {
+                GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
+                drawRulers(player, coordB, true, event.partialTicks);
+            }
+        }
+
+        if (isAValid && isBValid) {
+            Objects.requireNonNull(coordA);
+            Objects.requireNonNull(coordB);
+
+            boolean spawn = (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS
+                || !Objects.equals(DRAWN_CONFIG, state.config);
+
+            if (spawn) {
+                LAST_SPAWN_MS_EPOCH = System.currentTimeMillis();
+                DRAWN_CONFIG = state.config;
+
+                StructureLibAPI.startHinting(player.worldObj);
+
+                for (PendingBlock block : state.getPendingBlocks()) {
+                    ItemBlock blockItem = block.block;
+
+                    if (block.isInWorld(player.worldObj) && blockItem != null && blockItem.field_150939_a != Blocks.air) {
+                        StructureLibAPI.hintParticle(
+                            player.worldObj,
+                            block.x,
+                            block.y,
+                            block.z,
+                            blockItem.field_150939_a,
+                            block.metadata);
+                    }
+                }
+
+                StructureLibAPI.endHinting(player.worldObj);
+
+                int x1 = coordA.x;
+                int y1 = coordA.y;
+                int z1 = coordA.z;
+                int x2 = coordB.x;
+                int y2 = coordB.y;
+                int z2 = coordB.z;
+
+                int minX = Math.min(x1, x2);
+                int minY = Math.min(y1, y2);
+                int minZ = Math.min(z1, z2);
+                int maxX = Math.max(x1, x2);
+                int maxY = Math.max(y1, y2);
+                int maxZ = Math.max(z1, z2);
+
+                AboveHotbarHUD.renderTextAboveHotbar(
+                    String.format("dX=%d dY=%d dZ=%d", maxX - minX + 1, maxY - minY + 1, maxZ - minZ + 1),
+                    (int) (SPAWN_INTERVAL_MS * 20 / 1000),
+                    false,
+                    false);
+            }
+        }
+    }
+
+    private Iterator<Vector3i> blocks = null;
+
+    private void renderRegions(RenderHandEvent event, NBTState state, EntityPlayer player) {
+        Location sourceA = state.config.source == null ? null : state.config.source.a;
+        Location sourceB = state.config.source == null ? null : state.config.source.b;
+        Location paste = state.config.coordA;
+
+        if (state.config.action != null) {
+            switch (state.config.action) {
+                case MARK_COPY_A:
+                case MARK_CUT_A: {
+                    sourceA = new Location(player.worldObj, Config.getLookingAtLocation(player));
+                    GL11.glColor4f(0.0F, 0.0F, 1.0F, 0.75F);
+                    drawRulers(player, sourceA, false, event.partialTicks);
+                    break;
+                }
+                case MARK_COPY_B:
+                case MARK_CUT_B: {
+                    sourceA = state.config.source != null ? state.config.source.a : null;
+                    sourceB = new Location(player.worldObj, Config.getLookingAtLocation(player));
+                    GL11.glColor4f(0.0F, 0.0F, 1.0F, 0.75F);
+                    drawRulers(player, sourceB, false, event.partialTicks);
+                    break;
+                }
+                case MARK_PASTE: {
+                    paste = new Location(player.worldObj, Config.getLookingAtLocation(player));
+                    GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
+                    drawRulers(player, paste, false, event.partialTicks);
+                    break;
+                }
+                default: {
+                    return;
+                }
+            }
+        }
+
+        boolean isSourceAValid = sourceA != null && sourceA.isInWorld(player.worldObj);
+        boolean isSourceBValid = sourceB != null && sourceB.isInWorld(player.worldObj);
+        boolean isPasteValid = paste != null && paste.isInWorld(player.worldObj);
+
+        Vector3i deltas = null;
+
+        if (isSourceAValid && isSourceBValid) {
+            Objects.requireNonNull(sourceA);
+            Objects.requireNonNull(sourceB);
+
+            deltas = Config.getRegionDeltas(sourceA, sourceB);
+
+            GL11.glColor4f(0.0F, 0.0F, 1.0F, 0.75F);
+            drawAABB(player, Config.getBoundingBox(sourceA, deltas), event.partialTicks);
+
+            if (blocks == null) {
+                blocks = Config.getBlocksInBB(sourceA, deltas).iterator();
+            }
+
+            if (blocks != null && blocks.hasNext()) {
+                Vector3i block = blocks.next();
+
+                drawBox(player, new Location(player.worldObj, block), event.partialTicks);
+            }
+
+            if (blocks != null && !blocks.hasNext()) {
+                blocks = null;
+            }
+        }
+
+        if (isPasteValid) {
+            Objects.requireNonNull(paste);
+
+            GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
+            if (deltas != null) {
+                drawAABB(player, Config.getBoundingBox(paste, deltas), event.partialTicks);
+            } else {
+                drawAABB(player, Config.getBoundingBox(paste, new Vector3i()), event.partialTicks);
+            }
+        }
+    }
+
+    private void drawBox(EntityPlayer player, Location l, float partialTickTime) {
+        Block block = player.worldObj.getBlock(l.x, l.y, l.z);
+        block.setBlockBoundsBasedOnState(player.worldObj, l.x, l.y, l.z);
+        AxisAlignedBB aabb = block.getSelectedBoundingBoxFromPool(player.worldObj, l.x, l.y, l.z);
+        
+        GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
+        drawAABB(player, aabb, partialTickTime);
+    }
+
+    private void drawAABB(EntityPlayer player, AxisAlignedBB aabb, float partialTickTime) {
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
         GL11.glLineWidth(2.0F);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(false);
         float f1 = 0.002F;
-        Block block = world.getBlock(x, y, z);
 
-        block.setBlockBoundsBasedOnState(world, x, y, z);
         double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) partialTickTime;
         double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) partialTickTime;
         double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) partialTickTime;
         RenderGlobal.drawOutlinedBoundingBox(
-            block.getSelectedBoundingBoxFromPool(world, x, y, z)
+                aabb
                 .expand((double) f1, (double) f1, (double) f1)
                 .getOffsetBoundingBox(-d0, -d1, -d2),
             -1);
@@ -1029,10 +1167,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     private static final int RULER_LENGTH = 128;
 
-    private void drawRulers(EntityPlayer player, int x, int y, int z, float partialTickTime) {
+    private void drawRulers(EntityPlayer player, Location l, boolean fromSurface, float partialTickTime) {
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
         GL11.glLineWidth(2.0F);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(false);
@@ -1040,14 +1177,13 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         GL11.glPointSize(4);
 
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
 
         GL11.glPushMatrix();
 
         double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) partialTickTime;
         double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) partialTickTime;
         double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) partialTickTime;
-        GL11.glTranslated(x - d0 + 0.5, y - d1 + 0.5, z - d2 + 0.5);
+        GL11.glTranslated(l.x - d0 + 0.5, l.y - d1 + 0.5, l.z - d2 + 0.5);
 
         Tessellator tessellator = Tessellator.instance;
 
@@ -1056,7 +1192,11 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             Vector3d delta = getVecForDir(dir);
 
-            tessellator.addVertex(delta.x * 0.5, delta.y * 0.5, delta.z * 0.5);
+            if (fromSurface) {
+                tessellator.addVertex(delta.x * 0.5, delta.y * 0.5, delta.z * 0.5);
+            } else {
+                tessellator.addVertex(0, 0, 0);
+            }
             tessellator.addVertex(delta.x * RULER_LENGTH, delta.y * RULER_LENGTH, delta.z * RULER_LENGTH);
         }
 
