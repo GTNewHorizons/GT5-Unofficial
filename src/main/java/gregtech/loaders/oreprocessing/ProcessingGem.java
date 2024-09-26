@@ -49,6 +49,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean aSpecialRecipeReq = aMaterial.contains(SubTag.MORTAR_GRINDABLE);
         boolean aFuelPower = aMaterial.mFuelPower > 0;
 
+        // Blacklist materials which are handled by Werkstoff loader
+        if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt || aMaterial == Materials.Spodumene) return;
+
         switch (aPrefix) {
             case gem -> {
                 // fuel recipes
