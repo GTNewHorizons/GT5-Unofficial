@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.GTValues.D2;
 import static gregtech.api.enums.GTValues.M;
+import static gregtech.api.util.GTRecipeBuilder.DEBUG_MODE_COLLISION;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1309,18 +1310,29 @@ public enum OrePrefixes {
             return;
         }
 
-        if (aMaterial != Materials._NULL && !used.add(aMaterial)) {
-            GTLog.out.println("Duplicate material registry attempted by " + aModName + " for " + aOreDictName);
-            return;
-        }
-
         if (aMaterial.contains(SubTag.NO_RECIPES)) {
             return;
         }
 
-        if (!((aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
-            && GTUtility.isStackValid(aStack))) {
+        if (aMaterial == Materials._NULL && !mIsSelfReferencing && mIsMaterialBased) {
             return;
+        }
+
+        if (!GTUtility.isStackValid(aStack)) {
+            return;
+        }
+
+        if (aMaterial != Materials._NULL) {
+            if (!used.add(aMaterial)) {
+                if (DEBUG_MODE_COLLISION) {
+                    GTLog.out.println("Attempted duplicate recipe registration by " + aModName + " for " + aOreDictName);
+                }
+                return;
+            } else {
+                if (DEBUG_MODE_COLLISION) {
+                    GTLog.out.println("New recipe registration by " + aModName + " for " + aOreDictName);
+                }
+            }
         }
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
