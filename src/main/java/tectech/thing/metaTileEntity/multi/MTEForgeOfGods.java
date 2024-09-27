@@ -502,7 +502,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private void drainFuel() {
-        fuelConsumption = (long) calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1);
+        fuelConsumption = (long) Math.max(calculateFuelConsumption(this) * 5 * (batteryCharging ? 2 : 1), 1);
         if (fuelConsumption >= Integer.MAX_VALUE) {
             reduceBattery(fuelConsumptionFactor);
             return;
