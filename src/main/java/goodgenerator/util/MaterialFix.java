@@ -250,35 +250,7 @@ public class MaterialFix {
                         .addTo(benderRecipes);
                 }
             }
-            if (tMaterial.hasItemType(OrePrefixes.stick)) {
-                if (tMaterial.hasItemType(OrePrefixes.cellMolten)) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(ItemList.Shape_Mold_Rod.get(0))
-                        .fluidInputs(tMaterial.getMolten(72))
-                        .itemOutputs(tMaterial.get(OrePrefixes.stick, 1))
-                        .duration(
-                            Math.max(
-                                tMaterial.getStats()
-                                    .getMass() >> 1,
-                                1L) * TICKS)
-                        .eut(TierEU.RECIPE_HV)
-                        .addTo(fluidSolidifierRecipes);
-                }
-            }
             if (tMaterial.hasItemType(OrePrefixes.stickLong)) {
-                if (tMaterial.hasItemType(OrePrefixes.cellMolten)) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0))
-                        .fluidInputs(tMaterial.getMolten(144))
-                        .itemOutputs(tMaterial.get(OrePrefixes.stickLong, 1))
-                        .duration(
-                            Math.max(
-                                tMaterial.getStats()
-                                    .getMass(),
-                                1L) * TICKS)
-                        .eut(TierEU.RECIPE_HV)
-                        .addTo(fluidSolidifierRecipes);
-                }
                 if (tMaterial.hasItemType(OrePrefixes.stick)) {
                     GTModHandler.addCraftingRecipe(
                         tMaterial.get(OrePrefixes.stickLong, 1),
