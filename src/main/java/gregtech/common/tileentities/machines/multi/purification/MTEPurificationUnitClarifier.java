@@ -21,7 +21,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -326,7 +325,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     }
 
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_PURIFICATIONPLANT_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_PURIFICATIONPLANT_LOOP;
     }
 }
