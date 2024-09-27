@@ -547,7 +547,8 @@ public enum OreMixes {
         .primary(Materials.CassiteriteSand)
         .secondary(Materials.GarnetSand)
         .inBetween(Materials.Asbestos)
-        .sporadic(Materials.Diatomite)),
+        .sporadic(Materials.Diatomite)
+        .localize(Materials.Tin)),
 
     KaoliniteZeolite(new OreMixBuilder().name("ore.mix.kaolinitezeolite")
         .heightRange(50, 70)
