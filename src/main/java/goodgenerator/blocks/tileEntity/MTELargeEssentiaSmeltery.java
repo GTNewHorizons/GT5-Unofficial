@@ -41,6 +41,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.api.aspects.Aspect;
@@ -363,14 +364,18 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         this.drainNodePower(WORLD, x, y, z);
         this.nodePower -= expectedPower();
 
-        calculatePerfectOverclockedNessMulti(
-            RECIPE_EUT,
-            (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)),
-            1,
-            Math.min(Integer.MAX_VALUE, getMaxInputEnergy_EM()));
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(RECIPE_EUT)
+            .setEUt(getMaxInputEu())
+            .setDuration(
+                (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)))
+            .setDurationDecreasePerOC(4)
+            .calculate();
+
+        useLongPower = true;
+        lEUt = -calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
 
         this.updateSlots();
-        if (this.mEUt > 0) this.mEUt = -this.mEUt;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
