@@ -317,14 +317,5 @@ public class CompressorRecipes implements Runnable {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
-
-        if (Railcraft.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(RailcraftToolItems.getCoalCoke(9))
-                .itemOutputs(EnumCube.COKE_BLOCK.getItem())
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-        }
     }
 }
