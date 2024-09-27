@@ -1084,7 +1084,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(MaterialsKevlar.Acetaldehyde.getGas(1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1716,7 +1716,7 @@ public class ChemicalRecipes implements Runnable {
         // CH2CH2 + 2O = CH3COOH
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Ethylene.getCells(1), GTUtility.getIntegratedCircuit(9))
+            .itemInputs(Materials.Ethylene.getCells(1), GTUtility.getIntegratedCircuit(8))
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidInputs(Materials.Oxygen.getGas(2000))
             .fluidOutputs(Materials.AceticAcid.getFluid(1000))
@@ -1725,7 +1725,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Oxygen.getCells(2), GTUtility.getIntegratedCircuit(9))
+            .itemInputs(Materials.Oxygen.getCells(2), GTUtility.getIntegratedCircuit(8))
             .itemOutputs(Materials.Empty.getCells(2))
             .fluidInputs(Materials.Ethylene.getGas(1000))
             .fluidOutputs(Materials.AceticAcid.getFluid(1000))
@@ -1752,13 +1752,24 @@ public class ChemicalRecipes implements Runnable {
         // O + C2H4O2 + C2H4 = C4H6O2 + H2O
 
         GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(4))
+            .fluidInputs(
+                Materials.Oxygen.getGas(1000),
+                Materials.Ethylene.getGas(1000),
+                Materials.AceticAcid.getFluid(1000))
+            .fluidOutputs(Materials.VinylAcetate.getFluid(1000), Materials.Water.getFluid(1000))
+            .duration(9 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.Ethylene.getCells(1), Materials.AceticAcid.getCells(1))
             .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Oxygen.getGas(1000))
             .fluidOutputs(Materials.VinylAcetate.getFluid(1000))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.AceticAcid.getCells(1), Materials.Oxygen.getCells(1))
@@ -3597,7 +3608,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(1000))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Chlorine.getCells(2), GTUtility.getIntegratedCircuit(11))

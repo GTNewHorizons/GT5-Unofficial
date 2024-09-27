@@ -1052,7 +1052,7 @@ public class RecipeLoader {
 
         // Boron Trioxide
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(9))
+            .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(FluidRegistry.getFluidStack("boricacid", 2000))
             .fluidOutputs(new FluidStack(FluidRegistry.WATER, 3000))
             .itemOutputs(WerkstoffMaterialPool.BoronTrioxide.get(OrePrefixes.dust, 1))
