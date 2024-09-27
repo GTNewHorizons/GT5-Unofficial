@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
@@ -23,8 +22,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-import mods.railcraft.common.items.RailcraftToolItems;
 
 public class CompressorRecipes implements Runnable {
 
