@@ -110,7 +110,6 @@ public class RecipesGregTech {
         cyclotronRecipes();
         blastSmelterRecipes();
         extruderRecipes();
-        cuttingSawRecipes();
         breweryRecipes();
         laserEngraverRecipes();
         assemblyLineRecipes();
@@ -677,15 +676,6 @@ public class RecipesGregTech {
             .duration(1 * MINUTES)
             .eut(3)
             .addTo(brewingRecipes);
-    }
-
-    private static void cuttingSawRecipes() {
-        RA.stdBuilder()
-            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("plateMeatRaw", 9))
-            .duration(16 * TICKS)
-            .eut(TierEU.RECIPE_ULV)
-            .addTo(cutterRecipes);
     }
 
     private static void electrolyzerRecipes() {
