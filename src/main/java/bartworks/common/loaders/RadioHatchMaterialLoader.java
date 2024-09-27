@@ -14,6 +14,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 // cursed way of using a recipe map...
 public class RadioHatchMaterialLoader {
@@ -22,7 +23,7 @@ public class RadioHatchMaterialLoader {
 
         for (Werkstoff material : Werkstoff.werkstoffHashSet) {
             if (material == null || !material.getStats()
-                .isRadioactive()) {
+                .isRadioactive() || material == WerkstoffLoader.Tiberium) {
                 continue;
             }
 
