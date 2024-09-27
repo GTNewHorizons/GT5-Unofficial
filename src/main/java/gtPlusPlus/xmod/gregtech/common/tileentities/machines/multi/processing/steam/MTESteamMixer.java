@@ -207,7 +207,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
                             .allowOnly(ForgeDirection.NORTH)
                             .build(),
                         buildHatchAdder(MTESteamMixer.class)
-                            .anyOf(
+                            .atLeast(
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 OutputHatch,
