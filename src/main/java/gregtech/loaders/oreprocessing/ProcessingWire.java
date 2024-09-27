@@ -312,7 +312,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 2L),
-                            GTOreDictUnificator.get(OrePrefixes.cableGt01, aMaterial, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt01, aMaterial, 1L))
                         .duration(5 * SECONDS)
                         .eut(8)
@@ -321,7 +321,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 2L),
-                            GTOreDictUnificator.get(OrePrefixes.cableGt02, aMaterial, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt02, aMaterial, 1L))
                         .duration(10 * SECONDS)
                         .eut(16)
@@ -330,7 +330,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 4L),
-                            GTOreDictUnificator.get(OrePrefixes.cableGt04, aMaterial, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt04, aMaterial, 1L))
                         .duration(15 * SECONDS)
                         .eut(TierEU.RECIPE_LV)

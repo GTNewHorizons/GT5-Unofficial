@@ -828,7 +828,7 @@ public class RecipeLoader {
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 2))
             .itemOutputs(
-                WerkstoffMaterialPool.Zirconium.get(OrePrefixes.ingotHot, 1),
+                WerkstoffLoader.Zirconium.get(OrePrefixes.ingotHot, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesiumchloride, 6))
             .fluidInputs(WerkstoffMaterialPool.ZirconiumTetrachlorideSolution.getFluidOrGas(1000))
             .duration(30 * SECONDS)
