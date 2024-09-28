@@ -95,6 +95,7 @@ public final class TTUtility {
     }
 
     public static void setTier(int tier, Object o) {
+        // TODO why is it using reflection to change a final field from GREGTECH ?
         if (!(o instanceof MTETieredMachineBlock)) {
             GTMod.GT_FML_LOGGER.error(
                 "Could not set tier as object " + o.getClass()

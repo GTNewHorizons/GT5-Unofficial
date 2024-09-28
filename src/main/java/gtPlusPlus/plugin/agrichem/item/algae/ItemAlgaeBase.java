@@ -2,7 +2,6 @@ package gtPlusPlus.plugin.agrichem.item.algae;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -188,11 +187,9 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
         NBTTagCompound aTag;
         if (!aStack.hasTagCompound() || aStack.getTagCompound()
             .hasNoTags()) {
-            aTag = new NBTTagCompound();
             AlgaeGeneticData aGenes;
             if (aStack.getItemDamage() < 3 || aStack.getItemDamage() > 5) {
                 aGenes = new AlgaeGeneticData();
-                aTag = aGenes.writeToNBT();
             } else {
                 byte aTemp, aLifespan;
                 float aFert, aSpeed;
@@ -212,10 +209,9 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                     aFert,
                     aSpeed,
                     aLifespan,
-                    0,
-                    new ArrayList<>());
-                aTag = aGenes.writeToNBT();
+                    0);
             }
+            aTag = aGenes.writeToNBT();
         } else {
             aTag = aStack.getTagCompound();
         }

@@ -24,31 +24,31 @@ import com.google.common.io.ByteArrayDataInput;
 import bartworks.MainMod;
 import bartworks.system.material.TileEntityMetaGeneratedBlock;
 import bartworks.util.MurmurHash3;
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class MetaBlockPacket extends GTPacketNew {
+public class PacketBWMetaBlock extends GTPacket {
 
     int x;
     short y;
     int z;
     short meta;
 
-    public MetaBlockPacket(int x, int y, int z, int meta) {
-        super(false);
+    public PacketBWMetaBlock(int x, int y, int z, int meta) {
+        super();
         this.x = x;
         this.y = (short) y;
         this.z = z;
         this.meta = (short) meta;
     }
 
-    public MetaBlockPacket() {
-        super(true);
+    public PacketBWMetaBlock() {
+        super();
     }
 
     @Override
     public byte getPacketID() {
-        return 2;
+        return 24;
     }
 
     @Override
@@ -71,12 +71,12 @@ public class MetaBlockPacket extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput byteArrayDataInput) {
+    public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
         this.x = byteArrayDataInput.readInt();
         this.z = byteArrayDataInput.readInt();
         this.y = byteArrayDataInput.readShort();
         this.meta = byteArrayDataInput.readShort();
-        MetaBlockPacket todecode = new MetaBlockPacket(this.x, this.y, this.z, this.meta);
+        PacketBWMetaBlock todecode = new PacketBWMetaBlock(this.x, this.y, this.z, this.meta);
         if (byteArrayDataInput.readInt() != MurmurHash3.murmurhash3_x86_32(
             ByteBuffer.allocate(12)
                 .putInt(this.x)

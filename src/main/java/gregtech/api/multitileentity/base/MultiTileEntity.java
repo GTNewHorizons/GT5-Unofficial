@@ -52,8 +52,8 @@ import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.SyncedMultiTileEntity;
+import gregtech.api.net.GTPacket;
 import gregtech.api.net.GTPacketMultiTileEntity;
-import gregtech.api.net.GTPacketNew;
 import gregtech.api.net.data.CommonData;
 import gregtech.api.net.data.CoordinateData;
 import gregtech.api.net.data.MultiTileEntityData;
@@ -105,9 +105,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     private UUID ownerUUID = GTUtility.defaultUuid;
     private boolean lockUpgrade = false;
 
-    private final GTPacketMultiTileEntity fullPacket = new GTPacketMultiTileEntity(false);
-    private final GTPacketMultiTileEntity timedPacket = new GTPacketMultiTileEntity(false);
-    private final GTPacketMultiTileEntity graphicPacket = new GTPacketMultiTileEntity(false);
+    private final GTPacketMultiTileEntity fullPacket = new GTPacketMultiTileEntity();
+    private final GTPacketMultiTileEntity timedPacket = new GTPacketMultiTileEntity();
+    private final GTPacketMultiTileEntity graphicPacket = new GTPacketMultiTileEntity();
 
     public MultiTileEntity(boolean isTicking) {
         this.isTicking = isTicking;
@@ -1035,14 +1035,14 @@ public abstract class MultiTileEntity extends CoverableTileEntity
      */
     public GTPacketMultiTileEntity getClientDataPacket() {
 
-        final GTPacketMultiTileEntity packet = new GTPacketMultiTileEntity(false);
+        final GTPacketMultiTileEntity packet = new GTPacketMultiTileEntity();
         return packet;
     }
 
     @Override
     public void sendClientData(EntityPlayerMP aPlayer) {
         if (worldObj == null || worldObj.isRemote) return;
-        final GTPacketNew tPacket = getClientDataPacket();
+        final GTPacket tPacket = getClientDataPacket();
         if (aPlayer == null) {
             GTValues.NW.sendPacketToAllPlayersInRange(worldObj, tPacket, getXCoord(), getZCoord());
         } else {

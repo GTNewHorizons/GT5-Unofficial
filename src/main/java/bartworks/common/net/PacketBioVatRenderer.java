@@ -22,21 +22,21 @@ import bartworks.MainMod;
 import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.util.BWColorUtil;
 import bartworks.util.Coords;
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class RendererPacket extends GTPacketNew {
+public class PacketBioVatRenderer extends GTPacket {
 
     private Coords coords;
     private int integer;
     private byte removal;
 
-    public RendererPacket() {
-        super(true);
+    public PacketBioVatRenderer() {
+        super();
     }
 
-    public RendererPacket(Coords coords, int integer, boolean removal) {
-        super(false);
+    public PacketBioVatRenderer(Coords coords, int integer, boolean removal) {
+        super();
         this.coords = coords;
         this.integer = integer;
         this.removal = (byte) (removal ? 1 : 0);
@@ -44,7 +44,7 @@ public class RendererPacket extends GTPacketNew {
 
     @Override
     public byte getPacketID() {
-        return 0;
+        return 23;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class RendererPacket extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput dataInput) {
+    public GTPacket decode(ByteArrayDataInput dataInput) {
         this.coords = new Coords(dataInput.readInt(), dataInput.readShort(), dataInput.readInt(), dataInput.readInt());
         this.integer = BWColorUtil
             .getColorFromRGBArray(new int[] { dataInput.readByte(), dataInput.readByte(), dataInput.readByte() });
@@ -86,7 +86,7 @@ public class RendererPacket extends GTPacketNew {
             return null;
         }
 
-        return new RendererPacket(this.coords, this.integer, this.removal == 1);
+        return new PacketBioVatRenderer(this.coords, this.integer, this.removal == 1);
     }
 
     @Override
