@@ -23,7 +23,7 @@ public class Logger {
 
     private static final boolean enabled = !ASMConfiguration.debug.disableAllLogging;
 
-    public static final org.apache.logging.log4j.Logger getLogger() {
+    public static org.apache.logging.log4j.Logger getLogger() {
         return modLogger;
     }
 
@@ -38,8 +38,7 @@ public class Logger {
     public static void MACHINE_INFO(String s, Object... args) {
         if (enabled) {
             if (Configuration.debug.MachineInfo || GTCorePlugin.isDevEnv()) {
-                final String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
-                modLogger.info("Machine Info: " + s + " | " + name1, args);
+                modLogger.info("Machine Info: " + s + " ", args);
             }
         }
     }

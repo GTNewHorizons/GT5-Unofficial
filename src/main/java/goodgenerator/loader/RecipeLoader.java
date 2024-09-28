@@ -1272,16 +1272,6 @@ public class RecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GGMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GGMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingotHot))
-            .duration(6 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .metadata(COIL_HEAT, 7000)
-            .addTo(blastFurnaceRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingotHot, 1))
             .itemOutputs(GGMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingot, 1))
             .duration(20 * SECONDS)

@@ -2042,20 +2042,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .eut(2)
             .addTo(maceratorRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.furnace, 1, WILDCARD))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.lit_furnace, 1, WILDCARD))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
         GTOreDictUnificator.set(
             OrePrefixes.ingot,
             Materials.FierySteel,

@@ -123,10 +123,9 @@ public class BotRecipes {
             .metadata(COIL_HEAT, 1000)
             .addTo(blastFurnaceRecipes);
 
-        WO3.stackSize = 8;
         // 2WO3 + 3C = 2W + 3CO2
         GTValues.RA.stdBuilder()
-            .itemInputs(WO3, Materials.Carbon.getDust(3))
+            .itemInputs(TungstenTrioxide.get(dust, 8), Materials.Carbon.getDust(3))
             .itemOutputs(GTOreDictUnificator.get(ingotHot, Materials.Tungsten, 2L))
             .fluidOutputs(Materials.CarbonDioxide.getGas(3000))
             .duration(6 * MINUTES + 40 * SECONDS)
