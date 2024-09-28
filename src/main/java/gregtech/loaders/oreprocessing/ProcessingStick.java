@@ -61,7 +61,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
                     .fluidInputs(
                         Materials.Water.getFluid(
@@ -77,7 +77,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
@@ -93,7 +93,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
