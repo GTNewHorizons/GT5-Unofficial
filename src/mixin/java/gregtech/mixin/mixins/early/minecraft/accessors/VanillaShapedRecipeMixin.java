@@ -1,25 +1,23 @@
-package gregtech.mixin.mixins.early.minecraft;
-
-import java.util.List;
+package gregtech.mixin.mixins.early.minecraft.accessors;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.item.crafting.ShapedRecipes;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import gregtech.api.interfaces.IRecipeMutableAccess;
+import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 
-@Mixin(ShapelessRecipes.class)
-public class VanillaShapelessRecipeMixin implements IRecipeMutableAccess {
+@Mixin(ShapedRecipes.class)
+public class VanillaShapedRecipeMixin implements IRecipeMutableAccess {
 
     @Shadow
     private ItemStack recipeOutput;
 
     @Shadow
     @Final
-    public List<ItemStack> recipeItems;
+    public ItemStack[] recipeItems;
 
     @Override
     public ItemStack gt5u$getRecipeOutputItem() {

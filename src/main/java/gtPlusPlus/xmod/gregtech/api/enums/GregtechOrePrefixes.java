@@ -143,7 +143,7 @@ public enum GregtechOrePrefixes {
      */
     public int mMaterialGenerationBits = 0;
 
-    private GregtechOrePrefixes(final String aRegularLocalName, final String aLocalizedMaterialPre,
+    GregtechOrePrefixes(final String aRegularLocalName, final String aLocalizedMaterialPre,
         final String aLocalizedMaterialPost, final boolean aIsUnificatable, final boolean aIsMaterialBased,
         final boolean aIsSelfReferencing, final boolean aIsContainer, final boolean aDontUnificateActively,
         final boolean aIsUsedForBlocks, final boolean aAllowNormalRecycling, final boolean aGenerateDefaultItem,
@@ -277,18 +277,6 @@ public enum GregtechOrePrefixes {
         return "";
     }
 
-    public static GregtechOrePrefixes getPrefix(final String aPrefixName) {
-        return getPrefix(aPrefixName, null);
-    }
-
-    public static GregtechOrePrefixes getPrefix(final String aPrefixName, final GregtechOrePrefixes aReplacement) {
-        final Object tObject = GTUtility.getFieldContent(GregtechOrePrefixes.class, aPrefixName, false, false);
-        if ((tObject != null) && (tObject instanceof GregtechOrePrefixes)) {
-            return (GregtechOrePrefixes) tObject;
-        }
-        return aReplacement;
-    }
-
     public static Materials getMaterial(final String aOre) {
         return Materials.get(stripPrefix(aOre));
     }
@@ -302,7 +290,7 @@ public enum GregtechOrePrefixes {
     }
 
     public static boolean isInstanceOf(final String aName, final GregtechOrePrefixes aPrefix) {
-        return aName == null ? false : aName.startsWith(aPrefix.toString());
+        return aName != null && aName.startsWith(aPrefix.toString());
     }
 
     public boolean add(final ItemStack aStack) {
@@ -717,7 +705,7 @@ public enum GregtechOrePrefixes {
          */
         public final Fluid mStandardMoltenFluid = null;
 
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final boolean aUnificatable) {
             this.mUnificatable = aUnificatable;
             this.mMaterialInto = this;
@@ -735,7 +723,7 @@ public enum GregtechOrePrefixes {
             }
         }
 
-        private GT_Materials(final GT_Materials aMaterialInto, final boolean aReRegisterIntoThis) {
+        GT_Materials(final GT_Materials aMaterialInto, final boolean aReRegisterIntoThis) {
             this.mUnificatable = false;
             this.mDefaultLocalName = aMaterialInto.mDefaultLocalName;
             this.mMaterialInto = aMaterialInto.mMaterialInto;
@@ -767,7 +755,7 @@ public enum GregtechOrePrefixes {
          * @param aBlastFurnaceRequired If this requires a Blast Furnace.
          * @param aColor                Vanilla MC Wool Color which comes the closest to this.
          */
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -799,7 +787,7 @@ public enum GregtechOrePrefixes {
             }
         }
 
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -833,7 +821,7 @@ public enum GregtechOrePrefixes {
         /**
          * @param aElement The Element Enum represented by this Material
          */
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -872,7 +860,7 @@ public enum GregtechOrePrefixes {
             this.mAspects.addAll(aAspects);
         }
 
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -905,7 +893,7 @@ public enum GregtechOrePrefixes {
                 null);
         }
 
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -968,18 +956,6 @@ public enum GregtechOrePrefixes {
             } else {
                 this.mAspects.addAll(aAspects);
             }
-        }
-
-        public static GT_Materials get(final String aMaterialName) {
-            final Object tObject = GTUtility.getFieldContent(GT_Materials.class, aMaterialName, false, false);
-            if ((tObject != null) && (tObject instanceof GT_Materials)) {
-                return (GT_Materials) tObject;
-            }
-            return _NULL;
-        }
-
-        public static GT_Materials getRealMaterial(final String aMaterialName) {
-            return get(aMaterialName).mMaterialInto;
         }
 
         /**
