@@ -10,8 +10,6 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class MaterialsElements {
 
-    public static final String[] NAMES = new String[] { "Hydrogen", "Helium" };
-
     // First 50 Elements
     public final Material HYDROGEN = MaterialUtils.generateMaterialFromGtENUM(Materials.Hydrogen);
     public final Material HELIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Helium);
