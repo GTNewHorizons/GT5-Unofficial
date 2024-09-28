@@ -156,6 +156,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private boolean isRenderActive = false;
     private boolean secretUpgrade = false;
     private boolean rainbowMode = false;
+    private ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
 
@@ -2341,6 +2342,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         final DynamicPositionedColumn column4 = new DynamicPositionedColumn();
         final DynamicPositionedColumn column5 = new DynamicPositionedColumn();
         final DynamicPositionedColumn column6 = new DynamicPositionedColumn();
+
+        for (int i = 0; i < 16; i++) {
+            inputSlotHandler.insertItem(i, storedUpgradeWindowItems[i], false);
+            storedUpgradeWindowItems[i] = null;
+        }
+
         List<DynamicPositionedColumn> columnList = Arrays.asList(column1, column2, column3, column4, column5, column6);
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
@@ -3721,6 +3728,20 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
+
+        NBTTagCompound upgradeWindowStorageNBTTag = new NBTTagCompound();
+
+        int storageIndex = 0;
+        for (ItemStack itemStack : inputSlotHandler.getStacks()) {
+            if (itemStack != null) {
+                upgradeWindowStorageNBTTag
+                    .setInteger(storageIndex + "stacksizeOfStoredUpgradeItems", itemStack.stackSize);
+                NBT.setTag(storageIndex + "storedUpgradeItem", itemStack.writeToNBT(new NBTTagCompound()));
+            }
+            storageIndex++;
+        }
+
+        NBT.setTag("upgradeWindowStorage", upgradeWindowStorageNBTTag);
         super.saveNBTData(NBT);
     }
 
@@ -3763,6 +3784,18 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         for (int upgradeIndex = 0; upgradeIndex < 7; upgradeIndex++) {
             boolean upgrade = tempBooleanTag.getBoolean("upgradeMaterial" + upgradeIndex);
             materialPaidUpgrades[upgradeIndex] = upgrade;
+        }
+
+        NBTTagCompound tempItemTag = NBT.getCompoundTag("upgradeWindowStorage");
+
+        for (int index = 0; index < 16; index++) {
+
+            int stackSize = tempItemTag.getInteger(index + "stacksizeOfStoredUpgradeItems");
+            ItemStack itemStack = ItemStack.loadItemStackFromNBT(NBT.getCompoundTag(index + "storedUpgradeItem"));
+
+            if (itemStack != null) {
+                storedUpgradeWindowItems[index] = itemStack.splitStack(stackSize);
+            }
         }
 
         super.loadNBTData(NBT);
