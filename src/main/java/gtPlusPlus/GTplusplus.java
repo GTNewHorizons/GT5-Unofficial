@@ -4,12 +4,13 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
@@ -25,7 +26,6 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -44,7 +44,9 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
-import gtPlusPlus.plugin.manager.CoreManager;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
+import gtPlusPlus.plugin.fixes.vanilla.VanillaBedHeightFix;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -76,7 +78,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
         + " after:TGregworks;"
         + " after:StevesCarts;"
         + " required-after:gtnhlib@[0.0.10,);")
-public class GTplusplus implements ActionListener {
+public class GTplusplus {
 
     public enum INIT_PHASE {
 
@@ -149,8 +151,6 @@ public class GTplusplus implements ActionListener {
     @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         INIT_PHASE.PRE_INIT.setPhaseActive(true);
-        // Load all class objects within the plugin package.
-        CoreManager.veryEarlyInit();
         PacketHandler.init();
 
         // Give this a go mate.
@@ -162,7 +162,9 @@ public class GTplusplus implements ActionListener {
         proxy.preInit(event);
         Logger.INFO("Setting up our own GTProxy.");
         MetaGTProxy.preInit();
-        CoreManager.preInit();
+        AgrichemFluids.preInit();
+        fixVanillaOreDict();
+        new VanillaBedHeightFix();
     }
 
     @EventHandler
@@ -171,7 +173,6 @@ public class GTplusplus implements ActionListener {
         proxy.init(event);
         proxy.registerNetworkStuff();
         MetaGTProxy.init();
-        CoreManager.init();
         // Used by foreign players to generate .lang files for translation.
         if (Configuration.debug.dumpItemAndBlockData) {
             LocaleUtils.generateFakeLocaleFile();
@@ -184,7 +185,6 @@ public class GTplusplus implements ActionListener {
         proxy.postInit(event);
         BookHandler.runLater();
         MetaGTProxy.postInit();
-        CoreManager.postInit();
 
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO(
@@ -218,17 +218,8 @@ public class GTplusplus implements ActionListener {
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
-        CoreManager.serverStart();
         INIT_PHASE.STARTED.setPhaseActive(true);
     }
-
-    @EventHandler
-    public synchronized void serverStopping(final FMLServerStoppingEvent event) {
-        CoreManager.serverStop();
-    }
-
-    @Override
-    public void actionPerformed(final ActionEvent arg0) {}
 
     /**
      * This {@link EventHandler} is called after the {@link FMLPostInitializationEvent} stages of all loaded mods
@@ -382,5 +373,40 @@ public class GTplusplus implements ActionListener {
     private static void remap(Block block, FMLMissingMappingsEvent.MissingMapping mapping) {
         mapping.remap(block);
         Logger.INFO("Remapping block " + mapping.name + " to " + GTPlusPlus.ID + ":" + block.getUnlocalizedName());
+    }
+
+    private static void fixVanillaOreDict() {
+        registerToOreDict(ItemUtils.getSimpleStack(Items.blaze_rod), "rodBlaze");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.nether_wart), "cropNetherWart");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.reeds), "sugarcane");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.paper), "paper");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.ender_pearl), "enderpearl");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.bone), "bone");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.gunpowder), "gunpowder");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.string), "string");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.nether_star), "netherStar");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.leather), "leather");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.feather), "feather");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.egg), "egg");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.end_stone), "endstone");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.vine), "vine");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.cactus), "blockCactus");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.grass), "grass");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.obsidian), "obsidian");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.crafting_table), "workbench");
+    }
+
+    private static void registerToOreDict(ItemStack aStack, String aString) {
+        if (aStack.getItem() == Items.blaze_rod) {
+            Logger
+                .INFO("Registering " + aStack.getDisplayName() + " to OreDictionary under the tag '" + aString + "'.");
+        } else {
+            Logger.INFO(
+                "Registering " + aStack.getDisplayName()
+                    + " to OreDictionary under the tag '"
+                    + aString
+                    + "'. (Added to Forge in 1.8.9)");
+        }
+        ItemUtils.addItemToOreDictionary(aStack, aString);
     }
 }

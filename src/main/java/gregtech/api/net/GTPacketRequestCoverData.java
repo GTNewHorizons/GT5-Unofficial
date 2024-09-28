@@ -19,7 +19,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Client -> Server : ask for cover data
  */
-public class GTPacketRequestCoverData extends GTPacketNew {
+public class GTPacketRequestCoverData extends GTPacket {
 
     protected int mX;
     protected short mY;
@@ -31,11 +31,11 @@ public class GTPacketRequestCoverData extends GTPacketNew {
     protected EntityPlayerMP mPlayer;
 
     public GTPacketRequestCoverData() {
-        super(true);
+        super();
     }
 
     public GTPacketRequestCoverData(CoverInfo info, ICoverable tile) {
-        super(false);
+        super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
@@ -45,7 +45,7 @@ public class GTPacketRequestCoverData extends GTPacketNew {
     }
 
     public GTPacketRequestCoverData(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID) {
-        super(false);
+        super();
         this.mX = mX;
         this.mY = mY;
         this.mZ = mZ;
@@ -55,7 +55,7 @@ public class GTPacketRequestCoverData extends GTPacketNew {
     }
 
     public GTPacketRequestCoverData(ForgeDirection coverSide, int coverID, ICoverable tile) {
-        super(false);
+        super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
@@ -80,7 +80,7 @@ public class GTPacketRequestCoverData extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketRequestCoverData(
             aData.readInt(),
             aData.readShort(),

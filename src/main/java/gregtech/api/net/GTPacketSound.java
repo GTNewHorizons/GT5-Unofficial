@@ -12,7 +12,7 @@ import gregtech.api.util.GTUtility;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 
-public class GTPacketSound extends GTPacketNew {
+public class GTPacketSound extends GTPacket {
 
     private int mX, mZ;
     private short mY;
@@ -20,11 +20,11 @@ public class GTPacketSound extends GTPacketNew {
     private float mSoundStrength, mSoundPitch;
 
     public GTPacketSound() {
-        super(true);
+        super();
     }
 
     public GTPacketSound(String aSoundName, float aSoundStrength, float aSoundPitch, int aX, short aY, int aZ) {
-        super(false);
+        super();
         mX = aX;
         mY = aY;
         mZ = aZ;
@@ -49,7 +49,7 @@ public class GTPacketSound extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketSound(
             aData.readUTF(),
             aData.readFloat(),
