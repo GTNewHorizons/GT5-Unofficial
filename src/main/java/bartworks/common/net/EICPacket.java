@@ -30,7 +30,7 @@ public class EICPacket extends GTPacket {
 
     @Override
     public byte getPacketID() {
-        return 5;
+        return 27;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class MetaBlockPacket extends GTPacket {
 
     @Override
     public byte getPacketID() {
-        return 2;
+        return 24;
     }
 
     @Override

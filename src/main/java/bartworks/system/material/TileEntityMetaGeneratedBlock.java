@@ -22,8 +22,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 
-import bartworks.MainMod;
 import bartworks.common.net.MetaBlockPacket;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 
 public abstract class TileEntityMetaGeneratedBlock extends TileEntity implements ITexturedTileEntity {
@@ -49,7 +49,7 @@ public abstract class TileEntityMetaGeneratedBlock extends TileEntity implements
 
     @Override
     public Packet getDescriptionPacket() {
-        if (!this.worldObj.isRemote) MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+        if (!this.worldObj.isRemote) GTValues.NW.sendPacketToAllPlayersInRange(
             this.worldObj,
             new MetaBlockPacket(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
             this.xCoord,

@@ -39,7 +39,7 @@ public class OreDictCachePacket extends GTPacket {
 
     @Override
     public byte getPacketID() {
-        return 3;
+        return 25;
     }
 
     @Override

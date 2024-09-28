@@ -44,7 +44,7 @@ public class RendererPacket extends GTPacket {
 
     @Override
     public byte getPacketID() {
-        return 0;
+        return 23;
     }
 
     @Override

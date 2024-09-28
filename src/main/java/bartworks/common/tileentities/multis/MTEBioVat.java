@@ -57,7 +57,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.SideReference;
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.MainMod;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.FluidLoader;
@@ -69,6 +68,7 @@ import bartworks.util.Coords;
 import bartworks.util.MathUtils;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -390,7 +390,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB());
 
         if (SideReference.Side.Server) {
-            MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+            GTValues.NW.sendPacketToAllPlayersInRange(
                 this.getBaseMetaTileEntity()
                     .getWorld(),
                 new RendererPacket(
@@ -411,7 +411,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                     .getXCoord(),
                 this.getBaseMetaTileEntity()
                     .getZCoord());
-            MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+            GTValues.NW.sendPacketToAllPlayersInRange(
                 this.getBaseMetaTileEntity()
                     .getWorld(),
                 new RendererPacket(
@@ -703,7 +703,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             for (int x = -1; x < 2; x++) {
                 for (int y = 1; y < 3; y++) {
                     for (int z = -1; z < 2; z++) {
-                        MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+                        GTValues.NW.sendPacketToAllPlayersInRange(
                             this.getBaseMetaTileEntity()
                                 .getWorld(),
                             new RendererPacket(

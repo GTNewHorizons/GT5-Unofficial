@@ -2,6 +2,11 @@ package gregtech.api.net;
 
 import java.util.Arrays;
 
+import bartworks.common.net.EICPacket;
+import bartworks.common.net.MetaBlockPacket;
+import bartworks.common.net.OreDictCachePacket;
+import bartworks.common.net.RendererPacket;
+import bartworks.common.net.ServerJoinedPacket;
 import gregtech.common.blocks.PacketOres;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
@@ -25,6 +30,11 @@ public enum GTPacketTypes {
     TOOL_SWITCH_MODE(20, new GTPacketToolSwitchMode()),
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
+    BIO_VAT_RENDERER(23, new RendererPacket()),
+    BW_META_BLOCK(24, new MetaBlockPacket()),
+    ORE_DICT_CACHE(25, new OreDictCachePacket()),
+    SERVER_JOINED(26, new ServerJoinedPacket()),
+    EIC(27, new EICPacket()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

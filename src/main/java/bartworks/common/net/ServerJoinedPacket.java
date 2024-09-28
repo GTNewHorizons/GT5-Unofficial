@@ -25,7 +25,7 @@ public class ServerJoinedPacket extends GTPacket {
 
     private byte config;
 
-    ServerJoinedPacket() {
+    public ServerJoinedPacket() {
         super();
     }
 
@@ -36,7 +36,7 @@ public class ServerJoinedPacket extends GTPacket {
 
     @Override
     public byte getPacketID() {
-        return 4;
+        return 26;
     }
 
     @Override
