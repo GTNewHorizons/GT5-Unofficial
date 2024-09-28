@@ -46,7 +46,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -1854,7 +1853,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_EYE_OF_HARMONY_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EYE_OF_HARMONY_LOOP;
     }
 }

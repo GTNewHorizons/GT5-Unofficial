@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -345,8 +344,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_COMPRESSOR_OP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
     }
 
 }

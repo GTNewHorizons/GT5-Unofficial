@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -285,8 +284,8 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.RANDOM_ANVIL_USE.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.RANDOM_ANVIL_USE;
     }
 
     @Override

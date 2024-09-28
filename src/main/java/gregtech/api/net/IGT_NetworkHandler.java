@@ -5,16 +5,13 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
-@SuppressWarnings("deprecation")
 public interface IGT_NetworkHandler {
 
     void sendToPlayer(GTPacket aPacket, EntityPlayerMP aPlayer);
 
     void sendToAllAround(GTPacket aPacket, TargetPoint aPosition);
 
-    default void sendToAll(GTPacket aPacket) {
-        throw new UnsupportedOperationException("sendToAll not implemented");
-    }
+    void sendToAll(GTPacket aPacket);
 
     void sendToServer(GTPacket aPacket);
 

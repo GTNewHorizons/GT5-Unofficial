@@ -11,17 +11,17 @@ import gregtech.GTMod;
 import gregtech.api.util.GTClientPreference;
 import io.netty.buffer.ByteBuf;
 
-public class GTPacketClientPreference extends GTPacketNew {
+public class GTPacketClientPreference extends GTPacket {
 
     private GTClientPreference mPreference;
     private EntityPlayerMP mPlayer;
 
     public GTPacketClientPreference() {
-        super(true);
+        super();
     }
 
     public GTPacketClientPreference(GTClientPreference mPreference) {
-        super(false);
+        super();
         this.mPreference = mPreference;
     }
 
@@ -51,7 +51,7 @@ public class GTPacketClientPreference extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketClientPreference(
             new GTClientPreference(aData.readBoolean(), aData.readBoolean(), aData.readBoolean(), aData.readBoolean()));
     }

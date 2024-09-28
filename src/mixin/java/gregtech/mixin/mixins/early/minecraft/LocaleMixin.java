@@ -1,7 +1,5 @@
 package gregtech.mixin.mixins.early.minecraft;
 
-import static gregtech.mixin.MixinsVariablesHelper.currentlyTranslating;
-
 import java.util.regex.Matcher;
 
 import net.minecraft.client.resources.Locale;
@@ -12,9 +10,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import gregtech.mixin.hooks.MixinsVariablesHelper;
 import kubatech.Tags;
 
-@SuppressWarnings("unused")
 @Mixin(value = Locale.class)
 public class LocaleMixin {
 
@@ -25,8 +23,8 @@ public class LocaleMixin {
             target = "Lnet/minecraft/client/resources/IResourceManager;getAllResources(Lnet/minecraft/util/ResourceLocation;)Ljava/util/List;"),
         index = 0,
         require = 1)
-    private ResourceLocation kubatech$loadLocaleDataFiles(ResourceLocation resourceLocation) {
-        currentlyTranslating = resourceLocation.getResourceDomain();
+    private ResourceLocation gt5u$loadLocaleDataFiles(ResourceLocation resourceLocation) {
+        MixinsVariablesHelper.currentlyTranslating = resourceLocation.getResourceDomain();
         return resourceLocation;
     }
 
@@ -37,8 +35,10 @@ public class LocaleMixin {
             target = "Ljava/util/regex/Matcher;replaceAll(Ljava/lang/String;)Ljava/lang/String;",
             remap = false),
         require = 1)
-    private String kubatech$replaceAll(Matcher matcher, String replace) {
-        if (currentlyTranslating != null && currentlyTranslating.equals(Tags.MODID) && matcher.find()) {
+    private String gt5u$replaceAll(Matcher matcher, String replace) {
+        if (MixinsVariablesHelper.currentlyTranslating != null
+            && MixinsVariablesHelper.currentlyTranslating.equals(Tags.MODID)
+            && matcher.find()) {
             return matcher.replaceFirst(matcher.group());
         }
         return matcher.replaceAll(replace);

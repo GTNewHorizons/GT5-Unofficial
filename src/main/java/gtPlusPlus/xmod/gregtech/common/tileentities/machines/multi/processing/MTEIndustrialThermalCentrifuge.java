@@ -13,7 +13,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -188,7 +187,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_THERMAL_CENTRIFUGE_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_THERMAL_CENTRIFUGE_LOOP;
     }
 }

@@ -20,7 +20,6 @@ import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.GTValues;
 import gregtech.api.net.GTPacket;
-import gregtech.api.net.GTPacketNew;
 import gregtech.api.net.GTPacketTypes;
 import gregtech.api.net.IGT_NetworkHandler;
 import io.netty.buffer.ByteBuf;
@@ -31,7 +30,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.MessageToMessageCodec;
 
 @ChannelHandler.Sharable
-@SuppressWarnings("deprecation")
 public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacket> implements IGT_NetworkHandler {
 
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
@@ -41,7 +39,7 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacket> i
         this("GregTech", GTPacketTypes.referencePackets());
     }
 
-    public GTNetwork(String channelName, GTPacketNew... packetTypes) {
+    public GTNetwork(String channelName, GTPacket... packetTypes) {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel(channelName, this, new HandlerShared());
         final int lastPId = packetTypes[packetTypes.length - 1].getPacketID();
         this.mSubChannels = new GTPacket[lastPId + 1];

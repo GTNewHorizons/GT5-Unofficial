@@ -30,7 +30,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -402,7 +401,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_EBF_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EBF_LOOP;
     }
 }
