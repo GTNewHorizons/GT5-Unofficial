@@ -79,7 +79,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTRecipeMapUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
@@ -1098,25 +1097,6 @@ public final class RecipeMaps {
         .maxIO(1, 1, 0, 0)
         .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
         .build();
-    public static final RecipeMap<RecipeMapBackend> electrolyzerNonCellRecipes = RecipeMapBuilder
-        .of("gt.recipe.largeelectrolyzer")
-        .maxIO(1, 6, 1, 6)
-        .disableRegisterNEI()
-        .recipeEmitter(GTRecipeMapUtil::buildRecipeForMultiblock)
-        .build();
-    public static final RecipeMap<RecipeMapBackend> centrifugeNonCellRecipes = RecipeMapBuilder
-        .of("gt.recipe.largecentrifuge")
-        .maxIO(2, 6, 1, 6)
-        .disableOptimize()
-        .disableRegisterNEI()
-        .recipeEmitter(GTRecipeMapUtil::buildRecipeForMultiblock)
-        .build();
-    public static final RecipeMap<RecipeMapBackend> mixerNonCellRecipes = RecipeMapBuilder.of("gt.recipe.largemixer")
-        .maxIO(9, 4, 6, 4)
-        .disableOptimize()
-        .disableRegisterNEI()
-        .recipeEmitter(GTRecipeMapUtil::buildRecipeForMultiblockNoCircuit)
-        .build();
     public static final RecipeMap<LargeBoilerFuelBackend> largeBoilerFakeFuels = RecipeMapBuilder
         .of("gt.recipe.largeboilerfakefuels", LargeBoilerFuelBackend::new)
         .maxIO(1, 1, 0, 0)
@@ -1230,9 +1210,6 @@ public final class RecipeMaps {
         .build();
 
     static {
-        RecipeMaps.centrifugeRecipes.addDownstream(RecipeMaps.centrifugeNonCellRecipes.deepCopyInput());
-        RecipeMaps.mixerRecipes.addDownstream(RecipeMaps.mixerNonCellRecipes.deepCopyInput());
-        RecipeMaps.electrolyzerRecipes.addDownstream(RecipeMaps.electrolyzerNonCellRecipes.deepCopyInput());
         RecipeMaps.dieselFuels.addDownstream(
             IRecipeMap.newRecipeMap(
                 b -> b.build()

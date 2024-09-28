@@ -1,4 +1,4 @@
-package gregtech.api.interfaces;
+package gregtech.mixin.interfaces.accessors;
 
 import net.minecraft.item.ItemStack;
 

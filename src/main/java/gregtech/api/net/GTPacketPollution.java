@@ -8,17 +8,17 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.common.GTClient;
 import io.netty.buffer.ByteBuf;
 
-public class GTPacketPollution extends GTPacketNew {
+public class GTPacketPollution extends GTPacket {
 
     private ChunkCoordIntPair chunk;
     private int pollution;
 
     public GTPacketPollution() {
-        super(true);
+        super();
     }
 
     public GTPacketPollution(ChunkCoordIntPair chunk, int pollution) {
-        super(false);
+        super();
         this.chunk = chunk;
         this.pollution = pollution;
     }
@@ -31,7 +31,7 @@ public class GTPacketPollution extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketPollution(new ChunkCoordIntPair(aData.readInt(), aData.readInt()), aData.readInt());
     }
 

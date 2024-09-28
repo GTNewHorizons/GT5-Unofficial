@@ -48,16 +48,13 @@ public enum Mixin {
             .setSide(Side.BOTH)),
     VanillaAccessors(new Builder("Adds various accessors")
         .addMixinClasses(
-            "minecraft.VanillaShapedRecipeMixin",
-            "minecraft.VanillaShapelessRecipeMixin",
-            "minecraft.ForgeShapedRecipeMixin",
-            "minecraft.ForgeShapelessRecipeMixin",
-            "minecraft.PotionMixin")
-        .addTargetedMod(VANILLA)
-        .setApplyIf(() -> true)
-        .setPhase(Phase.EARLY)
-        .setSide(Side.BOTH)),
-    BlockStemMixin(new Builder("Stem Crop Block Accessor").addMixinClasses("minecraft.BlockStemMixin")
+            "minecraft.accessors.BlockStemMixin",
+            "minecraft.accessors.VanillaShapedRecipeMixin",
+            "minecraft.accessors.VanillaShapelessRecipeMixin",
+            "minecraft.accessors.ForgeShapedRecipeMixin",
+            "minecraft.accessors.ForgeShapelessRecipeMixin",
+            "minecraft.accessors.PotionMixin",
+            "minecraft.accessors.EntityPlayerMPMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)

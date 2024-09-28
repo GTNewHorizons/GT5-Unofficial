@@ -9,13 +9,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
@@ -27,6 +25,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.spark.RendererMessage;
@@ -282,11 +281,8 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            try {
-                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-                clientLocale = (String) FieldUtils.readField(player, "translator", true);
-            } catch (Exception e) {
-                clientLocale = "en_US";
+            if (aPlayer instanceof EntityPlayerMPAccessor) {
+                clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
             }
             GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         }

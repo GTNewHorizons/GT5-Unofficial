@@ -7,53 +7,35 @@ import com.google.common.io.ByteArrayDataInput;
 
 import io.netty.buffer.ByteBuf;
 
-/**
- * @deprecated Use {@link GTPacketNew} instead
- */
-@Deprecated
 public abstract class GTPacket {
 
-    public GTPacket(boolean aIsReference) {
-        //
-    }
+    public GTPacket() {}
 
     /**
-     * I use constant IDs instead of Dynamic ones, since that is much more fail safe
-     *
-     * @return a Packet ID for this Class
+     * Unique ID of this packet.
      */
     public abstract byte getPacketID();
 
     /**
-     * @return encoded byte Stream
-     * @deprecated Use {@link #encode(ByteBuf)} instead
+     * Encode the data into given byte buffer.
      */
-    @Deprecated
-    public abstract byte[] encode();
+    public abstract void encode(ByteBuf buffer);
 
     /**
-     * Encode the data into given byte buffer without creating an intermediate byte array. Default implementation just
-     * throw {@link UnsupportedOperationException}.
+     * Decode byte buffer into packet object.
      */
-    public void encode(ByteBuf aOut) {
-        throw new UnsupportedOperationException();
-    }
+    public abstract GTPacket decode(ByteArrayDataInput buffer);
 
     /**
-     * @return encoded byte Stream
-     */
-    public abstract GTPacket decode(ByteArrayDataInput aData);
-
-    /**
-     * Process the packet
+     * Process the received packet.
      *
-     * @param aWorld null if message is received on server side, the client world if message is received on client side
+     * @param world null if message is received on server side, the client world if message is received on client side
      */
-    public abstract void process(IBlockAccess aWorld);
+    public abstract void process(IBlockAccess world);
 
     /**
      * This will be called just before {@link #process(IBlockAccess)} to inform the handler about the source and type of
-     * connection
+     * connection.
      */
-    public void setINetHandler(INetHandler aHandler) {}
+    public void setINetHandler(INetHandler handler) {}
 }

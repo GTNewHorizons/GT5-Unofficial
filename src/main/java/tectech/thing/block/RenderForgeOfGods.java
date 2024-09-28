@@ -40,6 +40,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static float modelNormalize = .0067f * 2;
 
     private static boolean initialized = false;
+    private static boolean failedInit = false;
     private static int u_Color = -1, u_ModelMatrix = -1, u_Gamma = -1;
     private Matrix4fStack starModelMatrix = new Matrix4fStack(3);
 
@@ -402,13 +403,24 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
+        if (failedInit) return;
         if (!(tile instanceof TileEntityForgeOfGods forgeTile)) return;
         if (forgeTile.getRingCount() < 1) return;
 
+        // If something ever fails, just early return and never try again this session
         if (!initialized) {
             init();
-            initRings();
-            if (!initialized) return;
+            if (!initialized) {
+                failedInit = true;
+                return;
+            }
+            try {
+                initRings();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                failedInit = true;
+                return;
+            }
         }
 
         // Based on system time to prevent tps issues from causing stutters
