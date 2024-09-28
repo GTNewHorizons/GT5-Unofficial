@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -85,6 +86,7 @@ import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
@@ -674,10 +676,6 @@ public final class RecipeMaps {
                         .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
                         .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
                         .setDuration(aDuration * 10);
-                    coll.derive()
-                        .setInputs(aInput1, aInput2, coal.getBlocks(aCoalAmount))
-                        .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
-                        .setDuration(aDuration * 10);
                 }
                 if (Railcraft.isModLoaded()) {
                     coll.derive()
@@ -685,6 +683,22 @@ public final class RecipeMaps {
                         .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount / 2))
                         .setDuration(aDuration * 20 / 3);
                 }
+                ItemStack cactusCokeBlock = new ItemStack(
+                    Item.getItemFromBlock(ModBlocks.blockCactusCoke),
+                    aCoalAmount * 2,
+                    0);
+                ItemStack sugarCokeBlock = new ItemStack(
+                    Item.getItemFromBlock(ModBlocks.blockSugarCoke),
+                    aCoalAmount * 2,
+                    0);
+                coll.derive()
+                    .setInputs(aInput1, aInput2, cactusCokeBlock)
+                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                    .setDuration(aDuration * 20 / 3);
+                coll.derive()
+                    .setInputs(aInput1, aInput2, sugarCokeBlock)
+                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                    .setDuration(aDuration * 20 / 3);
             }
             return coll.getAll();
         })
@@ -776,7 +790,6 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> chemicalReactorRecipes = RecipeMapBuilder
         .of("gt.recipe.chemicalreactor")
         .maxIO(2, 2, 1, 1)
-        .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isFluid) {
                 if (isOutput) {

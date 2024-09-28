@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import static gregtech.api.recipe.RecipeMaps.centrifugeNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -16,6 +15,7 @@ import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMaps;
 
 public class GTForestryCompat {
@@ -132,8 +132,16 @@ public class GTForestryCompat {
     }
 
     public static void transferCentrifugeRecipes() {
+        ItemStack irradiatedComb = GTModHandler.getModItem(Mods.Forestry.ID, "beeCombs", 1, 9);
+
         try {
             for (ICentrifugeRecipe tRecipe : RecipeManagers.centrifugeManager.recipes()) {
+                ItemStack input = tRecipe.getInput();
+
+                // Don't transfer GT recipes to centrifuge, those recipes are made already by ItemComb
+                if (input.getUnlocalizedName()
+                    .contains("gt.comb")) continue;
+                if (irradiatedComb != null && input.isItemEqual(irradiatedComb)) continue;
                 Map<ItemStack, Float> outputs = tRecipe.getAllProducts();
                 ItemStack[] tOutputs = new ItemStack[outputs.size()];
                 int[] tChances = new int[outputs.size()];
@@ -151,14 +159,6 @@ public class GTForestryCompat {
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(5)
                     .addTo(centrifugeRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(tRecipe.getInput())
-                    .itemOutputs(tOutputs)
-                    .outputChances(tChances)
-                    .duration(6 * SECONDS + 8 * TICKS)
-                    .eut(5)
-                    .addTo(centrifugeNonCellRecipes);
             }
         } catch (Throwable e) {
             if (GTValues.D1) {

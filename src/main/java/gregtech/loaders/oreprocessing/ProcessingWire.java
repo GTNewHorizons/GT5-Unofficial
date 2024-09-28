@@ -258,33 +258,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                         .eut(8)
                         .addTo(packagerRecipes);
                 }
-                // alloy smelter recipes
-                {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 2L),
-                            GTOreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt01, aMaterial, 1L))
-                        .duration(5 * SECONDS)
-                        .eut(8)
-                        .addTo(alloySmelterRecipes);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 2L),
-                            GTOreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt02, aMaterial, 1L))
-                        .duration(10 * SECONDS)
-                        .eut(16)
-                        .addTo(alloySmelterRecipes);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 4L),
-                            GTOreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L))
-                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt04, aMaterial, 1L))
-                        .duration(15 * SECONDS)
-                        .eut(TierEU.RECIPE_LV)
-                        .addTo(alloySmelterRecipes);
-                }
                 // Assembler recipes
                 {
                     if (GTOreDictUnificator.get(correspondingCable, aMaterial, 1L) != null) {
@@ -333,6 +306,35 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             }
                         }
                     }
+                }
+                // Alloy Smelter recipes
+                if (correspondingCable == OrePrefixes.cableGt01) {
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(
+                            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 2L),
+                            GTOreDictUnificator.get(OrePrefixes.cableGt01, aMaterial, 1L))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt01, aMaterial, 1L))
+                        .duration(5 * SECONDS)
+                        .eut(8)
+                        .addTo(alloySmelterRecipes);
+                } else if (correspondingCable == OrePrefixes.cableGt02) {
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(
+                            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 2L),
+                            GTOreDictUnificator.get(OrePrefixes.cableGt02, aMaterial, 1L))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt02, aMaterial, 1L))
+                        .duration(10 * SECONDS)
+                        .eut(16)
+                        .addTo(alloySmelterRecipes);
+                } else if (correspondingCable == OrePrefixes.cableGt04) {
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(
+                            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 4L),
+                            GTOreDictUnificator.get(OrePrefixes.cableGt04, aMaterial, 1L))
+                        .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt04, aMaterial, 1L))
+                        .duration(15 * SECONDS)
+                        .eut(TierEU.RECIPE_LV)
+                        .addTo(alloySmelterRecipes);
                 }
             }
             case "RedstoneAlloy", "Iron", "Nickel", "Cupronickel", "Copper", "AnnealedCopper", "ElectricalSteel", "Kanthal", "Gold", "Electrum", "Silver", "BlueAlloy", "EnergeticAlloy", "Nichrome", "Steel", "BlackSteel", "Titanium", "Aluminium", "TPVAlloy", "VibrantAlloy" -> {
