@@ -1,4 +1,4 @@
-package gregtech.mixin;
+package gregtech.mixin.hooks;
 
 public class MixinsVariablesHelper {
 

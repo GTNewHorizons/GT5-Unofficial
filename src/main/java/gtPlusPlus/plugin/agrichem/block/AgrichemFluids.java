@@ -22,7 +22,7 @@ public class AgrichemFluids {
     public static Fluid mAcetone;
     public static Fluid mButanol;
 
-    public static void init() {
+    public static void preInit() {
         if (!FluidRegistry.isFluidRegistered("aceticacid")) {
             mAceticAcid = FluidUtils
                 .generateFluidNoPrefix("aceticacid", "Acetic Acid", 200, new short[] { 97, 168, 96, 100 }, true);

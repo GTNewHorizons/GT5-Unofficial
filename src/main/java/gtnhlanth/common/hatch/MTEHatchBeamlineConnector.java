@@ -4,16 +4,14 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.util.CommonValues.MOVE_AT;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
-
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 import tectech.mechanics.dataTransport.DataPacket;
 import tectech.util.TTUtility;
@@ -76,11 +74,8 @@ public abstract class MTEHatchBeamlineConnector<T extends DataPacket> extends MT
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
-            clientLocale = "en_US";
+        if (aPlayer instanceof EntityPlayerMPAccessor) {
+            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
         return true;
     }

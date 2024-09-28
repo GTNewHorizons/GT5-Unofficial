@@ -13,59 +13,45 @@
 
 package bartworks.common.net;
 
-import java.util.HashSet;
-
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import bartworks.system.oredict.OreDictHandler;
-import bartworks.util.Pair;
-import gregtech.api.net.GTPacketNew;
+import bartworks.MainMod;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class OreDictCachePacket extends GTPacketNew {
+public class PacketServerJoined extends GTPacket {
 
-    private HashSet<Pair<Integer, Short>> hashSet = new HashSet<>();
+    private byte config;
 
-    public OreDictCachePacket() {
-        super(true);
+    public PacketServerJoined() {
+        super();
     }
 
-    public OreDictCachePacket(HashSet<Pair<Integer, Short>> set) {
-        super(false);
-        this.hashSet = set;
+    public PacketServerJoined(Object obj) {
+        super();
+        this.config = 0;
     }
 
     @Override
     public byte getPacketID() {
-        return 3;
+        return 26;
     }
 
     @Override
     public void encode(ByteBuf aOut) {
-        int size = this.hashSet.size();
-        aOut.writeInt(size);
-        for (Pair<Integer, Short> p : this.hashSet) {
-            aOut.writeInt(p.getKey())
-                .writeShort(p.getValue());
-        }
+        aOut.writeByte(this.config);
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput byteArrayDataInput) {
-        int size = byteArrayDataInput.readInt();
-        for (int i = 0; i < size; i++) {
-            this.hashSet.add(new Pair<>(byteArrayDataInput.readInt(), byteArrayDataInput.readShort()));
-        }
-        return new OreDictCachePacket(this.hashSet);
+    public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
+        this.config = byteArrayDataInput.readByte();
+        return this;
     }
 
     @Override
     public void process(IBlockAccess iBlockAccess) {
-        OreDictHandler.getNonBWCache()
-            .clear();
-        OreDictHandler.getNonBWCache()
-            .addAll(this.hashSet);
+        MainMod.runOnPlayerJoined(false, false);
     }
 }
