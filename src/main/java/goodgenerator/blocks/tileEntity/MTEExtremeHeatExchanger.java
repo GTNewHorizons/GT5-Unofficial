@@ -51,6 +51,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
 
 public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable {
@@ -223,18 +225,26 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
         tRunningRecipe = null;
-        if (mHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.SUCCESSFUL;
+        FluidStack hotFluid = null;
+        if (mHotFluidHatch instanceof MTEHatchInputME inputME) {
+            FluidStack[] fluids = inputME.getStoredFluids();
+            if (fluids.length > 0) {
+                hotFluid = fluids[0];
+            }
+        } else {
+            hotFluid = mHotFluidHatch.getFluid();
+        }
+        if (hotFluid == null) return CheckRecipeResultRegistry.SUCCESSFUL;
         ExtremeHeatExchangerRecipe tRecipe = (ExtremeHeatExchangerRecipe) GoodGeneratorRecipeMaps.extremeHeatExchangerFuels
             .getBackend()
-            .findFuel(mHotFluidHatch.getFluid());
+            .findFuel(hotFluid);
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         tRunningRecipe = tRecipe;
-        this.hotName = mHotFluidHatch.getFluid()
-            .getFluid()
+        this.hotName = hotFluid.getFluid()
             .getName();
         int tMaxConsume = tRecipe.getMaxHotFluidConsume();
         int transformed_threshold = tRecipe.mSpecialValue;
-        int tRealConsume = Math.min(tMaxConsume, mHotFluidHatch.getFluid().amount);
+        int tRealConsume = Math.min(tMaxConsume, hotFluid.amount);
         double penalty = 0.0d;
         double efficiency = 1d;
         int shs_reduction_per_config = 150;
@@ -255,7 +265,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
 
         this.mMaxProgresstime = 20;
         this.mEUt = (int) (tRecipe.getEUt() * efficiency * ((double) tRealConsume / (double) tMaxConsume));
-        mHotFluidHatch.drain(tRealConsume, true);
+        // the 3-arg drain will work on both normal hatch and ME hatch
+        mHotFluidHatch.drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), tRealConsume), true);
         mCooledFluidHatch.fill(new FluidStack(tRecipe.getCooledFluid(), tRealConsume), true);
         this.mEfficiencyIncrease = 160;
 
@@ -269,7 +280,10 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             int waterAmount = (int) (this.mEUt / getUnitSteamPower(tReadySteam.getName())) / 160;
             if (waterAmount < 0) return false;
             int steamToOutput;
-            if (depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
+            startRecipeProcessing();
+            boolean isDepleteSuccess = depleteInput(GTModHandler.getDistilledWater(waterAmount));
+            endRecipeProcessing();
+            if (isDepleteSuccess) {
                 if (tRunningRecipe.mFluidInputs[0].getUnlocalizedName()
                     .contains("plasma")) {
                     steamToOutput = waterAmount * 160 / 1000;
@@ -419,6 +433,22 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
 
         public IGTHatchAdder<? super MTEExtremeHeatExchanger> adder() {
             return adder;
+        }
+    }
+
+    @Override
+    public void startRecipeProcessing() {
+        super.startRecipeProcessing();
+        if (mHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mHotFluidHatch.isValid()) {
+            aware.startRecipeProcessing();
+        }
+    }
+
+    @Override
+    public void endRecipeProcessing() {
+        super.endRecipeProcessing();
+        if (mHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mHotFluidHatch.isValid()) {
+            aware.endRecipeProcessing(this);
         }
     }
 }

@@ -43,7 +43,7 @@ public class GTRecipeBuilder {
     private static final boolean DEBUG_MODE_FULL_ENERGY;
     // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.invalid=true
     private static final boolean PANIC_MODE_INVALID;
-    private static final boolean DEBUG_MODE_COLLISION;
+    public static final boolean DEBUG_MODE_COLLISION;
 
     // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.collision=true
     private static final boolean PANIC_MODE_COLLISION;
