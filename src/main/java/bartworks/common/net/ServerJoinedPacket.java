@@ -18,19 +18,19 @@ import net.minecraft.world.IBlockAccess;
 import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.MainMod;
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class ServerJoinedPacket extends GTPacketNew {
+public class ServerJoinedPacket extends GTPacket {
 
     private byte config;
 
     ServerJoinedPacket() {
-        super(true);
+        super();
     }
 
     public ServerJoinedPacket(Object obj) {
-        super(false);
+        super();
         this.config = 0;
     }
 
@@ -45,7 +45,7 @@ public class ServerJoinedPacket extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput byteArrayDataInput) {
+    public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
         this.config = byteArrayDataInput.readByte();
         return this;
     }

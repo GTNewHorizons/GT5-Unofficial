@@ -6,11 +6,11 @@ import net.minecraft.world.World;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import gregtech.api.net.GTPacketTypes;
 import io.netty.buffer.ByteBuf;
 
-public class PacketOres extends GTPacketNew {
+public class PacketOres extends GTPacket {
 
     private int mX;
     private int mZ;
@@ -18,11 +18,11 @@ public class PacketOres extends GTPacketNew {
     private short mMetaData;
 
     public PacketOres() {
-        super(true);
+        super();
     }
 
     public PacketOres(int aX, short aY, int aZ, short aMetaData) {
-        super(false);
+        super();
         this.mX = aX;
         this.mY = aY;
         this.mZ = aZ;
@@ -38,7 +38,7 @@ public class PacketOres extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new PacketOres(aData.readInt(), aData.readShort(), aData.readInt(), aData.readShort());
     }
 

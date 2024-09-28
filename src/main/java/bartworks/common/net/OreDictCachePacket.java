@@ -21,19 +21,19 @@ import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.Pair;
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class OreDictCachePacket extends GTPacketNew {
+public class OreDictCachePacket extends GTPacket {
 
     private HashSet<Pair<Integer, Short>> hashSet = new HashSet<>();
 
     public OreDictCachePacket() {
-        super(true);
+        super();
     }
 
     public OreDictCachePacket(HashSet<Pair<Integer, Short>> set) {
-        super(false);
+        super();
         this.hashSet = set;
     }
 
@@ -53,7 +53,7 @@ public class OreDictCachePacket extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput byteArrayDataInput) {
+    public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
         int size = byteArrayDataInput.readInt();
         for (int i = 0; i < size; i++) {
             this.hashSet.add(new Pair<>(byteArrayDataInput.readInt(), byteArrayDataInput.readShort()));

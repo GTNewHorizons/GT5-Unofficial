@@ -19,7 +19,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.GTValues;
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import gregtech.api.net.GTPacketTypes;
 import gregtech.api.net.IGT_NetworkHandler;
 import io.netty.buffer.ByteBuf;
@@ -30,20 +30,20 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.MessageToMessageCodec;
 
 @ChannelHandler.Sharable
-public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacketNew> implements IGT_NetworkHandler {
+public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacket> implements IGT_NetworkHandler {
 
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
-    private final GTPacketNew[] mSubChannels;
+    private final GTPacket[] mSubChannels;
 
     public GTNetwork() {
         this("GregTech", GTPacketTypes.referencePackets());
     }
 
-    public GTNetwork(String channelName, GTPacketNew... packetTypes) {
+    public GTNetwork(String channelName, GTPacket... packetTypes) {
         this.mChannel = NetworkRegistry.INSTANCE.newChannel(channelName, this, new HandlerShared());
         final int lastPId = packetTypes[packetTypes.length - 1].getPacketID();
-        this.mSubChannels = new GTPacketNew[lastPId + 1];
-        for (GTPacketNew packetType : packetTypes) {
+        this.mSubChannels = new GTPacket[lastPId + 1];
+        for (GTPacket packetType : packetTypes) {
             final int pId = packetType.getPacketID();
             if (this.mSubChannels[pId] == null) this.mSubChannels[pId] = packetType;
             else throw new IllegalArgumentException("Duplicate Packet ID! " + pId);
@@ -51,7 +51,7 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacketNew
     }
 
     @Override
-    protected void encode(ChannelHandlerContext aContext, GTPacketNew aPacket, List<Object> aOutput) {
+    protected void encode(ChannelHandlerContext aContext, GTPacket aPacket, List<Object> aOutput) {
         final ByteBuf tBuf = Unpooled.buffer()
             .writeByte(aPacket.getPacketID());
         aPacket.encode(tBuf);
@@ -68,13 +68,13 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacketNew
         final ByteArrayDataInput aData = ByteStreams.newDataInput(
             aPacket.payload()
                 .array());
-        final GTPacketNew tPacket = this.mSubChannels[aData.readByte()].decode(aData);
+        final GTPacket tPacket = this.mSubChannels[aData.readByte()].decode(aData);
         tPacket.setINetHandler(aPacket.handler());
         aOutput.add(tPacket);
     }
 
     @Override
-    public void sendToPlayer(GTPacketNew aPacket, EntityPlayerMP aPlayer) {
+    public void sendToPlayer(GTPacket aPacket, EntityPlayerMP aPlayer) {
         if (aPacket == null) {
             GT_FML_LOGGER.info("packet null");
             return;
@@ -94,7 +94,7 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacketNew
     }
 
     @Override
-    public void sendToAllAround(GTPacketNew aPacket, NetworkRegistry.TargetPoint aPosition) {
+    public void sendToAllAround(GTPacket aPacket, NetworkRegistry.TargetPoint aPosition) {
         this.mChannel.get(Side.SERVER)
             .attr(FMLOutboundHandler.FML_MESSAGETARGET)
             .set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
@@ -106,7 +106,7 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacketNew
     }
 
     @Override
-    public void sendToAll(GTPacketNew aPacket) {
+    public void sendToAll(GTPacket aPacket) {
         this.mChannel.get(Side.SERVER)
             .attr(FMLOutboundHandler.FML_MESSAGETARGET)
             .set(FMLOutboundHandler.OutboundTarget.ALL);
@@ -115,7 +115,7 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacketNew
     }
 
     @Override
-    public void sendToServer(GTPacketNew aPacket) {
+    public void sendToServer(GTPacket aPacket) {
         this.mChannel.get(Side.CLIENT)
             .attr(FMLOutboundHandler.FML_MESSAGETARGET)
             .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
@@ -124,7 +124,7 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacketNew
     }
 
     @Override
-    public void sendPacketToAllPlayersInRange(World aWorld, GTPacketNew aPacket, int aX, int aZ) {
+    public void sendPacketToAllPlayersInRange(World aWorld, GTPacket aPacket, int aX, int aZ) {
         if (!aWorld.isRemote) {
             for (Object tObject : aWorld.playerEntities) {
                 if (!(tObject instanceof EntityPlayerMP tPlayer)) {
@@ -141,10 +141,10 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacketNew
     }
 
     @ChannelHandler.Sharable
-    static final class HandlerShared extends SimpleChannelInboundHandler<GTPacketNew> {
+    static final class HandlerShared extends SimpleChannelInboundHandler<GTPacket> {
 
         @Override
-        protected void channelRead0(ChannelHandlerContext ctx, GTPacketNew aPacket) {
+        protected void channelRead0(ChannelHandlerContext ctx, GTPacket aPacket) {
             final EntityPlayer aPlayer = GTValues.GT.getThePlayer();
             aPacket.process(aPlayer == null ? null : aPlayer.worldObj);
         }

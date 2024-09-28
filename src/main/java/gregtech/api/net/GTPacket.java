@@ -7,9 +7,9 @@ import com.google.common.io.ByteArrayDataInput;
 
 import io.netty.buffer.ByteBuf;
 
-public abstract class GTPacketNew {
+public abstract class GTPacket {
 
-    public GTPacketNew(boolean aIsReference) {}
+    public GTPacket() {}
 
     /**
      * Unique ID of this packet.
@@ -24,7 +24,7 @@ public abstract class GTPacketNew {
     /**
      * Decode byte buffer into packet object.
      */
-    public abstract GTPacketNew decode(ByteArrayDataInput buffer);
+    public abstract GTPacket decode(ByteArrayDataInput buffer);
 
     /**
      * Process the received packet.

@@ -24,21 +24,21 @@ import net.minecraftforge.common.DimensionManager;
 import com.google.common.io.ByteArrayDataInput;
 
 import bartworks.common.items.ItemCircuitProgrammer;
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class CircuitProgrammerPacket extends GTPacketNew {
+public class CircuitProgrammerPacket extends GTPacket {
 
     private int dimID, playerID;
     private byte chipCfg;
     private boolean hasChip;
 
     public CircuitProgrammerPacket() {
-        super(true);
+        super();
     }
 
     public CircuitProgrammerPacket(int dimID, int playerID, boolean hasChip, byte chipCfg) {
-        super(false);
+        super();
         this.dimID = dimID;
         this.playerID = playerID;
         this.hasChip = hasChip;
@@ -58,7 +58,7 @@ public class CircuitProgrammerPacket extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput byteArrayDataInput) {
+    public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
         return new CircuitProgrammerPacket(
             byteArrayDataInput.readInt(),
             byteArrayDataInput.readInt(),

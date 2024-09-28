@@ -24,10 +24,10 @@ import com.google.common.io.ByteArrayDataInput;
 import bartworks.MainMod;
 import bartworks.system.material.TileEntityMetaGeneratedBlock;
 import bartworks.util.MurmurHash3;
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class MetaBlockPacket extends GTPacketNew {
+public class MetaBlockPacket extends GTPacket {
 
     int x;
     short y;
@@ -35,7 +35,7 @@ public class MetaBlockPacket extends GTPacketNew {
     short meta;
 
     public MetaBlockPacket(int x, int y, int z, int meta) {
-        super(false);
+        super();
         this.x = x;
         this.y = (short) y;
         this.z = z;
@@ -43,7 +43,7 @@ public class MetaBlockPacket extends GTPacketNew {
     }
 
     public MetaBlockPacket() {
-        super(true);
+        super();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class MetaBlockPacket extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput byteArrayDataInput) {
+    public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
         this.x = byteArrayDataInput.readInt();
         this.z = byteArrayDataInput.readInt();
         this.y = byteArrayDataInput.readShort();

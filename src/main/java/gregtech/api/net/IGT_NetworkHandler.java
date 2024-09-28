@@ -7,13 +7,13 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 public interface IGT_NetworkHandler {
 
-    void sendToPlayer(GTPacketNew aPacket, EntityPlayerMP aPlayer);
+    void sendToPlayer(GTPacket aPacket, EntityPlayerMP aPlayer);
 
-    void sendToAllAround(GTPacketNew aPacket, TargetPoint aPosition);
+    void sendToAllAround(GTPacket aPacket, TargetPoint aPosition);
 
-    void sendToAll(GTPacketNew aPacket);
+    void sendToAll(GTPacket aPacket);
 
-    void sendToServer(GTPacketNew aPacket);
+    void sendToServer(GTPacket aPacket);
 
-    void sendPacketToAllPlayersInRange(World aWorld, GTPacketNew aPacket, int aX, int aZ);
+    void sendPacketToAllPlayersInRange(World aWorld, GTPacket aPacket, int aX, int aZ);
 }

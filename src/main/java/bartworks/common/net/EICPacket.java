@@ -10,20 +10,20 @@ import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
 import bartworks.util.Coords;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class EICPacket extends GTPacketNew {
+public class EICPacket extends GTPacket {
 
     private Coords coords;
     private boolean bool;
 
     public EICPacket() {
-        super(true);
+        super();
     }
 
     public EICPacket(Coords coords, boolean bool) {
-        super(false);
+        super();
         this.coords = coords;
         this.bool = bool;
     }
@@ -42,7 +42,7 @@ public class EICPacket extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new EICPacket(new Coords(aData.readInt(), aData.readInt(), aData.readInt()), aData.readBoolean());
     }
 
