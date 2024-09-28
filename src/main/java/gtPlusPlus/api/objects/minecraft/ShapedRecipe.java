@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import gregtech.api.interfaces.IRecipeMutableAccess;
+import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -25,14 +25,11 @@ public class ShapedRecipe implements IRecipeMutableAccess {
     }
 
     public ShapedRecipe(Object[] aInputs, ItemStack aOutput) {
-        String aGridWhole = "";
-        String aGrid[] = new String[3];
+        StringBuilder aGridWhole = new StringBuilder();
+        String[] aGrid = new String[3];
         char[] aChar = new char[9];
         String[] aLoggingInfo = new String[9];
-
-        if (mBlackList == null) {
-            mBlackList = new ItemStack[] {};
-        }
+        mBlackList = new ItemStack[] {};
 
         // Just to be safe
         try {
@@ -68,7 +65,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                 Object[] mVarags2 = null;
                 Logger.RECIPE("Generating Shaped Crafting Recipe for " + aOutput.getDisplayName());
 
-                if (aInputs.length < 9 || aInputs.length > 9) {
+                if (aInputs.length != 9) {
                     Logger.RECIPE(
                         "[Fix] Recipe for " + aOutput.getDisplayName()
                             + " has incorrect number of inputs. Size: "
@@ -118,7 +115,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
 
                     for (Pair<Character, Object> h : aRecipePairs) {
                         if (h.getKey() != null) {
-                            aGridWhole += String.valueOf(h.getKey());
+                            aGridWhole.append(String.valueOf(h.getKey()));
                             Logger.RECIPE("Adding '" + String.valueOf(h.getKey()) + "' to aGridWhole.");
                         }
                     }

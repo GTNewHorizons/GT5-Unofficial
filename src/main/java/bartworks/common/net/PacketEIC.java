@@ -10,27 +10,27 @@ import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
 import bartworks.util.Coords;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.net.GTPacketNew;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class EICPacket extends GTPacketNew {
+public class PacketEIC extends GTPacket {
 
     private Coords coords;
     private boolean bool;
 
-    public EICPacket() {
-        super(true);
+    public PacketEIC() {
+        super();
     }
 
-    public EICPacket(Coords coords, boolean bool) {
-        super(false);
+    public PacketEIC(Coords coords, boolean bool) {
+        super();
         this.coords = coords;
         this.bool = bool;
     }
 
     @Override
     public byte getPacketID() {
-        return 5;
+        return 27;
     }
 
     @Override
@@ -42,8 +42,8 @@ public class EICPacket extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
-        return new EICPacket(new Coords(aData.readInt(), aData.readInt(), aData.readInt()), aData.readBoolean());
+    public GTPacket decode(ByteArrayDataInput aData) {
+        return new PacketEIC(new Coords(aData.readInt(), aData.readInt(), aData.readInt()), aData.readBoolean());
     }
 
     @Override

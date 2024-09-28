@@ -35,14 +35,18 @@ public final class MainLoader {
         } catch (Throwable t) {
             LOGGER.error("Loading textures...", t);
         }
+
+        ProgressManager.ProgressBar progressBarPreload = ProgressManager.push("TecTech Preload", 1);
+
+        progressBarPreload.step("Regular Things");
+        new ThingsLoader().run();
+        LOGGER.info("Block/Item Init Done");
+
+        ProgressManager.pop(progressBarPreload);
     }
 
     public static void load() {
-        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 6);
-
-        progressBarLoad.step("Regular Things");
-        new ThingsLoader().run();
-        LOGGER.info("Block/Item Init Done");
+        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 5);
 
         progressBarLoad.step("Machine Things");
         new MachineLoader().run();

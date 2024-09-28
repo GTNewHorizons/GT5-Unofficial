@@ -110,10 +110,11 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 } else if (!aMaterial.contains(SubTag.NO_WORKING)) {
                     if ((!OrePrefixes.block.isIgnored(aMaterial))
                         && (null == GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
-                        && GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null) {
+                        && GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null
+                        && (aMaterial != Materials.Clay)) {
 
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.copyAmount(9, aStack))
+                            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 9))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                             .duration(15 * SECONDS)
                             .eut(2)
@@ -133,12 +134,13 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && (aMaterial != Materials.Paper)
                         && (aMaterial != MaterialsUEVplus.TranscendentMetal)
                         && (aMaterial != Materials.Clay)
-                        && (aMaterial != Materials.Wood)) {
+                        && (aMaterial != Materials.Wood)
+                        && (aMaterial != Materials.Carbon)) {
                         // compressor recipe
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1))
                                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                                     .duration(15 * SECONDS)
                                     .eut(2)

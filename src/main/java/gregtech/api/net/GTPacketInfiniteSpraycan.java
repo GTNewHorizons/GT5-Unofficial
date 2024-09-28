@@ -16,24 +16,24 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import io.netty.buffer.ByteBuf;
 
-public class GTPacketInfiniteSpraycan extends GTPacketNew {
+public class GTPacketInfiniteSpraycan extends GTPacket {
 
     private Action action;
     private int newColor;
     private EntityPlayerMP player;
 
     public GTPacketInfiniteSpraycan() {
-        super(true);
+        super();
     }
 
     public GTPacketInfiniteSpraycan(Action action) {
-        super(false);
+        super();
         this.action = action;
         this.newColor = -1;
     }
 
     public GTPacketInfiniteSpraycan(Action action, int newColor) {
-        super(false);
+        super();
         this.action = action;
         this.newColor = newColor;
     }
@@ -53,7 +53,7 @@ public class GTPacketInfiniteSpraycan extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(final ByteArrayDataInput aData) {
+    public GTPacket decode(final ByteArrayDataInput aData) {
         final int newColor = aData.readInt();
         final int length = aData.readInt();
         final byte[] name = new byte[length];
@@ -71,15 +71,10 @@ public class GTPacketInfiniteSpraycan extends GTPacketNew {
     public void process(final IBlockAccess aWorld) {
         ItemStack currentItemStack = player.inventory.getCurrentItem();
         if (currentItemStack != null && currentItemStack.getItem() instanceof MetaBaseItem item) {
-            item.forEachBehavior(currentItemStack, behavior -> {
-                if (behavior instanceof BehaviourSprayColorInfinite spraycanBehavior
-                    && action.execute(spraycanBehavior, currentItemStack, player, newColor)) {
-                    player.sendSlotContents(player.inventoryContainer, player.inventory.currentItem, currentItemStack);
-                    return true;
-                }
-
-                return false;
-            });
+            item.forEachBehavior(
+                currentItemStack,
+                behavior -> behavior instanceof BehaviourSprayColorInfinite spraycanBehavior
+                    && action.execute(spraycanBehavior, currentItemStack, player, newColor));
         }
     }
 

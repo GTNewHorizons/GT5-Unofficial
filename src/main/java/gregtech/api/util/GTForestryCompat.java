@@ -7,6 +7,8 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.Map;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import forestry.api.recipes.ICentrifugeRecipe;
@@ -170,10 +172,13 @@ public class GTForestryCompat {
     public static void transferSqueezerRecipes() {
         try {
             for (ISqueezerRecipe tRecipe : RecipeManagers.squeezerManager.recipes()) {
-                if ((tRecipe.getResources().length == 1) && (tRecipe.getFluidOutput() != null)
-                    && (tRecipe.getResources()[0] != null)) {
+                ItemStack[] resources = tRecipe.getResources();
+                if ((resources.length == 1) && (tRecipe.getFluidOutput() != null) && (resources[0] != null)) {
+                    Item input = resources[0].getItem();
+                    if (input == Items.pumpkin_seeds || input == Items.melon_seeds || input == Items.wheat_seeds)
+                        continue;
                     GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                    recipeBuilder.itemInputs(tRecipe.getResources()[0]);
+                    recipeBuilder.itemInputs(resources[0]);
                     if (tRecipe.getRemnants() != null) {
                         recipeBuilder.itemOutputs(tRecipe.getRemnants())
                             .outputChances((int) (tRecipe.getRemnantsChance() * 10000));

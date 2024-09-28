@@ -17,17 +17,17 @@ import io.netty.buffer.ByteBuf;
 /**
  * Client -> Server: send arbitrary data to server and update the currently held item.
  */
-public class GTPacketUpdateItem extends GTPacketNew {
+public class GTPacketUpdateItem extends GTPacket {
 
     private NBTTagCompound tag;
     private EntityPlayerMP mPlayer;
 
     public GTPacketUpdateItem() {
-        super(true);
+        super();
     }
 
     public GTPacketUpdateItem(NBTTagCompound tag) {
-        super(false);
+        super();
         this.tag = tag;
     }
 
@@ -49,7 +49,7 @@ public class GTPacketUpdateItem extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketUpdateItem(ISerializableObject.readCompoundTagFromGreggyByteBuf(aData));
     }
 
