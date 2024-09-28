@@ -27,14 +27,14 @@ import bartworks.util.MurmurHash3;
 import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class MetaBlockPacket extends GTPacket {
+public class PacketBWMetaBlock extends GTPacket {
 
     int x;
     short y;
     int z;
     short meta;
 
-    public MetaBlockPacket(int x, int y, int z, int meta) {
+    public PacketBWMetaBlock(int x, int y, int z, int meta) {
         super();
         this.x = x;
         this.y = (short) y;
@@ -42,7 +42,7 @@ public class MetaBlockPacket extends GTPacket {
         this.meta = (short) meta;
     }
 
-    public MetaBlockPacket() {
+    public PacketBWMetaBlock() {
         super();
     }
 
@@ -76,7 +76,7 @@ public class MetaBlockPacket extends GTPacket {
         this.z = byteArrayDataInput.readInt();
         this.y = byteArrayDataInput.readShort();
         this.meta = byteArrayDataInput.readShort();
-        MetaBlockPacket todecode = new MetaBlockPacket(this.x, this.y, this.z, this.meta);
+        PacketBWMetaBlock todecode = new PacketBWMetaBlock(this.x, this.y, this.z, this.meta);
         if (byteArrayDataInput.readInt() != MurmurHash3.murmurhash3_x86_32(
             ByteBuffer.allocate(12)
                 .putInt(this.x)

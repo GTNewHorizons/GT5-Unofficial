@@ -67,7 +67,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.client.renderer.EICPistonVisualizer;
 import bartworks.common.configs.Configuration;
-import bartworks.common.net.EICPacket;
+import bartworks.common.net.PacketEIC;
 import bartworks.util.Coords;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -354,7 +354,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             if (aBaseMetaTileEntity.isClientSide()) this.animatePiston(aBaseMetaTileEntity);
             else if (aBaseMetaTileEntity.hasMufflerUpgrade()) GTValues.NW.sendPacketToAllPlayersInRange(
                 aBaseMetaTileEntity.getWorld(),
-                new EICPacket(
+                new PacketEIC(
                     new Coords(
                         aBaseMetaTileEntity.getXCoord(),
                         aBaseMetaTileEntity.getYCoord(),

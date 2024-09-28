@@ -13,16 +13,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class EICPacket extends GTPacket {
+public class PacketEIC extends GTPacket {
 
     private Coords coords;
     private boolean bool;
 
-    public EICPacket() {
+    public PacketEIC() {
         super();
     }
 
-    public EICPacket(Coords coords, boolean bool) {
+    public PacketEIC(Coords coords, boolean bool) {
         super();
         this.coords = coords;
         this.bool = bool;
@@ -43,7 +43,7 @@ public class EICPacket extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
-        return new EICPacket(new Coords(aData.readInt(), aData.readInt(), aData.readInt()), aData.readBoolean());
+        return new PacketEIC(new Coords(aData.readInt(), aData.readInt(), aData.readInt()), aData.readBoolean());
     }
 
     @Override

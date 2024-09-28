@@ -25,17 +25,17 @@ import bartworks.util.Coords;
 import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class RendererPacket extends GTPacket {
+public class PacketBioVatRenderer extends GTPacket {
 
     private Coords coords;
     private int integer;
     private byte removal;
 
-    public RendererPacket() {
+    public PacketBioVatRenderer() {
         super();
     }
 
-    public RendererPacket(Coords coords, int integer, boolean removal) {
+    public PacketBioVatRenderer(Coords coords, int integer, boolean removal) {
         super();
         this.coords = coords;
         this.integer = integer;
@@ -86,7 +86,7 @@ public class RendererPacket extends GTPacket {
             return null;
         }
 
-        return new RendererPacket(this.coords, this.integer, this.removal == 1);
+        return new PacketBioVatRenderer(this.coords, this.integer, this.removal == 1);
     }
 
     @Override

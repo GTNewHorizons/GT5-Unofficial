@@ -22,7 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 
-import bartworks.common.net.MetaBlockPacket;
+import bartworks.common.net.PacketBWMetaBlock;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 
@@ -51,7 +51,7 @@ public abstract class TileEntityMetaGeneratedBlock extends TileEntity implements
     public Packet getDescriptionPacket() {
         if (!this.worldObj.isRemote) GTValues.NW.sendPacketToAllPlayersInRange(
             this.worldObj,
-            new MetaBlockPacket(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
+            new PacketBWMetaBlock(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
             this.xCoord,
             this.zCoord);
         return null;

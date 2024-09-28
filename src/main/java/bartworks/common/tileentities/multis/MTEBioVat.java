@@ -60,7 +60,7 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.FluidLoader;
-import bartworks.common.net.RendererPacket;
+import bartworks.common.net.PacketBioVatRenderer;
 import bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
@@ -393,7 +393,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             GTValues.NW.sendPacketToAllPlayersInRange(
                 this.getBaseMetaTileEntity()
                     .getWorld(),
-                new RendererPacket(
+                new PacketBioVatRenderer(
                     new Coords(
                         xDir + x
                             + this.getBaseMetaTileEntity()
@@ -414,7 +414,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             GTValues.NW.sendPacketToAllPlayersInRange(
                 this.getBaseMetaTileEntity()
                     .getWorld(),
-                new RendererPacket(
+                new PacketBioVatRenderer(
                     new Coords(
                         xDir + x
                             + this.getBaseMetaTileEntity()
@@ -706,7 +706,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                         GTValues.NW.sendPacketToAllPlayersInRange(
                             this.getBaseMetaTileEntity()
                                 .getWorld(),
-                            new RendererPacket(
+                            new PacketBioVatRenderer(
                                 new Coords(
                                     xDir + x
                                         + this.getBaseMetaTileEntity()

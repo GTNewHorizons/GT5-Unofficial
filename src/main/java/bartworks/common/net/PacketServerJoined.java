@@ -13,59 +13,45 @@
 
 package bartworks.common.net;
 
-import java.util.HashSet;
-
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import bartworks.system.oredict.OreDictHandler;
-import bartworks.util.Pair;
+import bartworks.MainMod;
 import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class OreDictCachePacket extends GTPacket {
+public class PacketServerJoined extends GTPacket {
 
-    private HashSet<Pair<Integer, Short>> hashSet = new HashSet<>();
+    private byte config;
 
-    public OreDictCachePacket() {
+    public PacketServerJoined() {
         super();
     }
 
-    public OreDictCachePacket(HashSet<Pair<Integer, Short>> set) {
+    public PacketServerJoined(Object obj) {
         super();
-        this.hashSet = set;
+        this.config = 0;
     }
 
     @Override
     public byte getPacketID() {
-        return 25;
+        return 26;
     }
 
     @Override
     public void encode(ByteBuf aOut) {
-        int size = this.hashSet.size();
-        aOut.writeInt(size);
-        for (Pair<Integer, Short> p : this.hashSet) {
-            aOut.writeInt(p.getKey())
-                .writeShort(p.getValue());
-        }
+        aOut.writeByte(this.config);
     }
 
     @Override
     public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
-        int size = byteArrayDataInput.readInt();
-        for (int i = 0; i < size; i++) {
-            this.hashSet.add(new Pair<>(byteArrayDataInput.readInt(), byteArrayDataInput.readShort()));
-        }
-        return new OreDictCachePacket(this.hashSet);
+        this.config = byteArrayDataInput.readByte();
+        return this;
     }
 
     @Override
     public void process(IBlockAccess iBlockAccess) {
-        OreDictHandler.getNonBWCache()
-            .clear();
-        OreDictHandler.getNonBWCache()
-            .addAll(this.hashSet);
+        MainMod.runOnPlayerJoined(false, false);
     }
 }
