@@ -636,6 +636,11 @@ public class MTEExoticModule extends MTEBaseModule {
     }
 
     @Override
+    protected boolean filtersFluid() {
+        return false;
+    }
+
+    @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Exotic Matter Producer")
