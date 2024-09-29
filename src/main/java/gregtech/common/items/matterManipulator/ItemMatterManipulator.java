@@ -71,7 +71,6 @@ import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.BlockActionContext;
-import gregtech.common.items.matterManipulator.BlockAnalyzer.TileAnalysisResult;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
 import gregtech.common.items.matterManipulator.NBTState.Config;
