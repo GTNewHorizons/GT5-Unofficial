@@ -9,12 +9,9 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.network.handler.AbstractClientMessageHandler;
-import gtPlusPlus.core.network.packet.AbstractPacket;
 import gtPlusPlus.core.network.packet.PacketVolumetricFlaskGui;
 import gtPlusPlus.core.network.packet.PacketVolumetricFlaskGui2;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class PacketHandler {
 
@@ -37,14 +34,6 @@ public class PacketHandler {
 
     private static void registerMessage(Class handlerClass, Class messageClass, Side side) {
         INSTANCE.registerMessage(handlerClass, messageClass, packetId++, side);
-        if (AbstractPacket.class.isInstance(messageClass.getClass())) {
-            AbstractPacket aPacket = ReflectionUtils.createNewInstanceFromConstructor(
-                ReflectionUtils.getConstructor(messageClass, new Class[] {}),
-                new Object[] {});
-            if (aPacket != null) {
-                Logger.INFO("Registered Packet: " + aPacket.getPacketName());
-            }
-        }
     }
 
     /**

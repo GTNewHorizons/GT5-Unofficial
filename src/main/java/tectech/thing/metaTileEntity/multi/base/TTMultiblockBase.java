@@ -21,12 +21,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -60,6 +58,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
@@ -88,7 +87,6 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import tectech.Reference;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.gui.TecTechUITextures;
@@ -117,11 +115,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     /** Base ID for the LED window popup. LED 1 I0 will have ID 100, LED 1 I1 101... */
     protected static int LED_WINDOW_BASE_ID = 100;
 
-    // Sound resource - same as with screen but override getActivitySound
-    public static final ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_lo_freq");
-
-    @SideOnly(Side.CLIENT)
-    private SoundLoop activitySoundLoop;
     // endregion
 
     // region HATCHES ARRAYS - they hold info about found hatches, add hatches to them... (auto structure magic does it
@@ -505,31 +498,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[texturePage][4] };
     }
 
-    /**
-     * should return your activity sound
-     */
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return activitySound;
-    }
-
-    /**
-     * plays the sounds auto magically
-     */
-    @SideOnly(Side.CLIENT)
-    protected void soundMagic(ResourceLocation activitySound) {
-        if (getBaseMetaTileEntity().isActive()) {
-            if (activitySoundLoop == null) {
-                activitySoundLoop = new SoundLoop(activitySound, getBaseMetaTileEntity(), false, true);
-                Minecraft.getMinecraft()
-                    .getSoundHandler()
-                    .playSound(activitySoundLoop);
-            }
-        } else {
-            if (activitySoundLoop != null) {
-                activitySoundLoop = null;
-            }
-        }
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.TECTECH_MACHINES_FX_LOW_FREQ;
     }
 
     // endregion
@@ -1200,7 +1171,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflers(active);
         } else {
-            soundMagic(getActivitySound());
+            doActivitySound(getActivitySoundLoop());
         }
     }
 

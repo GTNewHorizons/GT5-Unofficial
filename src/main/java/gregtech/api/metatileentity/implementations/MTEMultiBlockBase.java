@@ -32,7 +32,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -677,10 +676,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @SideOnly(Side.CLIENT)
-    protected void doActivitySound(ResourceLocation activitySound) {
+    protected void doActivitySound(SoundResource activitySound) {
         if (getBaseMetaTileEntity().isActive() && activitySound != null) {
             if (activitySoundLoop == null) {
-                activitySoundLoop = new GTSoundLoop(activitySound, getBaseMetaTileEntity(), false, true);
+                activitySoundLoop = new GTSoundLoop(
+                    activitySound.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true);
                 Minecraft.getMinecraft()
                     .getSoundHandler()
                     .playSound(activitySoundLoop);
@@ -710,7 +713,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * @return Sound that will be looped for as long as the machine is doing a recipe
      */
     @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySoundLoop() {
+    protected SoundResource getActivitySoundLoop() {
         return null;
     }
 

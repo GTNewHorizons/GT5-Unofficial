@@ -252,14 +252,6 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
     @Override
     public void saveNBTData(final NBTTagCompound aNBT) {
         aNBT.setByte("aCurrentOutputAmperage", aCurrentOutputAmperage);
-        long aEU = this.getBaseMetaTileEntity()
-            .getStoredEU();
-        if (aEU > 0) {
-            aNBT.setLong("aStoredEU", aEU);
-            if (aNBT.hasKey("aStoredEU")) {
-                Logger.WARNING("Set aStoredEU to NBT.");
-            }
-        }
     }
 
     @Override

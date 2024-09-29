@@ -11,7 +11,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package bartworks.hooks;
+package gregtech.mixin.hooks;
 
 import java.util.HashSet;
 import java.util.Iterator;

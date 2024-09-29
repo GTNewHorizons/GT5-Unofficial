@@ -17,7 +17,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +25,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -41,7 +39,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.WirelessComputationPacket;
-import tectech.Reference;
 import tectech.mechanics.dataTransport.InventoryDataPacket;
 import tectech.recipe.TTRecipeAdder;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -212,12 +209,9 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][1] };
     }
 
-    public static final ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_hi_freq");
-
     @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return activitySound;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
     }
 
     public final boolean addDataBankHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

@@ -339,12 +339,9 @@ public class GTPreLoad {
         try {
             Objects.requireNonNull(GTUtility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true))
                 .set(null, 0);
-            ((List<?>) Objects.requireNonNull(
-                GTUtility.getFieldContent(
-                    GTUtility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
-                    "drops",
-                    true,
-                    true))).clear();
+            ((List<?>) Objects
+                .requireNonNull(GTUtility.getFieldContent(ic2.api.recipe.Recipes.scrapboxDrops, "drops", true, true)))
+                    .clear();
         } catch (Throwable e) {
             if (GTValues.D1) {
                 e.printStackTrace(GTLog.err);
@@ -539,7 +536,7 @@ public class GTPreLoad {
 
     /**
      * Clamp value between 0 and 255
-     * 
+     *
      * @param value the value to clamp
      * @return the clamped value
      */

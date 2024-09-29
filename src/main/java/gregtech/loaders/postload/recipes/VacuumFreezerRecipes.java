@@ -337,34 +337,6 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L))
-                .duration(5 * TICKS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Nitrogen, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L))
-                .duration(1 * SECONDS + 8 * TICKS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Oxygen, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-                .duration(1 * SECONDS + 12 * TICKS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Radon, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L))
-                .duration(5 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.Boron.getPlasma(144L))
                 .fluidOutputs(Materials.Boron.getMolten(144L))
                 .duration(1 * SECONDS)

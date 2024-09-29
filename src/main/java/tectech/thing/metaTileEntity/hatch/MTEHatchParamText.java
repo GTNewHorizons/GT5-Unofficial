@@ -3,14 +3,11 @@ package tectech.thing.metaTileEntity.hatch;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -28,6 +25,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
@@ -145,11 +143,8 @@ public class MTEHatchParamText extends MTEHatchParam {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
-            clientLocale = "en_US";
+        if (aPlayer instanceof EntityPlayerMPAccessor) {
+            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
         GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;

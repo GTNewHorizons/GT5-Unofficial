@@ -13,45 +13,59 @@
 
 package bartworks.common.net;
 
+import java.util.HashSet;
+
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import bartworks.MainMod;
-import gregtech.api.net.GTPacketNew;
+import bartworks.system.oredict.OreDictHandler;
+import bartworks.util.Pair;
+import gregtech.api.net.GTPacket;
 import io.netty.buffer.ByteBuf;
 
-public class ServerJoinedPacket extends GTPacketNew {
+public class PacketOreDictCache extends GTPacket {
 
-    private byte config;
+    private HashSet<Pair<Integer, Short>> hashSet = new HashSet<>();
 
-    ServerJoinedPacket() {
-        super(true);
+    public PacketOreDictCache() {
+        super();
     }
 
-    public ServerJoinedPacket(Object obj) {
-        super(false);
-        this.config = 0;
+    public PacketOreDictCache(HashSet<Pair<Integer, Short>> set) {
+        super();
+        this.hashSet = set;
     }
 
     @Override
     public byte getPacketID() {
-        return 4;
+        return 25;
     }
 
     @Override
     public void encode(ByteBuf aOut) {
-        aOut.writeByte(this.config);
+        int size = this.hashSet.size();
+        aOut.writeInt(size);
+        for (Pair<Integer, Short> p : this.hashSet) {
+            aOut.writeInt(p.getKey())
+                .writeShort(p.getValue());
+        }
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput byteArrayDataInput) {
-        this.config = byteArrayDataInput.readByte();
-        return this;
+    public GTPacket decode(ByteArrayDataInput byteArrayDataInput) {
+        int size = byteArrayDataInput.readInt();
+        for (int i = 0; i < size; i++) {
+            this.hashSet.add(new Pair<>(byteArrayDataInput.readInt(), byteArrayDataInput.readShort()));
+        }
+        return new PacketOreDictCache(this.hashSet);
     }
 
     @Override
     public void process(IBlockAccess iBlockAccess) {
-        MainMod.runOnPlayerJoined(false, false);
+        OreDictHandler.getNonBWCache()
+            .clear();
+        OreDictHandler.getNonBWCache()
+            .addAll(this.hashSet);
     }
 }

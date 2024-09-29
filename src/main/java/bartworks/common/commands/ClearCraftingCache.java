@@ -17,7 +17,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 
-import bartworks.hooks.BWCoreStaticReplacementMethodes;
+import gregtech.mixin.hooks.BWCoreStaticReplacementMethodes;
 
 public class ClearCraftingCache extends CommandBase {
 

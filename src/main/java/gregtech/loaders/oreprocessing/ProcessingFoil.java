@@ -23,6 +23,9 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
+        // Blacklist materials which are handled by Werkstoff loader
+        if (material == Materials.Calcium || material == Materials.Magnesia) return;
+
         registerBenderRecipe(material);
         registerCover(stack, material);
     }

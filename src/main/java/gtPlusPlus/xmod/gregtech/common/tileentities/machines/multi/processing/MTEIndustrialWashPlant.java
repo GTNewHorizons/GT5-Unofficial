@@ -29,7 +29,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -430,7 +429,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_MULTI_ORE_WASHER_PLANT_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_MULTI_ORE_WASHER_PLANT_LOOP;
     }
 }
