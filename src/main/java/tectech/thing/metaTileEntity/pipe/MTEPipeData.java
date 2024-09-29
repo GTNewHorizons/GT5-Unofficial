@@ -4,6 +4,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -124,9 +125,10 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity t = aBaseMetaTileEntity.getTileEntityAtSide(side);
-            if (t instanceof IGregTechTileEntity a) {
-                if (a.getMetaTileEntity() instanceof MTEPipeData b) b.updateNetwork(true);
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
+
+            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
+                neighbor.updateNetwork(true);
             }
         }
     }
@@ -134,9 +136,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
     public void updateNetwork(boolean nestedCall) {
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 
-        if (active) {
-            active = false;
-        }
+        active = false;
 
         mConnections = 0;
         connectionCount = 0;
@@ -149,23 +149,23 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final ForgeDirection oppositeSide = side.getOpposite();
             TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
-            if (tTileEntity instanceof IConnectsToDataPipe) {
-                byte tColor = ((IConnectsToDataPipe) tTileEntity).getColorization();
+            if (tTileEntity instanceof IConnectsToDataPipe pipe) {
+                byte tColor = pipe.getColorization();
                 if (tColor != myColor) {
                     continue;
                 }
-                if (((IConnectsToDataPipe) tTileEntity).canConnectData(oppositeSide)) {
+                if (pipe.canConnectData(oppositeSide)) {
                     mConnections |= side.flag;
                     connectionCount++;
                 }
-            } else if (tTileEntity instanceof IGregTechTileEntity) {
-                IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (meta instanceof IConnectsToDataPipe) {
-                    byte tColor = ((IConnectsToDataPipe) meta).getColorization();
+            } else if (tTileEntity instanceof IGregTechTileEntity gregTechTileEntity) {
+                IMetaTileEntity meta = gregTechTileEntity.getMetaTileEntity();
+                if (meta instanceof IConnectsToDataPipe pipe) {
+                    byte tColor = pipe.getColorization();
                     if (tColor != myColor) {
                         continue;
                     }
-                    if (((IConnectsToDataPipe) meta).canConnectData(oppositeSide)) {
+                    if (pipe.canConnectData(oppositeSide)) {
                         mConnections |= side.flag;
                         connectionCount++;
                     }
@@ -187,12 +187,11 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity t = aBaseMetaTileEntity.getTileEntityAtSide(side);
-            if (t instanceof IGregTechTileEntity a) {
-                if (a.getMetaTileEntity() instanceof MTEPipeData b) {
-                    b.mConnections &= ~side.getOpposite().flag;
-                    connectionCount--;
-                }
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
+
+            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
+                neighbor.mConnections &= ~side.getOpposite().flag;
+                neighbor.connectionCount--;
             }
         }
 
@@ -225,6 +224,37 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
     }
 
     @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
+        float aY, float aZ, ItemStack aTool) {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        if (this.isConnectedAtSide(wrenchingSide)) {
+            this.mConnections &= ~wrenchingSide.flag;
+            this.connectionCount--;
+
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(wrenchingSide);
+
+            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
+                neighbor.mConnections &= ~wrenchingSide.getOpposite().flag;
+                neighbor.connectionCount--;
+            }
+
+        } else {
+            this.mConnections |= wrenchingSide.flag;
+            this.connectionCount++;
+
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(wrenchingSide);
+
+            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
+                neighbor.mConnections |= wrenchingSide.getOpposite().flag;
+                neighbor.connectionCount--;
+            }
+        }
+
+        return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
     public boolean canConnectData(ForgeDirection side) {
         return true;
     }
@@ -235,23 +265,23 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
             return null;
         }
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if ((mConnections & 1 << side.ordinal()) == 0) {
+            if ((mConnections & side.flag) == 0) {
                 continue; // if not connected continue
             }
             TileEntity next = getBaseMetaTileEntity().getTileEntityAtSide(side);
-            if (next instanceof IConnectsToDataPipe && next != source) {
-                if (((IConnectsToDataPipe) next).isDataInputFacing(side.getOpposite())) {
-                    return (IConnectsToDataPipe) next;
+            if (next instanceof IConnectsToDataPipe connectsToPipe && next != source) {
+                if (connectsToPipe.isDataInputFacing(side.getOpposite())) {
+                    return connectsToPipe;
                 }
-            } else if (next instanceof IGregTechTileEntity) {
-                IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
-                if (meta instanceof IConnectsToDataPipe connecsToPipe && meta != source) {
+            } else if (next instanceof IGregTechTileEntity gregTechTileEntity) {
+                IMetaTileEntity meta = gregTechTileEntity.getMetaTileEntity();
+                if (meta instanceof IConnectsToDataPipe connectsToPipe && meta != source) {
                     if (meta instanceof MTEPipeData pipeData && pipeData.connectionCount == 2) {
                         pipeData.markUsed();
-                        return connecsToPipe;
+                        return connectsToPipe;
                     }
-                    if (connecsToPipe.isDataInputFacing(side.getOpposite())) {
-                        return connecsToPipe;
+                    if (connectsToPipe.isDataInputFacing(side.getOpposite())) {
+                        return connectsToPipe;
                     }
                 }
             }
@@ -261,6 +291,12 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0)
+            return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    }
+
+    public AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         float tSpace = (1f - 0.375f) / 2;
         float tSide0 = tSpace;
         float tSide1 = 1f - tSpace;

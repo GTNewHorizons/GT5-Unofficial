@@ -4,6 +4,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -89,13 +90,11 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity t = aBaseMetaTileEntity.getTileEntityAtSide(side);
-            if (t instanceof IGregTechTileEntity a) {
-                System.out.println("passed");
-                if (a.getMetaTileEntity() instanceof MTEPipeEnergy b) {
-                    System.out.println("passed");
-                    b.updateNetwork(true);
-                }
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
+
+            if (gregTechTileEntity != null
+                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                neighbor.updateNetwork(true);
             }
         }
     }
@@ -103,9 +102,7 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
     public void updateNetwork(boolean nestedCall) {
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 
-        if (active) {
-            active = false;
-        }
+        active = false;
 
         mConnections = 0;
         connectionCount = 0;
@@ -117,28 +114,26 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
             final ForgeDirection oppositeSide = side.getOpposite();
 
             TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
-            if (tTileEntity instanceof IColoredTileEntity) {
-                byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
+            if (tTileEntity instanceof IColoredTileEntity coloredTileEntity) {
+                byte tColor = coloredTileEntity.getColorization();
                 if (tColor != aBaseMetaTileEntity.getColorization()) {
                     continue;
                 }
             }
-            if (tTileEntity instanceof PowerLogicHost) {
-                PowerLogic logic = ((PowerLogicHost) tTileEntity).getPowerLogic(oppositeSide);
+            if (tTileEntity instanceof PowerLogicHost host) {
+                PowerLogic logic = host.getPowerLogic(oppositeSide);
                 if (logic != null && logic.canUseLaser()) {
                     mConnections |= side.flag;
                     connectionCount++;
                     continue;
                 }
             }
-            if (tTileEntity instanceof IConnectsToEnergyTunnel
-                && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
+            if (tTileEntity instanceof IConnectsToEnergyTunnel tunnel && tunnel.canConnect(oppositeSide)) {
                 mConnections |= side.flag;
                 connectionCount++;
-            } else if (tTileEntity instanceof IGregTechTileEntity
-                && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
-                    if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
-                        .canConnect(oppositeSide)) {
+            } else if (tTileEntity instanceof IGregTechTileEntity gregTechTileEntity
+                && gregTechTileEntity.getMetaTileEntity() instanceof IConnectsToEnergyTunnel tunnel) {
+                    if (tunnel.canConnect(oppositeSide)) {
                         mConnections |= side.flag;
                         connectionCount++;
                     }
@@ -159,13 +154,12 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity t = aBaseMetaTileEntity.getTileEntityAtSide(side);
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
 
-            if (t instanceof IGregTechTileEntity a) {
-                if (a.getMetaTileEntity() instanceof MTEPipeEnergy b) {
-                    b.mConnections &= ~side.getOpposite().flag;
-                    connectionCount--;
-                }
+            if (gregTechTileEntity != null
+                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                neighbor.mConnections &= ~side.getOpposite().flag;
+                neighbor.connectionCount--;
             }
         }
 
@@ -195,6 +189,39 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
         } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
+    }
+
+    @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
+        float aY, float aZ, ItemStack aTool) {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        if (this.isConnectedAtSide(wrenchingSide)) {
+            this.mConnections &= ~wrenchingSide.flag;
+            this.connectionCount--;
+
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(wrenchingSide);
+
+            if (gregTechTileEntity != null
+                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                neighbor.mConnections &= ~wrenchingSide.getOpposite().flag;
+                neighbor.connectionCount--;
+            }
+
+        } else {
+            this.mConnections |= wrenchingSide.flag;
+            this.connectionCount++;
+
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(wrenchingSide);
+
+            if (gregTechTileEntity != null
+                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                neighbor.mConnections |= wrenchingSide.getOpposite().flag;
+                neighbor.connectionCount--;
+            }
+        }
+
+        return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -257,6 +284,12 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0)
+            return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    }
+
+    public AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         float tSpace = (1f - 0.5f) / 2;
         float tSide0 = tSpace;
         float tSide1 = 1f - tSpace;
