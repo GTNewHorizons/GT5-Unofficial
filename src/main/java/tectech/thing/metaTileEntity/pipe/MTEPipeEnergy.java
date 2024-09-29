@@ -30,7 +30,6 @@ import gregtech.common.GTClient;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.pipe.IActivePipe;
-import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.util.CommonValues;
@@ -138,12 +137,12 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
                 connectionCount++;
             } else if (tTileEntity instanceof IGregTechTileEntity
                 && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
-                if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
-                    .canConnect(oppositeSide)) {
-                    mConnections |= side.flag;
-                    connectionCount++;
+                    if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
+                        .canConnect(oppositeSide)) {
+                        mConnections |= side.flag;
+                        connectionCount++;
+                    }
                 }
-            }
         }
 
         if (!nestedCall) updateNeighboringNetworks();
@@ -197,7 +196,6 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }
-
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {

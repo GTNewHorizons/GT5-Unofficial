@@ -126,8 +126,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             TileEntity t = aBaseMetaTileEntity.getTileEntityAtSide(side);
             if (t instanceof IGregTechTileEntity a) {
-                if (a.getMetaTileEntity() instanceof MTEPipeData b)
-                    b.updateNetwork(true);
+                if (a.getMetaTileEntity() instanceof MTEPipeData b) b.updateNetwork(true);
             }
         }
     }
