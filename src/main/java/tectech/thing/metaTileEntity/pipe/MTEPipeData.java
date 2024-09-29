@@ -120,9 +120,90 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         };
     }
 
+    public void updateNeighboringNetworks() {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity t = aBaseMetaTileEntity.getTileEntityAtSide(side);
+            if (t instanceof IGregTechTileEntity a) {
+                if (a.getMetaTileEntity() instanceof MTEPipeData b)
+                    b.updateNetwork(true);
+            }
+        }
+    }
+
+    public void updateNetwork(boolean nestedCall) {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        if (active) {
+            active = false;
+        }
+
+        mConnections = 0;
+        connectionCount = 0;
+
+        byte myColor = aBaseMetaTileEntity.getColorization();
+        if (aBaseMetaTileEntity.getColorization() < 0) {
+            return;
+        }
+
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            final ForgeDirection oppositeSide = side.getOpposite();
+            TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
+            if (tTileEntity instanceof IConnectsToDataPipe) {
+                byte tColor = ((IConnectsToDataPipe) tTileEntity).getColorization();
+                if (tColor != myColor) {
+                    continue;
+                }
+                if (((IConnectsToDataPipe) tTileEntity).canConnectData(oppositeSide)) {
+                    mConnections |= side.flag;
+                    connectionCount++;
+                }
+            } else if (tTileEntity instanceof IGregTechTileEntity) {
+                IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+                if (meta instanceof IConnectsToDataPipe) {
+                    byte tColor = ((IConnectsToDataPipe) meta).getColorization();
+                    if (tColor != myColor) {
+                        continue;
+                    }
+                    if (((IConnectsToDataPipe) meta).canConnectData(oppositeSide)) {
+                        mConnections |= side.flag;
+                        connectionCount++;
+                    }
+                }
+            }
+        }
+
+        if (!nestedCall) updateNeighboringNetworks();
+    }
+
+    @Override
+    public void onColorChangeServer(byte aColor) {
+        this.updateNetwork(false);
+        super.onColorChangeServer(aColor);
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity t = aBaseMetaTileEntity.getTileEntityAtSide(side);
+            if (t instanceof IGregTechTileEntity a) {
+                if (a.getMetaTileEntity() instanceof MTEPipeData b) {
+                    b.mConnections &= ~side.getOpposite().flag;
+                    connectionCount--;
+                }
+            }
+        }
+
+        super.onBlockDestroyed();
+    }
+
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        onPostTick(aBaseMetaTileEntity, 31);
+        this.updateNetwork(false);
+        super.onFirstTick(aBaseMetaTileEntity);
     }
 
     @Override
@@ -137,41 +218,6 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
                         aBaseMetaTileEntity.getYCoord(),
                         aBaseMetaTileEntity.getZCoord(),
                         256);
-                }
-                if (active) {
-                    active = false;
-                }
-                mConnections = 0;
-                connectionCount = 0;
-                byte myColor = aBaseMetaTileEntity.getColorization();
-                if (aBaseMetaTileEntity.getColorization() < 0) {
-                    return;
-                }
-                for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                    final ForgeDirection oppositeSide = side.getOpposite();
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
-                    if (tTileEntity instanceof IConnectsToDataPipe) {
-                        byte tColor = ((IConnectsToDataPipe) tTileEntity).getColorization();
-                        if (tColor != myColor) {
-                            continue;
-                        }
-                        if (((IConnectsToDataPipe) tTileEntity).canConnectData(oppositeSide)) {
-                            mConnections |= 1 << side.ordinal();
-                            connectionCount++;
-                        }
-                    } else if (tTileEntity instanceof IGregTechTileEntity) {
-                        IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                        if (meta instanceof IConnectsToDataPipe) {
-                            byte tColor = ((IConnectsToDataPipe) meta).getColorization();
-                            if (tColor != myColor) {
-                                continue;
-                            }
-                            if (((IConnectsToDataPipe) meta).canConnectData(oppositeSide)) {
-                                mConnections |= 1 << side.ordinal();
-                                connectionCount++;
-                            }
-                        }
-                    }
                 }
             }
         } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
