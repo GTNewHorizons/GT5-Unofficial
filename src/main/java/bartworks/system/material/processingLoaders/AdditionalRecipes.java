@@ -486,8 +486,6 @@ public class AdditionalRecipes {
             .metadata(FUEL_VALUE, 125_000)
             .addTo(ultraHugeNaquadahReactorFuels);
 
-        LoadItemContainers.run();
-
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), WerkstoffLoader.Tiberium.get(dust, 3))
             .itemOutputs(BWNonMetaMaterialItems.TiberiumCell_1.get(1L))
