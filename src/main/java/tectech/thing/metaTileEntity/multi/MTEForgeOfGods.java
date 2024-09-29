@@ -198,10 +198,26 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         : GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
         // 1000 blocks max per placement.
-        int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 63, 14, 1, realBudget, env, false, true);
-        if (stackSize.stackSize > 1) {
+        int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
+
+        survivialBuildPiece(STRUCTURE_PIECE_SHAFT, stackSize, 63, 14, 1, realBudget, env, false, true);
+
+        int built = 0;
+        if (stackSize.stackSize > 0 && ringAmount < 1) {
+            built += survivialBuildPiece(
+                STRUCTURE_PIECE_FIRST_RING,
+                stackSize,
+                63,
+                14,
+                -59,
+                realBudget,
+                env,
+                false,
+                true);
+        }
+
+        if (stackSize.stackSize > 1 && ringAmount < 2) {
             built += survivialBuildPiece(
                 STRUCTURE_PIECE_SECOND_RING,
                 stackSize,
@@ -213,7 +229,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 false,
                 true);
         }
-        if (stackSize.stackSize > 2) {
+
+        if (stackSize.stackSize > 2 && ringAmount < 3) {
             built += survivialBuildPiece(
                 STRUCTURE_PIECE_THIRD_RING,
                 stackSize,
