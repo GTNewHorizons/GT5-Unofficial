@@ -39,6 +39,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -47,6 +48,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.math.LongMath;
+import com.google.common.primitives.Booleans;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -1074,7 +1076,15 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(70, 18)
                     .setPos(4, 35)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD))
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.ListSyncer<>(
+                            () -> Booleans.asList(upgrades),
+                            val -> upgrades = Booleans.toArray(val),
+                            PacketBuffer::writeBoolean,
+                            PacketBuffer::readBoolean),
+                        builder,
+                        (widget, val) -> ((NumericWidget) widget).setMaxValue(calculateMaxFuelFactor(this))))
             .widget(
                 new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
                     .setPos(64, 24)
