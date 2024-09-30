@@ -2692,10 +2692,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         .setSize(60, 10))
             .widget(
                 new TextWidget(
-                    EnumChatFormatting.DARK_AQUA + translateToLocal("gt.blockmachines.multimachine.FOG.teg")
-                        + " "
-                        + EnumChatFormatting.RESET
-                        + translateToLocal("gt.blockmachines.multimachine.FOG.serenybiss")).setScale(0.8f)
+                    translateToLocal("gt.blockmachines.multimachine.FOG.serenybiss") + " "
+                        + EnumChatFormatting.DARK_AQUA
+                        + translateToLocal("gt.blockmachines.multimachine.FOG.teg")).setScale(0.8f)
                             .setTextAlignment(Alignment.CenterLeft)
                             .setPos(7, 67)
                             .setSize(60, 10))
