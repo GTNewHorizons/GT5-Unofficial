@@ -31,10 +31,6 @@ public abstract class LogBase extends BlockLog {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Log";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(
-            ItemUtils.getSimpleStack(this),
-            "log" + Utils.sanitizeString(blockNameLocalized),
-            true);
         ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "logWood", true);
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         Blocks.fire.setFireInfo(this, 20, 100);
