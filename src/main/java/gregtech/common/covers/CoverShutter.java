@@ -4,10 +4,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui2.CoverGuiData;
+import gregtech.api.gui.modularui2.GTGuiTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
@@ -17,6 +26,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.gui.modularui2.LinkedBoolValue;
 
 public class CoverShutter extends CoverBehavior {
 
@@ -130,6 +140,78 @@ public class CoverShutter extends CoverBehavior {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected String getGuiId() {
+        return "cover.shutter";
+    }
+
+    @Override
+    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
+        EnumSyncValue<Mode> modeSyncValue = new EnumSyncValue<>(
+            Mode.class,
+            () -> getMode(guiData),
+            value -> setMode(value, guiData));
+        syncManager.syncValue("mode", modeSyncValue);
+
+        column.child(
+            new Grid().marginLeft(WIDGET_MARGIN)
+                .coverChildren()
+                .minElementMarginRight(WIDGET_MARGIN)
+                .minElementMarginBottom(2)
+                .minElementMarginTop(0)
+                .minElementMarginLeft(0)
+                .alignment(Alignment.CenterLeft)
+                .row(
+                    new ToggleButton().value(LinkedBoolValue.of(modeSyncValue, Mode.OPEN_IF_ENABLED))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .size(16),
+                    IKey.str(GTUtility.trans("082", "Open if work enabled"))
+                        .asWidget())
+                .row(
+                    new ToggleButton().value(LinkedBoolValue.of(modeSyncValue, Mode.OPEN_IF_DISABLED))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .size(16),
+                    IKey.str(GTUtility.trans("083", "Open if work disabled"))
+                        .asWidget())
+                .row(
+                    new ToggleButton().value(LinkedBoolValue.of(modeSyncValue, Mode.ONLY_OUTPUT))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .size(16),
+                    IKey.str(GTUtility.trans("084", "Only Output allowed"))
+                        .asWidget())
+                .row(
+                    new ToggleButton().value(LinkedBoolValue.of(modeSyncValue, Mode.ONLY_INPUT))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .size(16),
+                    IKey.str(GTUtility.trans("085", "Only Input allowed"))
+                        .asWidget()));
+    }
+
+    private enum Mode {
+
+        OPEN_IF_ENABLED,
+        OPEN_IF_DISABLED,
+        ONLY_OUTPUT,
+        ONLY_INPUT;
+
+        private static final Mode[] VALUES = Mode.values();
+    }
+
+    private Mode getMode(CoverGuiData guiData) {
+        int coverVariable = convert(getCoverData(guiData));
+        if (coverVariable >= 0 && coverVariable < Mode.VALUES.length) {
+            return Mode.VALUES[coverVariable];
+        }
+        return Mode.OPEN_IF_ENABLED;
+    }
+
+    private void setMode(Mode mode, CoverGuiData guiData) {
+        int coverVariable = convert(getCoverData(guiData));
+        if (mode.ordinal() == coverVariable) return;
+
+        guiData.setCoverData(new ISerializableObject.LegacyCoverData(mode.ordinal()));
     }
 
     @Override
