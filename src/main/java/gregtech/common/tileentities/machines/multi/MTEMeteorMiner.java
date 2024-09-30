@@ -65,6 +65,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.render.TileEntityLaserBeacon;
@@ -703,16 +704,17 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     protected void setElectricityStats() {
         this.mOutputItems = new ItemStack[0];
 
-        this.mEfficiency = getCurrentEfficiency(null);
+        this.mEfficiency = 10000;
         this.mEfficiencyIncrease = 10000;
 
-        int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
-        this.mEUt = (-3 * (1 << (tier << 1))) / ((isWaiting) ? 8 : 1);
-        this.mMaxProgresstime = (isWaiting) ? 200 : calculateMaxProgressTime(tier);
-    }
-
-    private int calculateMaxProgressTime(int tier) {
-        return Math.max(1, getBaseProgressTime() / (1 << tier));
+        OverclockCalculator calculator = new OverclockCalculator().setEUt(getAverageInputVoltage())
+            .setAmperage(getMaxInputAmps())
+            .setRecipeEUt(128)
+            .setDuration(12 * 20)
+            .setAmperageOC(mEnergyHatches.size() != 1);
+        calculator.calculate();
+        this.mMaxProgresstime = (isWaiting) ? 200 : calculator.getDuration();
+        this.mEUt = (int) (calculator.getConsumption() / ((isWaiting) ? 8 : 1));
     }
 
     private boolean isEnergyEnough() {
