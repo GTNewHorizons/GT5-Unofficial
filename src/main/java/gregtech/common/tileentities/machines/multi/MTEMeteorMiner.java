@@ -12,12 +12,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_METEOR_MINER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,10 +40,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -57,9 +49,13 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -511,12 +507,9 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             renderer.setShouldRender(true);
             renderer.setRange((double) (this.currentRadius + 32.5 + this.getLaserToEndHeight()));
             this.setFortuneTier();
-            for (int i = 0; i < (this.multiTier == 1 ? 1 : 4); i++) {
-                this.startMining(this.xDrill, this.yDrill);
-            }
+            this.startMining(this.multiTier);
             mOutputItems = res.toArray(new ItemStack[0]);
             res.clear();
-            this.moveToNextColumn();
         } else {
             renderer.setShouldRender(false);
             this.isWaiting = true;
@@ -533,38 +526,109 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
         return SimpleCheckRecipeResult.ofSuccess("meteor_mining");
     }
 
-    private void startMining(int currentX, int currentY) {
+    private void startMining(int tier) {
+        switch (tier) {
+            case 1 -> this.mineSingleBlock();
+            case 2 -> this.mineRow();
+            default -> throw new IllegalArgumentException("Invalid Multiblock Tier");
+        }
+    }
+
+    private void mineSingleBlock() {
         while (getBaseMetaTileEntity().getWorld()
+            .isAirBlock(this.xDrill, this.yDrill, this.zDrill)) {
+            this.moveToNextBlock();
+            if (this.hasFinished) return;
+        }
+        this.mineBlock(this.xDrill, this.yDrill, this.zDrill);
+        this.moveToNextBlock();
+    }
+
+    private void mineRow() {
+        int currentX = this.xDrill;
+        int currentY = this.yDrill;
+        while (getBaseMetaTileEntity().getWorld() // Skips empty rows
             .isAirBlock(currentX, currentY, this.zStart)) {
             this.moveToNextColumn();
             if (this.hasFinished) return;
             currentX = this.xDrill;
             currentY = this.yDrill;
         }
+
         int opposite = 0;
         for (int z = -currentRadius; z <= (currentRadius - opposite); z++) {
             int currentZ = this.zStart + z;
             if (!getBaseMetaTileEntity().getWorld()
-                .isAirBlock(currentX, currentY, currentZ)) {
-                Block target = getBaseMetaTileEntity().getBlock(currentX, currentY, currentZ);
-                if (target.getBlockHardness(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ) > 0) {
-                    final int blockMeta = getBaseMetaTileEntity().getMetaID(currentX, currentY, currentZ);
-                    res.addAll(
-                        target.getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, blockMeta, 0)
-                            .stream()
-                            .map(drop -> {
-                                int drops = drop.stackSize;
-                                if (this.fortuneTier > 0 && drop.getDisplayName()
-                                    .contains("Raw")) {
-                                    drops *= new Random().nextInt(this.fortuneTier + 1) + 1;
-                                }
-                                return new ItemStack(drop.getItem(), drops, drop.getItemDamage());
-                            })
-                            .collect(Collectors.toList()));
-                    getBaseMetaTileEntity().getWorld()
-                        .setBlockToAir(currentX, currentY, currentZ);
-                }
+                .isAirBlock(this.xDrill, this.yDrill, currentZ)) {
+                this.mineBlock(this.xDrill, this.yDrill, currentZ);
             } else opposite++;
+        }
+        this.moveToNextColumn();
+    }
+
+    private void mineBlock(int currentX, int currentY, int currentZ) {
+        Block target = getBaseMetaTileEntity().getBlock(currentX, currentY, currentZ);
+        if (target.getBlockHardness(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ) > 0) {
+            final int targetMeta = getBaseMetaTileEntity().getMetaID(currentX, currentY, currentZ);
+            Collection<ItemStack> drops = target
+                .getDrops(getBaseMetaTileEntity().getWorld(), currentX, currentY, currentZ, targetMeta, 0);
+            if (GTUtility.isOre(target, targetMeta)) {
+                res.addAll(getOutputByDrops(drops));
+            } else res.addAll(drops);
+            getBaseMetaTileEntity().getWorld()
+                .setBlockToAir(currentX, currentY, currentZ);
+        }
+    }
+
+    private Collection<ItemStack> getOutputByDrops(Collection<ItemStack> oreBlockDrops) {
+        long voltage = getMaxInputVoltage();
+        Collection<ItemStack> outputItems = new HashSet<>();
+        oreBlockDrops.forEach(currentItem -> {
+            if (!doUseMaceratorRecipe(currentItem)) {
+                outputItems.add(multiplyStackSize(currentItem));
+                return;
+            }
+            GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+                .items(currentItem)
+                .voltage(voltage)
+                .find();
+            if (tRecipe == null) {
+                outputItems.add(currentItem);
+                return;
+            }
+            for (int i = 0; i < tRecipe.mOutputs.length; i++) {
+                ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
+                if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
+                    multiplyStackSize(recipeOutput);
+                outputItems.add(recipeOutput);
+            }
+        });
+        return outputItems;
+    }
+
+    private ItemStack multiplyStackSize(ItemStack itemStack) {
+        itemStack.stackSize *= getBaseMetaTileEntity().getRandomNumber(this.fortuneTier + 1) + 1;
+        return itemStack;
+    }
+
+    private boolean doUseMaceratorRecipe(ItemStack currentItem) {
+        ItemData itemData = GTOreDictUnificator.getItemData(currentItem);
+        return itemData == null || itemData.mPrefix != OrePrefixes.crushed && itemData.mPrefix != OrePrefixes.dustImpure
+            && itemData.mPrefix != OrePrefixes.dust
+            && itemData.mPrefix != OrePrefixes.gem
+            && itemData.mPrefix != OrePrefixes.gemChipped
+            && itemData.mPrefix != OrePrefixes.gemExquisite
+            && itemData.mPrefix != OrePrefixes.gemFlawed
+            && itemData.mPrefix != OrePrefixes.gemFlawless
+            && itemData.mMaterial.mMaterial != Materials.Oilsands;
+    }
+
+    private void moveToNextBlock() {
+        if (this.zDrill <= this.zStart + currentRadius) {
+            this.zDrill++;
+        } else {
+            this.zDrill = this.zStart - currentRadius;
+            this.moveToNextColumn();
         }
     }
 
@@ -581,7 +645,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
 
     /**
      * Sets the coordinates of the center to the max range meteor center
-     * 
+     *
      */
     private void setStartCoords() {
         ForgeDirection facing = getBaseMetaTileEntity().getBackFacing();
@@ -641,7 +705,7 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
     }
 
     private int calculateMaxProgressTime(int tier) {
-        return Math.max(1, getBaseProgressTime() / (2 << tier));
+        return Math.max(1, getBaseProgressTime() / (1 << tier));
     }
 
     private boolean isEnergyEnough() {
