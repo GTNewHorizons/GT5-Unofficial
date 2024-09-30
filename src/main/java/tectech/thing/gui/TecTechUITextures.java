@@ -22,6 +22,7 @@ public class TecTechUITextures {
     public static final UITexture BACKGROUND_GLOW_PURPLE = UITexture.fullImage(MODID, "gui/background/purple_glow");
     public static final UITexture BACKGROUND_GLOW_BLUE = UITexture.fullImage(MODID, "gui/background/blue_glow");
     public static final UITexture BACKGROUND_GLOW_GREEN = UITexture.fullImage(MODID, "gui/background/green_glow");
+    public static final UITexture BACKGROUND_GLOW_RED = UITexture.fullImage(MODID, "gui/background/red_glow");
     public static final UITexture BACKGROUND_GLOW_WHITE = UITexture.fullImage(MODID, "gui/background/white_glow");
     public static final UITexture BACKGROUND_GLOW_RAINBOW = UITexture.fullImage(MODID, "gui/background/rainbow_glow");
     public static final UITexture BACKGROUND_SPACE = UITexture.fullImage(MODID, "gui/background/space");
@@ -210,6 +211,7 @@ public class TecTechUITextures {
     public static final UITexture PICTURE_OVERLAY_ORANGE = UITexture.fullImage(MODID, "gui/picture/overlay_orange");
     public static final UITexture PICTURE_OVERLAY_GREEN = UITexture.fullImage(MODID, "gui/picture/overlay_green");
     public static final UITexture PICTURE_OVERLAY_PURPLE = UITexture.fullImage(MODID, "gui/picture/overlay_purple");
+    public static final UITexture PICTURE_OVERLAY_RED = UITexture.fullImage(MODID, "gui/picture/overlay_red");
     public static final UITexture PICTURE_RAINBOW_SQUARE = UITexture.fullImage(MODID, "gui/picture/rainbow_square");
 
 }

@@ -1617,7 +1617,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(
                 createUpgradeBox(
                     8,
-                    0,
+                    4,
                     0,
                     new int[] { 4, 7 },
                     true,
@@ -1643,7 +1643,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(
                 createUpgradeBox(
                     10,
-                    0,
+                    4,
                     1,
                     new int[] { 6, 7 },
                     true,
@@ -2020,6 +2020,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             case 3 -> {
                 background = TecTechUITextures.BACKGROUND_GLOW_GREEN;
                 overlay = TecTechUITextures.PICTURE_OVERLAY_GREEN;
+            }
+            case 4 -> {
+                background = TecTechUITextures.BACKGROUND_GLOW_RED;
+                overlay = TecTechUITextures.PICTURE_OVERLAY_RED;
             }
             default -> {
                 background = TecTechUITextures.BACKGROUND_GLOW_BLUE;
