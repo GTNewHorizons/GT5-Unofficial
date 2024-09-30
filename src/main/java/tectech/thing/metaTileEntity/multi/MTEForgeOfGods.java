@@ -41,6 +41,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -151,7 +152,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private boolean batteryCharging = false;
     private boolean inversion = false;
     private boolean gravitonShardEjection = false;
-    private boolean noFormatting = false;
+    private FormattingMode formattingMode = FormattingMode.NONE;
     private boolean isRenderActive = false;
     private boolean secretUpgrade = false;
     private boolean rainbowMode = false;
@@ -1406,7 +1407,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
                 if (clickData.mouseButton == 0) {
-                    noFormatting = !noFormatting;
+                    formattingMode = formattingMode.cycle();
                 }
             })
                 .setSize(10, 10)
@@ -1415,7 +1416,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .setPos(5, 135)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(() -> noFormatting, val -> noFormatting = val),
+                    new FakeSyncWidget.ByteSyncer(
+                        () -> (byte) formattingMode.ordinal(),
+                        val -> formattingMode = FormattingMode.VALUES[MathHelper
+                            .clamp_int(val, 0, FormattingMode.VALUES.length - 1)]),
                     builder));
 
         return builder.build();
@@ -3440,11 +3444,55 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             translateToLocal("gt.blockmachines.multimachine.FOG.shardgain") + ": " + EnumChatFormatting.GRAY + sum);
     }
 
+    private enum FormattingMode {
+
+        NONE,
+        COMMA,
+        EXPONENT;
+
+        static final FormattingMode[] VALUES = values();
+
+        FormattingMode cycle() {
+            return switch (this) {
+                case NONE -> COMMA;
+                case COMMA -> EXPONENT;
+                case EXPONENT -> NONE;
+            };
+        }
+
+        String format(Number number) {
+            return switch (this) {
+                case NONE -> number.toString();
+                case COMMA -> {
+                    if (number instanceof BigInteger bi) yield formatNumbers(bi);
+                    else yield formatNumbers(number.longValue());
+                }
+                case EXPONENT -> {
+                    if (number instanceof BigInteger bi) {
+                        if (bi.compareTo(BigInteger.valueOf(1_000L)) > 0) {
+                            yield toExponentForm(bi);
+                        }
+                        yield bi.toString();
+                    } else {
+                        long value = number.longValue();
+                        if (value > 1_000L) {
+                            yield toExponentForm(value);
+                        }
+                        yield Long.toString(value);
+                    }
+                }
+            };
+        }
+    }
+
     private Text totalMilestoneProgress(int milestoneID) {
-        long progress;
-        BigInteger bigProgress;
+        Number progress;
         String suffix;
         switch (milestoneID) {
+            case 0 -> {
+                suffix = translateToLocal("gt.blockmachines.multimachine.FOG.power");
+                progress = totalPowerConsumed;
+            }
             case 1 -> {
                 suffix = translateToLocal("gt.blockmachines.multimachine.FOG.recipes");
                 progress = totalRecipesProcessed;
@@ -3457,42 +3505,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 suffix = translateToLocal("gt.blockmachines.multimachine.FOG.extensions");
                 progress = milestoneProgress[3];
             }
-            default -> {
-                suffix = translateToLocal("gt.blockmachines.multimachine.FOG.power");
-                bigProgress = totalPowerConsumed;
-                if (!noFormatting && (totalPowerConsumed.compareTo(BigInteger.valueOf(1_000L)) > 0)) {
-                    return new Text(
-                        translateToLocal("gt.blockmachines.multimachine.FOG.totalprogress") + ": "
-                            + EnumChatFormatting.GRAY
-                            + toExponentForm(bigProgress)
-                            + " "
-                            + suffix);
-                } else {
-                    return new Text(
-                        translateToLocal("gt.blockmachines.multimachine.FOG.totalprogress") + ": "
-                            + EnumChatFormatting.GRAY
-                            + bigProgress
-                            + " "
-                            + suffix);
-                }
-            }
+            default -> throw new IllegalArgumentException("Invalid Milestone ID");
         }
-        if (!noFormatting) {
-            return new Text(
-                translateToLocal("gt.blockmachines.multimachine.FOG.totalprogress") + ": "
-                    + EnumChatFormatting.GRAY
-                    + formatNumbers(progress)
-                    + " "
-                    + suffix);
-        } else {
-            return new Text(
-                translateToLocal("gt.blockmachines.multimachine.FOG.totalprogress") + ": "
-                    + EnumChatFormatting.GRAY
-                    + progress
-                    + " "
-                    + suffix);
-        }
-
+        return new Text(
+            translateToLocal("gt.blockmachines.multimachine.FOG.totalprogress") + ": "
+                + EnumChatFormatting.GRAY
+                + formattingMode.format(progress)
+                + " "
+                + suffix);
     }
 
     private Text currentMilestone(int milestoneID) {
@@ -3503,75 +3523,55 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private Text milestoneProgressText(int milestoneID) {
-        long max;
-        BigInteger bigMax;
+        Number max;
         String suffix;
         String progressText = translateToLocal("gt.blockmachines.multimachine.FOG.progress");
         Text done = new Text(translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete"));
-        if (noFormatting) {
-            done = new Text(
-                translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete") + EnumChatFormatting.DARK_RED
-                    + "?");
+
+        // todo what is this for?
+        // if (noFormatting) {
+        // done = new Text(
+        // translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete") + EnumChatFormatting.DARK_RED
+        // + "?");
+        // }
+
+        if (milestoneProgress[milestoneID] >= 7 && !inversion) {
+            return done;
         }
+
         switch (milestoneID) {
-            case 0:
-                if (milestoneProgress[0] < 7 || inversion) {
-                    suffix = translateToLocal("gt.blockmachines.multimachine.FOG.power");
-                    if (inversion) {
-                        bigMax = POWER_MILESTONE_T7_CONSTANT.multiply(BigInteger.valueOf(milestoneProgress[0] - 5));
-                    } else {
-                        bigMax = BigInteger.valueOf(LongMath.pow(9, milestoneProgress[0]))
-                            .multiply(BigInteger.valueOf(LongMath.pow(10, 15)));
-                    }
-                    if (!noFormatting && (bigMax.compareTo(BigInteger.valueOf(1_000L)) > 0)) {
-                        return new Text(
-                            progressText + ": " + EnumChatFormatting.GRAY + toExponentForm(bigMax) + " " + suffix);
-                    } else {
-                        return new Text(progressText + ": " + EnumChatFormatting.GRAY + bigMax + " " + suffix);
-                    }
+            case 0 -> {
+                suffix = translateToLocal("gt.blockmachines.multimachine.FOG.power");
+                if (inversion) {
+                    max = POWER_MILESTONE_T7_CONSTANT.multiply(BigInteger.valueOf(milestoneProgress[0] - 5));
                 } else {
-                    return done;
+                    max = BigInteger.valueOf(LongMath.pow(9, milestoneProgress[0]))
+                        .multiply(BigInteger.valueOf(LongMath.pow(10, 15)));
                 }
-            case 1:
-                if (milestoneProgress[1] < 7 || inversion) {
-                    suffix = translateToLocal("gt.blockmachines.multimachine.FOG.recipes");
-                    if (inversion) {
-                        max = RECIPE_MILESTONE_T7_CONSTANT * (milestoneProgress[1] - 5);
-                    } else {
-                        max = LongMath.pow(6, milestoneProgress[1]) * LongMath.pow(10, 7);
-                    }
-                    break;
+            }
+            case 1 -> {
+                suffix = translateToLocal("gt.blockmachines.multimachine.FOG.recipes");
+                if (inversion) {
+                    max = RECIPE_MILESTONE_T7_CONSTANT * (milestoneProgress[1] - 5);
                 } else {
-                    return done;
+                    max = LongMath.pow(6, milestoneProgress[1]) * LongMath.pow(10, 7);
                 }
-            case 2:
-                if (milestoneProgress[2] < 7 || inversion) {
-                    suffix = translateToLocal("gt.blockmachines.multimachine.FOG.fuelconsumed");
-                    if (inversion) {
-                        max = FUEL_MILESTONE_T7_CONSTANT * (milestoneProgress[2] - 5);
-                    } else {
-                        max = LongMath.pow(3, milestoneProgress[2]) * LongMath.pow(10, 4);
-                    }
-                    break;
+            }
+            case 2 -> {
+                suffix = translateToLocal("gt.blockmachines.multimachine.FOG.fuelconsumed");
+                if (inversion) {
+                    max = FUEL_MILESTONE_T7_CONSTANT * (milestoneProgress[2] - 5);
                 } else {
-                    return done;
+                    max = LongMath.pow(3, milestoneProgress[2]) * LongMath.pow(10, 4);
                 }
-            case 3:
-                if (milestoneProgress[3] < 7 || inversion) {
-                    suffix = translateToLocal("gt.blockmachines.multimachine.FOG.extensions");
-                    max = milestoneProgress[3] + 1;
-                    break;
-                } else {
-                    return done;
-                }
-            default:
-                return new Text("Error");
+            }
+            case 3 -> {
+                suffix = translateToLocal("gt.blockmachines.multimachine.FOG.extensions");
+                max = milestoneProgress[3] + 1;
+            }
+            default -> throw new IllegalArgumentException("Invalid Milestone ID");
         }
-        if (!noFormatting) {
-            return new Text(progressText + ": " + EnumChatFormatting.GRAY + formatNumbers(max) + " " + suffix);
-        } else {
-            return new Text(progressText + ": " + EnumChatFormatting.GRAY + max + " " + suffix);
-        }
+        return new Text(progressText + ": " + EnumChatFormatting.GRAY + formattingMode.format(max) + " " + suffix);
     }
 
     private Text inversionHeaderText() {
