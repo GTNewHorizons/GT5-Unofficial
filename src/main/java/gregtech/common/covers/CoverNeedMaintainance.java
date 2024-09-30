@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
@@ -15,6 +17,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.conditions.MaintenanceAlertCondition;
+import gregtech.common.covers.modes.RedstoneMode;
+import gregtech.common.gui.modularui2.cover.CoverGui;
+import gregtech.common.gui.modularui2.cover.CoverNeedMaintenanceGui;
 import gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory;
 
 public class CoverNeedMaintainance extends CoverLegacyData {
@@ -27,6 +33,27 @@ public class CoverNeedMaintainance extends CoverLegacyData {
         return (rotor != null && rotor.getItem() instanceof MetaGeneratedTool
             && rotor.getItemDamage() >= 170
             && rotor.getItemDamage() <= 176);
+    }
+
+    public MaintenanceAlertCondition getMaintenanceAlertCondition() {
+        int coverVariable = coverData;
+        if (coverVariable >= 0 && coverVariable < MaintenanceAlertCondition.values().length) {
+            return MaintenanceAlertCondition.values()[coverVariable >> 1];
+        }
+        return MaintenanceAlertCondition.ISSUE_1;
+    }
+
+    public void setMaintenanceAlertCondition(MaintenanceAlertCondition threshold) {
+        setVariable((coverData & 0x1) | (threshold.ordinal() << 1));
+    }
+
+    public RedstoneMode getRedstoneMode() {
+        int coverVariable = coverData;
+        return (coverVariable & 0x1) > 0 ? RedstoneMode.INVERTED : RedstoneMode.NORMAL;
+    }
+
+    public void setRedstoneMode(RedstoneMode redstoneMode) {
+        setVariable(redstoneMode == RedstoneMode.NORMAL ? coverData & ~0x1 : coverData | 0x1);
     }
 
     public boolean isRedstoneSensitive(long aTimer) {
@@ -152,6 +179,11 @@ public class CoverNeedMaintainance extends CoverLegacyData {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverGui<?> getCoverGui() {
+        return new CoverNeedMaintenanceGui();
+    }
 
     @Override
     public boolean hasCoverGUI() {
