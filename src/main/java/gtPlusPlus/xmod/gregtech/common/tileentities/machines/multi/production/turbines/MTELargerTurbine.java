@@ -58,8 +58,7 @@ import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
-public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerTurbineBase>
-    implements ISurvivalConstructable {
+public abstract class MTELargerTurbine extends GTPPMultiBlockBase<MTELargerTurbine> implements ISurvivalConstructable {
 
     protected int baseEff = 0;
     protected long optFlow = 0;
@@ -76,13 +75,13 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     public ArrayList<MTEHatchTurbine> mTurbineRotorHatches = new ArrayList<>();
 
-    public MTELargerTurbineBase(int aID, String aName, String aNameRegional) {
+    public MTELargerTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         frontFace = getTextureFrontFace();
         frontFaceActive = getTextureFrontFaceActive();
     }
 
-    public MTELargerTurbineBase(String aName) {
+    public MTELargerTurbine(String aName) {
         super(aName);
         frontFace = getTextureFrontFace();
         frontFaceActive = getTextureFrontFaceActive();
@@ -136,12 +135,12 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final ClassValue<IStructureDefinition<MTELargerTurbineBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
+    private static final ClassValue<IStructureDefinition<MTELargerTurbine>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         @SuppressWarnings("SpellCheckingInspection")
-        protected IStructureDefinition<MTELargerTurbineBase> computeValue(Class<?> type) {
-            return StructureDefinition.<MTELargerTurbineBase>builder()
+        protected IStructureDefinition<MTELargerTurbine> computeValue(Class<?> type) {
+            return StructureDefinition.<MTELargerTurbine>builder()
                 // c = turbine casing
                 // s = turbine shaft
                 // t = turbine housing
@@ -163,7 +162,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .addElement(
                     't',
                     lazy(
-                        t -> buildHatchAdder(MTELargerTurbineBase.class).adder(MTELargerTurbineBase::addTurbineHatch)
+                        t -> buildHatchAdder(MTELargerTurbine.class).adder(MTELargerTurbine::addTurbineHatch)
                             .hatchClass(MTEHatchTurbine.class)
                             .casingIndex(t.getCasingTextureIndex())
                             .dot(1)
@@ -171,7 +170,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .addElement(
                     'h',
                     lazy(
-                        t -> buildHatchAdder(MTELargerTurbineBase.class)
+                        t -> buildHatchAdder(MTELargerTurbine.class)
                             .atLeast(InputBus, InputHatch, OutputHatch, Dynamo.or(TTDynamo), Maintenance)
                             .casingIndex(t.getCasingTextureIndex())
                             .dot(4)
@@ -179,7 +178,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .addElement(
                     'm',
                     lazy(
-                        t -> buildHatchAdder(MTELargerTurbineBase.class).atLeast(Muffler)
+                        t -> buildHatchAdder(MTELargerTurbine.class).atLeast(Muffler)
                             .casingIndex(t.getCasingTextureIndex())
                             .dot(7)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
@@ -188,7 +187,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     };
 
     @Override
-    public IStructureDefinition<MTELargerTurbineBase> getStructureDefinition() {
+    public IStructureDefinition<MTELargerTurbine> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
 

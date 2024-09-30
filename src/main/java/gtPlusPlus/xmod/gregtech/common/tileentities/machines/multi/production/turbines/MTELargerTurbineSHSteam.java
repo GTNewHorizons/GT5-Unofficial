@@ -18,22 +18,22 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
-public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
+public class MTELargerTurbineSHSteam extends MTELargerTurbine {
 
     public boolean achievement = false;
     private boolean isUsingDenseSteam;
 
-    public MTELargeTurbineSHSteam(int aID, String aName, String aNameRegional) {
+    public MTELargerTurbineSHSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargeTurbineSHSteam(String aName) {
+    public MTELargerTurbineSHSteam(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargeTurbineSHSteam(mName);
+        return new MTELargerTurbineSHSteam(mName);
     }
 
     @Override

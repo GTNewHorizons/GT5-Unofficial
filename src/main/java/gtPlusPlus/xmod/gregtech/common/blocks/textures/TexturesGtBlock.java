@@ -182,8 +182,8 @@ public class TexturesGtBlock {
     // Farm Manager Casings
     public static final CustomIcon Casing_Machine_Farm_Manager = new CustomIcon(
         "TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
-    // Acacia_Log
-    public static final CustomIcon Casing_Machine_Acacia_Log = new CustomIcon("TileEntities/log_acacia_top");
+    // Sterile Casing
+    public static final CustomIcon Sterile_Casing = new CustomIcon("TileEntities/sterileCasing");
     // Podzol Top
     public static final CustomIcon Casing_Machine_Podzol = new CustomIcon("TileEntities/dirt_podzol_top");
 

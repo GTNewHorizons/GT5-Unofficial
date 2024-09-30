@@ -29,7 +29,7 @@ import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
-public class MTELargeTurbineGas extends MTELargerTurbineBase {
+public class MTELargerTurbineGas extends MTELargerTurbine {
 
     private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
 
@@ -39,17 +39,17 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                 .getFluid());
     }
 
-    public MTELargeTurbineGas(int aID, String aName, String aNameRegional) {
+    public MTELargerTurbineGas(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargeTurbineGas(String aName) {
+    public MTELargerTurbineGas(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargeTurbineGas(mName);
+        return new MTELargerTurbineGas(mName);
     }
 
     @Override

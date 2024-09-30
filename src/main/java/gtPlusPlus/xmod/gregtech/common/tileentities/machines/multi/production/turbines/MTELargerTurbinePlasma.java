@@ -27,7 +27,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbi
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
-public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
+public class MTELargerTurbinePlasma extends MTELargerTurbine {
 
     public MTELargerTurbinePlasma(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

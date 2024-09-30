@@ -22,7 +22,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbine;
 
 public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
@@ -209,7 +209,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBase::isValidTurbine)
+            new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbine::isValidTurbine)
                 .setAccess(false, true)
                 .setPos(79, 34));
     }
