@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
-import gregtech.api.util.GTLog;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -18,6 +17,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GTLog;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.AlgaeDefinition;
 import gtPlusPlus.plugin.agrichem.IAlgalItem;

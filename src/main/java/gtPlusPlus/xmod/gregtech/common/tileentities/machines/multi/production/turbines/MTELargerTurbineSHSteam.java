@@ -7,15 +7,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
 public class MTELargerTurbineSHSteam extends MTELargerTurbine {
@@ -175,15 +172,5 @@ public class MTELargerTurbineSHSteam extends MTELargerTurbine {
     @Override
     protected String getCasingName() {
         return "Reinforced HP Steam Turbine Casing";
-    }
-
-    @Override
-    protected ITexture getTextureFrontFace() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
-    }
-
-    @Override
-    protected ITexture getTextureFrontFaceActive() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
     }
 }
