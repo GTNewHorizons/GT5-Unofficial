@@ -11,6 +11,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -19,6 +26,9 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
+import gregtech.api.gui.modularui2.CoverGuiData;
+import gregtech.api.gui.modularui2.GTGuiTextures;
+import gregtech.api.gui.modularui2.GTWidgetThemes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.render.TextureFactory;
@@ -300,6 +310,142 @@ public abstract class CoverFacadeBase extends CoverBehaviorBase<CoverFacadeBase.
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected String getGuiId() {
+        return "cover.facade";
+    }
+
+    @Override
+    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {
+        column.child(
+            new Grid().marginLeft(WIDGET_MARGIN)
+                .coverChildren()
+                .minElementMarginRight(WIDGET_MARGIN)
+                .minElementMarginBottom(2)
+                .minElementMarginTop(0)
+                .minElementMarginLeft(0)
+                .alignment(Alignment.CenterLeft)
+                .row(
+                    new ToggleButton().value(
+                        new BooleanSyncValue(() -> getRedstonePass(guiData), value -> setRedstonePass(value, guiData)))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                        .size(16),
+                    IKey.str(GTUtility.trans("128", "Redstone"))
+                        .asWidget())
+                .row(
+                    new ToggleButton()
+                        .value(
+                            new BooleanSyncValue(() -> getEnergyPass(guiData), value -> setEnergyPass(value, guiData)))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                        .size(16),
+                    IKey.str(GTUtility.trans("129", "Energy"))
+                        .asWidget())
+                .row(
+                    new ToggleButton()
+                        .value(new BooleanSyncValue(() -> getFluidPass(guiData), value -> setFluidPass(value, guiData)))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                        .size(16),
+                    IKey.str(GTUtility.trans("130", "Fluids"))
+                        .asWidget())
+                .row(
+                    new ToggleButton()
+                        .value(new BooleanSyncValue(() -> getItemPass(guiData), value -> setItemPass(value, guiData)))
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                        .size(16),
+                    IKey.str(GTUtility.trans("131", "Items"))
+                        .asWidget()));
+    }
+
+    @Override
+    protected void addTitleToUI(CoverGuiData guiData, Flow column) {
+        ItemStack coverItem = getCoverData(guiData).mStack;
+        if (coverItem == null) return;
+        column.child(
+            Flow.row()
+                .coverChildren()
+                .marginBottom(4)
+                .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget())
+                .child(
+                    new com.cleanroommc.modularui.widgets.TextWidget(coverItem.getDisplayName()).marginLeft(4)
+                        .widgetTheme(GTWidgetThemes.TITLE_TEXT)));
+    }
+
+    private boolean getRedstonePass(CoverGuiData guiData) {
+        FacadeData coverData = getCoverData(guiData);
+        return (coverData.mFlags & 0x1) > 0;
+    }
+
+    private void setRedstonePass(boolean redstonePass, CoverGuiData guiData) {
+        FacadeData coverData = getCoverData(guiData);
+        boolean wasEnabled = getRedstonePass(guiData);
+        if (redstonePass == wasEnabled) return;
+
+        if (redstonePass) {
+            coverData.mFlags |= 0x1;
+        } else {
+            coverData.mFlags &= ~0x1;
+        }
+        guiData.setCoverData(coverData);
+    }
+
+    private boolean getEnergyPass(CoverGuiData guiData) {
+        FacadeData coverData = getCoverData(guiData);
+        return (coverData.mFlags & 0x2) > 0;
+    }
+
+    private void setEnergyPass(boolean energyPass, CoverGuiData guiData) {
+        FacadeData coverData = getCoverData(guiData);
+        boolean wasEnabled = getEnergyPass(guiData);
+        if (energyPass == wasEnabled) return;
+
+        if (energyPass) {
+            coverData.mFlags |= 0x2;
+        } else {
+            coverData.mFlags &= ~0x2;
+        }
+        guiData.setCoverData(coverData);
+    }
+
+    private boolean getFluidPass(CoverGuiData guiData) {
+        FacadeData coverData = getCoverData(guiData);
+        return (coverData.mFlags & 0x4) > 0;
+    }
+
+    private void setFluidPass(boolean fluidPass, CoverGuiData guiData) {
+        FacadeData coverData = getCoverData(guiData);
+        boolean wasEnabled = getFluidPass(guiData);
+        if (fluidPass == wasEnabled) return;
+
+        if (fluidPass) {
+            coverData.mFlags |= 0x4;
+        } else {
+            coverData.mFlags &= ~0x4;
+        }
+        guiData.setCoverData(coverData);
+    }
+
+    private boolean getItemPass(CoverGuiData guiData) {
+        FacadeData coverData = getCoverData(guiData);
+        return (coverData.mFlags & 0x8) > 0;
+    }
+
+    private void setItemPass(boolean itemPass, CoverGuiData guiData) {
+        FacadeData coverData = getCoverData(guiData);
+        boolean wasEnabled = getItemPass(guiData);
+        if (itemPass == wasEnabled) return;
+
+        if (itemPass) {
+            coverData.mFlags |= 0x8;
+        } else {
+            coverData.mFlags &= ~0x8;
+        }
+        guiData.setCoverData(coverData);
     }
 
     @Override

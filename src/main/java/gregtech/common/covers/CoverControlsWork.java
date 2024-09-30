@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -203,57 +204,40 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
             safeMode -> setSafeMode(safeMode, guiData));
 
         column.child(
-            Flow.column()
-                .crossAxisAlignment(Alignment.CrossAxis.START)
-                .marginLeft(WIDGET_MARGIN)
-                .childPadding(2)
-                .child(
-                    Flow.row()
-                        .coverChildren()
-                        .childPadding(WIDGET_MARGIN)
-                        .child(
-                            new ToggleButton()
-                                .value(LinkedBoolValue.of(conditionModeSyncValue, ConditionMode.ENABLE_WITH_REDSTONE))
-                                .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                .size(16))
-                        .child(
-                            IKey.str(GTUtility.trans("243", "Enable with Redstone"))
-                                .asWidget()))
-                .child(
-                    Flow.row()
-                        .coverChildren()
-                        .childPadding(WIDGET_MARGIN)
-                        .child(
-                            new ToggleButton()
-                                .value(LinkedBoolValue.of(conditionModeSyncValue, ConditionMode.DISABLE_WITH_REDSTONE))
-                                .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                                .size(16))
-                        .child(
-                            IKey.str(GTUtility.trans("244", "Disable with Redstone"))
-                                .asWidget()))
-                .child(
-                    Flow.row()
-                        .coverChildren()
-                        .childPadding(WIDGET_MARGIN)
-                        .child(
-                            new ToggleButton().value(LinkedBoolValue.of(conditionModeSyncValue, ConditionMode.DISABLE))
-                                .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                                .size(16))
-                        .child(
-                            IKey.str(GTUtility.trans("245", "Disable machine"))
-                                .asWidget()))
-                .child(
-                    Flow.row()
-                        .coverChildren()
-                        .childPadding(WIDGET_MARGIN)
-                        .child(
-                            new ToggleButton().value(safeModeSyncValue)
-                                .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                                .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                                .size(16))
-                        .child(
-                            IKey.str(GTUtility.trans("507", "Safe Mode"))
-                                .asWidget())));
+            new Grid().marginLeft(WIDGET_MARGIN)
+                .coverChildren()
+                .minElementMarginRight(WIDGET_MARGIN)
+                .minElementMarginBottom(2)
+                .minElementMarginTop(0)
+                .minElementMarginLeft(0)
+                .alignment(Alignment.CenterLeft)
+                .row(
+                    new ToggleButton()
+                        .value(LinkedBoolValue.of(conditionModeSyncValue, ConditionMode.ENABLE_WITH_REDSTONE))
+                        .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
+                        .size(16),
+                    IKey.str(GTUtility.trans("243", "Enable with Redstone"))
+                        .asWidget())
+                .row(
+                    new ToggleButton()
+                        .value(LinkedBoolValue.of(conditionModeSyncValue, ConditionMode.DISABLE_WITH_REDSTONE))
+                        .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                        .size(16),
+                    IKey.str(GTUtility.trans("244", "Disable with Redstone"))
+                        .asWidget())
+                .row(
+                    new ToggleButton().value(LinkedBoolValue.of(conditionModeSyncValue, ConditionMode.DISABLE))
+                        .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                        .size(16),
+                    IKey.str(GTUtility.trans("245", "Disable machine"))
+                        .asWidget())
+                .row(
+                    new ToggleButton().value(safeModeSyncValue)
+                        .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                        .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                        .size(16),
+                    IKey.str(GTUtility.trans("507", "Safe Mode"))
+                        .asWidget()));
     }
 
     private enum ConditionMode {
