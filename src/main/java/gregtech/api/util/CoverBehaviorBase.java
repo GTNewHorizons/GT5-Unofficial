@@ -25,9 +25,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -501,7 +499,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> implement
         if (doesBindPlayerInventory() && !guiData.isAnotherWindow()) {
             panel.bindPlayerInventory();
         }
-        final Flow widgetsColumn = new Column().coverChildren()
+        final Flow widgetsColumn = Flow.column()
+            .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .marginLeft(WIDGET_MARGIN)
             .marginTop(WIDGET_MARGIN);
@@ -530,7 +529,8 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> implement
         ItemStack coverItem = GTUtility.intToStack(guiData.getCoverID());
         if (coverItem == null) return;
         column.child(
-            new Row().coverChildren()
+            Flow.row()
+                .coverChildren()
                 .marginBottom(4)
                 .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget())
                 .child(

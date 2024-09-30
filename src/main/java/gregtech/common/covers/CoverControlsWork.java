@@ -11,9 +11,7 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -205,11 +203,13 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
             safeMode -> setSafeMode(safeMode, guiData));
 
         column.child(
-            new Column().crossAxisAlignment(Alignment.CrossAxis.START)
+            Flow.column()
+                .crossAxisAlignment(Alignment.CrossAxis.START)
                 .marginLeft(WIDGET_MARGIN)
                 .childPadding(2)
                 .child(
-                    new Row().coverChildren()
+                    Flow.row()
+                        .coverChildren()
                         .childPadding(WIDGET_MARGIN)
                         .child(
                             new ToggleButton()
@@ -220,7 +220,8 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
                             IKey.str(GTUtility.trans("243", "Enable with Redstone"))
                                 .asWidget()))
                 .child(
-                    new Row().coverChildren()
+                    Flow.row()
+                        .coverChildren()
                         .childPadding(WIDGET_MARGIN)
                         .child(
                             new ToggleButton()
@@ -231,7 +232,8 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
                             IKey.str(GTUtility.trans("244", "Disable with Redstone"))
                                 .asWidget()))
                 .child(
-                    new Row().coverChildren()
+                    Flow.row()
+                        .coverChildren()
                         .childPadding(WIDGET_MARGIN)
                         .child(
                             new ToggleButton().value(LinkedBoolValue.of(conditionModeSyncValue, ConditionMode.DISABLE))
@@ -241,7 +243,8 @@ public class CoverControlsWork extends CoverBehavior implements IControlsWorkCov
                             IKey.str(GTUtility.trans("245", "Disable machine"))
                                 .asWidget()))
                 .child(
-                    new Row().coverChildren()
+                    Flow.row()
+                        .coverChildren()
                         .childPadding(WIDGET_MARGIN)
                         .child(
                             new ToggleButton().value(safeModeSyncValue)

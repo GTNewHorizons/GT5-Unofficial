@@ -155,6 +155,8 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_EXPORT = fullImageGT("overlay_button/export");
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = fullImageGT("overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_IMPORT = fullImageGT("overlay_button/import");
+    public static final UITexture OVERLAY_BUTTON_POWER_SWITCH_ON = fullImageGT("overlay_button/power_switch_on");
+    public static final UITexture OVERLAY_BUTTON_PROGRESS = fullImageGT("overlay_button/progress");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_OFF = fullImageGT("overlay_button/redstone_off");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_ON = fullImageGT("overlay_button/redstone_on");
     public static final UITexture OVERLAY_BUTTON_USE_PROCESSING_STATE = fullImageGT(

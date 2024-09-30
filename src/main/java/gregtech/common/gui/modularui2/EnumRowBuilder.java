@@ -9,12 +9,11 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.interfaces.modularui.KeyProvider;
 
 /**
- * Creates a {@link Row} wrapping a series of buttons that are bound to the enum.
+ * Creates a row wrapping a series of buttons that are bound to the enum.
  * <p>
  * In order to add tooltip, you can either call {@link #tooltip(IKey...)} or implement {@link KeyProvider} for the enum.
  */
@@ -29,6 +28,10 @@ public class EnumRowBuilder<E extends Enum<E>> {
         this.enumClass = Objects.requireNonNull(enumClass);
     }
 
+    /**
+     * This method wraps supplied value with {@link LinkedBoolValue} to be bound to each button, so you still need to
+     * manually register it to {@link com.cleanroommc.modularui.value.sync.PanelSyncManager}.
+     */
     public EnumRowBuilder<E> value(EnumSyncValue<E> syncValue) {
         this.syncValue = syncValue;
         return this;
@@ -63,7 +66,8 @@ public class EnumRowBuilder<E extends Enum<E>> {
         if (this.tooltip != null && this.tooltip.length != enumClass.getEnumConstants().length) {
             throw new IllegalArgumentException("Number of tooltips must be " + enumClass.getEnumConstants().length);
         }
-        Flow row = new Row().childPadding(2)
+        Flow row = Flow.row()
+            .childPadding(2)
             .coverChildren();
         for (E enumVal : this.enumClass.getEnumConstants()) {
             ToggleButton button = new ToggleButton().value(LinkedBoolValue.of(this.syncValue, enumVal))
