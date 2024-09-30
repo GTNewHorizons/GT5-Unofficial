@@ -71,15 +71,10 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
     public void process(final IBlockAccess aWorld) {
         ItemStack currentItemStack = player.inventory.getCurrentItem();
         if (currentItemStack != null && currentItemStack.getItem() instanceof MetaBaseItem item) {
-            item.forEachBehavior(currentItemStack, behavior -> {
-                if (behavior instanceof BehaviourSprayColorInfinite spraycanBehavior
-                    && action.execute(spraycanBehavior, currentItemStack, player, newColor)) {
-                    player.sendSlotContents(player.inventoryContainer, player.inventory.currentItem, currentItemStack);
-                    return true;
-                }
-
-                return false;
-            });
+            item.forEachBehavior(
+                currentItemStack,
+                behavior -> behavior instanceof BehaviourSprayColorInfinite spraycanBehavior
+                    && action.execute(spraycanBehavior, currentItemStack, player, newColor));
         }
     }
 
