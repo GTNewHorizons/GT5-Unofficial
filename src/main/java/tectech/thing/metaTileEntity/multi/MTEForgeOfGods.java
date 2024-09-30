@@ -1392,7 +1392,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(5, 50)
                     .setSize(140, 30))
             .widget(
-                TextWidget.dynamicText(() -> milestoneProgressText(currentMilestoneID, true))
+                TextWidget.dynamicText(() -> milestoneProgressText(currentMilestoneID))
                     .setScale(0.7f)
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setSize(140, 30)
@@ -2692,7 +2692,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         .setSize(60, 10))
             .widget(
                 new TextWidget(
-                    translateToLocal("gt.blockmachines.multimachine.FOG.serenybiss") + " "
+                    translateToLocal("gt.blockmachines.multimachine.FOG.serenibyss") + " "
                         + EnumChatFormatting.DARK_AQUA
                         + translateToLocal("gt.blockmachines.multimachine.FOG.teg")).setScale(0.8f)
                             .setTextAlignment(Alignment.CenterLeft)
@@ -3502,14 +3502,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 + milestoneProgress[milestoneID]);
     }
 
-    private Text milestoneProgressText(int milestoneID, boolean formatting) {
+    private Text milestoneProgressText(int milestoneID) {
         long max;
         BigInteger bigMax;
         String suffix;
         String progressText = translateToLocal("gt.blockmachines.multimachine.FOG.progress");
         Text done = new Text(translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete"));
         if (noFormatting) {
-            formatting = false;
             done = new Text(
                 translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete") + EnumChatFormatting.DARK_RED
                     + "?");
@@ -3524,7 +3523,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         bigMax = BigInteger.valueOf(LongMath.pow(9, milestoneProgress[0]))
                             .multiply(BigInteger.valueOf(LongMath.pow(10, 15)));
                     }
-                    if (formatting && (totalPowerConsumed.compareTo(BigInteger.valueOf(1_000L)) > 0)) {
+                    if (!noFormatting && (bigMax.compareTo(BigInteger.valueOf(1_000L)) > 0)) {
                         return new Text(
                             progressText + ": " + EnumChatFormatting.GRAY + toExponentForm(bigMax) + " " + suffix);
                     } else {
@@ -3568,7 +3567,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             default:
                 return new Text("Error");
         }
-        if (formatting) {
+        if (!noFormatting) {
             return new Text(progressText + ": " + EnumChatFormatting.GRAY + formatNumbers(max) + " " + suffix);
         } else {
             return new Text(progressText + ": " + EnumChatFormatting.GRAY + max + " " + suffix);
