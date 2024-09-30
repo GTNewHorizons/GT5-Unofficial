@@ -110,10 +110,12 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
-        addChemicalBathRecipes(aMaterial, aMaterial, aStack, aPrefix);
-
-        for (Materials tMaterial : aMaterial.mOreByProducts) {
-            addChemicalBathRecipes(aMaterial, tMaterial, aStack, aPrefix);
+        if (aMaterial.mOreByProducts.isEmpty()) {
+            addChemicalBathRecipes(aMaterial, aMaterial, aStack, aPrefix);
+        } else {
+            for (Materials tMaterial : aMaterial.mOreByProducts) {
+                addChemicalBathRecipes(aMaterial, tMaterial, aStack, aPrefix);
+            }
         }
     }
 
