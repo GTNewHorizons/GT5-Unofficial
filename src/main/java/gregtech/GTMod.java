@@ -30,6 +30,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.cleanroommc.modularui.factory.GuiManager;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
@@ -60,6 +61,10 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.gui.modularui2.CoverUIFactory;
+import gregtech.api.gui.modularui2.GTGuiTextures;
+import gregtech.api.gui.modularui2.GTGuiTheme;
+import gregtech.api.gui.modularui2.GTWidgetThemes;
 import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.ItemData;
@@ -275,6 +280,12 @@ public class GTMod implements IGTMod {
         GTLog.out.println("GTMod: Setting Configs");
 
         GTPreLoad.loadConfig();
+
+        // ModularUI
+        GuiManager.registerFactory(CoverUIFactory.INSTANCE);
+        GTGuiTextures.init();
+        GTGuiTheme.registerThemes();
+        GTWidgetThemes.register();
 
         new EnchantmentHazmat();
         new EnchantmentEnderDamage();

@@ -19,6 +19,15 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
@@ -31,6 +40,12 @@ import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.gui.modularui2.CoverGuiData;
+import gregtech.api.gui.modularui2.GTGuiFactories;
+import gregtech.api.gui.modularui2.GTGuiTheme;
+import gregtech.api.gui.modularui2.GTGuiThemes;
+import gregtech.api.gui.modularui2.GTModularScreen;
+import gregtech.api.gui.modularui2.GTWidgetThemes;
 import gregtech.api.gui.widgets.CoverTickRateButton;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -41,7 +56,13 @@ import gregtech.common.covers.CoverInfo;
  *
  * @author glease
  */
-public abstract class CoverBehaviorBase<T extends ISerializableObject> {
+public abstract class CoverBehaviorBase<T extends ISerializableObject> implements IGuiHolder<CoverGuiData> {
+
+    /**
+     * Set to true to test MUI2 functionality. This eventually will be removed and everything will switch to MUI2.
+     */
+    @SuppressWarnings({ "FieldMayBeFinal", "FieldCanBeLocal" })
+    private static boolean USE_MODULAR_UI_2 = true;
 
     public WeakReference<EntityPlayer> lastPlayer = null;
     private final Class<T> typeToken;
@@ -66,7 +87,7 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
     public abstract T createDataObject();
 
     public final T createDataObject(NBTBase aNBT) {
-        // Handle legacy data (migrating from GT_CoverBehavior to GT_CoverBehaviorBase)
+        // Handle legacy data (migrating from GT_CoverBehavior to CoverBehaviorBase)
         if (aNBT instanceof NBTTagInt) {
             return createDataObject(((NBTTagInt) aNBT).func_150287_d());
         }
@@ -408,10 +429,134 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
 
     // region UI stuff
 
+    protected static final int WIDGET_MARGIN = 5;
+
     protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
     protected GUIColorOverride colorOverride;
     private static final String guiTexturePath = "gregtech:textures/gui/GuiCover.png";
 
+    @Override
+    public final ModularScreen createScreen(CoverGuiData data, ModularPanel mainPanel) {
+        return new GTModularScreen(mainPanel, getUITheme());
+    }
+
+    /**
+     * Specifies theme of this GUI. You don't need to touch this unless you really want to go fancy.
+     */
+    protected GTGuiTheme getUITheme() {
+        return GTGuiThemes.STANDARD;
+    }
+
+    /**
+     * Override this method to provide GUI ID if this cover has GUI. It's used for resource packs to customize stuff.
+     * Conventionally it should be {@code cover.snake_case}.
+     */
+    protected String getGuiId() {
+        // throw new RuntimeException("GUI ID must be provided to create GUI!");
+        return "hogehoge";
+    }
+
+    /**
+     * Override this method if you want to implement more customized GUI. Otherwise, implement {@link #addUIWidgets}
+     * instead.
+     * <br>
+     * In order to migrate from MUI1 to MUI2 smoothly, we support both of them for the time being. Since we have
+     * functionality to open cover window on top of machine GUI, we need to make cover GUI capable of operating on both
+     * ways. So don't forget to also implement {@link #createWindow}.
+     *
+     * @param guiData     information about the creation context
+     * @param syncManager sync handler where widget sync handlers should be registered
+     * @return UI panel to show
+     */
+    @Override
+    public ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager) {
+        return createBasePanel(guiData, syncManager);
+    }
+
+    /**
+     * Override this method to implement cover GUI if {@link #hasCoverGUI()} is true. If you want highly customized GUI,
+     * override {@link #buildUI} instead.
+     * <br>
+     * In order to migrate from MUI1 to MUI2 smoothly, we support both of them for the time being. Since we have
+     * functionality to open cover window on top of machine GUI, we need to make cover GUI capable of operating on both
+     * ways. So don't forget to also implement {@link #createWindow}.
+     *
+     * @param guiData     information about the creation context
+     * @param syncManager sync handler where widget sync handlers should be registered
+     * @param column      main column to add child widgets
+     */
+    public void addUIWidgets(CoverGuiData guiData, PanelSyncManager syncManager, Flow column) {}
+
+    /**
+     * Creates template panel for cover GUI. Called by {@link #buildUI}.
+     */
+    protected ModularPanel createBasePanel(CoverGuiData guiData, PanelSyncManager syncManager) {
+        syncManager.addCloseListener(player -> {
+            if (!NetworkUtils.isClient(player)) {
+                guiData.getTileEntity()
+                    .markDirty();
+            }
+        });
+        final ModularPanel panel = ModularPanel.defaultPanel(getGuiId(), getGUIWidth(), getGUIHeight());
+        if (doesBindPlayerInventory() && !guiData.isAnotherWindow()) {
+            panel.bindPlayerInventory();
+        }
+        final Flow widgetsColumn = new Column().coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .marginLeft(WIDGET_MARGIN)
+            .marginTop(WIDGET_MARGIN);
+        panel.child(widgetsColumn);
+        addTitleToUI(guiData, widgetsColumn);
+        addUIWidgets(guiData, syncManager, widgetsColumn);
+        // if (getUIBuildContext().isAnotherWindow()) {
+        // builder.widget(
+        // ButtonWidget.closeWindowButton(true)
+        // .setPos(getGUIWidth() - 15, 3));
+        // }
+
+        final CoverInfo coverInfo = guiData.getCoverable()
+            .getCoverInfoAtSide(guiData.getSide());
+        final CoverBehaviorBase<?> behavior = coverInfo.getCoverBehavior();
+        if (coverInfo.getMinimumTickRate() > 0 && behavior.allowsTickRateAddition()) {
+            panel.child(
+                new gregtech.common.gui.modularui2.widgets.CoverTickRateButton(coverInfo, syncManager).right(4)
+                    .bottom(4));
+        }
+
+        return panel;
+    }
+
+    protected void addTitleToUI(CoverGuiData guiData, Flow column) {
+        ItemStack coverItem = GTUtility.intToStack(guiData.getCoverID());
+        if (coverItem == null) return;
+        column.child(
+            new Row().coverChildren()
+                .marginBottom(4)
+                .child(new com.cleanroommc.modularui.drawable.ItemDrawable(coverItem).asWidget())
+                .child(
+                    new com.cleanroommc.modularui.widgets.TextWidget(coverItem.getDisplayName()).marginLeft(4)
+                        .widgetTheme(GTWidgetThemes.TITLE_TEXT)));
+    }
+
+    protected int getGUIWidth() {
+        return 176;
+    }
+
+    protected int getGUIHeight() {
+        return 107;
+    }
+
+    protected boolean doesBindPlayerInventory() {
+        return false;
+    }
+
+    protected T getCoverData(CoverGuiData guiData) {
+        return forceCast(guiData.getCoverData());
+    }
+
+    /**
+     * You also need to implement {@link #buildUI} if you want to implement cover GUI.
+     */
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new UIFactory(buildContext).createWindow();
     }
@@ -621,7 +766,12 @@ public abstract class CoverBehaviorBase<T extends ISerializableObject> {
         ICoverable aTileEntity, EntityPlayer aPlayer) {
         if (hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = new WeakReference<>(aPlayer);
-            GTUIInfos.openCoverUI(aTileEntity, aPlayer, side);
+            if (USE_MODULAR_UI_2) {
+                GTGuiFactories.cover()
+                    .open((EntityPlayerMP) aPlayer, aCoverID, aTileEntity, side, false);
+            } else {
+                GTUIInfos.openCoverUI(aTileEntity, aPlayer, side);
+            }
             return true;
         }
         return false;

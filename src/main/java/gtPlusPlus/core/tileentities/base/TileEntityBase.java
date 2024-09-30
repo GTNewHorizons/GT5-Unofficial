@@ -16,6 +16,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -933,6 +935,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
         mRedstone = aOnOff;
     }
 
+    @NotNull
     @Override
     public CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
         return side != ForgeDirection.UNKNOWN ? mCoverBehaviors[side.ordinal()] : GregTechAPI.sNoBehavior;

@@ -89,10 +89,12 @@ public final class CoverInfo {
         needsUpdate = aUpdate;
     }
 
+    @NotNull
     public CoverBehaviorBase<?> getCoverBehavior() {
         return coverBehavior;
     }
 
+    @NotNull
     public ISerializableObject getCoverData() {
         if (coverData != null) return coverData;
         return GregTechAPI.sNoBehavior.createDataObject();
@@ -262,6 +264,16 @@ public final class CoverInfo {
 
         tickRateAddition = clamp(tickRateAddition + (isDecreasing ? -1 : 1) * stepAmount);
         tickRateAddition = clamp(tickRateAddition - (getTickRate() % stepAmount));
+    }
+
+    /**
+     * @return If {@link #tickRateAddition} cannot go any higher
+     */
+    public boolean isTickRateAdditionMax() {
+        // Mimic adjustTickRateMultiplier logic
+        int simulatedTickRateAddition = clamp(tickRateAddition + 20);
+        return tickRateAddition
+            == clamp(simulatedTickRateAddition - ((getMinimumTickRate() + simulatedTickRateAddition) % 20));
     }
 
     /**

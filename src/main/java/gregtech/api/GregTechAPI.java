@@ -510,6 +510,7 @@ public class GregTechAPI {
      *
      * @return The Cover behavior
      */
+    @Nonnull
     public static CoverBehaviorBase<?> getCoverBehaviorNew(ItemStack aStack) {
         if (aStack == null || aStack.getItem() == null) return sNoBehavior;
         CoverBehaviorBase<?> rCover = sCoverBehaviors.get(new GTItemStack(aStack));
@@ -522,6 +523,7 @@ public class GregTechAPI {
     /**
      * returns a Cover behavior, guaranteed to not return null
      */
+    @Nonnull
     public static CoverBehaviorBase<?> getCoverBehaviorNew(int aStack) {
         if (aStack == 0) return sNoBehavior;
         return getCoverBehaviorNew(GTUtility.intToStack(aStack));

@@ -316,6 +316,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             .cast(aData) != null) coverInfo.setCoverData(aData);
     }
 
+    @NotNull
     @Override
     @Deprecated
     public CoverBehavior getCoverBehaviorAtSide(ForgeDirection side) {
@@ -360,11 +361,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return 0;
     }
 
+    @NotNull
     @Override
     public ISerializableObject getComplexCoverDataAtSide(ForgeDirection side) {
         return getCoverInfoAtSide(side).getCoverData();
     }
 
+    @NotNull
     @Override
     public CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
         return getCoverInfoAtSide(side).getCoverBehavior();

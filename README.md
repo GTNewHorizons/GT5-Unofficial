@@ -40,6 +40,14 @@ the chance of strange errors.
 Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno
 for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
 
+## For resource pack makers
+
+!This section is irrelevant for resource packs that don't modify GUI.
+
+We're in the process of migrating from ModularUI 1 to ModularUI 2, newer GUI library.
+If you want to just change the images of GUI, you can just make changes in the same way as for other mods.
+However, if you want to customize text color or use distinct texture for pregress bars, just like you can in MUI1, then you may need to or not need to rewrite mcmeta files. Here is the guide explaining in detail. _//TODO: write wiki_
+
 ## Music duration metadata
 
 The electric jukebox requires duration metadata to specify how many milliseconds each disk plays for.
