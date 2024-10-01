@@ -69,8 +69,8 @@ public enum Asteroids {
     public DimensionDef dimensionDef;
     public AsteroidPropertyBuilder asteroidPropertyBuilder;
 
-    private Asteroids(ModContainers modContainers, DimensionDef dimensionDef,
-        AsteroidPropertyBuilder asteroidPropertyBuilder) {
+    Asteroids(ModContainers modContainers, DimensionDef dimensionDef,
+              AsteroidPropertyBuilder asteroidPropertyBuilder) {
         this.modContainers = modContainers;
         this.dimensionDef = dimensionDef;
         this.asteroidPropertyBuilder = asteroidPropertyBuilder;

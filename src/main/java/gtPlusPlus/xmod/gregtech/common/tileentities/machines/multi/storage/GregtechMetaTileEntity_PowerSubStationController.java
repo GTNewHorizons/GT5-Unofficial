@@ -81,7 +81,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 public class GregtechMetaTileEntity_PowerSubStationController
     extends GTPPMultiBlockBase<GregtechMetaTileEntity_PowerSubStationController> implements ISurvivalConstructable {
 
-    private static enum TopState {
+    private enum TopState {
         MayBeTop,
         Top,
         NotTop

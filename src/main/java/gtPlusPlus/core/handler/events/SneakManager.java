@@ -113,14 +113,14 @@ public class SneakManager {
         return mIsWearingRing;
     }
 
-    public static enum State {
+    public enum State {
 
         ON(true),
         OFF(false);
 
         private final boolean STATE;
 
-        private State(final boolean State) {
+        State(final boolean State) {
             this.STATE = State;
         }
 

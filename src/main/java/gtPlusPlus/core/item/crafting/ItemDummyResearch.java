@@ -19,7 +19,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemDummyResearch extends ItemGenericToken {
 
-    public static enum ASSEMBLY_LINE_RESEARCH {
+    public enum ASSEMBLY_LINE_RESEARCH {
 
         RESEARCH_1_CONTAINMENT("Containment Fields", "Advanced scientific study"),
         RESEARCH_2_BASIC_CHEM("Basic Chemistry", "Time to start at the beginning"),
@@ -36,7 +36,7 @@ public class ItemDummyResearch extends ItemGenericToken {
         private final String mName;
         private final String mDesc;
 
-        private ASSEMBLY_LINE_RESEARCH(String aName, String aDesc) {
+        ASSEMBLY_LINE_RESEARCH(String aName, String aDesc) {
             mName = aName;
             mDesc = aDesc;
             ModItems.itemDummyResearch.register(mName, mDesc);
