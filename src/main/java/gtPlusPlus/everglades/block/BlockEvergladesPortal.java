@@ -264,8 +264,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
                 && par1IBlockAccess.getBlock(par2, par3, par4 + 2) != this;
             boolean flag4 = flag || flag1;
             boolean flag5 = flag2 || flag3;
-            return flag4 && par5 == 4 ? true
-                : (flag4 && par5 == 5 ? true : (flag5 && par5 == 2 ? true : flag5 && par5 == 3));
+            return flag4 && par5 == 4 || (flag4 && par5 == 5 || (flag5 && par5 == 2 || flag5 && par5 == 3));
         }
     }
 

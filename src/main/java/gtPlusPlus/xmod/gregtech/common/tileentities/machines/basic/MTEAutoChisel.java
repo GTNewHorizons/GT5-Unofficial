@@ -90,8 +90,7 @@ public class MTEAutoChisel extends MTEBasicMachine {
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return hasValidCache(aStack, this.getSpecialSlot(), false) ? true
-            : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) && hasChiselResults(aStack);
+        return hasValidCache(aStack, this.getSpecialSlot(), false) || super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) && hasChiselResults(aStack);
     }
 
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target

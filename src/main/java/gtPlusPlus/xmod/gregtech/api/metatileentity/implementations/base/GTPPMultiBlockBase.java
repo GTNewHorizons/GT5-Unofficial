@@ -513,7 +513,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
 
     public boolean checkHatch() {
         return mMaintenanceHatches.size() <= 1
-            && (this.getPollutionPerSecond(null) > 0 ? !mMufflerHatches.isEmpty() : true);
+            && (this.getPollutionPerSecond(null) <= 0 || !mMufflerHatches.isEmpty());
     }
 
     @Override

@@ -143,7 +143,7 @@ public class BTF_Inventory implements ISidedInventory {
 
     @Override
     public final boolean hasCustomInventoryName() {
-        return mTile != null ? mTile.hasCustomInventoryName() : false;
+        return mTile != null && mTile.hasCustomInventoryName();
     }
 
     @Override

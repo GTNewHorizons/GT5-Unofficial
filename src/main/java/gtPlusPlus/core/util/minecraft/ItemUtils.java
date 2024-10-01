@@ -103,8 +103,7 @@ public class ItemUtils {
         if (ItemList.Cell_Empty.hasBeenSet()) {
             return ItemList.Cell_Empty.get(i);
         }
-        final ItemStack temp = GTModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", i, 0);
-        return temp != null ? temp : null;
+        return GTModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", i, 0);
     }
 
     public static void getItemForOreDict(final String FQRN, final String oreDictName, final String itemName,

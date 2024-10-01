@@ -232,21 +232,19 @@ public class MachineBlockRenderer extends GTRendererBlock {
         RenderBlocks aRenderer) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
-        return tTileEntity instanceof ITexturedTileEntity
-            ? renderStandardBlock(
+        return tTileEntity instanceof ITexturedTileEntity && renderStandardBlock(
                 aWorld,
                 aX,
                 aY,
                 aZ,
                 aBlock,
                 aRenderer,
-                new ITexture[][] { GTMethodHelper.getTexture(tTileEntity, aBlock, DOWN),
-                    GTMethodHelper.getTexture(tTileEntity, aBlock, UP),
-                    GTMethodHelper.getTexture(tTileEntity, aBlock, ForgeDirection.NORTH),
-                    GTMethodHelper.getTexture(tTileEntity, aBlock, ForgeDirection.SOUTH),
-                    GTMethodHelper.getTexture(tTileEntity, aBlock, ForgeDirection.WEST),
-                    GTMethodHelper.getTexture(tTileEntity, aBlock, ForgeDirection.EAST) })
-            : false;
+                new ITexture[][]{GTMethodHelper.getTexture(tTileEntity, aBlock, DOWN),
+                        GTMethodHelper.getTexture(tTileEntity, aBlock, UP),
+                        GTMethodHelper.getTexture(tTileEntity, aBlock, ForgeDirection.NORTH),
+                        GTMethodHelper.getTexture(tTileEntity, aBlock, ForgeDirection.SOUTH),
+                        GTMethodHelper.getTexture(tTileEntity, aBlock, ForgeDirection.WEST),
+                        GTMethodHelper.getTexture(tTileEntity, aBlock, ForgeDirection.EAST)});
     }
 
     public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
@@ -1220,22 +1218,19 @@ public class MachineBlockRenderer extends GTRendererBlock {
     public boolean renderWorldBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, int aModelID,
         RenderBlocks aRenderer) {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return aTileEntity == null ? false
-            : (aTileEntity instanceof IGregTechTileEntity
+        return aTileEntity != null && (aTileEntity instanceof IGregTechTileEntity
                 && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity() != null
                 && ((IGregTechTileEntity) aTileEntity).getMetaTileEntity()
-                    .renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer)
-                        ? true
-                        : (aTileEntity instanceof IPipeRenderedTileEntity
-                            ? renderPipeBlock(
-                                aWorld,
-                                aX,
-                                aY,
-                                aZ,
-                                aBlock,
-                                (IPipeRenderedTileEntity) aTileEntity,
-                                aRenderer)
-                            : renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer)));
+                .renderInWorld(aWorld, aX, aY, aZ, aBlock, aRenderer) || (aTileEntity instanceof IPipeRenderedTileEntity
+                ? renderPipeBlock(
+                aWorld,
+                aX,
+                aY,
+                aZ,
+                aBlock,
+                (IPipeRenderedTileEntity) aTileEntity,
+                aRenderer)
+                : renderStandardBlock(aWorld, aX, aY, aZ, aBlock, aRenderer)));
     }
 
     @Override

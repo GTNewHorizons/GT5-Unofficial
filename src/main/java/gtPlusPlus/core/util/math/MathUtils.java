@@ -256,8 +256,7 @@ public class MathUtils {
     }
 
     public static int getRgbAsHex(final short[] RGBA) {
-        final int returnValue = Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
-        return (returnValue == 0) ? 0 : returnValue;
+        return Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
     }
 
     public static byte safeByte(long number) {

@@ -321,7 +321,7 @@ public class BaseItemComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        return (Configuration.visual.useGregtechTextures ? true : false);
+        return Configuration.visual.useGregtechTextures;
     }
 
     @Override
