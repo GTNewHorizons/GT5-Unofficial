@@ -176,6 +176,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
             if (mGlassTier < 10 && energyHatch.getTierForStructure() > mGlassTier) {
                 mStructureBadGlassTier = true;
+                break;
             }
         }
 

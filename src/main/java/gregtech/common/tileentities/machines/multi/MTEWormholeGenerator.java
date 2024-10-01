@@ -322,6 +322,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
             if (energyHatch.getTierForStructure() > mGlassTier) {
                 mStructureBadGlassTier = true;
+                break;
             }
         }
 

@@ -138,6 +138,7 @@ public class StringUtils {
             for (int o = 0; o < aInput.length(); o++) {
                 if (isSpecialCharacter(aInput.charAt(o))) {
                     isSpecial = true;
+                    break;
                 }
             }
             if (isSpecial) {
