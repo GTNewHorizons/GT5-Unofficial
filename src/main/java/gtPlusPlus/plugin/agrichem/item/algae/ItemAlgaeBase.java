@@ -17,6 +17,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GTLog;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.AlgaeDefinition;
 import gtPlusPlus.plugin.agrichem.IAlgalItem;
@@ -25,7 +26,6 @@ import gtPlusPlus.plugin.agrichem.logic.AlgaeGeneticData;
 public class ItemAlgaeBase extends Item implements IAlgalItem {
 
     protected IIcon base;
-    protected IIcon overlay;
 
     public ItemAlgaeBase() {
         this.setHasSubtypes(true);
@@ -89,8 +89,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 aList.add("Lifespan in days: " + mLifespan);
                 aList.add("Generation: " + mGeneration);
             }
-        } catch (Throwable t) {
-            t.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace(GTLog.err);
         }
         super.addInformation(aStack, p_77624_2_, aList, p_77624_4_);
     }
@@ -149,16 +149,12 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
 
     @Override
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (pass == 0) {
-            return this.base;
-        }
-        return this.overlay;
+        return this.base;
     }
 
     @Override
     public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(GTPlusPlus.ID + ":" + "bioscience/BasicAlgae");
-        this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "bioscience/BasicAlgae_Overlay");
+        this.base = i.registerIcon(GTPlusPlus.ID + ":bioscience/BasicAlgae");
     }
 
     public static ItemStack initNBT(ItemStack aFreshAlgae) {

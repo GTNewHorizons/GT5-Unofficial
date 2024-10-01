@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -30,15 +29,6 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
 
         public SpecialCasingItemBlock(Block par1) {
             super(par1);
-        }
-
-        @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            int aMeta = aStack.getItemDamage();
-            if (aMeta < 10) {
-                // aList.add("Tier: "+GT_Values.VN[aMeta]);
-            }
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
     }
 
