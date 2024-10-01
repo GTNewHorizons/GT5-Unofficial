@@ -291,7 +291,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 + " Seconds.");
         mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime);
 
-        String[] mInfo2 = mInfo.toArray(new String[mInfo.size()]);
+        String[] mInfo2 = mInfo.toArray(new String[0]);
         return mInfo2;
     }
 

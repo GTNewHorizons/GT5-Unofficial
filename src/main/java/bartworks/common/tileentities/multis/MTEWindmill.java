@@ -325,7 +325,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             ItemStack tmp = this.mOutputItems[0].copy();
             tmp.stackSize = amount;
             splitStacks.add(tmp);
-            this.mOutputItems = splitStacks.toArray(new ItemStack[splitStacks.size()]);
+            this.mOutputItems = splitStacks.toArray(new ItemStack[0]);
         }
         this.mMaxProgresstime = tRecipe.mDuration * 2 * 100 * this.mMulti / this.getSpeed(this.rotorBlock);
         this.mMulti = 16;

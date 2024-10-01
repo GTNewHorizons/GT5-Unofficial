@@ -1055,7 +1055,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         data.add("-----------------------");
 
-        return data.toArray(new String[data.size()]);
+        return data.toArray(new String[0]);
     }
 
     @Override
