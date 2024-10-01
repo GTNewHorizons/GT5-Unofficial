@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
@@ -26,6 +27,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -55,6 +58,8 @@ import gregtech.api.interfaces.tileentity.IRedstoneEmitter;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.FluidId;
 import gregtech.api.util.GTUtility.ItemId;
+import gregtech.api.util.Lazy;
+import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import ic2.api.item.ElectricItem;
 
@@ -100,14 +105,16 @@ public class PendingBuild {
             }
         }
 
-        ArrayList<PendingBlock> list = new ArrayList<>(BLOCKS_PER_PLACE);
+        ArrayList<PendingBlock> toPlace = new ArrayList<>(BLOCKS_PER_PLACE);
 
         Integer lastChunkX = null, lastChunkZ = null;
         int shuffleCount = 0;
 
         World world = placingPlayer.worldObj;
 
-        while (list.size() < BLOCKS_PER_PLACE && pendingBlocks.size() > 0) {
+        PendingBuildApplyContext applyContext = new PendingBuildApplyContext(stack);
+
+        while (toPlace.size() < BLOCKS_PER_PLACE && pendingBlocks.size() > 0) {
             PendingBlock next = pendingBlocks.getFirst();
 
             int x = next.x, y = next.y, z = next.z;
@@ -151,23 +158,28 @@ public class PendingBuild {
                 continue;
             }
 
-            if (!list.isEmpty() && !areBlocksBasicallyEqual(next, list.get(0))) {
+            if (!toPlace.isEmpty() && !areBlocksBasicallyEqual(next, toPlace.get(0))) {
                 break;
             }
 
-            @SuppressWarnings("null")
-            Block block = next.block == null ? Blocks.air : next.block.field_150939_a;
-            Block existing = world.getBlock(x, y, z);
-            int existingMeta = world.getBlockMetadata(x, y, z);
+            PendingBlock existing = PendingBlock.fromBlock(world, x, y, z);
 
-            if (existing == block && existingMeta == next.metadata) {
-                pendingBlocks.removeFirst();
+            if (existing.getBlock() == next.getBlock() && existing.metadata == next.metadata) {
+                PendingBlock block = pendingBlocks.removeFirst();
+
+                if (block.tileData != null) {
+                    applyContext.pendingBlock = block;
+                    block.tileData.apply(applyContext);
+                }
+
                 continue;
             }
 
+            Block existingBlock = existing == null ? Blocks.air : existing.getBlock();
+
             boolean canPlace = switch (manipulator.config.removeMode) {
-                case NONE -> existing.isAir(world, x, y, z);
-                case REPLACEABLE -> existing.isReplaceable(world, x, y, z);
+                case NONE -> existingBlock.isAir(world, x, y, z);
+                case REPLACEABLE -> existingBlock.isReplaceable(world, x, y, z);
                 case ALL -> true;
             };
 
@@ -182,23 +194,18 @@ public class PendingBuild {
                 }
             }
 
-            if (!existing.isAir(world, x, y, z)) {
-                PendingBlock toRemove = new PendingBlock(
-                    world.provider.dimensionId,
-                    x,
-                    y,
-                    z,
-                    new ItemStack(existing, existingMeta));
-                if (!tryConsumePower(stack, toRemove)) {
+            if (!existingBlock.isAir(world, x, y, z)) {
+                if (!tryConsumePower(stack, existing)) {
                     player.addChatMessage(
                         new ChatComponentText(EnumChatFormatting.RED + "Matter Manipulator ran out of EU."));
                     break;
                 }
 
-                removeBlock(world, x, y, z, existing, existingMeta);
+                removeBlock(world, x, y, z, existingBlock, existing == null ? 0 : existing.metadata);
             }
 
-            if (!block.canPlaceBlockAt(world, next.x, next.y, next.z)) {
+            if (!next.getBlock()
+                .canPlaceBlockAt(world, next.x, next.y, next.z)) {
                 pendingBlocks.addLast(pendingBlocks.removeFirst());
                 shuffleCount++;
 
@@ -215,12 +222,12 @@ public class PendingBuild {
                 break;
             }
 
-            list.add(pendingBlocks.removeFirst());
+            toPlace.add(pendingBlocks.removeFirst());
         }
 
         actuallyGivePlayerStuff();
 
-        if (list.isEmpty()) {
+        if (toPlace.isEmpty()) {
             if (!pendingBlocks.isEmpty()) {
                 player.addChatMessage(
                     new ChatComponentText(
@@ -235,36 +242,38 @@ public class PendingBuild {
             return;
         }
 
-        ItemStack item = new ItemStack(list.get(0).block, list.size());
-        if (item.getItem() != null) {
-            item.setTagCompound(list.get(0).nbt);
-
-            if (!tryConsumeItems(item)) {
-                player.addChatMessage(
-                    new ChatComponentText(
-                        EnumChatFormatting.RED + "Could not find item, it will be skipped. ("
-                            + item.stackSize
-                            + " x "
-                            + item.getDisplayName()
-                            + ")"));
-                player.setItemInUse(null, 0);
-                return;
+        if (!toPlace.get(0)
+            .isFree()) {
+            ItemStack item = toPlace.get(0)
+                .toStack();
+            if (item != null) {
+                if (!tryConsumeItems(item)) {
+                    player.addChatMessage(
+                        new ChatComponentText(
+                            EnumChatFormatting.RED + "Could not find item, it will be skipped. ("
+                                + item.stackSize
+                                + " x "
+                                + item.getDisplayName()
+                                + ")"));
+                    player.setItemInUse(null, 0);
+                    return;
+                }
             }
         }
 
         double avgX = 0, avgY = 0, avgZ = 0;
 
-        int n = list.size();
+        int n = toPlace.size();
 
-        for (PendingBlock pending : list) {
+        for (PendingBlock pending : toPlace) {
             avgX += pending.x / (double) n;
             avgY += pending.y / (double) n;
             avgZ += pending.z / (double) n;
 
-            ItemBlock block = pending.block;
+            ItemBlock block = pending.getItem();
             if (block != null) {
                 block.placeBlockAt(
-                    item,
+                    pending.toStack(),
                     player,
                     player.worldObj,
                     pending.x,
@@ -275,6 +284,11 @@ public class PendingBuild {
                     0,
                     0,
                     pending.metadata);
+
+                applyContext.pendingBlock = pending;
+                if (pending.tileData != null) {
+                    pending.tileData.apply(applyContext);
+                }
             }
         }
 
@@ -564,7 +578,7 @@ public class PendingBuild {
     }
 
     private static boolean areBlocksBasicallyEqual(PendingBlock a, PendingBlock b) {
-        return a.block == b.block && a.metadata == b.metadata && Objects.equals(a.nbt, b.nbt);
+        return a.block == b.block && a.metadata == b.metadata;
     }
 
     private static boolean areStacksBasicallyEqual(ItemStack a, ItemStack b) {
@@ -594,7 +608,7 @@ public class PendingBuild {
         double euUsage = EU_PER_BLOCK;
 
         try {
-            ItemBlock block = pendingBlock.block;
+            ItemBlock block = pendingBlock.getItem();
             if (block != null && (boolean) IS_BLOCK_CONTAINER.invoke(block.field_150939_a)) {
                 euUsage *= TE_PENALTY;
             }
@@ -750,6 +764,67 @@ public class PendingBuild {
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 emitter.setRedstoneOutputStrength(side, false);
             }
+        }
+    }
+
+    private class PendingBuildApplyContext implements IBlockApplyContext {
+
+        public static final double EU_PER_ACTION = 8192;
+
+        private final Lazy<EntityPlayer> fakePlayer = new Lazy<>(
+            () -> new FakePlayer(
+                (WorldServer) PendingBuild.this.placingPlayer.worldObj,
+                PendingBuild.this.placingPlayer.getGameProfile()));
+
+        public ItemStack manipulatorItemStack;
+        public PendingBlock pendingBlock;
+
+        public PendingBuildApplyContext(ItemStack manipulatorItemStack) {
+            this.manipulatorItemStack = manipulatorItemStack;
+        }
+
+        @Override
+        public Supplier<EntityPlayer> getFakePlayer() {
+            return fakePlayer;
+        }
+
+        @Override
+        public TileEntity getTileEntity() {
+            if (pendingBlock.isInWorld(placingPlayer.worldObj)) {
+                return placingPlayer.worldObj.getTileEntity(pendingBlock.x, pendingBlock.y, pendingBlock.z);
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public EntityPlayer getPlacingPlayer() {
+            return placingPlayer;
+        }
+
+        @Override
+        public boolean tryApplyAction(double complexity) {
+            return PendingBuild.this.tryConsumePower(
+                manipulatorItemStack,
+                pendingBlock.x,
+                pendingBlock.y,
+                pendingBlock.z,
+                EU_PER_ACTION * complexity);
+        }
+
+        @Override
+        public boolean tryConsumeItems(ItemStack... items) {
+            return PendingBuild.this.tryConsumeItems(items);
+        }
+
+        @Override
+        public void givePlayerItems(ItemStack... items) {
+            PendingBuild.this.givePlayerItems(items);
+        }
+
+        @Override
+        public void givePlayerFluids(FluidStack... fluids) {
+            PendingBuild.this.givePlayerFluids(fluids);
         }
     }
 }
