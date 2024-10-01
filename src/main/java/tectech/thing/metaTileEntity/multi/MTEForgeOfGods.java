@@ -158,7 +158,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private boolean isRenderActive = false;
     private boolean secretUpgrade = false;
     private boolean rainbowMode = false;
-    private ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
+    private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
 
@@ -3540,14 +3540,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         Number max;
         String suffix;
         String progressText = translateToLocal("gt.blockmachines.multimachine.FOG.progress");
-        Text done = new Text(translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete"));
-
-        // todo what is this for?
-        // if (noFormatting) {
-        // done = new Text(
-        // translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete") + EnumChatFormatting.DARK_RED
-        // + "?");
-        // }
+        Text done = new Text(
+            translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete")
+                + (formattingMode != FormattingMode.NONE ? EnumChatFormatting.DARK_RED + "?" : ""));
 
         if (milestoneProgress[milestoneID] >= 7 && !inversion) {
             return done;
