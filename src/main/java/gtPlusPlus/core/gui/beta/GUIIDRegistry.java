@@ -12,8 +12,6 @@ public class GUIIDRegistry {
     private static final Map<Integer, MUGuild> idMap = new HashMap<>();
     private static int nextId = 0;
 
-    static {}
-
     private static void registerGuiHandlers(final GUITypes MU_GuiType,
         final List<Class<? extends IGuiManagerMiscUtils>> guiHandlerClasses) {
         for (final Class<? extends IGuiManagerMiscUtils> tileGuiHandlerClass : guiHandlerClasses) {
