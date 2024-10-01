@@ -189,10 +189,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
-                    + this.passiveBaseMult
+                    + passiveBaseMult
                     + ")^"
                     + EnumChatFormatting.GREEN
-                    + this.passiveBaseExp
+                    + passiveBaseExp
                     + EnumChatFormatting.GRAY
                     + " EU/t passively. The consumption decays by 0.5% every tick when empty")
             .addInfo(
@@ -200,10 +200,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
-                    + this.activeBaseMult
+                    + activeBaseMult
                     + ")^"
                     + EnumChatFormatting.DARK_PURPLE
-                    + this.activeBaseExp
+                    + activeBaseExp
                     + EnumChatFormatting.GRAY
                     + " EU per operation to produce antimatter")
             .addSeparator()
@@ -223,19 +223,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.GRAY
                     + "^"
                     + EnumChatFormatting.GOLD
-                    + this.coefficientBaseExp
+                    + coefficientBaseExp
                     + EnumChatFormatting.GRAY
                     + ") * N("
                     + EnumChatFormatting.AQUA
-                    + this.baseSkew
+                    + baseSkew
                     + EnumChatFormatting.GRAY
                     + ", 0.25) of antimatter per cycle, consuming equal amounts of Protomatter")
             .addInfo(
                 "The change is split between the 16 Antimatter Hatches, sampled from N(" + EnumChatFormatting.AQUA
-                    + this.baseSkew
+                    + baseSkew
                     + EnumChatFormatting.GRAY
                     + ", 1) (Gaussian distribution with mean of "
-                    + this.baseSkew
+                    + baseSkew
                     + ")")
             .addInfo("The total change can be negative!")
             .addSeparator()
