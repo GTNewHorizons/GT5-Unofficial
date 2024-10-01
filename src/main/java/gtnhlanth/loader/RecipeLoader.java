@@ -4109,7 +4109,6 @@ public class RecipeLoader {
 
     public static void removeCeriumChemicalBath() {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
 
         GTLog.out.println(Tags.MODID + ": marking recipes in chem bath for removal!");
         for (GTRecipe recipe : chemicalBathRecipes.getAllRecipes()) {
@@ -4137,12 +4136,8 @@ public class RecipeLoader {
         GTLog.out.println(Tags.MODID + ": regenerating chem bath recipes");
         chemicalBathRecipes.getBackend()
             .removeRecipes(remove);
-        reAdd.forEach(chemicalBathRecipes::add);
         chemicalBathRecipes.getBackend()
             .reInit();
-
-        remove.clear();
-        reAdd.clear();
 
         GTLog.out.println("Chemical Bath done!");
     }
