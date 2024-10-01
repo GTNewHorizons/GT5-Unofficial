@@ -2,7 +2,7 @@ package gregtech.common.items.matterManipulator;
 
 import static gregtech.api.enums.Mods.GregTech;
 
-import java.util.Iterator;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +62,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -70,7 +71,7 @@ import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.matterManipulator.BlockAnalyzer.BlockActionContext;
+import gregtech.common.items.matterManipulator.BlockAnalyzer.BlockApplyContext;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
 import gregtech.common.items.matterManipulator.NBTState.Config;
@@ -79,7 +80,6 @@ import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
-import gregtech.common.items.matterManipulator.NBTState.Region;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -237,6 +237,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     case MARK_CUT_A -> "Marking first cut corner";
                     case MARK_CUT_B -> "Marking second cut corner";
                     case MARK_PASTE -> "Marking paste location";
+                    case SCAN -> "Scan";
                 });
             }
 
@@ -325,7 +326,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
             if (state.config.placeMode == PlaceMode.DEBUGGING) {
                 if (!world.isRemote) {
-                    BlockActionContext bac = new BlockActionContext();
+                    BlockApplyContext bac = new BlockApplyContext();
                     bac.world = world;
                     bac.x = location.x;
                     bac.y = location.y;
@@ -381,11 +382,11 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                                 state.config.coordB = null;
                             }
                         }
-    
+
                         break;
                     }
                     case SET_PASTE: {
-    
+
                         break;
                     }
                 }
@@ -485,18 +486,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 return true;
             }
             case MARK_COPY_A: {
-                state.config.source = new Region();
-                state.config.source.a = new Location(world, Config.getLookingAtLocation(player));
+                state.config.coordA = new Location(world, Config.getLookingAtLocation(player));
                 state.config.action = PendingAction.MARK_COPY_B;
                 return true;
             }
             case MARK_COPY_B: {
-                state.config.source.b = new Location(world, Config.getLookingAtLocation(player));
+                state.config.coordB = new Location(world, Config.getLookingAtLocation(player));
                 state.config.action = null;
                 return true;
             }
             case MARK_PASTE: {
-                state.config.coordA = new Location(world, Config.getLookingAtLocation(player));
+                state.config.coordC = new Location(world, Config.getLookingAtLocation(player));
                 state.config.action = null;
                 return true;
             }
@@ -576,33 +576,14 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
                 pending.assembleTask = BUILD_ASSEMBLING_POOL.submit(() -> {
                     List<PendingBlock> blocks = pending.manipulator.getPendingBlocks();
-                    blocks.sort((a, b) -> {
-                        int buildOrder = Integer.compare(a.buildOrder, b.buildOrder);
-                        if (buildOrder != 0) return buildOrder;
 
-                        if (a.block == null && b.block != null) {
-                            return -1;
-                        }
+                    Comparator<UniqueIdentifier> blockId = Comparator.comparing((UniqueIdentifier id) -> id.modId)
+                        .thenComparing(id -> id.name);
+                    Comparator<PendingBlock> comparePending = Comparator.comparingInt((PendingBlock b) -> b.buildOrder)
+                        .thenComparing(Comparator.nullsFirst(Comparator.comparing(b -> b.blockId, blockId)))
+                        .thenComparingInt(b -> b.metadata);
 
-                        if (a.block != null && b.block == null) {
-                            return 1;
-                        }
-
-                        if (a.block == null && b.block == null) {
-                            return 0;
-                        }
-
-                        @SuppressWarnings("null")
-                        int idOrder = Integer.compare(
-                            Block.getIdFromBlock(a.block.field_150939_a),
-                            Block.getIdFromBlock(b.block.field_150939_a));
-                        if (idOrder != 0) return idOrder;
-
-                        int metaOrder = Integer.compare(a.metadata, b.metadata);
-                        if (metaOrder != 0) return metaOrder;
-
-                        return 0;
-                    });
+                    blocks.sort(comparePending);
 
                     return new LinkedList<>(blocks);
                 });
@@ -910,7 +891,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .onClicked(() -> {
                     withState(buildContext, state -> {
                         state.config.action = PendingAction.MARK_COPY_A;
-                        state.config.source = null;
+                        state.config.coordA = null;
+                        state.config.coordB = null;
                     });
                 })
             .done()
@@ -919,7 +901,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .onClicked(() -> {
                     withState(buildContext, state -> {
                         state.config.action = PendingAction.MARK_PASTE;
-                        state.config.coordA = null;
+                        state.config.coordC = null;
                     });
                 })
             .done();
@@ -975,6 +957,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     private void renderGeom(RenderHandEvent event, NBTState state, EntityPlayer player) {
         Location coordA = state.config.getCoordA(player);
         Location coordB = state.config.getCoordB(player);
+        state.config.coordA = coordA;
+        state.config.coordB = coordB;
 
         boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
         boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
@@ -1012,17 +996,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
                 StructureLibAPI.startHinting(player.worldObj);
 
-                for (PendingBlock block : state.getPendingBlocks()) {
-                    ItemBlock blockItem = block.block;
+                for (PendingBlock pendingBlock : state.getPendingBlocks()) {
+                    Block block = pendingBlock.getBlock();
 
-                    if (block.isInWorld(player.worldObj) && blockItem != null && blockItem.field_150939_a != Blocks.air) {
+                    if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {
                         StructureLibAPI.hintParticle(
                             player.worldObj,
-                            block.x,
-                            block.y,
-                            block.z,
-                            blockItem.field_150939_a,
-                            block.metadata);
+                            pendingBlock.x,
+                            pendingBlock.y,
+                            pendingBlock.z,
+                            block,
+                            pendingBlock.metadata);
                     }
                 }
 
@@ -1051,12 +1035,10 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         }
     }
 
-    private Iterator<Vector3i> blocks = null;
-
     private void renderRegions(RenderHandEvent event, NBTState state, EntityPlayer player) {
-        Location sourceA = state.config.source == null ? null : state.config.source.a;
-        Location sourceB = state.config.source == null ? null : state.config.source.b;
-        Location paste = state.config.coordA;
+        Location sourceA = state.config.coordA;
+        Location sourceB = state.config.coordB;
+        Location paste = state.config.coordC;
 
         if (state.config.action != null) {
             switch (state.config.action) {
@@ -1069,7 +1051,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 }
                 case MARK_COPY_B:
                 case MARK_CUT_B: {
-                    sourceA = state.config.source != null ? state.config.source.a : null;
                     sourceB = new Location(player.worldObj, Config.getLookingAtLocation(player));
                     GL11.glColor4f(0.0F, 0.0F, 1.0F, 0.75F);
                     drawRulers(player, sourceB, false, event.partialTicks);
@@ -1087,6 +1068,10 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             }
         }
 
+        state.config.coordA = sourceA;
+        state.config.coordB = sourceB;
+        state.config.coordC = paste;
+
         boolean isSourceAValid = sourceA != null && sourceA.isInWorld(player.worldObj);
         boolean isSourceBValid = sourceB != null && sourceB.isInWorld(player.worldObj);
         boolean isPasteValid = paste != null && paste.isInWorld(player.worldObj);
@@ -1102,19 +1087,15 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             GL11.glColor4f(0.0F, 0.0F, 1.0F, 0.75F);
             drawAABB(player, Config.getBoundingBox(sourceA, deltas), event.partialTicks);
 
-            if (blocks == null) {
-                blocks = Config.getBlocksInBB(sourceA, deltas).iterator();
-            }
-
-            if (blocks != null && blocks.hasNext()) {
-                Vector3i block = blocks.next();
-
-                drawBox(player, new Location(player.worldObj, block), event.partialTicks);
-            }
-
-            if (blocks != null && !blocks.hasNext()) {
-                blocks = null;
-            }
+            AboveHotbarHUD.renderTextAboveHotbar(
+                String.format(
+                    "dX=%d dY=%d dZ=%d",
+                    Math.abs(deltas.x) + 1,
+                    Math.abs(deltas.y) + 1,
+                    Math.abs(deltas.z) + 1),
+                (int) (SPAWN_INTERVAL_MS * 20 / 1000),
+                false,
+                false);
         }
 
         if (isPasteValid) {
@@ -1126,6 +1107,32 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             } else {
                 drawAABB(player, Config.getBoundingBox(paste, new Vector3i()), event.partialTicks);
             }
+
+            boolean spawn = (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS
+                || !Objects.equals(DRAWN_CONFIG, state.config);
+
+            if (spawn) {
+                LAST_SPAWN_MS_EPOCH = System.currentTimeMillis();
+                DRAWN_CONFIG = state.config;
+
+                StructureLibAPI.startHinting(player.worldObj);
+
+                for (PendingBlock pendingBlock : state.getPendingBlocks()) {
+                    Block block = pendingBlock.getBlock();
+
+                    if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {
+                        StructureLibAPI.hintParticle(
+                            player.worldObj,
+                            pendingBlock.x,
+                            pendingBlock.y,
+                            pendingBlock.z,
+                            block,
+                            pendingBlock.metadata);
+                    }
+                }
+
+                StructureLibAPI.endHinting(player.worldObj);
+            }
         }
     }
 
@@ -1133,7 +1140,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         Block block = player.worldObj.getBlock(l.x, l.y, l.z);
         block.setBlockBoundsBasedOnState(player.worldObj, l.x, l.y, l.z);
         AxisAlignedBB aabb = block.getSelectedBoundingBoxFromPool(player.worldObj, l.x, l.y, l.z);
-        
+
         GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
         drawAABB(player, aabb, partialTickTime);
     }
@@ -1150,8 +1157,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) partialTickTime;
         double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) partialTickTime;
         RenderGlobal.drawOutlinedBoundingBox(
-                aabb
-                .expand((double) f1, (double) f1, (double) f1)
+            aabb.expand((double) f1, (double) f1, (double) f1)
                 .getOffsetBoundingBox(-d0, -d1, -d2),
             -1);
 

@@ -3,6 +3,14 @@ package gregtech.common.items.matterManipulator;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Vec3;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.google.gson.JsonElement;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
@@ -16,13 +24,6 @@ import appeng.parts.AEBasePart;
 import appeng.parts.automation.UpgradeInventory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class AEPartData {
 
@@ -76,14 +77,15 @@ public class AEPartData {
         if (partHost.getPart(side) instanceof AEBasePart part) {
             if (mCustomName != null) part.setCustomName(mCustomName);
 
-            EntityPlayer fakePlayer = context.getFakePlayer().get();
+            EntityPlayer fakePlayer = context.getFakePlayer()
+                .get();
 
             fakePlayer.inventory.mainInventory[0] = new ItemStack(new FakeMemoryCard());
 
             part.onActivate(fakePlayer, Vec3.createVectorHelper(0, 0, 0));
 
             fakePlayer.inventory.mainInventory[0] = null;
-            
+
             UpgradeInventory upgradeInv = (UpgradeInventory) part.getInventoryByName("upgrades");
 
             if (upgradeInv != null) {
@@ -169,51 +171,35 @@ public class AEPartData {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         AEPartData other = (AEPartData) obj;
         if (mPart == null) {
-            if (other.mPart != null)
-                return false;
-        } else if (!mPart.equals(other.mPart))
-            return false;
+            if (other.mPart != null) return false;
+        } else if (!mPart.equals(other.mPart)) return false;
         if (mSettingsName == null) {
-            if (other.mSettingsName != null)
-                return false;
-        } else if (!mSettingsName.equals(other.mSettingsName))
-            return false;
+            if (other.mSettingsName != null) return false;
+        } else if (!mSettingsName.equals(other.mSettingsName)) return false;
         if (mSettings == null) {
-            if (other.mSettings != null)
-                return false;
-        } else if (!mSettings.equals(other.mSettings))
-            return false;
+            if (other.mSettings != null) return false;
+        } else if (!mSettings.equals(other.mSettings)) return false;
         if (mMemoryCardData == null) {
-            if (other.mMemoryCardData != null)
-                return false;
-        } else if (!mMemoryCardData.equals(other.mMemoryCardData))
-            return false;
-        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades))
-            return false;
-        if (!Arrays.equals(mConfig, other.mConfig))
-            return false;
+            if (other.mMemoryCardData != null) return false;
+        } else if (!mMemoryCardData.equals(other.mMemoryCardData)) return false;
+        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades)) return false;
+        if (!Arrays.equals(mConfig, other.mConfig)) return false;
         if (mOreDict == null) {
-            if (other.mOreDict != null)
-                return false;
-        } else if (!mOreDict.equals(other.mOreDict))
-            return false;
+            if (other.mOreDict != null) return false;
+        } else if (!mOreDict.equals(other.mOreDict)) return false;
         if (mCustomName == null) {
-            if (other.mCustomName != null)
-                return false;
-        } else if (!mCustomName.equals(other.mCustomName))
-            return false;
+            if (other.mCustomName != null) return false;
+        } else if (!mCustomName.equals(other.mCustomName)) return false;
         return true;
     }
 
     private class FakeMemoryCard extends Item implements IMemoryCard {
+
         @Override
         public void setMemoryCardContents(ItemStack is, String SettingsName, NBTTagCompound data) {
             AEPartData.this.mSettingsName = SettingsName;
@@ -232,7 +218,7 @@ public class AEPartData {
 
         @Override
         public void notifyUser(EntityPlayer player, MemoryCardMessages msg) {
-            
+
         }
     }
 }

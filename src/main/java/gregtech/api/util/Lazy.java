@@ -2,7 +2,7 @@ package gregtech.api.util;
 
 import java.util.function.Supplier;
 
-public class Lazy<T> {
+public class Lazy<T> implements Supplier<T> {
 
     private boolean hasValue = false;
     private T value;
@@ -13,6 +13,7 @@ public class Lazy<T> {
         this.getter = getter;
     }
 
+    @Override
     public synchronized T get() {
         if (!hasValue) {
             value = getter.get();
