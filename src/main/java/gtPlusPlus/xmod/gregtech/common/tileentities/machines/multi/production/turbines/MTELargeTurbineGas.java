@@ -14,10 +14,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -26,7 +24,6 @@ import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("deprecation")
 public class MTELargeTurbineGas extends MTELargerTurbineBase {
@@ -199,15 +196,5 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
     @Override
     protected String getCasingName() {
         return "Reinforced Gas Turbine Casing";
-    }
-
-    @Override
-    protected ITexture getTextureFrontFace() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
-    }
-
-    @Override
-    protected ITexture getTextureFrontFaceActive() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
     }
 }
