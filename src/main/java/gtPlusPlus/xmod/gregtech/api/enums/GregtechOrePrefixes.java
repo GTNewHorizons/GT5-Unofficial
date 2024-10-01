@@ -928,7 +928,8 @@ public enum GregtechOrePrefixes {
             for (final MaterialStack tMaterial : this.mMaterialList) {
                 sb.append(tMaterial.toString());
             }
-            this.mChemicalFormula = sb.toString().replaceAll("_", "-");
+            this.mChemicalFormula = sb.toString()
+                .replaceAll("_", "-");
 
             int tAmountOfComponents = 0, tMeltingPoint = 0;
             for (final MaterialStack tMaterial : this.mMaterialList) {

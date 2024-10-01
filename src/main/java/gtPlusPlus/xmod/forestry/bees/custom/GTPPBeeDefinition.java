@@ -515,7 +515,7 @@ public enum GTPPBeeDefinition implements IBeeDefinition {
     }
 
     private static IAlleleBeeSpecies getSpecies(String name) {
-        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele("forestry.species" +name);
+        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele("forestry.species" + name);
     }
 
     protected abstract void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies);

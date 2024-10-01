@@ -39,10 +39,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
 
     public LFTRSpargingNEIHandler() {
         this.transferRects.add(
-            new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(65, 13, 36, 18),
-                this.getOverlayIdentifier()
-            ));
+            new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier()));
         if (!NEIGTPPConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
                 GTValues.GT,
@@ -83,8 +80,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        this.transferRects
-            .add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getOverlayIdentifier()));
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getOverlayIdentifier()));
     }
 
     public List<GasSpargingRecipeNEI> getCache() {

@@ -126,7 +126,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
         ItemStack aStack) {
         Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
         return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
-                && side == getBaseMetaTileEntity().getFrontFacing();
+            && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -134,7 +134,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
         ItemStack aStack) {
         Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
         return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
-                && side == getBaseMetaTileEntity().getFrontFacing();
+            && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     public ArrayList<ItemStack> getInventory() {

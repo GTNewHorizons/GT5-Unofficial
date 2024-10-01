@@ -480,48 +480,48 @@ public class RecipesGeneral {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_LV.get(1L),
                 bitsd,
-                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_LV.get(1),
-                        'P', GregtechItemList.Pollution_Cleaner_LV.get(1) });
+                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_LV.get(1), 'P',
+                    GregtechItemList.Pollution_Cleaner_LV.get(1) });
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_MV.get(1L),
                 bitsd,
-                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_MV.get(1),
-                        'P', GregtechItemList.Pollution_Cleaner_MV.get(1) });
+                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_MV.get(1), 'P',
+                    GregtechItemList.Pollution_Cleaner_MV.get(1) });
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_HV.get(1L),
                 bitsd,
-                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_HV.get(1),
-                        'P', GregtechItemList.Pollution_Cleaner_HV.get(1) });
+                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_HV.get(1), 'P',
+                    GregtechItemList.Pollution_Cleaner_HV.get(1) });
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_EV.get(1L),
                 bitsd,
-                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_EV.get(1),
-                        'P', GregtechItemList.Pollution_Cleaner_EV.get(1) });
+                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_EV.get(1), 'P',
+                    GregtechItemList.Pollution_Cleaner_EV.get(1) });
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_IV.get(1L),
                 bitsd,
-                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_IV.get(1),
-                        'P', GregtechItemList.Pollution_Cleaner_IV.get(1) });
+                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_IV.get(1), 'P',
+                    GregtechItemList.Pollution_Cleaner_IV.get(1) });
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_LuV.get(1L),
                 bitsd,
-                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_LuV.get(1),
-                        'P', GregtechItemList.Pollution_Cleaner_LuV.get(1) });
+                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_LuV.get(1), 'P',
+                    GregtechItemList.Pollution_Cleaner_LuV.get(1) });
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_ZPM.get(1L),
                 bitsd,
-                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_ZPM.get(1),
-                        'P', GregtechItemList.Pollution_Cleaner_ZPM.get(1) });
+                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_ZPM.get(1), 'P',
+                    GregtechItemList.Pollution_Cleaner_ZPM.get(1) });
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_UV.get(1L),
                 bitsd,
-                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_UV.get(1),
-                        'P', GregtechItemList.Pollution_Cleaner_UV.get(1) });
+                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_UV.get(1), 'P',
+                    GregtechItemList.Pollution_Cleaner_UV.get(1) });
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_MAX.get(1L),
                 bitsd,
-                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_MAX.get(1),
-                        'P', GregtechItemList.Pollution_Cleaner_MAX.get(1) });
+                new Object[] { "M", "P", 'M', ItemList.Hatch_Muffler_MAX.get(1), 'P',
+                    GregtechItemList.Pollution_Cleaner_MAX.get(1) });
         }
     }
 }

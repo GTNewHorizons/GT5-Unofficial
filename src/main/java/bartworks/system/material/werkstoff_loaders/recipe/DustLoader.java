@@ -190,7 +190,7 @@ public class DustLoader implements IWerkstoffRunnable {
                         null,
                         null,
                         new FluidStack[] { null },
-                        new FluidStack[] {!flOutputs.isEmpty() ? flOutputs.get(0) : null },
+                        new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                         (int) Math.max(
                             1L,
                             Math.abs(
@@ -215,7 +215,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             null,
                             null,
                             new FluidStack[] { null },
-                            new FluidStack[] {!flOutputs.isEmpty() ? flOutputs.get(0) : null },
+                            new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                             (int) Math.max(
                                 1L,
                                 Math.abs(
@@ -266,7 +266,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             new ItemStack[] { input },
                             null,
                             null,
-                            new FluidStack[] {!flOutputs.isEmpty() ? flOutputs.get(0) : null },
+                            new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                             null,
                             (int) Math.max(
                                 1L,

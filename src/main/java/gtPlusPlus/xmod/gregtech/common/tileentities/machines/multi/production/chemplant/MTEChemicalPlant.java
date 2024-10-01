@@ -114,7 +114,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         if (!mTieredBlockRegistry.containsKey(aTier)) {
             return 10;
         }
-        return mTieredBlockRegistry.get(aTier).getValue_3();
+        return mTieredBlockRegistry.get(aTier)
+            .getValue_3();
     }
 
     @Override

@@ -99,9 +99,9 @@ public class GUIPestKiller extends GuiContainer {
                     this.fontRendererObj.drawString("Range: 5x5", 4, 30, 4210752);
                     this.fontRendererObj.drawString("Poison: ", 4, 42, 4210752);
                     this.fontRendererObj.drawString(
-                            aTile.getTank()
-                                    .getFluid()
-                                    .getLocalizedName(),
+                        aTile.getTank()
+                            .getFluid()
+                            .getLocalizedName(),
                         4,
                         54,
                         4210752);
@@ -127,9 +127,9 @@ public class GUIPestKiller extends GuiContainer {
                     this.fontRendererObj.drawString("Range: 9x9", 4, 30, 4210752);
                     this.fontRendererObj.drawString("Poison: ", 4, 42, 4210752);
                     this.fontRendererObj.drawString(
-                            aTile.getTank()
-                                    .getFluid()
-                                    .getLocalizedName(),
+                        aTile.getTank()
+                            .getFluid()
+                            .getLocalizedName(),
                         4,
                         54,
                         4210752);

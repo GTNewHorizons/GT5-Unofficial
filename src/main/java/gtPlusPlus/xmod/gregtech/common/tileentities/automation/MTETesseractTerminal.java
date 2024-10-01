@@ -148,11 +148,11 @@ public class MTETesseractTerminal extends MTEBasicTank {
             if (this.getBaseMetaTileEntity()
                 .getOwnerName() != null
                 && !this.getBaseMetaTileEntity()
-                    .getOwnerName().isEmpty()) {
+                    .getOwnerName()
+                    .isEmpty()) {
                 if (this.getBaseMetaTileEntity()
                     .getOwnerName()
-                    .equalsIgnoreCase(
-                        aPlayer.getDisplayName())) {
+                    .equalsIgnoreCase(aPlayer.getDisplayName())) {
                     this.mOwner = PlayerUtils.getPlayersUUIDByName(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
@@ -191,9 +191,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                 }
                 PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
                 if (this.getTesseract(this.mFrequency, false) != null) {
-                    PlayerUtils.messagePlayer(
-                        aPlayer,
-                        EnumChatFormatting.GREEN + " (Connected)");
+                    PlayerUtils.messagePlayer(aPlayer, EnumChatFormatting.GREEN + " (Connected)");
                 }
             }
         } else if (aPlayer.getUniqueID()
@@ -268,10 +266,8 @@ public class MTETesseractTerminal extends MTEBasicTank {
             return null;
         }
         if (rTesseract.mFrequency != aFrequency) {
-            TesseractHelper.setTerminalOwnershipByPlayer(
-                PlayerUtils.getPlayerOnServerFromUUID(mOwner),
-                    aFrequency,
-                null);
+            TesseractHelper
+                .setTerminalOwnershipByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency, null);
             return null;
         }
         if (!rTesseract.isValidTesseractGenerator(
@@ -615,7 +611,8 @@ public class MTETesseractTerminal extends MTEBasicTank {
         if (this.getBaseMetaTileEntity()
             .getOwnerName() != null
             && !this.getBaseMetaTileEntity()
-                .getOwnerName().isEmpty()) {
+                .getOwnerName()
+                .isEmpty()) {
             this.mOwner = PlayerUtils.getPlayersUUIDByName(
                 this.getBaseMetaTileEntity()
                     .getOwnerName());

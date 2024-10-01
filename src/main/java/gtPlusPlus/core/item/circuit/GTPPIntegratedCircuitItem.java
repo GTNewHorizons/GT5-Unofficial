@@ -72,9 +72,8 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
         try {
             aList.add("Configuration == " + aStack.getItemDamage());
             aList.add(
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName() + ".tooltip.0",
-                    "Right click to reconfigure"));
+                GTLanguageManager
+                    .addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
             aList.add(
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName() + ".tooltip.1",

@@ -164,8 +164,8 @@ public interface IToolStats extends gregtech.api.interfaces.IToolStats {
      * @return the Amount of modified Items.
      */
     @Override
-    int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-                          int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
+    int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY,
+        int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
 
     /**
      * @return Returns a broken Version of the Item.
@@ -177,15 +177,13 @@ public interface IToolStats extends gregtech.api.interfaces.IToolStats {
      * @return the Damage actually done to the Mob.
      */
     @Override
-    float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-                                       EntityPlayer aPlayer);
+    float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
 
     /**
      * @return the Damage actually done to the Mob.
      */
     @Override
-    float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-                                      EntityPlayer aPlayer);
+    float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
 
     @Override
     IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack);

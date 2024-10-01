@@ -93,7 +93,7 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
             String.format(
                 transItem("020", "Progress: %s/%s"),
                 color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
-                    formatNumbers(getMaxDamage())));
+                formatNumbers(getMaxDamage())));
         if (aStack.getItemDamage() > 0) aList.add(EnumChatFormatting.RED + transItem("021", "Radiation Hazard"));
     }
 

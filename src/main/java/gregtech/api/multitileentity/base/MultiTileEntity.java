@@ -1016,12 +1016,11 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     @Override
     public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
-        if (aCheckPrecicely || privateAccess() || (ownerName.isEmpty()))
-            if ((ownerName.isEmpty()) && isServerSide()) {
-                setOwnerName(aPlayer.getDisplayName());
-                setOwnerUuid(aPlayer.getUniqueID());
-            } else return !privateAccess() || aPlayer.getDisplayName()
-                .equals("Player") || ownerName.equals("Player") || ownerName.equals(aPlayer.getDisplayName());
+        if (aCheckPrecicely || privateAccess() || (ownerName.isEmpty())) if ((ownerName.isEmpty()) && isServerSide()) {
+            setOwnerName(aPlayer.getDisplayName());
+            setOwnerUuid(aPlayer.getUniqueID());
+        } else return !privateAccess() || aPlayer.getDisplayName()
+            .equals("Player") || ownerName.equals("Player") || ownerName.equals(aPlayer.getDisplayName());
         return true;
     }
 

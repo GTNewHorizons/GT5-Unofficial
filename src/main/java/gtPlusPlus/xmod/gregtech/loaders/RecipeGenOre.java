@@ -74,7 +74,8 @@ public class RecipeGenOre extends RecipeGenBase {
         Material bonusA = null; // Ni
         Material bonusB = null; // Tin
 
-        if (!material.getComposites().isEmpty()
+        if (!material.getComposites()
+            .isEmpty()
             && material.getComposites()
                 .get(0) != null) {
             bonusA = material.getComposites()
@@ -602,8 +603,7 @@ public class RecipeGenOre extends RecipeGenBase {
                         + " x"
                         + mainDust.stackSize
                         + ", "
-                        + (emptyCell == null ? "No Cells"
-                            : emptyCell.getDisplayName() + " x" + emptyCell.stackSize));
+                        + (emptyCell == null ? "No Cells" : emptyCell.getDisplayName() + " x" + emptyCell.stackSize));
                 Logger.MATERIALS("Outputs " + ItemUtils.getArrayStackNames(mInternalOutputs));
                 Logger.MATERIALS("Time: " + ((int) Math.max(material.getMass() * 4L * 1, 1)));
                 Logger.MATERIALS("EU: " + tVoltageMultiplier);
@@ -662,7 +662,7 @@ public class RecipeGenOre extends RecipeGenBase {
             tinyDust,
             tinyDust,
             tinyDust,
-                matDust)) {
+            matDust)) {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");

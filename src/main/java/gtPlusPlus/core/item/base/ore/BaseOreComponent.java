@@ -241,8 +241,7 @@ public class BaseOreComponent extends Item {
         private final String DISPLAY_NAME;
         private final boolean HAS_OVERLAY;
 
-        ComponentTypes(final String LocalName, final String prefix, final String DisplayName,
-                       final boolean overlay) {
+        ComponentTypes(final String LocalName, final String prefix, final String DisplayName, final boolean overlay) {
             this.COMPONENT_NAME = LocalName;
             this.PREFIX = prefix;
             this.DISPLAY_NAME = DisplayName;

@@ -56,7 +56,8 @@ public class GT5OreSmallHelper {
         }
 
         for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
-            if (!worldGen.mWorldGenName.startsWith("ore.small.") || !(worldGen instanceof WorldgenGTOreSmallPieces worldGenSmallPieces)) {
+            if (!worldGen.mWorldGenName.startsWith("ore.small.")
+                || !(worldGen instanceof WorldgenGTOreSmallPieces worldGenSmallPieces)) {
                 continue;
             }
 

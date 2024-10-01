@@ -149,7 +149,7 @@ public class ItemRadioactiveCell extends GTGenericItem implements IBoxable {
             color1 + String.format(
                 transItem("001", "Durability: %s/%s"),
                 color2 + formatNumbers(this.maxDmg - getDurabilityOfStack(aStack)) + color1,
-                    formatNumbers(this.maxDmg)));
+                formatNumbers(this.maxDmg)));
     }
 
     @Override

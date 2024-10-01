@@ -75,14 +75,16 @@ public class DustDecayable extends BaseItemTickable {
                 if (iStack.stackSize > 1) {
                     int u = iStack.stackSize;
                     ItemUtils.getSimpleStack(getDecayResult()).stackSize = u;
-                    ((EntityPlayer) entityHolding).inventory.addItemStackToInventory((ItemUtils.getSimpleStack(getDecayResult())));
+                    ((EntityPlayer) entityHolding).inventory
+                        .addItemStackToInventory((ItemUtils.getSimpleStack(getDecayResult())));
                     for (int l = 0; l < u; l++) {
                         ((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
                     }
 
                 } else {
                     ItemUtils.getSimpleStack(getDecayResult()).stackSize = 1;
-                    ((EntityPlayer) entityHolding).inventory.addItemStackToInventory((ItemUtils.getSimpleStack(getDecayResult())));
+                    ((EntityPlayer) entityHolding).inventory
+                        .addItemStackToInventory((ItemUtils.getSimpleStack(getDecayResult())));
                     ((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
                 }
             }

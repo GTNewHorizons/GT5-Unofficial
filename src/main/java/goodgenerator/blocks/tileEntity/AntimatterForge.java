@@ -462,12 +462,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private long calculateContainedAntimatter() {
         long antimatterStored = 0;
         for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
-            if (amOutputHatch != null && amOutputHatch
-                    .isValid()
-                    && amOutputHatch
-                    .getFluid() != null) {
-                antimatterStored += amOutputHatch
-                        .getFluid().amount;
+            if (amOutputHatch != null && amOutputHatch.isValid() && amOutputHatch.getFluid() != null) {
+                antimatterStored += amOutputHatch.getFluid().amount;
             }
         }
         return antimatterStored;
@@ -508,15 +504,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         // Reduce the amount of antimatter in each hatch by half of the difference between the lowest amount and current
         // hatch contents
         for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
-            if (amOutputHatch != null && amOutputHatch
-                    .isValid()
-                    && amOutputHatch
-                    .getFluid() != null) {
-                FluidStack fluid = amOutputHatch
-                        .getFluid()
-                        .copy();
-                ratioLosses -= amOutputHatch
-                        .drain((int) ((fluid.amount - minAntimatterAmount) * 0.5), true).amount;
+            if (amOutputHatch != null && amOutputHatch.isValid() && amOutputHatch.getFluid() != null) {
+                FluidStack fluid = amOutputHatch.getFluid()
+                    .copy();
+                ratioLosses -= amOutputHatch.drain((int) ((fluid.amount - minAntimatterAmount) * 0.5), true).amount;
             }
         }
 
@@ -623,15 +614,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     private void decimateAntimatter() {
         for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
-            if (amOutputHatch != null && amOutputHatch
-                    .isValid()
-                    && amOutputHatch
-                    .getFluid() != null) {
-                FluidStack fluid = amOutputHatch
-                        .getFluid()
-                        .copy();
-                amOutputHatch
-                        .drain((int) Math.floor(fluid.amount * 0.1), true);
+            if (amOutputHatch != null && amOutputHatch.isValid() && amOutputHatch.getFluid() != null) {
+                FluidStack fluid = amOutputHatch.getFluid()
+                    .copy();
+                amOutputHatch.drain((int) Math.floor(fluid.amount * 0.1), true);
             }
         }
     }

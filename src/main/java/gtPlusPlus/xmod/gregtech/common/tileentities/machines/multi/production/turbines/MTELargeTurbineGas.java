@@ -156,8 +156,8 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                 float efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
                 tEU *= efficiency;
             }
-            tEU = GTUtility.safeInt(
-                (long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
+            tEU = GTUtility
+                .safeInt((long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
 
             return tEU;
         }

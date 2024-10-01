@@ -37,8 +37,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
             if (material.getPlate(1) != null && material.getIngot(1) != null) GTModHandler.addCraftingRecipe(
                 material.getPlate(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "h", "B", "I", 'I', material.getIngot(1), 'B',
-                    material.getIngot(1) });
+                new Object[] { "h", "B", "I", 'I', material.getIngot(1), 'B', material.getIngot(1) });
 
         if (ItemUtils.checkForInvalidItems(material.getPlate(1))
             && ItemUtils.checkForInvalidItems(material.getIngot(1)))
@@ -53,8 +52,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
             GTModHandler.addCraftingRecipe(
                 material.getPlateDouble(1),
                 GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "I", "B", "h", 'I', material.getPlate(1), 'B',
-                    material.getPlate(1) });
+                new Object[] { "I", "B", "h", 'I', material.getPlate(1), 'B', material.getPlate(1) });
 
         if (ItemUtils.checkForInvalidItems(material.getPlateDouble(1))
             && ItemUtils.checkForInvalidItems(material.getPlate(1)))

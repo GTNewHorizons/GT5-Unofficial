@@ -259,8 +259,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
                 tEU = (int) (tEU * efficiency);
             }
             tEU = GTUtility.safeInt(
-                (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency())
-                    * tEU));
+                (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency()) * tEU));
 
             return tEU;
         }

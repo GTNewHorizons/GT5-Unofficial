@@ -853,7 +853,8 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
 
-        if (!OreDictionary.getOres("fuelCoke").isEmpty()) {
+        if (!OreDictionary.getOres("fuelCoke")
+            .isEmpty()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     OreDictionary.getOres("fuelCoke")

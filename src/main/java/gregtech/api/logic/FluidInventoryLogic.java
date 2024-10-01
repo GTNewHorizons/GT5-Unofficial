@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -137,8 +136,9 @@ public class FluidInventoryLogic {
     @Nonnull
     public FluidStack[] getStoredFluids() {
         final FluidStack[] fluids = inventory.getFluids()
-                .stream()
-                .filter(Objects::nonNull).toArray(FluidStack[]::new);
+            .stream()
+            .filter(Objects::nonNull)
+            .toArray(FluidStack[]::new);
         if (fluids == null) {
             return new FluidStack[0];
         }

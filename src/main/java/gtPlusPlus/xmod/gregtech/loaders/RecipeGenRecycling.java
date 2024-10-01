@@ -250,8 +250,10 @@ public class RecipeGenRecycling implements Runnable {
         }
         return GTUtility.copyAmount(
             aAmount,
-                GTOreDictUnificator.getName2StackMap()
-                    .get(aName.toString()), getFirstOre(aName, aAmount), aReplacement);
+            GTOreDictUnificator.getName2StackMap()
+                .get(aName.toString()),
+            getFirstOre(aName, aAmount),
+            aReplacement);
     }
 
     public static ItemStack getFirstOre(final Object aName, final long aAmount) {

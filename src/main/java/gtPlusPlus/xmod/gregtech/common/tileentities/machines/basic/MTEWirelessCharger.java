@@ -453,7 +453,8 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
     private boolean isValidPlayer(EntityPlayer aPlayer) {
         BaseMetaTileEntity aTile = (BaseMetaTileEntity) this.getBaseMetaTileEntity();
         if (mLocked || (aTile != null && aTile.privateAccess())) {
-            return aPlayer.getUniqueID().equals(getBaseMetaTileEntity().getOwnerUuid());
+            return aPlayer.getUniqueID()
+                .equals(getBaseMetaTileEntity().getOwnerUuid());
         }
         return true;
     }

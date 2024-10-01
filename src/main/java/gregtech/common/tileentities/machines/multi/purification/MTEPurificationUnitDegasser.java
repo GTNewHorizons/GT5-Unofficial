@@ -305,8 +305,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4.")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE.toString()
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "Bit 1: "
                     + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD
@@ -350,8 +349,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "Xenon")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE.toString()
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "Bit 2: "
                     + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD
@@ -405,8 +403,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "2x")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE.toString()
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "Bit 3: "
                     + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD
@@ -418,8 +415,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "Molten Neutronium")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE.toString()
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "Bit 4: "
                     + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD
@@ -431,8 +427,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "all other bits and do not insert anything.")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE.toString()
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "No bits: "
                     + EnumChatFormatting.BLUE
                     + EnumChatFormatting.BOLD

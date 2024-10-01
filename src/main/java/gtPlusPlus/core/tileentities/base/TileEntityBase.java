@@ -427,13 +427,13 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
     @Override
     public boolean inputEnergyFrom(ForgeDirection side) {
         return side == ForgeDirection.UNKNOWN || (!this.isServerSide() ? this.isEnergyInputSide(side)
-                : side != ForgeDirection.UNKNOWN && this.mActiveEUInputs[side.ordinal()] && !this.mReleaseEnergy);
+            : side != ForgeDirection.UNKNOWN && this.mActiveEUInputs[side.ordinal()] && !this.mReleaseEnergy);
     }
 
     @Override
     public boolean outputsEnergyTo(ForgeDirection side) {
         return side == ForgeDirection.UNKNOWN || (!this.isServerSide() ? this.isEnergyOutputSide(side)
-                : side != ForgeDirection.UNKNOWN && this.mActiveEUOutputs[side.ordinal()] || this.mReleaseEnergy);
+            : side != ForgeDirection.UNKNOWN && this.mActiveEUOutputs[side.ordinal()] || this.mReleaseEnergy);
     }
 
     private boolean isEnergyInputSide(ForgeDirection side) {
@@ -765,17 +765,20 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public final boolean getSky(int aX, int aY, int aZ) {
-        return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ) || this.worldObj.canBlockSeeTheSky(aX, aY, aZ);
+        return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
+            || this.worldObj.canBlockSeeTheSky(aX, aY, aZ);
     }
 
     @Override
     public final boolean getOpacity(int aX, int aY, int aZ) {
-        return (!this.ignoreUnloadedChunks || !this.crossedChunkBorder(aX, aZ) || this.worldObj.blockExists(aX, aY, aZ)) && GTUtility.isOpaqueBlock(this.worldObj, aX, aY, aZ);
+        return (!this.ignoreUnloadedChunks || !this.crossedChunkBorder(aX, aZ) || this.worldObj.blockExists(aX, aY, aZ))
+            && GTUtility.isOpaqueBlock(this.worldObj, aX, aY, aZ);
     }
 
     @Override
     public final boolean getAir(int aX, int aY, int aZ) {
-        return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ) || GTUtility.isBlockAir(this.worldObj, aX, aY, aZ);
+        return this.ignoreUnloadedChunks && this.crossedChunkBorder(aX, aZ) && !this.worldObj.blockExists(aX, aY, aZ)
+            || GTUtility.isBlockAir(this.worldObj, aX, aY, aZ);
     }
 
     @Override

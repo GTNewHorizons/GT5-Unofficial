@@ -58,7 +58,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
             aPrimaryColor,
             aSecondaryColor,
             EnumRarity.common,
-                new ArrayList<>());
+            new ArrayList<>());
     }
 
     public static void registerEntityForSpawnEgg(final int aMetaID, String parEntityToSpawnName, int aPrimaryColor,

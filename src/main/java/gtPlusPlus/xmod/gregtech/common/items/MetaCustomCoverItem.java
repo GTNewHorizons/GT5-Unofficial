@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GTMultiTexture;
 import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.api.objects.Logger;

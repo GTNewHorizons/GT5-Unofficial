@@ -138,7 +138,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     @Override
     public String[] getInfoData() {
         ArrayList<String> mInfo = new ArrayList<>();
-        if (!this.getMetaName().isEmpty()) {
+        if (!this.getMetaName()
+            .isEmpty()) {
             mInfo.add(this.getMetaName());
         }
 
@@ -182,8 +183,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + ":");
             mInfo.add(
                 StatCollector.translateToLocal(
-                    EnumChatFormatting.GREEN.toString()
-                        + storedEnergy
+                    EnumChatFormatting.GREEN.toString() + storedEnergy
                         + EnumChatFormatting.RESET
                         + " EU / "
                         + EnumChatFormatting.YELLOW
@@ -194,8 +194,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.mei") + ":");
             mInfo.add(
                 StatCollector.translateToLocal(
-                    EnumChatFormatting.YELLOW.toString()
-                        + getMaxInputVoltage()
+                    EnumChatFormatting.YELLOW.toString() + getMaxInputVoltage()
                         + EnumChatFormatting.RESET
                         + " EU/t(*2A) "
                         + StatCollector.translateToLocal("GTPP.machines.tier")
@@ -210,8 +209,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + " In Dynamos:");
             mInfo.add(
                 StatCollector.translateToLocal(
-                    EnumChatFormatting.GREEN.toString()
-                        + storedEnergy
+                    EnumChatFormatting.GREEN.toString() + storedEnergy
                         + EnumChatFormatting.RESET
                         + " EU / "
                         + EnumChatFormatting.YELLOW
@@ -407,7 +405,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     public boolean isMachineRunning() {
-        return this.getBaseMetaTileEntity().isActive();
+        return this.getBaseMetaTileEntity()
+            .isActive();
     }
 
     @Override
@@ -508,8 +507,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     public boolean checkHatch() {
-        return mMaintenanceHatches.size() <= 1
-            && (this.getPollutionPerSecond(null) <= 0 || !mMufflerHatches.isEmpty());
+        return mMaintenanceHatches.size() <= 1 && (this.getPollutionPerSecond(null) <= 0 || !mMufflerHatches.isEmpty());
     }
 
     @Override

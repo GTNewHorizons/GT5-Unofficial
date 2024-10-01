@@ -27,9 +27,7 @@ public class WorkbenchCraftingHandler {
     public WorkbenchCraftingHandler() {
 
         // just a example recipe so you know how to add them
-        this.addRecipe(
-            new ItemStack(Blocks.iron_block),
-            new Object[] { "###", "###", "###", '#', Items.iron_ingot });
+        this.addRecipe(new ItemStack(Blocks.iron_block), new Object[] { "###", "###", "###", '#', Items.iron_ingot });
 
         // another example Recipe, but shapeless
         this.addShapelessRecipe(new ItemStack(Items.cake), new Object[] { Items.stick });

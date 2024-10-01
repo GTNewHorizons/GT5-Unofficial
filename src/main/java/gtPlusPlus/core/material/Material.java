@@ -459,7 +459,9 @@ public class Material {
                         } else {
                             StringBuilder c = new StringBuilder(b);
                             while (MathUtils.howManyPlaces(hashSize + c.length()) < 9) {
-                                c.append(c.toString().hashCode());
+                                c.append(
+                                    c.toString()
+                                        .hashCode());
                             }
                             b = c.toString();
                         }
@@ -1184,7 +1186,7 @@ public class Material {
 
     public final boolean hasSolidForm() {
         return ItemUtils
-                .checkForInvalidItems(new ItemStack[]{getDust(1), getBlock(1), getTinyDust(1), getSmallDust(1)});
+            .checkForInvalidItems(new ItemStack[] { getDust(1), getBlock(1), getTinyDust(1), getSmallDust(1) });
     }
 
     public final ItemStack[] getMaterialComposites() {
@@ -1272,14 +1274,16 @@ public class Material {
                 if (smallestRatio.length > 0) {
                     StringBuilder tempRatioStringThing1 = new StringBuilder();
                     for (long value : tempRatio) {
-                        tempRatioStringThing1.append(value).append(" : ");
+                        tempRatioStringThing1.append(value)
+                            .append(" : ");
                     }
                     Logger.MATERIALS("Default Ratio: " + tempRatioStringThing1);
 
                     StringBuilder tempRatioStringThing = new StringBuilder();
                     int tempSmallestCraftingUseSize = 0;
                     for (long l : smallestRatio) {
-                        tempRatioStringThing.append(l).append(" : ");
+                        tempRatioStringThing.append(l)
+                            .append(" : ");
                         tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + l);
                     }
                     // this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
@@ -1326,14 +1330,20 @@ public class Material {
 
                                             if (aChemFormula.length() > 3
                                                 || StringUtils.uppercaseCount(aChemFormula) > 1) {
-                                                dummyFormula.append("(").append(aChemFormula).append(")").append(dummyFormulaArray[e]);
+                                                dummyFormula.append("(")
+                                                    .append(aChemFormula)
+                                                    .append(")")
+                                                    .append(dummyFormulaArray[e]);
                                             } else {
-                                                dummyFormula.append(aChemFormula).append(dummyFormulaArray[e]);
+                                                dummyFormula.append(aChemFormula)
+                                                    .append(dummyFormulaArray[e]);
                                             }
                                         } else if (dummyFormulaArray[e] == 1) {
                                             if (aChemFormula.length() > 3
                                                 || StringUtils.uppercaseCount(aChemFormula) > 1) {
-                                                dummyFormula.append("(").append(aChemFormula).append(")");
+                                                dummyFormula.append("(")
+                                                    .append(aChemFormula)
+                                                    .append(")");
                                             } else {
                                                 dummyFormula.append(aChemFormula);
                                             }

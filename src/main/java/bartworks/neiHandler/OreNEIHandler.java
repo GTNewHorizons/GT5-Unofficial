@@ -96,8 +96,8 @@ public class OreNEIHandler extends TemplateRecipeHandler {
     public void drawExtras(int recipe) {
         if (recipe < this.arecipes.size() && this.arecipes.get(recipe) instanceof CachedOreRecipe cachedOreRecipe) {
 
-            if (cachedOreRecipe.getOtherStacks() == null || cachedOreRecipe.getOtherStacks().isEmpty())
-                return;
+            if (cachedOreRecipe.getOtherStacks() == null || cachedOreRecipe.getOtherStacks()
+                .isEmpty()) return;
 
             if (!cachedOreRecipe.small) {
                 if (cachedOreRecipe.getOtherStacks()

@@ -17,8 +17,8 @@ public interface IOreRecipeRegistrator {
      * @param aStack    always != null
      */
     void registerOre(GregtechOrePrefixes aPrefix, GT_Materials aMaterial, String aOreDictName, String aModName,
-                     ItemStack aStack);
+        ItemStack aStack);
 
     void registerOre(GregtechOrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-                     ItemStack copyAmount);
+        ItemStack copyAmount);
 }

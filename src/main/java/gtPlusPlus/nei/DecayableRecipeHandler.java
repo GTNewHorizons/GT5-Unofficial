@@ -47,14 +47,13 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        this.transferRects
-            .add(new RecipeTransferRect(new Rectangle(6, 3, 16, 16), getOverlayIdentifier()));
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(6, 3, 16, 16), getOverlayIdentifier()));
     }
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        if (result == null || (!(result.getItem() instanceof DustDecayable)
-            && !(result.getItem() instanceof BaseItemDustUnique))) {
+        if (result == null
+            || (!(result.getItem() instanceof DustDecayable) && !(result.getItem() instanceof BaseItemDustUnique))) {
             return;
         }
         final List<DecayableRecipe> recipes = DecayableRecipe.mRecipes;

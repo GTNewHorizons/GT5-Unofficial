@@ -26,7 +26,7 @@ public class DecayableRecipe {
     public boolean equals(Object o) {
         if (o instanceof DecayableRecipe i) {
             return i.mTime == this.mTime && GTUtility.areStacksEqual(mInput, i.mInput)
-                    && GTUtility.areStacksEqual(mOutput, i.mOutput);
+                && GTUtility.areStacksEqual(mOutput, i.mOutput);
         }
         return false;
     }

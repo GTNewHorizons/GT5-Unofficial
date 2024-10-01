@@ -733,7 +733,15 @@ public class ItemUtils {
         for (int i = 0; i < p.length; ++i) {
             for (int j = i + 1; j < p.length; ++j) {
                 if (p[j] != null && (p[i] == null || GTUtility.areStacksEqual(p[i], p[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(aInputInventory, aInputInventory, j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+                    GTUtility.moveStackFromSlotAToSlotB(
+                        aInputInventory,
+                        aInputInventory,
+                        j,
+                        i,
+                        (byte) 64,
+                        (byte) 1,
+                        (byte) 64,
+                        (byte) 1);
                 }
             }
         }
@@ -753,8 +761,8 @@ public class ItemUtils {
         String aDisplay = null;
         try {
             aDisplay = (StatCollector.translateToLocal(
-                    aStack.getItem()
-                            .getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
+                aStack.getItem()
+                    .getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
             if (aStack.hasTagCompound()) {
                 if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
                     NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");
@@ -801,14 +809,14 @@ public class ItemUtils {
         final Item aSkookum = ItemUtils.getItemFromFQRN("miscutils:gt.plusplus.metatool.01");
         final Class aSkookClass = aSkookum.getClass();
         return aSkookClass.isInstance(mItem) || mItem instanceof MetaGeneratedTool01
-                || mItem instanceof MetaGeneratedGregtechTools
-                || mItem instanceof GTMetaTool
-                || mItem == aSkookum;
+            || mItem instanceof MetaGeneratedGregtechTools
+            || mItem instanceof GTMetaTool
+            || mItem == aSkookum;
     }
 
     public static boolean isToolScrewdriver(ItemStack aScrewdriver) {
         return isItemGregtechTool(aScrewdriver)
-                && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150);
+            && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150);
     }
 
     public static ItemStack[] cleanItemStackArray(ItemStack[] input) {
@@ -861,10 +869,10 @@ public class ItemUtils {
         if (aStack != null) {
             Item aItem = aStack.getItem();
             return aItem == CI.getNumberedBioCircuit(0)
-                    .getItem() || aItem
+                .getItem() || aItem
                     == GTUtility.getIntegratedCircuit(0)
-                    .getItem()
-                    || aItem == CI.getNumberedAdvancedCircuit(0)
+                        .getItem()
+                || aItem == CI.getNumberedAdvancedCircuit(0)
                     .getItem();
         }
         return false;

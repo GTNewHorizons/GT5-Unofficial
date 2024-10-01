@@ -193,9 +193,9 @@ public class Utils {
                     .substring(1)
                     .toUpperCase());
             Logger.WARNING(
-                    Integer.toHexString(0x1000000 | i)
-                            .substring(1)
-                            .toUpperCase());
+                Integer.toHexString(0x1000000 | i)
+                    .substring(1)
+                    .toUpperCase());
         }
         return hexColorMap;
     }

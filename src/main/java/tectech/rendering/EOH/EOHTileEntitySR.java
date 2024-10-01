@@ -59,7 +59,8 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
 
         if (EOHRenderTile.getOrbitingObjects() != null) {
 
-            if (EOHRenderTile.getOrbitingObjects().isEmpty()) {
+            if (EOHRenderTile.getOrbitingObjects()
+                .isEmpty()) {
                 EOHRenderTile.generateImportantInfo();
             }
 

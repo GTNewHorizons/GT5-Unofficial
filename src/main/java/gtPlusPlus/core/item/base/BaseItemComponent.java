@@ -231,9 +231,7 @@ public class BaseItemComponent extends Item {
                 }
             }
 
-            if (this.materialName != null
-                && !this.materialName.isEmpty()
-                && (this.componentMaterial != null)) {
+            if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
                 if (this.componentMaterial != null) {
                     if (!this.componentMaterial.vChemicalFormula.contains("?")) {
@@ -255,7 +253,8 @@ public class BaseItemComponent extends Item {
                     }
 
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
-                        if (this.unlocalName.toLowerCase().contains("hot")) {
+                        if (this.unlocalName.toLowerCase()
+                            .contains("hot")) {
                             list.add(
                                 EnumChatFormatting.GRAY + "Warning: "
                                     + EnumChatFormatting.RED
@@ -430,7 +429,7 @@ public class BaseItemComponent extends Item {
         private final OrePrefixes a_GT_EQUAL;
 
         ComponentTypes(final String LocalName, final String DisplayName, final String OreDictName,
-                       final OrePrefixes aPrefix) {
+            final OrePrefixes aPrefix) {
             this.COMPONENT_NAME = LocalName;
             this.DISPLAY_NAME = DisplayName;
             this.OREDICT_NAME = OreDictName;

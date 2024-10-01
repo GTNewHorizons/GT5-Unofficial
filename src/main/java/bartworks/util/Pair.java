@@ -34,7 +34,7 @@ public class Pair<A, B> implements Map.Entry<A, B> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Pair<?, ?> pair1)) return false;
+        if (!(o instanceof Pair<?, ?>pair1)) return false;
 
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         return Arrays.equals(this.pair, pair1.pair);

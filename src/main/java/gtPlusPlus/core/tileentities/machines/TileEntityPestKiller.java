@@ -344,7 +344,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean canExtractItem(final int aSlot, final ItemStack aStack, final int p_102008_3_) {
-        return this.getInventory().getInventory()[1] != null;
+        return this.getInventory()
+            .getInventory()[1] != null;
     }
 
     public String getCustomName() {

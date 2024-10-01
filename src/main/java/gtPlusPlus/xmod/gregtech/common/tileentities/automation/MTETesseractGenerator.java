@@ -195,11 +195,11 @@ public class MTETesseractGenerator extends MTEBasicTank {
             if (this.getBaseMetaTileEntity()
                 .getOwnerName() != null
                 && !this.getBaseMetaTileEntity()
-                    .getOwnerName().isEmpty()) {
+                    .getOwnerName()
+                    .isEmpty()) {
                 if (this.getBaseMetaTileEntity()
                     .getOwnerName()
-                    .equalsIgnoreCase(
-                        aPlayer.getDisplayName())) {
+                    .equalsIgnoreCase(aPlayer.getDisplayName())) {
                     this.mOwner = PlayerUtils.getPlayersUUIDByName(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
@@ -786,13 +786,11 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     private MTETesseractGenerator getGeneratorEntity() {
-        return TesseractHelper
-            .getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
+        return TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
     }
 
     private MTETesseractGenerator getGeneratorEntity(int frequency) {
-        return TesseractHelper
-            .getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), frequency);
+        return TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), frequency);
     }
 
     @Override
@@ -800,7 +798,8 @@ public class MTETesseractGenerator extends MTEBasicTank {
         if (this.getBaseMetaTileEntity()
             .getOwnerName() != null
             && !this.getBaseMetaTileEntity()
-                .getOwnerName().isEmpty()) {
+                .getOwnerName()
+                .isEmpty()) {
             this.mOwner = PlayerUtils.getPlayersUUIDByName(
                 this.getBaseMetaTileEntity()
                     .getOwnerName());

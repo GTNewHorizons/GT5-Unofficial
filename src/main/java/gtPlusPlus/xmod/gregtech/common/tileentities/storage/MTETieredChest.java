@@ -39,8 +39,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
             aNameRegional,
             aTier,
             3,
-            "This Chest stores " + (int) (Math.pow(6.0D, (double) aTier) * mStorageFactor) + " Items"
-        );
+            "This Chest stores " + (int) (Math.pow(6.0D, (double) aTier) * mStorageFactor) + " Items");
     }
 
     public MTETieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

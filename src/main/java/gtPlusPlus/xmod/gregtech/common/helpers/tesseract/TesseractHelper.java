@@ -51,7 +51,7 @@ public class TesseractHelper {
 
     // Saves A Generator to the Players UUID map along with the Freq.
     public static boolean setGeneratorOwnershipByPlayer(EntityPlayer player, int freq,
-                                                        MTETesseractGenerator generator) {
+        MTETesseractGenerator generator) {
         if (player == null) {
             return false;
         }
@@ -148,8 +148,7 @@ public class TesseractHelper {
     }
 
     // Saves A Terminal to the Players UUID map along with the Freq.
-    public static boolean setTerminalOwnershipByPlayer(EntityPlayer player, int freq,
-                                                       MTETesseractTerminal generator) {
+    public static boolean setTerminalOwnershipByPlayer(EntityPlayer player, int freq, MTETesseractTerminal generator) {
         if (player == null) {
             return false;
         }

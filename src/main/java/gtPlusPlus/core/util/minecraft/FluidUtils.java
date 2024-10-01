@@ -507,8 +507,8 @@ public class FluidUtils {
     }
 
     public static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName,
-                                               final int MeltingPoint, final short[] RGBA, ItemStack dustStack, final ItemStack dustStack2,
-                                               final int amountPerItem, final boolean aGenerateCell) {
+        final int MeltingPoint, final short[] RGBA, ItemStack dustStack, final ItemStack dustStack2,
+        final int amountPerItem, final boolean aGenerateCell) {
         if (dustStack == null) {
             dustStack = ItemUtils
                 .getItemStackOfAmountFromOreDictNoBroken("dust" + Utils.sanitizeString(localizedName), 1);

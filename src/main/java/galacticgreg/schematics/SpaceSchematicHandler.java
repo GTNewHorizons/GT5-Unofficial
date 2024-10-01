@@ -127,7 +127,8 @@ public class SpaceSchematicHandler {
      */
     public boolean SaveSpaceStructure(SpaceSchematic pSchematic) {
         try {
-            if (pSchematic.getName().isEmpty()) return false;
+            if (pSchematic.getName()
+                .isEmpty()) return false;
 
             JAXBContext tJaxbCtx = JAXBContext.newInstance(SpaceSchematic.class);
             Marshaller jaxMarsh = tJaxbCtx.createMarshaller();

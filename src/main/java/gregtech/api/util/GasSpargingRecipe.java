@@ -56,20 +56,20 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 
     public boolean isValid() {
         return mInputGas != null && mInputGas.amount > 0
-                && mInputSpentFuel != null
-                && mInputSpentFuel.amount > 0
-                && mFluidOutputs != null
-                && mFluidOutputs.length >= 1
-                && mMaxOutputQuantity != null
-                && mMaxOutputQuantity.length >= 1
-                && mFluidOutputs.length == mMaxOutputQuantity.length;
+            && mInputSpentFuel != null
+            && mInputSpentFuel.amount > 0
+            && mFluidOutputs != null
+            && mFluidOutputs.length >= 1
+            && mMaxOutputQuantity != null
+            && mMaxOutputQuantity.length >= 1
+            && mFluidOutputs.length == mMaxOutputQuantity.length;
     }
 
     public boolean containsInputs(FluidStack aSpargeGas, FluidStack aSpentFuel) {
         if (aSpargeGas != null && aSpargeGas.getFluid()
             .equals(this.mInputGas.getFluid())) {
             return aSpentFuel != null && aSpentFuel.getFluid()
-                    .equals(this.mInputSpentFuel.getFluid());
+                .equals(this.mInputSpentFuel.getFluid());
         }
         return false;
     }

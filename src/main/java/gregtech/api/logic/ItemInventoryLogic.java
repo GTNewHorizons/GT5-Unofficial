@@ -164,8 +164,9 @@ public class ItemInventoryLogic {
     @Nonnull
     public ItemStack[] getStoredItems() {
         final ItemStack[] items = inventory.getStacks()
-                .stream()
-                .filter(Objects::nonNull).toArray(ItemStack[]::new);
+            .stream()
+            .filter(Objects::nonNull)
+            .toArray(ItemStack[]::new);
         if (items == null) {
             return new ItemStack[0];
         }

@@ -151,23 +151,20 @@ public class RecipeIC2 {
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod,
-                    'X', OrePrefixes.plate.get(Materials.DarkSteel), 'S',
-                OrePrefixes.screw.get(Materials.DarkSteel) });
+            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
+                OrePrefixes.plate.get(Materials.DarkSteel), 'S', OrePrefixes.screw.get(Materials.DarkSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod,
-                    'X', OrePrefixes.plate.get(Materials.TungstenSteel), 'S',
-                OrePrefixes.screw.get(Materials.TungstenSteel) });
+            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
+                OrePrefixes.plate.get(Materials.TungstenSteel), 'S', OrePrefixes.screw.get(Materials.TungstenSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod,
-                    'X', OrePrefixes.plate.get(Materials.Molybdenum), 'S',
-                OrePrefixes.screw.get(Materials.Molybdenum) });
+            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
+                OrePrefixes.plate.get(Materials.Molybdenum), 'S', OrePrefixes.screw.get(Materials.Molybdenum) });
         Logger.INFO("Added recipe item for GT5 Extruder: Shaft Shape");
 
         // Shaft Recipes

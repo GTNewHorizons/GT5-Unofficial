@@ -321,9 +321,9 @@ public class GTUtil {
             player,
             dualInputHatches)) {
             return loadConfigurationFromDataStick(
-                    tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
-                    player,
-                    dualInputHatches);
+                tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
+                player,
+                dualInputHatches);
         }
 
         return true;
