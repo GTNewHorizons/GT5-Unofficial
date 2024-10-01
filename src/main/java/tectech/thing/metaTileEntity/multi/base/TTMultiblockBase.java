@@ -2611,7 +2611,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         break;
                 }
                 setBackground(texture);
-                super.draw(partialTicks);
                 GL11.glColor4f(1f, 1f, 1f, 1f);
             }
         }.setOnClick((clickData, widget) -> {
