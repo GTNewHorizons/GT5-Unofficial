@@ -295,15 +295,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
                                         Logger.INFO("mCurrentPollution[4]:" + mCurrentPollution);
                                         Logger.INFO("mCurrentPollution[5]:" + reduction);
-                                        if (reduction <= mCurrentPollution) {
-                                            // Clean some Air.
-                                            toRemove = reduction;
-                                        } else {
-                                            // Makes sure we don't get negative pollution.
-                                            toRemove = mCurrentPollution;
-                                        }
 
-                                        toRemove = toRemove / 2;
+                                        toRemove = Math.min(reduction, mCurrentPollution) / 2;
                                         Logger.INFO("mCurrentPollution[6]:" + toRemove);
 
                                         // We are good to clean
