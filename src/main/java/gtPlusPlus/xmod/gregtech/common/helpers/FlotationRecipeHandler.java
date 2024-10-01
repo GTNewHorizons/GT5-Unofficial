@@ -46,7 +46,7 @@ public class FlotationRecipeHandler {
     }
 
     public static ItemStack findMilledStack(ItemStack[] aInputs) {
-        if (aInputs == null || aInputs.length <= 0) {
+        if (aInputs == null) {
             return null;
         }
         for (ItemStack aStack : aInputs) {

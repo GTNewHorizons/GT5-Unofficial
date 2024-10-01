@@ -677,46 +677,34 @@ public class ItemUtils {
             return false;
         }
 
-        if (mInputs.length > 0) {
-            for (ItemStack stack : mInputs) {
-                if (stack != null) {
-                    if (stack.getItem() != null) {
-                        if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
-                            .getClass() == ModItems.AAA_Broken.getClass()) {
-                            return false;
-                        } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
-                            .getClass() == ModItems.ZZZ_Empty.getClass()) {
-                                return false;
-                            } else {
-                                continue;
-                            }
-                    } else {
-                        continue;
+        for (ItemStack stack : mInputs) {
+            if (stack != null) {
+                if (stack.getItem() != null) {
+                    if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
+                        .getClass() == ModItems.AAA_Broken.getClass()) {
+                        return false;
+                    } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
+                        .getClass() == ModItems.ZZZ_Empty.getClass()) {
+                        return false;
                     }
-                } else {
-                    return false;
                 }
+            } else {
+                return false;
             }
         }
-        if (mOutputs.length > 0) {
-            for (ItemStack stack : mOutputs) {
-                if (stack != null) {
-                    if (stack.getItem() != null) {
-                        if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
-                            .getClass() == ModItems.AAA_Broken.getClass()) {
-                            return false;
-                        } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
-                            .getClass() == ModItems.ZZZ_Empty.getClass()) {
-                                return false;
-                            } else {
-                                continue;
-                            }
-                    } else {
-                        continue;
+        for (ItemStack stack : mOutputs) {
+            if (stack != null) {
+                if (stack.getItem() != null) {
+                    if (stack.getItem() == ModItems.AAA_Broken || stack.getItem()
+                        .getClass() == ModItems.AAA_Broken.getClass()) {
+                        return false;
+                    } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
+                        .getClass() == ModItems.ZZZ_Empty.getClass()) {
+                        return false;
                     }
-                } else {
-                    return false;
                 }
+            } else {
+                return false;
             }
         }
 

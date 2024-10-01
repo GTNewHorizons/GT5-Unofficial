@@ -148,10 +148,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (extra == null) {
             extra = new String[0];
         }
-        if (extra.length > 0) {
-            for (String s : extra) {
-                mInfo.add(s);
-            }
+        for (String s : extra) {
+            mInfo.add(s);
         }
 
         long seconds = (this.mTotalRunTime / 20);

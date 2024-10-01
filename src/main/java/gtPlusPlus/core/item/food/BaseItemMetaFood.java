@@ -422,7 +422,7 @@ public class BaseItemMetaFood extends ItemFood {
 
     private static ArrayList<String> getOreDictNamesAsArrayList(String... aOreDictNames) {
         ArrayList<String> aPackage = new ArrayList<>();
-        if (aOreDictNames != null && aOreDictNames.length > 0) {
+        if (aOreDictNames != null) {
             for (String aEffect : aOreDictNames) {
                 aPackage.add(aEffect);
             }
