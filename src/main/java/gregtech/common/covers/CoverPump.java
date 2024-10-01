@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -232,10 +233,10 @@ public class CoverPump extends CoverBehavior {
                                 })
                                     .dynamicTooltip(() -> {
                                         ISerializableObject.LegacyCoverData coverData = getCoverData();
-                                        return Arrays.asList(
-                                            coverData == null || coverData.get() % 2 == 0
-                                                ? GTUtility.trans("314", "Allow Input")
-                                                : GTUtility.trans("312", "Allow Output"));
+                                        return Collections.singletonList(
+                                                coverData == null || coverData.get() % 2 == 0
+                                                        ? GTUtility.trans("314", "Allow Input")
+                                                        : GTUtility.trans("312", "Allow Output"));
                                     })
                                     .setPos(spaceX * 0, spaceY * 2);
                             })
@@ -249,10 +250,10 @@ public class CoverPump extends CoverBehavior {
                                 })
                                     .dynamicTooltip(() -> {
                                         ISerializableObject.LegacyCoverData coverData = getCoverData();
-                                        return Arrays.asList(
-                                            coverData == null || coverData.get() % 2 == 0
-                                                ? GTUtility.trans("313", "Block Input")
-                                                : GTUtility.trans("311", "Block Output"));
+                                        return Collections.singletonList(
+                                                coverData == null || coverData.get() % 2 == 0
+                                                        ? GTUtility.trans("313", "Block Input")
+                                                        : GTUtility.trans("311", "Block Output"));
                                     })
                                     .setPos(spaceX * 1, spaceY * 2);
                             })

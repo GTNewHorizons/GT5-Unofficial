@@ -18,6 +18,7 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -59,10 +60,9 @@ public class StaticRecipeChangeLoaders {
     private static TObjectDoubleHashMap<Materials> gtEbfGasRecipeTimeMultipliers = null;
     private static TObjectDoubleHashMap<Materials> gtEbfGasRecipeConsumptionMultipliers = null;
 
-    public static final List<ItemStack> whitelistForEBFNoGasRecipeDontCheckItemData = Arrays
-        .asList(GTModHandler.getModItem(TinkerConstruct.ID, "materials", 1L, 12) // Raw Aluminum -> Aluminium Ingot
-        // (coremod)
-        );
+    public static final List<ItemStack> whitelistForEBFNoGasRecipeDontCheckItemData = Collections.singletonList(GTModHandler.getModItem(TinkerConstruct.ID, "materials", 1L, 12) // Raw Aluminum -> Aluminium Ingot
+            // (coremod)
+    );
 
     private StaticRecipeChangeLoaders() {}
 
