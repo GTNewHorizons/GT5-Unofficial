@@ -571,15 +571,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         // Migrate from 4x8 to 4x9 pattern inventory
         int oldPatternCount = 4 * 8;
         int oldSlotManual = oldPatternCount + 1;
-        int oldSlotCircuit = oldPatternCount;
 
         if (internalInventory[oldSlotManual] == null && mInventory[oldSlotManual] != null) {
             mInventory[SLOT_MANUAL_START] = mInventory[oldSlotManual];
             mInventory[oldSlotManual] = null;
         }
-        if (internalInventory[oldSlotCircuit] == null && mInventory[oldSlotCircuit] != null) {
-            mInventory[SLOT_CIRCUIT] = mInventory[oldSlotCircuit];
-            mInventory[oldSlotCircuit] = null;
+        if (internalInventory[oldPatternCount] == null && mInventory[oldPatternCount] != null) {
+            mInventory[SLOT_CIRCUIT] = mInventory[oldPatternCount];
+            mInventory[oldPatternCount] = null;
         }
 
         // reconstruct patternDetailsPatternSlotMap

@@ -332,8 +332,7 @@ public class MathUtils {
         for (byte i : aDataSet) {
             total += i;
         }
-        byte result = safeByte(total / divisor);
-        return result;
+        return safeByte(total / divisor);
     }
 
     public static short getShortAverage(short[] aDataSet) {
@@ -361,8 +360,7 @@ public class MathUtils {
         for (int i : aDataSet) {
             total += i;
         }
-        int result = safeInt(total / divisor);
-        return result;
+        return safeInt(total / divisor);
     }
 
     public static long getLongAverage(long[] aDataSet) {
@@ -450,31 +448,26 @@ public class MathUtils {
     }
 
     public static byte getSafeByte(Byte b) {
-        Byte a = safeCast(b);
-        return a;
+        return safeCast(b);
     }
 
     public static short getSafeShort(Short b) {
-        Short a = safeCast(b);
-        return a;
+        return safeCast(b);
     }
 
     public static int getSafeInt(Integer b) {
-        Integer a = safeCast(b);
-        return a;
+        return safeCast(b);
     }
 
     public static long getSafeLong(Long b) {
-        Long a = safeCast(b);
-        return a;
+        return safeCast(b);
     }
 
     public static int safeCast_LongToInt(long o) {
         if (o > Integer.MAX_VALUE) {
             return Integer.MAX_VALUE;
         } else {
-            int i = (int) o;
-            return i;
+            return (int) o;
         }
     }
 

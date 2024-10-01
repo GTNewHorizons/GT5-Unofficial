@@ -516,8 +516,7 @@ public class CI {
         if (aPrefix == OrePrefixes.liquid) {
             int aMatID = (aTier == 0 || aTier == 2 || aTier == 5 || aTier == 8 ? 0
                 : (aTier == 1 || aTier == 3 || aTier == 6 || aTier == 9 ? 1 : 2));
-            ItemStack aCell = aMaster[aMatID][aTier].getCell(aAmount);
-            return aCell;
+            return aMaster[aMatID][aTier].getCell(aAmount);
         }
 
         if (aPrefix == OrePrefixes.circuit) {

@@ -649,7 +649,6 @@ public class RecipeGenOre extends RecipeGenBase {
             null,
             matDust);
 
-        final ItemStack normalDust = matDust;
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
 
@@ -663,28 +662,28 @@ public class RecipeGenOre extends RecipeGenBase {
             tinyDust,
             tinyDust,
             tinyDust,
-            normalDust)) {
+                matDust)) {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
         if (RecipeUtils
-            .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
+            .addShapedRecipe(matDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
             Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
         if (RecipeUtils
-            .addShapedRecipe(smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, normalDust)) {
+            .addShapedRecipe(smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, matDust)) {
             Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
         if (RecipeUtils
-            .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, material.getSmallDust(4))) {
+            .addShapedRecipe(null, matDust, null, null, null, null, null, null, null, material.getSmallDust(4))) {
             Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");

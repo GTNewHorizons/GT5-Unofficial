@@ -124,12 +124,11 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
     }
 
     public ItemStack writeItemsToNBT(final ItemStack itemStack, final ItemStack[] craftingGrid) {
-        final ItemStack[] blueprint = craftingGrid;
         if (itemStack.hasTagCompound()) {
             final NBTTagCompound nbt = itemStack.getTagCompound();
             final NBTTagList list = new NBTTagList();
             for (int i = 0; i < INV_SIZE; i++) {
-                final ItemStack stack = blueprint[i];
+                final ItemStack stack = craftingGrid[i];
                 if (stack != null) {
                     final NBTTagCompound data = new NBTTagCompound();
                     stack.writeToNBT(data);

@@ -97,10 +97,8 @@ public class WorkbenchCraftingHandler {
 
     public void addShapelessRecipe(final ItemStack par1ItemStack, final Object[] par2ArrayOfObj) {
         final ArrayList<ItemStack> arraylist = new ArrayList<>();
-        final Object[] aobj = par2ArrayOfObj;
-        final int i = aobj.length;
 
-        for (final Object obj : aobj) {
+        for (final Object obj : par2ArrayOfObj) {
             if (obj instanceof ItemStack) {
                 arraylist.add(((ItemStack) obj).copy());
                 continue;

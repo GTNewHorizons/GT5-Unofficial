@@ -169,8 +169,7 @@ public class MetaCustomCoverItem extends Item {
         }
         double currentDamage = getCoverDamage(stack);
         double meta = stack.getItemDamage() == 0 ? 50 : 2500;
-        double durabilitypercent = currentDamage / meta;
-        return durabilitypercent;
+        return currentDamage / meta;
     }
 
     @Override

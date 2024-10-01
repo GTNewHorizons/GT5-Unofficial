@@ -606,7 +606,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .toLowerCase()
             .contains("steam");
 
-        String[] ret = new String[] {
+        return new String[] {
             // 8 Lines available for information panels
             tRunning + ": "
                 + EnumChatFormatting.RED
@@ -649,7 +649,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 + GTUtility.formatNumbers(mPollutionReduction)
                 + EnumChatFormatting.RESET
                 + " %" };
-        return ret;
     }
 
     @Override

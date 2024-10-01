@@ -1018,10 +1018,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
     @Override
     public GTPacketMultiTileEntity getClientDataPacket() {
-        final GTPacketMultiTileEntity packet = super.getClientDataPacket();
-
-        return packet;
-
+        return super.getClientDataPacket();
     }
 
     @Override

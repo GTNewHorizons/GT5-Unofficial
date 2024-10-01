@@ -853,16 +853,12 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
     }
 
     private static float getVoltageFactor(long mEU, int antennaTier) {
-
         // float factor = (float) Math.pow(1.00004, -mEU * Math.pow(antennaTier, 1.0/3.0) + 80000);
         // float factor = (float) -Math.pow(1.1, -mEU / 2000 * Math.pow(antennaTier, 2.0 / 3.0)) + 1; // Strictly
         // improves
         // with higher tier
         // antenna
-        float factor = (float) (Math.sqrt(mEU) / 1500);
-
-        return factor;
-
+        return (float) (Math.sqrt(mEU) / 1500);
     }
 
     /*
@@ -882,11 +878,10 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
          * \ +\ \frac{l^{1.11t^{\frac{1}{3}}}}{40000000}
          */
 
-        double energy = (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0 / 9.0)) / 40_000_000)
-            * (-Math.pow(Math.pow(0.15, 2.0 / (Math.pow(antennaTier, 5.0 / 2.0))), voltage / 60768.0) + 1); // In
-                                                                                                            // keV
+        // keV
 
-        return energy;
+        return (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0 / 9.0)) / 40_000_000)
+            * (-Math.pow(Math.pow(0.15, 2.0 / (Math.pow(antennaTier, 5.0 / 2.0))), voltage / 60768.0) + 1);
 
     }
 

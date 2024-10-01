@@ -396,7 +396,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
-        String[] ret = new String[] {
+        return new String[] {
             // 8 Lines available for information panels
             tRunning + ": "
                 + EnumChatFormatting.RED
@@ -441,7 +441,6 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + EnumChatFormatting.RESET
                 + " %" /* 8 */
         };
-        return ret;
     }
 
     public boolean hasTurbine() {

@@ -675,8 +675,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (!canOpenControllerGui()) return guiProvider;
         if (uiContext.getPlayer()
             .isSneaking()) return guiProvider;
-        GUIProvider<?> controllerGUI = controller.getGUI(uiContext);
-        return controllerGUI;
+        return controller.getGUI(uiContext);
     }
 
     @Override

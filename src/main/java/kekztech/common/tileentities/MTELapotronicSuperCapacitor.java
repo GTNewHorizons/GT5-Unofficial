@@ -854,11 +854,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
 
         // Passive loss is multiplied by number of maintenance issues.
-        long total_passive_loss = temp_capacity_divided * (getIdealStatus() - repairStatus + 1);
-
         // Maximum of 100,000 EU/t drained per UHV cell. The logic is 1% of EU capacity should be drained every 86400
         // seconds (1 day).
-        return total_passive_loss;
+        return temp_capacity_divided * (getIdealStatus() - repairStatus + 1);
     }
 
     /**

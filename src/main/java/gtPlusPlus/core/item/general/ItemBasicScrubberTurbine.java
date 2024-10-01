@@ -133,8 +133,7 @@ public class ItemBasicScrubberTurbine extends Item {
         }
         double currentDamage = getFilterDamage(stack);
         double meta = getMaxDurability(stack);
-        double durabilitypercent = currentDamage / meta;
-        return durabilitypercent;
+        return currentDamage / meta;
     }
 
     @Override

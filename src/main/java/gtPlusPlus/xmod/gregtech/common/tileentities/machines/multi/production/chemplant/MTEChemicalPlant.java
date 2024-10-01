@@ -114,10 +114,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         if (!mTieredBlockRegistry.containsKey(aTier)) {
             return 10;
         }
-        int aCasingID = mTieredBlockRegistry.get(aTier)
-            .getValue_3();
-        // Logger.INFO("Found casing texture ID "+aCasingID+" for tier "+aTier);
-        return aCasingID;
+        return mTieredBlockRegistry.get(aTier).getValue_3();
     }
 
     @Override

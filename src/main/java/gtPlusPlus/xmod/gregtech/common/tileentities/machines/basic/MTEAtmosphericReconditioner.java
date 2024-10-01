@@ -264,8 +264,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                                     Logger.INFO("mOptimalAirFlow[1]:" + mOptimalAirFlow);
 
                                     // Calculate The Voltage we are running
-                                    long tVoltage = drainEU;
-                                    byte tTier = (byte) Math.max(1, GTUtility.getTier(tVoltage));
+                                    byte tTier = (byte) Math.max(1, GTUtility.getTier(drainEU));
 
                                     // Check Sides for Air,
                                     // More air means more pollution processing.

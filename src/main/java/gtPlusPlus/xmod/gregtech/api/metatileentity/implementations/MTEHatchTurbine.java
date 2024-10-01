@@ -106,8 +106,7 @@ public class MTEHatchTurbine extends MTEHatch {
 
     public boolean hasTurbine() {
         ItemStack aStack = this.mInventory[0];
-        boolean aIsValid = MTELargerTurbineBase.isValidTurbine(aStack);
-        return aIsValid;
+        return MTELargerTurbineBase.isValidTurbine(aStack);
     }
 
     public ItemStack getTurbine() {

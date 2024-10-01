@@ -2347,22 +2347,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         IItemHandlerModifiable upgradeMatsHandler = new ItemStackHandler(12);
         int uniqueItems = inputs.length;
         for (int i = 0; i < 12; i++) {
-            int index = i;
-            int cleanDiv4 = index / 4;
+            int cleanDiv4 = i / 4;
             if (i < uniqueItems) {
-                ItemStack stack = inputs[index];
+                ItemStack stack = inputs[i];
                 if (stack != null) {
                     stack = stack.copy();
                     stack.stackSize = 1;
-                    upgradeMatsHandler.setStackInSlot(index, stack);
+                    upgradeMatsHandler.setStackInSlot(i, stack);
                 }
                 builder.widget(
                     new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
-                        .setPos(5 + cleanDiv4 * 36, 6 + index % 4 * 18)
+                        .setPos(5 + cleanDiv4 * 36, 6 + i % 4 * 18)
                         .setSize(18, 18));
                 columnList.get(cleanDiv4)
                     .addChild(
-                        new SlotWidget(upgradeMatsHandler, index).setAccess(false, false)
+                        new SlotWidget(upgradeMatsHandler, i).setAccess(false, false)
                             .disableInteraction());
                 columnList.get(cleanDiv4 + 3)
                     .addChild(
@@ -2372,7 +2371,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             } else {
                 builder.widget(
                     new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_DISABLED)
-                        .setPos(5 + cleanDiv4 * 36, 6 + index % 4 * 18)
+                        .setPos(5 + cleanDiv4 * 36, 6 + i % 4 * 18)
                         .setSize(18, 18));
             }
         }

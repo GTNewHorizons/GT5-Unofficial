@@ -31,8 +31,7 @@ public class CoverToggleVisual extends CoverBehavior {
             BlockPos aPos = new BlockPos(
                 aEntity.getIGregTechTileEntity(aEntity.getXCoord(), aEntity.getYCoord(), aEntity.getZCoord()));
 
-            String s = aEntity.getInventoryName() + "." + aPos.getUniqueIdentifier() + side.name();
-            return s;
+            return aEntity.getInventoryName() + "." + aPos.getUniqueIdentifier() + side.name();
         } catch (Throwable t) {}
         XSTR x = new XSTR();
         return "ERROR." + x.getSeed() + x.hashCode() + x.nextDouble() + ".ID";

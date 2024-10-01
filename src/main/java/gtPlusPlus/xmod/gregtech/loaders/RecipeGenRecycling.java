@@ -320,7 +320,6 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {
-        String mTemp = oredictName;
 
         // Banned Materials and replacements for GT5.8 compat.
 
@@ -329,7 +328,7 @@ public class RecipeGenRecycling implements Runnable {
             return ItemUtils.getSimpleStack(Items.clay_ball, amount);
         }
 
-        final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
+        final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
         if (!oreDictList.isEmpty()) {
             final ItemStack returnValue = oreDictList.get(0)
                 .copy();

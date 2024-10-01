@@ -484,8 +484,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
             if (GTUtility.areStacksEqual(a, aInput)) {
                 if (mTank.getFluid() == null || mTank.getFluid()
                     .isFluidEqual(aFluidForInput)) {
-                    boolean didFill = fill(ForgeDirection.UNKNOWN, aFluidForInput, true) > 0;
-                    return didFill;
+                    return fill(ForgeDirection.UNKNOWN, aFluidForInput, true) > 0;
                 }
             } else {
                 continue;

@@ -83,10 +83,9 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
 
     @Override
     public String[] getDescription() {
-        String[] aDesc = new String[] { "Item Output for Multiblocks", getSlots(this.mTier) + " Slots",
+        return new String[] { "Item Output for Multiblocks", getSlots(this.mTier) + " Slots",
             "Left click with data stick to save filter config", "Right click with data stick to load filter config",
             GTPPCore.GT_Tooltip.get() };
-        return aDesc;
     }
 
     @Override

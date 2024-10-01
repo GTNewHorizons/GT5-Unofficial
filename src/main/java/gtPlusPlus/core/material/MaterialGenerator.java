@@ -320,8 +320,7 @@ public class MaterialGenerator {
 
             final String unlocalizedName = matInfo.getUnlocalizedName();
             final String materialName = matInfo.getLocalizedName();
-            final short[] C = customRGB;
-            final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+            final Integer Colour = Utils.rgbtoHexValue(customRGB[0], customRGB[1], customRGB[2]);
 
             if (Colour == null) {
                 Logger.DEBUG_MATERIALS("Invalid Material while constructing " + materialName + ".");

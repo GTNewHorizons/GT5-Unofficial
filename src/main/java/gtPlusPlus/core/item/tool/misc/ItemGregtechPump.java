@@ -768,8 +768,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 .getInteger("mCapacity");
         }
         int aMeta = this.getCorrectMetaForItemstack(container);
-        int aCapacity = (aMeta == 0 ? 2000 : (aMeta == 1 ? 8000 : (aMeta == 2 ? 32000 : 128000)));
-        return aCapacity;
+        return aMeta == 0 ? 2000 : aMeta == 1 ? 8000 : aMeta == 2 ? 32000 : 128000;
     }
 
     public int fill(ItemStack container, FluidStack resource) {

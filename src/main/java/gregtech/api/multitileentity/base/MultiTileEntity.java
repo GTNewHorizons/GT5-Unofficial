@@ -1034,9 +1034,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
      * @return a Packet containing all Data which has to be synchronised to the Client - Override as needed
      */
     public GTPacketMultiTileEntity getClientDataPacket() {
-
-        final GTPacketMultiTileEntity packet = new GTPacketMultiTileEntity();
-        return packet;
+        return new GTPacketMultiTileEntity();
     }
 
     @Override

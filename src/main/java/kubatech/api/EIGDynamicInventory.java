@@ -425,8 +425,7 @@ public class EIGDynamicInventory<T> {
             DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
             for (int j = 0, jmax = (i == imax ? (buttons.size() - 1) % perRow : (perRow - 1)); j <= jmax; j++) {
                 final int finalI = i * perRow;
-                final int finalJ = j;
-                final int ID = finalI + finalJ;
+                final int ID = finalI + j;
                 row.widget(buttons.get(ID));
             }
             dynamicInventoryWidget.widget(row.setPos(0, i * 18));

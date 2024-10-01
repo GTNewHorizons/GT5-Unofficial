@@ -290,8 +290,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 + " Seconds.");
         mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime);
 
-        String[] mInfo2 = mInfo.toArray(new String[0]);
-        return mInfo2;
+        return mInfo.toArray(new String[0]);
     }
 
     public int getPollutionReductionForAllMufflers() {
@@ -408,10 +407,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     public boolean isMachineRunning() {
-        boolean aRunning = this.getBaseMetaTileEntity()
-            .isActive();
-        // log("Queried Multiblock is currently running: "+aRunning);
-        return aRunning;
+        return this.getBaseMetaTileEntity().isActive();
     }
 
     @Override
@@ -609,8 +605,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aTileEntity == null) {
             return null;
         }
-        final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        return aMetaTileEntity;
+        return aTileEntity.getMetaTileEntity();
     }
 
     @Override
@@ -781,28 +776,27 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aTileEntity == null) {
             return false;
         }
-        final IMetaTileEntity aMetaTileEntity = aTileEntity;
-        if (aMetaTileEntity instanceof MTEHatchInput || aMetaTileEntity instanceof MTEHatchInputBus
-            || aMetaTileEntity instanceof MteHatchSteamBusInput) {
-            if (aMetaTileEntity instanceof MTEHatchInput) {
-                ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
-                ((MTEHatchInput) aMetaTileEntity).mRecipeMap = aMap;
+        if (aTileEntity instanceof MTEHatchInput || aTileEntity instanceof MTEHatchInputBus
+            || aTileEntity instanceof MteHatchSteamBusInput) {
+            if (aTileEntity instanceof MTEHatchInput) {
+                ((MTEHatchInput) aTileEntity).mRecipeMap = null;
+                ((MTEHatchInput) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
                     log("Remapped Input Hatch to " + aMap.unlocalizedName + ".");
                 } else {
                     log("Cleared Input Hatch.");
                 }
-            } else if (aMetaTileEntity instanceof MTEHatchInputBus) {
-                ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = null;
-                ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = aMap;
+            } else if (aTileEntity instanceof MTEHatchInputBus) {
+                ((MTEHatchInputBus) aTileEntity).mRecipeMap = null;
+                ((MTEHatchInputBus) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
                     log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
                 } else {
                     log("Cleared Input Bus.");
                 }
             } else {
-                ((MteHatchSteamBusInput) aMetaTileEntity).mRecipeMap = null;
-                ((MteHatchSteamBusInput) aMetaTileEntity).mRecipeMap = aMap;
+                ((MteHatchSteamBusInput) aTileEntity).mRecipeMap = null;
+                ((MteHatchSteamBusInput) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
                     log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
                 } else {
@@ -996,8 +990,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             }
         }
         // Do Super
-        boolean aSuper = super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        return aSuper;
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     public boolean onPlungerRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {

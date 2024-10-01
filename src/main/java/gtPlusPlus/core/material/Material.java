@@ -1514,8 +1514,7 @@ public class Material {
         if (this.mFluid == null) {
             return null;
         }
-        final FluidStack moltenFluid = new FluidStack(this.mFluid, fluidAmount);
-        return moltenFluid;
+        return new FluidStack(this.mFluid, fluidAmount);
     }
 
     public final boolean setFluid(Fluid aFluid) {

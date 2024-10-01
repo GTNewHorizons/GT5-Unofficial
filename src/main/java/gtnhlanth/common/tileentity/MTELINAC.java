@@ -569,9 +569,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     private static float calculateTemperatureFactor(int fluidTemp) {
-
-        float factor = (float) Math.pow(1.1, 0.2 * fluidTemp);
-        return factor;
+        return (float) Math.pow(1.1, 0.2 * fluidTemp);
     }
 
     /*
@@ -678,7 +676,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         }
 
-        int finalOutput = survivialBuildPiece(
+        return survivialBuildPiece(
             STRUCTURE_PIECE_END,
             stackSize,
             3,
@@ -688,8 +686,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             env,
             false,
             true);
-
-        return finalOutput;
     }
 
     @Override

@@ -86,8 +86,7 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
         needsUpdate = true;
         float amount = tank.getFluidAmount();
         float capacity = tank.getCapacity();
-        float volume = (amount / capacity) * 0.8F;
-        return volume;
+        return (amount / capacity) * 0.8F;
     }
 
     @Override

@@ -146,17 +146,9 @@ public class ItemUtils {
         final int meta, final int itemstackSize) {
         if (MOD) {
             try {
-                Item em = null;
                 final Item em1 = getItemFromFQRN(FQRN);
-
                 if (em1 != null) {
-                    if (null == em) {
-                        em = em1;
-                    }
-                    if (em != null) {
-                        final ItemStack metaStack = new ItemStack(em, itemstackSize, meta);
-                        return metaStack;
-                    }
+                    return new ItemStack(em1, itemstackSize, meta);
                 }
                 return null;
             } catch (final NullPointerException e) {
@@ -169,17 +161,9 @@ public class ItemUtils {
 
     public static ItemStack simpleMetaStack(final String FQRN, final int meta, final int itemstackSize) {
         try {
-            Item em = null;
             final Item em1 = getItemFromFQRN(FQRN);
-            // Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
             if (em1 != null) {
-                if (null == em) {
-                    em = em1;
-                }
-                if (em != null) {
-                    final ItemStack metaStack = new ItemStack(em, itemstackSize, meta);
-                    return metaStack;
-                }
+                return new ItemStack(em1, itemstackSize, meta);
             }
             return null;
         } catch (final NullPointerException e) {
@@ -281,8 +265,7 @@ public class ItemUtils {
         }
 
         if (oredictName.contains("rod")) {
-            String s = "stick" + oredictName.substring(3);
-            oredictName = s;
+            oredictName = "stick" + oredictName.substring(3);
         }
 
         // Banned Materials and replacements for GT5.8 compat.
@@ -755,16 +738,15 @@ public class ItemUtils {
         }
         // ItemStack[] g = organiseInventory(p);
 
-        IInventory aTemp = aInputInventory;
         for (int i = 0; i < p.length; ++i) {
             for (int j = i + 1; j < p.length; ++j) {
                 if (p[j] != null && (p[i] == null || GTUtility.areStacksEqual(p[i], p[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(aTemp, aTemp, j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+                    GTUtility.moveStackFromSlotAToSlotB(aInputInventory, aInputInventory, j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
                 }
             }
         }
 
-        return aTemp;
+        return aInputInventory;
     }
 
     public static String getFluidName(FluidStack aFluid) {

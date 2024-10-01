@@ -17,8 +17,7 @@ public class Logger {
 
     // Generate GT++ Logger
     public static org.apache.logging.log4j.Logger makeLogger() {
-        final org.apache.logging.log4j.Logger gtPlusPlusLogger = LogManager.getLogger("GT++");
-        return gtPlusPlusLogger;
+        return LogManager.getLogger("GT++");
     }
 
     private static final boolean enabled = !ASMConfiguration.debug.disableAllLogging;

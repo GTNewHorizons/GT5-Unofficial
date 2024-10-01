@@ -40,14 +40,13 @@ public class RecipeGenBlastSmelterGTNH {
     }
 
     private static synchronized FluidStack getFluidFromIngot(final ItemStackData ingot) {
-        ItemStackData h = ingot;
-        if (mCachedIngotToFluidRegistry.containsKey(h.getUniqueDataIdentifier())) {
+        if (mCachedIngotToFluidRegistry.containsKey(ingot.getUniqueDataIdentifier())) {
             Logger.MACHINE_INFO("[ABS] mCachedIngotToFluidRegistry contains Output Ingot.");
-            return mCachedIngotToFluidRegistry.get(h.getUniqueDataIdentifier());
+            return mCachedIngotToFluidRegistry.get(ingot.getUniqueDataIdentifier());
         }
-        if (mCachedHotToColdRegistry.containsKey(h.getUniqueDataIdentifier())) {
+        if (mCachedHotToColdRegistry.containsKey(ingot.getUniqueDataIdentifier())) {
             Logger.MACHINE_INFO("[ABS] mCachedHotToColdRegistry contains Output Ingot.");
-            return mCachedIngotToFluidRegistry.get(mCachedHotToColdRegistry.get(h.getUniqueDataIdentifier()));
+            return mCachedIngotToFluidRegistry.get(mCachedHotToColdRegistry.get(ingot.getUniqueDataIdentifier()));
         }
         Logger.MACHINE_INFO("[ABS] Neither Cache contains Output Ingot.");
         return null;

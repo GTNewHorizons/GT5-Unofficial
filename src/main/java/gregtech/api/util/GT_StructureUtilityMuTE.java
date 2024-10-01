@@ -181,8 +181,7 @@ public class GT_StructureUtilityMuTE {
                     mIcons = new IIcon[6];
                     Arrays.fill(mIcons, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex].getIcon());
                 }
-                final short[] RGBA = DEFAULT;
-                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, RGBA);
+                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, DEFAULT);
                 return true;
             }
 
