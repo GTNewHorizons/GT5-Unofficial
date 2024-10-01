@@ -724,10 +724,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 if (aStack.getItem() instanceof ItemBasicScrubberTurbine) {
                     return true;
                 }
-                if (aStack.getItem() instanceof MetaGeneratedTool && aStack.getItemDamage() >= 170
-                    && aStack.getItemDamage() <= 179) {
-                    return true;
-                }
+                return aStack.getItem() instanceof MetaGeneratedTool && aStack.getItemDamage() >= 170
+                        && aStack.getItemDamage() <= 179;
             }
         }
         return false;

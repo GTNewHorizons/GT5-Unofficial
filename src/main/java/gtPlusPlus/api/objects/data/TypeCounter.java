@@ -115,11 +115,7 @@ public class TypeCounter<V> implements Set<V> {
     @Override
     public boolean remove(Object arg0) {
         InternalTypeCounterObject<V> aValue = mInternalMap.remove(arg0.toString());
-        if (aValue != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return aValue != null;
     }
 
     @Override

@@ -184,10 +184,9 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
         mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 2, 2)) return false;
-        if (mCasingAmount < 85) return false;
+        return mCasingAmount >= 85;
 
         // All checks passed!
-        return true;
     }
 
     @Override

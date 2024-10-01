@@ -273,9 +273,7 @@ public class MTEBaseModule extends TTMultiblockBase {
             if (mOutputHatches.isEmpty()) {
                 return false;
             }
-            if (mOutputBusses.isEmpty()) {
-                return false;
-            }
+            return !mOutputBusses.isEmpty();
         }
 
         return true;

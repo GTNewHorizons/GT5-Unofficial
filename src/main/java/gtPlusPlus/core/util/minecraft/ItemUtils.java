@@ -513,10 +513,7 @@ public class ItemUtils {
                 .contains("thorium")) {
                     sRadiation = 1;
                 }
-        if (sRadiation >= 1) {
-            return true;
-        }
-        return false;
+        return sRadiation >= 1;
     }
 
     public static int getRadioactivityLevel(final String materialName) {
@@ -639,11 +636,7 @@ public class ItemUtils {
         String mName = Utils.sanitizeString(mMat.getLocalizedName());
 
         String mItemName = mPrefix.name() + mName;
-        ItemStack gregstack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);
-        if (gregstack == null) {
-            return null;
-        }
-        return (gregstack);
+        return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);
     }
 
     public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
@@ -833,21 +826,15 @@ public class ItemUtils {
         final Item mItem = aStack.getItem();
         final Item aSkookum = ItemUtils.getItemFromFQRN("miscutils:gt.plusplus.metatool.01");
         final Class aSkookClass = aSkookum.getClass();
-        if (aSkookClass.isInstance(mItem) || mItem instanceof MetaGeneratedTool01
-            || mItem instanceof MetaGeneratedGregtechTools
-            || mItem instanceof GTMetaTool
-            || mItem == aSkookum) {
-            return true;
-        }
-        return false;
+        return aSkookClass.isInstance(mItem) || mItem instanceof MetaGeneratedTool01
+                || mItem instanceof MetaGeneratedGregtechTools
+                || mItem instanceof GTMetaTool
+                || mItem == aSkookum;
     }
 
     public static boolean isToolScrewdriver(ItemStack aScrewdriver) {
-        if (isItemGregtechTool(aScrewdriver)
-            && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150)) {
-            return true;
-        }
-        return false;
+        return isItemGregtechTool(aScrewdriver)
+                && (aScrewdriver.getItemDamage() == 22 || aScrewdriver.getItemDamage() == 150);
     }
 
     public static ItemStack[] cleanItemStackArray(ItemStack[] input) {
@@ -899,14 +886,12 @@ public class ItemUtils {
     public static boolean isControlCircuit(ItemStack aStack) {
         if (aStack != null) {
             Item aItem = aStack.getItem();
-            if (aItem == CI.getNumberedBioCircuit(0)
-                .getItem() || aItem
+            return aItem == CI.getNumberedBioCircuit(0)
+                    .getItem() || aItem
                     == GTUtility.getIntegratedCircuit(0)
-                        .getItem()
-                || aItem == CI.getNumberedAdvancedCircuit(0)
-                    .getItem()) {
-                return true;
-            }
+                    .getItem()
+                    || aItem == CI.getNumberedAdvancedCircuit(0)
+                    .getItem();
         }
         return false;
     }
@@ -996,20 +981,13 @@ public class ItemUtils {
         if (GTUtility.areStacksEqual(aStack, GenericChem.mSynchrotronCapableCatalyst, true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mAlgagenicGrowthPromoterCatalyst, true)) {
-            return true;
-        }
-
-        return false;
+        return GTUtility.areStacksEqual(aStack, GenericChem.mAlgagenicGrowthPromoterCatalyst, true);
     }
 
     public static boolean isMillingBall(ItemStack aStack) {
         if (GTUtility.areStacksEqual(aStack, GenericChem.mMillingBallAlumina, true)) {
             return true;
         }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mMillingBallSoapstone, true)) {
-            return true;
-        }
-        return false;
+        return GTUtility.areStacksEqual(aStack, GenericChem.mMillingBallSoapstone, true);
     }
 }

@@ -195,10 +195,7 @@ public class RecipeUtils {
             return false;
         }
         // let gregtech handle shapeless recipes.
-        if (GTModHandler.addShapelessCraftingRecipe(OutputItem, inputItems)) {
-            return true;
-        }
-        return false;
+        return GTModHandler.addShapelessCraftingRecipe(OutputItem, inputItems);
     }
 
     public static boolean generateMortarRecipe(ItemStack aStack, ItemStack aOutput) {
@@ -254,12 +251,8 @@ public class RecipeUtils {
 
             Logger.RECIPE("Using " + validCounter + " valid inputs and " + invalidCounter + " invalid inputs.");
             ShapedRecipe r = new ShapedRecipe(aFiltered, mOutput);
-            if (r != null && r.mRecipe != null) {
-                isValid = true;
-            } else {
-                isValid = false;
-            }
-            mRecipe = r != null ? r.mRecipe : null;
+            isValid = r.mRecipe != null;
+            mRecipe = r.mRecipe;
         }
 
         @Override
@@ -436,11 +429,7 @@ public class RecipeUtils {
         public InternalRecipeObject2(ShapedOreRecipe aRecipe) {
             mRecipe = aRecipe;
             mOutput = aRecipe.getRecipeOutput();
-            if (mOutput != null) {
-                this.isValid = true;
-            } else {
-                this.isValid = false;
-            }
+            this.isValid = mOutput != null;
         }
 
         @Override

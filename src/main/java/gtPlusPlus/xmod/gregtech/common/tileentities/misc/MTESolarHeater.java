@@ -266,18 +266,15 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     }
 
     public boolean canSeeSky() {
-        if (this.getBaseMetaTileEntity()
-            .getWorld()
-            .canBlockSeeTheSky(
-                this.getBaseMetaTileEntity()
-                    .getXCoord(),
-                this.getBaseMetaTileEntity()
-                    .getYCoord() + 1,
-                this.getBaseMetaTileEntity()
-                    .getZCoord())) {
-            return true;
-        }
-        return false;
+        return this.getBaseMetaTileEntity()
+                .getWorld()
+                .canBlockSeeTheSky(
+                        this.getBaseMetaTileEntity()
+                                .getXCoord(),
+                        this.getBaseMetaTileEntity()
+                                .getYCoord() + 1,
+                        this.getBaseMetaTileEntity()
+                                .getZCoord());
     }
 
     public boolean setSolarTower(MTESolarTower aTowerTile) {

@@ -78,11 +78,7 @@ public class BaseItemIngotHot extends BaseItemIngot {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        if (Configuration.visual.useGregtechTextures) {
-            return true;
-        } else {
-            return false;
-        }
+        return Configuration.visual.useGregtechTextures;
     }
 
     @Override

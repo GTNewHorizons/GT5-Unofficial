@@ -427,12 +427,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         world.setBlock(xTarget, yTarget, zTarget, Blocks.air);
         world.setBlock(xTarget, yTarget, zTarget, GregTechAPI.sWormholeRender);
 
-        TileEntityWormhole wormhole = (TileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
-
-        if (wormhole == null) {
-            return null;
-        }
-        return wormhole;
+        return (TileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
     }
 
     @Nullable

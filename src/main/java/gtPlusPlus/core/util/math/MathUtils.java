@@ -184,10 +184,7 @@ public class MathUtils {
      * @return boolean Whether or not it divides evenly.
      */
     public static boolean isNumberEven(final long x) {
-        if ((x % 2) == 0) {
-            return true;
-        }
-        return false;
+        return x % 2 == 0;
     }
 
     /**

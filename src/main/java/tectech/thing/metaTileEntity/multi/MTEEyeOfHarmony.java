@@ -923,11 +923,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         }
 
         // Make sure there are 2 input hatches.
-        if (mInputHatches.size() != 2) {
-            return false;
-        }
-
-        return true;
+        return mInputHatches.size() == 2;
     }
 
     private boolean animationsEnabled = true;

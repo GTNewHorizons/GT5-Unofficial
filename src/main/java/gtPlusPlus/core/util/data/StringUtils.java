@@ -75,10 +75,9 @@ public class StringUtils {
             return true;
         } else if (s.contains(StringUtils.subscript("8"))) {
             return true;
-        } else if (s.contains(StringUtils.subscript("9"))) {
-            return true;
+        } else {
+            return s.contains(StringUtils.subscript("9"));
         }
-        return false;
     }
 
     public static String firstLetterCaps(String data) {

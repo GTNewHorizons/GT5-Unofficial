@@ -125,22 +125,16 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
-        if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
-            && side == getBaseMetaTileEntity().getFrontFacing()) {
-            return true;
-        }
-        return false;
+        return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+                && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
-        if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
-            && side == getBaseMetaTileEntity().getFrontFacing()) {
-            return true;
-        }
-        return false;
+        return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+                && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     public ArrayList<ItemStack> getInventory() {

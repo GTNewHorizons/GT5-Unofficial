@@ -221,14 +221,10 @@ public class ItemGenericChemBase extends Item {
     public boolean showDurabilityBar(ItemStack aStack) {
         if (ItemUtils.isMillingBall(aStack)) {
             int aDam = getMillingBallDamage(aStack);
-            if (aDam > 0) {
-                return true;
-            }
+            return aDam > 0;
         } else if (ItemUtils.isCatalyst(aStack)) {
             int aDam = getCatalystDamage(aStack);
-            if (aDam > 0) {
-                return true;
-            }
+            return aDam > 0;
         }
         return false;
     }

@@ -72,12 +72,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (aStack == null || aPlayer == null || aWorld == null || aWorld.isRemote) {
             return false;
         }
-        if (!aWorld.isRemote && tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ)) {
-            return true;
-        } else {
-            // return super.onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, a4, p_77648_8_, p_77648_9_, p_77648_10_);
-            return false;
-        }
+        return tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ);
     }
 
     @Override
@@ -973,10 +968,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         if (discharge(aStack, removal, aTier, true, true, false) > 0) {
                             didDrain = true;
                         }
-                    } else if (aTier == 0) {
-                        didDrain = true;
                     } else {
-                        didDrain = false;
+                        didDrain = aTier == 0;
                     }
 
                     if (didDrain) {

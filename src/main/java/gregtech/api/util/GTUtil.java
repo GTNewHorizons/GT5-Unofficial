@@ -320,10 +320,10 @@ public class GTUtil {
             tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
             player,
             dualInputHatches)) {
-            if (!loadConfigurationFromDataStick(
-                tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
-                player,
-                dualInputHatches)) return false;
+            return loadConfigurationFromDataStick(
+                    tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
+                    player,
+                    dualInputHatches);
         }
 
         return true;

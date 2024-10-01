@@ -246,9 +246,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
                             ItemStack aInput = p.input.item;
                             ItemStack aOutput = p.output.item;
                             if (GTUtility.areStacksEqual(aInput, this.input.item, true)) {
-                                if (GTUtility.areStacksEqual(aOutput, this.output.item, true)) {
-                                    return true;
-                                }
+                                return GTUtility.areStacksEqual(aOutput, this.output.item, true);
                             }
                         }
                     }

@@ -177,11 +177,7 @@ public class MetaCustomCoverItem extends Item {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (KeyboardUtils.isShiftKeyDown()) {
             boolean con = getCoverConnections(stack);
-            if (con) {
-                setCoverConnections(stack, false);
-            } else {
-                setCoverConnections(stack, true);
-            }
+            setCoverConnections(stack, !con);
         }
         return stack;
     }

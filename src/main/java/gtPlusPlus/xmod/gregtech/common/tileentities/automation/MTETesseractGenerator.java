@@ -786,21 +786,13 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     private MTETesseractGenerator getGeneratorEntity() {
-        MTETesseractGenerator thisGenerator = TesseractHelper
+        return TesseractHelper
             .getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
-        if (thisGenerator != null) {
-            return thisGenerator;
-        }
-        return null;
     }
 
     private MTETesseractGenerator getGeneratorEntity(int frequency) {
-        MTETesseractGenerator thisGenerator = TesseractHelper
+        return TesseractHelper
             .getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), frequency);
-        if (thisGenerator != null) {
-            return thisGenerator;
-        }
-        return null;
     }
 
     @Override

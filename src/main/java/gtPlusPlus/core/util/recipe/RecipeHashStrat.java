@@ -58,10 +58,7 @@ public class RecipeHashStrat {
         if (!areFluidStackArraysEqual(recipe1.mFluidInputs, recipe2.mFluidInputs)) {
             return false;
         }
-        if (!areFluidStackArraysEqual(recipe1.mFluidOutputs, recipe2.mFluidOutputs)) {
-            return false;
-        }
-        return true;
+        return areFluidStackArraysEqual(recipe1.mFluidOutputs, recipe2.mFluidOutputs);
 
     }
 

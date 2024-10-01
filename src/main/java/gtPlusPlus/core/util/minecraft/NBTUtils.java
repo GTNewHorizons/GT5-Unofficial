@@ -125,10 +125,7 @@ public class NBTUtils {
 
     public static boolean hasKey(ItemStack stack, String key) {
         final NBTTagCompound itemData = getNBT(stack);
-        if (itemData.hasKey(key)) {
-            return true;
-        }
-        return false;
+        return itemData.hasKey(key);
     }
 
     public static boolean createIntegerTagCompound(ItemStack rStack, String tagName, String keyName, int keyValue) {
@@ -144,9 +141,7 @@ public class NBTUtils {
         NBTTagCompound aNBT = getNBT(aStack);
         if (aNBT != null && hasKey(aStack, tagName)) {
             aNBT = aNBT.getCompoundTag(tagName);
-            if (aNBT != null) {
-                return aNBT;
-            }
+            return aNBT;
         }
         return null;
     }

@@ -82,10 +82,7 @@ public class MaterialGenerator {
         FluidStack rFluidOut, Integer aTime, Integer aEu) {
 
         RecipeGenFluidCanning g = new RecipeGenFluidCanning(false, aEmpty, aFullContainer, aFluidIn, null, null, 0);
-        if (g != null && g.valid()) {
-            return true;
-        }
-        return false;
+        return g != null && g.valid();
     }
 
     public static void generate(final Material matInfo) {

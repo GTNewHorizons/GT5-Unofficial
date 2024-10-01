@@ -194,15 +194,10 @@ public class MTEHatchTurbine extends MTEHatch {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.mHasController) {
             if (aTick % 20 == 0) {
-                if (isControllerActive()) {
-                    this.getBaseMetaTileEntity()
-                        .setActive(true);
-                } else {
-                    this.getBaseMetaTileEntity()
-                        .setActive(false);
-                }
+                this.getBaseMetaTileEntity()
+                    .setActive(isControllerActive());
             }
-        } else if (!this.mHasController && this.mControllerLocation != null) {
+        } else if (this.mControllerLocation != null) {
             // Weird Invalid State
             if (setController(BlockPos.generateBlockPos(mControllerLocation))) {
                 // Valid
@@ -246,10 +241,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean canSetNewController() {
-        if ((mControllerLocation != null && !mControllerLocation.isEmpty()) || this.mHasController) {
-            return false;
-        }
-        return true;
+        return (mControllerLocation == null || mControllerLocation.isEmpty()) && !this.mHasController;
     }
 
     public boolean setController(BlockPos aPos) {

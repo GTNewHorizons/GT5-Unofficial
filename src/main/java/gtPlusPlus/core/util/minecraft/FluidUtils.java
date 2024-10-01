@@ -637,10 +637,7 @@ public class FluidUtils {
         if (aFStack5 != null) {
             return aFStack5;
         }
-        if (aFStack6 != null) {
-            return aFStack6;
-        }
-        return null;
+        return aFStack6;
     }
 
     public static FluidStack getWildcardFluidStack(Materials aMaterial, int amount) {
@@ -654,11 +651,7 @@ public class FluidUtils {
             return aFStack2;
         } else if (aFStack3 != null) {
             return aFStack3;
-        } else if (aFStack4 != null) {
-            return aFStack4;
-        } else {
-            return null;
-        }
+        } else return aFStack4;
     }
 
     public static FluidStack getAir(int aAmount) {

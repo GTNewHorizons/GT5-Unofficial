@@ -166,10 +166,7 @@ public class BaseOreComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        if (this.componentType.hasOverlay()) {
-            return true;
-        }
-        return false;
+        return this.componentType.hasOverlay();
     }
 
     @Override

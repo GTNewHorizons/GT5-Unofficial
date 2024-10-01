@@ -142,11 +142,7 @@ public class BaseItemDamageable extends Item {
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         int dmg = (int) getItemDamage(stack);
-        if (dmg <= 20) {
-            return false;
-        } else {
-            return true;
-        }
+        return dmg > 20;
     }
 
     public static ItemStack damageItem(ItemStack item) {
