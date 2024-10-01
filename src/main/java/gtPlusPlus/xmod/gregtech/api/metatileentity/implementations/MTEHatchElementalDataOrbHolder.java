@@ -148,7 +148,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     public ItemStack getOrbByCircuit() {
         ItemStack aCirc = getBaseMetaTileEntity().getStackInSlot(getCircuitSlot());
-        if (aCirc != null && ItemUtils.isControlCircuit(aCirc)) {
+        if (ItemUtils.isControlCircuit(aCirc)) {
             int slot = aCirc.getItemDamage() - 1; // slots are 0 indexed but there's no 0 circuit
             if (slot < getBaseMetaTileEntity().getSizeInventory() - 1) {
                 return getBaseMetaTileEntity().getStackInSlot(slot);

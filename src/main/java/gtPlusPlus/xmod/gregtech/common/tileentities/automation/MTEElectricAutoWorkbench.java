@@ -391,7 +391,9 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
                             tTempStack.stackSize = 1;
                             tRecipe[0] = tTempStack;
                             tOutput = GTOreDictUnificator.get(true, tTempStack);
-                            if (tOutput != null && GTUtility.areStacksEqual(tOutput, tTempStack)) tOutput = null;
+                            if (GTUtility.areStacksEqual(tOutput, tTempStack)) {
+                                tOutput = null;
+                            }
                             if (tOutput == null) {
                                 tRecipe[0] = null;
                                 if (mInventory[18] == null) {

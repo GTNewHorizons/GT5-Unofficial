@@ -406,7 +406,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         for (MTEHatchInputBus aInputBus : this.mInputBusses) {
             for (int slot = aInputBus.getSizeInventory() - 1; slot >= 0; slot--) {
                 ItemStack aStack = aInputBus.getStackInSlot(slot);
-                if (aStack != null && GTUtility.areStacksEqual(aStack, aTurbine)) {
+                if (GTUtility.areStacksEqual(aStack, aTurbine)) {
                     aStack.stackSize -= aTurbine.stackSize;
                     updateSlots();
                     endRecipeProcessing();
