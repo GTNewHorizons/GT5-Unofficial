@@ -185,9 +185,8 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         int x = pos.xPos, y = pos.yPos, z = pos.zPos;
         Logger.INFO("Trigger");
         int blockCount = 0;
-        BlockPos portal = pos;
-        World par1World = portal.world;
-        for (BlockPos side : portal.getSurroundingBlocks()) {
+        World par1World = pos.world;
+        for (BlockPos side : pos.getSurroundingBlocks()) {
             Block b = side.getBlockAtPos();
             if (b == DimensionEverglades.blockPortalFrame || b == DimensionEverglades.portalBlock) {
                 blockCount++;
@@ -195,7 +194,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         }
         if (blockCount < 4) {
             par1World.setBlockToAir(x, y, z);
-            par1World.scheduleBlockUpdate(x, y, z, portal.getBlockAtPos(), 0);
+            par1World.scheduleBlockUpdate(x, y, z, pos.getBlockAtPos(), 0);
         }
 
         byte b0 = 0;
