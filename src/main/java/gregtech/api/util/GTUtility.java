@@ -1892,7 +1892,7 @@ public class GTUtility {
             tmp = aFluid.getFluid()
                 .getID();
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
