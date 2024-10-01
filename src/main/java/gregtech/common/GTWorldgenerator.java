@@ -204,7 +204,7 @@ public class GTWorldgenerator implements IWorldGenerator {
     public enum OregenPattern {
         // The last value is used when creating a new world
         AXISSYMMETRICAL,
-        EQUAL_SPACING;
+        EQUAL_SPACING
     }
 
     public static class WorldGenContainer implements Runnable {

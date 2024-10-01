@@ -125,7 +125,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     .extFacing()
                     .glow()
                     .build()));
-    };
+    }
 
     private boolean addLaserSource(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();

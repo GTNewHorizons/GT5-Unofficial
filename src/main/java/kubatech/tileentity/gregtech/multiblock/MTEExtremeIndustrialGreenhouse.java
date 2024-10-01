@@ -986,7 +986,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     ItemStack suppertItem = outputs[i];
                     if (!player.inventory.addItemStackToInventory(suppertItem)) {
                         player.entityDropItem(suppertItem, 0.f);
-                    } ;
+                    }
                 }
                 if (bucket.getSeedCount() <= 0) this.buckets.remove(bucket);
                 return ret;

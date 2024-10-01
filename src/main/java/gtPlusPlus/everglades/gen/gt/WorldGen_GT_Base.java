@@ -206,7 +206,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                 this.mX = x;
                 this.mZ = z;
             }
-        };
+        }
 
         public static ArrayList<NearbySeeds> seedList = new ArrayList<>();
 

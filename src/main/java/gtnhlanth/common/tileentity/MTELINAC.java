@@ -612,7 +612,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     return false;
                 }
                 break;
-            } ;
+            }
 
             length += 2;
         }
