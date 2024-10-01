@@ -15,23 +15,23 @@ import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.util.math.MathUtils;
 
 @SuppressWarnings("deprecation")
-public class MTELargerTurbineSteam extends MTELargerTurbineBase {
+public class MTELargeTurbineSteam extends MTELargerTurbineBase {
 
     private float water;
     private boolean achievement = false;
     private boolean isUsingDenseSteam;
 
-    public MTELargerTurbineSteam(int aID, String aName, String aNameRegional) {
+    public MTELargeTurbineSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargerTurbineSteam(String aName) {
+    public MTELargeTurbineSteam(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargerTurbineSteam(mName);
+        return new MTELargeTurbineSteam(mName);
     }
 
     @Override

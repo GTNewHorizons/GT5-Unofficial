@@ -12,11 +12,8 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvHeatExchanger;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineGas;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbinePlasma;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineSCSteam;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineSHSteam;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineSteam;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.*;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargeTurbineSteam;
 
 public class GregtechLargeTurbinesAndHeatExchanger {
 
@@ -27,15 +24,15 @@ public class GregtechLargeTurbinesAndHeatExchanger {
 
     private static void run1() {
         GregtechItemList.Large_Steam_Turbine.set(
-            new MTELargerTurbineSteam(Large_Steam_Turbine.ID, "multimachine.largerturbine", "XL Turbo Steam Turbine")
+            new MTELargeTurbineSteam(Large_Steam_Turbine.ID, "multimachine.largerturbine", "XL Turbo Steam Turbine")
                 .getStackForm(1L));
         GregtechItemList.Large_HPSteam_Turbine.set(
-            new MTELargerTurbineSHSteam(
+            new MTELargeTurbineSHSteam(
                 Large_HPSteam_Turbine.ID,
                 "multimachine.largerhpturbine",
                 "XL Turbo HP Steam Turbine").getStackForm(1L));
         GregtechItemList.Large_Gas_Turbine.set(
-            new MTELargerTurbineGas(Large_Gas_Turbine.ID, "multimachine.largergasturbine", "XL Turbo Gas Turbine")
+            new MTELargeTurbineGas(Large_Gas_Turbine.ID, "multimachine.largergasturbine", "XL Turbo Gas Turbine")
                 .getStackForm(1L));
         GregtechItemList.Large_Plasma_Turbine.set(
             new MTELargerTurbinePlasma(
@@ -43,7 +40,7 @@ public class GregtechLargeTurbinesAndHeatExchanger {
                 "multimachine.largerplasmaturbine",
                 "XL Turbo Plasma Turbine").getStackForm(1L));
         GregtechItemList.Large_SCSteam_Turbine.set(
-            new MTELargerTurbineSCSteam(
+            new MTELargeTurbineSCSteam(
                 Large_SCSteam_Turbine.ID,
                 "multimachine.largerscturbine",
                 "XL Turbo SC Steam Turbine").getStackForm(1L));

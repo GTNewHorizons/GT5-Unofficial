@@ -15,22 +15,22 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 
 @SuppressWarnings("deprecation")
-public class MTELargerTurbineSHSteam extends MTELargerTurbineBase {
+public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
 
     public boolean achievement = false;
     private boolean isUsingDenseSteam;
 
-    public MTELargerTurbineSHSteam(int aID, String aName, String aNameRegional) {
+    public MTELargeTurbineSHSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargerTurbineSHSteam(String aName) {
+    public MTELargeTurbineSHSteam(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargerTurbineSHSteam(mName);
+        return new MTELargeTurbineSHSteam(mName);
     }
 
     @Override

@@ -95,7 +95,7 @@ public class Particle {
         UNKNOWN = new Particle(ElementaryGroup.UNKNOWN, "Unknown");
     }
 
-    public enum ElementaryGroup {
+    public static enum ElementaryGroup {
         QUARK,
         LEPTON,
         BOSON,

@@ -15,22 +15,22 @@ import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 
-public class MTELargerTurbineSCSteam extends MTELargerTurbineBase {
+public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
 
     private boolean hasConsumedSteam;
     private boolean isUsingDenseSteam;
 
-    public MTELargerTurbineSCSteam(int aID, String aName, String aNameRegional) {
+    public MTELargeTurbineSCSteam(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTELargerTurbineSCSteam(String aName) {
+    public MTELargeTurbineSCSteam(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargerTurbineSCSteam(mName);
+        return new MTELargeTurbineSCSteam(mName);
     }
 
     @Override
