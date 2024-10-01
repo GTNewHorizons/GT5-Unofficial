@@ -179,9 +179,9 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(compressorRecipes);
         }
 
-        switch (aMaterial.mName) {
-            case "Mercury" -> System.err.println(
-                "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
+        if (aMaterial.mName.equals("Mercury")) {
+            System.err.println(
+                    "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
         }
     }
 }

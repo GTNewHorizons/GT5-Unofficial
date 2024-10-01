@@ -212,17 +212,13 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     public static int getMaxHatchTier(int aCellTier) {
-        switch (aCellTier) {
-            case 9 -> {
-                return GTValues.VOLTAGE_NAMES[9].equals("Ultimate High Voltage") ? 15 : 9;
-            }
-            default -> {
-                if (aCellTier < 4) {
-                    return 0;
-                } else {
-                    return aCellTier;
-                }
-            }
+        if (aCellTier == 9) {
+            return GTValues.VOLTAGE_NAMES[9].equals("Ultimate High Voltage") ? 15 : 9;
+        }
+        if (aCellTier < 4) {
+            return 0;
+        } else {
+            return aCellTier;
         }
     }
 

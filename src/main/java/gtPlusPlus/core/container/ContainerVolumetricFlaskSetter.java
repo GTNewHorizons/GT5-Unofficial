@@ -159,8 +159,8 @@ public class ContainerVolumetricFlaskSetter extends Container {
     @Override
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
-        switch (par1) {
-            case 0 -> mCustomValue = (short) par2;
+        if (par1 == 0) {
+            mCustomValue = (short) par2;
         }
     }
 
