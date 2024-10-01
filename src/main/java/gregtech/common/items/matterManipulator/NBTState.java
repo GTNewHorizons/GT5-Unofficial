@@ -4,15 +4,18 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -61,7 +64,10 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.DimensionalCoord;
 import appeng.tile.misc.TileSecurity;
 import appeng.tile.networking.TileWireless;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.matterManipulator.BlockAnalyzer.RegionAnalysis;
 
 class NBTState {
 
@@ -187,6 +193,42 @@ class NBTState {
     // #region Pending blocks
 
     public List<PendingBlock> getPendingBlocks() {
+        switch (config.placeMode) {
+            case COPYING: {
+                Location coordA = config.coordA;
+                Location coordB = config.coordB;
+                Location coordC = config.coordC;
+
+                if (!Location.areCompatible(coordA, coordB, coordC)) {
+                    return new ArrayList<>();
+                }
+
+                RegionAnalysis analysis = BlockAnalyzer.analyzeRegion(coordA.getWorld(), coordA, coordB);
+
+                for (PendingBlock block : analysis.blocks) {
+                    block.x += coordC.x;
+                    block.y += coordC.y;
+                    block.z += coordC.z;
+                }
+
+                return analysis.blocks;
+            }
+            case DEBUGGING: {
+                throw new IllegalStateException();
+            }
+            case GEOMETRY: {
+                return getGeomPendingBlocks();
+            }
+            case MOVING: {
+                throw new IllegalStateException();
+            }
+            default: {
+                throw new AssertionError();
+            }
+        }
+    }
+
+    private List<PendingBlock> getGeomPendingBlocks() {
         ArrayList<PendingBlock> pending = new ArrayList<>();
 
         if (config.coordA == null || config.coordB == null) {
@@ -418,9 +460,8 @@ class NBTState {
         public PlaceMode placeMode = PlaceMode.GEOMETRY;
         public Shape shape = Shape.LINE;
 
-        public Location coordA, coordB;
-        public Region source;
-        public Vector3i coordAOffset, coordBOffset;
+        public Location coordA, coordB, coordC;
+        public Vector3i coordAOffset, coordBOffset, coordCOffset;
 
         public JsonElement corners, edges, faces, volumes;
 
@@ -552,10 +593,10 @@ class NBTState {
             int maxX = Math.max(l.x, l.x + deltas.x) + 1;
             int maxY = Math.max(l.y, l.y + deltas.y) + 1;
             int maxZ = Math.max(l.z, l.z + deltas.z) + 1;
-    
+
             return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
         }
-    
+
         public static List<Vector3i> getBlocksInBB(Location l, Vector3i deltas) {
             int minX = Math.min(l.x, l.x + deltas.x);
             int minY = Math.min(l.y, l.y + deltas.y);
@@ -563,7 +604,7 @@ class NBTState {
             int maxX = Math.max(l.x, l.x + deltas.x) + 1;
             int maxY = Math.max(l.y, l.y + deltas.y) + 1;
             int maxZ = Math.max(l.z, l.z + deltas.z) + 1;
-    
+
             int dX = maxX - minX;
             int dY = maxY - minY;
             int dZ = maxZ - minZ;
@@ -580,7 +621,7 @@ class NBTState {
 
             return blocks;
         }
-    
+
         public Location getCoordA(EntityPlayer player) {
             if (coordAOffset == null) {
                 return coordA;
@@ -615,8 +656,10 @@ class NBTState {
             result = prime * result + ((shape == null) ? 0 : shape.hashCode());
             result = prime * result + ((coordA == null) ? 0 : coordA.hashCode());
             result = prime * result + ((coordB == null) ? 0 : coordB.hashCode());
+            result = prime * result + ((coordC == null) ? 0 : coordC.hashCode());
             result = prime * result + ((coordAOffset == null) ? 0 : coordAOffset.hashCode());
             result = prime * result + ((coordBOffset == null) ? 0 : coordBOffset.hashCode());
+            result = prime * result + ((coordCOffset == null) ? 0 : coordCOffset.hashCode());
             result = prime * result + ((corners == null) ? 0 : corners.hashCode());
             result = prime * result + ((edges == null) ? 0 : edges.hashCode());
             result = prime * result + ((faces == null) ? 0 : faces.hashCode());
@@ -642,12 +685,18 @@ class NBTState {
             if (coordB == null) {
                 if (other.coordB != null) return false;
             } else if (!coordB.equals(other.coordB)) return false;
+            if (coordC == null) {
+                if (other.coordC != null) return false;
+            } else if (!coordC.equals(other.coordC)) return false;
             if (coordAOffset == null) {
                 if (other.coordAOffset != null) return false;
             } else if (!coordAOffset.equals(other.coordAOffset)) return false;
             if (coordBOffset == null) {
                 if (other.coordBOffset != null) return false;
             } else if (!coordBOffset.equals(other.coordBOffset)) return false;
+            if (coordCOffset == null) {
+                if (other.coordCOffset != null) return false;
+            } else if (!coordCOffset.equals(other.coordCOffset)) return false;
             if (corners == null) {
                 if (other.corners != null) return false;
             } else if (!corners.equals(other.corners)) return false;
@@ -711,14 +760,14 @@ class NBTState {
 
     static class PendingBlock extends Location {
 
-        @Nullable
-        public ItemBlock block;
+        public UniqueIdentifier blockId;
         public int metadata;
-        @Nullable
-        public NBTTagCompound nbt;
+        public TileAnalysisResult tileData;
         public int renderOrder, buildOrder;
 
-        @SuppressWarnings("null")
+        public transient ItemBlock item;
+        public transient Block block;
+
         public PendingBlock(int worldId, int x, int y, int z, ItemStack block) {
             super(worldId, x, y, z);
             setBlock(block);
@@ -730,29 +779,146 @@ class NBTState {
             this.buildOrder = buildOrder;
         }
 
-        public void setBlock(ItemStack block) {
-            if (block != null && block.getItem() instanceof ItemBlock item) {
-                this.block = item;
-                this.metadata = block.getItemDamage();
-                this.nbt = block.getTagCompound();
-            } else {
-                this.block = (ItemBlock) Item.getItemFromBlock(Blocks.air);
-                this.metadata = 0;
-                this.nbt = null;
+        public PendingBlock(int worldId, int x, int y, int z, Block block, int meta) {
+            super(worldId, x, y, z);
+            setBlock(block, meta);
+        }
+
+        public void reset() {
+            this.block = null;
+            this.item = null;
+            this.blockId = null;
+            this.metadata = 0;
+        }
+
+        public void setBlock(Block block, int metadata) {
+            reset();
+
+            this.blockId = GameRegistry.findUniqueIdentifierFor(block == null ? Blocks.air : block);
+            this.metadata = metadata;
+        }
+
+        public void setBlock(ItemStack stack) {
+            reset();
+
+            Optional<Block> block = Optional.ofNullable(stack)
+                .map(ItemStack::getItem)
+                .map(Block::getBlockFromItem);
+
+            if (block.isPresent()) {
+                this.block = block.get();
+                this.item = (ItemBlock) Item.getItemFromBlock(block.get());
+                this.blockId = GameRegistry.findUniqueIdentifierFor(block.get());
+                this.metadata = this.item.getMetadata(Items.feather.getDamage(stack));
             }
+        }
+
+        public Block getBlock() {
+            if (block == null) {
+                block = blockId == null ? Blocks.air : GameRegistry.findBlock(blockId.modId, blockId.name);
+            }
+
+            return block;
+        }
+
+        public ItemBlock getItem() {
+            if (item == null) {
+                Block block = getBlock();
+
+                if (block != null) {
+                    item = (ItemBlock) Item.getItemFromBlock(block);
+                }
+            }
+
+            return item;
+        }
+
+        public ItemStack toStack() {
+            Item item = getItem();
+
+            return item == null ? null : new ItemStack(item, 1, metadata);
+        }
+
+        public boolean isFree() {
+            Block block = getBlock();
+
+            if (block == Blocks.air) {
+                return true;
+            }
+
+            if (block == AEApi.instance()
+                .definitions()
+                .blocks()
+                .multiPart()
+                .maybeBlock()
+                .get()) {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static PendingBlock fromBlock(World world, int x, int y, int z) {
+            Block block = world.getBlock(x, y, z);
+
+            Item item = Item.getItemFromBlock(block);
+
+            Block realBlock = !block.isFlowerPot() ? Block.getBlockFromItem(item) : block;
+            int meta = realBlock.getDamageValue(world, x, y, z);
+
+            return new PendingBlock(world.provider.dimensionId, x, y, z, realBlock, meta);
         }
 
         @Override
         public String toString() {
-            return "PendingBlock [location=" + super.toString()
-                + ", block="
-                + block
+            return "PendingBlock [blockId=" + blockId
+                + ", metadata="
+                + metadata
+                + ", tileData="
+                + tileData
                 + ", renderOrder="
                 + renderOrder
                 + ", buildOrder="
                 + buildOrder
+                + ", x="
+                + x
+                + ", y="
+                + y
+                + ", z="
+                + z
+                + ", worldId="
+                + worldId
+                + ", world="
+                + getWorld()
                 + "]";
         }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = super.hashCode();
+            result = prime * result + ((blockId == null) ? 0 : blockId.hashCode());
+            result = prime * result + metadata;
+            result = prime * result + ((tileData == null) ? 0 : tileData.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (!super.equals(obj)) return false;
+            if (getClass() != obj.getClass()) return false;
+            PendingBlock other = (PendingBlock) obj;
+            if (blockId == null) {
+                if (other.blockId != null) return false;
+            } else if (!blockId.equals(other.blockId)) return false;
+            if (metadata != other.metadata) return false;
+            if (tileData == null) {
+                if (other.tileData != null) return false;
+            } else if (!tileData.equals(other.tileData)) return false;
+            return true;
+        }
+
     }
 
     static class Location {
@@ -830,6 +996,23 @@ class NBTState {
             return new Location(worldId, x, y, z);
         }
 
+        public static boolean areCompatible(Location a, Location b) {
+            if (a == null || b == null) return false;
+
+            if (a.worldId != b.worldId) return false;
+
+            return true;
+        }
+
+        public static boolean areCompatible(Location a, Location b, Location c) {
+            if (a == null || b == null || c == null) return false;
+
+            if (a.worldId != b.worldId) return false;
+            if (a.worldId != c.worldId) return false;
+
+            return true;
+        }
+
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -871,6 +1054,10 @@ class NBTState {
 
     @SuppressWarnings("unchecked")
     public static JsonElement toJsonObject(NBTBase nbt) {
+        if (nbt == null) {
+            return null;
+        }
+
         if (nbt instanceof NBTTagCompound) {
             // NBTTagCompound
             final NBTTagCompound nbtTagCompound = (NBTTagCompound) nbt;
@@ -942,6 +1129,10 @@ class NBTState {
     }
 
     public static NBTBase toNbt(JsonElement jsonElement) {
+        if (jsonElement == null) {
+            return null;
+        }
+
         if (jsonElement instanceof JsonPrimitive) {
             final JsonPrimitive jsonPrimitive = (JsonPrimitive) jsonElement;
 
