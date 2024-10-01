@@ -99,12 +99,10 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                 // generateEnd(world, random, chunkX * 16, chunkZ * 16);
                 break;
             default: // Any other dimension
-                if (world.provider.dimensionId != xDim) {
-                    break;
-                } else {
+                if (world.provider.dimensionId == xDim) {
                     generateEverglades(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                    break;
                 }
+                break;
         }
     }
 

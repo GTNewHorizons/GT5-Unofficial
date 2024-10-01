@@ -152,15 +152,12 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
             if (totalFlow <= 0) return 0;
             tEU = GTUtility.safeInt((long) totalFlow * fuelValue);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GTUtility.safeInt(
-                    (long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
                 tEU *= efficiency;
-                tEU = GTUtility.safeInt(
-                    (long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
             }
+            tEU = GTUtility.safeInt(
+                (long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
 
             return tEU;
         }

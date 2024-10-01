@@ -137,14 +137,8 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                 } else {
                     if (isNumber(par2) || isNumber(par1)) {
                         log("Pressed number.");
-                        if (this.mText.getText()
-                            .equals("0")) {
-                            this.mText.textboxKeyTyped(par1, par2);
-                            sendUpdateToServer();
-                        } else {
-                            this.mText.textboxKeyTyped(par1, par2);
-                            sendUpdateToServer();
-                        }
+                        this.mText.textboxKeyTyped(par1, par2);
+                        sendUpdateToServer();
                     } else {
                         log("Pressed unused key.");
                         super.keyTyped(par1, par2);

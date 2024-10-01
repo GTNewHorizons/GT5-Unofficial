@@ -159,15 +159,14 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
         if (cacheFlag && width == 16 && length == 16 && (x & 15) == 0 && (y & 15) == 0) {
             BiomeGenBase[] abiomegenbase1 = this.biomeCache.getCachedBiomes(x, y);
             System.arraycopy(abiomegenbase1, 0, listToReuse, 0, width * length);
-            return listToReuse;
         } else {
             int[] aint = this.biomeIndexLayer.getInts(x, y, width, length);
 
             for (int i = 0; i < width * length; ++i) {
                 listToReuse[i] = BiomeGenBase.getBiome(aint[i]);
             }
-            return listToReuse;
         }
+        return listToReuse;
     }
 
     /**

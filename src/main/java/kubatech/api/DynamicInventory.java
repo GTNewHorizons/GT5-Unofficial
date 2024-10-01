@@ -266,20 +266,15 @@ public class DynamicInventory<T> {
                                     ItemStack leftover = inventoryInjector.inject(copy);
                                     if (leftover == null) return;
                                     input.stackSize--;
-                                    if (input.stackSize > 0) {
-                                        ((EntityPlayerMP) player).isChangingQuantityOnly = true;
-                                        ((EntityPlayerMP) player).updateHeldItem();
-                                        return;
-                                    } else player.inventory.setItemStack(null);
                                 } else {
                                     ItemStack leftover = inventoryInjector.inject(input);
                                     if (leftover == null) return;
-                                    if (input.stackSize > 0) {
-                                        ((EntityPlayerMP) player).isChangingQuantityOnly = true;
-                                        ((EntityPlayerMP) player).updateHeldItem();
-                                        return;
-                                    } else player.inventory.setItemStack(null);
                                 }
+                                if (input.stackSize > 0) {
+                                    ((EntityPlayerMP) player).isChangingQuantityOnly = true;
+                                    ((EntityPlayerMP) player).updateHeldItem();
+                                    return;
+                                } else player.inventory.setItemStack(null);
                             }
                             ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                             ((EntityPlayerMP) player).updateHeldItem();
@@ -367,20 +362,15 @@ public class DynamicInventory<T> {
                         ItemStack leftover = inventoryInjector.inject(copy);
                         if (leftover == null) return;
                         input.stackSize--;
-                        if (input.stackSize > 0) {
-                            ((EntityPlayerMP) player).isChangingQuantityOnly = true;
-                            ((EntityPlayerMP) player).updateHeldItem();
-                            return;
-                        } else player.inventory.setItemStack(null);
                     } else {
                         ItemStack leftover = inventoryInjector.inject(input);
                         if (leftover == null) return;
-                        if (input.stackSize > 0) {
-                            ((EntityPlayerMP) player).isChangingQuantityOnly = true;
-                            ((EntityPlayerMP) player).updateHeldItem();
-                            return;
-                        } else player.inventory.setItemStack(null);
                     }
+                    if (input.stackSize > 0) {
+                        ((EntityPlayerMP) player).isChangingQuantityOnly = true;
+                        ((EntityPlayerMP) player).updateHeldItem();
+                        return;
+                    } else player.inventory.setItemStack(null);
                     ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                     ((EntityPlayerMP) player).updateHeldItem();
                     return;

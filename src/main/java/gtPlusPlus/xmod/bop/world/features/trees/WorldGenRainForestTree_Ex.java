@@ -302,9 +302,7 @@ public class WorldGenRainForestTree_Ex extends WorldGenAbstractTree {
                 }
                 return true;
             }
-            return false;
-        } else {
-            return false;
         }
+        return false;
     }
 }

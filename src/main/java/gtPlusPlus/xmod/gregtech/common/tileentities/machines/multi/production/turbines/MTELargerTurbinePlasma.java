@@ -254,18 +254,13 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             if (totalFlow <= 0) return 0;
             tEU = GTUtility.safeInt((long) ((fuelValue / 20D) * (double) totalFlow));
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GTUtility.safeInt(
-                    (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency())
-                        * tEU));
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 double efficiency = 1.0D - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
-
                 tEU = (int) (tEU * efficiency);
-                tEU = GTUtility.safeInt(
-                    (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency())
-                        * tEU));
             }
+            tEU = GTUtility.safeInt(
+                (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency())
+                    * tEU));
 
             return tEU;
         }

@@ -154,10 +154,8 @@ public class BaseItemDamageable extends Item {
             long currentUse = BaseItemDamageable.getItemDamage(item);
             if (currentUse >= 0 && currentUse <= 250) {
                 BaseItemDamageable.setItemDamage(item, currentUse + 1);
-                return item;
-            } else {
-                return item;
             }
+            return item;
         }
         return null;
     }
