@@ -298,7 +298,7 @@ public final class GTMusicSystem {
         }
 
         static synchronized void onPauseMs(long pauseDurationMs) {
-            musicSources.forEach((uuid, source) -> { source.startedPlayingAtMs += pauseDurationMs; });
+            musicSources.forEach((uuid, source) -> source.startedPlayingAtMs += pauseDurationMs);
         }
     }
 
@@ -594,7 +594,7 @@ public final class GTMusicSystem {
 
             // We manipulate server state here, because we've checked this is singleplayer pausing.
             GTMusicSystem.ServerSystem.onPauseMs(pauseDurationMs);
-            musicSources.forEach((uuid, source) -> { source.startedPlayingAtMs += pauseDurationMs; });
+            musicSources.forEach((uuid, source) -> source.startedPlayingAtMs += pauseDurationMs);
             activelyPlayingMusic.forEach((uuid, data) -> {
                 data.originalStartTime += pauseDurationMs;
                 data.clientReferenceStartTime += pauseDurationMs;

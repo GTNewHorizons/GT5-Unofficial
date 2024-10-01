@@ -427,13 +427,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public List<TCAspects.TC_AspectStack> getGTWrappedTCAspects() {
         final List<TCAspects.TC_AspectStack> ret = new ArrayList<>();
         Arrays.stream(this.getTCAspects())
-            .forEach(objectIntegerPair -> {
-                new TCAspects.TC_AspectStack(
-                    TCAspects.valueOf(
-                        ((Aspect) objectIntegerPair.getKey()).getName()
-                            .toUpperCase(Locale.US)),
-                    objectIntegerPair.getValue()).addToAspectList(ret);
-            });
+            .forEach(objectIntegerPair -> new TCAspects.TC_AspectStack(
+                TCAspects.valueOf(
+                    ((Aspect) objectIntegerPair.getKey()).getName()
+                        .toUpperCase(Locale.US)),
+                objectIntegerPair.getValue()).addToAspectList(ret));
         return ret;
     }
 
