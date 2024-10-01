@@ -120,9 +120,6 @@ public class ReflectionUtils {
                     setFieldValue_Internal(object, field, fieldValue);
                     return true;
                 }
-            } catch (final NoSuchFieldException e) {
-                Logger.REFLECTION("setField(" + object + ", " + field.getName() + ") failed.");
-                clazz = clazz.getSuperclass();
             } catch (final Exception e) {
                 Logger.REFLECTION("setField(" + object + ", " + field.getName() + ") failed.");
                 throw new IllegalStateException(e);
@@ -161,7 +158,7 @@ public class ReflectionUtils {
      *
      * Set the value of a field reflectively.
      */
-    private static void setFieldValue_Internal(Object owner, Field field, Object value) throws Exception {
+    private static void setFieldValue_Internal(Object owner, Field field, Object value) {
         cacheAccessor(field).setValue(owner, value);
     }
 

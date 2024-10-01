@@ -86,7 +86,7 @@ public class EIGTests {
                 }
 
                 @Override
-                public void checkSessionLock() throws MinecraftException {
+                public void checkSessionLock() {
 
                 }
 
