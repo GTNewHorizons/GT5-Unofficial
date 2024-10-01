@@ -40,7 +40,6 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class ZPMRubberChanges implements Runnable {
 
-    @SuppressWarnings("unchecked")
     public void run() {
 
         HashSet<ItemStack> ZPMPlusComponents = new HashSet<>();

@@ -36,7 +36,6 @@ public class BiomeEverglades {
 
     static class BiomeGenEverglades extends BiomeGenBase {
 
-        @SuppressWarnings("unchecked")
         public BiomeGenEverglades() {
             super(Configuration.worldgen.EVERGLADESBIOME_ID);
             this.theBiomeDecorator = new CustomBiomeGenerator();
@@ -73,7 +72,7 @@ public class BiomeEverglades {
             return 0xF67A14;
         }
 
-        @SuppressWarnings({ "unchecked", "unused" })
+        @SuppressWarnings({"unused" })
         private boolean addToMonsterSpawnLists(Class<? extends EntityLiving> EntityClass, int a, int b, int c) {
             this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityClass, a, b, c));
             return true;

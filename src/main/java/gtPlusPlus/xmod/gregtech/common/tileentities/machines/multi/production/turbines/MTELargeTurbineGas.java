@@ -25,7 +25,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 
-@SuppressWarnings("deprecation")
 public class MTELargeTurbineGas extends MTELargerTurbineBase {
 
     private static final HashSet<Fluid> BLACKLIST = new HashSet<>();

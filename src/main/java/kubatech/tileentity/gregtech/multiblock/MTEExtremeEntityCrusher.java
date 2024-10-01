@@ -497,7 +497,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 isValid = false;
                 return;
             }
-            // noinspection unchecked
             attackDamage = ((Multimap<String, AttributeModifier>) stack.getAttributeModifiers())
                 .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())
                 .stream()
@@ -592,7 +591,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 EECPlayer.currentWeapon = weapon;
                 Item lootingHolderItem = weapon.getItem();
                 for (int i = 0; i < times + 1; i++) {
-                    // noinspection ConstantConditions
                     if (!lootingHolderItem.hitEntity(weapon, recipe.recipe.entity, EECPlayer)) break;
                     if (weapon.stackSize == 0) {
                         weaponCache.setStackInSlot(0, null);

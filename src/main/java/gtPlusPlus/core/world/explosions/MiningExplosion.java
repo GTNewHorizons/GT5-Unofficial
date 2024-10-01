@@ -48,7 +48,6 @@ public class MiningExplosion extends Explosion {
     /**
      * Does the first part of the explosion (destroy blocks)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void doExplosionA() {
         final float f = this.explosionSize;

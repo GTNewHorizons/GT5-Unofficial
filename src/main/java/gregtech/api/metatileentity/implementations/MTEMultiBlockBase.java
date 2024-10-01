@@ -1323,7 +1323,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         boolean outputSuccess = true;
-        // noinspection DataFlowIssue
         final List<MTEHatchOutput> filteredHatches = filterValidMTEs(mOutputHatches);
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;

@@ -431,7 +431,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
                 // It was noted by IntelliJ that replacing ((GT_MetaGenerated_Tool) aStack.getItem()) with
                 // GT_MetaGenerated_Tool can have side effects. This refactoring will need tests.
-                @SuppressWarnings("AccessStaticViaInstance")
                 float aOptFlow = (Math.max(Float.MIN_NORMAL, turbine.getOptimalFlow()));
                 aList.add(
                     tOffset + 0,

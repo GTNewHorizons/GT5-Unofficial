@@ -300,7 +300,6 @@ public class BaseItemComponent extends Item {
         super.addInformation(stack, aPlayer, list, bool);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
         final boolean p_77663_5_) {
@@ -328,7 +327,6 @@ public class BaseItemComponent extends Item {
         return (Configuration.visual.useGregtechTextures ? true : false);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 
