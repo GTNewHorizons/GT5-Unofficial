@@ -274,7 +274,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
         if (rTesseract.mFrequency != aFrequency) {
             TesseractHelper.setTerminalOwnershipByPlayer(
                 PlayerUtils.getPlayerOnServerFromUUID(mOwner),
-                Integer.valueOf(aFrequency),
+                    aFrequency,
                 null);
             return null;
         }

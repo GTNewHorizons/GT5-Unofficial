@@ -323,7 +323,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         if (sCoversItems.isEmpty()) {
             initCovers();
         }
-        return sCoversItems.get(Integer.valueOf(aStack));
+        return sCoversItems.get(aStack);
     }
 
     @Override

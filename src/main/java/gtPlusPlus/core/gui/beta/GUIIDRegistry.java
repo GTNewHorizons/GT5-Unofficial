@@ -17,7 +17,7 @@ public class GUIIDRegistry {
         for (final Class<? extends IGuiManagerMiscUtils> tileGuiHandlerClass : guiHandlerClasses) {
             final MUGuild guiId = new MUGuild(nextId++, MU_GuiType, tileGuiHandlerClass);
             classMap.put(tileGuiHandlerClass, guiId);
-            idMap.put(Integer.valueOf(guiId.getId()), guiId);
+            idMap.put(guiId.getId(), guiId);
         }
     }
 
@@ -40,6 +40,6 @@ public class GUIIDRegistry {
     }
 
     public static MUGuild getGuiId(final int id) {
-        return idMap.get(Integer.valueOf(id));
+        return idMap.get(id);
     }
 }

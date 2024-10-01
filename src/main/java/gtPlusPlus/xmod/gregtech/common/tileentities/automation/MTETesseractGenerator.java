@@ -681,8 +681,8 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 && (this.getBaseMetaTileEntity()
                     .decreaseStoredEnergyUnits(this.mNeededEnergy, false))) {
                 // Utils.LOG_WARNING("Can Work & Has Energy");
-                if ((getGeneratorEntity(Integer.valueOf(this.mFrequency)) == null)
-                    || (!getGeneratorEntity(Integer.valueOf(this.mFrequency)).isValidTesseractGenerator(null, true))) {
+                if ((getGeneratorEntity(this.mFrequency) == null)
+                    || (!getGeneratorEntity(this.mFrequency).isValidTesseractGenerator(null, true))) {
                     // Utils.LOG_WARNING("storing TE I think to mFreq map?");
                     TesseractHelper.setGeneratorOwnershipByPlayer(
                         PlayerUtils.getPlayerOnServerFromUUID(mOwner),
@@ -690,7 +690,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
                         this);
                 }
             } else {
-                if (getGeneratorEntity(Integer.valueOf(this.mFrequency)) == this) {
+                if (getGeneratorEntity(this.mFrequency) == this) {
                     Logger.WARNING("this gen == mFreq on map - do block update");
                     TesseractHelper.removeGenerator(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
                     this.getBaseMetaTileEntity()
@@ -698,7 +698,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 }
                 this.isWorking = 0;
             }
-            if (getGeneratorEntity(Integer.valueOf(this.mFrequency)) == this) {
+            if (getGeneratorEntity(this.mFrequency) == this) {
                 // Utils.LOG_WARNING("mFreq == this - do work related things");
                 if (this.isWorking < 20) {
                     this.isWorking = ((byte) (this.isWorking + 1));
