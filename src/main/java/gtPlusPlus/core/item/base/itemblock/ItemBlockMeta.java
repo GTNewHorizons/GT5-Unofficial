@@ -13,7 +13,6 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.interfaces.ITileTooltip;
 
 public class ItemBlockMeta extends ItemBlockWithMetadata {
 
@@ -25,9 +24,9 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
         this.mBlock = aBlock;
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-        if (aBlock instanceof ITileTooltip aTooltip) {
-            // aTooltips.put(aTooltip.getTooltipID(), aTooltip.getTooltipMap());
-        }
+        // if (aBlock instanceof ITileTooltip aTooltip) {
+        // aTooltips.put(aTooltip.getTooltipID(), aTooltip.getTooltipMap());
+        // }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

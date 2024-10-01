@@ -391,21 +391,13 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 mCurrentChunkPollution += getPollutionInChunk(r);
             }
         }
-        if (mCurrentChunkPollution > 0) {
-            mHasPollution = true;
-        } else {
-            mHasPollution = false;
-        }
+        mHasPollution = mCurrentChunkPollution > 0;
         return mCurrentChunkPollution;
     }
 
     public int getPollutionInChunk(Chunk aChunk) {
         int mCurrentChunkPollution = PollutionUtils.getPollution(aChunk);
-        if (mCurrentChunkPollution > 0) {
-            mHasPollution = true;
-        } else {
-            mHasPollution = false;
-        }
+        mHasPollution = mCurrentChunkPollution > 0;
         return mCurrentChunkPollution;
     }
 
@@ -573,9 +565,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     public boolean removePollution(int toRemove) {
 
-        if (this == null || this.getBaseMetaTileEntity() == null
-            || this.getBaseMetaTileEntity()
-                .getWorld() == null) {
+        if (this.getBaseMetaTileEntity() == null || this.getBaseMetaTileEntity()
+            .getWorld() == null) {
             return false;
         }
 

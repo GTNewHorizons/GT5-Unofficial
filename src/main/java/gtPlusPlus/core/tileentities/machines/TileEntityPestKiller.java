@@ -404,17 +404,15 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
                 fluid = null;
             }
 
-            if (this != null) {
-                FluidEvent.fireEvent(
-                    new FluidEvent.FluidDrainingEvent(
-                        fluid,
-                        this.getWorldObj(),
-                        this.xCoord,
-                        this.yCoord,
-                        this.zCoord,
-                        this.mTank,
-                        0));
-            }
+            FluidEvent.fireEvent(
+                new FluidEvent.FluidDrainingEvent(
+                    fluid,
+                    this.getWorldObj(),
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    this.mTank,
+                    0));
         }
         updateTileEntity();
         return stack;
