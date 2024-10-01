@@ -48,7 +48,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadTransferRects() {
         this.transferRects
-            .add(new RecipeTransferRect(new Rectangle(6, 3, 16, 16), getOverlayIdentifier(), new Object[0]));
+            .add(new RecipeTransferRect(new Rectangle(6, 3, 16, 16), getOverlayIdentifier()));
     }
 
     @Override
@@ -136,16 +136,16 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         if (cost > 0) {
 
             // NEI Strings
-            String s = I18n.format("GTPP.nei.info", new Object[] { cost });
-            String s0 = I18n.format("GTPP.nei.timetaken", new Object[] { cost });
+            String s = I18n.format("GTPP.nei.info", cost);
+            String s0 = I18n.format("GTPP.nei.timetaken", cost);
 
             // Time Strings
-            String s1 = I18n.format("GTPP.time.ticks", new Object[] { cost });
-            String s2 = I18n.format("GTPP.time.seconds", new Object[] { cost });
-            String s3 = I18n.format("GTPP.time.minutes", new Object[] { cost });
-            String s4 = I18n.format("GTPP.time.hours", new Object[] { cost });
-            String s5 = I18n.format("GTPP.time.days", new Object[] { cost });
-            String s6 = I18n.format("GTPP.time.months", new Object[] { cost });
+            String s1 = I18n.format("GTPP.time.ticks", cost);
+            String s2 = I18n.format("GTPP.time.seconds", cost);
+            String s3 = I18n.format("GTPP.time.minutes", cost);
+            String s4 = I18n.format("GTPP.time.hours", cost);
+            String s5 = I18n.format("GTPP.time.days", cost);
+            String s6 = I18n.format("GTPP.time.months", cost);
             int y = 20;
 
             int secs = cost / 20;

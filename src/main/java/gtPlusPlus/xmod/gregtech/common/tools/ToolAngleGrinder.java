@@ -28,7 +28,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 public class ToolAngleGrinder extends GTTool {
 
     public static final List<String> mEffectiveList = Arrays
-        .asList(new String[] { EntityIronGolem.class.getName(), "EntityTowerGuardian" });
+        .asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
 
     @Override
     public float getNormalDamageAgainstEntity(final float aOriginalDamage, final Entity aEntity, final ItemStack aStack,

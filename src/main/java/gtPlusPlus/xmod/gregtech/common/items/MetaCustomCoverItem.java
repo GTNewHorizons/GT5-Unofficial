@@ -74,7 +74,7 @@ public class MetaCustomCoverItem extends Item {
             }
             GregTechAPI.registerCover(
                 thisStack,
-                new GTMultiTexture(new ITexture[] { new GTRenderedTexture(mTextures[i]) }),
+                new GTMultiTexture(new GTRenderedTexture(mTextures[i])),
                 new CoverToggleVisual());
         }
     }

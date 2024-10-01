@@ -788,7 +788,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_highlight"))
                     .setBackground(
-                        new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_INVERT_REDSTONE })
+                            GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
                     .setSize(16, 16));
             // Show the reason why the machine shutdown
             row.widget(
