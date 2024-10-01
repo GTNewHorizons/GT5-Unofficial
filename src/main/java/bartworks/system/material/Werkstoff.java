@@ -278,7 +278,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.mID = (short) mID;
         this.defaultName = defaultName;
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> { this.getLocalizedName(); });
+        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedName());
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
@@ -316,7 +316,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         // this.toolTip = "The formula is to long...";
 
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> { this.getLocalizedToolTip(); });
+        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedToolTip());
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
