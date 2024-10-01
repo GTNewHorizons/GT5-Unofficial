@@ -115,8 +115,8 @@ public class ShapedRecipe implements IRecipeMutableAccess {
 
                     for (Pair<Character, Object> h : aRecipePairs) {
                         if (h.getKey() != null) {
-                            aGridWhole.append(String.valueOf(h.getKey()));
-                            Logger.RECIPE("Adding '" + String.valueOf(h.getKey()) + "' to aGridWhole.");
+                            aGridWhole.append(h.getKey());
+                            Logger.RECIPE("Adding '" + h.getKey() + "' to aGridWhole.");
                         }
                     }
 

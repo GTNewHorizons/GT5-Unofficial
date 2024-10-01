@@ -189,10 +189,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
-                    + String.valueOf(this.passiveBaseMult)
+                    + this.passiveBaseMult
                     + ")^"
                     + EnumChatFormatting.GREEN
-                    + String.valueOf(this.passiveBaseExp)
+                    + this.passiveBaseExp
                     + EnumChatFormatting.GRAY
                     + " EU/t passively. The consumption decays by 0.5% every tick when empty")
             .addInfo(
@@ -200,10 +200,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
-                    + String.valueOf(this.activeBaseMult)
+                    + this.activeBaseMult
                     + ")^"
                     + EnumChatFormatting.DARK_PURPLE
-                    + String.valueOf(this.activeBaseExp)
+                    + this.activeBaseExp
                     + EnumChatFormatting.GRAY
                     + " EU per operation to produce antimatter")
             .addSeparator()
@@ -223,19 +223,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.GRAY
                     + "^"
                     + EnumChatFormatting.GOLD
-                    + String.valueOf(this.coefficientBaseExp)
+                    + this.coefficientBaseExp
                     + EnumChatFormatting.GRAY
                     + ") * N("
                     + EnumChatFormatting.AQUA
-                    + String.valueOf(this.baseSkew)
+                    + this.baseSkew
                     + EnumChatFormatting.GRAY
                     + ", 0.25) of antimatter per cycle, consuming equal amounts of Protomatter")
             .addInfo(
                 "The change is split between the 16 Antimatter Hatches, sampled from N(" + EnumChatFormatting.AQUA
-                    + String.valueOf(this.baseSkew)
+                    + this.baseSkew
                     + EnumChatFormatting.GRAY
                     + ", 1) (Gaussian distribution with mean of "
-                    + String.valueOf(this.baseSkew)
+                    + this.baseSkew
                     + ")")
             .addInfo("The total change can be negative!")
             .addSeparator()
