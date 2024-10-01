@@ -163,7 +163,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         }
 
         // List to hold unsorted scanner messages
-        List<ChatComponentText> oreMessages = new ArrayList<ChatComponentText>();
+        List<ChatComponentText> oreMessages = new ArrayList<>();
 
         for (String key : ores.keySet()) {
             int value = ores.get(key);
@@ -178,7 +178,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             StatCollector.translateToLocal("detrav.scanner.distance.texts.1"),
             StatCollector.translateToLocal("detrav.scanner.distance.texts.0"));
 
-        List<ChatComponentText> oreMessagesSorted = new ArrayList<ChatComponentText>();
+        List<ChatComponentText> oreMessagesSorted = new ArrayList<>();
         oreMessagesSorted.add(new ChatComponentText(CHAT_MSG_SEPARATOR));
 
         // Sort ore messages by distance, separated by -----

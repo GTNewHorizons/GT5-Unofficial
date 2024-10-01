@@ -44,7 +44,7 @@ public class EyeOfHarmonyRecipeStorage {
         }
     };
 
-    private final HashMap<String, EyeOfHarmonyRecipe> recipeHashMap = new HashMap<String, EyeOfHarmonyRecipe>() {
+    private final HashMap<String, EyeOfHarmonyRecipe> recipeHashMap = new HashMap<>() {
 
         private static final long serialVersionUID = -3501819612517400500L;
 

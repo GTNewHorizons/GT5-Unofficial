@@ -58,7 +58,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
             aPrimaryColor,
             aSecondaryColor,
             EnumRarity.common,
-            new ArrayList<String>());
+                new ArrayList<>());
     }
 
     public static void registerEntityForSpawnEgg(final int aMetaID, String parEntityToSpawnName, int aPrimaryColor,
@@ -176,7 +176,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
      * Spawns the creature specified by the egg's type in the location specified by
      *
      * the last three parameters. Parameters: world, entityID, x, y, z.
-     * 
+     *
      * @param par1ItemStack
      */
     public Entity spawnEntity(ItemStack par1ItemStack, World parWorld, double parX, double parY, double parZ) {

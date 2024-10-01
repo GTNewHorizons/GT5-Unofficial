@@ -25,7 +25,7 @@ import gregtech.api.util.GTOreDictUnificator;
 public class StructureHelper {
 
     public static <T> IStructureElement<T> addFrame(Materials aMaterials) {
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             private IIcon[] mIcons;
 
@@ -77,7 +77,7 @@ public class StructureHelper {
     public static <T> IStructureElement<T> addTieredBlock(Block aBlock, BiPredicate<T, Integer> aSetTheFuckingMeta,
         Function<T, Integer> aGetTheFuckingMeta, int maxMeta) {
 
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {

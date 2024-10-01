@@ -219,7 +219,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         .addElement(
             'W',
             ofChain(ofBlock(Blocks.water, 0), ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
-        .addElement('F', new IStructureElementNoPlacement<MTEMegaIndustrialApiary>() {
+        .addElement('F', new IStructureElementNoPlacement<>() {
 
             @Override
             public boolean check(MTEMegaIndustrialApiary mte, World world, int x, int y, int z) {

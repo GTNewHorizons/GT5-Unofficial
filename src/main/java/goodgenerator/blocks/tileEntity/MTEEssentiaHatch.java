@@ -169,7 +169,7 @@ public class MTEEssentiaHatch extends TileEntity implements IAspectContainer, IE
 
     @Override
     public boolean doesContainerContain(AspectList aspectList) {
-        ArrayList<Boolean> ret = new ArrayList<Boolean>();
+        ArrayList<Boolean> ret = new ArrayList<>();
         for (Aspect a : aspectList.aspects.keySet()) ret.add(current.aspects.containsKey(a));
         return !ret.contains(false);
     }

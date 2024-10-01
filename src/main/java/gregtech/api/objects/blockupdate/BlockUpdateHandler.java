@@ -35,8 +35,8 @@ public class BlockUpdateHandler {
 
     private BlockUpdateHandler() {
 
-        blocksToUpdate = new HashMap<ChunkCoordIntPair, WorldCoord>();
-        cooldowns = new HashMap<ChunkCoordIntPair, RandomCooldown>();
+        blocksToUpdate = new HashMap<>();
+        cooldowns = new HashMap<>();
 
         FMLCommonHandler.instance()
             .bus()

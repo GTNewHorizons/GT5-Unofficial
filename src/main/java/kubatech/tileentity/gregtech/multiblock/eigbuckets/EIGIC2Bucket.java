@@ -602,7 +602,6 @@ public class EIGIC2Bucket extends EIGBucket {
         // Create kernel out of our growth speeds
         double[] kernel = tabulate(speeds, 1.0d / speeds.length);
         double[] convolutionTarget = new double[signal.length];
-        LinkedList<Double> P = new LinkedList<Double>();
 
         // Perform convolutions on the signal until it's too weak to be recognised.
         double p, avgRolls = 1;

@@ -33,7 +33,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     // simple name is rather expensive to compute and it's not cached
     // see https://stackoverflow.com/q/17369304
-    private static final ClassValue<String> simpleNameCache = new ClassValue<String>() {
+    private static final ClassValue<String> simpleNameCache = new ClassValue<>() {
 
         @Override
         protected String computeValue(Class<?> type) {

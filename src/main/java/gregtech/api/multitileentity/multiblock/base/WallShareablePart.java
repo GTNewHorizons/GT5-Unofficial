@@ -30,7 +30,7 @@ public class WallShareablePart extends MultiBlockPart {
             return;
         }
 
-        targets.add(new WeakTargetRef<IMultiBlockController>(IMultiBlockController.class, true));
+        targets.add(new WeakTargetRef<>(IMultiBlockController.class, true));
     }
 
     @Override

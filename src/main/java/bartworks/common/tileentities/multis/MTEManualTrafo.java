@@ -93,7 +93,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
                 2))
         .addElement('t', ofBlock(BW_BLOCKS[2], 1))
         .addElement('f', ofBlock(BW_BLOCKS[2], 0))
-        .addElement('T', new IStructureElementNoPlacement<MTEManualTrafo>() {
+        .addElement('T', new IStructureElementNoPlacement<>() {
 
             @Override
             public boolean check(MTEManualTrafo te, World world, int x, int y, int z) {
