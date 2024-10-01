@@ -2,7 +2,6 @@ package gtneioreplugin;
 
 @com.gtnewhorizon.gtnhlib.config.Config(
     modid = GTNEIOrePlugin.MODID,
-    category = "general",
     filename = GTNEIOrePlugin.MODID)
 public class Config {
 
