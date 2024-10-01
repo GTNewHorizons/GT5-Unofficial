@@ -193,9 +193,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                 if (this.getTesseract(this.mFrequency, false) != null) {
                     PlayerUtils.messagePlayer(
                         aPlayer,
-                        new StringBuilder().append(EnumChatFormatting.GREEN)
-                            .append(" (Connected)")
-                            .toString());
+                        EnumChatFormatting.GREEN + " (Connected)");
                 }
             }
         } else if (aPlayer.getUniqueID()
@@ -247,9 +245,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                     aPlayer,
                     "Frequency: " + this.mFrequency
                         + (this.getTesseract(this.mFrequency, false) == null ? ""
-                            : new StringBuilder().append(EnumChatFormatting.GREEN)
-                                .append(" (Connected)")
-                                .toString()));
+                            : EnumChatFormatting.GREEN + " (Connected)"));
             }
         } else if (aPlayer.getUniqueID()
             .compareTo(this.mOwner) != 0) {

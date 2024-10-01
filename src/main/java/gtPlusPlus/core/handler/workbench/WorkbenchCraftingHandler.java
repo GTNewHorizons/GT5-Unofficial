@@ -36,7 +36,7 @@ public class WorkbenchCraftingHandler {
     }
 
     void addRecipe(final ItemStack par1ItemStack, final Object[] par2ArrayOfObj) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         int i = 0;
         int j = 0;
         int k = 0;
@@ -47,18 +47,14 @@ public class WorkbenchCraftingHandler {
             for (final String s2 : as) {
                 k++;
                 j = s2.length();
-                s = (new StringBuilder()).append(s)
-                    .append(s2)
-                    .toString();
+                s.append(s2);
             }
         } else {
             while (par2ArrayOfObj[i] instanceof String) {
                 final String s1 = (String) par2ArrayOfObj[i++];
                 k++;
                 j = s1.length();
-                s = (new StringBuilder()).append(s)
-                    .append(s1)
-                    .toString();
+                s.append(s1);
             }
         }
 
