@@ -451,10 +451,10 @@ public class RecipesMachines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(18),
                 ItemList.Casing_Turbine.get(1),
-                CI.getPlate(3, 4),
-                CI.getScrew(3, 8))
+                MaterialsAlloy.INCONEL_625.getPlate(4),
+                MaterialsAlloy.INCONEL_625.getScrew(8))
             .itemOutputs(GregtechItemList.Casing_Turbine_LP.get(1))
-            .fluidInputs(CI.tieredMaterials[2].getMolten(144 * 2))
+            .fluidInputs(Materials.Aluminium.getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
