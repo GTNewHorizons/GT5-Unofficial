@@ -53,12 +53,9 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        if (result == null || (!DustDecayable.class.isInstance(result.getItem())
-            && !BaseItemDustUnique.class.isInstance(result.getItem()))) {
+        if (result == null || (!(result.getItem() instanceof DustDecayable)
+            && !(result.getItem() instanceof BaseItemDustUnique))) {
             return;
-        }
-        if (result != null) {
-            // Logger.INFO("Looking up crafting recipes for "+ItemUtils.getItemName(result));
         }
         final List<DecayableRecipe> recipes = DecayableRecipe.mRecipes;
         for (final DecayableRecipe recipe : recipes) {
@@ -227,9 +224,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
 
         @Override
         public int compareTo(CachedRecipe o) {
-            boolean b = DecayableRecipeNEI.class.isInstance(o);
-            if (b) {
-                DecayableRecipeNEI p = (DecayableRecipeNEI) o;
+            if (o instanceof DecayableRecipeNEI p) {
                 return Integer.compare(p.time, this.time);
             }
             return 0;
@@ -238,16 +233,13 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
         @Override
         public boolean equals(Object obj) {
             if (obj != null) {
-                if (DecayableRecipeNEI.class.isInstance(obj)) {
-                    DecayableRecipeNEI p = (DecayableRecipeNEI) obj;
-                    if (p != null) {
-                        // Time check first to keep it simple and not unbox the Recipes.
-                        if (p.time == this.time) {
-                            ItemStack aInput = p.input.item;
-                            ItemStack aOutput = p.output.item;
-                            if (GTUtility.areStacksEqual(aInput, this.input.item, true)) {
-                                return GTUtility.areStacksEqual(aOutput, this.output.item, true);
-                            }
+                if (obj instanceof DecayableRecipeNEI p) {
+                    // Time check first to keep it simple and not unbox the Recipes.
+                    if (p.time == this.time) {
+                        ItemStack aInput = p.input.item;
+                        ItemStack aOutput = p.output.item;
+                        if (GTUtility.areStacksEqual(aInput, this.input.item, true)) {
+                            return GTUtility.areStacksEqual(aOutput, this.output.item, true);
                         }
                     }
                 }

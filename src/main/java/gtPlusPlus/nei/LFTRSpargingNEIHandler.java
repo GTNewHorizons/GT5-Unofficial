@@ -444,9 +444,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
 
         @Override
         public int compareTo(CachedRecipe o) {
-            boolean b = GasSpargingRecipeNEI.class.isInstance(o);
-            if (b) {
-                GasSpargingRecipeNEI p = (GasSpargingRecipeNEI) o;
+            if (o instanceof GasSpargingRecipeNEI p) {
                 return Integer.compare(p.mOutputs.size(), this.mOutputs.size());
             }
             return 0;
@@ -455,12 +453,9 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
         @Override
         public boolean equals(Object obj) {
             if (obj != null) {
-                if (GasSpargingRecipeNEI.class.isInstance(obj)) {
-                    GasSpargingRecipeNEI p = (GasSpargingRecipeNEI) obj;
-                    if (p != null) {
-                        if (GTUtility.areStacksEqual(p.mInputs.get(0).item, this.mInputs.get(0).item, true)) {
-                            return p.mOutputs.size() == this.mOutputs.size();
-                        }
+                if (obj instanceof GasSpargingRecipeNEI p) {
+                    if (GTUtility.areStacksEqual(p.mInputs.get(0).item, this.mInputs.get(0).item, true)) {
+                        return p.mOutputs.size() == this.mOutputs.size();
                     }
                 }
             }
