@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.google.gson.JsonElement;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
@@ -28,11 +34,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileAnalysisResult {
 
@@ -172,8 +173,7 @@ public class TileAnalysisResult {
                 basicMachine.mFluidTransfer = (mGTBasicIOFlags & GT_BASIC_IO_PUSH_FLUIDS) != 0;
                 basicMachine.mDisableFilter = (mGTBasicIOFlags & GT_BASIC_IO_DISABLE_FILTER) != 0;
                 basicMachine.mDisableMultiStack = (mGTBasicIOFlags & GT_BASIC_IO_DISABLE_MULTISTACK) != 0;
-                basicMachine.mAllowInputFromOutputSide = (mGTBasicIOFlags & GT_BASIC_IO_INPUT_FROM_OUTPUT_SIDE)
-                    != 0;
+                basicMachine.mAllowInputFromOutputSide = (mGTBasicIOFlags & GT_BASIC_IO_INPUT_FROM_OUTPUT_SIDE) != 0;
             }
 
             if (mte instanceof IConnectable connectable) {
@@ -248,8 +248,7 @@ public class TileAnalysisResult {
 
                     ItemId actualItem = part == null ? null
                         : ItemId.createWithoutNBT(part.getItemStack(PartItemStack.Break));
-                    ItemId expectedItem = expected == null ? null
-                        : ItemId.createWithoutNBT(expected.getPartStack());
+                    ItemId expectedItem = expected == null ? null : ItemId.createWithoutNBT(expected.getPartStack());
 
                     if ((expectedItem == null || !Objects.equals(actualItem, expectedItem)) && actualItem != null) {
                         removePart(ctx, partHost, dir);
@@ -371,66 +370,40 @@ public class TileAnalysisResult {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         TileAnalysisResult other = (TileAnalysisResult) obj;
         if (mConnections == null) {
-            if (other.mConnections != null)
-                return false;
-        } else if (!mConnections.equals(other.mConnections))
-            return false;
+            if (other.mConnections != null) return false;
+        } else if (!mConnections.equals(other.mConnections)) return false;
         if (mGTColour == null) {
-            if (other.mGTColour != null)
-                return false;
-        } else if (!mGTColour.equals(other.mGTColour))
-            return false;
-        if (mGTFront != other.mGTFront)
-            return false;
-        if (mGTMainFacing != other.mGTMainFacing)
-            return false;
+            if (other.mGTColour != null) return false;
+        } else if (!mGTColour.equals(other.mGTColour)) return false;
+        if (mGTFront != other.mGTFront) return false;
+        if (mGTMainFacing != other.mGTMainFacing) return false;
         if (mGTBasicIOFlags == null) {
-            if (other.mGTBasicIOFlags != null)
-                return false;
-        } else if (!mGTBasicIOFlags.equals(other.mGTBasicIOFlags))
-            return false;
-        if (mGTFacing != other.mGTFacing)
-            return false;
-        if (!Arrays.equals(mCovers, other.mCovers))
-            return false;
+            if (other.mGTBasicIOFlags != null) return false;
+        } else if (!mGTBasicIOFlags.equals(other.mGTBasicIOFlags)) return false;
+        if (mGTFacing != other.mGTFacing) return false;
+        if (!Arrays.equals(mCovers, other.mCovers)) return false;
         if (mStrongRedstone == null) {
-            if (other.mStrongRedstone != null)
-                return false;
-        } else if (!mStrongRedstone.equals(other.mStrongRedstone))
-            return false;
+            if (other.mStrongRedstone != null) return false;
+        } else if (!mStrongRedstone.equals(other.mStrongRedstone)) return false;
         if (mGTCustomName == null) {
-            if (other.mGTCustomName != null)
-                return false;
-        } else if (!mGTCustomName.equals(other.mGTCustomName))
-            return false;
-        if (mAEColour != other.mAEColour)
-            return false;
-        if (mAEUp != other.mAEUp)
-            return false;
-        if (mAEForward != other.mAEForward)
-            return false;
+            if (other.mGTCustomName != null) return false;
+        } else if (!mGTCustomName.equals(other.mGTCustomName)) return false;
+        if (mAEColour != other.mAEColour) return false;
+        if (mAEUp != other.mAEUp) return false;
+        if (mAEForward != other.mAEForward) return false;
         if (mAEConfig == null) {
-            if (other.mAEConfig != null)
-                return false;
-        } else if (!mAEConfig.equals(other.mAEConfig))
-            return false;
-        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades))
-            return false;
+            if (other.mAEConfig != null) return false;
+        } else if (!mAEConfig.equals(other.mAEConfig)) return false;
+        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades)) return false;
         if (mAECustomName == null) {
-            if (other.mAECustomName != null)
-                return false;
-        } else if (!mAECustomName.equals(other.mAECustomName))
-            return false;
-        if (!Arrays.equals(mAEParts, other.mAEParts))
-            return false;
+            if (other.mAECustomName != null) return false;
+        } else if (!mAECustomName.equals(other.mAECustomName)) return false;
+        if (!Arrays.equals(mAEParts, other.mAEParts)) return false;
         return true;
     }
 }

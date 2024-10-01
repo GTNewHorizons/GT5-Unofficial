@@ -1,19 +1,12 @@
 package gregtech.common.items.matterManipulator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import org.joml.Vector3i;
-
-import com.mojang.authlib.GameProfile;
-
-import gregtech.api.util.Lazy;
-import gregtech.common.items.matterManipulator.NBTState.Config;
-import gregtech.common.items.matterManipulator.NBTState.Location;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -23,6 +16,15 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.joml.Vector3i;
+
+import com.mojang.authlib.GameProfile;
+
+import gregtech.api.util.Lazy;
+import gregtech.common.items.matterManipulator.NBTState.Config;
+import gregtech.common.items.matterManipulator.NBTState.Location;
+import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 
 public class BlockAnalyzer {
 
@@ -46,43 +48,44 @@ public class BlockAnalyzer {
         RegionAnalysis analysis = new RegionAnalysis();
 
         Vector3i deltas = Config.getRegionDeltas(a, b);
-        analysis.sX = Math.abs(deltas.x);
-        analysis.sY = Math.abs(deltas.y);
-        analysis.sZ = Math.abs(deltas.z);
-        
-        int count = analysis.sX * analysis.sY * analysis.sZ;
+        analysis.deltas = deltas;
 
-        analysis.blocks = new Block[count];
-        analysis.meta = new int[count];
-        analysis.tiles = new TileAnalysisResult[count];
-
-        List<Vector3i> voxels = Config.getBlocksInBB(a, deltas);
+        analysis.blocks = new ArrayList<>();
 
         BlockAnalysisContext context = new BlockAnalysisContext(world);
 
-        for (int i = 0; i < count; i++) {
-            Vector3i voxel = voxels.get(i);
+        for (Vector3i voxel : Config.getBlocksInBB(a, deltas)) {
+            PendingBlock pending = PendingBlock.fromBlock(world, voxel.x, voxel.y, voxel.z);
 
-            analysis.blocks[i] = world.getBlock(voxel.x, voxel.y, voxel.z);
-            analysis.meta[i] = world.getBlockMetadata(voxel.x, voxel.y, voxel.z);
+            if (pending == null) {
+                continue;
+            }
 
             context.voxel = voxel;
             TileAnalysisResult tile = analyze(context);
 
-            if (tile != null && tile.doesAnything()) analysis.tiles[i] = tile;
+            if (tile != null && tile.doesAnything()) {
+                pending.tileData = tile;
+            }
+
+            pending.x -= a.x;
+            pending.y -= a.y;
+            pending.z -= a.z;
+
+            analysis.blocks.add(pending);
         }
-        
+
         return analysis;
     }
 
     public static class RegionAnalysis {
-        public int sX, sY, sZ;
-        public Block[] blocks;
-        public int[] meta;
-        public TileAnalysisResult[] tiles;
+
+        public Vector3i deltas;
+        public List<PendingBlock> blocks;
     }
 
     public static interface IBlockAnalysisContext {
+
         public Supplier<EntityPlayer> getFakePlayer();
 
         public TileEntity getTileEntity();
@@ -96,7 +99,10 @@ public class BlockAnalyzer {
 
         public BlockAnalysisContext(World world) {
             this.world = world;
-            fakePlayer = new Lazy<>(() -> new FakePlayer((WorldServer) world, new GameProfile(UUID.randomUUID(), "BlockAnalyzer Fake Player")));
+            fakePlayer = new Lazy<>(
+                () -> new FakePlayer(
+                    (WorldServer) world,
+                    new GameProfile(UUID.randomUUID(), "BlockAnalyzer Fake Player")));
         }
 
         @Override
@@ -111,16 +117,19 @@ public class BlockAnalyzer {
     }
 
     public static interface IBlockApplyContext extends IBlockAnalysisContext {
+
         public EntityPlayer getPlacingPlayer();
 
         public boolean tryApplyAction(double complexity);
 
         public boolean tryConsumeItems(ItemStack... items);
+
         public void givePlayerItems(ItemStack... items);
+
         public void givePlayerFluids(FluidStack... fluids);
     }
 
-    public static class BlockActionContext implements IBlockApplyContext {
+    public static class BlockApplyContext implements IBlockApplyContext {
 
         public World world;
         public int x, y, z;

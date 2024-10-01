@@ -1,15 +1,16 @@
 package gregtech.common.items.matterManipulator;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+
 import com.google.gson.JsonElement;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 
 public class CoverData {
 
@@ -85,28 +86,19 @@ public class CoverData {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         CoverData other = (CoverData) obj;
         if (cover == null) {
-            if (other.cover != null)
-                return false;
-        } else if (!cover.equals(other.cover))
-            return false;
+            if (other.cover != null) return false;
+        } else if (!cover.equals(other.cover)) return false;
         if (coverData == null) {
-            if (other.coverData != null)
-                return false;
-        } else if (!coverData.equals(other.coverData))
-            return false;
+            if (other.coverData != null) return false;
+        } else if (!coverData.equals(other.coverData)) return false;
         if (tickRateAddition == null) {
-            if (other.tickRateAddition != null)
-                return false;
-        } else if (!tickRateAddition.equals(other.tickRateAddition))
-            return false;
+            if (other.tickRateAddition != null) return false;
+        } else if (!tickRateAddition.equals(other.tickRateAddition)) return false;
         return true;
     }
 
