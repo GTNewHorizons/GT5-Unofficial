@@ -20,8 +20,8 @@ public class TurbineStatCalculator {
     public TurbineStatCalculator(MetaGeneratedTool turbineItem, ItemStack aStack) {
         turbine = turbineItem;
         item = aStack;
-        tMaxDamage = turbine.getToolMaxDamage(aStack);
-        tMaterial = turbine.getPrimaryMaterial(aStack);
+        tMaxDamage = MetaGeneratedTool.getToolMaxDamage(aStack);
+        tMaterial = MetaGeneratedTool.getPrimaryMaterial(aStack);
         tStats = turbine.getToolStats(aStack);
     }
 
@@ -32,7 +32,7 @@ public class TurbineStatCalculator {
     }
 
     public long getCurrentDurability() {
-        return getMaxDurability() - turbine.getToolDamage(item);
+        return getMaxDurability() - MetaGeneratedTool.getToolDamage(item);
     }
 
     // Efficiency in percentages

@@ -503,7 +503,7 @@ public final class GTMusicSystem {
                 for (int i = 0; i < baublesSize; i++) {
                     final ItemStack item = baubles.getStackInSlot(i);
                     if (item != null && item.getItem() instanceof ItemWirelessHeadphones headphones) {
-                        final UUID id = headphones.getBoundJukeboxUUID(item);
+                        final UUID id = ItemWirelessHeadphones.getBoundJukeboxUUID(item);
                         if (id != null) {
                             wornHeadphones.add(id);
                         }

@@ -132,8 +132,8 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
 
     @Override
     public IStructureDefinition<MTELargeRocketEngine> getStructureDefinition() {
-        if (this.STRUCTURE_DEFINITION == null) {
-            this.STRUCTURE_DEFINITION = StructureDefinition.<MTELargeRocketEngine>builder()
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTELargeRocketEngine>builder()
                 .addShape(
                     this.mName,
                     transpose(
@@ -161,7 +161,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                 .addElement('M', Muffler.newAny(getCasingTextureIndex(), 3))
                 .build();
         }
-        return this.STRUCTURE_DEFINITION;
+        return STRUCTURE_DEFINITION;
     }
 
     @Override

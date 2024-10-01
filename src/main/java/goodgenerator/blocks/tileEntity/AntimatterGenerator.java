@@ -278,7 +278,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new AntimatterGenerator(this.MAIN_NAME);
+        return new AntimatterGenerator(MAIN_NAME);
     }
 
     @Override
