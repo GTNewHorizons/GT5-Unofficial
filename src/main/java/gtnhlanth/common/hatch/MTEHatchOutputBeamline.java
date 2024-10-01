@@ -98,7 +98,7 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePa
 
             IMetaTileEntity nextMeta = nextTE.getMetaTileEntity();
 
-            if (nextMeta == null || !(nextMeta instanceof IConnectsToBeamline)) { // Non-beamliney block
+            if (!(nextMeta instanceof IConnectsToBeamline)) { // Non-beamliney block
                 return;
             }
 
