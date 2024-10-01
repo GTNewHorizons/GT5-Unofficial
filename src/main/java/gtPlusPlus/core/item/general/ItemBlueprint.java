@@ -226,21 +226,18 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
 
     public boolean createNBT(final ItemStack itemStack) {
         if (itemStack.hasTagCompound()) {
-            if (!itemStack.stackTagCompound.getBoolean("mBlueprint") && !itemStack.stackTagCompound.getString("mName")
-                .equals("")) {
+            if (!itemStack.stackTagCompound.getBoolean("mBlueprint") && !itemStack.stackTagCompound.getString("mName").isEmpty()) {
                 // No Blueprint and no name Set
                 Logger.WARNING("No Blueprint and no name Set");
                 return false;
             } else if (itemStack.stackTagCompound.getBoolean("mBlueprint")
-                && !itemStack.stackTagCompound.getString("mName")
-                    .equals("")) {
+                && !itemStack.stackTagCompound.getString("mName").isEmpty()) {
                         // Has Blueprint but invalid name set
                         Logger.WARNING("Has Blueprint but invalid name set");
                         return false;
                     } else
                 if (!itemStack.stackTagCompound.getBoolean("mBlueprint")
-                    && itemStack.stackTagCompound.getString("mName")
-                        .equals("")) {
+                    && itemStack.stackTagCompound.getString("mName").isEmpty()) {
                             // Has no Blueprint, but strangely has a name
                             Logger.WARNING("Has no Blueprint, but strangely has a name");
                             return false;

@@ -86,7 +86,7 @@ public class BaseItemDamageable extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        if ((this.itemName == null) || this.itemName.equals("")) {
+        if ((this.itemName == null) || this.itemName.isEmpty()) {
             return super.getItemStackDisplayName(tItem);
         }
         return this.itemName;

@@ -378,7 +378,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
     @Override
     public boolean hasCustomInventoryName() {
-        return (this.customName != null) && !this.customName.equals("");
+        return (this.customName != null) && !this.customName.isEmpty();
     }
 
     @Override

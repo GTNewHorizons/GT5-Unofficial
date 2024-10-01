@@ -112,7 +112,7 @@ public class BaseOreComponent extends Item {
     @Override
     public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
         final boolean bool) {
-        if (this.materialName != null && !this.materialName.equals("")) {
+        if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
                 if (!this.componentMaterial.vChemicalFormula.contains("?")) {
                     list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));

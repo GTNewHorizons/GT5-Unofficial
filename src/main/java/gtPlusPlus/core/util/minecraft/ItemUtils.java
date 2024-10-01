@@ -576,14 +576,14 @@ public class ItemUtils {
             final GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
             if (id != null) {
                 final String modname = (id.modId == null ? id.name : id.modId);
-                value = ((id == null) || id.modId.equals("")) ? Minecraft.ID : modname;
+                value = ((id == null) || id.modId.isEmpty()) ? Minecraft.ID : modname;
             }
         } catch (final Throwable t) {
             try {
                 final UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
                 if (t2 != null) {
                     final String modname = (t2.modId == null ? t2.name : t2.modId);
-                    value = ((t2 == null) || t2.modId.equals("")) ? Minecraft.ID : modname;
+                    value = ((t2 == null) || t2.modId.isEmpty()) ? Minecraft.ID : modname;
                 }
             } catch (final Throwable t3) {
                 t3.printStackTrace();

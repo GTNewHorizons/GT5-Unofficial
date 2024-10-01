@@ -197,7 +197,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
 
     @Override
     public boolean hasCustomInventoryName() {
-        return this.customName != null && !this.customName.equals("");
+        return this.customName != null && !this.customName.isEmpty();
     }
 
     @Override

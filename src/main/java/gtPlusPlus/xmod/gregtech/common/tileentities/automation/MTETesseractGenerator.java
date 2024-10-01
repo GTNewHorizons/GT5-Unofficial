@@ -195,8 +195,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
             if (this.getBaseMetaTileEntity()
                 .getOwnerName() != null
                 && !this.getBaseMetaTileEntity()
-                    .getOwnerName()
-                    .equals("")) {
+                    .getOwnerName().isEmpty()) {
                 if (this.getBaseMetaTileEntity()
                     .getOwnerName()
                     .toLowerCase()
@@ -811,8 +810,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
         if (this.getBaseMetaTileEntity()
             .getOwnerName() != null
             && !this.getBaseMetaTileEntity()
-                .getOwnerName()
-                .equals("")) {
+                .getOwnerName().isEmpty()) {
             this.mOwner = PlayerUtils.getPlayersUUIDByName(
                 this.getBaseMetaTileEntity()
                     .getOwnerName());

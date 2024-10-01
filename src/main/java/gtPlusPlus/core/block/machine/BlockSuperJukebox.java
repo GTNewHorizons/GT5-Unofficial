@@ -568,7 +568,7 @@ public class BlockSuperJukebox extends BlockJukebox {
 
         @Override
         public boolean hasCustomInventoryName() {
-            return (this.customName != null) && !this.customName.equals("");
+            return (this.customName != null) && !this.customName.isEmpty();
         }
     }
 }

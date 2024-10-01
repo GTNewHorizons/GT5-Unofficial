@@ -138,8 +138,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     @Override
     public String[] getInfoData() {
         ArrayList<String> mInfo = new ArrayList<>();
-        if (!this.getMetaName()
-            .equals("")) {
+        if (!this.getMetaName().isEmpty()) {
             mInfo.add(this.getMetaName());
         }
 

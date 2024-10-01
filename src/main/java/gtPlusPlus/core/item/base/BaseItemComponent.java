@@ -231,8 +231,8 @@ public class BaseItemComponent extends Item {
                 }
             }
 
-            if ((this.materialName != null) && (this.materialName != "")
-                && !this.materialName.equals("")
+            if (this.materialName != null
+                && !this.materialName.isEmpty()
                 && (this.componentMaterial != null)) {
 
                 if (this.componentMaterial != null) {
@@ -255,10 +255,7 @@ public class BaseItemComponent extends Item {
                     }
 
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
-                        if ((this.materialName != null) && (this.materialName != "")
-                            && !this.materialName.equals("")
-                            && this.unlocalName.toLowerCase()
-                                .contains("hot")) {
+                        if (this.unlocalName.toLowerCase().contains("hot")) {
                             list.add(
                                 EnumChatFormatting.GRAY + "Warning: "
                                     + EnumChatFormatting.RED

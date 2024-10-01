@@ -369,7 +369,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean hasCustomInventoryName() {
-        return (this.mCustomName != null) && !this.mCustomName.equals("");
+        return (this.mCustomName != null) && !this.mCustomName.isEmpty();
     }
 
     @Override

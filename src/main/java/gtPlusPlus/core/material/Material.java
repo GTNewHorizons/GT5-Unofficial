@@ -1299,7 +1299,7 @@ public class Material {
             return "";
         }
         Logger.MATERIALS("===============| Calculating Atomic Formula for " + this.localizedName + " |===============");
-        if (!chemSymbol.equals("")) {
+        if (!chemSymbol.isEmpty()) {
             return chemSymbol;
         }
         final ArrayList<MaterialStack> tempInput = this.vMaterialInput;
