@@ -168,9 +168,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 internalOutputs.removeIf(Objects::isNull);
 
                 int[] chances = new int[internalOutputs.size()];
-                for (int i = 0; i < internalOutputs.size(); i++) {
-                    chances[i] = mChances[i];
-                }
+                System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
 
                 ItemStack[] inputs;
                 if (emptyCell == null) {
@@ -284,9 +282,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
-                for (int i = 0; i < internalOutputs.size(); i++) {
-                    chances[i] = mChances[i];
-                }
+                System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
 
                 ItemStack[] inputs;
                 if (emptyCell == null) {
