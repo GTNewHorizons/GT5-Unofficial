@@ -148,7 +148,7 @@ public class ContainerPestKiller extends Container {
         return super.func_94530_a(p_94530_1_, p_94530_2_);
     }
 
-    private class GT_Slot_Render extends Slot {
+    private static class GT_Slot_Render extends Slot {
 
         public final int mSlotIndex;
         public boolean mEnabled = true;

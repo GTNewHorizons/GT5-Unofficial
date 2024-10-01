@@ -197,7 +197,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 
         // Local class to track which orevein seeds must be checked when doing
         // chunkified worldgen
-        class NearbySeeds {
+        static class NearbySeeds {
 
             public int mX;
             public int mZ;

@@ -233,7 +233,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
         return currenttip;
     }
 
-    public class FixedPositionedStack extends PositionedStack {
+    public static class FixedPositionedStack extends PositionedStack {
 
         public final int mChance;
         public boolean permutated = false;

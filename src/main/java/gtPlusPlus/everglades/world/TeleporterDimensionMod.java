@@ -457,7 +457,7 @@ public class TeleporterDimensionMod extends Teleporter {
         }
     }
 
-    public class PortalPosition extends ChunkCoordinates {
+    public static class PortalPosition extends ChunkCoordinates {
 
         /**
          * The worldtime at which this PortalPosition was last verified
