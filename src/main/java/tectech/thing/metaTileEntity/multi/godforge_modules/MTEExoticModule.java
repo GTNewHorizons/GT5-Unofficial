@@ -96,7 +96,7 @@ public class MTEExoticModule extends MTEBaseModule {
         .disableRegisterNEI()
         .build();
     private static final int NUMBER_OF_INPUTS = 7;
-    private static final int INPUT_LIST_WINDOW_ID = 10;
+    private static final int INPUT_LIST_WINDOW_ID = 11;
 
     public MTEExoticModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

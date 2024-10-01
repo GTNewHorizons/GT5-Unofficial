@@ -292,6 +292,6 @@ public class GodforgeMath {
         module.setPowerTally(BigInteger.ZERO);
         godforge.addTotalRecipesProcessed(module.getRecipeTally());
         module.setRecipeTally(0);
-
+        module.setInversionConfig(godforge.isInversionAvailable());
     }
 }

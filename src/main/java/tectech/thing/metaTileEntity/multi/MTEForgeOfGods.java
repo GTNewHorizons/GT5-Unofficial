@@ -33,6 +33,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -2508,6 +2510,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     protected ModularWindow createGeneralInfoWindow(final EntityPlayer player) {
+        return createGeneralInfoWindow(() -> inversion, val -> inversion = val);
+    }
+
+    // because modularui1 creates its synced windows following a specific interface spec, so we have to create a
+    // second method in order to pass a parameter :(
+    public static ModularWindow createGeneralInfoWindow(Supplier<Boolean> inversionGetter,
+        Consumer<Boolean> inversionSetter) {
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         final int WIDTH = 300;
         final int HEIGHT = 300;
@@ -2569,20 +2578,20 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(7, 140)
                     .setSize(150, 15))
             .widget(
-                TextWidget.dynamicText(this::inversionHeaderText)
+                TextWidget.dynamicText(() -> inversionInfoText(inversionGetter.get()))
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(7, 155)
                     .setSize(150, 15))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (inversion) {
+                if (inversionGetter.get()) {
                     scrollable.setVerticalScrollOffset(1766);
                 }
             })
-                .setPlayClickSound(inversion)
+                .setPlayClickSound(inversionGetter.get())
                 .setPos(7, 155)
                 .setSize(150, 15)
-                .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> inversion, (val) -> inversion = val), scrollable))
+                .attachSyncer(new FakeSyncWidget.BooleanSyncer(inversionGetter, inversionSetter), scrollable))
             .widget(
                 new TextWidget(
                     EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.fuel"))
@@ -2636,13 +2645,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(7, 1439)
                     .setSize(280, 320))
             .widget(
-                TextWidget.dynamicText(this::inversionHeaderText)
+                TextWidget.dynamicText(() -> inversionHeaderText(inversionGetter.get()))
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setTextAlignment(Alignment.TopCenter)
                     .setPos(7, 1776)
                     .setSize(280, 15))
             .widget(
-                TextWidget.dynamicText(this::inversionInfoText)
+                TextWidget.dynamicText(() -> inversionInfoText(inversionGetter.get()))
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(7, 1793)
@@ -3286,6 +3295,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         inversion = inversionChecker == 4;
     }
 
+    public boolean isInversionAvailable() {
+        return inversion;
+    }
+
     private Text inversionStatusText() {
         String inversionStatus = "";
         if (inversion) {
@@ -3583,7 +3596,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return new Text(progressText + ": " + EnumChatFormatting.GRAY + formattingMode.format(max) + " " + suffix);
     }
 
-    private Text inversionHeaderText() {
+    private static Text inversionHeaderText(boolean inversion) {
         return inversion
             ? new Text(
                 EnumChatFormatting.BOLD + "§k2"
@@ -3596,7 +3609,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             : new Text("");
     }
 
-    private Text inversionInfoText() {
+    private static Text inversionInfoText(boolean inversion) {
         return inversion ? new Text(translateToLocal("gt.blockmachines.multimachine.FOG.inversioninfotext"))
             : new Text("");
     }
