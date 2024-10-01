@@ -463,7 +463,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (checkMachine() && (mEnergyHatches.size() > 0 || mExoticEnergyHatches.size() > 0)) {
+        if (checkMachine() && (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty())) {
             long oV = inputVoltage, oEut = inputEUt;
             inputVoltage = Integer.MAX_VALUE;
             inputEUt = 0;

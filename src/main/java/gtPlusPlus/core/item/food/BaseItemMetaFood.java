@@ -304,7 +304,7 @@ public class BaseItemMetaFood extends ItemFood {
     public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         try {
             String aTooltip = mTooltipMap.get(getMetaKey(aStack));
-            if (aTooltip != null && aTooltip.length() > 0) {
+            if (aTooltip != null && !aTooltip.isEmpty()) {
                 aList.add(aTooltip);
             }
         } catch (Throwable t) {

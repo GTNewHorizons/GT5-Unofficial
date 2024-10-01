@@ -108,7 +108,7 @@ public class MTEAutoChisel extends MTEBasicMachine {
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
     private static boolean hasChiselResults(ItemStack from) {
         List<ItemStack> results = getItemsForChiseling(from);
-        return results.size() > 0;
+        return !results.isEmpty();
     }
 
     private static List<ItemStack> getItemsForChiseling(ItemStack aStack) {

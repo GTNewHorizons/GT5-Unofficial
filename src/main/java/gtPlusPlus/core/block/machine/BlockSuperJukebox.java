@@ -328,7 +328,7 @@ public class BlockSuperJukebox extends BlockJukebox {
             Logger.INFO("b1");
             // Select First Record
             ItemStack aRecordToPlay;
-            if (mValidRecords.size() == 0) {
+            if (mValidRecords.isEmpty()) {
                 Logger.INFO("bX");
                 return false;
             } else {

@@ -144,7 +144,7 @@ public class BaseItemDustUnique extends Item {
         if (this.sRadiation > 0) {
             list.add(GTPPCore.GT_Tooltip_Radioactive.get());
         }
-        if (this.chemicalNotation.length() > 0 && !chemicalNotation.equals("")
+        if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("")
             && !chemicalNotation.equals("NullFormula")) {
             list.add(this.chemicalNotation);
         }

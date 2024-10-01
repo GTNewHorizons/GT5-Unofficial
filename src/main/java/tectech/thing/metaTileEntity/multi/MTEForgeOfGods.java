@@ -343,11 +343,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
         // Make sure there are no energy hatches
         {
-            if (mEnergyHatches.size() > 0) {
+            if (!mEnergyHatches.isEmpty()) {
                 return false;
             }
 
-            if (mExoticEnergyHatches.size() > 0) {
+            if (!mExoticEnergyHatches.isEmpty()) {
                 return false;
             }
         }
@@ -410,7 +410,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 startRecipeProcessing();
                 FluidStack[] fluidInHatch = null;
                 boolean fuelDrained = false;
-                if (mInputHatches != null && mInputHatches.size() != 0) {
+                if (mInputHatches != null && !mInputHatches.isEmpty()) {
                     fluidInHatch = this.getStoredFluids()
                         .toArray(new FluidStack[0]);
                 }
@@ -422,7 +422,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (upgrades[29]) {
                     maxModuleCount += 4;
                 }
-                if (mInputBusses.size() != 0) {
+                if (!mInputBusses.isEmpty()) {
                     if (internalBattery == 0) {
                         MTEHatchInputBus inputBus = mInputBusses.get(0);
                         ItemStack[] inputBusInventory = inputBus.getRealInventory();
@@ -496,7 +496,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 }
 
                 // Do module calculations and checks
-                if (moduleHatches.size() > 0 && internalBattery > 0 && moduleHatches.size() <= maxModuleCount) {
+                if (!moduleHatches.isEmpty() && internalBattery > 0 && moduleHatches.size() <= maxModuleCount) {
                     for (MTEBaseModule module : moduleHatches) {
                         if (allowModuleConnection(module, this)) {
                             module.connect();
@@ -734,7 +734,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public void onRemoval() {
-        if (moduleHatches != null && moduleHatches.size() > 0) {
+        if (moduleHatches != null && !moduleHatches.isEmpty()) {
             for (MTEBaseModule module : moduleHatches) {
                 module.disconnect();
             }
@@ -3275,7 +3275,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public void reduceBattery(int amount) {
         if (internalBattery - amount <= 0) {
             internalBattery = 0;
-            if (moduleHatches.size() > 0) {
+            if (!moduleHatches.isEmpty()) {
                 for (MTEBaseModule module : moduleHatches) {
                     module.disconnect();
                 }

@@ -133,7 +133,7 @@ public class BaseOreComponent extends Item {
                 }
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
-                if (aChemicalFormula != null && aChemicalFormula.length() > 0) {
+                if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
                     list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));
                 }
             }

@@ -476,7 +476,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public ISubTagContainer getOreByProductRaw(int aNumber) {
-        if (this.mOreByProducts.size() == 0) return null;
+        if (this.mOreByProducts.isEmpty()) return null;
         if (aNumber < 0) aNumber = this.mOreByProducts.size() + aNumber;
         while (aNumber >= this.mOreByProducts.size()) aNumber--;
         ISubTagContainer o = this.mOreByProducts.get(aNumber);
@@ -485,7 +485,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public ItemStack getOreByProduct(int aNumber, OrePrefixes prefixes) {
-        if (this.mOreByProducts.size() == 0) return null;
+        if (this.mOreByProducts.isEmpty()) return null;
         if (aNumber < 0) aNumber = this.mOreByProducts.size() + aNumber;
         while (aNumber >= this.mOreByProducts.size()) aNumber--;
         Object o = this.mOreByProducts.get(aNumber);

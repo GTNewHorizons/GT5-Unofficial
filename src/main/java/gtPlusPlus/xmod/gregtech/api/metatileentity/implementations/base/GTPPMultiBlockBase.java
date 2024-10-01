@@ -465,7 +465,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
     }
 
     public ItemStack findItemInInventory(ItemStack aSearchStack) {
-        if (aSearchStack != null && this.mInputBusses.size() > 0) {
+        if (aSearchStack != null && !this.mInputBusses.isEmpty()) {
             for (MTEHatchInputBus bus : this.mInputBusses) {
                 if (bus != null) {
                     for (ItemStack uStack : bus.mInventory) {

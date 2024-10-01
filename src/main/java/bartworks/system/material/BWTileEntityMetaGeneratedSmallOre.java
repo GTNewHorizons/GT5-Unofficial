@@ -90,7 +90,7 @@ public class BWTileEntityMetaGeneratedSmallOre extends BWTileEntityMetaGenerated
                     tSelector.add(tStack);
                 }
             }
-            if (tSelector.size() > 0) {
+            if (!tSelector.isEmpty()) {
                 int i = 0;
 
                 for (int j = Math.max(1, aFortune > 0 ? tRandom.nextInt(1 + aFortune) : 0); i < j; ++i) {

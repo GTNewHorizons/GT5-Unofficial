@@ -243,7 +243,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
             && mCasingAmount >= 128
             && itemPipeTier >= 0
-            && mEnergyHatches.size() >= 1
+            && !mEnergyHatches.isEmpty()
             && mMufflerHatches.size() == 1;
     }
 

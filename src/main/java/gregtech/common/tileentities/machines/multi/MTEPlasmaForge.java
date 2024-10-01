@@ -849,13 +849,13 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
         // If there is more than 1 TT energy hatch, the structure check will fail.
         // If there is a TT hatch and a normal hatch, the structure check will fail.
-        if (mExoticEnergyHatches.size() > 0) {
-            if (mEnergyHatches.size() > 0) return false;
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
             if (mExoticEnergyHatches.size() > 1) return false;
         }
 
         // If there is 0 or more than 2 energy hatches structure check will fail.
-        if (mEnergyHatches.size() > 0) {
+        if (!mEnergyHatches.isEmpty()) {
             if (mEnergyHatches.size() > 2) return false;
 
             // Check will also fail if energy hatches are not of the same tier.
@@ -868,7 +868,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         }
 
         // If there are no energy hatches or TT energy hatches, structure will fail to form.
-        if ((mEnergyHatches.size() == 0) && (mExoticEnergyHatches.size() == 0)) return false;
+        if ((mEnergyHatches.isEmpty()) && (mExoticEnergyHatches.isEmpty())) return false;
 
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!

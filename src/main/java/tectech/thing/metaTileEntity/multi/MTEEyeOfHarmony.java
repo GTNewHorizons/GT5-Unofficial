@@ -913,11 +913,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
         // Make sure there are no energy hatches.
         {
-            if (mEnergyHatches.size() > 0) {
+            if (!mEnergyHatches.isEmpty()) {
                 return false;
             }
 
-            if (mExoticEnergyHatches.size() > 0) {
+            if (!mExoticEnergyHatches.isEmpty()) {
                 return false;
             }
         }

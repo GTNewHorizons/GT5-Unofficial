@@ -2792,7 +2792,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public long getProtons() {
         if (mElement != null) return mElement.getProtons();
-        if (mMaterialList.size() == 0) return Element.Tc.getProtons();
+        if (mMaterialList.isEmpty()) return Element.Tc.getProtons();
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
@@ -2803,7 +2803,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public long getNeutrons() {
         if (mElement != null) return mElement.getNeutrons();
-        if (mMaterialList.size() == 0) return Element.Tc.getNeutrons();
+        if (mMaterialList.isEmpty()) return Element.Tc.getNeutrons();
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
@@ -2814,7 +2814,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public long getMass() {
         if (mElement != null) return mElement.getMass();
-        if (mMaterialList.size() == 0) return Element.Tc.getMass();
+        if (mMaterialList.isEmpty()) return Element.Tc.getMass();
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;

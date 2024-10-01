@@ -577,7 +577,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         // Glass has to be at least UV-tier to allow TT Laser hatches
         if (glassTier < 8) {
-            if (mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0) return false;
+            if (!mEnergyTunnelsTT.isEmpty() || !mDynamoTunnelsTT.isEmpty()) return false;
         }
 
         // Check if enough (more than 50%) non-empty caps

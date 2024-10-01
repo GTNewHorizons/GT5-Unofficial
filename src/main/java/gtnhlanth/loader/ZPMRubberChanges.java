@@ -372,7 +372,7 @@ public class ZPMRubberChanges implements Runnable {
         boolean replaced = false;
         for (int i = 0; i < stacks.length; i++) {
             if (!GTUtility.isStackValid(stacks[i])) {
-                if (stacks[i] instanceof ArrayList && ((ArrayList) stacks[i]).size() > 0) {
+                if (stacks[i] instanceof ArrayList && !((ArrayList) stacks[i]).isEmpty()) {
                     if (GTUtility.areStacksEqual(stack, (ItemStack) ((ArrayList) stacks[i]).get(0), true))
                         if (!replace) return true;
                         else {

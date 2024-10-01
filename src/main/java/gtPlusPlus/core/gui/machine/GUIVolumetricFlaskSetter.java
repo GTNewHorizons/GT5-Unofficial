@@ -127,7 +127,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                 } else if (par2 == Keyboard.KEY_BACK) {
                     log("Pressed Backspace.");
                     String aCurrentText = getText();
-                    if (aCurrentText.length() > 0) {
+                    if (!aCurrentText.isEmpty()) {
                         this.mText.setText(aCurrentText.substring(0, aCurrentText.length() - 1));
                         if (getText().length() <= 0) {
                             setText(0);
@@ -191,7 +191,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     }
 
     public void sendUpdateToServer() {
-        if (getText().length() > 0) {
+        if (!getText().isEmpty()) {
             PacketHandler.sendToServer(new PacketVolumetricFlaskGui(mTile, parse(getText())));
         }
     }
@@ -211,7 +211,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
         this.mText.updateCursorCounter();
 
         // Check TextBox Value is correct
-        if (getText().length() > 0) {
+        if (!getText().isEmpty()) {
             int aCustomValue = parse(getText());
             int aTileValue = ((ContainerVolumetricFlaskSetter) mContainer).mCustomValue;
             if (mContainer != null) {

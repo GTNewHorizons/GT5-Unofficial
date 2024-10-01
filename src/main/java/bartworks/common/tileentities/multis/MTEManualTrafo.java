@@ -208,7 +208,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
 
     @Override
     public long getInputTier() {
-        if (this.mEnergyHatches.size() > 0) return GTUtility.getTier(
+        if (!this.mEnergyHatches.isEmpty()) return GTUtility.getTier(
             this.mEnergyHatches.get(0)
                 .getBaseMetaTileEntity()
                 .getInputVoltage());
@@ -217,7 +217,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
 
     @Override
     public long getOutputTier() {
-        if (this.mDynamoHatches.size() > 0) return GTUtility.getTier(
+        if (!this.mDynamoHatches.isEmpty()) return GTUtility.getTier(
             this.mDynamoHatches.get(0)
                 .getBaseMetaTileEntity()
                 .getOutputVoltage());
@@ -253,7 +253,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
         this.upstep = this.mode % 2 == 0;
         boolean tapmode = this.mode > 1;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || this.mEnergyHatches.size() == 0) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || this.mEnergyHatches.isEmpty()) return false;
 
         byte intier = this.mEnergyHatches.get(0).mTier;
         for (MTEHatchEnergy in : this.mEnergyHatches) if (in.mTier != intier) return false;
@@ -268,7 +268,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
         if (!this.checkPiece(STRUCTURE_PIECE_TOP, 1, mHeight, 0)) return false;
         this.mTiers = mHeight - 1;
 
-        if (this.mDynamoHatches.size() == 0 || this.mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
+        if (this.mDynamoHatches.isEmpty() || this.mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
 
         byte outtier = this.mDynamoHatches.get(0).mTier;
         for (MTEHatchDynamo out : this.mDynamoHatches) {

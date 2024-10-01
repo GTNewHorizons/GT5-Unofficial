@@ -270,10 +270,10 @@ public class MTEBaseModule extends TTMultiblockBase {
         }
 
         if (this instanceof MTEExoticModule) {
-            if (mOutputHatches.size() < 1) {
+            if (mOutputHatches.isEmpty()) {
                 return false;
             }
-            if (mOutputBusses.size() < 1) {
+            if (mOutputBusses.isEmpty()) {
                 return false;
             }
         }

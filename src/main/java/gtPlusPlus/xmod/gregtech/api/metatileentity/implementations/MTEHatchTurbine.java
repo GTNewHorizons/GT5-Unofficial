@@ -224,7 +224,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public MTELargerTurbineBase getController() {
-        if (this.mHasController && this.mControllerLocation != null && this.mControllerLocation.length() > 0) {
+        if (this.mHasController && this.mControllerLocation != null && !this.mControllerLocation.isEmpty()) {
             BlockPos p = BlockPos.generateBlockPos(mControllerLocation);
             if (p != null) {
                 // Logger.INFO(p.getLocationString());
@@ -246,7 +246,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean canSetNewController() {
-        if ((mControllerLocation != null && mControllerLocation.length() > 0) || this.mHasController) {
+        if ((mControllerLocation != null && !mControllerLocation.isEmpty()) || this.mHasController) {
             return false;
         }
         return true;
@@ -395,7 +395,7 @@ public class MTEHatchTurbine extends MTEHatch {
                     aHasTurbine ? "Cannot remove turbine, no free inventory space." : "No turbine to remove.");
             }
         } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
-            if (mControllerLocation != null && mControllerLocation.length() > 0) {
+            if (mControllerLocation != null && !mControllerLocation.isEmpty()) {
                 if (setController(BlockPos.generateBlockPos(mControllerLocation))) {
                     if (PlayerUtils.isCreative(aPlayer)
                         || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {

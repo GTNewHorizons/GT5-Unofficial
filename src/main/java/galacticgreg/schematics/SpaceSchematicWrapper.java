@@ -31,7 +31,7 @@ public class SpaceSchematicWrapper implements ISpaceObjectGenerator {
     }
 
     public boolean isCalculated() {
-        return _mFinalizedStructure != null && _mFinalizedStructure.size() > 0;
+        return _mFinalizedStructure != null && !_mFinalizedStructure.isEmpty();
     }
 
     /**

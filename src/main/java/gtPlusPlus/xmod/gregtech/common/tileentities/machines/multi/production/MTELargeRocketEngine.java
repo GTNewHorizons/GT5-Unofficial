@@ -182,7 +182,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         this.mAllDynamoHatches.clear();
         this.mAirIntakes.clear();
         return checkPiece(this.mName, 1, 1, 0) && this.mCasing >= 64 - 48
-            && this.mAirIntakes.size() >= 1
+            && !this.mAirIntakes.isEmpty()
             && checkHatch();
     }
 
@@ -270,7 +270,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         // reset fuel ticks in case it does not reset when it stops
         if (this.freeFuelTicks != 0 && this.mProgresstime == 0 && this.mEfficiency == 0) this.freeFuelTicks = 0;
 
-        if (tFluids.size() > 0 && getRecipeMap() != null) {
+        if (!tFluids.isEmpty() && getRecipeMap() != null) {
             if (this.mRuntime % 72 == 0) {
                 if (!consumeCO2()) {
                     this.freeFuelTicks = 0;
@@ -375,7 +375,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         if (aEU <= 0) {
             return true;
         }
-        if (this.mAllDynamoHatches.size() > 0) {
+        if (!this.mAllDynamoHatches.isEmpty()) {
             return addEnergyOutputMultipleDynamos(aEU, true);
         }
         return false;

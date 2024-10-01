@@ -570,7 +570,7 @@ public class Material {
                 this.isRadioactive = true;
                 this.vRadiationLevel = (byte) radiationLevel;
             } else {
-                if (vMaterialInput.size() > 0) {
+                if (!vMaterialInput.isEmpty()) {
                     ArrayList<Byte> aDataSet = new ArrayList<>();
                     for (MaterialStack m : this.vMaterialInput) {
                         aDataSet.add(m.getStackMaterial().vRadiationLevel);

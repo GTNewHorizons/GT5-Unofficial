@@ -338,7 +338,7 @@ public class EIGDynamicInventory<T> {
                         for (Object o : stack.getTooltip(player, false)) {
                             tip.add(o.toString());
                         }
-                        if (tip.size() >= 1 && tip.get(0) != null) {
+                        if (!tip.isEmpty() && tip.get(0) != null) {
                             tip.set(0, stack.stackSize + " x " + tip.get(0));
                         }
                         return tip;

@@ -211,7 +211,7 @@ public class MathUtils {
         final int randomInt = randInt(1, 5);
         final Map<Integer, String> colours = Utils.hexColourGeneratorRandom(5);
 
-        if ((colours.get(randomInt) != null) && (colours.size() > 0)) {
+        if ((colours.get(randomInt) != null) && (!colours.isEmpty())) {
             temp = colours.get(randomInt);
         } else {
             temp = "0F0F0F";

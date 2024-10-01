@@ -109,7 +109,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
 
     @Override
     long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
-        if (aFluids.size() >= 1) {
+        if (!aFluids.isEmpty()) {
             int tEU = 0;
             int actualOptimalFlow = 0;
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.

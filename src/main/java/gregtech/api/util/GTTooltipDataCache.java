@@ -54,7 +54,7 @@ public class GTTooltipDataCache {
             lines.addAll(getAllLines(key + ".extended", args)); // Are extended lines enabled? If so add them to the
                                                                 // lines
         }
-        if (lines.size() == 0) {
+        if (lines.isEmpty()) {
             lines.add(key); // Fallback in case no lines could be found at all
         }
         return new TooltipData(

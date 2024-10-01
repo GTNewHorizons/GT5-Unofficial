@@ -249,7 +249,7 @@ public class ItemUtils {
             if (fqrnSplit.length == 2) {
                 Logger.INFO("Mod: " + fqrnSplit[0] + ", Item: " + fqrnSplit[1]);
                 return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
-            } else if (fqrnSplit.length == 3 && fqrnSplit[2] != null && fqrnSplit[2].length() > 0) {
+            } else if (fqrnSplit.length == 3 && fqrnSplit[2] != null && !fqrnSplit[2].isEmpty()) {
                 Logger.INFO("Mod: " + fqrnSplit[0] + ", Item: " + fqrnSplit[1] + ", Meta: " + fqrnSplit[2]);
                 ItemStack aStack = GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
                 int aMeta = Integer.parseInt(fqrnSplit[2]);
@@ -471,7 +471,7 @@ public class ItemUtils {
         final String unlocalizedName = Utils.sanitizeString(materialName);
         final int Colour = material.getRgbAsHex();
         final String aChemForm = material.vChemicalFormula;
-        final boolean isChemFormvalid = (aChemForm != null && aChemForm.length() > 0);
+        final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
         Item[] output = null;
         if (onlyLargeDust == false) {
             output = new Item[] {

@@ -530,7 +530,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
             }
 
             // Now process each oreseed vs this requested chunk
-            for (; seedList.size() != 0; seedList.remove(0)) {
+            for (; !seedList.isEmpty(); seedList.remove(0)) {
                 if (debugWorldGen)
                     GTLog.out.println("Processing seed x=" + seedList.get(0).mX + " z=" + seedList.get(0).mZ);
                 worldGenFindVein(seedList.get(0).mX, seedList.get(0).mZ);

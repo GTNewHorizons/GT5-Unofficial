@@ -558,7 +558,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
             weaponCheck: {
-                MTEHatchInputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
+                MTEHatchInputBus inputbus = this.mInputBusses.isEmpty() ? null : this.mInputBusses.get(0);
                 if (inputbus != null && !inputbus.isValid()) inputbus = null;
                 ItemStack lootingHolder = inputbus == null ? null : inputbus.getStackInSlot(0);
                 if (lootingHolder == null) break weaponCheck;
@@ -654,8 +654,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
         if (mCasing < 35 || mMaintenanceHatches.size() != 1
-            || mEnergyHatches.size() == 0
-            || !(mInputBusses.size() == 0 || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0)))
+            || mEnergyHatches.isEmpty()
+            || !(mInputBusses.isEmpty() || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0)))
             return false;
         if (mGlassTier < 8) for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();

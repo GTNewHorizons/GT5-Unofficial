@@ -326,7 +326,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             // Search for a valid orevein for this dimension
             if (!validOreveins.containsKey(oreveinSeed)) {
                 if ((oreveinPercentageRoll < oreveinPercentage) && (WorldgenGTOreLayer.sWeight > 0)
-                    && (WorldgenGTOreLayer.sList.size() > 0)) {
+                    && (!WorldgenGTOreLayer.sList.isEmpty())) {
                     int placementAttempts = 0;
                     boolean oreveinFound = false;
                     int i;
@@ -549,7 +549,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             }
 
             // Now process each oreseed vs this requested chunk
-            for (; seedList.size() != 0; seedList.remove(0)) {
+            for (; !seedList.isEmpty(); seedList.remove(0)) {
                 if (debugWorldGen)
                     GTLog.out.println("Processing seed x=" + seedList.get(0).mX + " z=" + seedList.get(0).mZ);
                 worldGenFindVein(seedList.get(0).mX, seedList.get(0).mZ);
@@ -593,7 +593,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             short secondaryMeta = 0;
             short betweenMeta = 0;
             short sporadicMeta = 0;
-            if ((WorldgenGTOreLayer.sWeight > 0) && (WorldgenGTOreLayer.sList.size() > 0)) {
+            if ((WorldgenGTOreLayer.sWeight > 0) && (!WorldgenGTOreLayer.sList.isEmpty())) {
                 boolean temp = true;
                 int tRandomWeight;
                 for (int i = 0; (i < oreveinAttempts) && (temp); i++) {

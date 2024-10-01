@@ -629,7 +629,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
             MTEHatchEnergy hatch = (MTEHatchEnergy) aMetaTileEntity;
 
             // First energy hatch added
-            if (this.mEnergyHatches.size() == 0) this.energyHatchTier = hatch.mTier;
+            if (this.mEnergyHatches.isEmpty()) this.energyHatchTier = hatch.mTier;
 
             // Disallow any hatches that don't match the tier of the first hatch added
             if (hatch.mTier != this.energyHatchTier) return false;
@@ -652,7 +652,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
         int antennaTier = antennaBlock.getTier();
 
         // First antenna casing added
-        if (this.mAntennaCasings.size() == 0) this.antennaeTier = antennaTier;
+        if (this.mAntennaCasings.isEmpty()) this.antennaeTier = antennaTier;
 
         if (antennaTier != this.antennaeTier) return false;
 
@@ -687,7 +687,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
 
         ArrayList<FluidStack> fluidList = this.getStoredFluids();
 
-        if (fluidList.size() == 0) {
+        if (fluidList.isEmpty()) {
 
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
 

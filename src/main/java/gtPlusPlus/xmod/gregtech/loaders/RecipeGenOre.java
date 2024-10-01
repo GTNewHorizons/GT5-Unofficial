@@ -74,8 +74,7 @@ public class RecipeGenOre extends RecipeGenBase {
         Material bonusA = null; // Ni
         Material bonusB = null; // Tin
 
-        if (material.getComposites()
-            .size() >= 1
+        if (!material.getComposites().isEmpty()
             && material.getComposites()
                 .get(0) != null) {
             bonusA = material.getComposites()
@@ -374,7 +373,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
         if (!disableOptional) {
             // Process Dust
-            if (componentMap.size() > 0 && componentMap.size() <= 6) {
+            if (!componentMap.isEmpty() && componentMap.size() <= 6) {
 
                 ItemStack[] mInternalOutputs = new ItemStack[6];
                 int[] mChances = new int[6];

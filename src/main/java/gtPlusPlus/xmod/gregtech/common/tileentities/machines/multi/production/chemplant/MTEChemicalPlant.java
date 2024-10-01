@@ -216,7 +216,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             .dot(1)
                             .build(),
                         buildHatchAdder(MTEChemicalPlant.class).hatchClass(MTEHatchCatalysts.class)
-                            .shouldReject(t -> t.mCatalystBuses.size() >= 1)
+                            .shouldReject(t -> !t.mCatalystBuses.isEmpty())
                             .adder(MTEChemicalPlant::addChemicalPlantList)
                             .casingIndex(getCasingTextureID())
                             .dot(1)

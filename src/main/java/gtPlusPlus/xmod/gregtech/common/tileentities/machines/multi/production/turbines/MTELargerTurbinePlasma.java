@@ -91,7 +91,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
         try {
             ArrayList<MTEHatchTurbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();
-            if (aEmptyTurbineRotorHatches.size() > 0) {
+            if (!aEmptyTurbineRotorHatches.isEmpty()) {
                 hatch: for (MTEHatchTurbine aHatch : aEmptyTurbineRotorHatches) {
                     ArrayList<ItemStack> aTurbines = getAllBufferedTurbines();
                     for (ItemStack aTurbineItem : aTurbines) {
@@ -106,7 +106,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
                 }
             }
 
-            if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
+            if (!getEmptyTurbineAssemblies().isEmpty() || !areAllTurbinesTheSame()) {
                 stopMachine(ShutDownReasonRegistry.NO_TURBINE);
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
@@ -121,7 +121,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
-            if (tFluids.size() > 0) {
+            if (!tFluids.isEmpty()) {
                 if (baseEff == 0 || optFlow == 0
                     || counter >= 512
                     || this.getBaseMetaTileEntity()
@@ -168,7 +168,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             // formula:
             // EU/t = EU/t * MIN(1, ( ( (FuelValue / 200) ^ 2 ) / EUPerTurbine))
             int fuelValue = 0;
-            if (tFluids.size() > 0) {
+            if (!tFluids.isEmpty()) {
                 fuelValue = getFuelValue(new FluidStack(tFluids.get(0), 0));
             }
             float magicValue = (fuelValue * 0.005f) * (fuelValue * 0.005f);
@@ -208,7 +208,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
     }
 
     long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
-        if (aFluids.size() >= 1) {
+        if (!aFluids.isEmpty()) {
             int tEU = 0;
 
             int actualOptimalFlow = 0;

@@ -158,7 +158,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     protected void calculateTier() {
-        if (functionalCasings.size() == 0) {
+        if (functionalCasings.isEmpty()) {
             return;
         }
         double sum = 0;

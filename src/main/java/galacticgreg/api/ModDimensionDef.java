@@ -386,7 +386,7 @@ public class ModDimensionDef {
      * @return
      */
     public AsteroidBlockComb getRandomAsteroidMaterial() {
-        if (_mValidAsteroidMaterials.size() == 0) return null;
+        if (_mValidAsteroidMaterials.isEmpty()) return null;
 
         if (_mValidAsteroidMaterials.size() == 1) return _mValidAsteroidMaterials.get(0);
         else {
@@ -402,7 +402,7 @@ public class ModDimensionDef {
      * @return
      */
     public SpecialBlockComb getRandomSpecialAsteroidBlock() {
-        if (_mSpecialBlocksForAsteroids.size() == 0) return null;
+        if (_mSpecialBlocksForAsteroids.isEmpty()) return null;
 
         if (_mSpecialBlocksForAsteroids.size() == 1) return _mSpecialBlocksForAsteroids.get(0);
         else {

@@ -467,7 +467,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     if (mStorage.size() >= mMaxSlots) break;
                 }
                 updateSlots();
-            } else if (mPrimaryMode == 1 && mStorage.size() > 0) {
+            } else if (mPrimaryMode == 1 && !mStorage.isEmpty()) {
                 if (tryOutputAll(mStorage, s -> Collections.singletonList(((BeeSimulator) s).queenStack)))
                     isCacheDirty = true;
             } else return CheckRecipeResultRegistry.NO_RECIPE;
@@ -594,7 +594,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         if (this.mGlassTier < 10 && !this.mEnergyHatches.isEmpty())
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches)
                 if (this.mGlassTier < hatchEnergy.mTier) return false;
-        boolean valid = this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() >= 1 && this.mCasing >= 190;
+        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 190;
         flowersError = valid && !this.flowersCheck.isEmpty();
         if (valid) updateMaxSlots();
         return valid;

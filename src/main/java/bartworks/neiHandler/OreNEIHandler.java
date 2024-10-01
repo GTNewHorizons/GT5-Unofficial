@@ -98,8 +98,7 @@ public class OreNEIHandler extends TemplateRecipeHandler {
             CachedOreRecipe cachedOreRecipe = (CachedOreRecipe) this.arecipes.get(recipe);
 
             if (cachedOreRecipe == null || cachedOreRecipe.getOtherStacks() == null
-                || cachedOreRecipe.getOtherStacks()
-                    .size() == 0)
+                || cachedOreRecipe.getOtherStacks().isEmpty())
                 return;
 
             if (!cachedOreRecipe.small) {

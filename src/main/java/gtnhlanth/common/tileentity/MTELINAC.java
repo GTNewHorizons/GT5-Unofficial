@@ -276,7 +276,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         outputRate = 0;
 
         ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
-        if (tFluidInputs.size() == 0) {
+        if (tFluidInputs.isEmpty()) {
             this.doRandomMaintenanceDamage(); // Penalise letting coolant run dry
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
             return false;

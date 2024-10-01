@@ -311,7 +311,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
                 .setPos(173, 167 - 1));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
-        drawTexts(screenElements, slotWidgets.size() > 0 ? slotWidgets.get(0) : null);
+        drawTexts(screenElements, !slotWidgets.isEmpty() ? slotWidgets.get(0) : null);
         builder.widget(
             new Scrollable().setVerticalScroll()
                 .widget(screenElements.setPos(10, 0))

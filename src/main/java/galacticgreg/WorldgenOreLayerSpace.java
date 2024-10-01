@@ -138,7 +138,7 @@ public class WorldgenOreLayerSpace extends GTWorldgen {
                 sporadicMeta = ((WorldgenOreLayerSpace) tGen).mSporadicMeta;
             }
         } else {
-            if ((WorldgenOreLayerSpace.sWeight > 0) && (GalacticGreg.oreVeinWorldgenList.size() > 0)) {
+            if ((WorldgenOreLayerSpace.sWeight > 0) && (!GalacticGreg.oreVeinWorldgenList.isEmpty())) {
                 GalacticGreg.Logger.trace("About to select oremix");
                 boolean temp = true;
                 int tRandomWeight;

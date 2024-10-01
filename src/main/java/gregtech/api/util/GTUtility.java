@@ -4266,14 +4266,14 @@ public class GTUtility {
                     tPageText.append((tPageText.length() == 0) ? "" : aListDelimiter)
                         .append(list[i]);
 
-                if (tPageText.length() > 0) {
+                if (tPageText.length() != 0) {
                     String tPageCounter = tTotalPages > 1 ? String.format(aPageFormatter, tPage + 1, tTotalPages) : "";
                     NBTTagString tPageTag = new NBTTagString(String.format(aPageHeader, tPageCounter) + tPageText);
                     aBook.appendTag(tPageTag);
                 }
 
                 ++tPage;
-            } while (tPageText.length() > 0);
+            } while (tPageText.length() != 0);
         }
 
         public static void addEnchantment(ItemStack aStack, Enchantment aEnchantment, int aLevel) {
