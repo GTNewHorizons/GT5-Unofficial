@@ -116,7 +116,7 @@ public class MaterialGenerator {
             }
 
             if (matInfo.getState() == MaterialState.SOLID) {
-                if (generateEverything == true) {
+                if (generateEverything) {
                     if (sRadiation >= 1) {
                         tempBlock = new BlockBaseModular(matInfo, BlockTypes.STANDARD);
                         temp = new BaseItemIngot(matInfo);
@@ -156,7 +156,7 @@ public class MaterialGenerator {
                     temp = new BaseItemPlateDouble(matInfo);
                 }
             } else if (matInfo.getState() == MaterialState.LIQUID) {
-                if (generateEverything == true) {
+                if (generateEverything) {
                     tempBlock = new BlockBaseModular(matInfo, BlockTypes.STANDARD);
                 }
                 temp = new BaseItemIngot(matInfo);

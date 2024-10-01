@@ -536,7 +536,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                     this.getBaseMetaTileEntity()
                         .decreaseStoredEnergyUnits(128, false);
                 }
-            } else if (this.mDidWork == true) {
+            } else if (this.mDidWork) {
                 this.mDidWork = false;
                 this.getBaseMetaTileEntity()
                     .issueBlockUpdate();

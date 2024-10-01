@@ -472,7 +472,7 @@ public class ItemUtils {
         final String aChemForm = material.vChemicalFormula;
         final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
         Item[] output = null;
-        if (onlyLargeDust == false) {
+        if (!onlyLargeDust) {
             output = new Item[] {
                 new BaseItemDustUnique(
                     "itemDust" + unlocalizedName,
