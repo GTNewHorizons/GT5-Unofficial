@@ -32,7 +32,7 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbine;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
 
 @SuppressWarnings("deprecation")
 public class MTEHatchTurbine extends MTEHatch {
@@ -106,7 +106,7 @@ public class MTEHatchTurbine extends MTEHatch {
 
     public boolean hasTurbine() {
         ItemStack aStack = this.mInventory[0];
-        boolean aIsValid = MTELargerTurbine.isValidTurbine(aStack);
+        boolean aIsValid = MTELargerTurbineBase.isValidTurbine(aStack);
         return aIsValid;
     }
 
@@ -122,7 +122,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean insertTurbine(ItemStack aTurbine) {
-        if (MTELargerTurbine.isValidTurbine(aTurbine)) {
+        if (MTELargerTurbineBase.isValidTurbine(aTurbine)) {
             this.mInventory[0] = aTurbine;
             return true;
         }
@@ -214,7 +214,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean isControllerActive() {
-        MTELargerTurbine x = getController();
+        MTELargerTurbineBase x = getController();
         if (x != null) {
             // Logger.INFO("Checking Status of Controller. Running? "+(x.mEUt > 0));
             return x.lEUt > 0;
@@ -223,15 +223,15 @@ public class MTEHatchTurbine extends MTEHatch {
         return false;
     }
 
-    public MTELargerTurbine getController() {
+    public MTELargerTurbineBase getController() {
         if (this.mHasController && this.mControllerLocation != null && this.mControllerLocation.length() > 0) {
             BlockPos p = BlockPos.generateBlockPos(mControllerLocation);
             if (p != null) {
                 // Logger.INFO(p.getLocationString());
                 IGregTechTileEntity tTileEntity = getBaseMetaTileEntity()
                     .getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
-                if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbine) {
-                    return (MTELargerTurbine) tTileEntity.getMetaTileEntity();
+                if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBase) {
+                    return (MTELargerTurbineBase) tTileEntity.getMetaTileEntity();
                 } else {
                     if (tTileEntity == null) {
                         Logger.INFO("Controller MTE is null, somehow?");
@@ -334,7 +334,8 @@ public class MTEHatchTurbine extends MTEHatch {
             PlayerUtils.messagePlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
                 Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
-                String aSize = MTELargerTurbine.getTurbineSizeString(MTELargerTurbine.getTurbineSize(getTurbine()));
+                String aSize = MTELargerTurbineBase
+                    .getTurbineSizeString(MTELargerTurbineBase.getTurbineSize(getTurbine()));
                 PlayerUtils.messagePlayer(aPlayer, "Using: " + aMat.mLocalizedName + " " + aSize);
             }
         } else {
@@ -420,7 +421,7 @@ public class MTEHatchTurbine extends MTEHatch {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbine::isValidTurbine)
+            new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBase::isValidTurbine)
                 .setAccess(false, true)
                 .setPos(79, 34));
     }

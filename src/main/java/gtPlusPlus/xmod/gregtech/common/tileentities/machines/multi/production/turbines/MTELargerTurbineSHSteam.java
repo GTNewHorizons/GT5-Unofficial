@@ -15,7 +15,7 @@ import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 
 @SuppressWarnings("deprecation")
-public class MTELargerTurbineSHSteam extends MTELargerTurbine {
+public class MTELargerTurbineSHSteam extends MTELargerTurbineBase {
 
     public boolean achievement = false;
     private boolean isUsingDenseSteam;

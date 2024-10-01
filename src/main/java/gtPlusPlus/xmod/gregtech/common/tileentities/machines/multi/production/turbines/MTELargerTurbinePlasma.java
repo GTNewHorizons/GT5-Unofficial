@@ -24,7 +24,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
 @SuppressWarnings("deprecation")
-public class MTELargerTurbinePlasma extends MTELargerTurbine {
+public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
     public MTELargerTurbinePlasma(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

@@ -15,7 +15,7 @@ import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.util.math.MathUtils;
 
 @SuppressWarnings("deprecation")
-public class MTELargerTurbineSteam extends MTELargerTurbine {
+public class MTELargerTurbineSteam extends MTELargerTurbineBase {
 
     private float water;
     private boolean achievement = false;

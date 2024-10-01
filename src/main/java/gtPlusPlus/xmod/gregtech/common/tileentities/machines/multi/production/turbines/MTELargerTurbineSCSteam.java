@@ -15,7 +15,7 @@ import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 
-public class MTELargerTurbineSCSteam extends MTELargerTurbine {
+public class MTELargerTurbineSCSteam extends MTELargerTurbineBase {
 
     private boolean hasConsumedSteam;
     private boolean isUsingDenseSteam;
