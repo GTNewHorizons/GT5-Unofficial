@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -310,8 +311,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             return false;
         }
         if (glassTier >= VoltageIndex.UMV) return true;
-        for (int i = 0; i < this.mEnergyHatches.size(); ++i)
-            if (this.mEnergyHatches.get(i).mTier > glassTier) return false;
+        for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+            if (mEnergyHatch.mTier > glassTier) {
+                return false;
+            }
+        }
 
         return mCasingAmount >= (100 + mWidth * 23);
     }

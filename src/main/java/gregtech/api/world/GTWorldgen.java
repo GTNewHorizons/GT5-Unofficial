@@ -96,9 +96,10 @@ public abstract class GTWorldgen {
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
             boolean value = false;
-            for (int i = 0; i < aAllowedDimensionTypes.length; i++) {
-                if (aAllowedDimensionTypes[i].isInstance(aWorld.provider)) {
+            for (Class aAllowedDimensionType : aAllowedDimensionTypes) {
+                if (aAllowedDimensionType.isInstance(aWorld.provider)) {
                     value = true;
+                    break;
                 }
             }
 

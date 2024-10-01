@@ -461,14 +461,14 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     private long calculateContainedAntimatter() {
         long antimatterStored = 0;
-        for (int i = 0; i < amOutputHatches.size(); i++) {
-            if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
-                .isValid()
-                || amOutputHatches.get(i)
-                    .getFluid() == null)
-                continue;
-            antimatterStored += amOutputHatches.get(i)
-                .getFluid().amount;
+        for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
+            if (amOutputHatch != null && amOutputHatch
+                    .isValid()
+                    && amOutputHatch
+                    .getFluid() != null) {
+                antimatterStored += amOutputHatch
+                        .getFluid().amount;
+            }
         }
         return antimatterStored;
     }
@@ -507,17 +507,17 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         int ratioLosses = 0;
         // Reduce the amount of antimatter in each hatch by half of the difference between the lowest amount and current
         // hatch contents
-        for (int i = 0; i < amOutputHatches.size(); i++) {
-            if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
-                .isValid()
-                || amOutputHatches.get(i)
-                    .getFluid() == null)
-                continue;
-            FluidStack fluid = amOutputHatches.get(i)
-                .getFluid()
-                .copy();
-            ratioLosses -= amOutputHatches.get(i)
-                .drain((int) ((fluid.amount - minAntimatterAmount) * 0.5), true).amount;
+        for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
+            if (amOutputHatch != null && amOutputHatch
+                    .isValid()
+                    && amOutputHatch
+                    .getFluid() != null) {
+                FluidStack fluid = amOutputHatch
+                        .getFluid()
+                        .copy();
+                ratioLosses -= amOutputHatch
+                        .drain((int) ((fluid.amount - minAntimatterAmount) * 0.5), true).amount;
+            }
         }
 
         // Check for upgrade fluids
@@ -534,8 +534,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         List<FluidStack> inputFluids = getStoredFluids();
-        for (int i = 0; i < inputFluids.size(); i++) {
-            FluidStack inputFluid = inputFluids.get(i);
+        for (FluidStack inputFluid : inputFluids) {
             setModifiers(inputFluid, -0.15f, magneticUpgrades, MAGNETIC_ID);
             setModifiers(inputFluid, -0.05f, gravityUpgrades, GRAVITY_ID);
             setModifiers(inputFluid, 0.05f, containmentUpgrades, CONTAINMENT_ID);
@@ -623,17 +622,17 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     private void decimateAntimatter() {
-        for (int i = 0; i < amOutputHatches.size(); i++) {
-            if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
-                .isValid()
-                || amOutputHatches.get(i)
-                    .getFluid() == null)
-                continue;
-            FluidStack fluid = amOutputHatches.get(i)
-                .getFluid()
-                .copy();
-            amOutputHatches.get(i)
-                .drain((int) Math.floor(fluid.amount * 0.1), true);
+        for (AntimatterOutputHatch amOutputHatch : amOutputHatches) {
+            if (amOutputHatch != null && amOutputHatch
+                    .isValid()
+                    && amOutputHatch
+                    .getFluid() != null) {
+                FluidStack fluid = amOutputHatch
+                        .getFluid()
+                        .copy();
+                amOutputHatch
+                        .drain((int) Math.floor(fluid.amount * 0.1), true);
+            }
         }
     }
 

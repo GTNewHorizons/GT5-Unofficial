@@ -1510,8 +1510,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     if (items == null) {
                         continue;
                     }
-                    for (int i = 0; i < items.length; i++) {
-                        ItemStack item = items[i];
+                    for (ItemStack item : items) {
                         if (item != null) {
                             rList.add(item);
                         }
