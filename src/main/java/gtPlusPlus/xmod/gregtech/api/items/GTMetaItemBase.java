@@ -278,8 +278,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                         EnumChatFormatting.AQUA + "Empty. You should recycle it properly." + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
-                        EnumChatFormatting.AQUA + ""
-                            + GTUtility.formatNumbers(tCharge)
+                        EnumChatFormatting.AQUA + GTUtility.formatNumbers(tCharge)
                             + " / "
                             + GTUtility.formatNumbers(Math.abs(tStats[0]))
                             + " EU - Voltage: "

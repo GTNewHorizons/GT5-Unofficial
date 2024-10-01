@@ -380,9 +380,9 @@ public class RecipeUtils {
         String aRow1 = aFullString.substring(0, 3);
         String aRow2 = aFullString.substring(3, 6);
         String aRow3 = aFullString.substring(6, 9);
-        Logger.RECIPE("" + aRow1);
-        Logger.RECIPE("" + aRow2);
-        Logger.RECIPE("" + aRow3);
+        Logger.RECIPE(aRow1);
+        Logger.RECIPE(aRow2);
+        Logger.RECIPE(aRow3);
 
         String[] aStringData = new String[] { aRow1, aRow2, aRow3 };
         Object[] aDataObject = new Object[19];

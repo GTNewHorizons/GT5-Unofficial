@@ -78,7 +78,7 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             String amountString;
 
             if (fluidAmount < 10_000) {
-                amountString = "" + fluidAmount + "L";
+                amountString = fluidAmount + "L";
             } else {
                 amountString = ReadableNumberConverter.INSTANCE.toWideReadableForm(fluidAmount) + "L";
             }

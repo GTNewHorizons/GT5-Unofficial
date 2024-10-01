@@ -786,9 +786,9 @@ public class ItemUtils {
         }
         String aDisplay = null;
         try {
-            aDisplay = ("" + StatCollector.translateToLocal(
-                aStack.getItem()
-                    .getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
+            aDisplay = (StatCollector.translateToLocal(
+                    aStack.getItem()
+                            .getUnlocalizedNameInefficiently(aStack) + ".name")).trim();
             if (aStack.hasTagCompound()) {
                 if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("display", 10)) {
                     NBTTagCompound nbttagcompound = aStack.stackTagCompound.getCompoundTag("display");

@@ -262,8 +262,8 @@ public abstract class MetaBaseItem extends GTGenericItem
             aList.add(
                 EnumChatFormatting.BLUE + String.format(
                     transItem("013", "%sL / %sL"),
-                    "" + (tFluid == null ? 0 : formatNumbers(tFluid.amount)),
-                    "" + formatNumbers(tStats[0])) + EnumChatFormatting.GRAY);
+                        tFluid == null ? 0 : formatNumbers(tFluid.amount),
+                        formatNumbers(tStats[0])) + EnumChatFormatting.GRAY);
         }
 
         ArrayList<IItemBehaviour<MetaBaseItem>> behaviours = mItemBehaviors.get((short) getDamage(aStack));

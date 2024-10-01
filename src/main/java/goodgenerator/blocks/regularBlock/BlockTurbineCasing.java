@@ -21,7 +21,7 @@ public class BlockTurbineCasing extends BlockCasing implements ITextureBlock {
 
     static {
         for (int i = 0; i < 3; i++) for (int j = 1; j <= 9; j++)
-            turbineShape[i][j - 1] = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_" + i + "" + j);
+            turbineShape[i][j - 1] = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_" + i + j);
     }
 
     public BlockTurbineCasing(String name, String texture) {

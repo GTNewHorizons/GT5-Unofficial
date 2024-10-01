@@ -636,7 +636,7 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
             for (String name : this.getLocalMap()
                 .keySet()) {
-                PlayerUtils.messagePlayer(aPlayer, "" + name);
+                PlayerUtils.messagePlayer(aPlayer, name);
             }
 
         } else {
@@ -644,7 +644,7 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
             for (String name : this.getLongRangeMap()
                 .keySet()) {
-                PlayerUtils.messagePlayer(aPlayer, "" + name);
+                PlayerUtils.messagePlayer(aPlayer, name);
             }
         }
 

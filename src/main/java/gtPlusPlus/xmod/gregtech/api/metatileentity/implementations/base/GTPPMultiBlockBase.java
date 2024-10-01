@@ -182,7 +182,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + ":");
             mInfo.add(
                 StatCollector.translateToLocal(
-                    "" + EnumChatFormatting.GREEN
+                    EnumChatFormatting.GREEN.toString()
                         + storedEnergy
                         + EnumChatFormatting.RESET
                         + " EU / "
@@ -194,7 +194,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.mei") + ":");
             mInfo.add(
                 StatCollector.translateToLocal(
-                    "" + EnumChatFormatting.YELLOW
+                    EnumChatFormatting.YELLOW.toString()
                         + getMaxInputVoltage()
                         + EnumChatFormatting.RESET
                         + " EU/t(*2A) "
@@ -210,7 +210,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(StatCollector.translateToLocal("GTPP.multiblock.energy") + " In Dynamos:");
             mInfo.add(
                 StatCollector.translateToLocal(
-                    "" + EnumChatFormatting.GREEN
+                    EnumChatFormatting.GREEN.toString()
                         + storedEnergy
                         + EnumChatFormatting.RESET
                         + " EU / "
@@ -1370,8 +1370,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                         () -> StatCollector.translateToLocal("GTPP.multiblock.specialvalue") + ": "
                             + EnumChatFormatting.RED
                             + getLastRecipeEU()
-                            + EnumChatFormatting.RESET
-                            + "")
+                            + EnumChatFormatting.RESET)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(
                         widget -> mMachine && getLastRecipeEU() != 0

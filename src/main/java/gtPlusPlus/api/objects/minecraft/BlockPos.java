@@ -65,7 +65,7 @@ public class BlockPos implements Serializable {
     }
 
     public String getUniqueIdentifier() {
-        String S = "" + this.dim + "@" + this.xPos + "@" + this.yPos + "@" + this.zPos;
+        String S = this.dim + "@" + this.xPos + "@" + this.yPos + "@" + this.zPos;
         return S;
     }
 

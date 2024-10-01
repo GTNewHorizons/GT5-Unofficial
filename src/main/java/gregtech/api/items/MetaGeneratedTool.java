@@ -436,7 +436,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     tOffset + 0,
                     EnumChatFormatting.GRAY + String.format(
                         transItem("001", "Durability: %s/%s"),
-                        "" + EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
+                        EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
                         " " + formatNumbers(turbine.getMaxDurability())) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
@@ -462,10 +462,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s L/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalSteamFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalSteamEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -479,10 +479,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s L/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -499,10 +499,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalGasFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalGasEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -516,10 +516,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseGasFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseGasEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -533,10 +533,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalPlasmaFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalPlasmaEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -550,10 +550,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -570,7 +570,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     tOffset,
                     EnumChatFormatting.WHITE + String.format(
                         transItem("001", "Durability: %s/%s"),
-                        "" + EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
+                        EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
                         " " + formatNumbers(tMaxDamage)) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,

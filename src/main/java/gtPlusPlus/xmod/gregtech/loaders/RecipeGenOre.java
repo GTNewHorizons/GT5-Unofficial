@@ -603,7 +603,7 @@ public class RecipeGenOre extends RecipeGenBase {
                         + mainDust.stackSize
                         + ", "
                         + (emptyCell == null ? "No Cells"
-                            : "" + emptyCell.getDisplayName() + " x" + emptyCell.stackSize));
+                            : emptyCell.getDisplayName() + " x" + emptyCell.stackSize));
                 Logger.MATERIALS("Outputs " + ItemUtils.getArrayStackNames(mInternalOutputs));
                 Logger.MATERIALS("Time: " + ((int) Math.max(material.getMass() * 4L * 1, 1)));
                 Logger.MATERIALS("EU: " + tVoltageMultiplier);

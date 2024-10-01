@@ -197,8 +197,7 @@ public class MaterialGenerator {
             return true;
 
         } catch (final Throwable t) {
-
-            Logger.MATERIALS("" + matInfo.getLocalizedName() + " failed to generate.");
+            Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
             return false;
         }
     }
@@ -304,7 +303,7 @@ public class MaterialGenerator {
             new RecipeGenPlasma(matInfo);
 
         } catch (final Throwable t) {
-            Logger.MATERIALS("" + matInfo.getLocalizedName() + " failed to generate.");
+            Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
         }
     }
 
@@ -421,7 +420,7 @@ public class MaterialGenerator {
             new RecipeGenPlasma(matInfo);
             return true;
         } catch (final Throwable t) {
-            Logger.MATERIALS("" + matInfo.getLocalizedName() + " failed to generate.");
+            Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
             t.printStackTrace();
             return false;
         }
