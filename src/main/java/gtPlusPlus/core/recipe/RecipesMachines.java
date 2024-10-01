@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -625,12 +626,12 @@ public class RecipesMachines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(17),
                 CI.getTieredGTPPMachineCasing(2, 1),
-                CI.getPlate(3, 2),
-                CI.getGear(3, 4),
+                MaterialsAlloy.INCONEL_625.getPlate(2),
+                MaterialsAlloy.INCONEL_625.getGear(4),
                 CI.getElectricMotor(3, 2),
                 CI.getCircuit(3, 4))
             .itemOutputs(GregtechItemList.Solar_Tower_Reflector.get(1))
-            .fluidInputs(CI.getTertiaryTieredFluid(3, 144 * 4))
+            .fluidInputs(Materials.Titanium.getMolten(4 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
