@@ -3,6 +3,7 @@ package gregtech.api.logic;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -25,7 +26,7 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 
 /**
  * Generic Fluid logic for MuTEs.
- * 
+ *
  * @author BlueWeabo
  */
 public class FluidInventoryLogic {
@@ -82,7 +83,7 @@ public class FluidInventoryLogic {
     }
 
     /**
-     * 
+     *
      * @return The Fluid Inventory Logic as an NBTTagList to be saved in another nbt as how one wants.
      */
     @Nonnull
@@ -136,10 +137,8 @@ public class FluidInventoryLogic {
     @Nonnull
     public FluidStack[] getStoredFluids() {
         final FluidStack[] fluids = inventory.getFluids()
-            .stream()
-            .filter(fluid -> fluid != null)
-            .collect(Collectors.toList())
-            .toArray(new FluidStack[0]);
+                .stream()
+                .filter(Objects::nonNull).toArray(FluidStack[]::new);
         if (fluids == null) {
             return new FluidStack[0];
         }
@@ -181,7 +180,7 @@ public class FluidInventoryLogic {
 
     /**
      * Try and drain the first fluid found for that amount. Used by GT_Cover_Pump
-     * 
+     *
      * @param amount Fluid to drain from the tank
      * @return A fluidstack with the possible amount drained
      */

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -163,10 +164,8 @@ public class ItemInventoryLogic {
     @Nonnull
     public ItemStack[] getStoredItems() {
         final ItemStack[] items = inventory.getStacks()
-            .stream()
-            .filter(item -> item != null)
-            .collect(Collectors.toList())
-            .toArray(new ItemStack[0]);
+                .stream()
+                .filter(Objects::nonNull).toArray(ItemStack[]::new);
         if (items == null) {
             return new ItemStack[0];
         }
