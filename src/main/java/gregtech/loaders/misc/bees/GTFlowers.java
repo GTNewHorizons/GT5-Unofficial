@@ -26,7 +26,7 @@ public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeTyp
 
     FLAMING;
 
-    protected boolean dominant;
+    private final boolean dominant;
 
     GTFlowers() {
         dominant = true;
