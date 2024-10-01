@@ -298,7 +298,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 PlayerChatHelper
                     .SendInfo(pPlayer, String.format("Machine radius changed to %d Blocks", getRadiusTierOverride()));
             } else PlayerChatHelper
-                .SendError(pPlayer, String.format("Can't change radius; Machine is in TileEntity Mode!"));
+                .SendError(pPlayer, "Can't change radius; Machine is in TileEntity Mode!");
         } else {
             mMode = (byte) (mMode == 0x00 ? 0x01 : 0x00);
             markDirty();

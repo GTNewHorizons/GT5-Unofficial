@@ -975,10 +975,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         data.add("Wormhole Generator Info");
 
         if (mStructureBadGlassTier) {
-            data.add(String.format("§cStructure errors:§r"));
+            data.add("§cStructure errors:§r");
 
             if (mStructureBadGlassTier) {
-                data.add(String.format("§cGlass tier must be greater than or equal to the energy hatch tiers.§r"));
+                data.add("§cGlass tier must be greater than or equal to the energy hatch tiers.§r");
             }
         }
 
@@ -1064,22 +1064,22 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
             if (mLink == null) {
-                return String.format("§7Missing Entangled Singularity§f");
+                return "§7Missing Entangled Singularity§f";
             }
 
             if (!mLink.isFormed()) {
-                return String.format("§7Wormhole status: §cNo destination§f");
+                return "§7Wormhole status: §cNo destination§f";
             }
 
             if (mLink.mWormholeEnergy > 0 && !mLink.isActive()) {
-                return String.format("§7Wormhole status: §6Decaying§f");
+                return "§7Wormhole status: §6Decaying§f";
             }
 
             if (mLink.mWormholeEnergy > 0) {
-                return String.format("§7Wormhole status: §bActive§f");
+                return "§7Wormhole status: §bActive§f";
             }
 
-            return String.format("§7Wormhole status: Inactive§f");
+            return "§7Wormhole status: Inactive§f";
         }),
 
             TextWidget.dynamicString(() -> {
