@@ -245,6 +245,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
+            .addInfo("Can perform recipes up to laser source tier + 1")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
             .addInfo("Only accepts borosilicate glass (no, really)")
@@ -326,7 +327,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (laserTier < VoltageIndex.UXV && recipe.mEUt > GTValues.V[laserTier]) {
+                if (laserTier < VoltageIndex.UXV && recipe.mEUt > (GTValues.V[laserTier + 1])) {
                     return SimpleCheckRecipeResult.ofFailure("laser_insufficient");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
