@@ -447,13 +447,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
             boolean b = GasSpargingRecipeNEI.class.isInstance(o);
             if (b) {
                 GasSpargingRecipeNEI p = (GasSpargingRecipeNEI) o;
-                if (p.mOutputs.size() > this.mOutputs.size()) {
-                    return 1;
-                } else if (p.mOutputs.size() == this.mOutputs.size()) {
-                    return 0;
-                } else {
-                    return -1;
-                }
+                return Integer.compare(p.mOutputs.size(), this.mOutputs.size());
             }
             return 0;
         }

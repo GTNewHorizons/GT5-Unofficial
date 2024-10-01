@@ -83,13 +83,7 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
 
     @Override
     public int compareTo(GasSpargingRecipe o) {
-        if (o.mFluidOutputs.length > this.mFluidOutputs.length) {
-            return 1;
-        } else if (o.mFluidOutputs.length == this.mFluidOutputs.length) {
-            return 0;
-        } else {
-            return -1;
-        }
+        return Integer.compare(o.mFluidOutputs.length, this.mFluidOutputs.length);
     }
 
     public String[] getRecipeInfo() {

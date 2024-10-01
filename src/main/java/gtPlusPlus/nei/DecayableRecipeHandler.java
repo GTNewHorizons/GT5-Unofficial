@@ -230,13 +230,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
             boolean b = DecayableRecipeNEI.class.isInstance(o);
             if (b) {
                 DecayableRecipeNEI p = (DecayableRecipeNEI) o;
-                if (p.time > this.time) {
-                    return 1;
-                } else if (p.time == this.time) {
-                    return 0;
-                } else {
-                    return -1;
-                }
+                return Integer.compare(p.time, this.time);
             }
             return 0;
         }
