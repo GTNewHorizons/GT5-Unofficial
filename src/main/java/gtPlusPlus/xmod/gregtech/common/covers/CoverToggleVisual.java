@@ -171,7 +171,7 @@ public class CoverToggleVisual extends CoverBehavior {
         return b != null ? b == VALUE_ON : false;
     }
 
-    public static final boolean getCoverConnections(final ItemStack aStack) {
+    public static boolean getCoverConnections(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");

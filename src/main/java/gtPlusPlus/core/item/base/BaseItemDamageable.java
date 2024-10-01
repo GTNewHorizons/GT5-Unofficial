@@ -101,7 +101,7 @@ public class BaseItemDamageable extends Item {
         return true;
     }
 
-    public static final long getItemDamage(final ItemStack aStack) {
+    public static long getItemDamage(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("Damage");
@@ -114,7 +114,7 @@ public class BaseItemDamageable extends Item {
         return 0L;
     }
 
-    public static final boolean setItemDamage(final ItemStack aStack, final long aDamage) {
+    public static boolean setItemDamage(final ItemStack aStack, final long aDamage) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("Damage");

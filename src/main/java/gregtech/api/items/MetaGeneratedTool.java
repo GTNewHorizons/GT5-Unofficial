@@ -100,7 +100,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- FOR ADDING CUSTOM ITEMS INTO THE REMAINING 766 RANGE ---------- */
 
-    public static final Materials getPrimaryMaterial(ItemStack aStack) {
+    public static Materials getPrimaryMaterial(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -109,7 +109,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return Materials._NULL;
     }
 
-    public static final Materials getSecondaryMaterial(ItemStack aStack) {
+    public static Materials getSecondaryMaterial(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -120,7 +120,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- INTERNAL OVERRIDES ---------- */
 
-    public static final long getToolMaxDamage(ItemStack aStack) {
+    public static long getToolMaxDamage(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -129,7 +129,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return 0;
     }
 
-    public static final long getToolDamage(ItemStack aStack) {
+    public static long getToolDamage(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -138,7 +138,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return 0;
     }
 
-    public static final boolean setToolDamage(ItemStack aStack, long aDamage) {
+    public static boolean setToolDamage(ItemStack aStack, long aDamage) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -150,7 +150,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return false;
     }
 
-    public static final boolean setToolMode(ItemStack aStack, byte aMode) {
+    public static boolean setToolMode(ItemStack aStack, byte aMode) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -162,7 +162,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return false;
     }
 
-    public static final byte getToolMode(ItemStack aStack) {
+    public static byte getToolMode(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");

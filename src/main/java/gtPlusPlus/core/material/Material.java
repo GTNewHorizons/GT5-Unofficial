@@ -1368,7 +1368,7 @@ public class Material {
         return isFluidQueued = true;
     }
 
-    public static final void generateQueuedFluids() {
+    public static void generateQueuedFluids() {
         for (Material m : mMaterialMap) {
             if (m.isFluidQueued) {}
         }

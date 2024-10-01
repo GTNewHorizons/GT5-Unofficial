@@ -25,7 +25,7 @@ public class TesseractHelper {
      */
 
     // Checks if a Generator is owned by a player.
-    public static final boolean isGeneratorOwnedByPlayer(EntityPlayer player, MTETesseractGenerator generator) {
+    public static boolean isGeneratorOwnedByPlayer(EntityPlayer player, MTETesseractGenerator generator) {
         if (player == null) {
             Logger.WARNING("Failed. [isGeneratorOwnedByPlayer]");
             return false;
@@ -50,8 +50,8 @@ public class TesseractHelper {
     }
 
     // Saves A Generator to the Players UUID map along with the Freq.
-    public static final boolean setGeneratorOwnershipByPlayer(EntityPlayer player, int freq,
-        MTETesseractGenerator generator) {
+    public static boolean setGeneratorOwnershipByPlayer(EntityPlayer player, int freq,
+                                                        MTETesseractGenerator generator) {
         if (player == null) {
             return false;
         }
@@ -82,7 +82,7 @@ public class TesseractHelper {
     }
 
     // Gets Generator based on Frequency.
-    public static final MTETesseractGenerator getGeneratorByFrequency(EntityPlayer player, int freq) {
+    public static MTETesseractGenerator getGeneratorByFrequency(EntityPlayer player, int freq) {
         if (player == null) {
             return null;
         }
@@ -107,7 +107,7 @@ public class TesseractHelper {
     }
 
     // Remove Tesseract Generator
-    public static final boolean removeGenerator(EntityPlayer player, int frequency) {
+    public static boolean removeGenerator(EntityPlayer player, int frequency) {
         if (player == null) {
             return false;
         }
@@ -129,7 +129,7 @@ public class TesseractHelper {
      */
 
     // Checks if a Terminal is owned by a player.
-    public static final boolean isTerminalOwnedByPlayer(EntityPlayer player, MTETesseractTerminal generator) {
+    public static boolean isTerminalOwnedByPlayer(EntityPlayer player, MTETesseractTerminal generator) {
         if (player == null) {
             return false;
         }
@@ -148,8 +148,8 @@ public class TesseractHelper {
     }
 
     // Saves A Terminal to the Players UUID map along with the Freq.
-    public static final boolean setTerminalOwnershipByPlayer(EntityPlayer player, int freq,
-        MTETesseractTerminal generator) {
+    public static boolean setTerminalOwnershipByPlayer(EntityPlayer player, int freq,
+                                                       MTETesseractTerminal generator) {
         if (player == null) {
             return false;
         }
@@ -178,7 +178,7 @@ public class TesseractHelper {
     }
 
     // Gets Terminal based on Frequency.
-    public static final MTETesseractTerminal getTerminalByFrequency(EntityPlayer player, int freq) {
+    public static MTETesseractTerminal getTerminalByFrequency(EntityPlayer player, int freq) {
         if (player == null) {
             return null;
         }
@@ -200,7 +200,7 @@ public class TesseractHelper {
     }
 
     // Remove Tesseract Terminal
-    public static final boolean removeTerminal(EntityPlayer player, int frequency) {
+    public static boolean removeTerminal(EntityPlayer player, int frequency) {
         if (player == null) {
             return false;
         }

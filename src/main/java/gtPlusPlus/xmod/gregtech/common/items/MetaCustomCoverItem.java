@@ -112,7 +112,7 @@ public class MetaCustomCoverItem extends Item {
         return true;
     }
 
-    public static final long getCoverDamage(final ItemStack aStack) {
+    public static long getCoverDamage(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");
@@ -125,7 +125,7 @@ public class MetaCustomCoverItem extends Item {
         return 0L;
     }
 
-    public static final boolean setCoverDamage(final ItemStack aStack, final long aDamage) {
+    public static boolean setCoverDamage(final ItemStack aStack, final long aDamage) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");
@@ -137,7 +137,7 @@ public class MetaCustomCoverItem extends Item {
         return false;
     }
 
-    public static final boolean getCoverConnections(final ItemStack aStack) {
+    public static boolean getCoverConnections(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");
@@ -150,7 +150,7 @@ public class MetaCustomCoverItem extends Item {
         return false;
     }
 
-    public static final boolean setCoverConnections(final ItemStack aStack, final boolean aConnections) {
+    public static boolean setCoverConnections(final ItemStack aStack, final boolean aConnections) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");

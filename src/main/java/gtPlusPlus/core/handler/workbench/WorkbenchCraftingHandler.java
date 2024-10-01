@@ -20,7 +20,7 @@ public class WorkbenchCraftingHandler {
     private static final WorkbenchCraftingHandler instance = new WorkbenchCraftingHandler();
     private final List<IRecipe> recipes = new ArrayList<>();
 
-    public static final WorkbenchCraftingHandler getInstance() {
+    public static WorkbenchCraftingHandler getInstance() {
         return instance;
     }
 

@@ -357,7 +357,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         return true;
     }
 
-    public static final boolean getShowMessages(final ItemStack aStack) {
+    public static boolean getShowMessages(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT == null) {
             if (!createNBT(aStack)) {
@@ -369,7 +369,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         return aNBT.getBoolean("ShowMSG");
     }
 
-    public static final boolean setShowMessages(final ItemStack aStack, final boolean aShow) {
+    public static boolean setShowMessages(final ItemStack aStack, final boolean aShow) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT == null) {
             if (!createNBT(aStack)) {
