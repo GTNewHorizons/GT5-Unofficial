@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBlockMeta extends ItemBlockWithMetadata {
 
     private final Block mBlock;
-    private HashMap<Integer, ArrayList<String>> aTooltips = new LinkedHashMap<>();
+    private final HashMap<Integer, ArrayList<String>> aTooltips = new LinkedHashMap<>();
 
     public ItemBlockMeta(final Block aBlock) {
         super(aBlock, aBlock);

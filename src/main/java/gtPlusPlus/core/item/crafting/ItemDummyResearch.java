@@ -43,7 +43,7 @@ public class ItemDummyResearch extends ItemGenericToken {
         }
     }
 
-    private static Map<String, Integer> mInternalNameToIdMap = new LinkedHashMap<>();
+    private static final Map<String, Integer> mInternalNameToIdMap = new LinkedHashMap<>();
 
     public static ItemStack getResearchStack(ASSEMBLY_LINE_RESEARCH aResearchName, int aStacksize) {
         Integer aMeta = mInternalNameToIdMap.get(Utils.sanitizeString(aResearchName.mName));

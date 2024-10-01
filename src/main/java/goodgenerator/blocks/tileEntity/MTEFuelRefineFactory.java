@@ -54,7 +54,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     private IStructureDefinition<MTEFuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
-    private int[] cnt = new int[] { 0, 0, 0, 0 };
+    private final int[] cnt = new int[] { 0, 0, 0, 0 };
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
         Loaders.FRF_Coil_4 };
 

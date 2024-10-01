@@ -323,16 +323,16 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private @Nullable AENetworkProxy gridProxy = null;
 
     // holds all internal inventories
-    private PatternSlot[] internalInventory = new PatternSlot[MAX_PATTERN_COUNT];
+    private final PatternSlot[] internalInventory = new PatternSlot[MAX_PATTERN_COUNT];
 
     // a hash map for faster lookup of pattern slots, not necessarily all valid.
-    private Map<ICraftingPatternDetails, PatternSlot> patternDetailsPatternSlotMap = new HashMap<>(MAX_PATTERN_COUNT);
+    private final Map<ICraftingPatternDetails, PatternSlot> patternDetailsPatternSlotMap = new HashMap<>(MAX_PATTERN_COUNT);
 
     private boolean needPatternSync = true;
     private boolean justHadNewItems = false;
 
     private String customName = null;
-    private boolean supportFluids;
+    private final boolean supportFluids;
     private boolean additionalConnection = false;
     private boolean disablePatternOptimization = false;
 

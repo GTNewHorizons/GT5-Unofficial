@@ -38,7 +38,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
     private int chunkX;
     private int chunkZ;
-    private int mSize = 100;
+    private final int mSize = 100;
 
     private long mProfilingStart;
     private long mProfilingEnd;

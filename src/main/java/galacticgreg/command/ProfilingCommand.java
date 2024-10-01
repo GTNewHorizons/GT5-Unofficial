@@ -23,7 +23,7 @@ import galacticgreg.registry.GalacticGregRegistry;
  */
 public class ProfilingCommand implements ICommand {
 
-    private List<String> aliases;
+    private final List<String> aliases;
 
     public ProfilingCommand() {
         this.aliases = new ArrayList<>();

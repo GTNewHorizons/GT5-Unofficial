@@ -164,7 +164,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         };
     }
 
-    private HashSet<ICropTile> mCropCache = new HashSet<>();
+    private final HashSet<ICropTile> mCropCache = new HashSet<>();
     private boolean mInvalidCache = false;
 
     public boolean doesInventoryHaveSpace() {

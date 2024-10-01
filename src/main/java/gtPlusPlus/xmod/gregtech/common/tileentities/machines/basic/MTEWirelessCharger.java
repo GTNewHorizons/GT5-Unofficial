@@ -449,8 +449,8 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
-    private Map<String, UUID> mWirelessChargingMap = new HashMap<>();
-    private Map<String, UUID> mLocalChargingMap = new HashMap<>();
+    private final Map<String, UUID> mWirelessChargingMap = new HashMap<>();
+    private final Map<String, UUID> mLocalChargingMap = new HashMap<>();
 
     private boolean isValidPlayer(EntityPlayer aPlayer) {
         BaseMetaTileEntity aTile = (BaseMetaTileEntity) this.getBaseMetaTileEntity();

@@ -219,7 +219,7 @@ public class GT_StructureUtilityMuTE {
      */
     public static class MuTEStructureCasing {
 
-        private String registryName;
+        private final String registryName;
         private int registryId = GTValues.W;
         private final int defaultMeta;
         private final Integer[] validIds;

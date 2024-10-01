@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 
 public class SpecialBlockComb extends BlockMetaComb {
 
-    private Enums.AllowedBlockPosition _mBlockPosition;
+    private final Enums.AllowedBlockPosition _mBlockPosition;
 
     /**
      * Creates a simple instance for a block that has a meta value and a block position it is allowed to spawn

@@ -26,7 +26,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class BaseItemIngotHot extends BaseItemIngot {
 
     private final ItemStack outputIngot;
-    private int tickCounter = 0;
+    private final int tickCounter = 0;
     private final int tickCounterMax = 200;
     private final int mTier;
 

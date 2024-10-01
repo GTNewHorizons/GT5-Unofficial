@@ -57,20 +57,20 @@ public class RecipeIC2 {
     public static String ring_T3 = "ringChrome";
     public static String ring_T4 = "ringOsmiridium";
 
-    private static ItemStack rotor_blade_T1 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_1.getItem());
-    private static ItemStack rotor_blade_T2 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_2.getItem());
-    private static ItemStack rotor_blade_T3 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_3.getItem());
-    private static ItemStack rotor_blade_T4 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_4.getItem());
+    private static final ItemStack rotor_blade_T1 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_1.getItem());
+    private static final ItemStack rotor_blade_T2 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_2.getItem());
+    private static final ItemStack rotor_blade_T3 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_3.getItem());
+    private static final ItemStack rotor_blade_T4 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_4.getItem());
 
-    private static ItemStack shaft_T1 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_1.getItem());
-    private static ItemStack shaft_T2 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_2.getItem());
-    private static ItemStack shaft_T3 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_3.getItem());
-    private static ItemStack shaft_T4 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_4.getItem());
+    private static final ItemStack shaft_T1 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_1.getItem());
+    private static final ItemStack shaft_T2 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_2.getItem());
+    private static final ItemStack shaft_T3 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_3.getItem());
+    private static final ItemStack shaft_T4 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_4.getItem());
 
-    private static ItemStack rotor_T1 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_1.getItem());
-    private static ItemStack rotor_T2 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_2.getItem());
-    private static ItemStack rotor_T3 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_3.getItem());
-    private static ItemStack rotor_T4 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_4.getItem());
+    private static final ItemStack rotor_T1 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_1.getItem());
+    private static final ItemStack rotor_T2 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_2.getItem());
+    private static final ItemStack rotor_T3 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_3.getItem());
+    private static final ItemStack rotor_T4 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_4.getItem());
 
     private static boolean checkForEnderIO() {
         if (!EnderIO.isModLoaded()) {

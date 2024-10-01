@@ -68,8 +68,8 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
     public static final int CONSUMED_FLUID = 32_000; // Fluid consumed per processed recipe, maybe increase with EU
     public static final int MIN_INPUT_FOCUS = 25; // Inclusive
 
-    private ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     public ArrayList<BlockAntennaCasing> mAntennaCasings = new ArrayList<>();
 

@@ -90,26 +90,26 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private static final float coefficientBaseExp = 0.5f;
     private static final float baseSkew = 0.2f;
 
-    private float[] modifiers = { 0.0f, 0.0f, 0.0f, 0.0f };
-    private FluidStack[] upgradeFluids = { null, null, null, null };
-    private int[] fluidConsumptions = { 0, 0, 0, 0 };
+    private final float[] modifiers = { 0.0f, 0.0f, 0.0f, 0.0f };
+    private final FluidStack[] upgradeFluids = { null, null, null, null };
+    private final int[] fluidConsumptions = { 0, 0, 0, 0 };
 
     public static final String MAIN_NAME = "antimatterForge";
-    private int speed = 100;
+    private final int speed = 100;
     private long rollingCost = 0L;
     private boolean isLoadedChunk;
     public GTRecipe mLastRecipe;
     public int para;
-    private Random r = new Random();
+    private final Random r = new Random();
     // Values for displaying cycle data
     private long guiAntimatterAmount = 0;
     private long guiAntimatterChange = 0;
     private long guiPassiveEnergy = 0;
     private long guiActiveEnergy = 0;
 
-    private boolean canRender = false;
+    private final boolean canRender = false;
 
-    private List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
+    private final List<AntimatterOutputHatch> amOutputHatches = new ArrayList<>(16);
     private static final ClassValue<IStructureDefinition<AntimatterForge>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override

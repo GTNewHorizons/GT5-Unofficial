@@ -81,9 +81,9 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected int nodeIncrease = 0;
 
     private IStructureDefinition<MTELargeEssentiaSmeltery> multiDefinition = null;
-    private ArrayList<MTEEssentiaOutputHatch> mEssentiaOutputHatches = new ArrayList<>();
+    private final ArrayList<MTEEssentiaOutputHatch> mEssentiaOutputHatches = new ArrayList<>();
     private int pTier = 0;
-    private XSTR xstr = new XSTR();
+    private final XSTR xstr = new XSTR();
 
     public MTELargeEssentiaSmeltery(String name) {
         super(name);

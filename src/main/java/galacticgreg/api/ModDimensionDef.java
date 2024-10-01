@@ -15,15 +15,15 @@ import net.minecraft.world.chunk.IChunkProvider;
 public class ModDimensionDef {
 
     private static final String STR_NOTDEFINED = "iiznotdefined";
-    private String _mDimensionName;
+    private final String _mDimensionName;
     private String _mInternalDimIdentifier;
-    private String _mChunkProvider;
+    private final String _mChunkProvider;
     private Enums.AirReplaceRule _mDimAirSetting;
-    private ArrayList<ModDBMDef> _mReplaceableBlocks;
+    private final ArrayList<ModDBMDef> _mReplaceableBlocks;
     private Enums.DimensionType _mDimensionType;
 
-    private List<ISpaceObjectGenerator> _mSpaceObjectsGenerators;
-    private List<ISpaceObjectGenerator> _mSpaceStructureGenerators;
+    private final List<ISpaceObjectGenerator> _mSpaceObjectsGenerators;
+    private final List<ISpaceObjectGenerator> _mSpaceStructureGenerators;
 
     // Special Planets config settings
     private int _mGroundOreMaxY = 64;
@@ -34,10 +34,10 @@ public class ModDimensionDef {
     private GTOreTypes _mStoneType;
 
     // Asteroid stuff
-    private List<AsteroidBlockComb> _mValidAsteroidMaterials;
-    private List<SpecialBlockComb> _mSpecialBlocksForAsteroids;
+    private final List<AsteroidBlockComb> _mValidAsteroidMaterials;
+    private final List<SpecialBlockComb> _mSpecialBlocksForAsteroids;
 
-    private Random _mRandom = new Random(System.currentTimeMillis());
+    private final Random _mRandom = new Random(System.currentTimeMillis());
 
     /**
      * Internal function

@@ -25,9 +25,9 @@ public class WorldChunkManagerCustom extends WorldChunkManager {
     /** A GenLayer containing the indices into BiomeGenBase.biomeList[] */
     private GenLayer biomeIndexLayer;
     /** The BiomeCache object for this world. */
-    private BiomeCache biomeCache;
+    private final BiomeCache biomeCache;
     /** A list of biomes that the player can spawn in. */
-    private List<BiomeGenBase> biomesToSpawnIn;
+    private final List<BiomeGenBase> biomesToSpawnIn;
 
     @SuppressWarnings({ "rawtypes" })
     public WorldChunkManagerCustom() {

@@ -27,7 +27,7 @@ import galacticgreg.schematics.SpaceSchematicFactory;
  */
 public class AEStorageCommand implements ICommand {
 
-    private List<String> aliases;
+    private final List<String> aliases;
 
     public AEStorageCommand() {
         this.aliases = new ArrayList<>();

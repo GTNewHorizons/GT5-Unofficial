@@ -24,8 +24,8 @@ public class GenEllipsoid implements ISpaceObjectGenerator {
     private Random _mRandom;
     private List<StructureInformation> _mStructure;
 
-    private double _mCoreDensity = 0.7D;
-    private double _mSineFactor = 0.05D;
+    private final double _mCoreDensity = 0.7D;
+    private final double _mSineFactor = 0.05D;
     private float _mRandomInfluence;
     private float _mRandomAngleX;
     private float _mRandomAngleY;

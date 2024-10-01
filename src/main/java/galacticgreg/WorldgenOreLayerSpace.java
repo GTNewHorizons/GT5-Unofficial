@@ -36,7 +36,7 @@ public class WorldgenOreLayerSpace extends GTWorldgen {
 
     private long mProfilingStart;
     private long mProfilingEnd;
-    private Map<String, Boolean> allowedDims;
+    private final Map<String, Boolean> allowedDims;
 
     public WorldgenOreLayerSpace(OreMixBuilder mix) {
         super(mix.oreMixName, GalacticGreg.oreVeinWorldgenList, mix.enabledByDefault);
@@ -82,7 +82,7 @@ public class WorldgenOreLayerSpace extends GTWorldgen {
         return allowedDims.getOrDefault(pDimensionDef.getDimIdentifier(), false);
     }
 
-    private static Map<String, List<String>> _mBufferedVeinList = new HashMap<>();
+    private static final Map<String, List<String>> _mBufferedVeinList = new HashMap<>();
 
     /**
      * Get a List of all Veins which are enabled for given Dim. Query is buffered

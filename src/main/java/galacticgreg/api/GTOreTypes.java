@@ -36,10 +36,10 @@ public enum GTOreTypes {
      */
     NormalOres(0, Blocks.stone, 0, 0); // Unsure about blockupdate value!
 
-    private int _mOffset;
-    private Block _mStoneBlock;
-    private int _mBlockMeta;
-    private int _mUpdateMode;
+    private final int _mOffset;
+    private final Block _mStoneBlock;
+    private final int _mBlockMeta;
+    private final int _mUpdateMode;
 
     GTOreTypes(int pOffset, Block pBlock, int pMeta, int pUpdateMode) {
         _mOffset = pOffset;

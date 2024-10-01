@@ -10,8 +10,8 @@ import net.minecraft.block.Block;
 public class ModDBMDef {
 
     private String _targetBlockName;
-    private int _targetMeta;
-    private boolean _canAlwaysReplace;
+    private final int _targetMeta;
+    private final boolean _canAlwaysReplace;
 
     public String getBlockName() {
         return _targetBlockName;

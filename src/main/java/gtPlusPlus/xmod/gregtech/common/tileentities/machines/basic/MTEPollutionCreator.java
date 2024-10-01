@@ -25,7 +25,7 @@ public class MTEPollutionCreator extends GTPPMetaTileEntity {
     int[] mAveragePollutionArray = new int[10];
     private int mArrayPos = 0;
     private int mTickTimer = 0;
-    private int mSecondTimer = 0;
+    private final int mSecondTimer = 0;
 
     public MTEPollutionCreator(final int aID, final String aName, final String aNameRegional, final int aTier,
         final String aDescription, final int aSlotCount) {

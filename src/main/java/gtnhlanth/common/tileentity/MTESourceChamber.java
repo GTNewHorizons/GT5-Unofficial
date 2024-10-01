@@ -53,7 +53,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
     private static final IStructureDefinition<MTESourceChamber> STRUCTURE_DEFINITION;
 
-    private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
 

@@ -5,7 +5,7 @@ import gtPlusPlus.core.material.Material;
 
 public class BaseItemDust extends BaseItemComponent {
 
-    private BaseItemComponent[] mSizedDusts = new BaseItemComponent[2];
+    private final BaseItemComponent[] mSizedDusts = new BaseItemComponent[2];
 
     public BaseItemDust(Material aMat) {
         this(aMat, true);

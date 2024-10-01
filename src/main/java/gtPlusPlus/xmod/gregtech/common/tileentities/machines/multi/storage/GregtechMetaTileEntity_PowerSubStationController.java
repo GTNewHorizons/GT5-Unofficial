@@ -99,7 +99,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
     private final int ENERGY_TAX = 5;
 
     private int mCasing;
-    private int[] cellCount = new int[6];
+    private final int[] cellCount = new int[6];
     private TopState topState = TopState.MayBeTop;
     private static IStructureDefinition<GregtechMetaTileEntity_PowerSubStationController> STRUCTURE_DEFINITION = null;
 

@@ -1404,11 +1404,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private int currentColorCode = 0;
     private int currentMilestoneBG = 0;
     private int gravitonShardCost = 0;
-    private int[][] prereqUpgrades = new int[31][];
+    private final int[][] prereqUpgrades = new int[31][];
     private int[] followupUpgrades = new int[] {};
     private boolean isUpradeSplitStart = false;
     private boolean doesCurrentUpgradeRequireExtraMats = false;
-    private boolean[] allPrereqRequired = new boolean[31];
+    private final boolean[] allPrereqRequired = new boolean[31];
     private boolean[] upgrades = new boolean[31];
     private boolean[] materialPaidUpgrades = new boolean[7];
 

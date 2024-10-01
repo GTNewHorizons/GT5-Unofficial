@@ -22,7 +22,7 @@ import gregtech.common.blocks.TileEntityOres;
  */
 public class DetravScannerCommand implements ICommand {
 
-    private List aliases;
+    private final List aliases;
 
     public DetravScannerCommand() {
         this.aliases = new ArrayList<String>();

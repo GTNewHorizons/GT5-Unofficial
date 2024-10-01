@@ -31,7 +31,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 
 public class FluidUtils {
 
-    private static HashMap<String, Fluid> sFluidCache = new HashMap<>();
+    private static final HashMap<String, Fluid> sFluidCache = new HashMap<>();
 
     public static FluidStack getWater(final int amount) {
         return FluidUtils.getFluidStack("water", amount);

@@ -110,8 +110,8 @@ public class BlockUpdateHandler {
         return chunk.getChunkCoordIntPair();
     }
 
-    private HashMap<ChunkCoordIntPair, WorldCoord> blocksToUpdate;
-    private HashMap<ChunkCoordIntPair, RandomCooldown> cooldowns;
+    private final HashMap<ChunkCoordIntPair, WorldCoord> blocksToUpdate;
+    private final HashMap<ChunkCoordIntPair, RandomCooldown> cooldowns;
     private World currWorld = null;
     private long internalTickCounter = 0;
 }
