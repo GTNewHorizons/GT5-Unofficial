@@ -64,8 +64,7 @@ public class ModDBMDef {
     public boolean equals(Object other) {
         if (other == null) return false;
         if (other == this) return true;
-        if (!(other instanceof ModDBMDef)) return false;
-        ModDBMDef otherModDBMDef = (ModDBMDef) other;
+        if (!(other instanceof ModDBMDef otherModDBMDef)) return false;
         return (otherModDBMDef._targetBlockName.equals(_targetBlockName) && otherModDBMDef._targetMeta == _targetMeta);
     }
 

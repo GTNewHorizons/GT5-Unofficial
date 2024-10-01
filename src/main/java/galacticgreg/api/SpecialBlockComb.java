@@ -52,8 +52,7 @@ public class SpecialBlockComb extends BlockMetaComb {
     public boolean equals(Object other) {
         if (other == null) return false;
         if (other == this) return true;
-        if (!(other instanceof SpecialBlockComb)) return false;
-        SpecialBlockComb otherObj = (SpecialBlockComb) other;
+        if (!(other instanceof SpecialBlockComb otherObj)) return false;
 
         boolean tFlag = true;
         String otherName = Block.blockRegistry.getNameForObject(otherObj.getBlock());

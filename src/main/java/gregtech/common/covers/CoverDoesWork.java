@@ -37,8 +37,7 @@ public class CoverDoesWork extends CoverBehavior {
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
-        if ((aTileEntity instanceof IMachineProgress)) {
-            IMachineProgress mProgress = (IMachineProgress) aTileEntity;
+        if ((aTileEntity instanceof IMachineProgress mProgress)) {
             boolean inverted = isFlagSet(aCoverVariable, FLAG_INVERTED);
             int signal = 0;
 

@@ -31,8 +31,7 @@ public class BlockTurbineCasing extends BlockCasing implements ITextureBlock {
 
     private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection side) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
-        IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
+        if (!(tTileEntity instanceof IGregTechTileEntity tTile)) return 0;
         if (tTile.getMetaTileEntity() instanceof MTELargeTurbineBase && tTile.getFrontFacing() == side) {
             if (tTile.isActive()) return 1;
             return ((MTELargeTurbineBase) tTile.getMetaTileEntity()).hasTurbine() ? 2 : 3;

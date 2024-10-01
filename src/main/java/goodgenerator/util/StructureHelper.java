@@ -32,8 +32,7 @@ public class StructureHelper {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tBlock = world.getTileEntity(x, y, z);
-                if (tBlock instanceof BaseMetaPipeEntity) {
-                    BaseMetaPipeEntity tFrame = (BaseMetaPipeEntity) tBlock;
+                if (tBlock instanceof BaseMetaPipeEntity tFrame) {
                     if (tFrame.isInvalidTileEntity()) return false;
                     if (tFrame.getMetaTileEntity() instanceof MTEFrame) {
                         return ((MTEFrame) tFrame.getMetaTileEntity()).mMaterial == aMaterials;
@@ -55,8 +54,7 @@ public class StructureHelper {
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 ItemStack tFrame = GTOreDictUnificator.get(OrePrefixes.frameGt, aMaterials, 1);
-                if (tFrame.getItem() instanceof ItemBlock) {
-                    ItemBlock tFrameStackItem = (ItemBlock) tFrame.getItem();
+                if (tFrame.getItem() instanceof ItemBlock tFrameStackItem) {
                     return tFrameStackItem
                         .placeBlockAt(tFrame, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tFrame));
                 }

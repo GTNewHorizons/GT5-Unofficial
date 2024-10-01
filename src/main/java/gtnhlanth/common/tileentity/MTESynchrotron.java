@@ -624,9 +624,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-
-            MTEHatchEnergy hatch = (MTEHatchEnergy) aMetaTileEntity;
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
 
             // First energy hatch added
             if (this.mEnergyHatches.isEmpty()) this.energyHatchTier = hatch.mTier;
@@ -645,9 +643,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
 
         if (block == null) return false;
 
-        if (!(block instanceof BlockAntennaCasing)) return false;
-
-        BlockAntennaCasing antennaBlock = (BlockAntennaCasing) block;
+        if (!(block instanceof BlockAntennaCasing antennaBlock)) return false;
 
         int antennaTier = antennaBlock.getTier();
 

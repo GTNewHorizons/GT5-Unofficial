@@ -52,16 +52,14 @@ public class AEStorageCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender pCommandSender, String[] pArgs) {
         try {
-            if (pCommandSender instanceof EntityPlayer) {
+            if (pCommandSender instanceof EntityPlayer tEP) {
                 if (pArgs.length < 1) return;
 
                 String tName = pArgs[0];
 
-                EntityPlayer tEP = (EntityPlayer) pCommandSender;
                 // Check if item in hand is a spatial storage cell
                 ItemStack tIS = tEP.inventory.getCurrentItem();
-                if (tIS.getItem() instanceof ItemSpatialStorageCell) {
-                    ItemSpatialStorageCell tCell = (ItemSpatialStorageCell) tIS.getItem();
+                if (tIS.getItem() instanceof ItemSpatialStorageCell tCell) {
                     World tSpatialWorld = tCell.getWorld(tIS);
                     WorldCoord storedSize = tCell.getStoredSize(tIS);
 
@@ -154,8 +152,7 @@ public class AEStorageCommand implements ICommand {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender pCommandSender) {
         // Command is only enabled for actual players and only if they are OP-ed
-        if (pCommandSender instanceof EntityPlayerMP) {
-            EntityPlayerMP tEP = (EntityPlayerMP) pCommandSender;
+        if (pCommandSender instanceof EntityPlayerMP tEP) {
             return MinecraftServer.getServer()
                 .getConfigurationManager()
                 .func_152596_g(tEP.getGameProfile());
