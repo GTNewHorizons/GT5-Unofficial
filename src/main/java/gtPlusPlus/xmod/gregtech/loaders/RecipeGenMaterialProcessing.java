@@ -77,8 +77,8 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
 
             // Process Dust
             if (componentMap.size() > 0 && componentMap.size() <= 6) {
-                ItemStack mInternalOutputs[] = new ItemStack[6];
-                int mChances[] = new int[6];
+                ItemStack[] mInternalOutputs = new ItemStack[6];
+                int[] mChances = new int[6];
                 int mCellCount = 0;
 
                 int mTotalCount = 0;
@@ -195,8 +195,8 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                     "[Issue][Electrolyzer] " + material.getLocalizedName()
                         + " is composed of over 6 materials, so an electrolyzer recipe for processing cannot be generated. Trying to create one for the Dehydrator instead.");
 
-                ItemStack mInternalOutputs[] = new ItemStack[9];
-                int mChances[] = new int[9];
+                ItemStack[] mInternalOutputs = new ItemStack[9];
+                int[] mChances = new int[9];
                 int mCellCount = 0;
 
                 int mTotalCount = 0;

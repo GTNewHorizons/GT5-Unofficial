@@ -23,7 +23,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemGenericChemBase extends Item {
 
-    protected final IIcon base[];
+    protected final IIcon[] base;
 
     private final int aMetaSize = 34;
 

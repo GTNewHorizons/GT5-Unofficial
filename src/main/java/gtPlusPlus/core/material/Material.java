@@ -471,7 +471,7 @@ public class Material {
                     } else {
                         valueR = a;
                     }
-                    short fc[] = new short[3];
+                    short[] fc = new short[3];
                     int aIndex = 0;
                     for (char gg : valueR.toCharArray()) {
                         short ui = Short.parseShort("" + gg);

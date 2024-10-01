@@ -35,14 +35,14 @@ public class WorkbenchCraftingHandler {
         this.addShapelessRecipe(new ItemStack(Items.cake), new Object[] { Items.stick });
     }
 
-    void addRecipe(final ItemStack par1ItemStack, final Object par2ArrayOfObj[]) {
+    void addRecipe(final ItemStack par1ItemStack, final Object[] par2ArrayOfObj) {
         String s = "";
         int i = 0;
         int j = 0;
         int k = 0;
 
         if (par2ArrayOfObj[i] instanceof String[]) {
-            final String as[] = (String[]) par2ArrayOfObj[i++];
+            final String[] as = (String[]) par2ArrayOfObj[i++];
 
             for (final String s2 : as) {
                 k++;
@@ -79,7 +79,7 @@ public class WorkbenchCraftingHandler {
             hashmap.put(character, itemstack);
         }
 
-        final ItemStack aitemstack[] = new ItemStack[j * k];
+        final ItemStack[] aitemstack = new ItemStack[j * k];
 
         for (int i1 = 0; i1 < (j * k); i1++) {
             final char c = s.charAt(i1);
@@ -95,9 +95,9 @@ public class WorkbenchCraftingHandler {
         this.recipes.add(new ShapedRecipes(j, k, aitemstack, par1ItemStack));
     }
 
-    public void addShapelessRecipe(final ItemStack par1ItemStack, final Object par2ArrayOfObj[]) {
+    public void addShapelessRecipe(final ItemStack par1ItemStack, final Object[] par2ArrayOfObj) {
         final ArrayList<ItemStack> arraylist = new ArrayList<>();
-        final Object aobj[] = par2ArrayOfObj;
+        final Object[] aobj = par2ArrayOfObj;
         final int i = aobj.length;
 
         for (final Object obj : aobj) {

@@ -86,7 +86,7 @@ public class RecipeGenRecycling implements Runnable {
                     .getDisplayName());
             validCounter++;
         }
-        Pair<OrePrefixes, ItemStack> temp3[] = new Pair[validCounter];
+        Pair<OrePrefixes, ItemStack>[] temp3 = new Pair[validCounter];
         int temp4 = 0;
         for (Pair<OrePrefixes, ItemStack> r : mValidPairs) {
             if (r == null) {

@@ -24,7 +24,7 @@ public class NBTUtils {
     public static ItemStack[] readItemsFromNBT(ItemStack itemstack) {
         NBTTagCompound tNBT = getNBT(itemstack);
         final NBTTagList list = tNBT.getTagList("Items", 10);
-        ItemStack inventory[] = new ItemStack[list.tagCount()];
+        ItemStack[] inventory = new ItemStack[list.tagCount()];
         for (int i = 0; i < list.tagCount(); i++) {
             final NBTTagCompound data = list.getCompoundTagAt(i);
             final int slot = data.getInteger("Slot");

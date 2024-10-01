@@ -53,8 +53,8 @@ public class RecipeGenBlastSmelterGTNH {
         return null;
     }
 
-    private static boolean isValid(final ItemStack[] inputs, final ItemStack outputs[], final FluidStack[] fluidIn,
-        final FluidStack fluidOut) {
+    private static boolean isValid(final ItemStack[] inputs, final ItemStack[] outputs, final FluidStack[] fluidIn,
+                                   final FluidStack fluidOut) {
         if (inputs != null && outputs != null
             && fluidIn != null
             && fluidOut != null

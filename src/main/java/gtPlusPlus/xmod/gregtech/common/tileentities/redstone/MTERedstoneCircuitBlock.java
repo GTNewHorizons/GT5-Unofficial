@@ -46,7 +46,8 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedstoneCircuitBlock, IAddUIWidgets {
 
-    public int mGate = 0, mGateData[] = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public int mGate = 0;
+    public int[] mGateData = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
     public boolean bOutput = true;
 
     public MTERedstoneCircuitBlock(int aID) {
