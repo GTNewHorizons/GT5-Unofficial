@@ -3097,7 +3097,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + "Clicking on the logo in the controller gui opens an extensive information window,")
             .addInfo("explaining everything there is to know about this multiblock.")
             .addInfo(TOOLTIP_BAR)
-            .beginStructureBlock(126, 29, 186, false)
+            .beginStructureBlock(127, 29, 186, false)
             .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
                 "Total blocks needed for the structure with " + EnumChatFormatting.DARK_PURPLE
