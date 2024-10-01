@@ -924,11 +924,11 @@ public enum GregtechOrePrefixes {
                 aColor);
             this.mExtraData = aExtraData;
             this.mMaterialList.addAll(aMaterialList);
-            this.mChemicalFormula = "";
+            final StringBuilder sb = new StringBuilder();
             for (final MaterialStack tMaterial : this.mMaterialList) {
-                this.mChemicalFormula += tMaterial.toString();
+                sb.append(tMaterial.toString());
             }
-            this.mChemicalFormula = this.mChemicalFormula.replaceAll("_", "-");
+            this.mChemicalFormula = sb.toString().replaceAll("_", "-");
 
             int tAmountOfComponents = 0, tMeltingPoint = 0;
             for (final MaterialStack tMaterial : this.mMaterialList) {

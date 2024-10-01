@@ -341,7 +341,7 @@ public class RecipeUtils {
     private static boolean addShapedRecipe(Object[] Inputs, ItemStack aOutputStack) {
         Object[] Slots = new Object[9];
 
-        String aFullString = "";
+        StringBuilder aFullString = new StringBuilder();
         String aFullStringExpanded = "abcdefghi";
 
         for (int i = 0; i < 9; i++) {
@@ -349,23 +349,23 @@ public class RecipeUtils {
 
             if (o instanceof ItemStack) {
                 Slots[i] = ItemUtils.getSimpleStack((ItemStack) o, 1);
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Item) {
                 Slots[i] = ItemUtils.getSimpleStack((Item) o, 1);
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Block) {
                 Slots[i] = ItemUtils.getSimpleStack((Block) o, 1);
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof String) {
                 Slots[i] = o;
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof ItemData aData) {
                 ItemStack aStackFromGT = ItemUtils.getOrePrefixStack(aData.mPrefix, aData.mMaterial.mMaterial, 1);
                 Slots[i] = aStackFromGT;
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o == null) {
                 Slots[i] = null;
-                aFullString += " ";
+                aFullString.append(" ");
             } else {
                 Slots[i] = null;
                 Logger.INFO(
