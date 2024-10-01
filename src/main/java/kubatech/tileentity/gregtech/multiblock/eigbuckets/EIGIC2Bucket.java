@@ -619,7 +619,7 @@ public class EIGIC2Bucket extends EIGBucket {
 
     /**
      * Creates an array that corresponds to the amount of times a number appears in a list.
-     *
+     * <p>
      * Ex: {1,2,3,4} -> {0,1,1,1,1}, {0,2,2,4} -> {1,0,2,0,1}
      *
      * @param bin        The number list to tabulate

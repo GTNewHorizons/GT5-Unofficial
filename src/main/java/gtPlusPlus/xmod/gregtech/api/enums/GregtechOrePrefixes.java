@@ -410,9 +410,9 @@ public enum GregtechOrePrefixes {
          * at a location where it shouldn't happen.
          * <p/>
          * Mainly for preventing NullPointer Exceptions and providing Default Values.
-         *
+         * <p>
          * Unknown Material Components. Dead End Section.
-         *
+         * <p>
          * Alkalus Range 730-799 & 970-998 (aMetaItemSubID, TextureSet, aToolSpeed, aToolDurability, aToolQuality,
          * aTypes, R, G, B, Alpha, aLocalName, aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp,
          * aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider, aColor

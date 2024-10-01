@@ -184,7 +184,7 @@ public class ModDimensionDef {
      * NeverReplaceAir: No matter what, if there is an Air-Block found, it will not replace it. AllowReplaceAir: This
      * will generate Ores in Stones (defined by addBlockDefinition()) and air if found OnlyReplaceAir : This will not
      * generate Ores in solid blocks, but only in air
-     *
+     * <p>
      * Note that "OnlyReplaceAir" is a special setting if you have a dimension that is not defined as "Asteroids" but
      * you still need/want to generate ores in midair.
      *
@@ -206,7 +206,7 @@ public class ModDimensionDef {
     /**
      * Set a manual override for ores that shall be generated. This setting is ignored if getIsAsteroidDimension()
      * returns true
-     *
+     * <p>
      * For example, on GalactiCraft Mars, this value is set to GTOreTypes.RedGranite, because it matches the color
      * better. If you don't set anything here, it will generate regular stone-ores.
      *
@@ -336,7 +336,7 @@ public class ModDimensionDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Do not call this function by yourself. Ever. It will cause explosions, water to blood, death of firstborn,...
      * Seriously, don't do it.
      */
@@ -351,7 +351,7 @@ public class ModDimensionDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Check if pBlock can be replaced by an ore
      *
      * @param pBlock
@@ -380,7 +380,7 @@ public class ModDimensionDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Randomly select one material out of all defined materials
      *
      * @return
@@ -396,7 +396,7 @@ public class ModDimensionDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Randomly select one special block to be placed in the asteroids
      *
      * @return

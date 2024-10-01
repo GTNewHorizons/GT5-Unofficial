@@ -109,18 +109,10 @@ public class ItemUtils {
     public static void getItemForOreDict(final String FQRN, final String oreDictName, final String itemName,
         final int meta) {
         try {
-            Item em = null;
             final Item em1 = getItemFromFQRN(FQRN);
-
             if (em1 != null) {
-                em = em1;
-            }
-
-            if (em != null) {
-
-                final ItemStack metaStack = new ItemStack(em, 1, meta);
+                final ItemStack metaStack = new ItemStack(em1, 1, meta);
                 GTOreDictUnificator.registerOre(oreDictName, metaStack);
-
             }
         } catch (final NullPointerException e) {
             Logger.ERROR(itemName + " not found. [NULL]");

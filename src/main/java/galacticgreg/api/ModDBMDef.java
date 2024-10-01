@@ -27,7 +27,7 @@ public class ModDBMDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Check if the given Block is equal to the block in this instance
      *
      * @param pBlock the Block in question
@@ -43,7 +43,7 @@ public class ModDBMDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Check if the given Block is equal to the block in this instance and matches the metadata
      *
      * @param pBlock the block in question

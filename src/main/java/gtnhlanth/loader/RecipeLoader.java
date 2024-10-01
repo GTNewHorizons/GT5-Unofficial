@@ -3376,7 +3376,7 @@ public class RecipeLoader {
         /**
          * 1/9 Ce + 3 Lu + 5 Sapphire = 8 LuAG Blend 1/9 Ce + 3 Lu + 10 Green Sapphire = 8 LuAG Blend 2/9 Ce + 6 Lu + 25
          * Alumina + 9 Oxygen = 12 LuAG Blend
-         *
+         * <p>
          * 1 Ce + 60 Lu + 100 Sapphire = 160 LuAG Blend 1 Ce + 60 Lu +200 Green Sapphire = 160 LuAG Blend
          *
          */

@@ -1643,7 +1643,7 @@ public class GTUtility {
     /**
      * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
      * filter cannot bypass filtering done by IFluidHandlers themselves.
-     *
+     * <p>
      * this overload will assume the fill side is the opposite of drainSide
      *
      * @param source    tank to drain from. method become noop if this is null
