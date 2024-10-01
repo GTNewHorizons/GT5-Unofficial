@@ -398,6 +398,19 @@ public class RecipeMapBackend {
                     return Stream.empty();
                 }
             }
+            if (!properties.allowCircuitOnly && properties.minItemInputs == 0 && properties.minFluidInputs == 0) {
+                // Both items and fluids can be empty, but we still need at least one non-circuit input.
+                int count = 0;
+                for (FluidStack fluid : fluids) if (fluid != null) {
+                    count++;
+                    break;
+                }
+                if (count == 0) for (ItemStack item : rawItems) if (!isAnyIntegratedCircuit(item)) {
+                    count++;
+                    break;
+                }
+                if (count == 0) return Stream.empty();
+            }
         }
 
         ItemStack[] items;

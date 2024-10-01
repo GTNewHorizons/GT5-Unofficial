@@ -102,6 +102,15 @@ public final class RecipeMapBuilder<B extends RecipeMapBackend> {
     }
 
     /**
+     * Whether to allow recipes which only use a programmed circuit, and no item/fluid inputs. If this is false, such
+     * recipes are optimized away.
+     */
+    public RecipeMapBuilder<B> allowCircuitOnly(boolean allowCircuitOnly) {
+        backendPropertiesBuilder.allowCircuitOnly(allowCircuitOnly);
+        return this;
+    }
+
+    /**
      * Whether this recipemap should check for equality of special slot when searching recipe.
      */
     public RecipeMapBuilder<B> specialSlotSensitive() {
