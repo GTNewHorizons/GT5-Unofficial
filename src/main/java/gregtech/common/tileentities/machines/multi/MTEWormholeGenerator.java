@@ -968,9 +968,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     @Override
     public String[] getInfoData() {
-        List<String> data = new ArrayList<>();
 
-        data.addAll(Arrays.asList(super.getInfoData()));
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add("-----------------------");
         data.add("Wormhole Generator Info");

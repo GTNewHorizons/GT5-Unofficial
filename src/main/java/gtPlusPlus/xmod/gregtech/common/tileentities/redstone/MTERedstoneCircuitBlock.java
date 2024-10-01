@@ -160,8 +160,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     public void switchGateForward(boolean aShift) {
         try {
             Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
-            ArrayList<Integer> tList = new ArrayList<>();
-            tList.addAll(tKeys);
+            ArrayList<Integer> tList = new ArrayList<>(tKeys);
             if (tList.size() <= 0) return;
             Collections.sort(tList);
             if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
@@ -178,8 +177,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     public void switchGateBackward(boolean aShift) {
         try {
             Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
-            ArrayList<Integer> tList = new ArrayList<>();
-            tList.addAll(tKeys);
+            ArrayList<Integer> tList = new ArrayList<>(tKeys);
             if (tList.size() <= 0) return;
             Collections.sort(tList);
             if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);

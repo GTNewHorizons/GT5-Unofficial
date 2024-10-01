@@ -756,8 +756,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     @Override
     public String[] getInfoData() {
-        ArrayList<String> aTooltipSuper = new ArrayList<>();
-        aTooltipSuper.addAll(Arrays.asList(super.getInfoData()));
+        ArrayList<String> aTooltipSuper = new ArrayList<>(Arrays.asList(super.getInfoData()));
         int mAirSides = getFreeSpaces();
         int reduction = 0;
 
