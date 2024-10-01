@@ -175,7 +175,7 @@ public class TexturesGtBlock {
         "qft/SpaceTimeBendingCore") : new CustomIcon("qft/SpaceTimeBendingCoreStatic");
     public static final CustomIcon ForceFieldGlass = new CustomIcon("qft/ForceFieldGlass");
     public static final CustomIcon ForceField = new CustomIcon("qft/ForceField");
-    public static final CustomIcon Blank = new CustomIcon("qft/Blank");
+    public static final CustomIcon Blank = new CustomIcon("qft/blank");
     //spotless:on
 
     // MACHINE_CASING_FARM_MANAGER_STRUCTURAL
