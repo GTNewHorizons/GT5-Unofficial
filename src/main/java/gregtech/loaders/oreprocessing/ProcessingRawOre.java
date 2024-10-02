@@ -88,7 +88,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 OrePrefixes.dustImpure,
                 tMaterial,
                 GTUtility.copyAmount(aMaterial.mOreMultiplier, tCleaned, tDust, tGem),
-                    aMaterial.mOreMultiplier);
+                aMaterial.mOreMultiplier);
         }
 
         for (Materials tMat : aMaterial.mOreByProducts) {

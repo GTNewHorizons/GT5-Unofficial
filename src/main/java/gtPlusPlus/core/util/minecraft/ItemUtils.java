@@ -685,8 +685,8 @@ public class ItemUtils {
                         return false;
                     } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
                         .getClass() == ModItems.ZZZ_Empty.getClass()) {
-                        return false;
-                    }
+                            return false;
+                        }
                 }
             } else {
                 return false;
@@ -700,8 +700,8 @@ public class ItemUtils {
                         return false;
                     } else if (stack.getItem() == ModItems.ZZZ_Empty || stack.getItem()
                         .getClass() == ModItems.ZZZ_Empty.getClass()) {
-                        return false;
-                    }
+                            return false;
+                        }
                 }
             } else {
                 return false;

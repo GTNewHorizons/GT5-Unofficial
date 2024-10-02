@@ -68,7 +68,7 @@ public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeTyp
 
     public ItemStack[] getItemStacks() {
         if (this == GTFlowers.FLAMING) {
-            return new ItemStack[]{new ItemStack(Blocks.fire)};
+            return new ItemStack[] { new ItemStack(Blocks.fire) };
         }
         return new ItemStack[0];
     }

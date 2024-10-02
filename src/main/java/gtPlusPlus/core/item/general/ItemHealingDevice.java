@@ -288,7 +288,8 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                         }
                     }
                 }
-                if (!(this.getCharge(baubleStack) <= (this.getMaxCharge(baubleStack) - getTransferLimit(baubleStack)))) {
+                if (!(this.getCharge(baubleStack)
+                    <= (this.getMaxCharge(baubleStack) - getTransferLimit(baubleStack)))) {
                     break;
                 }
             }

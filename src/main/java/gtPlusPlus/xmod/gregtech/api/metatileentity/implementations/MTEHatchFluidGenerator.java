@@ -9,7 +9,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -58,14 +57,12 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
     @Override
     public ITexture[] getTexturesActive(final ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_MUFFLER) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(Textures.BlockIcons.OVERLAY_MUFFLER) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(final ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture,
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_MUFFLER) };
+        return new ITexture[] { aBaseTexture, new GTRenderedTexture(Textures.BlockIcons.OVERLAY_MUFFLER) };
     }
 
     @Override

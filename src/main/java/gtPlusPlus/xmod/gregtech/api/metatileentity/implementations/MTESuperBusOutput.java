@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraft.inventory.IInventory;
-
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
@@ -68,8 +66,8 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
                 if (this.mInventory[j] != null && (this.mInventory[i] == null
                     || GTUtility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
                     GTUtility.moveStackFromSlotAToSlotB(
-                            this.getBaseMetaTileEntity(),
-                            this.getBaseMetaTileEntity(),
+                        this.getBaseMetaTileEntity(),
+                        this.getBaseMetaTileEntity(),
                         j,
                         i,
                         (byte) 64,

@@ -1,8 +1,6 @@
 package gtneioreplugin;
 
-@com.gtnewhorizon.gtnhlib.config.Config(
-    modid = GTNEIOrePlugin.MODID,
-    filename = GTNEIOrePlugin.MODID)
+@com.gtnewhorizon.gtnhlib.config.Config(modid = GTNEIOrePlugin.MODID, filename = GTNEIOrePlugin.MODID)
 public class Config {
 
     @com.gtnewhorizon.gtnhlib.config.Config.Comment("if true, generate both csv files.")

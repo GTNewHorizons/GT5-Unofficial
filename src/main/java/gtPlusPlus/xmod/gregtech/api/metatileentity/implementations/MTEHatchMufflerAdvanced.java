@@ -309,34 +309,34 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         if (chk1) {
             aWorld.spawnParticle(
                 name,
-                    xPos + ran1 * 0.5F,
-                    yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    xSpd,
-                    ySpd,
-                    zSpd);
+                xPos + ran1 * 0.5F,
+                yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
         }
 
         if (chk2) {
             aWorld.spawnParticle(
                 name,
-                    xPos + ran2 * 0.5F,
-                    yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    xSpd,
-                    ySpd,
-                    zSpd);
+                xPos + ran2 * 0.5F,
+                yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
         }
 
         if (chk3) {
             aWorld.spawnParticle(
                 name,
-                    xPos + ran3 * 0.5F,
-                    yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
-                    xSpd,
-                    ySpd,
-                    zSpd);
+                xPos + ran3 * 0.5F,
+                yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
         }
     }
 

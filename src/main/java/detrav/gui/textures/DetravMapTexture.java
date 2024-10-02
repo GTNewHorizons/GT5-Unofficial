@@ -119,26 +119,10 @@ public class DetravMapTexture extends AbstractTexture {
         int u = 0, v = 0;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(
-                x,
-                y + height,
-            0,
-                (float) (u) * f,
-                (float) (v + height) * f1);
-        tessellator.addVertexWithUV(
-                x + width,
-                y + height,
-            0,
-                (float) (u + width) * f,
-                (float) (v + height) * f1);
-        tessellator.addVertexWithUV(
-                x + width,
-                y,
-            0,
-                (float) (u + width) * f,
-                (float) (v) * f1);
-        tessellator
-            .addVertexWithUV(x, y, 0, (float) (u) * f, (float) (v) * f1);
+        tessellator.addVertexWithUV(x, y + height, 0, (float) (u) * f, (float) (v + height) * f1);
+        tessellator.addVertexWithUV(x + width, y + height, 0, (float) (u + width) * f, (float) (v + height) * f1);
+        tessellator.addVertexWithUV(x + width, y, 0, (float) (u + width) * f, (float) (v) * f1);
+        tessellator.addVertexWithUV(x, y, 0, (float) (u) * f, (float) (v) * f1);
         tessellator.draw();
     }
 

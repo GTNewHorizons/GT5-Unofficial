@@ -46,7 +46,8 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 
     // Rename to hasCircuitToConfigure
     public final boolean hasCircuitToConfigure() {
-        for (ItemStack i : this.getInventory().getInventory()) {
+        for (ItemStack i : this.getInventory()
+            .getInventory()) {
             if (i != null) {
                 return true;
             }

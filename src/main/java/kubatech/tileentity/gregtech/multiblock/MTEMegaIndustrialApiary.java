@@ -468,8 +468,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 }
                 updateSlots();
             } else if (mPrimaryMode == 1 && !mStorage.isEmpty()) {
-                if (tryOutputAll(mStorage, s -> Collections.singletonList(s.queenStack)))
-                    isCacheDirty = true;
+                if (tryOutputAll(mStorage, s -> Collections.singletonList(s.queenStack))) isCacheDirty = true;
             } else return CheckRecipeResultRegistry.NO_RECIPE;
             mMaxProgresstime = 10;
             mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);

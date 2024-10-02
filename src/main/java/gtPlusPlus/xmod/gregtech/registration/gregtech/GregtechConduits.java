@@ -877,8 +877,7 @@ public class GregtechConduits {
         String tName = aName.toString();
         if (GTUtility.isStringInvalid(tName)) return false;
         ArrayList<ItemStack> tList = GTOreDictUnificator.getOres(tName);
-        for (ItemStack itemStack : tList)
-            if (GTUtility.areStacksEqual(itemStack, aStack, true)) return false;
+        for (ItemStack itemStack : tList) if (GTUtility.areStacksEqual(itemStack, aStack, true)) return false;
         OreDictionary.registerOre(tName, GTUtility.copyAmount(1L, new Object[] { aStack }));
         return true;
     }

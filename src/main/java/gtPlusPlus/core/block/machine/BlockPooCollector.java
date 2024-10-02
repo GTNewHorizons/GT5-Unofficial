@@ -85,11 +85,11 @@ public class BlockPooCollector extends BlockContainer {
         } else {
             TileEntityBaseFluidCollector tank = (TileEntityBaseFluidCollector) world.getTileEntity(x, y, z);
             if (tank != null) {
-                //Item handItem;
-                //try {
-                //    handItem = player.getHeldItem()
-                //        .getItem();
-                //} catch (Throwable t) {}
+                // Item handItem;
+                // try {
+                // handItem = player.getHeldItem()
+                // .getItem();
+                // } catch (Throwable t) {}
 
                 // Fluid container code
                 /*
