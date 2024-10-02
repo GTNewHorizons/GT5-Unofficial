@@ -175,6 +175,21 @@ public class GT_StructureUtilityMuTE {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                final TileEntity tileEntity = world.getTileEntity(x, y, z);
+                if (!(tileEntity instanceof MultiBlockPart part)) return false;
+
+                for (MuTEStructureCasing casing : allowedCasings) {
+                    if (casing.isCasingValid(part.getMultiTileEntityRegistryID(), part.getMultiTileEntityID())) {
+                        final IMultiBlockController tTarget = part.getTarget(false);
+                        return tTarget == null || tTarget == t;
+                    }
+                }
+
+                return false;
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 // Moved here from Controller. TODO: Proper implementation
                 if (mIcons == null) {

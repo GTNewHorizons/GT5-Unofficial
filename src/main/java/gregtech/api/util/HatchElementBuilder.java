@@ -403,6 +403,13 @@ public class HatchElementBuilder<T> {
                 }
 
                 @Override
+                public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                    // without modifying state, the best we can do is verify that this is a GT TE.
+                    TileEntity tileEntity = world.getTileEntity(x, y, z);
+                    return tileEntity instanceof IGregTechTileEntity;
+                }
+
+                @Override
                 public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                     StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), mDot - 1);
                     return true;
@@ -418,6 +425,19 @@ public class HatchElementBuilder<T> {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 return tileEntity instanceof IGregTechTileEntity
                     && mAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) mCasingIndex);
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                if (tileEntity instanceof IGregTechTileEntity gtTileEntity) {
+                    // verify that the block matches the item hatch filter
+                    ItemStack blockItem = gtTileEntity.getMetaTileEntity()
+                        .getStackForm(0);
+                    return mHatchItemFilter.apply(t, trigger)
+                        .test(blockItem);
+                }
+                return false;
             }
 
             @Override
