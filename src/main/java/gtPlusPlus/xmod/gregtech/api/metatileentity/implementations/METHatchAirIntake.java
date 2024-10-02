@@ -101,27 +101,27 @@ public class METHatchAirIntake extends MTEHatchFluidGenerator {
 
         aWorld.spawnParticle(
             name,
-            (double) (xPos + ran1 * 0.5f),
-            (double) (yPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f),
-            (double) (zPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f),
-            (double) xSpd,
-            (double) -ySpd,
-            (double) zSpd);
+                xPos + ran1 * 0.5f,
+                yPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f,
+                zPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f,
+                xSpd,
+                -ySpd,
+                zSpd);
         aWorld.spawnParticle(
             name,
-            (double) (xPos + ran2 * 0.5f),
-            (double) (yPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f),
-            (double) (zPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f),
-            (double) xSpd,
-            (double) -ySpd,
-            (double) zSpd);
+                xPos + ran2 * 0.5f,
+                yPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f,
+                zPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f,
+                xSpd,
+                -ySpd,
+                zSpd);
         aWorld.spawnParticle(
             name,
-            (double) (xPos + ran3 * 0.5f),
-            (double) (yPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f),
-            (double) (zPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f),
-            (double) xSpd,
-            (double) -ySpd,
-            (double) zSpd);
+                xPos + ran3 * 0.5f,
+                yPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f,
+                zPos + METHatchAirIntake.floatGen.nextFloat() * 0.5f,
+                xSpd,
+                -ySpd,
+                zSpd);
     }
 }

@@ -204,10 +204,9 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         logic.setAmperageOC(true);
         logic.setAvailableVoltage(this.getMaxInputEu());
         logic.setAvailableAmperage(1);
-
-        logic.setEuModifier((float) (getEUMultiplier()));
+        logic.setEuModifier(getEUMultiplier());
         logic.setMaxParallel(getParallels());
-        logic.setSpeedBonus(1.0f / (float) (getSpeedBonus()));
+        logic.setSpeedBonus(1.0f / getSpeedBonus());
     }
 
     @Override

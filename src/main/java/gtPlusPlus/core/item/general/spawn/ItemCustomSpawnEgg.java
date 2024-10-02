@@ -192,7 +192,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
                     MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F),
                     0.0F);
                 parWorld.spawnEntityInWorld(entityToSpawn);
-                entityToSpawn.onSpawnWithEgg((IEntityLivingData) null);
+                entityToSpawn.onSpawnWithEgg(null);
                 entityToSpawn.playLivingSound();
             } else {
                 // DEBUG

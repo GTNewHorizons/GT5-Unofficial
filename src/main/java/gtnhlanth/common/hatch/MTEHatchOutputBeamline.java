@@ -102,11 +102,11 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector<BeamLinePa
                 return;
             }
 
-            if (((IConnectsToBeamline) nextMeta) instanceof MTEHatchInputBeamline) {
+            if (nextMeta instanceof MTEHatchInputBeamline) {
                 ((MTEHatchInputBeamline) nextMeta).setContents(q); // Reached another multi
                 break;
 
-            } else if (((IConnectsToBeamline) nextMeta) instanceof MTEBeamlinePipe) { // Another pipe follows
+            } else if (nextMeta instanceof MTEBeamlinePipe) { // Another pipe follows
 
                 if (((MTEBeamlinePipe) nextMeta).isDataInputFacing(front.getOpposite())) { // Connected to previous pipe
                     ((MTEBeamlinePipe) nextMeta).markUsed();

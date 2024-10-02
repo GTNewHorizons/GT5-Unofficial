@@ -180,7 +180,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             // Magic numbers: can always change by at least 200 eu/s, but otherwise by at most 20 percent of the
             // difference in power level (per second)
             // This is how much the turbine can actually change during this tick
-            int maxChangeAllowed = Math.max(200, GTUtility.safeInt((long) Math.abs(difference) / 5));
+            int maxChangeAllowed = Math.max(200, GTUtility.safeInt(Math.abs(difference) / 5));
 
             if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed
                 // change

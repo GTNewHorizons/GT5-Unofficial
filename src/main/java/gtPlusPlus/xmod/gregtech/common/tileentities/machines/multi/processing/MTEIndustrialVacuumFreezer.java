@@ -72,7 +72,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return (IMetaTileEntity) new MTEIndustrialVacuumFreezer(this.mName);
+        return new MTEIndustrialVacuumFreezer(this.mName);
     }
 
     @Override

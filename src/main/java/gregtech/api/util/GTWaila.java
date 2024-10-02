@@ -3,7 +3,7 @@ package gregtech.api.util;
 public abstract class GTWaila {
 
     public static String getMachineProgressString(boolean isActive, int maxProgresstime, int progresstime) {
-        return getMachineProgressString(isActive, (long) maxProgresstime, (long) progresstime);
+        return getMachineProgressString(isActive, maxProgresstime, (long) progresstime);
     }
 
     public static String getMachineProgressString(boolean isActive, long maxProgresstime, long progresstime) {

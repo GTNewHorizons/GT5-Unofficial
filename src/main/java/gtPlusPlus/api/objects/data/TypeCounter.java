@@ -55,7 +55,7 @@ public class TypeCounter<V> implements Set<V> {
         String aKey = aKeyName != null ? aKeyName : arg0.toString();
         InternalTypeCounterObject<V> aValue = mInternalMap.get(aKey);
         if (aValue == null) {
-            aValue = new InternalTypeCounterObject<>((V) arg0);
+            aValue = new InternalTypeCounterObject<>(arg0);
             Logger.WARNING("Adding new key to map: " + aKey);
         }
         aValue.add();

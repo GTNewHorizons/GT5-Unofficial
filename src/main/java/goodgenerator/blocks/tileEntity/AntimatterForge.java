@@ -561,7 +561,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             containedProtomatter);
 
         // We didn't have enough protomatter, reduce antimatter by 10% and stop the machine.
-        if (!this.depleteInput(MaterialsUEVplus.Protomatter.getFluid((long) Math.abs(antimatterChange)))) {
+        if (!this.depleteInput(MaterialsUEVplus.Protomatter.getFluid(Math.abs(antimatterChange)))) {
             decimateAntimatter();
             stopMachine(ShutDownReasonRegistry.outOfFluid(MaterialsUEVplus.Protomatter.getFluid(1L)));
             endRecipeProcessing();
@@ -633,7 +633,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             int change = (int) (Math.ceil((r.nextGaussian() + baseSkew + modifiers[ACTIVATION_ID]) * (coeff / 16)));
             difference += change;
             if (change >= 0) {
-                hatch.fill(MaterialsUEVplus.Antimatter.getFluid((long) (change)), true);
+                hatch.fill(MaterialsUEVplus.Antimatter.getFluid(change), true);
             } else {
                 hatch.drain(-change, true);
             }

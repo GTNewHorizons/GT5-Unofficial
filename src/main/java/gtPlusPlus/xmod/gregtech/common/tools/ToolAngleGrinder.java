@@ -134,7 +134,7 @@ public class ToolAngleGrinder extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return (IIconContainer) (aIsToolHead ? TexturesGtTools.ANGLE_GRINDER : ItemIcons.POWER_UNIT_HV);
+        return aIsToolHead ? TexturesGtTools.ANGLE_GRINDER : ItemIcons.POWER_UNIT_HV;
     }
 
     @Override

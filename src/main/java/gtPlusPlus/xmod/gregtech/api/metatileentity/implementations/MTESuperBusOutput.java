@@ -68,8 +68,8 @@ public class MTESuperBusOutput extends MTEHatchOutputBus {
                 if (this.mInventory[j] != null && (this.mInventory[i] == null
                     || GTUtility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
                     GTUtility.moveStackFromSlotAToSlotB(
-                        (IInventory) this.getBaseMetaTileEntity(),
-                        (IInventory) this.getBaseMetaTileEntity(),
+                            this.getBaseMetaTileEntity(),
+                            this.getBaseMetaTileEntity(),
                         j,
                         i,
                         (byte) 64,

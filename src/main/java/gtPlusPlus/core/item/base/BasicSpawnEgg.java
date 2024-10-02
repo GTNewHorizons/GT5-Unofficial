@@ -162,7 +162,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
                     0.0F);
 
                 parWorld.spawnEntityInWorld(this.entityToSpawn);
-                this.entityToSpawn.onSpawnWithEgg((IEntityLivingData) null);
+                this.entityToSpawn.onSpawnWithEgg(null);
                 this.entityToSpawn.playLivingSound();
             } else {
                 // DEBUG

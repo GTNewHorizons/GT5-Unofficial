@@ -288,7 +288,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     private boolean addEssentiaOutputHatchToMachineList(MTEEssentiaOutputHatch aTileEntity) {
         if (aTileEntity instanceof MTEEssentiaOutputHatch) {
-            return this.mEssentiaOutputHatches.add((MTEEssentiaOutputHatch) aTileEntity);
+            return this.mEssentiaOutputHatches.add(aTileEntity);
         }
         return false;
     }

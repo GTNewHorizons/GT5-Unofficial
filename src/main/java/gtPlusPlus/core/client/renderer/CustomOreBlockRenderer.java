@@ -555,8 +555,7 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
                 .getTextureManager()
                 .getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
         }
-
-        return (IIcon) iicon;
+        return iicon;
     }
 
     IBlockAccess blockAccess = RenderBlocks.getInstance().blockAccess;
