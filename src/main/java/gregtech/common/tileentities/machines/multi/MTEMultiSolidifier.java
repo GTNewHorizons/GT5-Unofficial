@@ -74,8 +74,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     private static final double DECAY_RATE = 0.025;
 
     private byte glassTier = 0;
-    protected int mWidth;
-    private int mCasingAmount;
+    protected int width;
+    private int casingAmount;
     private float speedup = 1;
     private int runningTickCounter = 0;
 
@@ -230,56 +230,30 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 4, 0);
         // max Width, minimal mid-pieces to build on each side
-        int tTotalWidth = Math.min(stackSize.stackSize + 1, 6);
-        for (int i = 1; i < tTotalWidth - 1; i++) {
-            // horizontal offset 3 from controller and number of pieces times width of each piece
-            buildPiece(MS_LEFT_MID, stackSize, hintsOnly, 3 + 2 * i, 4, 0);
-            // the same but on other side of controller, for some reason -2 works right but -3 is weird
-            buildPiece(MS_RIGHT_MID, stackSize, hintsOnly, -2 - 2 * i, 4, 0);
+        int totalWidth = Math.min(stackSize.stackSize + 1, 6);
+        for (int i = 0; i < totalWidth; i++) {
+            // pieces are 2 wide so offset 5 from controller and number of pieces times width of each piece
+            buildPiece(MS_LEFT_MID, stackSize, hintsOnly, 5 + 2 * i, 4, 0);
+            // the extra offset to account for piece width isn't needed in this direction
+            buildPiece(MS_RIGHT_MID, stackSize, hintsOnly, -4 - 2 * i, 4, 0);
         }
-        // trial and error numbers that work
-        buildPiece(MS_END, stackSize, hintsOnly, (tTotalWidth + 2) * 2 - 4, 4, 0);
-        buildPiece(MS_END, stackSize, hintsOnly, (-tTotalWidth - 2) * 2 + 4, 4, 0);
+        buildPiece(MS_END, stackSize, hintsOnly, 4 + 2 * totalWidth, 4, 0);
+        buildPiece(MS_END, stackSize, hintsOnly, -4 - 2 * totalWidth, 4, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        mWidth = 0;
-        nWidth = 0;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int tTotalWidth = Math.min(stackSize.stackSize + 1, 6);
-        for (int i = 1; i < tTotalWidth; i++) {
-            mWidth = i;
-            nWidth = i;
-            built = survivialBuildPiece(MS_LEFT_MID, stackSize, 3 + 2 * i, 4, 0, elementBudget, env, false, true);
-            if (built >= 0) return built;
-            built = survivialBuildPiece(MS_RIGHT_MID, stackSize, -2 - 2 * i, 4, 0, elementBudget, env, false, true);
+        int totalWidth = Math.min(stackSize.stackSize + 1, 6);
+        for (int i = 0; i < totalWidth; i++) {
+            built = survivialBuildPiece(MS_LEFT_MID, stackSize, 5 + 2 * i, 4, 0, elementBudget, env, false, true);
+            built += survivialBuildPiece(MS_RIGHT_MID, stackSize, -4 - 2 * i, 4, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        if (mWidth == tTotalWidth - 1) {
-            built += survivialBuildPiece(
-                MS_END,
-                stackSize,
-                (3 + tTotalWidth) * 2 - 4,
-                4,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
-            built += survivialBuildPiece(
-                MS_END,
-                stackSize,
-                (-3 - tTotalWidth) * 2 + 4,
-                4,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
-        }
+        built = survivialBuildPiece(MS_END, stackSize, -4 - 2 * totalWidth, 4, 0, elementBudget, env, false, true);
+        built += survivialBuildPiece(MS_END, stackSize, 4 + 2 * totalWidth, 4, 0, elementBudget, env, false, true);
         return built;
     }
 
@@ -289,23 +263,22 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     private void onCasingAdded() {
-        mCasingAmount++;
+        casingAmount++;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mWidth = 0;
-        mCasingAmount = 0;
+        width = 0;
+        casingAmount = 0;
 
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (mWidth < (6)) {
-                if (checkPiece(MS_RIGHT_MID, (-2 * (mWidth + 1)) - 2, 4, 0)
-                    && checkPiece(MS_LEFT_MID, (2 * (mWidth + 1)) + 3, 4, 0)) {
-                    mWidth++;
+            while (width < (6)) {
+                if (checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0) && checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0)) {
+                    width++;
                 } else break;
             }
         } else return false;
-        if (!checkPiece(MS_END, (-2 * mWidth) - 4, 4, 0) || !checkPiece(MS_END, (mWidth * 2) + 4, 4, 0)) {
+        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0) || !checkPiece(MS_END, 4 + 2 * width, 4, 0)) {
             return false;
         }
         if (glassTier >= VoltageIndex.UMV) return true;
@@ -315,7 +288,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             }
         }
 
-        return mCasingAmount >= (100 + mWidth * 23);
+        return casingAmount >= (100 + width * 23);
     }
 
     @Override
@@ -354,7 +327,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     public int getMaxParallelRecipes() {
-        return 4 + (mWidth * PARALLELS_PER_WIDTH) * GTUtility.getTier(this.getMaxInputVoltage());
+        return 4 + (width * PARALLELS_PER_WIDTH) * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
