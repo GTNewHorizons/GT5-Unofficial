@@ -41,7 +41,7 @@ public class MTEBuckConverter extends MTETieredMachineBlock implements IAddUIWid
 
     private static GTRenderedTexture BUCK, BUCK_ACTIVE;
     public int EUT = 0, AMP = 0;
-    private static NumberFormatMUI numberFormat = new NumberFormatMUI();
+    private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public MTEBuckConverter(int aID, String aName, String aNameRegional, int aTier) {
         super(

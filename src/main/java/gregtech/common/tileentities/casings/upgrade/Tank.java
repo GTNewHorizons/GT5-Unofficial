@@ -19,8 +19,8 @@ public class Tank extends UpgradeCasing {
     public static final int INPUT = 0;
     public static final int OUTPUT = 1;
     public static final int BOTH = 2;
-    private String tankName = "tank";
-    private int type = BOTH;
+    private final String tankName = "tank";
+    private final int type = BOTH;
 
     @Override
     protected void customWork(IMultiBlockController aTarget) {

@@ -8,6 +8,7 @@ import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -410,9 +411,9 @@ public enum GregtechOrePrefixes {
          * at a location where it shouldn't happen.
          * <p/>
          * Mainly for preventing NullPointer Exceptions and providing Default Values.
-         *
+         * <p>
          * Unknown Material Components. Dead End Section.
-         *
+         * <p>
          * Alkalus Range 730-799 & 970-998 (aMetaItemSubID, TextureSet, aToolSpeed, aToolDurability, aToolQuality,
          * aTypes, R, G, B, Alpha, aLocalName, aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp,
          * aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider, aColor
@@ -420,7 +421,7 @@ public enum GregtechOrePrefixes {
          *
          */
         _NULL(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", 0, 0, 0, 0, false, false, 1, 1, 1,
-            Dyes._NULL, Element._NULL, Arrays.asList(getTcAspectStack(TCAspects.VACUOS.name(), 1))),
+            Dyes._NULL, Element._NULL, Collections.singletonList(getTcAspectStack(TCAspects.VACUOS.name(), 1))),
 
         // Lapis(526, TextureSet.SET_LAPIS, 1.0F, 0, 1, 1 | 4 | 8, 70, 70, 220, 0, "Lapis", 0, 0, -1, 0, false, false,
         // 3, 1, 1, Dyes.dyeBlue, 2, Arrays.asList(new MaterialStack(Materials.Lazurite, 12), new
@@ -459,7 +460,7 @@ public enum GregtechOrePrefixes {
             Arrays.asList(getTcAspectStack(TCAspects.ELECTRUM, 8), getTcAspectStack(TCAspects.MACHINA, 8))),
 
         Superconductor(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 190, 240, 190, 0, "Superconductor", 0, 0, -1, 0, false,
-            false, 1, 1, 1, Dyes.dyeGreen, Arrays.asList(getTcAspectStack(TCAspects.ELECTRUM, 8))),
+            false, 1, 1, 1, Dyes.dyeGreen, Collections.singletonList(getTcAspectStack(TCAspects.ELECTRUM, 8))),
 
         Staballoy(30, TextureSet.SET_ROUGH, 10.0F, 5120, 4, 1 | 2 | 16 | 32 | 64 | 128, 68, 75, 66, 0, "Staballoy", 0,
             0, 1500, 2800, true, false, 1, 3, 1, Dyes.dyeGreen, 2,
@@ -924,11 +925,12 @@ public enum GregtechOrePrefixes {
                 aColor);
             this.mExtraData = aExtraData;
             this.mMaterialList.addAll(aMaterialList);
-            this.mChemicalFormula = "";
+            final StringBuilder sb = new StringBuilder();
             for (final MaterialStack tMaterial : this.mMaterialList) {
-                this.mChemicalFormula += tMaterial.toString();
+                sb.append(tMaterial.toString());
             }
-            this.mChemicalFormula = this.mChemicalFormula.replaceAll("_", "-");
+            this.mChemicalFormula = sb.toString()
+                .replaceAll("_", "-");
 
             int tAmountOfComponents = 0, tMeltingPoint = 0;
             for (final MaterialStack tMaterial : this.mMaterialList) {

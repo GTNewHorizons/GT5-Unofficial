@@ -21,7 +21,7 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     public int mEfficiency;
 
     public MTERocketFuelGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires GT++ Rocket Fuels", new ITexture[0]);
+        super(aID, aName, aNameRegional, aTier, "Requires GT++ Rocket Fuels");
     }
 
     public MTERocketFuelGenerator(final String aName, final int aTier, final String[] aDescription,

@@ -87,10 +87,8 @@ public class MTETurboCharger extends MTECharger {
                 }
             }
 
-            if (getBaseMetaTileEntity() instanceof BaseMetaTileEntity) {
-                BaseMetaTileEntity mBaseMetaTileEntity = (BaseMetaTileEntity) getBaseMetaTileEntity();
-                if (mBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity) {
-                    MetaTileEntity mMetaTileEntity = (MetaTileEntity) mBaseMetaTileEntity.getMetaTileEntity();
+            if (getBaseMetaTileEntity() instanceof BaseMetaTileEntity mBaseMetaTileEntity) {
+                if (mBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity mMetaTileEntity) {
                     if (mMetaTileEntity.dechargerSlotCount() > 0
                         && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {
                         for (int i = mMetaTileEntity.dechargerSlotStartIndex(),

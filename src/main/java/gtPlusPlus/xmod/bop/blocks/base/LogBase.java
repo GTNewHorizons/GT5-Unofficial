@@ -40,10 +40,6 @@ public abstract class LogBase extends BlockLog {
         Blocks.fire.setFireInfo(this, 20, 100);
     }
 
-    private void setVanillaVariable(Object toSet, Object value) {
-        toSet = value;
-    }
-
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
@@ -78,8 +74,8 @@ public abstract class LogBase extends BlockLog {
             this.textureTop[i] = iIcon
                 .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
         }
-
-        setVanillaVariable(this.field_150167_a, this.textureSide);
-        setVanillaVariable(this.field_150166_b, this.textureTop);
+        // TODO uncomment the line below, I don't want to do it now in case it causes a crash
+        // this.field_150167_a = this.textureSide;
+        // this.field_150166_b = this.textureTop;
     }
 }

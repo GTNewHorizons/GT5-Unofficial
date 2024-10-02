@@ -172,7 +172,7 @@ public class RecipesMachines {
     // Misc
     public static ItemStack INPUT_RCCokeOvenBlock;
 
-    public static final void loadRecipes() {
+    public static void loadRecipes() {
         run();
         Logger.INFO("Loading Recipes for the Various machine blocks.");
     }
@@ -3299,7 +3299,7 @@ public class RecipesMachines {
 
     private static void fakeMachineCasingCovers() {
         int aMaxTier = GTValues.VOLTAGE_NAMES.length;
-        ItemStack aTier[] = new ItemStack[aMaxTier];
+        ItemStack[] aTier = new ItemStack[aMaxTier];
         for (int i = 0; i < aMaxTier; i++) {
             aTier[i] = ItemUtils.simpleMetaStack(CoverManager.Cover_Gt_Machine_Casing, i, 7);
         }

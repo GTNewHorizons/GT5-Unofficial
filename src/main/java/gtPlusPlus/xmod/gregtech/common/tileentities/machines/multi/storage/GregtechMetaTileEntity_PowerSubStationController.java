@@ -81,7 +81,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 public class GregtechMetaTileEntity_PowerSubStationController
     extends GTPPMultiBlockBase<GregtechMetaTileEntity_PowerSubStationController> implements ISurvivalConstructable {
 
-    private static enum TopState {
+    private enum TopState {
         MayBeTop,
         Top,
         NotTop
@@ -99,7 +99,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
     private final int ENERGY_TAX = 5;
 
     private int mCasing;
-    private int[] cellCount = new int[6];
+    private final int[] cellCount = new int[6];
     private TopState topState = TopState.MayBeTop;
     private static IStructureDefinition<GregtechMetaTileEntity_PowerSubStationController> STRUCTURE_DEFINITION = null;
 
@@ -212,17 +212,13 @@ public class GregtechMetaTileEntity_PowerSubStationController
     }
 
     public static int getMaxHatchTier(int aCellTier) {
-        switch (aCellTier) {
-            case 9 -> {
-                return GTValues.VOLTAGE_NAMES[9].equals("Ultimate High Voltage") ? 15 : 9;
-            }
-            default -> {
-                if (aCellTier < 4) {
-                    return 0;
-                } else {
-                    return aCellTier;
-                }
-            }
+        if (aCellTier == 9) {
+            return GTValues.VOLTAGE_NAMES[9].equals("Ultimate High Voltage") ? 15 : 9;
+        }
+        if (aCellTier < 4) {
+            return 0;
+        } else {
+            return aCellTier;
         }
     }
 

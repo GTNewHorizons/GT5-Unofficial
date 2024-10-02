@@ -20,8 +20,8 @@ public class PowerNodePath extends NodePath {
     int mTick = 0;
     boolean mCountUp = true;
 
-    private AveragePerTickCounter avgAmperageCounter = new AveragePerTickCounter(TickTime.SECOND);
-    private AveragePerTickCounter avgVoltageCounter = new AveragePerTickCounter(TickTime.SECOND);
+    private final AveragePerTickCounter avgAmperageCounter = new AveragePerTickCounter(TickTime.SECOND);
+    private final AveragePerTickCounter avgVoltageCounter = new AveragePerTickCounter(TickTime.SECOND);
 
     public PowerNodePath(MetaPipeEntity[] aCables) {
         super(aCables);

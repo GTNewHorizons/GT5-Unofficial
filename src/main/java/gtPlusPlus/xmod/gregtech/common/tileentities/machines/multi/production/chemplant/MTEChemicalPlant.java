@@ -80,7 +80,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     private int mPipeCasingTier = 0;
     private int mCoilTier = 0;
     private HeatingCoilLevel checkCoil;
-    private int[] checkCasing = new int[8];
+    private final int[] checkCasing = new int[8];
     private int checkMachine;
     private int checkPipe;
     private int maxTierOfHatch;
@@ -114,10 +114,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         if (!mTieredBlockRegistry.containsKey(aTier)) {
             return 10;
         }
-        int aCasingID = mTieredBlockRegistry.get(aTier)
+        return mTieredBlockRegistry.get(aTier)
             .getValue_3();
-        // Logger.INFO("Found casing texture ID "+aCasingID+" for tier "+aTier);
-        return aCasingID;
     }
 
     @Override
@@ -216,7 +214,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             .dot(1)
                             .build(),
                         buildHatchAdder(MTEChemicalPlant.class).hatchClass(MTEHatchCatalysts.class)
-                            .shouldReject(t -> t.mCatalystBuses.size() >= 1)
+                            .shouldReject(t -> !t.mCatalystBuses.isEmpty())
                             .adder(MTEChemicalPlant::addChemicalPlantList)
                             .casingIndex(getCasingTextureID())
                             .dot(1)

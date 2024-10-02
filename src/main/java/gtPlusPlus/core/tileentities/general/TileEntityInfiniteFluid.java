@@ -54,17 +54,15 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
                 fluid = null;
             }
 
-            if (this != null) {
-                FluidEvent.fireEvent(
-                    new FluidEvent.FluidDrainingEvent(
-                        fluid,
-                        this.getWorldObj(),
-                        this.xCoord,
-                        this.yCoord,
-                        this.zCoord,
-                        this.tank,
-                        0));
-            }
+            FluidEvent.fireEvent(
+                new FluidEvent.FluidDrainingEvent(
+                    fluid,
+                    this.getWorldObj(),
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    this.tank,
+                    0));
         }
         return stack;
     }
@@ -88,8 +86,7 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
         needsUpdate = true;
         float amount = tank.getFluidAmount();
         float capacity = tank.getCapacity();
-        float volume = (amount / capacity) * 0.8F;
-        return volume;
+        return (amount / capacity) * 0.8F;
     }
 
     @Override

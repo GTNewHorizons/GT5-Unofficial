@@ -75,13 +75,13 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
         ResourceLocation antimatterLocation = new ResourceLocation(
             GoodGenerator.resourceDomain,
             "models/Antimatter.obj");
-        antimatterModel = (IModelCustom) new WavefrontObject(antimatterLocation);
+        antimatterModel = new WavefrontObject(antimatterLocation);
 
         ResourceLocation location = new ResourceLocation(GoodGenerator.resourceDomain, "models/SmoothSphere.obj");
-        containerModel = (IModelCustom) new WavefrontObject(location);
+        containerModel = new WavefrontObject(location);
 
         ResourceLocation ringLocation = new ResourceLocation(GoodGenerator.resourceDomain, "models/GlowRing.obj");
-        ringModel = (IModelCustom) new WavefrontObject(ringLocation);
+        ringModel = new WavefrontObject(ringLocation);
     }
 
     private void init() {

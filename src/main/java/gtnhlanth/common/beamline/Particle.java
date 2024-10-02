@@ -10,21 +10,21 @@ public enum Particle {
     PROTON(true, 3, 938.27f, 15000, "proton", "p\u207A", 1, null),
     ALPHA(true, 4, 3727.38f, 8000, "alpha", "\u03B1", 2, null);
 
-    private boolean canAcc;
+    private final boolean canAcc;
 
-    private float restMass; // in MeV
+    private final float restMass; // in MeV
 
-    private float maxSourceEnergy; // in keV
+    private final float maxSourceEnergy; // in keV
 
-    private String name;
-    private String shortName;
+    private final String name;
+    private final String shortName;
 
-    private float charge; // in multiples of elemental charge
+    private final float charge; // in multiples of elemental charge
 
-    private String chargeSpecial;
+    private final String chargeSpecial;
 
-    private Particle(boolean canAcc, int id, float restMass, float maxSourceEnergy, String name, String shortName,
-        float charge, String chargeSpecial) { // ID
+    Particle(boolean canAcc, int id, float restMass, float maxSourceEnergy, String name, String shortName, float charge,
+        String chargeSpecial) { // ID
         // is
         // symbolic
         // only

@@ -45,7 +45,7 @@ public class MBItemFrame extends Item implements IHiveFrame {
 
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        if ((this.toolTip != "") || !this.toolTip.equals("")) {
+        if (!this.toolTip.isEmpty()) {
             list.add(EnumChatFormatting.GRAY + this.toolTip);
         }
         super.addInformation(stack, aPlayer, list, bool);
@@ -79,10 +79,7 @@ public class MBItemFrame extends Item implements IHiveFrame {
 
     @Override
     public boolean hasEffect(final ItemStack par1ItemStack, final int pass) {
-        if ((this.rarity_value == EnumRarity.uncommon) || (this.rarity_value == EnumRarity.common)) {
-            return false;
-        }
-        return true;
+        return this.rarity_value != EnumRarity.uncommon && this.rarity_value != EnumRarity.common;
     }
 
     @Override

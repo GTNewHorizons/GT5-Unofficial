@@ -40,10 +40,6 @@ public class LeavesBase extends BlockLeaves {
         Blocks.fire.setFireInfo(this, 80, 150);
     }
 
-    private void setVanillaVariable(Object toSet, Object value) {
-        toSet = value;
-    }
-
     @Override
     public int quantityDropped(Random p_149745_1_) {
         return p_149745_1_.nextInt(20) == 0 ? 1 : 0;
@@ -96,7 +92,8 @@ public class LeavesBase extends BlockLeaves {
                     .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "leaves/" + "leaves_" + leafType[i][j]);
             }
         }
-        setVanillaVariable(this.field_150129_M, this.leafTextures);
+        // TODO uncomment the line below, I don't want to do it now in case it causes a crash
+        // this.field_150129_M = this.leafTextures;
     }
 
     @Override

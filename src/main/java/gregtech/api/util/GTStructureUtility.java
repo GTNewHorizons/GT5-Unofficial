@@ -76,7 +76,7 @@ public class GTStructureUtility {
                 Block block = world.getBlock(x, y, z);
                 if (block instanceof BlockFrameBox frameBox) {
                     int meta = world.getBlockMetadata(x, y, z);
-                    Materials material = frameBox.getMaterial(meta);
+                    Materials material = BlockFrameBox.getMaterial(meta);
                     return aFrameMaterial == material;
                 }
                 return false;

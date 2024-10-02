@@ -208,7 +208,6 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
 
     @Override
     public String[] getInfoData() {
-        super.looseFit = looseFit;
         return super.getInfoData();
     }
 

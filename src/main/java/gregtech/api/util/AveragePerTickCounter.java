@@ -11,7 +11,7 @@ public class AveragePerTickCounter {
      * Averages a value over a certain amount of ticks
      *
      * @param period amount of ticks to average (20 for 1 second)
-     * 
+     *
      */
     public AveragePerTickCounter(int period) throws InvalidParameterException {
 
@@ -120,13 +120,13 @@ public class AveragePerTickCounter {
             .getTickCounter();
     }
 
-    private ArrayDeque<Measurement> values;
-    private int period;
+    private final ArrayDeque<Measurement> values;
+    private final int period;
 
-    private double cachedAverage = 0;
+    private final double cachedAverage = 0;
     private boolean isCachedAverageValid = true;
 
-    private class Measurement {
+    private static class Measurement {
 
         public int TimestampInWorldTicks;
         public long Value;

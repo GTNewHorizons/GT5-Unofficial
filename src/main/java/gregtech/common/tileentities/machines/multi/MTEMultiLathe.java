@@ -306,7 +306,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
             return false;
         return this.mMaintenanceHatches.size() == 1 && pipeTier > 0
-            && mEnergyHatches.size() >= 1
+            && !mEnergyHatches.isEmpty()
             && mCasingAmount >= 42
             && mMufflerHatches.size() == 1;
     }

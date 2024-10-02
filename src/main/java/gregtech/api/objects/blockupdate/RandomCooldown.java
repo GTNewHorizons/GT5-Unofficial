@@ -26,6 +26,6 @@ public class RandomCooldown extends Cooldown {
         lengthInTicks = minLengthInTicks + XSTR_INSTANCE.nextInt(maxLengthInTicks - minLengthInTicks + 1);
     }
 
-    private int minLengthInTicks;
-    private int maxLengthInTicks;
+    private final int minLengthInTicks;
+    private final int maxLengthInTicks;
 }

@@ -77,7 +77,6 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-@SuppressWarnings("unchecked")
 public class MTEResearchStation extends TTMultiblockBase implements ISurvivalConstructable {
 
     public static final String machine = "EM Machinery";

@@ -1016,12 +1016,11 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     @Override
     public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
-        if (aCheckPrecicely || privateAccess() || (ownerName.length() == 0))
-            if ((ownerName.length() == 0) && isServerSide()) {
-                setOwnerName(aPlayer.getDisplayName());
-                setOwnerUuid(aPlayer.getUniqueID());
-            } else return !privateAccess() || aPlayer.getDisplayName()
-                .equals("Player") || ownerName.equals("Player") || ownerName.equals(aPlayer.getDisplayName());
+        if (aCheckPrecicely || privateAccess() || (ownerName.isEmpty())) if ((ownerName.isEmpty()) && isServerSide()) {
+            setOwnerName(aPlayer.getDisplayName());
+            setOwnerUuid(aPlayer.getUniqueID());
+        } else return !privateAccess() || aPlayer.getDisplayName()
+            .equals("Player") || ownerName.equals("Player") || ownerName.equals(aPlayer.getDisplayName());
         return true;
     }
 
@@ -1034,9 +1033,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
      * @return a Packet containing all Data which has to be synchronised to the Client - Override as needed
      */
     public GTPacketMultiTileEntity getClientDataPacket() {
-
-        final GTPacketMultiTileEntity packet = new GTPacketMultiTileEntity();
-        return packet;
+        return new GTPacketMultiTileEntity();
     }
 
     @Override

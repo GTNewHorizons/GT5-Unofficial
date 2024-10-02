@@ -11,7 +11,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 
-@SuppressWarnings({ "unchecked" })
 public class WerkstoffMaterialPool implements Runnable {
 
     // Current highest ID = 11_499

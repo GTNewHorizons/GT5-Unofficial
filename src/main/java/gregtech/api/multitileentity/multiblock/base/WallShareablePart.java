@@ -17,7 +17,7 @@ public class WallShareablePart extends MultiBlockPart {
 
     @Override
     public void setTarget(IMultiBlockController newController, int allowedModes) {
-        if (targets.size() >= 1) {
+        if (!targets.isEmpty()) {
             this.allowedModes = 0;
             setMode((byte) 0);
             controller.invalidate();
@@ -30,7 +30,7 @@ public class WallShareablePart extends MultiBlockPart {
             return;
         }
 
-        targets.add(new WeakTargetRef<IMultiBlockController>(IMultiBlockController.class, true));
+        targets.add(new WeakTargetRef<>(IMultiBlockController.class, true));
     }
 
     @Override

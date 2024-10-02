@@ -1952,7 +1952,7 @@ public enum MetaTileEntityIDs {
 
     public final int ID;
 
-    private MetaTileEntityIDs(int ID) {
+    MetaTileEntityIDs(int ID) {
         this.ID = ID;
     }
 }
