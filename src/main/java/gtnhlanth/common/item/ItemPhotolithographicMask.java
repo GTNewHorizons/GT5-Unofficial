@@ -10,8 +10,8 @@ import gtnhlanth.Tags;
 
 public class ItemPhotolithographicMask extends Item implements ICanFocus {
 
-    private String name;
-    private String descSpectrum;
+    private final String name;
+    private final String descSpectrum;
 
     public ItemPhotolithographicMask(String name, int maxDamage, String descSpectrum) {
         super();

@@ -466,7 +466,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
         }
 
-        isOK = isOK && this.mMaintenanceHatches.size() == 1 && energyHatches.size() >= 1;
+        isOK = isOK && this.mMaintenanceHatches.size() == 1 && !energyHatches.isEmpty();
         if (isOK) {
             this.activatePiston();
             return true;

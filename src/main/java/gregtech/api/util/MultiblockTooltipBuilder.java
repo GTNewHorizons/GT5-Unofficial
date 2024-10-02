@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -118,9 +119,7 @@ public class MultiblockTooltipBuilder {
      */
 
     public MultiblockTooltipBuilder addInfoAll(String... infoStrings) {
-        for (String str : infoStrings) {
-            iLines.add(str);
-        }
+        iLines.addAll(Arrays.asList(infoStrings));
         return this;
     }
 

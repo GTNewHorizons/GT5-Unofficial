@@ -24,7 +24,7 @@ public class NBTUtils {
     public static ItemStack[] readItemsFromNBT(ItemStack itemstack) {
         NBTTagCompound tNBT = getNBT(itemstack);
         final NBTTagList list = tNBT.getTagList("Items", 10);
-        ItemStack inventory[] = new ItemStack[list.tagCount()];
+        ItemStack[] inventory = new ItemStack[list.tagCount()];
         for (int i = 0; i < list.tagCount(); i++) {
             final NBTTagCompound data = list.getCompoundTagAt(i);
             final int slot = data.getInteger("Slot");
@@ -125,10 +125,7 @@ public class NBTUtils {
 
     public static boolean hasKey(ItemStack stack, String key) {
         final NBTTagCompound itemData = getNBT(stack);
-        if (itemData.hasKey(key)) {
-            return true;
-        }
-        return false;
+        return itemData.hasKey(key);
     }
 
     public static boolean createIntegerTagCompound(ItemStack rStack, String tagName, String keyName, int keyValue) {
@@ -144,9 +141,7 @@ public class NBTUtils {
         NBTTagCompound aNBT = getNBT(aStack);
         if (aNBT != null && hasKey(aStack, tagName)) {
             aNBT = aNBT.getCompoundTag(tagName);
-            if (aNBT != null) {
-                return aNBT;
-            }
+            return aNBT;
         }
         return null;
     }

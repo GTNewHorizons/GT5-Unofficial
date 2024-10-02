@@ -22,7 +22,7 @@ import gregtech.common.blocks.TileEntityOres;
  */
 public class DetravScannerCommand implements ICommand {
 
-    private List aliases;
+    private final List aliases;
 
     public DetravScannerCommand() {
         this.aliases = new ArrayList<String>();
@@ -57,7 +57,7 @@ public class DetravScannerCommand implements ICommand {
             }
 
             for (i++; i < args.length; i++) {
-                String temp = (String) strs.get(strs.size() - 1);
+                String temp = strs.get(strs.size() - 1);
                 temp = temp + " " + args[i];
                 temp = temp.replace("\"", "");
                 strs.set(strs.size() - 1, temp);

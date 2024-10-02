@@ -266,8 +266,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
          * In previous versions, a saw used to go in the controller slot. We do not want an update to stop processing of
          * a machine set up like this. Instead, a sapling is placed in this slot at the start of the next operation.
          */
-        if (aStack.getItem() instanceof MetaGeneratedTool01) return true;
-        return false;
+        return aStack.getItem() instanceof MetaGeneratedTool01;
     }
 
     @Override

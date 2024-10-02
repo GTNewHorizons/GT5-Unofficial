@@ -577,10 +577,8 @@ public class BioRecipes {
 
     private static void recipeFermentationBase() {
         processFermentationOreDict();
-        ArrayList<ItemStack> aFruitVege = mList_Master_FruitVege;
-        ArrayList<ItemStack> aSeeds = mList_Master_Seeds;
         ArrayList<ItemStack> aMap = OreDictionary.getOres("cropSugarbeet");
-        for (ItemStack a : aFruitVege) {
+        for (ItemStack a : mList_Master_FruitVege) {
             if (aMap.contains(a)) {
                 continue;
             }
@@ -596,7 +594,7 @@ public class BioRecipes {
 
             }
         }
-        for (ItemStack a : aSeeds) {
+        for (ItemStack a : mList_Master_Seeds) {
             if (ItemUtils.checkForInvalidItems(a)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(getBioChip(3), ItemUtils.getSimpleStack(a, 20))

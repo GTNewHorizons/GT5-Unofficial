@@ -243,7 +243,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
             && mCasingAmount >= 128
             && itemPipeTier >= 0
-            && mEnergyHatches.size() >= 1
+            && !mEnergyHatches.isEmpty()
             && mMufflerHatches.size() == 1;
     }
 
@@ -294,8 +294,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
-        return build;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @SideOnly(Side.CLIENT)

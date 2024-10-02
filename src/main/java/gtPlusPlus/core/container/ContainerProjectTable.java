@@ -178,15 +178,11 @@ public class ContainerProjectTable extends Container {
     }
 
     public ItemStack getOutputContent() {
-        ItemStack output = this.craftResult.getStackInSlot(0);
-        if (output != null) {
-            return output;
-        }
-        return null;
+        return this.craftResult.getStackInSlot(0);
     }
 
     public ItemStack[] getInputComponents() {
-        ItemStack inputs[] = new ItemStack[9];
+        ItemStack[] inputs = new ItemStack[9];
         for (int r = 0; r < this.craftMatrix.getSizeInventory(); r++) {
             ItemStack temp = this.craftMatrix.getStackInSlot(r);
             inputs[r] = temp;

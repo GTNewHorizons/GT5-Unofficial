@@ -44,6 +44,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
@@ -310,8 +311,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             return false;
         }
         if (glassTier >= VoltageIndex.UMV) return true;
-        for (int i = 0; i < this.mEnergyHatches.size(); ++i)
-            if (this.mEnergyHatches.get(i).mTier > glassTier) return false;
+        for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+            if (mEnergyHatch.mTier > glassTier) {
+                return false;
+            }
+        }
 
         return mCasingAmount >= (100 + mWidth * 23);
     }

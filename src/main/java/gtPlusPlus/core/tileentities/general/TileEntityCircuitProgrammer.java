@@ -48,9 +48,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
     public final boolean hasCircuitToConfigure() {
         for (ItemStack i : this.getInventory()
             .getInventory()) {
-            if (i == null) {
-                continue;
-            } else {
+            if (i != null) {
                 return true;
             }
         }
@@ -66,10 +64,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
             .getInventory()
             .clone();
         // Check if there is output in slot.
-        Boolean hasOutput = false;
-        if (aInputs[25] != null) {
-            hasOutput = true;
-        }
+        boolean hasOutput = aInputs[25] != null;
         ArrayList<Integer> aValidSlots = new ArrayList<>();
         int aSlotCount = 0;
         for (ItemStack i : aInputs) {
@@ -127,7 +122,6 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                     }
                 }
             }
-            continue;
         }
         return false;
     }
@@ -144,7 +138,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                 }
                 this.tickCount++;
             }
-        } catch (final Throwable t) {}
+        } catch (final Throwable ignored) {}
     }
 
     public boolean anyPlayerInRange() {
@@ -283,7 +277,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 
     @Override
     public boolean hasCustomInventoryName() {
-        return (this.customName != null) && !this.customName.equals("");
+        return (this.customName != null) && !this.customName.isEmpty();
     }
 
     @Override

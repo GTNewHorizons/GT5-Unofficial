@@ -129,9 +129,9 @@ public class WorldgenStone extends GTWorldgen {
             }
         }
 
-        boolean result = stones.size() != 0;
+        boolean result = !stones.isEmpty();
         // Now process each oreseed vs this requested chunk
-        for (; stones.size() != 0; stones.remove(0)) {
+        for (; !stones.isEmpty(); stones.remove(0)) {
             int x = stones.get(0).mX * 16;
             int z = stones.get(0).mZ * 16;
 

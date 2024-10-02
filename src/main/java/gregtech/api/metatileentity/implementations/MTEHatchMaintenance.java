@@ -272,7 +272,6 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                                 aStack.stackSize = 0;
                             } else {
                                 aStack.stackSize -= amt;
-                                amt = 0;
                                 break;
                             }
                         }

@@ -19,10 +19,7 @@ public class FileUtils {
     private static final Charset utf8 = StandardCharsets.UTF_8;
 
     public static boolean doesFileExist(File f) {
-        if (f != null && f.exists() && !f.isDirectory()) {
-            return true;
-        }
-        return false;
+        return f != null && f.exists() && !f.isDirectory();
     }
 
     public static File createFile(String path, String filename, String extension) {

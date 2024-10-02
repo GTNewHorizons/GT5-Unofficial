@@ -46,7 +46,8 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedstoneCircuitBlock, IAddUIWidgets {
 
-    public int mGate = 0, mGateData[] = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+    public int mGate = 0;
+    public int[] mGateData = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
     public boolean bOutput = true;
 
     public MTERedstoneCircuitBlock(int aID) {
@@ -159,8 +160,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     public void switchGateForward(boolean aShift) {
         try {
             Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
-            ArrayList<Integer> tList = new ArrayList<>();
-            tList.addAll(tKeys);
+            ArrayList<Integer> tList = new ArrayList<>(tKeys);
             if (tList.size() <= 0) return;
             Collections.sort(tList);
             if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
@@ -177,8 +177,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
     public void switchGateBackward(boolean aShift) {
         try {
             Set<Integer> tKeys = GregTechAPI.sCircuitryBehaviors.keySet();
-            ArrayList<Integer> tList = new ArrayList<>();
-            tList.addAll(tKeys);
+            ArrayList<Integer> tList = new ArrayList<>(tKeys);
             if (tList.size() <= 0) return;
             Collections.sort(tList);
             if (!GregTechAPI.sCircuitryBehaviors.containsKey(mGate)) mGate = tList.get(0);
@@ -324,7 +323,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         if (sCoversItems.isEmpty()) {
             initCovers();
         }
-        return sCoversItems.get(Integer.valueOf(aStack));
+        return sCoversItems.get(aStack);
     }
 
     @Override

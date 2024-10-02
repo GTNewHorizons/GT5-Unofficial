@@ -152,7 +152,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                                 .build(),
                             buildHatchAdder(MTEElementalDuplicator.class)
                                 .hatchClass(MTEHatchElementalDataOrbHolder.class)
-                                .shouldReject(x -> x.mReplicatorDataOrbHatches.size() >= 1)
+                                .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
                                 .adder(MTEElementalDuplicator::addDataOrbHatch)
                                 .casingIndex(getCasingTextureIndex())
                                 .dot(1)
@@ -172,7 +172,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0);
-        if (this.mInputHatches.size() != 1 || (this.mOutputBusses.size() != 1 && this.mOutputHatches.size() != 0)
+        if (this.mInputHatches.size() != 1 || (this.mOutputBusses.size() != 1 && !this.mOutputHatches.isEmpty())
             || this.mEnergyHatches.size() != 1
             || this.mReplicatorDataOrbHatches.size() != 1) {
             return false;

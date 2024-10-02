@@ -25,7 +25,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 
-@SuppressWarnings("deprecation")
 public class MTELargeTurbineGas extends MTELargerTurbineBase {
 
     private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
@@ -110,7 +109,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
 
     @Override
     long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
-        if (aFluids.size() >= 1) {
+        if (!aFluids.isEmpty()) {
             int tEU = 0;
             int actualOptimalFlow = 0;
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
@@ -153,15 +152,12 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
             if (totalFlow <= 0) return 0;
             tEU = GTUtility.safeInt((long) totalFlow * fuelValue);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GTUtility.safeInt(
-                    (long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
                 tEU *= efficiency;
-                tEU = GTUtility.safeInt(
-                    (long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
             }
+            tEU = GTUtility
+                .safeInt((long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
 
             return tEU;
         }

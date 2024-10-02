@@ -20,7 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Logic of the Item logic for the controller. This is controlling all of the inventories.
- * 
+ *
  * @author BlueWeabo
  */
 public class ControllerItemLogic {
@@ -53,7 +53,7 @@ public class ControllerItemLogic {
 
     @Nullable
     private Pair<UUID, ItemInventoryLogic> checkIfInventoryExistsAsUnallocated(@Nonnull ItemInventoryLogic inventory) {
-        if (unallocatedInventories.size() == 0) {
+        if (unallocatedInventories.isEmpty()) {
             return null;
         }
         return unallocatedInventories.stream()

@@ -223,8 +223,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                     M.getComposites()
                         .get(irc)
                         .getDustStack(r))) {
-                final int xr = r;
-                if ((xr > 0) && (xr <= 100)) {
+                if (r > 0 && r <= 100) {
                     final int mathmatics = (r * 1000);
                     componentsFluid = FluidUtils.getFluidStack(
                         M.getComposites()

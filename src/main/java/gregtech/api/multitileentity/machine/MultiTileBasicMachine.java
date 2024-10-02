@@ -247,10 +247,9 @@ public abstract class MultiTileBasicMachine<P extends MuTEProcessingLogic<P>> ex
         super.copyTextures();
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
             .getReferenceTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (!(tCanonicalTileEntity instanceof MultiTileBasicMachine)) {
+        if (!(tCanonicalTileEntity instanceof MultiTileBasicMachine canonicalEntity)) {
             return;
         }
-        final MultiTileBasicMachine canonicalEntity = (MultiTileBasicMachine) tCanonicalTileEntity;
         activeOverlayTexture = canonicalEntity.activeOverlayTexture;
         activeOverlayGlowTexture = canonicalEntity.activeOverlayGlowTexture;
         inactiveOverlayTexture = canonicalEntity.inactiveOverlayTexture;

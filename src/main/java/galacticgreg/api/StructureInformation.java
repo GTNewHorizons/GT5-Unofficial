@@ -9,9 +9,9 @@ import galacticgreg.api.Enums.TargetBlockPosition;
  */
 public class StructureInformation {
 
-    private Vec3 _mCoordinates;
-    private TargetBlockPosition _mBlockPosition;
-    private BlockMetaComb _mBlockMetaComb;
+    private final Vec3 _mCoordinates;
+    private final TargetBlockPosition _mBlockPosition;
+    private final BlockMetaComb _mBlockMetaComb;
 
     public TargetBlockPosition getBlockPosition() {
         return _mBlockPosition;
