@@ -89,7 +89,7 @@ public class RendererMessage implements IMessage {
                     spark.y + spark.yR + 0.5F,
                     spark.z + spark.zR + 0.5F,
                     world.rand.nextLong(),
-                    6,
+                    10,
                     0.5F,
                     8);
                 bolt.defaultFractal();
