@@ -61,7 +61,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -220,7 +219,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         .addElement(
             'W',
             ofChain(ofBlock(Blocks.water, 0), ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
-        .addElement('F', new IStructureElementNoPlacement<MTEMegaIndustrialApiary>() {
+        .addElement('F', new IStructureElementNoPlacement<>() {
 
             @Override
             public boolean check(MTEMegaIndustrialApiary mte, World world, int x, int y, int z) {
@@ -249,7 +248,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public void onRemoval() {
         super.onRemoval();
         if (getBaseMetaTileEntity().isServerSide())
-            tryOutputAll(mStorage, s -> Collections.singletonList(((BeeSimulator) s).queenStack));
+            tryOutputAll(mStorage, s -> Collections.singletonList(s.queenStack));
     }
 
     private boolean isCacheDirty = true;
@@ -468,9 +467,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     if (mStorage.size() >= mMaxSlots) break;
                 }
                 updateSlots();
-            } else if (mPrimaryMode == 1 && mStorage.size() > 0) {
-                if (tryOutputAll(mStorage, s -> Collections.singletonList(((BeeSimulator) s).queenStack)))
-                    isCacheDirty = true;
+            } else if (mPrimaryMode == 1 && !mStorage.isEmpty()) {
+                if (tryOutputAll(mStorage, s -> Collections.singletonList(s.queenStack))) isCacheDirty = true;
             } else return CheckRecipeResultRegistry.NO_RECIPE;
             mMaxProgresstime = 10;
             mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -595,7 +593,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         if (this.mGlassTier < 10 && !this.mEnergyHatches.isEmpty())
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches)
                 if (this.mGlassTier < hatchEnergy.mTier) return false;
-        boolean valid = this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() >= 1 && this.mCasing >= 190;
+        boolean valid = this.mMaintenanceHatches.size() == 1 && !this.mEnergyHatches.isEmpty() && this.mCasing >= 190;
         flowersError = valid && !this.flowersCheck.isEmpty();
         if (valid) updateMaxSlots();
         return valid;
@@ -1181,7 +1179,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_MEGA_INDUSTRIAL_APIARY_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_MEGA_INDUSTRIAL_APIARY_LOOP;
     }
 }

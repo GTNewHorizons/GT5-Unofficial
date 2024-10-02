@@ -1937,7 +1937,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     JUPITER(GTBranchDefinition.PLANET, "Jupiter", false, new Color(0x734B2E), new Color(0xD0CBC4), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.JUPITER), 0.35f);
         beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CallistoStoneDust", 1, 0), 0.05f);
-        beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CallistoIceDust", 1, 0), 0.05f);
+        beeSpecies.addSpecialty(Materials.CallistoIce.getDust(1), 0.05f);
         beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.IoStoneDust", 1, 0), 0.05f);
         beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EuropaStoneDust", 1, 0), 0.05f);
         beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EuropaIceDust", 1, 0), 0.05f);
@@ -1991,7 +1991,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     CALLISTO(GTBranchDefinition.PLANET, "Callisto", true, new Color(0x0f333d), new Color(0x0d84a5), beeSpecies -> {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.JUPITER), 0.25f);
         beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CallistoStoneDust", 1, 0), 0.10f);
-        beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CallistoIceDust", 1, 0), 0.10f);
+        beeSpecies.addSpecialty(Materials.CallistoIce.getDust(1), 0.10f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();

@@ -31,7 +31,7 @@ public class BasicBlock extends BlockContainer {
         this.setStepSound(soundTypeMetal);
     }
 
-    public static enum BlockTypes {
+    public enum BlockTypes {
 
         STANDARD("blockBlock", "pickaxe", soundTypeMetal),
         FRAME("blockFrameGt", "wrench", soundTypeMetal),

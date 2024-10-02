@@ -97,7 +97,7 @@ public class BWWordGenerator implements IWorldGenerator {
             if (!BWWordGenerator.WorldGenContainer.mGenerated.contains(centerChunk)
                 && this.surroundingChunksLoaded(xCenter, zCenter)) {
                 BWWordGenerator.WorldGenContainer.mGenerated.add(centerChunk);
-                if (BWOreLayer.sWeight > 0 && BWOreLayer.sList.size() > 0) {
+                if (BWOreLayer.sWeight > 0 && !BWOreLayer.sList.isEmpty()) {
                     boolean temp = true;
                     int tRandomWeight;
                     for (int i = 0; i < 256 && temp; i++) {

@@ -26,126 +26,126 @@ public interface IToolStats extends gregtech.api.interfaces.IToolStats {
      * Called when aPlayer crafts this Tool
      */
     @Override
-    public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer);
+    void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer);
 
     /**
      * Called when this gets added to a Tool Item
      */
-    public void onStatsAddedToTool(GTMetaTool gregtech_MetaTool, int aID);
+    void onStatsAddedToTool(GTMetaTool gregtech_MetaTool, int aID);
 
     /**
      * @return Damage the Tool receives when breaking a Block. 100 is one Damage Point (or 100 EU).
      */
     @Override
-    public int getToolDamagePerBlockBreak();
+    int getToolDamagePerBlockBreak();
 
     /**
      * @return Damage the Tool receives when converting the drops of a Block. 100 is one Damage Point (or 100 EU).
      */
     @Override
-    public int getToolDamagePerDropConversion();
+    int getToolDamagePerDropConversion();
 
     /**
      * @return Damage the Tool receives when being used as Container Item. 100 is one use, however it is usually 8 times
      *         more than normal.
      */
     @Override
-    public int getToolDamagePerContainerCraft();
+    int getToolDamagePerContainerCraft();
 
     /**
      * @return Damage the Tool receives when being used as Weapon, 200 is the normal Value, 100 for actual Weapons.
      */
     @Override
-    public int getToolDamagePerEntityAttack();
+    int getToolDamagePerEntityAttack();
 
     /**
      * @return Basic Quality of the Tool, 0 is normal. If increased, it will increase the general quality of all Tools
      *         of this Type. Decreasing is also possible.
      */
     @Override
-    public int getBaseQuality();
+    int getBaseQuality();
 
     /**
      * @return The Damage Bonus for this Type of Tool against Mobs. 1.0F is normal punch.
      */
     @Override
-    public float getBaseDamage();
+    float getBaseDamage();
 
     /**
      * @return This gets the Hurt Resistance time for Entities getting hit. (always does 1 as minimum)
      */
     @Override
-    public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity);
+    int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity);
 
     /**
      * @return This is a multiplier for the Tool Speed. 1.0F = no special Speed.
      */
     @Override
-    public float getSpeedMultiplier();
+    float getSpeedMultiplier();
 
     /**
      * @return This is a multiplier for the Tool Speed. 1.0F = no special Durability.
      */
     @Override
-    public float getMaxDurabilityMultiplier();
+    float getMaxDurabilityMultiplier();
 
     @Override
-    public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity);
+    DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity);
 
     @Override
-    public String getMiningSound();
+    String getMiningSound();
 
     @Override
-    public String getCraftingSound();
+    String getCraftingSound();
 
     @Override
-    public String getEntityHitSound();
+    String getEntityHitSound();
 
     @Override
-    public String getBreakingSound();
+    String getBreakingSound();
 
     @Override
-    public Enchantment[] getEnchantments(ItemStack aStack);
+    Enchantment[] getEnchantments(ItemStack aStack);
 
     @Override
-    public int[] getEnchantmentLevels(ItemStack aStack);
+    int[] getEnchantmentLevels(ItemStack aStack);
 
     /**
      * @return If this Tool can be used for blocking Damage like a Sword.
      */
     @Override
-    public boolean canBlock();
+    boolean canBlock();
 
     /**
      * @return If this Tool can be used as an RC Crowbar.
      */
     @Override
-    public boolean isCrowbar();
+    boolean isCrowbar();
 
     /**
      * @return If this Tool can be used as an BC Wrench.
      */
     @Override
-    public boolean isWrench();
+    boolean isWrench();
 
     /**
      * @return If this Tool can be used as Weapon i.e. if that is the main purpose.
      */
     @Override
-    public boolean isWeapon();
+    boolean isWeapon();
 
     /**
      * @return If this Tool is a Ranged Weapon. Return false at isWeapon unless you have a Blade attached to your
      *         Bow/Gun or something
      */
     @Override
-    public boolean isRangedWeapon();
+    boolean isRangedWeapon();
 
     /**
      * @return If this Tool can be used as Weapon i.e. if that is the main purpose.
      */
     @Override
-    public boolean isMiningTool();
+    boolean isMiningTool();
 
     /**
      * aBlock.getHarvestTool(aMetaData) can return the following Values for example. "axe", "pickaxe", "sword",
@@ -156,7 +156,7 @@ public interface IToolStats extends gregtech.api.interfaces.IToolStats {
      *         check.
      */
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData);
+    boolean isMinableBlock(Block aBlock, byte aMetaData);
 
     /**
      * This lets you modify the Drop List, when this type of Tool has been used.
@@ -164,38 +164,36 @@ public interface IToolStats extends gregtech.api.interfaces.IToolStats {
      * @return the Amount of modified Items.
      */
     @Override
-    public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
+    int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY,
+        int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
 
     /**
      * @return Returns a broken Version of the Item.
      */
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack);
+    ItemStack getBrokenItem(ItemStack aStack);
 
     /**
      * @return the Damage actually done to the Mob.
      */
     @Override
-    public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-        EntityPlayer aPlayer);
+    float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
 
     /**
      * @return the Damage actually done to the Mob.
      */
     @Override
-    public float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-        EntityPlayer aPlayer);
+    float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer);
 
     @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack);
+    IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack);
 
     @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack);
+    short[] getRGBa(boolean aIsToolHead, ItemStack aStack);
 
     /**
      * Called when this gets added to a Tool Item
      */
     @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID);
+    void onStatsAddedToTool(MetaGeneratedTool aItem, int aID);
 }

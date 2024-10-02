@@ -41,6 +41,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.api.aspects.Aspect;
@@ -80,9 +81,9 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected int nodeIncrease = 0;
 
     private IStructureDefinition<MTELargeEssentiaSmeltery> multiDefinition = null;
-    private ArrayList<MTEEssentiaOutputHatch> mEssentiaOutputHatches = new ArrayList<>();
+    private final ArrayList<MTEEssentiaOutputHatch> mEssentiaOutputHatches = new ArrayList<>();
     private int pTier = 0;
-    private XSTR xstr = new XSTR();
+    private final XSTR xstr = new XSTR();
 
     public MTELargeEssentiaSmeltery(String name) {
         super(name);
@@ -130,8 +131,8 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         if (len > MAX_STRUCTURE_LENGTH - 1 || len < DEFAULT_STRUCTURE_LENGTH) return false;
         if (!structureCheck_EM(STRUCTURE_PIECE_LAST, 2, 2, -len - 1)) return false;
         if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
-            && this.mInputBusses.size() >= 1
-            && this.mEssentiaOutputHatches.size() >= 1) {
+            && !this.mInputBusses.isEmpty()
+            && !this.mEssentiaOutputHatches.isEmpty()) {
             this.mParallel = Math.floor(this.mParallel += 1 << this.pTier);
             return true;
         }
@@ -287,7 +288,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     private boolean addEssentiaOutputHatchToMachineList(MTEEssentiaOutputHatch aTileEntity) {
         if (aTileEntity instanceof MTEEssentiaOutputHatch) {
-            return this.mEssentiaOutputHatches.add((MTEEssentiaOutputHatch) aTileEntity);
+            return this.mEssentiaOutputHatches.add(aTileEntity);
         }
         return false;
     }
@@ -363,14 +364,18 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         this.drainNodePower(WORLD, x, y, z);
         this.nodePower -= expectedPower();
 
-        calculatePerfectOverclockedNessMulti(
-            RECIPE_EUT,
-            (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)),
-            1,
-            Math.min(Integer.MAX_VALUE, getMaxInputEnergy_EM()));
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(RECIPE_EUT)
+            .setEUt(getMaxInputEu())
+            .setDuration(
+                (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)))
+            .setDurationDecreasePerOC(4)
+            .calculate();
+
+        useLongPower = true;
+        lEUt = -calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
 
         this.updateSlots();
-        if (this.mEUt > 0) this.mEUt = -this.mEUt;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 

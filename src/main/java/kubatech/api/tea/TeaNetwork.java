@@ -16,7 +16,7 @@ public class TeaNetwork {
     public BigInteger teaAmount = BigInteger.ZERO;
     public BigInteger teaLimit = BigInteger.valueOf(Long.MAX_VALUE);
     PlayerData owner;
-    private HashSet<TeaStorageTile> teaStorageExtenders = new HashSet<>();
+    private final HashSet<TeaStorageTile> teaStorageExtenders = new HashSet<>();
 
     public static TeaNetwork getNetwork(UUID player) {
         PlayerData p = PlayerDataManager.getPlayer(player);

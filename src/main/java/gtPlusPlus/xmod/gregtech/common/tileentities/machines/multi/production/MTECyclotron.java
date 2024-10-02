@@ -15,7 +15,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -139,8 +138,8 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
     @Override
@@ -265,7 +264,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mOutputBusses.size() > 0) {
+        if (!this.mOutputBusses.isEmpty()) {
             for (MTEHatchOutputBus g : this.mOutputBusses) {
                 if (g != null) {
                     for (ItemStack s : g.mInventory) {

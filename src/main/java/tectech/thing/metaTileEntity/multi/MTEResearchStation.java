@@ -32,7 +32,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -63,6 +62,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.recipe.TecTechRecipeMaps;
@@ -77,7 +77,6 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-@SuppressWarnings("unchecked")
 public class MTEResearchStation extends TTMultiblockBase implements ISurvivalConstructable {
 
     public static final String machine = "EM Machinery";
@@ -538,11 +537,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         super.onRightclick(aBaseMetaTileEntity, aPlayer);
 
         if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
-            try {
-                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-                clientLocale = (String) FieldUtils.readField(player, "translator", true);
-            } catch (Exception e) {
-                clientLocale = "en_US";
+            if (aPlayer instanceof EntityPlayerMPAccessor) {
+                clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
             }
         } else {
             return true;

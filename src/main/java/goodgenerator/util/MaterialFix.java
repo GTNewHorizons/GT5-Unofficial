@@ -3,7 +3,6 @@ package goodgenerator.util;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -317,12 +316,5 @@ public class MaterialFix {
                     .addTo(benderRecipes);
             }
         }
-        Materials tUHV = Materials.Longasssuperconductornameforuhvwire;
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, tUHV, 2))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stickLong, tUHV, 1))
-            .duration(Math.max(tUHV.getMass(), 1L) * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(hammerRecipes);
     }
 }

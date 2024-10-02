@@ -85,7 +85,7 @@ public class ItemBasicScrubberTurbine extends Item {
         return true;
     }
 
-    public static final long getFilterDamage(final ItemStack aStack) {
+    public static long getFilterDamage(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("BasicTurbine");
@@ -98,7 +98,7 @@ public class ItemBasicScrubberTurbine extends Item {
         return 0L;
     }
 
-    public static final boolean setFilterDamage(final ItemStack aStack, final long aDamage) {
+    public static boolean setFilterDamage(final ItemStack aStack, final long aDamage) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("BasicTurbine");
@@ -133,8 +133,7 @@ public class ItemBasicScrubberTurbine extends Item {
         }
         double currentDamage = getFilterDamage(stack);
         double meta = getMaxDurability(stack);
-        double durabilitypercent = currentDamage / meta;
-        return durabilitypercent;
+        return currentDamage / meta;
     }
 
     @Override

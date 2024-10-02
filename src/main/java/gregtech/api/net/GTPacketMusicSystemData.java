@@ -8,16 +8,16 @@ import gregtech.api.util.GTMusicSystem;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
-public class GTPacketMusicSystemData extends GTPacketNew {
+public class GTPacketMusicSystemData extends GTPacket {
 
     ByteBuf storedData;
 
     public GTPacketMusicSystemData() {
-        super(true);
+        super();
     }
 
     public GTPacketMusicSystemData(ByteBuf data) {
-        super(false);
+        super();
         this.storedData = data;
     }
 
@@ -39,7 +39,7 @@ public class GTPacketMusicSystemData extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         final int len = aData.readInt();
         final byte[] fullData = new byte[len];
         aData.readFully(fullData);

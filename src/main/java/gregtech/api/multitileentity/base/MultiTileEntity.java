@@ -52,8 +52,8 @@ import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.SyncedMultiTileEntity;
+import gregtech.api.net.GTPacket;
 import gregtech.api.net.GTPacketMultiTileEntity;
-import gregtech.api.net.GTPacketNew;
 import gregtech.api.net.data.CommonData;
 import gregtech.api.net.data.CoordinateData;
 import gregtech.api.net.data.MultiTileEntityData;
@@ -105,9 +105,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     private UUID ownerUUID = GTUtility.defaultUuid;
     private boolean lockUpgrade = false;
 
-    private final GTPacketMultiTileEntity fullPacket = new GTPacketMultiTileEntity(false);
-    private final GTPacketMultiTileEntity timedPacket = new GTPacketMultiTileEntity(false);
-    private final GTPacketMultiTileEntity graphicPacket = new GTPacketMultiTileEntity(false);
+    private final GTPacketMultiTileEntity fullPacket = new GTPacketMultiTileEntity();
+    private final GTPacketMultiTileEntity timedPacket = new GTPacketMultiTileEntity();
+    private final GTPacketMultiTileEntity graphicPacket = new GTPacketMultiTileEntity();
 
     public MultiTileEntity(boolean isTicking) {
         this.isTicking = isTicking;
@@ -1016,12 +1016,11 @@ public abstract class MultiTileEntity extends CoverableTileEntity
 
     @Override
     public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
-        if (aCheckPrecicely || privateAccess() || (ownerName.length() == 0))
-            if ((ownerName.length() == 0) && isServerSide()) {
-                setOwnerName(aPlayer.getDisplayName());
-                setOwnerUuid(aPlayer.getUniqueID());
-            } else return !privateAccess() || aPlayer.getDisplayName()
-                .equals("Player") || ownerName.equals("Player") || ownerName.equals(aPlayer.getDisplayName());
+        if (aCheckPrecicely || privateAccess() || (ownerName.isEmpty())) if ((ownerName.isEmpty()) && isServerSide()) {
+            setOwnerName(aPlayer.getDisplayName());
+            setOwnerUuid(aPlayer.getUniqueID());
+        } else return !privateAccess() || aPlayer.getDisplayName()
+            .equals("Player") || ownerName.equals("Player") || ownerName.equals(aPlayer.getDisplayName());
         return true;
     }
 
@@ -1034,15 +1033,13 @@ public abstract class MultiTileEntity extends CoverableTileEntity
      * @return a Packet containing all Data which has to be synchronised to the Client - Override as needed
      */
     public GTPacketMultiTileEntity getClientDataPacket() {
-
-        final GTPacketMultiTileEntity packet = new GTPacketMultiTileEntity(false);
-        return packet;
+        return new GTPacketMultiTileEntity();
     }
 
     @Override
     public void sendClientData(EntityPlayerMP aPlayer) {
         if (worldObj == null || worldObj.isRemote) return;
-        final GTPacketNew tPacket = getClientDataPacket();
+        final GTPacket tPacket = getClientDataPacket();
         if (aPlayer == null) {
             GTValues.NW.sendPacketToAllPlayersInRange(worldObj, tPacket, getXCoord(), getZCoord());
         } else {

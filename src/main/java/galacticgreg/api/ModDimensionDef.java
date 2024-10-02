@@ -15,15 +15,15 @@ import net.minecraft.world.chunk.IChunkProvider;
 public class ModDimensionDef {
 
     private static final String STR_NOTDEFINED = "iiznotdefined";
-    private String _mDimensionName;
+    private final String _mDimensionName;
     private String _mInternalDimIdentifier;
-    private String _mChunkProvider;
+    private final String _mChunkProvider;
     private Enums.AirReplaceRule _mDimAirSetting;
-    private ArrayList<ModDBMDef> _mReplaceableBlocks;
+    private final ArrayList<ModDBMDef> _mReplaceableBlocks;
     private Enums.DimensionType _mDimensionType;
 
-    private List<ISpaceObjectGenerator> _mSpaceObjectsGenerators;
-    private List<ISpaceObjectGenerator> _mSpaceStructureGenerators;
+    private final List<ISpaceObjectGenerator> _mSpaceObjectsGenerators;
+    private final List<ISpaceObjectGenerator> _mSpaceStructureGenerators;
 
     // Special Planets config settings
     private int _mGroundOreMaxY = 64;
@@ -34,10 +34,10 @@ public class ModDimensionDef {
     private GTOreTypes _mStoneType;
 
     // Asteroid stuff
-    private List<AsteroidBlockComb> _mValidAsteroidMaterials;
-    private List<SpecialBlockComb> _mSpecialBlocksForAsteroids;
+    private final List<AsteroidBlockComb> _mValidAsteroidMaterials;
+    private final List<SpecialBlockComb> _mSpecialBlocksForAsteroids;
 
-    private Random _mRandom = new Random(System.currentTimeMillis());
+    private final Random _mRandom = new Random(System.currentTimeMillis());
 
     /**
      * Internal function
@@ -184,7 +184,7 @@ public class ModDimensionDef {
      * NeverReplaceAir: No matter what, if there is an Air-Block found, it will not replace it. AllowReplaceAir: This
      * will generate Ores in Stones (defined by addBlockDefinition()) and air if found OnlyReplaceAir : This will not
      * generate Ores in solid blocks, but only in air
-     *
+     * <p>
      * Note that "OnlyReplaceAir" is a special setting if you have a dimension that is not defined as "Asteroids" but
      * you still need/want to generate ores in midair.
      *
@@ -206,7 +206,7 @@ public class ModDimensionDef {
     /**
      * Set a manual override for ores that shall be generated. This setting is ignored if getIsAsteroidDimension()
      * returns true
-     *
+     * <p>
      * For example, on GalactiCraft Mars, this value is set to GTOreTypes.RedGranite, because it matches the color
      * better. If you don't set anything here, it will generate regular stone-ores.
      *
@@ -336,7 +336,7 @@ public class ModDimensionDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Do not call this function by yourself. Ever. It will cause explosions, water to blood, death of firstborn,...
      * Seriously, don't do it.
      */
@@ -351,7 +351,7 @@ public class ModDimensionDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Check if pBlock can be replaced by an ore
      *
      * @param pBlock
@@ -380,13 +380,13 @@ public class ModDimensionDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Randomly select one material out of all defined materials
      *
      * @return
      */
     public AsteroidBlockComb getRandomAsteroidMaterial() {
-        if (_mValidAsteroidMaterials.size() == 0) return null;
+        if (_mValidAsteroidMaterials.isEmpty()) return null;
 
         if (_mValidAsteroidMaterials.size() == 1) return _mValidAsteroidMaterials.get(0);
         else {
@@ -396,13 +396,13 @@ public class ModDimensionDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Randomly select one special block to be placed in the asteroids
      *
      * @return
      */
     public SpecialBlockComb getRandomSpecialAsteroidBlock() {
-        if (_mSpecialBlocksForAsteroids.size() == 0) return null;
+        if (_mSpecialBlocksForAsteroids.isEmpty()) return null;
 
         if (_mSpecialBlocksForAsteroids.size() == 1) return _mSpecialBlocksForAsteroids.get(0);
         else {

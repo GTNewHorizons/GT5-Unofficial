@@ -4,7 +4,7 @@ import gregtech.api.enums.TextureSet;
 
 public class CustomTextureSet extends TextureSet {
 
-    public static enum TextureSets {
+    public enum TextureSets {
 
         REFINED(),
         GEM_A(),
@@ -13,7 +13,7 @@ public class CustomTextureSet extends TextureSet {
 
         private final CustomTextureSet A;
 
-        private TextureSets() {
+        TextureSets() {
             A = new CustomTextureSet(
                 this.name()
                     .toUpperCase());

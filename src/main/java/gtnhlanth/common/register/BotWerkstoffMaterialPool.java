@@ -11,7 +11,6 @@ import bartworks.util.Pair;
 /*
  * Originally authored by botn365 under the MIT License. See BotdustriesLICENSE
  */
-@SuppressWarnings("unchecked")
 public class BotWerkstoffMaterialPool implements Runnable {
 
     public static final Werkstoff TungsticAcid = new Werkstoff(

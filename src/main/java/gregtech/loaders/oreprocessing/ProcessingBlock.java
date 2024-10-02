@@ -81,7 +81,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Water.getFluid(
@@ -93,7 +93,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
@@ -105,7 +105,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
@@ -154,7 +154,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (tStack2 != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(aStack)
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1))
                 .itemOutputs(tStack2)
                 .duration(5 * SECONDS)
                 .eut(24)
@@ -179,8 +179,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(compressorRecipes);
         }
 
-        switch (aMaterial.mName) {
-            case "Mercury" -> System.err.println(
+        if (aMaterial.mName.equals("Mercury")) {
+            System.err.println(
                 "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
         }
     }

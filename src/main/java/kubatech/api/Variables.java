@@ -51,7 +51,6 @@ public class Variables {
         + EnumChatFormatting.DARK_BLUE
         + "Lib"
         + EnumChatFormatting.RESET
-        + ""
         + EnumChatFormatting.GRAY
         + " Hologram Projector on the Controller!";
 

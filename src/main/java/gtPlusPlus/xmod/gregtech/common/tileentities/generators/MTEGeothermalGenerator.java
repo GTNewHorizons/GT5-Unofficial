@@ -27,7 +27,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     public int mEfficiency;
 
     public MTEGeothermalGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires Pahoehoe Lava or Normal Lava as Fuel", new ITexture[0]);
+        super(aID, aName, aNameRegional, aTier, "Requires Pahoehoe Lava or Normal Lava as Fuel");
         this.setEfficiency();
     }
 

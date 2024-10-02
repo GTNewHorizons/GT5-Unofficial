@@ -33,7 +33,7 @@ import gregtech.api.render.TextureFactory;
 
 public class MTENaquadahReactor extends MTEBasicGenerator {
 
-    private int mEfficiency;
+    private final int mEfficiency;
 
     public MTENaquadahReactor(int aID, String aName, String[] aDescription, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, aDescription);

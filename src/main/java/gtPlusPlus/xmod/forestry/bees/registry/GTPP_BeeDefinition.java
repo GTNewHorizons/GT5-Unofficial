@@ -184,8 +184,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
             case GTPP_Bees.GREGTECH -> "gregtech.species" + name;
             default -> "forestry.species" + name;
         };
-        IAlleleBeeSpecies ret = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
-        return ret;
+        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
     }
 
     private void setSpeciesProperties(GTPPAlleleBeeSpecies species2) {

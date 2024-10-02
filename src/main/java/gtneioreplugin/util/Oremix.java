@@ -78,7 +78,7 @@ public class Oremix implements Comparable<Oremix> {
 
     @Override
     public int compareTo(Oremix ore) {
-        return ore.oreMixName.compareTo(ore.oreMixName);
+        return this.oreMixName.compareTo(ore.oreMixName);
     }
 
     public static String getCsvHeader() {
