@@ -239,8 +239,6 @@ public class AdditionalRecipes {
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1000))
                         .duration(25 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
-                        .ignoreCollision()
-                        .fake()
                         .addTo(bioLabRecipes);
                 }
             }
