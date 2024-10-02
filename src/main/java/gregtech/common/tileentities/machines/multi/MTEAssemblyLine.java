@@ -15,7 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -439,7 +439,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         if (GTUtility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
             rList.add(mInventory[1]);
         }
-        for (MTEHatchDataAccess tHatch : filterValidMTEs(mDataAccessHatches)) {
+        for (MTEHatchDataAccess tHatch : validMTEList(mDataAccessHatches)) {
             rList.addAll(tHatch.getInventoryItems(stack -> isCorrectDataItem(stack, state)));
         }
         return rList;

@@ -10,6 +10,6 @@ public interface ISmartInputHatch {
     // Have the contents of the hatch changed since the last check?
     boolean justUpdated();
 
-    public boolean doFastRecipeCheck();
+    boolean doFastRecipeCheck();
 
 }

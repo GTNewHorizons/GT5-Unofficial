@@ -4,48 +4,35 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gtPlusPlus.api.interfaces.IPlugin;
+import gregtech.asm.GTCorePlugin;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.plugin.fixes.interfaces.IBugFix;
-import gtPlusPlus.preloader.PreloaderCore;
 
 // TODO move this as a mixin in hodgepodge
-public class VanillaBedHeightFix implements IBugFix {
+public class VanillaBedHeightFix {
 
     private final Method mSleepInBedAt;
-    private final IPlugin mParent;
 
-    public VanillaBedHeightFix(IPlugin minstance) {
-        mParent = minstance;
-        Method m;
-        if (!PreloaderCore.DEV_ENVIRONMENT) {
-            m = ReflectionUtils.getMethod(EntityPlayer.class, "func_71018_a", int.class, int.class, int.class);
-        } else {
-            m = ReflectionUtils.getMethod(
-                net.minecraft.entity.player.EntityPlayer.class,
-                "sleepInBedAt",
+    public VanillaBedHeightFix() {
+        Method m = null;
+        try {
+            m = EntityPlayer.class.getDeclaredMethod(
+                GTCorePlugin.isDevEnv() ? "sleepInBedAt" : "func_71018_a",
                 int.class,
                 int.class,
                 int.class);
-        }
+        } catch (NoSuchMethodException ignored) {}
         if (m != null) {
             mSleepInBedAt = m;
-            mParent.log("Registering Bed Height Fix.");
-            Utils.registerEvent(this);
+            Logger.INFO("Registering Bed Height Fix.");
+            MinecraftForge.EVENT_BUS.register(this);
         } else {
             mSleepInBedAt = null;
         }
-    }
-
-    @Override
-    public boolean isFixValid() {
-        return mSleepInBedAt != null;
     }
 
     /**
@@ -57,7 +44,7 @@ public class VanillaBedHeightFix implements IBugFix {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerSleepInBed(PlayerSleepInBedEvent evt) {
         Logger.WARNING("Sleep Event Detected. Player is sleeping at Y: " + evt.y);
-        if (evt.y <= 0 && isFixValid()) {
+        if (evt.y <= 0) {
             int correctY = 256 + evt.y;
             if (correctY <= 0) {
                 Logger.WARNING(
@@ -78,9 +65,6 @@ public class VanillaBedHeightFix implements IBugFix {
                     Logger.WARNING("Encountered an error trying to sleep.");
                 }
             }
-        } else if (!isFixValid()) {
-            Logger.WARNING(
-                "Method sleepInBedAt was not found in EntityPlayer (wrong MC and/or Forge version?), unable to fix");
         }
     }
 }

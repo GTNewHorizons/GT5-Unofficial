@@ -149,13 +149,10 @@ public class MTETesseractTerminal extends MTEBasicTank {
                 .getOwnerName() != null
                 && !this.getBaseMetaTileEntity()
                     .getOwnerName()
-                    .equals("")) {
+                    .isEmpty()) {
                 if (this.getBaseMetaTileEntity()
                     .getOwnerName()
-                    .toLowerCase()
-                    .equals(
-                        aPlayer.getDisplayName()
-                            .toLowerCase())) {
+                    .equalsIgnoreCase(aPlayer.getDisplayName())) {
                     this.mOwner = PlayerUtils.getPlayersUUIDByName(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
@@ -194,11 +191,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                 }
                 PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
                 if (this.getTesseract(this.mFrequency, false) != null) {
-                    PlayerUtils.messagePlayer(
-                        aPlayer,
-                        new StringBuilder().append(EnumChatFormatting.GREEN)
-                            .append(" (Connected)")
-                            .toString());
+                    PlayerUtils.messagePlayer(aPlayer, EnumChatFormatting.GREEN + " (Connected)");
                 }
             }
         } else if (aPlayer.getUniqueID()
@@ -250,9 +243,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                     aPlayer,
                     "Frequency: " + this.mFrequency
                         + (this.getTesseract(this.mFrequency, false) == null ? ""
-                            : new StringBuilder().append(EnumChatFormatting.GREEN)
-                                .append(" (Connected)")
-                                .toString()));
+                            : EnumChatFormatting.GREEN + " (Connected)"));
             }
         } else if (aPlayer.getUniqueID()
             .compareTo(this.mOwner) != 0) {
@@ -275,10 +266,8 @@ public class MTETesseractTerminal extends MTEBasicTank {
             return null;
         }
         if (rTesseract.mFrequency != aFrequency) {
-            TesseractHelper.setTerminalOwnershipByPlayer(
-                PlayerUtils.getPlayerOnServerFromUUID(mOwner),
-                Integer.valueOf(aFrequency),
-                null);
+            TesseractHelper
+                .setTerminalOwnershipByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency, null);
             return null;
         }
         if (!rTesseract.isValidTesseractGenerator(
@@ -539,7 +528,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
                     this.getBaseMetaTileEntity()
                         .decreaseStoredEnergyUnits(128, false);
                 }
-            } else if (this.mDidWork == true) {
+            } else if (this.mDidWork) {
                 this.mDidWork = false;
                 this.getBaseMetaTileEntity()
                     .issueBlockUpdate();
@@ -623,7 +612,7 @@ public class MTETesseractTerminal extends MTEBasicTank {
             .getOwnerName() != null
             && !this.getBaseMetaTileEntity()
                 .getOwnerName()
-                .equals("")) {
+                .isEmpty()) {
             this.mOwner = PlayerUtils.getPlayersUUIDByName(
                 this.getBaseMetaTileEntity()
                     .getOwnerName());

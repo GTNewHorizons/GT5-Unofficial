@@ -24,9 +24,11 @@ import static gregtech.api.enums.Materials.Tetrahedrite;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import bartworks.system.material.WerkstoffLoader;
+import bwcrossmod.galacticraft.planets.ross128ba.WorldProviderRoss128ba;
 import gregtech.api.interfaces.ISubTagContainer;
 
 public class BWWorldGenRoss128ba extends BWOreLayer {
@@ -54,6 +56,18 @@ public class BWWorldGenRoss128ba extends BWOreLayer {
     @Override
     public String getDimName() {
         return StatCollector.translateToLocal("moon.Ross128ba");
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public boolean isGenerationAllowed(World aWorld, Class... aAllowedDimensionTypes) {
+        for (Class clazz : aAllowedDimensionTypes) {
+            if (clazz == WorldProviderRoss128ba.class) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static void init_Ores() {
@@ -157,6 +171,6 @@ public class BWWorldGenRoss128ba extends BWOreLayer {
 
     @Override
     public boolean isGenerationAllowed(String aDimName, int aDimensionType, int aAllowedDimensionType) {
-        return aDimensionType == ConfigHandler.ross128BAID;
+        return aDimensionType == Configuration.crossModInteractions.ross128BAID;
     }
 }

@@ -2,8 +2,6 @@ package gtPlusPlus.plugin.agrichem.logic;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import gtPlusPlus.api.objects.data.AutoMap;
-
 public class AlgaeGeneticData {
 
     private final int mLifespan;
@@ -24,15 +22,12 @@ public class AlgaeGeneticData {
 
     private final float mProductionSpeed;
 
-    private final AutoMap<AlgaeGrowthRequirement> mSpecialRequirements;
-
     public AlgaeGeneticData() {
-        this(true, true, true, true, (byte) 0, 1f, 1f, (byte) 30, 0, new AutoMap<>());
+        this(true, true, true, true, (byte) 0, 1f, 1f, (byte) 30, 0);
     }
 
     public AlgaeGeneticData(boolean isDominant, boolean requiresLight, boolean isSalt, boolean isFresh,
-        byte aTempTolerance, float aFertility, float aSpeed, byte aLifespan, int aGeneration,
-        AutoMap<AlgaeGrowthRequirement> aRequirements) {
+        byte aTempTolerance, float aFertility, float aSpeed, byte aLifespan, int aGeneration) {
         mIsDominant = isDominant;
         mRequiresLight = requiresLight;
         mSaltWater = isSalt;
@@ -42,7 +37,6 @@ public class AlgaeGeneticData {
         mProductionSpeed = aSpeed;
         mLifespan = aLifespan;
         mGeneration = aGeneration;
-        mSpecialRequirements = aRequirements;
     }
 
     public AlgaeGeneticData(NBTTagCompound aNBT) {
@@ -67,7 +61,6 @@ public class AlgaeGeneticData {
             mLifespan = aNBT.getByte("mLifespan");
             mGeneration = aNBT.getInteger("mGeneration");
         }
-        mSpecialRequirements = new AutoMap<>();
     }
 
     /**
@@ -107,10 +100,6 @@ public class AlgaeGeneticData {
 
     public final int getGeneration() {
         return this.mGeneration;
-    }
-
-    public final AutoMap<AlgaeGrowthRequirement> getSpecialRequirements() {
-        return this.mSpecialRequirements;
     }
 
     public NBTTagCompound writeToNBT() {

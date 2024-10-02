@@ -145,7 +145,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     }
                 })))
         .addElement('b', ofBlock(Blocks.brick_block, 0))
-        .addElement('s', new IStructureElement<MTEWindmill>() {
+        .addElement('s', new IStructureElement<>() {
 
             @Override
             public boolean check(MTEWindmill t, World world, int x, int y, int z) {
@@ -286,8 +286,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
         if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
 
-        GTRecipe tRecipe = RecipeMaps.maceratorRecipes
-            .findRecipe(this.getBaseMetaTileEntity(), false, false, V[1], null, itemStack);
+        GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+            .items(itemStack)
+            .voltage(V[1])
+            .find();
         if (tRecipe == null) {
             return false;
         }
@@ -323,7 +325,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             ItemStack tmp = this.mOutputItems[0].copy();
             tmp.stackSize = amount;
             splitStacks.add(tmp);
-            this.mOutputItems = splitStacks.toArray(new ItemStack[splitStacks.size()]);
+            this.mOutputItems = splitStacks.toArray(new ItemStack[0]);
         }
         this.mMaxProgresstime = tRecipe.mDuration * 2 * 100 * this.mMulti / this.getSpeed(this.rotorBlock);
         this.mMulti = 16;
@@ -370,11 +372,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     }
 
                     if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        aStack = null;
                         return true;
                     }
                     tHatch.setInventorySlotContents(i, null);
-                    aStack = null;
                     return false;
                 }
             }

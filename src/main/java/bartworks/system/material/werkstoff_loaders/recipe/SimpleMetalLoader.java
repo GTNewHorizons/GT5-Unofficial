@@ -14,7 +14,6 @@
 package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.OrePrefixes.block;
-import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
 import static gregtech.api.enums.OrePrefixes.foil;
 import static gregtech.api.enums.OrePrefixes.gem;
@@ -26,14 +25,13 @@ import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -90,13 +88,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     werkstoff.getRGBA(),
                     false) : TextureFactory.of(texSet.mTextures[block.mTextureIndex], werkstoff.getRGBA(), false);
                 GregTechAPI.registerCover(werkstoff.get(plate), texture, null);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(plate))
-                    .itemOutputs(werkstoff.get(dust))
-                    .duration(2 * TICKS)
-                    .eut(8)
-                    .addTo(maceratorRecipes);
 
                 return;
             }
@@ -161,16 +152,18 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(16)
                 .addTo(latheRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(werkstoff.get(foil, 4))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 1L,
-                        1L))
-                .eut(24)
-                .addTo(benderRecipes);
+            if (werkstoff != WerkstoffLoader.Fluorophlogopite) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
+                    .itemOutputs(werkstoff.get(foil, 4))
+                    .duration(
+                        (int) Math.max(
+                            werkstoff.getStats()
+                                .getMass(),
+                            1L))
+                    .eut(24)
+                    .addTo(benderRecipes);
+            }
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(10))
@@ -215,35 +208,6 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         1L))
                 .eut(45)
                 .addTo(extruderRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(stickLong))
-                .itemOutputs(werkstoff.get(dust))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(stick))
-                .itemOutputs(werkstoff.get(dustSmall, 2))
-                .duration(2 * TICKS)
-                .eut(8)
-                .addTo(maceratorRecipes);
-
         }
     }
 }

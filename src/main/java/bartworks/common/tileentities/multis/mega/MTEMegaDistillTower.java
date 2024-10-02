@@ -42,7 +42,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -206,10 +206,9 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null || aTileEntity.isDead() || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput))
-            return false;
+        if (aTileEntity == null || aTileEntity.isDead()
+            || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) return false;
         while (this.mOutputHatchesByLayer.size() < this.mHeight) this.mOutputHatchesByLayer.add(new ArrayList<>());
-        MTEHatchOutput tHatch = (MTEHatchOutput) aTileEntity.getMetaTileEntity();
         tHatch.updateTexture(aBaseCasingIndex);
         return this.mOutputHatchesByLayer.get(this.mHeight - 1)
             .add(tHatch);
@@ -391,7 +390,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallel(ConfigHandler.megaMachinesMax);
+        return new ProcessingLogic().setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     @Override

@@ -176,6 +176,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
             if (mGlassTier < 10 && energyHatch.getTierForStructure() > mGlassTier) {
                 mStructureBadGlassTier = true;
+                break;
             }
         }
 
@@ -200,11 +201,12 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        super.setProcessingLogicPower(logic);
-        logic.setAvailableAmperage(mEnergyHatches.size());
-        logic.setEuModifier((float) (getEUMultiplier()));
+        logic.setAmperageOC(true);
+        logic.setAvailableVoltage(this.getMaxInputEu());
+        logic.setAvailableAmperage(1);
+        logic.setEuModifier(getEUMultiplier());
         logic.setMaxParallel(getParallels());
-        logic.setSpeedBonus(1.0f / (float) (getSpeedBonus()));
+        logic.setSpeedBonus(1.0f / getSpeedBonus());
     }
 
     @Override
@@ -285,8 +287,10 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 (int) Math.round((1 - HEATING_COIL_EU_MULTIPLIER) * 100)
             ))
             .addInfo(String.format(
-                "Every solenoid tier gives +%d parallels",
-                (int) PARALLELS_PER_SOLENOID
+                "Every solenoid tier gives %s%d * tier%s parallels (MV is tier 2)",
+                EnumChatFormatting.ITALIC,
+                PARALLELS_PER_SOLENOID,
+                EnumChatFormatting.GRAY
             ))
             .addInfo(String.format(
                 "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
@@ -386,16 +390,15 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public String[] getInfoData() {
-        var data = new ArrayList<String>();
 
-        data.addAll(Arrays.asList(super.getInfoData()));
+        ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(String.format("Max Parallels: %s%d%s", YELLOW, getParallels(), RESET));
         data.add(String.format("Heating Coil Speed Bonus: +%s%.0f%s %%", YELLOW, getCoilSpeedBonus() * 100, RESET));
         data.add(String.format("Total Speed Multiplier: %s%.0f%s %%", YELLOW, getSpeedBonus() * 100, RESET));
         data.add(String.format("Total EU/t Multiplier: %s%.0f%s %%", YELLOW, getEUMultiplier() * 100, RESET));
 
-        return data.toArray(new String[data.size()]);
+        return data.toArray(new String[0]);
     }
 
     public int getParallels() {

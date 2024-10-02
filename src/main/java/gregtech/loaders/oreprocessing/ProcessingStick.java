@@ -29,6 +29,12 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        // Blacklist materials which are handled by Werkstoff loader
+        if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt
+            || aMaterial == Materials.Spodumene
+            || aMaterial == Materials.Calcium
+            || aMaterial == Materials.Magnesia) return;
+
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L),
@@ -55,7 +61,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
                     .fluidInputs(
                         Materials.Water.getFluid(
@@ -71,7 +77,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
                     .fluidInputs(
                         GTModHandler.getDistilledWater(
@@ -87,7 +93,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(

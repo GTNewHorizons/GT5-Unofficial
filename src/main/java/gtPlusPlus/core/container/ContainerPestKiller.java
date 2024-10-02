@@ -83,10 +83,7 @@ public class ContainerPestKiller extends Container {
     @Override
     public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
         final EntityPlayer aPlayer) {
-        boolean fluid = false;
-        if (aSlotIndex == 2) {
-            fluid = true;
-        }
+        boolean fluid = aSlotIndex == 2;
         if (!fluid) {
             return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
         } else {
@@ -111,7 +108,7 @@ public class ContainerPestKiller extends Container {
     @Override
     public ItemStack transferStackInSlot(final EntityPlayer par1EntityPlayer, final int par2) {
         ItemStack var3 = null;
-        final Slot var4 = (Slot) this.inventorySlots.get(par2);
+        final Slot var4 = this.inventorySlots.get(par2);
 
         if ((var4 != null) && var4.getHasStack()) {
             final ItemStack var5 = var4.getStack();
@@ -127,7 +124,7 @@ public class ContainerPestKiller extends Container {
              */
 
             if (var5.stackSize == 0) {
-                var4.putStack((ItemStack) null);
+                var4.putStack(null);
             } else {
                 var4.onSlotChanged();
             }
@@ -148,7 +145,7 @@ public class ContainerPestKiller extends Container {
         return super.func_94530_a(p_94530_1_, p_94530_2_);
     }
 
-    private class GT_Slot_Render extends Slot {
+    private static class GT_Slot_Render extends Slot {
 
         public final int mSlotIndex;
         public boolean mEnabled = true;

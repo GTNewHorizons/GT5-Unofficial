@@ -13,13 +13,10 @@
 
 package bartworks.system.material.CircuitGeneration;
 
-import static gregtech.api.enums.ItemList.Circuit_Board_Advanced;
-import static gregtech.api.enums.ItemList.Circuit_Board_Basic;
 import static gregtech.api.enums.ItemList.Circuit_Board_Bio;
 import static gregtech.api.enums.ItemList.Circuit_Board_Bio_Ultra;
 import static gregtech.api.enums.ItemList.Circuit_Board_Coated;
 import static gregtech.api.enums.ItemList.Circuit_Board_Coated_Basic;
-import static gregtech.api.enums.ItemList.Circuit_Board_Elite;
 import static gregtech.api.enums.ItemList.Circuit_Board_Epoxy;
 import static gregtech.api.enums.ItemList.Circuit_Board_Epoxy_Advanced;
 import static gregtech.api.enums.ItemList.Circuit_Board_Fiberglass;
@@ -149,6 +146,12 @@ public class CircuitPartLoader implements Runnable {
         }
 
         for (ItemList single : CIRCUIT_PARTS) {
+            // Skip placeholder values and maintain the ids
+            if (single == null) {
+                CircuitImprintLoader.reverseIDs--;
+                continue;
+            }
+
             if (!single.hasBeenSet()) continue;
             ItemStack itemStack = single.get(1);
             if (!GTUtility.isStackValid(itemStack)) continue;
@@ -194,9 +197,9 @@ public class CircuitPartLoader implements Runnable {
      */
     private static final List<ItemList> CIRCUIT_PARTS = Collections.unmodifiableList(
         Arrays.asList(
-            Circuit_Board_Basic,
-            Circuit_Board_Advanced,
-            Circuit_Board_Elite,
+            null,
+            null,
+            null,
             Circuit_Parts_Crystal_Chip_Elite,
             Circuit_Parts_Crystal_Chip_Master,
             Circuit_Board_Coated,

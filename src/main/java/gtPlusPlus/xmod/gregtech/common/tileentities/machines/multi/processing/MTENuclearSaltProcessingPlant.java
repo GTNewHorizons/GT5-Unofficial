@@ -32,6 +32,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -67,7 +68,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiAutoCrafter;
+        return Configuration.pollution.pollutionPerSecondNuclearSaltProcessingPlant;
     }
 
     @Override

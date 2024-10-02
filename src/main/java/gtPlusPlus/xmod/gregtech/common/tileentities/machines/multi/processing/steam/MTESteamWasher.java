@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -267,7 +266,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
-            && tCountCasing > 55
+            && tCountCasing >= 55
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -275,7 +274,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
             && tierMachineCasing == 2
-            && tCountCasing > 55
+            && tCountCasing >= 55
             && checkHatches()) {
             updateHatchTexture();
             tierMachine = 2;
@@ -293,7 +292,7 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     @Override
     public int getMaxParallelRecipes() {
-        return tierMachine == 1 ? 8 : 16;
+        return 8;
     }
 
     @Override
@@ -331,27 +330,26 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
             @Nonnull
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1.33)
-                    .setSpeedBoost(1.5);
+                    .setEUtDiscount(1.25 * tierMachine)
+                    .setSpeedBoost(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
     public int getTierRecipes() {
-        return tierMachine == 1 ? 1 : 2;
+        return 1;
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Washer")
-            .addInfo("33.3% faster than a single block steam machine would run")
-            .addInfo("Uses only 66.6% of the steam/s that a single block steam machine would use")
-            .addInfo("Bronze tier runs recipes up to LV tier")
-            .addInfo("Steel tier runs recipes up to MV tier")
-            .addInfo("Processes 8x parallel Bronze tier and 16x parallel Steel tier")
+            .addInfo("Controller Block for the Steam Purifier")
+            .addInfo("25% faster than using single block steam machines of the same pressure")
+            .addInfo("Only consumes steam at 62.5% of the L/s normally required")
+            .addInfo("Processes up to 8 items at once")
+            .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -364,13 +362,13 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
                     + EnumChatFormatting.GRAY
                     + " Any casing")
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
+            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(EnumChatFormatting.GOLD + "55-59x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
             .addStructureInfo(EnumChatFormatting.GOLD + "24x" + EnumChatFormatting.GRAY + " Any Glass")
             .addStructureInfo(EnumChatFormatting.GOLD + "12x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
+            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "55-59x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "24x" + EnumChatFormatting.GRAY + " Any Glass")
@@ -394,11 +392,10 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
-
         currenttip.add(
             StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.YELLOW
-                + tag.getInteger("tierMachine")
+                + getSteamTierTextForWaila(tag)
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.curparallelism") + ": "
@@ -443,8 +440,8 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_STEAM_WASHER_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_STEAM_WASHER_LOOP;
     }
 
     @Override

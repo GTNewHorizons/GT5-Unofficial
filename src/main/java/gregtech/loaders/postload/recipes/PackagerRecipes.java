@@ -24,13 +24,6 @@ public class PackagerRecipes implements Runnable {
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Tool_MatchBox_Full.get(1L))
-            .itemOutputs(ItemList.Tool_Matches.get(16L))
-            .duration(1 * SECONDS + 12 * TICKS)
-            .eut(16)
-            .addTo(packagerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrap.get(9), ItemList.Schematic_3by3.get(0))
             .itemOutputs(ItemList.IC2_Scrapbox.get(1))
             .duration(16 * TICKS)

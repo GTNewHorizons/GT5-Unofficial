@@ -5,7 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.List;
 
@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -77,7 +76,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     public GTRecipe mLastRecipe;
     public int para;
     protected OverclockDescriber overclockDescriber;
-    private static final ClassValue<IStructureDefinition<MTELargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<MTELargeFusionComputer>>() {
+    private static final ClassValue<IStructureDefinition<MTELargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<MTELargeFusionComputer> computeValue(Class<?> type) {
@@ -300,7 +299,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
                     long energyLimit = getSingleHatchPower();
                     List<MTEHatch> hatches = getExoticAndNormalEnergyHatchList();
-                    for (MTEHatch hatch : filterValidMTEs(hatches)) {
+                    for (MTEHatch hatch : validMTEList(hatches)) {
                         long consumableEnergy = Math.min(hatch.getEUVar(), energyLimit);
                         long receivedEnergy = Math
                             .min(consumableEnergy, maxEUStore() - aBaseMetaTileEntity.getStoredEU());
@@ -358,7 +357,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                 .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         } else {
-            soundMagic(getActivitySoundLoop());
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -570,8 +569,8 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
     @Override

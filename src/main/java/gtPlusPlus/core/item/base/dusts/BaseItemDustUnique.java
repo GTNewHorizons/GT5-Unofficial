@@ -17,6 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.StringUtils;
@@ -43,7 +44,7 @@ public class BaseItemDustUnique extends Item {
         this.setCreativeTab(tabMisc);
         this.colour = colour;
         this.materialName = materialName;
-        if (mChemicalFormula == null || mChemicalFormula.equals("") || mChemicalFormula.equals("NullFormula")) {
+        if (mChemicalFormula == null || mChemicalFormula.isEmpty() || mChemicalFormula.equals("NullFormula")) {
             this.chemicalNotation = StringUtils.subscript(materialName);
         } else {
             this.chemicalNotation = StringUtils.subscript(mChemicalFormula);
@@ -83,7 +84,7 @@ public class BaseItemDustUnique extends Item {
             temp = temp.replace("itemD", "d");
             Logger.WARNING("Generating OreDict Name: " + temp);
         }
-        if ((temp != null) && !temp.equals("")) {
+        if ((temp != null) && !temp.isEmpty()) {
             GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
         }
         registerComponent();
@@ -120,7 +121,7 @@ public class BaseItemDustUnique extends Item {
     }
 
     private String getCorrectTexture(final String pileSize) {
-        if (!GTPPCore.ConfigSwitches.useGregtechTextures) {
+        if (!Configuration.visual.useGregtechTextures) {
             if ((pileSize.equals("dust")) || (pileSize.equals("Dust"))) {
                 this.setTextureName(GTPlusPlus.ID + ":" + "dust");
             } else {
@@ -143,7 +144,7 @@ public class BaseItemDustUnique extends Item {
         if (this.sRadiation > 0) {
             list.add(GTPPCore.GT_Tooltip_Radioactive.get());
         }
-        if (this.chemicalNotation.length() > 0 && !chemicalNotation.equals("")
+        if (!this.chemicalNotation.isEmpty() && !chemicalNotation.isEmpty()
             && !chemicalNotation.equals("NullFormula")) {
             list.add(this.chemicalNotation);
         }

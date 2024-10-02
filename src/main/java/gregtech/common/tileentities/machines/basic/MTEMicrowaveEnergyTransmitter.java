@@ -42,8 +42,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.machinestats.ConfigMicrowaveEnergyTransmitter;
-import gregtech.common.config.machinestats.ConfigTeleporter;
+import gregtech.common.config.MachineStats;
 
 public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
 
@@ -148,10 +147,10 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
 
     @Override
     public void onConfigLoad() {
-        sInterDimensionalTeleportAllowed = ConfigTeleporter.interDimensionalTPAllowed;
-        mMaxLoss = Math.max(ConfigMicrowaveEnergyTransmitter.maxLoss, 11);
-        mMaxLossDistance = ConfigMicrowaveEnergyTransmitter.maxLossDistance;
-        mPassiveEnergyUse = ConfigMicrowaveEnergyTransmitter.passiveEnergyUse;
+        sInterDimensionalTeleportAllowed = MachineStats.teleporter.interDimensionalTPAllowed;
+        mMaxLoss = Math.max(MachineStats.microwaveEnergyTransmitter.maxLoss, 11);
+        mMaxLossDistance = MachineStats.microwaveEnergyTransmitter.maxLossDistance;
+        mPassiveEnergyUse = MachineStats.microwaveEnergyTransmitter.passiveEnergyUse;
     }
 
     @Override

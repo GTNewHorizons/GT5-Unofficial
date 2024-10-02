@@ -1,8 +1,9 @@
 package gtPlusPlus.core.material;
 
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.util.Utils;
@@ -42,7 +43,7 @@ public class Particle {
 
     public static final Particle UNKNOWN;
 
-    public static final AutoMap<Particle> aMap = new AutoMap<>();
+    public static final ArrayList<Particle> aMap = new ArrayList<>();
 
     static {
 
@@ -94,13 +95,13 @@ public class Particle {
         UNKNOWN = new Particle(ElementaryGroup.UNKNOWN, "Unknown");
     }
 
-    public static enum ElementaryGroup {
+    public enum ElementaryGroup {
         QUARK,
         LEPTON,
         BOSON,
         BARYON,
         MESON,
-        UNKNOWN;
+        UNKNOWN
     }
 
     public final ElementaryGroup mParticleType;
@@ -115,7 +116,7 @@ public class Particle {
         mParticleType = aParticleType;
         mParticleName = aParticleName;
         mComposition = aComposition == null ? new Particle[] { this } : aComposition;
-        aMap.put(this);
+        aMap.add(this);
     }
 
     public static ItemStack getIon(String aElementName, int aCharge) {

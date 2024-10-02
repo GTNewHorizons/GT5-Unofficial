@@ -39,7 +39,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
@@ -47,6 +47,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -178,7 +179,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().enablePerfectOverclock()
-            .setMaxParallel(ConfigHandler.megaMachinesMax);
+            .setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
     }
 
     @Override
@@ -202,8 +203,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0) || this.mMaintenanceHatches.size() != 1) return false;
 
         if (this.glassTier < 8) {
-            for (int i = 0; i < this.mExoticEnergyHatches.size(); ++i) {
-                MTEHatch hatch = this.mExoticEnergyHatches.get(i);
+            for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
                     return false;
                 }
@@ -211,8 +211,8 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
                     return false;
                 }
             }
-            for (int i = 0; i < this.mEnergyHatches.size(); ++i) {
-                if (this.glassTier < this.mEnergyHatches.get(i).mTier) {
+            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+                if (this.glassTier < mEnergyHatch.mTier) {
                     return false;
                 }
             }

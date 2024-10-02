@@ -107,12 +107,6 @@ public class ItemDrop extends Item {
         ItemStack tDrop;
 
         tDrop = getStackForType(DropType.OIL);
-        addProcessLV(
-            tDrop,
-            Materials.OilHeavy.getFluid(100L),
-            GTModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
-            3000,
-            8);
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
@@ -120,12 +114,6 @@ public class ItemDrop extends Item {
             GTModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
             30);
         tDrop = getStackForType(DropType.COOLANT);
-        addProcessLV(
-            tDrop,
-            new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
-            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 0),
-            3000,
-            8);
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
@@ -133,12 +121,6 @@ public class ItemDrop extends Item {
             GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 0),
             30);
         tDrop = getStackForType(DropType.HOT_COOLANT);
-        addProcessLV(
-            tDrop,
-            new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 100),
-            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
-            3000,
-            8);
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
@@ -153,13 +135,6 @@ public class ItemDrop extends Item {
             1500,
             48);
         tDrop = getStackForType(DropType.LAPIS);
-        addProcessLV(
-            tDrop,
-            new FluidStack(FluidRegistry.getFluid("ic2coolant"), 200),
-            GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 3),
-            5000,
-            1200,
-            2);
         RecipeManagers.squeezerManager.addRecipe(
             400,
             new ItemStack[] { tDrop },
@@ -174,17 +149,10 @@ public class ItemDrop extends Item {
             3000,
             8);
         tDrop = getStackForType(DropType.OXYGEN);
-        addProcessLV(
-            tDrop,
-            new FluidStack(FluidRegistry.getFluid("liquidoxygen"), 100),
-            GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
-            250,
-            1200,
-            8);
         RecipeManagers.squeezerManager.addRecipe(
             400,
             new ItemStack[] { tDrop },
-            new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
+            new FluidStack(FluidRegistry.getFluid("liquidoxygen"), 100),
             GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
             30);
         tDrop = getStackForType(DropType.ENDERGOO);

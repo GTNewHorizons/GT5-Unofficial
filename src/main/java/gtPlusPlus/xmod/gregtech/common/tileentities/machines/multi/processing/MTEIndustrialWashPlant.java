@@ -42,6 +42,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
@@ -59,6 +62,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -248,8 +252,8 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         if (machineMode == MACHINEMODE_CHEMBATH)
-            return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
+            return Configuration.pollution.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 
     @Override
@@ -421,5 +425,11 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_MULTI_ORE_WASHER_PLANT_LOOP;
     }
 }

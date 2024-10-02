@@ -244,6 +244,12 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return this;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
+    public final MetaGeneratedItem setSubIcons(int metaValue, int length) {
+        mIconList[metaValue] = Arrays.copyOf(mIconList[metaValue], length + 1);
+        return this;
+    }
+
     /**
      *
      * @param aMetaValue the Meta Value of the Item you want to set it to. [0 - 32765]

@@ -43,7 +43,7 @@ public class GTRecipeBuilder {
     private static final boolean DEBUG_MODE_FULL_ENERGY;
     // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.invalid=true
     private static final boolean PANIC_MODE_INVALID;
-    private static final boolean DEBUG_MODE_COLLISION;
+    public static final boolean DEBUG_MODE_COLLISION;
 
     // Any stable release should be tested at least once with this: -Dgt.recipebuilder.panic.collision=true
     private static final boolean PANIC_MODE_COLLISION;
@@ -205,6 +205,30 @@ public class GTRecipeBuilder {
         }
         // place a breakpoint here to catch all these issues
         GTLog.err.print("invalid recipe");
+        new IllegalArgumentException().printStackTrace(GTLog.err);
+        if (PANIC_MODE_INVALID) {
+            throw new IllegalArgumentException("invalid recipe");
+        }
+    }
+
+    public static void handleInvalidRecipeLowFluids() {
+        if (!DEBUG_MODE_INVALID && !PANIC_MODE_INVALID) {
+            return;
+        }
+        // place a breakpoint here to catch all these issues
+        GTLog.err.println("invalid recipe: not enough input fluids");
+        new IllegalArgumentException().printStackTrace(GTLog.err);
+        if (PANIC_MODE_INVALID) {
+            throw new IllegalArgumentException("invalid recipe");
+        }
+    }
+
+    public static void handleInvalidRecipeLowItems() {
+        if (!DEBUG_MODE_INVALID && !PANIC_MODE_INVALID) {
+            return;
+        }
+        // place a breakpoint here to catch all these issues
+        GTLog.err.println("invalid recipe: not enough input items");
         new IllegalArgumentException().printStackTrace(GTLog.err);
         if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");

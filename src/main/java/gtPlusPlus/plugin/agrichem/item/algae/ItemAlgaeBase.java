@@ -17,7 +17,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.api.objects.data.AutoMap;
+import gregtech.api.util.GTLog;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.AlgaeDefinition;
 import gtPlusPlus.plugin.agrichem.IAlgalItem;
@@ -26,7 +26,6 @@ import gtPlusPlus.plugin.agrichem.logic.AlgaeGeneticData;
 public class ItemAlgaeBase extends Item implements IAlgalItem {
 
     protected IIcon base;
-    protected IIcon overlay;
 
     public ItemAlgaeBase() {
         this.setHasSubtypes(true);
@@ -90,8 +89,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 aList.add("Lifespan in days: " + mLifespan);
                 aList.add("Generation: " + mGeneration);
             }
-        } catch (Throwable t) {
-            t.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace(GTLog.err);
         }
         super.addInformation(aStack, p_77624_2_, aList, p_77624_4_);
     }
@@ -150,16 +149,12 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
 
     @Override
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (pass == 0) {
-            return this.base;
-        }
-        return this.overlay;
+        return this.base;
     }
 
     @Override
     public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(GTPlusPlus.ID + ":" + "bioscience/BasicAlgae");
-        this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "bioscience/BasicAlgae_Overlay");
+        this.base = i.registerIcon(GTPlusPlus.ID + ":bioscience/BasicAlgae");
     }
 
     public static ItemStack initNBT(ItemStack aFreshAlgae) {
@@ -171,8 +166,6 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 AlgaeGeneticData y = aItem.getSpeciesData(aFreshAlgae);
                 aNewTag = y.writeToNBT();
                 aFreshAlgae.setTagCompound(aNewTag);
-            } else {
-                aNewTag = aFreshAlgae.getTagCompound();
             }
         }
         return aFreshAlgae;
@@ -188,11 +181,9 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
         NBTTagCompound aTag;
         if (!aStack.hasTagCompound() || aStack.getTagCompound()
             .hasNoTags()) {
-            aTag = new NBTTagCompound();
             AlgaeGeneticData aGenes;
             if (aStack.getItemDamage() < 3 || aStack.getItemDamage() > 5) {
                 aGenes = new AlgaeGeneticData();
-                aTag = aGenes.writeToNBT();
             } else {
                 byte aTemp, aLifespan;
                 float aFert, aSpeed;
@@ -200,8 +191,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 int aDam = aStack.getItemDamage();
                 aTemp = (byte) (aDam == 3 ? 0 : aDam == 4 ? 2 : 1);
                 aLifespan = (byte) (aDam == 3 ? 1 : aDam == 4 ? 3f : 2f);
-                aFert = (float) (aDam == 3 ? 2f : aDam == 4 ? 1f : 1.75f);
-                aSpeed = (float) (aDam == 3 ? 1f : aDam == 4 ? 1.5f : 2f);
+                aFert = aDam == 3 ? 2f : aDam == 4 ? 1f : 1.75f;
+                aSpeed = aDam == 3 ? 1f : aDam == 4 ? 1.5f : 2f;
 
                 aGenes = new AlgaeGeneticData(
                     true,
@@ -212,10 +203,9 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                     aFert,
                     aSpeed,
                     aLifespan,
-                    0,
-                    new AutoMap<>());
-                aTag = aGenes.writeToNBT();
+                    0);
             }
+            aTag = aGenes.writeToNBT();
         } else {
             aTag = aStack.getTagCompound();
         }

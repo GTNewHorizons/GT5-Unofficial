@@ -12,9 +12,9 @@ public abstract class ItemPackage implements RunnableWithInfo<String> {
 
     public ItemPackage(boolean hasExtraLateRun) {
         // Register for late run
-        CompatHandler.mObjectsToRunInPostInit.put(this);
+        CompatHandler.mObjectsToRunInPostInit.add(this);
         if (hasExtraLateRun) {
-            CompatHandler.mObjectsToRunInOnLoadComplete.put(this);
+            CompatHandler.mObjectsToRunInOnLoadComplete.add(this);
         }
         init();
     }
@@ -53,5 +53,5 @@ public abstract class ItemPackage implements RunnableWithInfo<String> {
      */
     public boolean onLoadComplete(FMLLoadCompleteEvent event) {
         return false;
-    };
+    }
 }

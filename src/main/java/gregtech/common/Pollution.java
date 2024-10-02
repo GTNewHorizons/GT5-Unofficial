@@ -107,13 +107,13 @@ public class Pollution {
             // make a snapshot of what to work on
             pollutionList = new ArrayList<>(pollutedChunks);
             // set operations per tick
-            if (pollutionList.size() > 0) operationsPerTick = Math.max(1, pollutionList.size() / cycleLen);
+            if (!pollutionList.isEmpty()) operationsPerTick = Math.max(1, pollutionList.size() / cycleLen);
             else operationsPerTick = 0; // SANity
             blank = false;
         }
 
         for (int chunksProcessed = 0; chunksProcessed < operationsPerTick; chunksProcessed++) {
-            if (pollutionList.size() == 0) break; // no more stuff to do
+            if (pollutionList.isEmpty()) break; // no more stuff to do
             ChunkCoordIntPair actualPos = pollutionList.remove(pollutionList.size() - 1); // faster
             // get pollution
             ChunkData currentData = STORAGE.get(world, actualPos);

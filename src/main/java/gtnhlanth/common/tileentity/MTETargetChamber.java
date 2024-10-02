@@ -56,9 +56,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     private static final IStructureDefinition<MTETargetChamber> STRUCTURE_DEFINITION;
 
-    private ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
-    private ArrayList<MTEBusInputFocus> mInputFocus = new ArrayList<>();
+    private final ArrayList<MTEBusInputFocus> mInputFocus = new ArrayList<>();
 
     private static final int CASING_INDEX_FRONT = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings3, 10); // Grate
     private static final int CASING_INDEX_CENTRE = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14); // Shielded
@@ -101,7 +101,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
     			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
     			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(CASING_INDEX_CENTRE).dot(4).build())
-
     			.build();
     }
     //spotless:on
@@ -448,7 +447,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + Float.toString(mEfficiency / 100.0F)
+                + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
 

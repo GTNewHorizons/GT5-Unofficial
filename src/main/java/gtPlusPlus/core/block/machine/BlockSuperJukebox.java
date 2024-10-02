@@ -1,5 +1,6 @@
 package gtPlusPlus.core.block.machine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -25,7 +26,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.inventories.InventorySuperJukebox;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -77,7 +77,7 @@ public class BlockSuperJukebox extends BlockJukebox {
         }
 
         final TileEntity te = world.getTileEntity(x, y, z);
-        if ((te != null) && (te instanceof TileEntitySuperJukebox)) {
+        if (te instanceof TileEntitySuperJukebox) {
             player.openGui(GTplusplus.instance, GuiHandler.GUI14, world, x, y, z);
             return true;
         }
@@ -315,12 +315,12 @@ public class BlockSuperJukebox extends BlockJukebox {
 
         // Determine which record to play
         public boolean selectRecordToPlayFromInventoryAndSetViaVanillaHandler() {
-            AutoMap<ItemStack> mValidRecords = new AutoMap<>();
+            ArrayList<ItemStack> mValidRecords = new ArrayList<>();
             for (ItemStack g : this.getInventory()
                 .getInventory()) {
                 if (g != null) {
                     if (g.getItem() instanceof ItemRecord) {
-                        mValidRecords.put(g);
+                        mValidRecords.add(g);
                     }
                 }
             }
@@ -328,7 +328,7 @@ public class BlockSuperJukebox extends BlockJukebox {
             Logger.INFO("b1");
             // Select First Record
             ItemStack aRecordToPlay;
-            if (mValidRecords.size() == 0) {
+            if (mValidRecords.isEmpty()) {
                 Logger.INFO("bX");
                 return false;
             } else {
@@ -399,8 +399,8 @@ public class BlockSuperJukebox extends BlockJukebox {
                     ItemStack aRecordToPlay = tileentityjukebox.func_145856_a();
                     if (aRecordToPlay != null) {
                         aWorld.playAuxSFX(1005, aX, aY, aZ, 0);
-                        aWorld.playRecord((String) null, aX, aY, aZ);
-                        tileentityjukebox.func_145857_a((ItemStack) null);
+                        aWorld.playRecord(null, aX, aY, aZ);
+                        tileentityjukebox.func_145857_a(null);
                         this.markDirty();
                     }
                 }
@@ -568,7 +568,7 @@ public class BlockSuperJukebox extends BlockJukebox {
 
         @Override
         public boolean hasCustomInventoryName() {
-            return (this.customName != null) && !this.customName.equals("");
+            return (this.customName != null) && !this.customName.isEmpty();
         }
     }
 }

@@ -13,92 +13,45 @@
 
 package bwcrossmod.cls;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Optional;
+import java.io.IOException;
 
+import alexiil.mods.load.MinecraftDisplayer;
+import alexiil.mods.load.ProgressDisplayer;
 import bartworks.system.material.Werkstoff;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
 public class CLSCompat {
 
     private CLSCompat() {}
 
     private static final long MINIMAL_UPDATE_INTERVAL = 1000 / 30; // target 30 fps
     private static long lastUpdate = 0;
-    private static Class alexiilMinecraftDisplayer;
-    private static Class alexiilProgressDisplayer;
-    private static Method displayProgress;
-    private static Field isRegisteringBartWorks;
-
-    static {
-        try {
-            alexiilMinecraftDisplayer = Class.forName("alexiil.mods.load.MinecraftDisplayer");
-            alexiilProgressDisplayer = Class.forName("alexiil.mods.load.ProgressDisplayer");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Optional.ofNullable(alexiilMinecraftDisplayer)
-            .ifPresent(e -> {
-                try {
-                    isRegisteringBartWorks = e.getField("isRegisteringBartWorks");
-                } catch (NoSuchFieldException ex) {
-                    ex.printStackTrace();
-                }
-            });
-
-        Optional.ofNullable(alexiilProgressDisplayer)
-            .ifPresent(e -> {
-                try {
-                    displayProgress = e.getMethod("displayProgress", String.class, float.class);
-                } catch (NoSuchMethodException ex) {
-                    ex.printStackTrace();
-                }
-            });
-    }
 
     public static Integer[] initCls() {
         int sizeStep;
         int sizeStep2 = 1;
-
-        try {
-            isRegisteringBartWorks.set(null, true);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
+        MinecraftDisplayer.isRegisteringBartWorks = true;
         if (Werkstoff.werkstoffHashSet.size() >= 100) sizeStep = Werkstoff.werkstoffHashSet.size() / 100 - 1;
         else sizeStep = sizeStep2 = Werkstoff.werkstoffHashSet.size();
-
         return new Integer[] { sizeStep, sizeStep2, sizeStep };
     }
 
     public static int invokeStepSize(Werkstoff werkstoff, Integer[] steps, int size) {
         --steps[0];
-
         long time = System.currentTimeMillis();
         if (time - lastUpdate >= MINIMAL_UPDATE_INTERVAL) {
             try {
-                displayProgress.invoke(null, werkstoff.getDefaultName(), (float) size / 10000);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
+                ProgressDisplayer.displayProgress(werkstoff.getDefaultName(), (float) size / 10000);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             lastUpdate = time;
         }
-
         if (steps[0] == 0 && Werkstoff.werkstoffHashSet.size() >= 100) steps[0] = steps[2];
-
         size += steps[1];
         return size;
     }
 
     public static void disableCls() {
-        try {
-            isRegisteringBartWorks.set(null, false);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        MinecraftDisplayer.isRegisteringBartWorks = false;
     }
 }

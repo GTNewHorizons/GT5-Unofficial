@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import gregtech.api.util.GTLog;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
@@ -27,7 +28,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 4;
+    private final int mTooltipID = 2;
 
     @Override
     public int getTooltipID() {
@@ -39,7 +40,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     }
 
     /**
-     * Called upon block activation (right click on the block.)
+     * Called upon block activation (right-click on the block.)
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
@@ -60,11 +61,12 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
                         mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
                     }
                 }
-            } catch (final Throwable t) {}
-
+            } catch (Exception e) {
+                e.printStackTrace(GTLog.err);
+            }
             if (!mDidScrewDriver) {
                 final TileEntity te = world.getTileEntity(x, y, z);
-                if ((te != null) && (te instanceof TileEntityCircuitProgrammer)) {
+                if (te instanceof TileEntityCircuitProgrammer) {
                     player.openGui(GTplusplus.instance, GuiHandler.GUI8, world, x, y, z);
                     return true;
                 }
@@ -141,13 +143,10 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
 
     @Override
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
-        String[] aTexData = new String[] { GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_G",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I" };
-        CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<>(aTexData) };
-        return aTextureData;
+        String[] aTexData = new String[] { GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
+            GTPlusPlus.ID + ":metro/TEXTURE_TECH_PANEL_B", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
+            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
+            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I" };
+        return (CubicObject<String>[]) new CubicObject[] { new CubicObject<>(aTexData) };
     }
 }

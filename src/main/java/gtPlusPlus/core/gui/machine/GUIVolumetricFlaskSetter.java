@@ -24,10 +24,10 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     private static final ResourceLocation mGuiTextures = new ResourceLocation(
         GTPlusPlus.ID,
         "textures/gui/VolumetricFlaskSetter.png");
-    private ContainerVolumetricFlaskSetter mContainer;
+    private final ContainerVolumetricFlaskSetter mContainer;
     private boolean mIsOpen = false;
     private GuiValueField mText;
-    private TileEntityVolumetricFlaskSetter mTile;
+    private final TileEntityVolumetricFlaskSetter mTile;
 
     public GUIVolumetricFlaskSetter(ContainerVolumetricFlaskSetter aContainer) {
         super(aContainer);
@@ -48,16 +48,16 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(final int i, final int j) {
         super.drawGuiContainerForegroundLayer(i, j);
         this.mText.drawTextBox();
-        this.fontRendererObj.drawString(I18n.format("container.VolumetricFlaskSetter", new Object[0]), 4, 3, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.VolumetricFlaskSetter"), 4, 3, 4210752);
         int aYVal = 49;
-        this.fontRendererObj.drawString(I18n.format("0 = 16l", new Object[0]), 8, aYVal, 4210752);
-        this.fontRendererObj.drawString(I18n.format("4 = 576l", new Object[0]), 64, aYVal, 4210752);
-        this.fontRendererObj.drawString(I18n.format("1 = 36l", new Object[0]), 8, aYVal += 8, 4210752);
-        this.fontRendererObj.drawString(I18n.format("5 = 720l", new Object[0]), 64, aYVal, 4210752);
-        this.fontRendererObj.drawString(I18n.format("2 = 144l", new Object[0]), 8, aYVal += 8, 4210752);
-        this.fontRendererObj.drawString(I18n.format("6 = 864l", new Object[0]), 64, aYVal, 4210752);
-        this.fontRendererObj.drawString(I18n.format("3 = 432l", new Object[0]), 8, aYVal += 8, 4210752);
-        this.fontRendererObj.drawString(I18n.format("-> = Custom", new Object[0]), 59, aYVal, 4210752);
+        this.fontRendererObj.drawString(I18n.format("0 = 16l"), 8, aYVal, 4210752);
+        this.fontRendererObj.drawString(I18n.format("4 = 576l"), 64, aYVal, 4210752);
+        this.fontRendererObj.drawString(I18n.format("1 = 36l"), 8, aYVal += 8, 4210752);
+        this.fontRendererObj.drawString(I18n.format("5 = 720l"), 64, aYVal, 4210752);
+        this.fontRendererObj.drawString(I18n.format("2 = 144l"), 8, aYVal += 8, 4210752);
+        this.fontRendererObj.drawString(I18n.format("6 = 864l"), 64, aYVal, 4210752);
+        this.fontRendererObj.drawString(I18n.format("3 = 432l"), 8, aYVal += 8, 4210752);
+        this.fontRendererObj.drawString(I18n.format("-> = Custom"), 59, aYVal, 4210752);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                 } else if (par2 == Keyboard.KEY_BACK) {
                     log("Pressed Backspace.");
                     String aCurrentText = getText();
-                    if (aCurrentText.length() > 0) {
+                    if (!aCurrentText.isEmpty()) {
                         this.mText.setText(aCurrentText.substring(0, aCurrentText.length() - 1));
                         if (getText().length() <= 0) {
                             setText(0);
@@ -137,14 +137,8 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
                 } else {
                     if (isNumber(par2) || isNumber(par1)) {
                         log("Pressed number.");
-                        if (this.mText.getText()
-                            .equals("0")) {
-                            this.mText.textboxKeyTyped(par1, par2);
-                            sendUpdateToServer();
-                        } else {
-                            this.mText.textboxKeyTyped(par1, par2);
-                            sendUpdateToServer();
-                        }
+                        this.mText.textboxKeyTyped(par1, par2);
+                        sendUpdateToServer();
                     } else {
                         log("Pressed unused key.");
                         super.keyTyped(par1, par2);
@@ -191,7 +185,7 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
     }
 
     public void sendUpdateToServer() {
-        if (getText().length() > 0) {
+        if (!getText().isEmpty()) {
             PacketHandler.sendToServer(new PacketVolumetricFlaskGui(mTile, parse(getText())));
         }
     }
@@ -211,13 +205,11 @@ public class GUIVolumetricFlaskSetter extends GuiContainer {
         this.mText.updateCursorCounter();
 
         // Check TextBox Value is correct
-        if (getText().length() > 0) {
+        if (!getText().isEmpty()) {
             int aCustomValue = parse(getText());
-            int aTileValue = ((ContainerVolumetricFlaskSetter) mContainer).mCustomValue;
-            if (mContainer != null) {
-                if (aTileValue != aCustomValue) {
-                    setText(aTileValue);
-                }
+            int aTileValue = mContainer.mCustomValue;
+            if (aTileValue != aCustomValue) {
+                setText(aTileValue);
             }
         }
     }

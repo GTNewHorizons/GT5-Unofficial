@@ -27,6 +27,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -43,13 +45,14 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.ReflectionUtil;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderAlgaeFarm;
@@ -66,7 +69,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     private static final Class<?> cofhWater;
 
     static {
-        cofhWater = ReflectionUtils.getClass("cofh.asmhooks.block.BlockWater");
+        cofhWater = ReflectionUtil.getClass("cofh.asmhooks.block.BlockWater");
     }
 
     public MTEAlgaePondBase(final int aID, final String aName, final String aNameRegional) {
@@ -180,8 +183,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
         if (checkPiece(mName, 4, 2, 0) && mCasing >= 64
             && checkMeta > 0
-            && mInputHatches.size() >= 1
-            && mOutputBusses.size() >= 1) {
+            && !mInputHatches.isEmpty()
+            && !mOutputBusses.isEmpty()) {
             mLevel = checkMeta - 1;
             for (MTEHatchInput inputHatch : mInputHatches) {
                 if (inputHatch.mTier < mLevel) {
@@ -309,7 +312,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiAlgaePond;
+        return Configuration.pollution.pollutionPerSecondMultiAlgaePond;
     }
 
     @Override
@@ -388,5 +391,11 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_ALGAE_LOOP;
     }
 }

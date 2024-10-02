@@ -316,7 +316,7 @@ public class GTOreDictUnificator {
         ItemStack[] aStacks = {};
         if (obj instanceof ItemStack) aStacks = new ItemStack[] { (ItemStack) obj };
         else if (obj instanceof ItemStack[]) aStacks = (ItemStack[]) obj;
-        else if (obj instanceof List) aStacks = (ItemStack[]) ((List<?>) obj).toArray(new ItemStack[0]);
+        else if (obj instanceof List) aStacks = ((List<?>) obj).toArray(new ItemStack[0]);
         List<ItemStack> rList = new ArrayList<>();
         for (ItemStack aStack : aStacks) {
             if (aStack == null) continue;
@@ -324,7 +324,7 @@ public class GTOreDictUnificator {
             List<ItemStack> tList = sUnificationTable.get(aStack);
             if (tList != null) {
                 for (ItemStack tStack : tList) {
-                    ItemStack tStack1 = GTUtility.copyAmount(aStack.stackSize, tStack);
+                    ItemStack tStack1 = GTUtility.copyAmountUnsafe(aStack.stackSize, tStack);
                     rList.add(tStack1);
                 }
             }
@@ -582,5 +582,9 @@ public class GTOreDictUnificator {
 
         return GTUtility.isStringValid(aName) ? Collections.unmodifiableList(OreDictionary.getOres(aName))
             : Collections.emptyList();
+    }
+
+    public static Map<String, ItemStack> getName2StackMap() {
+        return sName2StackMap;
     }
 }

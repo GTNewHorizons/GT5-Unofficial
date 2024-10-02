@@ -21,6 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
@@ -111,7 +112,7 @@ public class BaseOreComponent extends Item {
     @Override
     public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
         final boolean bool) {
-        if (this.materialName != null && !this.materialName.equals("")) {
+        if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
                 if (!this.componentMaterial.vChemicalFormula.contains("?")) {
                     list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
@@ -132,7 +133,7 @@ public class BaseOreComponent extends Item {
                 }
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
-                if (aChemicalFormula != null && aChemicalFormula.length() > 0) {
+                if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
                     list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));
                 }
             }
@@ -165,10 +166,7 @@ public class BaseOreComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        if (this.componentType.hasOverlay()) {
-            return true;
-        }
-        return false;
+        return this.componentType.hasOverlay();
     }
 
     @Override
@@ -180,7 +178,7 @@ public class BaseOreComponent extends Item {
                 this.overlay = par1IconRegister
                     .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
-        } else if (GTPPCore.ConfigSwitches.useGregtechTextures) {
+        } else if (Configuration.visual.useGregtechTextures) {
             // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
             // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
             // layer 0 texture path.");
@@ -208,16 +206,15 @@ public class BaseOreComponent extends Item {
             if (renderPass == 1) {
                 return Utils.rgbtoHexValue(230, 230, 230);
             }
-            return this.componentColour;
         } else {
-            if (renderPass == 0 && !GTPPCore.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
                 return this.componentColour;
             }
-            if (renderPass == 1 && GTPPCore.ConfigSwitches.useGregtechTextures) {
+            if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
                 return Utils.rgbtoHexValue(230, 230, 230);
             }
-            return this.componentColour;
         }
+        return this.componentColour;
     }
 
     @Override
@@ -228,7 +225,7 @@ public class BaseOreComponent extends Item {
         return this.overlay;
     }
 
-    public static enum ComponentTypes {
+    public enum ComponentTypes {
 
         DUST("dust", "", " Dust", true),
         DUSTIMPURE("dustImpure", "Impure ", " Dust", true),
@@ -244,8 +241,7 @@ public class BaseOreComponent extends Item {
         private final String DISPLAY_NAME;
         private final boolean HAS_OVERLAY;
 
-        private ComponentTypes(final String LocalName, final String prefix, final String DisplayName,
-            final boolean overlay) {
+        ComponentTypes(final String LocalName, final String prefix, final String DisplayName, final boolean overlay) {
             this.COMPONENT_NAME = LocalName;
             this.PREFIX = prefix;
             this.DISPLAY_NAME = DisplayName;

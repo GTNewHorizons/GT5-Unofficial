@@ -11,7 +11,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Set;
 
@@ -21,7 +21,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -399,7 +398,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 if (mMachine) {
                     this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                     if (this.mEnergyHatches != null) {
-                        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+                        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
                             long energyToMove = GTValues.V[tier()] / 16;
                             if (aBaseMetaTileEntity.getStoredEU() + energyToMove < maxEUStore()
                                 && tHatch.getBaseMetaTileEntity()
@@ -546,8 +545,8 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
     @Override

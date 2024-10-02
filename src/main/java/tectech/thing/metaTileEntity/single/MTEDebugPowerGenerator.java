@@ -323,7 +323,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                 .setPos(43, 4))
 
             .widget(
-                new TextWidget().setStringSupplier(() -> "TIER: " + VN[TTUtility.getTier(Math.abs(EUT))])
+                new TextWidget().setStringSupplier(() -> "TIER: " + VN[GTUtility.getTier(Math.abs(EUT))])
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 22))
 

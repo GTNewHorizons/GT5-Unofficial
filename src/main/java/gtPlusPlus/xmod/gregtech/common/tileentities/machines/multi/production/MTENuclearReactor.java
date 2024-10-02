@@ -261,7 +261,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
-            if ((mOutputHatches.size() >= 3 || canDumpFluidToME()) && mInputHatches.size() >= 1
+            if ((mOutputHatches.size() >= 3 || canDumpFluidToME()) && !mInputHatches.isEmpty()
                 && mDynamoHatches.size() == 4
                 && mMufflerHatches.size() == 4) {
                 this.turnCasingActive(false);

@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import gregtech.api.util.GTLog;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
@@ -29,7 +30,7 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 8;
+    private final int mTooltipID = 5;
 
     @Override
     public int getTooltipID() {
@@ -68,11 +69,12 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
                         mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
                     }
                 }
-            } catch (final Throwable t) {}
-
+            } catch (Exception e) {
+                e.printStackTrace(GTLog.err);
+            }
             if (!mDidScrewDriver) {
                 final TileEntity te = world.getTileEntity(x, y, z);
-                if ((te != null) && (te instanceof TileEntityVolumetricFlaskSetter aTile)) {
+                if (te instanceof TileEntityVolumetricFlaskSetter) {
                     player.openGui(GTplusplus.instance, GuiHandler.GUI18, world, x, y, z);
                     // new Packet_VolumetricFlaskGui2(aTile, aTile.getCustomValue());
                     return true;
@@ -145,13 +147,10 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
 
     @Override
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
-        String[] aTexData = new String[] { GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_A",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_TECH_PANEL_C",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H" };
-        CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<>(aTexData) };
-        return aTextureData;
+        String[] aTexData = new String[] { GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
+            GTPlusPlus.ID + ":metro/TEXTURE_TECH_PANEL_C", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
+            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
+            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H" };
+        return (CubicObject<String>[]) new CubicObject[] { new CubicObject<>(aTexData) };
     }
 }

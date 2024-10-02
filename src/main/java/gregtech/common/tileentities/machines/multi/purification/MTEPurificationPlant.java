@@ -338,11 +338,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         }
 
         // using nano forge method of detecting hatches.
-        if (!checkExoticAndNormalEnergyHatches()) {
-            return false;
-        }
-
-        return true;
+        return checkExoticAndNormalEnergyHatches();
     }
 
     private boolean checkHatches() {

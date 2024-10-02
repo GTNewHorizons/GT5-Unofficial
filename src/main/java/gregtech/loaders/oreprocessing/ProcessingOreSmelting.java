@@ -34,6 +34,10 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         GTModHandler.removeFurnaceSmelting(aStack);
         if (!aMaterial.contains(SubTag.NO_SMELTING)) {
             if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
@@ -116,14 +120,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(aMaterial.getDust(2), Materials.Quartzite.getDust(4))
-                                    .itemOutputs(
-                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                        Materials.Ferrosilite.getDustSmall(outputAmount))
-                                    .duration(2 * MINUTES)
-                                    .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(primitiveBlastRecipes);
-                                GTValues.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2), Materials.NetherQuartz.getDust(2))
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
@@ -187,7 +183,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     1L);
                 if ((tStack == null) && (!aMaterial.contains(SubTag.SMELTING_TO_GEM)))
                     tStack = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
-                GTModHandler.addSmeltingRecipe(aStack, tStack);
+                GTModHandler.addSmeltingRecipe(GTOreDictUnificator.get(aPrefix, aMaterial, 1L), tStack);
             }
         }
     }

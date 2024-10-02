@@ -228,34 +228,6 @@ public class VacuumFreezerRecipes implements Runnable {
                 .duration(1 * SECONDS + 8 * TICKS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Reactor_Coolant_Sp_1.getWildcard(1L))
-                .itemOutputs(ItemList.Reactor_Coolant_Sp_1.get(1L))
-                .duration(1 * MINUTES + 30 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Reactor_Coolant_Sp_2.getWildcard(1L))
-                .itemOutputs(ItemList.Reactor_Coolant_Sp_2.get(1L))
-                .duration(3 * MINUTES)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Reactor_Coolant_Sp_3.getWildcard(1L))
-                .itemOutputs(ItemList.Reactor_Coolant_Sp_3.get(1L))
-                .duration(4 * MINUTES + 30 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Reactor_Coolant_Sp_6.getWildcard(1L))
-                .itemOutputs(ItemList.Reactor_Coolant_Sp_6.get(1L))
-                .duration(9 * MINUTES)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
         }
 
         // Freeze superconductors.
@@ -365,34 +337,6 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium, 1L))
-                .duration(5 * TICKS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Nitrogen, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1L))
-                .duration(1 * SECONDS + 8 * TICKS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Oxygen, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
-                .duration(1 * SECONDS + 12 * TICKS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Radon, 1L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Radon, 1L))
-                .duration(5 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(vacuumFreezerRecipes);
-
-            GTValues.RA.stdBuilder()
                 .fluidInputs(Materials.Boron.getPlasma(144L))
                 .fluidOutputs(Materials.Boron.getMolten(144L))
                 .duration(1 * SECONDS)
@@ -435,7 +379,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .fluidInputs(MaterialsUEVplus.Creon.getPlasma(1296L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.Mellion, 9L))
             .fluidOutputs(MaterialsUEVplus.Creon.getMolten(1296L))
-            .duration(40 * SECONDS)
+            .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(vacuumFreezerRecipes);
     }

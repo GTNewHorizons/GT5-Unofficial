@@ -42,7 +42,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -168,7 +168,7 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
 
     @Override
     public int getPollutionPerSecond(ItemStack arg0) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiPackager;
+        return Configuration.pollution.pollutionPerSecondMultiPackager;
     }
 
     @Override

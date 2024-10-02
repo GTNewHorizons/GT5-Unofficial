@@ -11,7 +11,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -61,7 +61,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import tectech.TecTech;
+import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.spark.RendererMessage;
 import tectech.mechanics.spark.ThaumSpark;
@@ -89,32 +89,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         .build();
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
     private int sparkCount = 10;
-
-    // region variables
-    private static final int transferRadiusTowerFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TOWER; // Default
-                                                                                                            // is 32
-    private static final int transferRadiusTransceiverFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_TRANSCEIVER; // Default
-                                                                                                                        // is
-                                                                                                                        // 16
-    private static final int transferRadiusCoverUltimateFromConfig = TecTech.configTecTech.TESLA_MULTI_RANGE_COVER; // Default
-                                                                                                                    // is
-                                                                                                                    // 16
-    private static final int plasmaRangeMultiT1 = TecTech.configTecTech.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1; // Default
-                                                                                                                 // is 2
-    private static final int plasmaRangeMultiT2 = TecTech.configTecTech.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2; // Default
-                                                                                                                 // is 4
-    private static final int heliumUse = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM; // Default is
-                                                                                                        // 100
-    private static final int nitrogenUse = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN; // Default
-                                                                                                            // is 50
-    private static final int radonUse = TecTech.configTecTech.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON; // Default is 50
-    private static final boolean visualEffect = TecTech.configTecTech.TESLA_VISUAL_EFFECT; // Default is true
-    // Default is {1, 1, 1}
-    private static final int[] plasmaTierLoss = new int[] { TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T0,
-        TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T1, TecTech.configTecTech.TESLA_MULTI_LOSS_PER_BLOCK_T2 };
-    private static final float overDriveLoss = TecTech.configTecTech.TESLA_MULTI_LOSS_FACTOR_OVERDRIVE; // Default is
-                                                                                                        // 0.25F;
-    private static final boolean doFluidOutput = TecTech.configTecTech.TESLA_MULTI_GAS_OUTPUT; // Default is false
 
     // Face icons
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -295,8 +269,8 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
         value = (int) value;
         if (value < 0) return LedStatus.STATUS_TOO_LOW;
-        if (value > transferRadiusTowerFromConfig) return LedStatus.STATUS_HIGH;
-        if (value < transferRadiusTowerFromConfig) return LedStatus.STATUS_LOW;
+        if (value > ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER) return LedStatus.STATUS_HIGH;
+        if (value < ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER) return LedStatus.STATUS_LOW;
         return LedStatus.STATUS_OK;
     };
     private static final IStatusFunction<MTETeslaTower> TRANSFER_RADIUS_TRANSCEIVER_STATUS = (base, p) -> {
@@ -304,8 +278,8 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
         value = (int) value;
         if (value < 0) return LedStatus.STATUS_TOO_LOW;
-        if (value > transferRadiusTransceiverFromConfig) return LedStatus.STATUS_HIGH;
-        if (value < transferRadiusTransceiverFromConfig) return LedStatus.STATUS_LOW;
+        if (value > ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER) return LedStatus.STATUS_HIGH;
+        if (value < ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER) return LedStatus.STATUS_LOW;
         return LedStatus.STATUS_OK;
     };
     private static final IStatusFunction<MTETeslaTower> TRANSFER_RADIUS_COVER_ULTIMATE_STATUS = (base, p) -> {
@@ -313,8 +287,8 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         if (Double.isNaN(value)) return LedStatus.STATUS_WRONG;
         value = (int) value;
         if (value < 0) return LedStatus.STATUS_TOO_LOW;
-        if (value > transferRadiusCoverUltimateFromConfig) return LedStatus.STATUS_HIGH;
-        if (value < transferRadiusCoverUltimateFromConfig) return LedStatus.STATUS_LOW;
+        if (value > ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER) return LedStatus.STATUS_HIGH;
+        if (value < ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER) return LedStatus.STATUS_LOW;
         return LedStatus.STATUS_OK;
     };
     private static final IStatusFunction<MTETeslaTower> OUTPUT_VOLTAGE_OR_CURRENT_STATUS = (base, p) -> {
@@ -394,10 +368,10 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         int plasmaBoost;
         switch (plasmaTier) {
             case 2:
-                plasmaBoost = plasmaRangeMultiT2;
+                plasmaBoost = ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T2;
                 break;
             case 1:
-                plasmaBoost = plasmaRangeMultiT1;
+                plasmaBoost = ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COEFFICIENT_PLASMA_T1;
                 break;
             default:
                 plasmaBoost = 1;
@@ -421,27 +395,24 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         for (MTEHatchInput fluidHatch : mInputHatches) {
             if (fluidHatch.mFluid != null) {
                 if (fluidHatch.mFluid.isFluidEqual(Materials.Helium.getPlasma(1))
-                    && fluidHatch.mFluid.amount >= heliumUse) {
-                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - heliumUse;
-                    if (doFluidOutput) {
-                        mOutputFluidsQueue = new FluidStack[] { Materials.Helium.getGas(heliumUse) };
-                    }
+                    && fluidHatch.mFluid.amount >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM) {
+                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
+                        - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;
+
                     plasmaTier = 1;
                     return;
-                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))
-                    && fluidHatch.mFluid.amount >= nitrogenUse) {
-                        fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - nitrogenUse;
-                        if (doFluidOutput) {
-                            mOutputFluidsQueue = new FluidStack[] { Materials.Nitrogen.getGas(nitrogenUse) };
-                        }
+                } else if (fluidHatch.mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && fluidHatch.mFluid.amount
+                    >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN) {
+                        fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
+                            - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN;
+
                         plasmaTier = 1;
                         return;
-                    } else if (fluidHatch.mFluid.isFluidEqual(Materials.Radon.getPlasma(1))
-                        && fluidHatch.mFluid.amount >= radonUse) {
-                            fluidHatch.mFluid.amount = fluidHatch.mFluid.amount - radonUse;
-                            if (doFluidOutput) {
-                                mOutputFluidsQueue = new FluidStack[] { Materials.Radon.getGas(radonUse) };
-                            }
+                    } else if (fluidHatch.mFluid.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidHatch.mFluid.amount
+                        >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON) {
+                            fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
+                                - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON;
+
                             plasmaTier = 2;
                             return;
                         }
@@ -457,7 +428,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(false);
         }
@@ -466,7 +437,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         mTier = -1;
 
         if (structureCheck_EM("main", 3, 16, 0)) {
-            for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+            for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
                 cap.getBaseMetaTileEntity()
                     .setActive(iGregTechTileEntity.isActive());
             }
@@ -522,7 +493,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         mMaxProgresstime = 20;
         vTier = -1;
         long[] capacitorData;
-        for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             if (cap.getCapacitors()[0] > vTier) {
                 vTier = (int) cap.getCapacitors()[0];
             }
@@ -540,7 +511,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         }
 
         outputVoltageMax = V[vTier + 1];
-        for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(true);
             capacitorData = cap.getCapacitors();
@@ -620,7 +591,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         super.onRemoval();
         if (!getBaseMetaTileEntity().isClientSide()) {
             TeslaUtil.teslaSimpleNodeSetRemove(this);
-            for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+            for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
                 cap.getBaseMetaTileEntity()
                     .setActive(false);
             }
@@ -653,18 +624,18 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         popogaSetting = hatch_1.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         transferRadiusTowerSetting = hatch_2.makeInParameter(
             0,
-            transferRadiusTowerFromConfig,
+            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
             TRANSFER_RADIUS_TOWER_SETTING_NAME,
             TRANSFER_RADIUS_TOWER_STATUS);
         popogaSetting = hatch_2.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         transferRadiusTransceiverSetting = hatch_3.makeInParameter(
             0,
-            transferRadiusTransceiverFromConfig,
+            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TRANSCEIVER,
             TRANSFER_RADIUS_TRANSCEIVER_SETTING_NAME,
             TRANSFER_RADIUS_TRANSCEIVER_STATUS);
         transferRadiusCoverUltimateSetting = hatch_3.makeInParameter(
             1,
-            transferRadiusCoverUltimateFromConfig,
+            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_COVER,
             TRANSFER_RADIUS_COVER_ULTIMATE_SETTING_NAME,
             TRANSFER_RADIUS_COVER_ULTIMATE_STATUS);
         outputVoltageSetting = hatch_4
@@ -723,7 +694,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
-        for (MTEHatchCapacitor cap : filterValidMTEs(eCapacitorHatches)) {
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(false);
         }
@@ -775,7 +746,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         outputMaxDisplay.set(Math.max(outputCurrentDisplay.get(), outputMaxDisplay.get()));
         // TODO Encapsulate the spark sender
         sparkCount--;
-        if (sparkCount == 0 && visualEffect) {
+        if (sparkCount == 0 && ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
             IGregTechTileEntity mte = getBaseMetaTileEntity();
             sparkCount = 10;
             if (!sparkList.isEmpty()) {
@@ -910,12 +881,18 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     @Override
     public int getTeslaEnergyLossPerBlock() {
-        return plasmaTierLoss[plasmaTier];
+
+        return switch (plasmaTier) {
+            case 0 -> ConfigHandler.TeslaTweaks.TESLA_MULTI_LOSS_PER_BLOCK_T0;
+            case 1 -> ConfigHandler.TeslaTweaks.TESLA_MULTI_LOSS_PER_BLOCK_T1;
+            case 2 -> ConfigHandler.TeslaTweaks.TESLA_MULTI_LOSS_PER_BLOCK_T2;
+            default -> throw new IllegalStateException();
+        };
     }
 
     @Override
     public float getTeslaOverdriveLossCoefficient() {
-        return overDriveLoss;
+        return ConfigHandler.TeslaTweaks.TESLA_MULTI_LOSS_FACTOR_OVERDRIVE;
     }
 
     @Override
