@@ -640,7 +640,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
                         GTOreDictUnificator.addToBlacklist(rStack);
-                        continue;
                     }
                 }
             }
@@ -673,7 +672,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                     if (tUseOreDict) {
                         GTOreDictUnificator.registerOre(tRandomData, rStack);
-                        continue;
                     }
                 }
             }

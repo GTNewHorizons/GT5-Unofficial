@@ -487,8 +487,6 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
                     .isFluidEqual(aFluidForInput)) {
                     return fill(ForgeDirection.UNKNOWN, aFluidForInput, true) > 0;
                 }
-            } else {
-                continue;
             }
         }
         return false;

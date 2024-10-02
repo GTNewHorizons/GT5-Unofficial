@@ -384,7 +384,7 @@ public class ZPMRubberChanges implements Runnable {
                             GTLog.out.print("Replaced recipe!: " + stack.getDisplayName() + " ");
                         }
 
-                } else continue;
+                }
             } else if (GTUtility.areStacksEqual(stack, (ItemStack) stacks[i], true)) if (!replace) return true;
             else {
                 int amount = ((ItemStack) stacks[i]).stackSize;

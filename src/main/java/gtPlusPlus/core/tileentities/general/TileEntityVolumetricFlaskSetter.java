@@ -220,7 +220,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                     }
                 }
             }
-            continue;
         }
         return false;
     }

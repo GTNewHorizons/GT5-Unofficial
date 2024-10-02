@@ -124,9 +124,7 @@ public class ThreadAspectScanner extends Thread {
                     for (ItemStack stack : group) {
                         thaumcraft.api.aspects.AspectList a = thaumcraft.common.lib.crafting.ThaumcraftCraftingManager
                             .getObjectTags(stack);
-                        if (a == null) {
-                            continue;
-                        } else {
+                        if (a != null) {
                             ArrayList<Pair<String, Integer>> aspectPairs = new ArrayList<>();
                             for (thaumcraft.api.aspects.Aspect c : a.getAspectsSortedAmount()) {
                                 if (c != null) {

@@ -148,7 +148,6 @@ public class RecipeGenBlastSmelterGTNH {
             // continue to next recipe if the Temp is too high.
             if (special > 3600) {
                 Logger.MACHINE_INFO("[ABS] Skipping ABS addition for GTNH due to temp.");
-                continue;
             } else {
                 FluidStack mMoltenStack = null;
                 int mMoltenCount = 0;

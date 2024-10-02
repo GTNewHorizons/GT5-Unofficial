@@ -256,9 +256,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         if (!aEntities.isEmpty()) {
             for (EntityLivingBase aFoundEntity : aEntities) {
                 if (aFoundEntity instanceof EntityPlayer aPlayer) {
-                    if (PlayerUtils.isCreative(aPlayer) || !PlayerUtils.canTakeDamage(aPlayer)) {
-                        continue;
-                    } else {
+                    if (!PlayerUtils.isCreative(aPlayer) && PlayerUtils.canTakeDamage(aPlayer)) {
                         if (aFoundEntity.getHealth() > 0) {
                             EntityUtils.doDamage(aFoundEntity, mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
                             if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {

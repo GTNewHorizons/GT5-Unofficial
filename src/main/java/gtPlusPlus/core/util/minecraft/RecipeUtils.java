@@ -134,7 +134,6 @@ public class RecipeUtils {
             if ((is != null) && (is.getItem() == I)) {
                 items.remove();
                 Logger.RECIPE("Remove a recipe with " + I.getUnlocalizedName() + " as output.");
-                continue;
             }
         }
         Logger.RECIPE("All recipes should be gone?");

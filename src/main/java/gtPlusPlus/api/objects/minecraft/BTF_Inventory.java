@@ -183,11 +183,7 @@ public class BTF_Inventory implements ISidedInventory {
     public boolean isEmpty() {
         for (int s = 0; s < this.getSizeInventory(); s++) {
             ItemStack slot = mInventory[s];
-            if (slot == null) {
-                continue;
-            } else {
-                return false;
-            }
+            if (slot != null) return false;
         }
         return true;
     }
