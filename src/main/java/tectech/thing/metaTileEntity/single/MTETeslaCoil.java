@@ -43,7 +43,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
         .linkedListValues()
         .build();
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
-    private int sparkCount = 10;
+    private int sparkCount = 20;
 
     private static final int transferRadiusMax = ConfigHandler.TeslaTweaks.TESLA_SINGLE_RANGE;
     private static final int transferRadiusMin = 4; // Minimum user configurable
@@ -264,7 +264,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
         // TODO Encapsulate the spark sender
         sparkCount--;
         if (sparkCount == 0) {
-            sparkCount = 10;
+            sparkCount = 20;
             if (!sparkList.isEmpty()) {
                 NetworkDispatcher.INSTANCE.sendToAllAround(
                     new RendererMessage.RendererData(sparkList),
