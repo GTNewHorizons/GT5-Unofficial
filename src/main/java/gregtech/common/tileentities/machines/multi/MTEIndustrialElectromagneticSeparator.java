@@ -270,8 +270,8 @@ public class MTEIndustrialElectromagneticSeparator
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) return false;
             if (mExoticEnergyHatches.size() > 1) return false;
-            if (mExoticEnergyHatches.get(0)
-                .maxWorkingAmperesIn() > 64) return false;
+            return mExoticEnergyHatches.get(0)
+                .maxWorkingAmperesIn() <= 64;
         }
 
         // All checks passed!

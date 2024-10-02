@@ -30,10 +30,6 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 
         @Override
         public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            int aMeta = aStack.getItemDamage();
-            if (aMeta < 10) {
-                // aList.add("Tier: "+GT_Values.VN[aMeta]);
-            }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
     }
@@ -97,9 +93,9 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         return switch (aMeta) {
             case 0 -> TexturesGtBlock.Casing_Redox_1.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
-            case 2 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-            case 3 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
-            case 4 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+            case 2 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
+            case 3 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
+            case 4 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL.getIcon();
             case 5 -> TexturesGtBlock.Casing_Material_RedSteel.getIcon();
             case 6 -> TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
             case 7 -> TexturesGtBlock.Casing_Material_Stellite.getIcon();

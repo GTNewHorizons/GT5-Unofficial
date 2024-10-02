@@ -114,20 +114,15 @@ public class ItemTeaCollection extends ItemProxy {
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
         if (!checkTeaOwner(stack, entity.getCommandSenderName())) {
             tooltipList.add(
-                EnumChatFormatting.GRAY + ""
-                    + EnumChatFormatting.BOLD
-                    + ""
+                EnumChatFormatting.GRAY.toString() + EnumChatFormatting.BOLD
                     + EnumChatFormatting.ITALIC
                     + StatCollector.translateToLocal("kubaitem.notyours"));
             return;
         }
         tooltipList.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("kubaitem.fromcollection"));
         tooltipList.add(
-            EnumChatFormatting.GRAY + ""
-                + EnumChatFormatting.BOLD
-                + ""
+            EnumChatFormatting.GRAY.toString() + EnumChatFormatting.BOLD
                 + EnumChatFormatting.ITALIC
-                + ""
                 + EnumChatFormatting.UNDERLINE
                 + StatCollector.translateToLocal("kubaitem.teacollection"));
     }
@@ -169,7 +164,7 @@ public class ItemTeaCollection extends ItemProxy {
         if (checkTeaOwner(stack, Minecraft.getMinecraft().thePlayer.getCommandSenderName())) {
             return super.getDisplayName(stack);
         }
-        return EnumChatFormatting.GOLD + "" + EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + "???????";
+        return EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "???????";
     }
 
     @Override

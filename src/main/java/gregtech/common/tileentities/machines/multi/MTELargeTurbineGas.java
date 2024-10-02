@@ -130,7 +130,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
 
     @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
-        if (aFluids.size() >= 1) {
+        if (!aFluids.isEmpty()) {
             int tEU = 0;
             int actualOptimalFlow = 0;
 

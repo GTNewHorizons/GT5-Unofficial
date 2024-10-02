@@ -183,6 +183,6 @@ public class BlockCasings8 extends BlockCasingsAbstract {
             }
         }
 
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        return Textures.BlockIcons.MACHINE_CASING_ADVANCEDGAS.getIcon();
     }
 }

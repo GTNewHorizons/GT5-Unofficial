@@ -22,7 +22,7 @@ public class PowerLogic {
     public static final int RECEIVER = 1;
     public static final int EMITTER = 2;
     public static final int BOTH = RECEIVER | EMITTER;
-    private static float wirelessChargeFactor = 0.5F;
+    private static final float wirelessChargeFactor = 0.5F;
     private long storedEnergy = 0;
     private long energyCapacity = 0;
     private long voltage = 0;

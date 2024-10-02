@@ -73,17 +73,15 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
                 fluid = null;
             }
 
-            if (this != null) {
-                FluidEvent.fireEvent(
-                    new FluidEvent.FluidDrainingEvent(
-                        fluid,
-                        this.getWorldObj(),
-                        this.xCoord,
-                        this.yCoord,
-                        this.zCoord,
-                        this.tank,
-                        0));
-            }
+            FluidEvent.fireEvent(
+                new FluidEvent.FluidDrainingEvent(
+                    fluid,
+                    this.getWorldObj(),
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    this.tank,
+                    0));
         }
         return stack;
     }

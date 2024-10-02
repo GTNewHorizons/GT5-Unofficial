@@ -14,7 +14,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -58,7 +57,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
             aPrimaryColor,
             aSecondaryColor,
             EnumRarity.common,
-            new ArrayList<String>());
+            new ArrayList<>());
     }
 
     public static void registerEntityForSpawnEgg(final int aMetaID, String parEntityToSpawnName, int aPrimaryColor,
@@ -84,7 +83,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
 
     /**
      * Callback for item usage. If the item does something special on right clicking,
-     *
+     * <p>
      * he will have one of those. Return True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
     @Override
@@ -92,91 +91,87 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
         int par5, int par6, int par7, float par8, float par9, float par10) {
         if (par3World.isRemote) {
             return true;
-        } else {
-            Block block = par3World.getBlock(par4, par5, par6);
-            par4 += Facing.offsetsXForSide[par7];
-            par5 += Facing.offsetsYForSide[par7];
-            par6 += Facing.offsetsZForSide[par7];
-            double d0 = 0.0D;
-
-            if (par7 == 1 && block.getRenderType() == 11) {
-                d0 = 0.5D;
-            }
-
-            Entity entity = spawnEntity(par1ItemStack, par3World, par4 + 0.5D, par5 + d0, par6 + 0.5D);
-
-            if (entity != null) {
-                if (entity instanceof EntityLivingBase && par1ItemStack.hasDisplayName()) {
-                    ((EntityLiving) entity).setCustomNameTag(par1ItemStack.getDisplayName());
-                }
-
-                if (!par2EntityPlayer.capabilities.isCreativeMode) {
-                    --par1ItemStack.stackSize;
-                }
-            }
-
-            return true;
         }
+        Block block = par3World.getBlock(par4, par5, par6);
+        par4 += Facing.offsetsXForSide[par7];
+        par5 += Facing.offsetsYForSide[par7];
+        par6 += Facing.offsetsZForSide[par7];
+        double d0 = 0.0D;
+
+        if (par7 == 1 && block.getRenderType() == 11) {
+            d0 = 0.5D;
+        }
+
+        Entity entity = spawnEntity(par1ItemStack, par3World, par4 + 0.5D, par5 + d0, par6 + 0.5D);
+
+        if (entity != null) {
+            if (entity instanceof EntityLivingBase && par1ItemStack.hasDisplayName()) {
+                ((EntityLiving) entity).setCustomNameTag(par1ItemStack.getDisplayName());
+            }
+
+            if (!par2EntityPlayer.capabilities.isCreativeMode) {
+                --par1ItemStack.stackSize;
+            }
+        }
+
+        return true;
     }
 
     /**
      * Called whenever this item is equipped and the right mouse button is pressed.
-     *
+     * <p>
      * Args: itemStack, world, entityPlayer
      */
     @Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
         if (par2World.isRemote) {
             return par1ItemStack;
-        } else {
-            MovingObjectPosition movingobjectposition = getMovingObjectPositionFromPlayer(
-                par2World,
-                par3EntityPlayer,
-                true);
+        }
+        MovingObjectPosition movingobjectposition = getMovingObjectPositionFromPlayer(
+            par2World,
+            par3EntityPlayer,
+            true);
 
-            if (movingobjectposition == null) {
-                return par1ItemStack;
-            } else {
-                if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                    int i = movingobjectposition.blockX;
-                    int j = movingobjectposition.blockY;
-                    int k = movingobjectposition.blockZ;
+        if (movingobjectposition != null) {
+            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                int i = movingobjectposition.blockX;
+                int j = movingobjectposition.blockY;
+                int k = movingobjectposition.blockZ;
 
-                    if (!par2World.canMineBlock(par3EntityPlayer, i, j, k)) {
-                        return par1ItemStack;
-                    }
+                if (!par2World.canMineBlock(par3EntityPlayer, i, j, k)) {
+                    return par1ItemStack;
+                }
 
-                    if (!par3EntityPlayer.canPlayerEdit(i, j, k, movingobjectposition.sideHit, par1ItemStack)) {
+                if (!par3EntityPlayer.canPlayerEdit(i, j, k, movingobjectposition.sideHit, par1ItemStack)) {
 
-                        return par1ItemStack;
-                    }
+                    return par1ItemStack;
+                }
 
-                    if (par2World.getBlock(i, j, k) instanceof BlockLiquid) {
-                        Entity entity = spawnEntity(par1ItemStack, par2World, i, j, k);
+                if (par2World.getBlock(i, j, k) instanceof BlockLiquid) {
+                    Entity entity = spawnEntity(par1ItemStack, par2World, i, j, k);
 
-                        if (entity != null) {
-                            if (entity instanceof EntityLivingBase && par1ItemStack.hasDisplayName()) {
+                    if (entity != null) {
+                        if (entity instanceof EntityLivingBase && par1ItemStack.hasDisplayName()) {
 
-                                ((EntityLiving) entity).setCustomNameTag(par1ItemStack.getDisplayName());
-                            }
+                            ((EntityLiving) entity).setCustomNameTag(par1ItemStack.getDisplayName());
+                        }
 
-                            if (!par3EntityPlayer.capabilities.isCreativeMode) {
-                                --par1ItemStack.stackSize;
-                            }
+                        if (!par3EntityPlayer.capabilities.isCreativeMode) {
+                            --par1ItemStack.stackSize;
                         }
                     }
                 }
-
-                return par1ItemStack;
             }
+
         }
+        return par1ItemStack;
     }
 
     /**
      * Spawns the creature specified by the egg's type in the location specified by
-     *
+     * <p>
      * the last three parameters. Parameters: world, entityID, x, y, z.
-     * 
+     *
      * @param par1ItemStack
      */
     public Entity spawnEntity(ItemStack par1ItemStack, World parWorld, double parX, double parY, double parZ) {
@@ -196,7 +191,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
                     MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat() * 360.0F),
                     0.0F);
                 parWorld.spawnEntityInWorld(entityToSpawn);
-                entityToSpawn.onSpawnWithEgg((IEntityLivingData) null);
+                entityToSpawn.onSpawnWithEgg(null);
                 entityToSpawn.playLivingSound();
             } else {
                 // DEBUG

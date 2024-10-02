@@ -27,7 +27,7 @@ import galacticgreg.schematics.SpaceSchematicFactory;
  */
 public class AEStorageCommand implements ICommand {
 
-    private List<String> aliases;
+    private final List<String> aliases;
 
     public AEStorageCommand() {
         this.aliases = new ArrayList<>();
@@ -52,16 +52,14 @@ public class AEStorageCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender pCommandSender, String[] pArgs) {
         try {
-            if (pCommandSender instanceof EntityPlayer) {
+            if (pCommandSender instanceof EntityPlayer tEP) {
                 if (pArgs.length < 1) return;
 
                 String tName = pArgs[0];
 
-                EntityPlayer tEP = (EntityPlayer) pCommandSender;
                 // Check if item in hand is a spatial storage cell
                 ItemStack tIS = tEP.inventory.getCurrentItem();
-                if (tIS.getItem() instanceof ItemSpatialStorageCell) {
-                    ItemSpatialStorageCell tCell = (ItemSpatialStorageCell) tIS.getItem();
+                if (tIS.getItem() instanceof ItemSpatialStorageCell tCell) {
                     World tSpatialWorld = tCell.getWorld(tIS);
                     WorldCoord storedSize = tCell.getStoredSize(tIS);
 
@@ -104,7 +102,6 @@ public class AEStorageCommand implements ICommand {
                                     // If block is a TileEntity
                                     if (bTE != null) {
                                         // Print a warning on the console
-                                        tMsg += " TE";
                                         GalacticGreg.Logger.warn(
                                             "Warning: Found TileEntity at X[%d] Y[%d] Z[%d]. NBT States are not exported!",
                                             lX,
@@ -154,8 +151,7 @@ public class AEStorageCommand implements ICommand {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender pCommandSender) {
         // Command is only enabled for actual players and only if they are OP-ed
-        if (pCommandSender instanceof EntityPlayerMP) {
-            EntityPlayerMP tEP = (EntityPlayerMP) pCommandSender;
+        if (pCommandSender instanceof EntityPlayerMP tEP) {
             return MinecraftServer.getServer()
                 .getConfigurationManager()
                 .func_152596_g(tEP.getGameProfile());

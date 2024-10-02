@@ -487,9 +487,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondaryFiller)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sandstone)) {
 
-            if (aWorld.setBlock(aX, aY, aZ, aMetaData, 0, 3)) {
-                return true;
-            }
+            return aWorld.setBlock(aX, aY, aZ, aMetaData, 0, 3);
         }
         return false;
     }

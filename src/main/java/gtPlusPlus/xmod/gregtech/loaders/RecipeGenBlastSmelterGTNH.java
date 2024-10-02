@@ -24,8 +24,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenBlastSmelterGTNH {
 
-    private static Map<String, FluidStack> mCachedIngotToFluidRegistry = new HashMap<>();
-    private static Map<String, String> mCachedHotToColdRegistry = new HashMap<>();
+    private static final Map<String, FluidStack> mCachedIngotToFluidRegistry = new HashMap<>();
+    private static final Map<String, String> mCachedHotToColdRegistry = new HashMap<>();
 
     private static synchronized void setIngotToFluid(final ItemStackData stack, final FluidStack fluid) {
         if (stack != null && fluid != null) {
@@ -40,29 +40,25 @@ public class RecipeGenBlastSmelterGTNH {
     }
 
     private static synchronized FluidStack getFluidFromIngot(final ItemStackData ingot) {
-        ItemStackData h = ingot;
-        if (mCachedIngotToFluidRegistry.containsKey(h.getUniqueDataIdentifier())) {
+        if (mCachedIngotToFluidRegistry.containsKey(ingot.getUniqueDataIdentifier())) {
             Logger.MACHINE_INFO("[ABS] mCachedIngotToFluidRegistry contains Output Ingot.");
-            return mCachedIngotToFluidRegistry.get(h.getUniqueDataIdentifier());
+            return mCachedIngotToFluidRegistry.get(ingot.getUniqueDataIdentifier());
         }
-        if (mCachedHotToColdRegistry.containsKey(h.getUniqueDataIdentifier())) {
+        if (mCachedHotToColdRegistry.containsKey(ingot.getUniqueDataIdentifier())) {
             Logger.MACHINE_INFO("[ABS] mCachedHotToColdRegistry contains Output Ingot.");
-            return mCachedIngotToFluidRegistry.get(mCachedHotToColdRegistry.get(h.getUniqueDataIdentifier()));
+            return mCachedIngotToFluidRegistry.get(mCachedHotToColdRegistry.get(ingot.getUniqueDataIdentifier()));
         }
         Logger.MACHINE_INFO("[ABS] Neither Cache contains Output Ingot.");
         return null;
     }
 
-    private static boolean isValid(final ItemStack[] inputs, final ItemStack outputs[], final FluidStack[] fluidIn,
+    private static boolean isValid(final ItemStack[] inputs, final ItemStack[] outputs, final FluidStack[] fluidIn,
         final FluidStack fluidOut) {
-        if (inputs != null && outputs != null
+        return inputs != null && outputs != null
             && fluidIn != null
             && fluidOut != null
             && inputs.length > 0
-            && outputs.length > 0) {
-            return true;
-        }
-        return false;
+            && outputs.length > 0;
     }
 
     public static synchronized boolean generateGTNHBlastSmelterRecipesFromEBFList() {
@@ -152,7 +148,6 @@ public class RecipeGenBlastSmelterGTNH {
             // continue to next recipe if the Temp is too high.
             if (special > 3600) {
                 Logger.MACHINE_INFO("[ABS] Skipping ABS addition for GTNH due to temp.");
-                continue;
             } else {
                 FluidStack mMoltenStack = null;
                 int mMoltenCount = 0;
@@ -188,7 +183,7 @@ public class RecipeGenBlastSmelterGTNH {
                         aTempList.add(recipeItem);
                     }
 
-                    inputs = aTempList.toArray(new ItemStack[aTempList.size()]);
+                    inputs = aTempList.toArray(new ItemStack[0]);
                     int inputLength = inputs.length;
                     // If no circuit was found, increase array length by 1 to add circuit at newInput[0]
                     if (!circuitFound) {

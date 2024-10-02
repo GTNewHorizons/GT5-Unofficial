@@ -285,8 +285,7 @@ public class BaseItemTickable extends CoreItem {
             return 0;
         }
         double currentDamage = getTicks(null, stack);
-        double durabilitypercent = currentDamage / getMaxTicks(stack);
-        return durabilitypercent;
+        return currentDamage / getMaxTicks(stack);
     }
 
     @SuppressWarnings("unchecked")

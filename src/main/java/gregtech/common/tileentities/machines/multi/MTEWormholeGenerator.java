@@ -322,6 +322,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
             if (energyHatch.getTierForStructure() > mGlassTier) {
                 mStructureBadGlassTier = true;
+                break;
             }
         }
 
@@ -426,12 +427,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         world.setBlock(xTarget, yTarget, zTarget, Blocks.air);
         world.setBlock(xTarget, yTarget, zTarget, GregTechAPI.sWormholeRender);
 
-        TileEntityWormhole wormhole = (TileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
-
-        if (wormhole == null) {
-            return null;
-        }
-        return wormhole;
+        return (TileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
     }
 
     @Nullable
@@ -968,18 +964,17 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     @Override
     public String[] getInfoData() {
-        List<String> data = new ArrayList<>();
 
-        data.addAll(Arrays.asList(super.getInfoData()));
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add("-----------------------");
         data.add("Wormhole Generator Info");
 
         if (mStructureBadGlassTier) {
-            data.add(String.format("§cStructure errors:§r"));
+            data.add("§cStructure errors:§r");
 
             if (mStructureBadGlassTier) {
-                data.add(String.format("§cGlass tier must be greater than or equal to the energy hatch tiers.§r"));
+                data.add("§cGlass tier must be greater than or equal to the energy hatch tiers.§r");
             }
         }
 
@@ -1056,7 +1051,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         data.add("-----------------------");
 
-        return data.toArray(new String[data.size()]);
+        return data.toArray(new String[0]);
     }
 
     @Override
@@ -1065,22 +1060,22 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
             if (mLink == null) {
-                return String.format("§7Missing Entangled Singularity§f");
+                return "§7Missing Entangled Singularity§f";
             }
 
             if (!mLink.isFormed()) {
-                return String.format("§7Wormhole status: §cNo destination§f");
+                return "§7Wormhole status: §cNo destination§f";
             }
 
             if (mLink.mWormholeEnergy > 0 && !mLink.isActive()) {
-                return String.format("§7Wormhole status: §6Decaying§f");
+                return "§7Wormhole status: §6Decaying§f";
             }
 
             if (mLink.mWormholeEnergy > 0) {
-                return String.format("§7Wormhole status: §bActive§f");
+                return "§7Wormhole status: §bActive§f";
             }
 
-            return String.format("§7Wormhole status: Inactive§f");
+            return "§7Wormhole status: Inactive§f";
         }),
 
             TextWidget.dynamicString(() -> {

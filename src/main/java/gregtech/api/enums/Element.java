@@ -287,7 +287,6 @@ public enum Element {
      * Links to every pure Material containing just this Element.
      */
     // bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsLoader reassigns it, so no final here
-    @SuppressWarnings("NonFinalFieldInEnum")
     public ArrayList<Materials> mLinkedMaterials = new ArrayList<>();
 
     /**

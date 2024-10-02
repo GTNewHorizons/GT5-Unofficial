@@ -108,7 +108,7 @@ public class GalacticGregConfig extends ConfigManager {
     public boolean serverPostInit() {
         CustomLootChest = new BlockMetaComb(Blocks.chest);
         try {
-            if (LootChestItemOverride != "") {
+            if (LootChestItemOverride != null && !LootChestItemOverride.isEmpty()) {
                 String[] args = LootChestItemOverride.split(":");
                 String tMod;
                 String tName;

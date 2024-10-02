@@ -266,7 +266,7 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     }
 
     public boolean canSeeSky() {
-        if (this.getBaseMetaTileEntity()
+        return this.getBaseMetaTileEntity()
             .getWorld()
             .canBlockSeeTheSky(
                 this.getBaseMetaTileEntity()
@@ -274,17 +274,14 @@ public class MTESolarHeater extends MTETieredMachineBlock {
                 this.getBaseMetaTileEntity()
                     .getYCoord() + 1,
                 this.getBaseMetaTileEntity()
-                    .getZCoord())) {
-            return true;
-        }
-        return false;
+                    .getZCoord());
     }
 
     public boolean setSolarTower(MTESolarTower aTowerTile) {
         if (!hasSolarTower()) {
             this.mTX = aTowerTile.getBaseMetaTileEntity()
                 .getXCoord();
-            this.mTY = (int) aTowerTile.getBaseMetaTileEntity()
+            this.mTY = aTowerTile.getBaseMetaTileEntity()
                 .getYCoord();
             this.mTZ = aTowerTile.getBaseMetaTileEntity()
                 .getZCoord();

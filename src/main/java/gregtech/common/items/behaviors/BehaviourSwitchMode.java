@@ -39,8 +39,7 @@ public class BehaviourSwitchMode extends BehaviourNone {
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         super.getAdditionalToolTips(aItem, aList, aStack);
-        if ((aItem instanceof MetaGeneratedTool)) {
-            MetaGeneratedTool itemTool = (MetaGeneratedTool) aItem;
+        if ((aItem instanceof MetaGeneratedTool itemTool)) {
             final int maxMode = itemTool.getToolMaxMode(aStack);
             if (maxMode > 1) {
                 aList.add("Shift+Rclick to change mode");

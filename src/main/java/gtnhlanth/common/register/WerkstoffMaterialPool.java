@@ -11,7 +11,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 
-@SuppressWarnings({ "unchecked" })
 public class WerkstoffMaterialPool implements Runnable {
 
     // Current highest ID = 11_499
@@ -112,6 +111,19 @@ public class WerkstoffMaterialPool implements Runnable {
             .onlyDust(),
         offsetID + 6,
         TextureSet.SET_DULL);
+
+    public static final Werkstoff Zirconium = new Werkstoff(
+        new short[] { 225, 230, 225 },
+        "Zirconium",
+        subscriptNumbers("Zr"),
+        new Werkstoff.Stats().setBlastFurnace(true),
+        Werkstoff.Types.ELEMENT,
+        new Werkstoff.GenerationFeatures().disable()
+            .onlyDust()
+            .addMetalItems(),
+        // .enforceUnification(),
+        offsetID + 7,
+        TextureSet.SET_METALLIC);
 
     public static final Werkstoff Zirconia = new Werkstoff(
         new short[] { 177, 152, 101 },

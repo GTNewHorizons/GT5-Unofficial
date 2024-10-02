@@ -12,7 +12,7 @@ public enum MaterialState {
 
     private final int STATE;
 
-    private MaterialState(final int State) {
+    MaterialState(final int State) {
         this.STATE = State;
     }
 

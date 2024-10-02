@@ -38,7 +38,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
     private int chunkX;
     private int chunkZ;
-    private int mSize = 100;
+    private final int mSize = 100;
 
     private long mProfilingStart;
     private long mProfilingEnd;
@@ -502,7 +502,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         GalacticGreg.Logger.trace("Running orevein-gen in Dim %s", pDimensionDef.getDimIdentifier());
 
         if (GTWorldgenerator.isOreChunk(pX / 16, pZ / 16)) {
-            if ((WorldgenOreLayerSpace.sWeight > 0) && (GalacticGreg.oreVeinWorldgenList.size() > 0)) {
+            if ((WorldgenOreLayerSpace.sWeight > 0) && (!GalacticGreg.oreVeinWorldgenList.isEmpty())) {
 
                 boolean temp = true;
                 int tRandomWeight;

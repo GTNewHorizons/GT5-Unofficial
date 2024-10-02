@@ -142,7 +142,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * Summary:
      * Accelerators in EIG are a bit cheaper than on the crop field (4 amps instead of 6 amps)
      * There are 4 crops touching the accelerator (1 AMP for 1 accelerated crop)
-     *
+     * <p>
      * Changing T one number down will buff the EIG twice, as well as changing it up will nerf the EIG twice
      * (That is because accelerators are imperfectly scaled in game LV = 2x, MV = 4x, ...)
      */
@@ -986,7 +986,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     ItemStack suppertItem = outputs[i];
                     if (!player.inventory.addItemStackToInventory(suppertItem)) {
                         player.entityDropItem(suppertItem, 0.f);
-                    } ;
+                    }
                 }
                 if (bucket.getSeedCount() <= 0) this.buckets.remove(bucket);
                 return ret;

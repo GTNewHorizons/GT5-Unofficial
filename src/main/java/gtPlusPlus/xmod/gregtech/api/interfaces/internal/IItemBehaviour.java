@@ -16,31 +16,31 @@ import gtPlusPlus.xmod.gregtech.api.items.GTMetaItemBase;
 
 public interface IItemBehaviour<E extends Item> {
 
-    public boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
+    boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
-    public boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+    boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide,
+        float hitX, float hitY, float hitZ);
+
+    boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
         int aSide, float hitX, float hitY, float hitZ);
 
-    public boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int aSide, float hitX, float hitY, float hitZ);
+    ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer);
 
-    public ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer);
+    List<String> getAdditionalToolTips(E aItem, List<String> aList, ItemStack aStack);
 
-    public List<String> getAdditionalToolTips(E aItem, List<String> aList, ItemStack aStack);
+    void onUpdate(E aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand);
 
-    public void onUpdate(E aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand);
+    boolean isItemStackUsable(E aItem, ItemStack aStack);
 
-    public boolean isItemStackUsable(E aItem, ItemStack aStack);
+    boolean canDispense(E aItem, IBlockSource aSource, ItemStack aStack);
 
-    public boolean canDispense(E aItem, IBlockSource aSource, ItemStack aStack);
+    ItemStack onDispense(E aItem, IBlockSource aSource, ItemStack aStack);
 
-    public ItemStack onDispense(E aItem, IBlockSource aSource, ItemStack aStack);
+    boolean hasProjectile(GTMetaItemBase aItem, SubTag aProjectileType, ItemStack aStack);
 
-    public boolean hasProjectile(GTMetaItemBase aItem, SubTag aProjectileType, ItemStack aStack);
+    EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,
+        double aZ);
 
-    public EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX,
-        double aY, double aZ);
-
-    public EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
-        EntityLivingBase aEntity, float aSpeed);
+    EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
+        float aSpeed);
 }

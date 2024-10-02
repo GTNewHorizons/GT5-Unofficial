@@ -1700,9 +1700,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     public List<MTEHatch> getExoticEnergyHatches() {
-        List<MTEHatch> list = new ArrayList<>();
-        list.addAll(eEnergyMulti);
-        return list;
+        return new ArrayList<>(eEnergyMulti);
     }
 
     @Override
@@ -1858,10 +1856,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-
         return false;
     }
 
@@ -2006,10 +2000,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-
         return false;
     }
 
@@ -2019,10 +2009,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-
         return false;
     }
 
@@ -2611,7 +2597,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         break;
                 }
                 setBackground(texture);
-                super.draw(partialTicks);
                 GL11.glColor4f(1f, 1f, 1f, 1f);
             }
         }.setOnClick((clickData, widget) -> {

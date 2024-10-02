@@ -91,7 +91,7 @@ public class MTEExoticModule extends MTEBaseModule {
     List<FluidStack> inputPlasmas = new ArrayList<>();
     private GTRecipe plasmaRecipe = null;
     private BigInteger powerForRecipe = BigInteger.ZERO;
-    private static RecipeMap<RecipeMapBackend> tempRecipeMap = RecipeMapBuilder.of("godforgeExoticTempRecipeMap")
+    private static final RecipeMap<RecipeMapBackend> tempRecipeMap = RecipeMapBuilder.of("godforgeExoticTempRecipeMap")
         .maxIO(0, 0, 7, 2)
         .disableRegisterNEI()
         .build();

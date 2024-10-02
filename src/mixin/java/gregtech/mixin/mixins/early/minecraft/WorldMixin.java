@@ -13,7 +13,6 @@ import kubatech.loaders.BlockLoader;
 @Mixin(value = World.class)
 public class WorldMixin {
 
-    @SuppressWarnings("ConstantConditions")
     @ModifyReturnValue(method = "getBlock", at = @At("RETURN"), require = 1)
     private Block gt5u$getBlockDetector(Block block, int x, int y, int z) {
         if (block == BlockLoader.kubaBlock) BlockLoader.kubaBlock.setLastBlockAccess((World) (Object) this, x, y, z);

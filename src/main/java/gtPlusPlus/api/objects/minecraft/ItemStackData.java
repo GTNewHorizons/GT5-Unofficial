@@ -19,7 +19,7 @@ public class ItemStackData {
         mDamage = aStack.getItemDamage();
         mStackSize = aStack.stackSize;
         mNBT = (aStack.getTagCompound() != null ? aStack.getTagCompound() : new NBTTagCompound());
-        mUniqueDataTag = "" + Item.getIdFromItem(mItem) + "" + mDamage + "" + mStackSize + "" + mNBT.getId();
+        mUniqueDataTag = String.valueOf(Item.getIdFromItem(mItem)) + mDamage + mStackSize + mNBT.getId();
     }
 
     public String getUniqueDataIdentifier() {
