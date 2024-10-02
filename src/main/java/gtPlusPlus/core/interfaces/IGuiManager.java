@@ -4,13 +4,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-public abstract interface IGuiManager extends IGuiManagerMiscUtils {
+public interface IGuiManager extends IGuiManagerMiscUtils {
 
-    public abstract ChunkCoordinates getCoordinates();
+    ChunkCoordinates getCoordinates();
 
-    public abstract World getWorld();
+    World getWorld();
 
-    public abstract Object getGui(EntityPlayer paramEntityPlayer, int paramInt);
+    Object getGui(EntityPlayer paramEntityPlayer, int paramInt);
 
-    public abstract Object getContainer(EntityPlayer paramEntityPlayer, int paramInt);
+    Object getContainer(EntityPlayer paramEntityPlayer, int paramInt);
 }

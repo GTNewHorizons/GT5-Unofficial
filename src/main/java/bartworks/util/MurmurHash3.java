@@ -128,11 +128,11 @@ public final class MurmurHash3 {
                 /***
                  * // optimized ascii implementation (currently slower!!! code size?) if (shift == 24) { k1 = k1 | (code
                  * << 24);
-                 *
+                 * <p>
                  * k1 *= c1; k1 = (k1 << 15) | (k1 >>> 17); // ROTL32(k1,15); k1 *= c2;
-                 *
+                 * <p>
                  * h1 ^= k1; h1 = (h1 << 13) | (h1 >>> 19); // ROTL32(h1,13); h1 = h1*5+0xe6546b64;
-                 *
+                 * <p>
                  * shift = 0; nBytes += 4; k1 = 0; } else { k1 |= code << shift; shift += 8; } continue;
                  ***/
             } else if (code < 0x800) {

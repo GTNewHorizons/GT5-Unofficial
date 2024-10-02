@@ -70,7 +70,7 @@ public interface ProcessingLogicHost<P extends MuTEProcessingLogic<P>>
 
     /**
      * DO NOT CALL YOURSELF!!!
-     *
+     * <p>
      * If you want to make the processing logic be updated call {@link #setProcessingUpdate(boolean)}
      */
     boolean needsUpdate();

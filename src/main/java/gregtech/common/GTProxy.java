@@ -1816,7 +1816,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     return;
                 }
                 String tName = aEvent.Name.replaceFirst(aPrefix.toString(), "");
-                if (tName.length() > 0) {
+                if (!tName.isEmpty()) {
                     char firstChar = tName.charAt(0);
                     if (Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
                         || firstChar == '_'
@@ -2197,7 +2197,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 && ((this.mItemDespawnTime != 6000) || (this.mMaxEqualEntitiesAtOneSpot > 0))) {
                 long startTime = System.nanoTime();
                 double oldX = 0, oldY = 0, oldZ = 0;
-                if (debugEntityCramming && (aEvent.world.loadedEntityList.size() != 0)) {
+                if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
                     GTLog.out.println("CRAM: Entity list size " + aEvent.world.loadedEntityList.size());
                 }
                 for (int i = 0; i < aEvent.world.loadedEntityList.size(); i++) {
@@ -2247,7 +2247,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                             }
                     }
                 }
-                if (debugEntityCramming && (aEvent.world.loadedEntityList.size() != 0)) {
+                if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
                     GTLog.out.println(
                         "CRAM: Time spent checking " + (System.nanoTime() - startTime) / 1000 + " microseconds");
                 }

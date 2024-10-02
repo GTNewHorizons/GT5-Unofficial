@@ -45,7 +45,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final ClassValue<IStructureDefinition<MTELargeTurbineBase>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<MTELargeTurbineBase>>() {
+    private static final ClassValue<IStructureDefinition<MTELargeTurbineBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<MTELargeTurbineBase> computeValue(Class<?> type) {
@@ -270,7 +270,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
-        String[] ret = new String[] {
+        return new String[] {
             // 8 Lines available for information panels
             tRunning + ": "
                 + EnumChatFormatting.RED
@@ -315,7 +315,6 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
                 + EnumChatFormatting.RESET
                 + " %" /* 8 */
         };
-        return ret;
     }
 
     public boolean hasTurbine() {

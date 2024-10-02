@@ -133,7 +133,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
     public int machineMode = 0;
-    public List<UITexture> machineModeIcons = new ArrayList<UITexture>();
+    public List<UITexture> machineModeIcons = new ArrayList<>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
@@ -1323,7 +1323,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         boolean outputSuccess = true;
-        // noinspection DataFlowIssue
         final List<MTEHatchOutput> filteredHatches = filterValidMTEs(mOutputHatches);
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
@@ -1511,8 +1510,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     if (items == null) {
                         continue;
                     }
-                    for (int i = 0; i < items.length; i++) {
-                        ItemStack item = items[i];
+                    for (ItemStack item : items) {
                         if (item != null) {
                             rList.add(item);
                         }

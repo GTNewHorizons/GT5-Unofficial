@@ -46,10 +46,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class AgriculturalChem extends ItemPackage {
 
-    private static boolean aBOP;
-    private static boolean aTiCon;
-
-    private static ArrayList<FluidStack> mBloodFluids = new ArrayList<>();
+    private static final ArrayList<FluidStack> mBloodFluids = new ArrayList<>();
 
     /**
      * Fluids
@@ -294,8 +291,8 @@ public class AgriculturalChem extends ItemPackage {
     public AgriculturalChem() {
         super();
 
-        aBOP = BiomesOPlenty.isModLoaded();
-        aTiCon = TinkerConstruct.isModLoaded();
+        boolean aBOP = BiomesOPlenty.isModLoaded();
+        boolean aTiCon = TinkerConstruct.isModLoaded();
 
         Logger.INFO("Adding Agrochemical content");
 

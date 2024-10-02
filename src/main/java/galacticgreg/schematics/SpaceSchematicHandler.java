@@ -47,7 +47,7 @@ public class SpaceSchematicHandler {
 
         if (_mSpaceSchematics == null) return null;
 
-        if (_mSpaceSchematics.size() == 0) return null;
+        if (_mSpaceSchematics.isEmpty()) return null;
 
         if (_mSpaceSchematics.size() == 1) {
             tChoosenSchematic = _mSpaceSchematics.get(0);
@@ -59,7 +59,7 @@ public class SpaceSchematicHandler {
             }
         }
 
-        if (tRandomIDs.size() > 0) {
+        if (!tRandomIDs.isEmpty()) {
             int tRnd = GalacticGreg.GalacticRandom.nextInt(tRandomIDs.size());
             tChoosenSchematic = _mSpaceSchematics.get(tRandomIDs.get(tRnd));
         }
@@ -128,7 +128,7 @@ public class SpaceSchematicHandler {
     public boolean SaveSpaceStructure(SpaceSchematic pSchematic) {
         try {
             if (pSchematic.getName()
-                .length() < 1) return false;
+                .isEmpty()) return false;
 
             JAXBContext tJaxbCtx = JAXBContext.newInstance(SpaceSchematic.class);
             Marshaller jaxMarsh = tJaxbCtx.createMarshaller();

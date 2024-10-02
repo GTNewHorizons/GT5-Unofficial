@@ -281,8 +281,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         boolean aAllCasings = aCasingCount1 && aCasingCount2 && aCasingCount3 && aCasingCount4;
         if (!aAllCasings || !aAllStructure
             || mMaintenanceHatches.size() != 1
-            || mInputHatches.size() < 1
-            || mOutputHatches.size() < 1) {
+            || mInputHatches.isEmpty()
+            || mOutputHatches.isEmpty()) {
             log(
                 "Bad Hatches - Solar Heaters: " + mSolarHeaters.size()
                     + ", Maint: "
@@ -486,7 +486,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                 // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
             }
         }
-        return mSolarHeaters.size() > 0;
+        return !mSolarHeaters.isEmpty();
     }
 
     private boolean addSolarHeater(IGregTechTileEntity aTileEntity, int a) {

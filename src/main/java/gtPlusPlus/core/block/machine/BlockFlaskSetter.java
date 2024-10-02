@@ -151,7 +151,6 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
             GTPlusPlus.ID + ":metro/TEXTURE_TECH_PANEL_C", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
             GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
             GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H" };
-        CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<>(aTexData) };
-        return aTextureData;
+        return (CubicObject<String>[]) new CubicObject[] { new CubicObject<>(aTexData) };
     }
 }

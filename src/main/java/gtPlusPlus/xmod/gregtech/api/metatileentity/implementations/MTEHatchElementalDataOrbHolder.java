@@ -125,22 +125,16 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
-        if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
-            && side == getBaseMetaTileEntity().getFrontFacing()) {
-            return true;
-        }
-        return false;
+        return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+            && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
-        if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
-            && side == getBaseMetaTileEntity().getFrontFacing()) {
-            return true;
-        }
-        return false;
+        return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+            && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     public ArrayList<ItemStack> getInventory() {
@@ -154,7 +148,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     public ItemStack getOrbByCircuit() {
         ItemStack aCirc = getBaseMetaTileEntity().getStackInSlot(getCircuitSlot());
-        if (aCirc != null && ItemUtils.isControlCircuit(aCirc)) {
+        if (ItemUtils.isControlCircuit(aCirc)) {
             int slot = aCirc.getItemDamage() - 1; // slots are 0 indexed but there's no 0 circuit
             if (slot < getBaseMetaTileEntity().getSizeInventory() - 1) {
                 return getBaseMetaTileEntity().getStackInSlot(slot);

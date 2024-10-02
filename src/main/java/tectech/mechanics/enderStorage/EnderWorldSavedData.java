@@ -48,9 +48,9 @@ public class EnderWorldSavedData extends WorldSavedData {
             ObjectInputStream ois = new ObjectInputStream(is);
             Object data = ois.readObject();
             EnderLiquidTagLink = (Map<EnderLinkTag, EnderFluidContainer>) data;
-        } catch (IOException | ClassNotFoundException ignored) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("ENDER_LIQUID_TAG_LINK LOAD FAILED");
-            System.out.println(ignored);
+            e.printStackTrace();
         }
 
         try {
@@ -59,9 +59,9 @@ public class EnderWorldSavedData extends WorldSavedData {
             ObjectInputStream ois = new ObjectInputStream(is);
             Object data = ois.readObject();
             EnderLiquidTankLink = (Map<EnderLinkTank, EnderLinkTag>) data;
-        } catch (IOException | ClassNotFoundException ignored) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("ENDER_LIQUID_TANK_LINK LOAD FAILED");
-            System.out.println(ignored);
+            e.printStackTrace();
         }
     }
 
@@ -74,9 +74,9 @@ public class EnderWorldSavedData extends WorldSavedData {
             oos.flush();
             byte[] data = bos.toByteArray();
             nbtTagCompound.setByteArray(ENDER_LIQUID_TAG_LINK, data);
-        } catch (IOException ignored) {
+        } catch (IOException e) {
             System.out.println("ENDER_LIQUID_TAG_LINK SAVE FAILED");
-            System.out.println(ignored);
+            e.printStackTrace();
         }
 
         try {
@@ -86,9 +86,9 @@ public class EnderWorldSavedData extends WorldSavedData {
             oos.flush();
             byte[] data = bos.toByteArray();
             nbtTagCompound.setByteArray(ENDER_LIQUID_TANK_LINK, data);
-        } catch (IOException ignored) {
+        } catch (IOException e) {
             System.out.println("ENDER_LIQUID_TANK_LINK SAVE FAILED");
-            System.out.println(ignored);
+            e.printStackTrace();
         }
     }
 

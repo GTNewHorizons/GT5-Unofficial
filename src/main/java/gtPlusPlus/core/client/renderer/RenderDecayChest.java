@@ -23,7 +23,7 @@ public class RenderDecayChest extends TileEntitySpecialRenderer {
     private static final ResourceLocation mChestTexture = new ResourceLocation(
         GTPlusPlus.ID,
         "textures/blocks/TileEntities/DecayablesChest_full.png");
-    private ModelDecayChest mChestModel = new ModelDecayChest();
+    private final ModelDecayChest mChestModel = new ModelDecayChest();
 
     public static RenderDecayChest INSTANCE;
     public final int mRenderID;

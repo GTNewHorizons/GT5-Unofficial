@@ -169,7 +169,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
     }
 
     public MTERTGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires RTG Pellets", new ITexture[0]);
+        super(aID, aName, aNameRegional, aTier, "Requires RTG Pellets");
     }
 
     private byte getTier() {

@@ -91,7 +91,7 @@ public class ThreadAspectScanner extends Thread {
                     if (item.getHasSubtypes()) {
                         List q1 = new ArrayList();
                         item.getSubItems(item, item.getCreativeTab(), q1);
-                        if (q1 != null && q1.size() > 0) {
+                        if (q1 != null && !q1.isEmpty()) {
                             for (int e = 0; e < q1.size(); e++) {
                                 ItemStack check = ItemUtils.simpleMetaStack(item, e, 1);
                                 if (check != null) {
@@ -124,9 +124,7 @@ public class ThreadAspectScanner extends Thread {
                     for (ItemStack stack : group) {
                         thaumcraft.api.aspects.AspectList a = thaumcraft.common.lib.crafting.ThaumcraftCraftingManager
                             .getObjectTags(stack);
-                        if (a == null) {
-                            continue;
-                        } else {
+                        if (a != null) {
                             ArrayList<Pair<String, Integer>> aspectPairs = new ArrayList<>();
                             for (thaumcraft.api.aspects.Aspect c : a.getAspectsSortedAmount()) {
                                 if (c != null) {
