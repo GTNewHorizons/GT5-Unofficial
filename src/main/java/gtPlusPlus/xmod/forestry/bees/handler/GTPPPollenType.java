@@ -28,7 +28,7 @@ public enum GTPPPollenType {
         return GTPP_Bees.sPollenMappings.get(aID);
     }
 
-    private GTPPPollenType(int aID, String aName, boolean aShow, int... aColour) {
+    GTPPPollenType(int aID, String aName, boolean aShow, int... aColour) {
         this.mID = aID;
         this.mName = aName;
         this.mNameUnlocal = aName.toLowerCase()

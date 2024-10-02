@@ -179,7 +179,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
                     stacks.add(stack);
                 }
             }
-            if (stacks.size() > 0) {
+            if (!stacks.isEmpty()) {
                 this.stacks = stacks.toArray(TTRecipeAdder.nullItem);
             }
         }

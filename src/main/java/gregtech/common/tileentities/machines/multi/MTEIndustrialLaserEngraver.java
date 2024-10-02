@@ -310,9 +310,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         if (mCasingAmount < 35) return false;
         if (laserSource == null) return false;
         if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
-        if (glassTier < VoltageIndex.UMV && laserSource.mTier > glassTier) return false;
-
-        return true;
+        return glassTier >= VoltageIndex.UMV || laserSource.mTier <= glassTier;
     }
 
     private static String getUniqueIdentifier(ItemStack is) {
@@ -593,7 +591,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         lensColors.put("gt.bwMetaGeneratedlens10023", Colors.Red);
         lensColors.put("gt.bwMetaGeneratedlens11499", Colors.Green);
         lensColors.put("gt.bwMetaGeneratedlens11358", Colors.Red);
-        lensColors.put("MU-metaitem.0132140", Colors.Purple);
         lensColors.put("MU-metaitem.0132140", Colors.Purple);
 
         //

@@ -16,7 +16,7 @@ public class BaseItemBurnable extends CoreItem {
         super(unlocalizedName, creativeTab, stackSize, maxDmg, description);
         this.itemName = displayName;
         this.meta = meta;
-        if (oredictName != null && !oredictName.equals("")) {
+        if (oredictName != null && !oredictName.isEmpty()) {
             registerOrdictionary(oredictName);
         }
         registerFuel(burnTime);

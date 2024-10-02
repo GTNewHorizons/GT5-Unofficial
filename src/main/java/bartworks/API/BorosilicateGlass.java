@@ -112,9 +112,9 @@ public class BorosilicateGlass {
 
     /**
      * Register a new block as valid borosilicate glass with given tier (even if it doesn't contain boron at all)
-     *
+     * <p>
      * Does not support matching by more complex stuff like tile entity!
-     *
+     * <p>
      * Can only be called at INIT stage.
      */
     public static void registerGlass(Block block, int meta, byte tier) {

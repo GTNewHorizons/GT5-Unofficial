@@ -24,10 +24,10 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
 
     int mCurrentPollution;
     int mAveragePollution;
-    int mAveragePollutionArray[] = new int[10];
+    int[] mAveragePollutionArray = new int[10];
     private int mArrayPos = 0;
     private int mTickTimer = 0;
-    private int mSecondTimer = 0;
+    private final int mSecondTimer = 0;
     private long mRedstoneLevel = 0;
 
     public MTEPollutionDetector(final int aID, final String aName, final String aNameRegional, final int aTier,

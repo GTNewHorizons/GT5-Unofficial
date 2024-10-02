@@ -214,11 +214,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
         log("Structure Check: " + aStructure);
         if (mTurbineRotorHatches.size() != 12 || mMaintenanceHatches.size() != 1
-            || (mDynamoHatches.size() < 1 && mTecTechDynamoHatches.size() < 1)
+            || (mDynamoHatches.isEmpty() && mTecTechDynamoHatches.isEmpty())
             || (requiresMufflers() && mMufflerHatches.size() != 4)
-            || mInputBusses.size() < 1
-            || mInputHatches.size() < 1
-            || (requiresOutputHatch() && mOutputHatches.size() < 1)) {
+            || mInputBusses.isEmpty()
+            || mInputHatches.isEmpty()
+            || (requiresOutputHatch() && mOutputHatches.isEmpty())) {
             log(
                 "Bad Hatches - Turbine Housings: " + mTurbineRotorHatches.size()
                     + ", Maint: "
@@ -406,7 +406,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         for (MTEHatchInputBus aInputBus : this.mInputBusses) {
             for (int slot = aInputBus.getSizeInventory() - 1; slot >= 0; slot--) {
                 ItemStack aStack = aInputBus.getStackInSlot(slot);
-                if (aStack != null && GTUtility.areStacksEqual(aStack, aTurbine)) {
+                if (GTUtility.areStacksEqual(aStack, aTurbine)) {
                     aStack.stackSize -= aTurbine.stackSize;
                     updateSlots();
                     endRecipeProcessing();
@@ -421,7 +421,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public @NotNull CheckRecipeResult checkProcessing() {
         try {
             ArrayList<MTEHatchTurbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();
-            if (aEmptyTurbineRotorHatches.size() > 0) {
+            if (!aEmptyTurbineRotorHatches.isEmpty()) {
                 hatch: for (MTEHatchTurbine aHatch : aEmptyTurbineRotorHatches) {
                     ArrayList<ItemStack> aTurbines = getAllBufferedTurbines();
                     for (ItemStack aTurbineItem : aTurbines) {
@@ -436,7 +436,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 }
             }
 
-            if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
+            if (!getEmptyTurbineAssemblies().isEmpty() || !areAllTurbinesTheSame()) {
                 stopMachine(ShutDownReasonRegistry.NO_TURBINE);
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
@@ -448,7 +448,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
             TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
 
-            if (tFluids.size() > 0) {
+            if (!tFluids.isEmpty()) {
                 if (baseEff == 0 || optFlow == 0
                     || counter >= 512
                     || this.getBaseMetaTileEntity()
@@ -606,7 +606,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .toLowerCase()
             .contains("steam");
 
-        String[] ret = new String[] {
+        return new String[] {
             // 8 Lines available for information panels
             tRunning + ": "
                 + EnumChatFormatting.RED
@@ -649,7 +649,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 + GTUtility.formatNumbers(mPollutionReduction)
                 + EnumChatFormatting.RESET
                 + " %" };
-        return ret;
     }
 
     @Override
@@ -794,7 +793,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         if (aEU <= 0) {
             return true;
         }
-        if (this.mAllDynamoHatches.size() > 0) {
+        if (!this.mAllDynamoHatches.isEmpty()) {
             return addEnergyOutputMultipleDynamos(aEU, true);
         }
         return false;

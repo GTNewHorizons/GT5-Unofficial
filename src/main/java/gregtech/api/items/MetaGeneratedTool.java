@@ -100,7 +100,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- FOR ADDING CUSTOM ITEMS INTO THE REMAINING 766 RANGE ---------- */
 
-    public static final Materials getPrimaryMaterial(ItemStack aStack) {
+    public static Materials getPrimaryMaterial(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -109,7 +109,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return Materials._NULL;
     }
 
-    public static final Materials getSecondaryMaterial(ItemStack aStack) {
+    public static Materials getSecondaryMaterial(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -120,7 +120,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- INTERNAL OVERRIDES ---------- */
 
-    public static final long getToolMaxDamage(ItemStack aStack) {
+    public static long getToolMaxDamage(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -129,7 +129,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return 0;
     }
 
-    public static final long getToolDamage(ItemStack aStack) {
+    public static long getToolDamage(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -138,7 +138,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return 0;
     }
 
-    public static final boolean setToolDamage(ItemStack aStack, long aDamage) {
+    public static boolean setToolDamage(ItemStack aStack, long aDamage) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -150,7 +150,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return false;
     }
 
-    public static final boolean setToolMode(ItemStack aStack, byte aMode) {
+    public static boolean setToolMode(ItemStack aStack, byte aMode) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -162,7 +162,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return false;
     }
 
-    public static final byte getToolMode(ItemStack aStack) {
+    public static byte getToolMode(ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -431,13 +431,12 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
                 // It was noted by IntelliJ that replacing ((GT_MetaGenerated_Tool) aStack.getItem()) with
                 // GT_MetaGenerated_Tool can have side effects. This refactoring will need tests.
-                @SuppressWarnings("AccessStaticViaInstance")
                 float aOptFlow = (Math.max(Float.MIN_NORMAL, turbine.getOptimalFlow()));
                 aList.add(
                     tOffset + 0,
                     EnumChatFormatting.GRAY + String.format(
                         transItem("001", "Durability: %s/%s"),
-                        "" + EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
+                        EnumChatFormatting.GREEN + formatNumbers(turbine.getCurrentDurability()) + " ",
                         " " + formatNumbers(turbine.getMaxDurability())) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,
@@ -463,10 +462,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s L/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalSteamFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalSteamEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -480,10 +479,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s L/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseSteamEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -500,10 +499,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalGasFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalGasEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -517,10 +516,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseGasFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLooseGasEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -534,10 +533,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalPlasmaFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalPlasmaEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -551,10 +550,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                         + " | "
                         + String.format(
                             "%s EU/t > %s EU/t | %s",
-                            "" + EnumChatFormatting.GOLD
+                            EnumChatFormatting.GOLD
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaFlow())))
                                 + EnumChatFormatting.GRAY,
-                            "" + EnumChatFormatting.DARK_GREEN
+                            EnumChatFormatting.DARK_GREEN
                                 + formatNumbers(GTUtility.safeInt((long) (turbine.getOptimalLoosePlasmaEUt())))
                                 + EnumChatFormatting.GRAY,
                             "" + EnumChatFormatting.BLUE
@@ -571,7 +570,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     tOffset,
                     EnumChatFormatting.WHITE + String.format(
                         transItem("001", "Durability: %s/%s"),
-                        "" + EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
+                        EnumChatFormatting.GREEN + formatNumbers(tMaxDamage - getToolDamage(aStack)) + " ",
                         " " + formatNumbers(tMaxDamage)) + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 1,

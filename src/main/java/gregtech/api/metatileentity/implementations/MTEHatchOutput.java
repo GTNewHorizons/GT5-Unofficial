@@ -143,7 +143,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("mMode", mMode);
-        if (isFluidLocked() && lockedFluidName != null && lockedFluidName.length() != 0)
+        if (isFluidLocked() && lockedFluidName != null && !lockedFluidName.isEmpty())
             aNBT.setString("lockedFluidName", lockedFluidName);
         else aNBT.removeTag("lockedFluidName");
     }

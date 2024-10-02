@@ -147,10 +147,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
      * Check if the internal cache can still fit more fluids in it
      */
     public boolean canAcceptFluid() {
-        if (getCachedAmount() < getCacheCapacity()) {
-            return true;
-        }
-        return false;
+        return getCachedAmount() < getCacheCapacity();
     }
 
     /**

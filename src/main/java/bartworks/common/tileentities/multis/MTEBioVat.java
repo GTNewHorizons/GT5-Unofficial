@@ -313,7 +313,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null || !(aMetaTileEntity instanceof GT_MetaTileEntity_RadioHatch)) {
+        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_RadioHatch)) {
             return false;
         } else {
             ((GT_MetaTileEntity_RadioHatch) aMetaTileEntity).updateTexture(CasingIndex);
@@ -332,8 +332,8 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         return this.mCasing >= 19 && this.mRadHatches.size() <= 1
             && this.mOutputHatches.size() == 1
             && this.mMaintenanceHatches.size() == 1
-            && this.mInputHatches.size() > 0
-            && this.mEnergyHatches.size() > 0;
+            && !this.mInputHatches.isEmpty()
+            && !this.mEnergyHatches.isEmpty();
     }
 
     @Override

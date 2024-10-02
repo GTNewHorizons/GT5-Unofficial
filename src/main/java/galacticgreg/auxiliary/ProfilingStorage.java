@@ -13,7 +13,7 @@ import galacticgreg.api.ModDimensionDef;
  */
 public class ProfilingStorage {
 
-    private Map<String, List<Long>> mProfilingMap;
+    private final Map<String, List<Long>> mProfilingMap;
 
     public ProfilingStorage() {
         mProfilingMap = new HashMap<>();

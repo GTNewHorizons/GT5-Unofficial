@@ -29,7 +29,7 @@ public enum GTPPDropType {
         return GTPP_Bees.sDropMappings.get(aID);
     }
 
-    private GTPPDropType(int aID, String aName, boolean aShow, int... aColour) {
+    GTPPDropType(int aID, String aName, boolean aShow, int... aColour) {
         this.mID = aID;
         this.mName = aName;
         this.mNameUnlocal = aName.toLowerCase()

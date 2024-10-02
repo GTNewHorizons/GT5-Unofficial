@@ -183,8 +183,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
         if (checkPiece(mName, 4, 2, 0) && mCasing >= 64
             && checkMeta > 0
-            && mInputHatches.size() >= 1
-            && mOutputBusses.size() >= 1) {
+            && !mInputHatches.isEmpty()
+            && !mOutputBusses.isEmpty()) {
             mLevel = checkMeta - 1;
             for (MTEHatchInput inputHatch : mInputHatches) {
                 if (inputHatch.mTier < mLevel) {
