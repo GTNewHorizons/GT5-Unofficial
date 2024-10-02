@@ -29,9 +29,8 @@ public class PlayerUtils {
         .getClass("thaumcraft.common.lib.FakeThaumcraftPlayer");
 
     public static List<EntityPlayerMP> getOnlinePlayers() {
-        final List<EntityPlayerMP> onlinePlayers = MinecraftServer.getServer()
+        return MinecraftServer.getServer()
             .getConfigurationManager().playerEntityList;
-        return onlinePlayers;
     }
 
     public static void messagePlayer(final EntityPlayer P, final String S) {

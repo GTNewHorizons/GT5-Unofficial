@@ -64,11 +64,8 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if ((aMetaValue < 0) || (aMetaValue >= 32766) || (aBehavior == null)) {
             return this;
         }
-        ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors.get((short) aMetaValue);
-        if (tList == null) {
-            tList = new ArrayList<>(1);
-            this.mItemBehaviors.put((short) aMetaValue, tList);
-        }
+        ArrayList<IItemBehaviour<GTMetaItemBase>> tList = this.mItemBehaviors
+            .computeIfAbsent((short) aMetaValue, k -> new ArrayList<>(1));
         tList.add(aBehavior);
         return this;
     }
@@ -278,8 +275,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                         EnumChatFormatting.AQUA + "Empty. You should recycle it properly." + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
-                        EnumChatFormatting.AQUA + ""
-                            + GTUtility.formatNumbers(tCharge)
+                        EnumChatFormatting.AQUA + GTUtility.formatNumbers(tCharge)
                             + " / "
                             + GTUtility.formatNumbers(Math.abs(tStats[0]))
                             + " EU - Voltage: "

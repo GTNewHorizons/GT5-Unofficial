@@ -9,7 +9,6 @@ import bartworks.util.Pair;
 import goodgenerator.util.CharExchanger;
 import gregtech.api.enums.TextureSet;
 
-@SuppressWarnings({ "unchecked" })
 public class GGMaterial implements Runnable {
 
     protected static final int OffsetID = 10001;

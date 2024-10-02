@@ -424,9 +424,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         spacetimeHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
-        if (mCasingAmount < 950) return false;
-
-        return true;
+        return mCasingAmount >= 950;
     }
 
     @Override

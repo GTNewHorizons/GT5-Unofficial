@@ -156,7 +156,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
-        if (eDataAccessHatches.size() > 0 && (eStacksDataOutputs.size() > 0 || eWirelessStacksDataOutputs.size() > 0)) {
+        if (!eDataAccessHatches.isEmpty() && (!eStacksDataOutputs.isEmpty() || !eWirelessStacksDataOutputs.isEmpty())) {
             mEUt = -(int) V[slave ? 6 : 4];
             eAmpereFlow = 1
                 + (long) (eStacksDataOutputs.size() + eWirelessStacksDataOutputs.size()) * eDataAccessHatches.size();
@@ -179,7 +179,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 }
             }
         }
-        if (stacks.size() > 0) {
+        if (!stacks.isEmpty()) {
             ItemStack[] arr = stacks.toArray(TTRecipeAdder.nullItem);
             for (MTEHatchDataItemsOutput hatch : eStacksDataOutputs) {
                 hatch.q = new InventoryDataPacket(arr);

@@ -41,7 +41,7 @@ public class BaseItemIngotOld extends Item {
         } else if (this.unlocalName.contains("itemHotIngot")) {
             temp = this.unlocalName.replace("itemHotIngot", "ingotHot");
         }
-        if ((temp != null) && !temp.equals("")) {
+        if ((temp != null) && !temp.isEmpty()) {
             GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
         }
         // this.generateCompressorRecipe();
@@ -80,7 +80,7 @@ public class BaseItemIngotOld extends Item {
             }
             temp = temp.replace("itemIngot", "block");
             Logger.WARNING("Generating OreDict Name: " + temp);
-            if ((temp != null) && !temp.equals("")) {
+            if ((temp != null) && !temp.isEmpty()) {
                 tempOutput = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
                 if (tempOutput != null) {
                     GTValues.RA.stdBuilder()

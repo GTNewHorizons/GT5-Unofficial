@@ -22,7 +22,7 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
 
     private long mProfilingStart;
     private long mProfilingEnd;
-    private Map<String, Boolean> allowedDims;
+    private final Map<String, Boolean> allowedDims;
 
     public WorldgenOreSmallSpace(SmallOreBuilder ore) {
         super(ore.smallOreName, GalacticGreg.smallOreWorldgenList, ore.enabledByDefault);

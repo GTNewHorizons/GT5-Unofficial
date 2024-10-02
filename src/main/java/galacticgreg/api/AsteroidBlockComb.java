@@ -58,8 +58,7 @@ public class AsteroidBlockComb extends BlockMetaComb {
     public boolean equals(Object other) {
         if (other == null) return false;
         if (other == this) return true;
-        if (!(other instanceof AsteroidBlockComb)) return false;
-        AsteroidBlockComb otherObj = (AsteroidBlockComb) other;
+        if (!(other instanceof AsteroidBlockComb otherObj)) return false;
 
         boolean tFlag = true;
         String otherName = Block.blockRegistry.getNameForObject(otherObj.getBlock());

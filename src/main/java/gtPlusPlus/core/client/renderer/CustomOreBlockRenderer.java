@@ -31,8 +31,7 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
 
     public boolean renderStandardBlock(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock,
         RenderBlocks aRenderer) {
-        Block tTileEntity = aBlock;
-        if ((tTileEntity instanceof ITexturedBlock)) {
+        if ((aBlock instanceof ITexturedBlock)) {
             return renderStandardBlock(
                 aWorld,
                 aX,
@@ -40,12 +39,12 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
                 aZ,
                 aBlock,
                 aRenderer,
-                new ITexture[][] { ((ITexturedBlock) tTileEntity).getTexture(ForgeDirection.DOWN),
-                    ((ITexturedBlock) tTileEntity).getTexture(ForgeDirection.UP),
-                    ((ITexturedBlock) tTileEntity).getTexture(ForgeDirection.NORTH),
-                    ((ITexturedBlock) tTileEntity).getTexture(ForgeDirection.SOUTH),
-                    ((ITexturedBlock) tTileEntity).getTexture(ForgeDirection.WEST),
-                    ((ITexturedBlock) tTileEntity).getTexture(ForgeDirection.EAST) });
+                new ITexture[][] { ((ITexturedBlock) aBlock).getTexture(ForgeDirection.DOWN),
+                    ((ITexturedBlock) aBlock).getTexture(ForgeDirection.UP),
+                    ((ITexturedBlock) aBlock).getTexture(ForgeDirection.NORTH),
+                    ((ITexturedBlock) aBlock).getTexture(ForgeDirection.SOUTH),
+                    ((ITexturedBlock) aBlock).getTexture(ForgeDirection.WEST),
+                    ((ITexturedBlock) aBlock).getTexture(ForgeDirection.EAST) });
         }
         return false;
     }
@@ -556,8 +555,7 @@ public class CustomOreBlockRenderer implements ISimpleBlockRenderingHandler {
                 .getTextureManager()
                 .getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
         }
-
-        return (IIcon) iicon;
+        return iicon;
     }
 
     IBlockAccess blockAccess = RenderBlocks.getInstance().blockAccess;

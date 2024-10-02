@@ -182,7 +182,6 @@ public class MultiTileEntityBlock extends BlockContainer implements IDebugableBl
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public final void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aAABB,
         List<AxisAlignedBB> aList, Entity aEntity) {
         final TileEntity tileEntity = world.getTileEntity(x, y, z);

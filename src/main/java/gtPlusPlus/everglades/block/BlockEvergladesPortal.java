@@ -185,9 +185,8 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         int x = pos.xPos, y = pos.yPos, z = pos.zPos;
         Logger.INFO("Trigger");
         int blockCount = 0;
-        BlockPos portal = pos;
-        World par1World = portal.world;
-        for (BlockPos side : portal.getSurroundingBlocks()) {
+        World par1World = pos.world;
+        for (BlockPos side : pos.getSurroundingBlocks()) {
             Block b = side.getBlockAtPos();
             if (b == DimensionEverglades.blockPortalFrame || b == DimensionEverglades.portalBlock) {
                 blockCount++;
@@ -195,7 +194,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         }
         if (blockCount < 4) {
             par1World.setBlockToAir(x, y, z);
-            par1World.scheduleBlockUpdate(x, y, z, portal.getBlockAtPos(), 0);
+            par1World.scheduleBlockUpdate(x, y, z, pos.getBlockAtPos(), 0);
         }
 
         byte b0 = 0;
@@ -205,16 +204,12 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
             b1 = 0;
         }
         int i1;
-        for (i1 = y; par1World.getBlock(x, i1 - 1, z) == this; --i1) {
-            ;
-        }
+        for (i1 = y; par1World.getBlock(x, i1 - 1, z) == this; --i1) {}
         if (par1World.getBlock(x, i1 - 1, z) != DimensionEverglades.blockPortalFrame) {
             par1World.setBlockToAir(x, y, z);
         } else {
             int j1;
-            for (j1 = 1; j1 < 4 && par1World.getBlock(x, i1 + j1, z) == this; ++j1) {
-                ;
-            }
+            for (j1 = 1; j1 < 4 && par1World.getBlock(x, i1 + j1, z) == this; ++j1) {}
             if (j1 == 3 && par1World.getBlock(x, i1 + j1, z) == DimensionEverglades.blockPortalFrame) {
                 boolean flag = par1World.getBlock(x - 1, y, z) == this || par1World.getBlock(x + 1, y, z) == this;
                 boolean flag1 = par1World.getBlock(x, y, z - 1) == this || par1World.getBlock(x, y, z + 1) == this;
@@ -266,8 +261,7 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
                 && par1IBlockAccess.getBlock(par2, par3, par4 + 2) != this;
             boolean flag4 = flag || flag1;
             boolean flag5 = flag2 || flag3;
-            return flag4 && par5 == 4 ? true
-                : (flag4 && par5 == 5 ? true : (flag5 && par5 == 2 ? true : flag5 && par5 == 3));
+            return flag4 && par5 == 4 || (flag4 && par5 == 5 || (flag5 && par5 == 2 || flag5 && par5 == 3));
         }
     }
 

@@ -387,7 +387,7 @@ public enum GTStones {
 
     public final StoneBuilder stone;
 
-    private GTStones(StoneBuilder stone) {
+    GTStones(StoneBuilder stone) {
         this.stone = stone;
     }
 

@@ -8,7 +8,7 @@ import gregtech.api.net.GTPacketMultiTileEntity;
 
 public interface SyncedMultiTileEntity {
 
-    public static final int DEFAULT_TIMED_PACKET_PERIOD = 20;
+    int DEFAULT_TIMED_PACKET_PERIOD = 20;
 
     /**
      * Will send a packet to the client when they open the controller or access a casing.

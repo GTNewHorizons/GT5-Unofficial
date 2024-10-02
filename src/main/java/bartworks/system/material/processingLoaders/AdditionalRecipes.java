@@ -274,7 +274,6 @@ public class AdditionalRecipes {
             .addTo(BartWorksRecipeMaps.acidGenFuels);
     }
 
-    @SuppressWarnings("deprecation")
     public static void run() {
         runBWRecipes();
 

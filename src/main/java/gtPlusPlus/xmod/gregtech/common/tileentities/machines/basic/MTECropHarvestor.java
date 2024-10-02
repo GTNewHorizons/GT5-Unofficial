@@ -164,7 +164,7 @@ public class MTECropHarvestor extends MTEBasicTank {
         };
     }
 
-    private HashSet<ICropTile> mCropCache = new HashSet<>();
+    private final HashSet<ICropTile> mCropCache = new HashSet<>();
     private boolean mInvalidCache = false;
 
     public boolean doesInventoryHaveSpace() {
@@ -213,7 +213,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                 for (int x = (-aSide); x <= aSide; x++) {
                     for (int z = (-aSide); z <= aSide; z++) {
                         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityOffset(x, y, z);
-                        if (tTileEntity != null && tTileEntity instanceof ICropTile tCrop) {
+                        if (tTileEntity instanceof ICropTile tCrop) {
                             this.mCropCache.add(tCrop);
                         }
                     }

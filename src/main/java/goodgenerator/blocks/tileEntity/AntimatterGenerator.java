@@ -79,7 +79,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
 
-    private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterGenerator>>() {
+    private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<AntimatterGenerator> computeValue(Class<?> type) {
@@ -125,7 +125,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     .extFacing()
                     .glow()
                     .build()));
-    };
+    }
 
     private boolean addLaserSource(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
@@ -278,7 +278,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new AntimatterGenerator(this.MAIN_NAME);
+        return new AntimatterGenerator(MAIN_NAME);
     }
 
     @Override

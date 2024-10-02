@@ -106,8 +106,7 @@ public class MTEHatchTurbine extends MTEHatch {
 
     public boolean hasTurbine() {
         ItemStack aStack = this.mInventory[0];
-        boolean aIsValid = MTELargerTurbineBase.isValidTurbine(aStack);
-        return aIsValid;
+        return MTELargerTurbineBase.isValidTurbine(aStack);
     }
 
     public ItemStack getTurbine() {
@@ -194,15 +193,10 @@ public class MTEHatchTurbine extends MTEHatch {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.mHasController) {
             if (aTick % 20 == 0) {
-                if (isControllerActive()) {
-                    this.getBaseMetaTileEntity()
-                        .setActive(true);
-                } else {
-                    this.getBaseMetaTileEntity()
-                        .setActive(false);
-                }
+                this.getBaseMetaTileEntity()
+                    .setActive(isControllerActive());
             }
-        } else if (!this.mHasController && this.mControllerLocation != null) {
+        } else if (this.mControllerLocation != null) {
             // Weird Invalid State
             if (setController(BlockPos.generateBlockPos(mControllerLocation))) {
                 // Valid
@@ -224,7 +218,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public MTELargerTurbineBase getController() {
-        if (this.mHasController && this.mControllerLocation != null && this.mControllerLocation.length() > 0) {
+        if (this.mHasController && this.mControllerLocation != null && !this.mControllerLocation.isEmpty()) {
             BlockPos p = BlockPos.generateBlockPos(mControllerLocation);
             if (p != null) {
                 // Logger.INFO(p.getLocationString());
@@ -246,10 +240,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean canSetNewController() {
-        if ((mControllerLocation != null && mControllerLocation.length() > 0) || this.mHasController) {
-            return false;
-        }
-        return true;
+        return (mControllerLocation == null || mControllerLocation.isEmpty()) && !this.mHasController;
     }
 
     public boolean setController(BlockPos aPos) {
@@ -395,7 +386,7 @@ public class MTEHatchTurbine extends MTEHatch {
                     aHasTurbine ? "Cannot remove turbine, no free inventory space." : "No turbine to remove.");
             }
         } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
-            if (mControllerLocation != null && mControllerLocation.length() > 0) {
+            if (mControllerLocation != null && !mControllerLocation.isEmpty()) {
                 if (setController(BlockPos.generateBlockPos(mControllerLocation))) {
                     if (PlayerUtils.isCreative(aPlayer)
                         || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {

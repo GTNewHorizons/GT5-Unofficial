@@ -76,7 +76,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     public GTRecipe mLastRecipe;
     public int para;
     protected OverclockDescriber overclockDescriber;
-    private static final ClassValue<IStructureDefinition<MTELargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<MTELargeFusionComputer>>() {
+    private static final ClassValue<IStructureDefinition<MTELargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<MTELargeFusionComputer> computeValue(Class<?> type) {
