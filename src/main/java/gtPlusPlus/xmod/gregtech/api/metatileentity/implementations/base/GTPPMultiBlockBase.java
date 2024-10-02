@@ -413,19 +413,16 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 .doExplosion(GTValues.V[8])) {
             tTileEntity = localIterator.next();
         }
-        tTileEntity = null;
         for (final Iterator<MTEHatchOutputBattery> localIterator = this.mDischargeHatches.iterator(); localIterator
             .hasNext(); tTileEntity.getBaseMetaTileEntity()
                 .doExplosion(GTValues.V[8])) {
             tTileEntity = localIterator.next();
         }
-        tTileEntity = null;
         for (final Iterator<MTEHatch> localIterator = this.mTecTechDynamoHatches.iterator(); localIterator
             .hasNext(); tTileEntity.getBaseMetaTileEntity()
                 .doExplosion(GTValues.V[8])) {
             tTileEntity = localIterator.next();
         }
-        tTileEntity = null;
         for (final Iterator<MTEHatch> localIterator = this.mTecTechEnergyHatches.iterator(); localIterator
             .hasNext(); tTileEntity.getBaseMetaTileEntity()
                 .doExplosion(GTValues.V[8])) {

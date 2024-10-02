@@ -179,7 +179,6 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
 
                 if (output != null) {
                     this.setBlueprintName(stack, output.getDisplayName());
-                    hasBP = true;
                     return true;
                 }
                 return false;

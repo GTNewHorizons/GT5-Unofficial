@@ -166,8 +166,6 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 AlgaeGeneticData y = aItem.getSpeciesData(aFreshAlgae);
                 aNewTag = y.writeToNBT();
                 aFreshAlgae.setTagCompound(aNewTag);
-            } else {
-                aNewTag = aFreshAlgae.getTagCompound();
             }
         }
         return aFreshAlgae;

@@ -77,7 +77,7 @@ public class GUIPestKiller extends GuiContainer {
                     if (aTank != null && aTank.getFluidAmount() > 0) {
                         aPercentage = MathUtils.findPercentage(aTank.getFluidAmount(), aTank.getCapacity());
                         // Logger.INFO("Percent = "+aPercentage);
-                        aFrameHeight = (int) (aPercentage / aDivisor);
+                        // aFrameHeight = (int) (aPercentage / aDivisor);
                         // Logger.INFO("Frame Height = "+aFrameHeight);
                     }
                     this.fontRendererObj.drawString("Tier: 0", 4, 18, 4210752);

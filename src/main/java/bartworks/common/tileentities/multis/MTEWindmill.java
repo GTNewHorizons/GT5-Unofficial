@@ -372,11 +372,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     }
 
                     if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        aStack = null;
                         return true;
                     }
                     tHatch.setInventorySlotContents(i, null);
-                    aStack = null;
                     return false;
                 }
             }

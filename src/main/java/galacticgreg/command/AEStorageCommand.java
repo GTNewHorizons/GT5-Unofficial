@@ -102,7 +102,6 @@ public class AEStorageCommand implements ICommand {
                                     // If block is a TileEntity
                                     if (bTE != null) {
                                         // Print a warning on the console
-                                        tMsg += " TE";
                                         GalacticGreg.Logger.warn(
                                             "Warning: Found TileEntity at X[%d] Y[%d] Z[%d]. NBT States are not exported!",
                                             lX,

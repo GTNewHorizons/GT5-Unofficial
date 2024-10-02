@@ -230,7 +230,6 @@ public class MTESteamTurbine extends MTEBasicGenerator {
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         if (GTModHandler.isSuperHeatedSteam(aFluid)) {
             aFluid.amount = 0;
-            aFluid = null;
             return false;
         }
         return super.isFluidInputAllowed(aFluid);

@@ -315,7 +315,6 @@ public class EIGIC2Bucket extends EIGBucket {
                                 ItemStack newSupport = potentialBlockStack.copy();
                                 newSupport.stackSize = 1;
                                 this.supportItems = new ItemStack[] { newSupport };
-                                keepLooking = false;
                                 crop.updateNutrientsForBlockUnder();
                                 break blockLoop;
                             }

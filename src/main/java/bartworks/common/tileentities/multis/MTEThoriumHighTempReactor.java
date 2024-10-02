@@ -207,8 +207,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                             .min(MTEThoriumHighTempReactor.HELIUM_NEEDED - this.HeliumSupply, fluidStack.amount);
                         fluidStack.amount -= toget;
                         this.HeliumSupply += toget;
-                        if (MTEThoriumHighTempReactor.HELIUM_NEEDED == this.HeliumSupply && fluidStack.amount == 0)
-                            fluidStack = null;
                     }
                 }
             }

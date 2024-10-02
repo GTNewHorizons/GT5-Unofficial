@@ -477,8 +477,6 @@ public class ChunkProviderModded implements IChunkProvider {
         }
         biomegenbase.decorate(this.worldObj, this.rand, k, l);
         SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, k + 8, l + 8, 16, 16, this.rand);
-        k += 8;
-        l += 8;
 
         MinecraftForge.EVENT_BUS
             .post(new PopulateChunkEvent.Post(par1IChunkProvider, worldObj, rand, par2, par3, flag));
