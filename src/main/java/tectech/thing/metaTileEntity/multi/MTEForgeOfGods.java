@@ -2081,7 +2081,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             .setPos(9, 5))
                     .addChild(
                         new TextWidget(translateToLocal("fog.upgrade.text." + (currentUpgradeID)))
-                            .setTextAlignment(Alignment.CenterLeft)
+                            .setTextAlignment(Alignment.Center)
                             .setDefaultColor(EnumChatFormatting.WHITE)
                             .setSize(WIDTH - 15, LORE_POS - 30)
                             .setPos(9, 30))
