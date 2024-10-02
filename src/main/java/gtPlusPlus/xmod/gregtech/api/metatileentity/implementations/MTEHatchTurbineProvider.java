@@ -110,18 +110,14 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     public boolean isItemStackTurbine(ItemStack aStack) {
         if (aStack.getItem() instanceof MetaGeneratedTool) {
-            if (aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 176) {
-                return true;
-            }
+            return aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 176;
         }
         return false;
     }
 
     public boolean isItemStackScrewdriver(ItemStack aStack) {
         if (aStack.getItem() instanceof MetaGeneratedTool) {
-            if (aStack.getItemDamage() == 22 || aStack.getItemDamage() == 150) {
-                return true;
-            }
+            return aStack.getItemDamage() == 22 || aStack.getItemDamage() == 150;
         }
         return false;
     }

@@ -206,10 +206,9 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null || aTileEntity.isDead() || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput))
-            return false;
+        if (aTileEntity == null || aTileEntity.isDead()
+            || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) return false;
         while (this.mOutputHatchesByLayer.size() < this.mHeight) this.mOutputHatchesByLayer.add(new ArrayList<>());
-        MTEHatchOutput tHatch = (MTEHatchOutput) aTileEntity.getMetaTileEntity();
         tHatch.updateTexture(aBaseCasingIndex);
         return this.mOutputHatchesByLayer.get(this.mHeight - 1)
             .add(tHatch);

@@ -21,7 +21,7 @@ public class BlockTurbineCasing extends BlockCasing implements ITextureBlock {
 
     static {
         for (int i = 0; i < 3; i++) for (int j = 1; j <= 9; j++)
-            turbineShape[i][j - 1] = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_" + i + "" + j);
+            turbineShape[i][j - 1] = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_" + i + j);
     }
 
     public BlockTurbineCasing(String name, String texture) {
@@ -31,8 +31,7 @@ public class BlockTurbineCasing extends BlockCasing implements ITextureBlock {
 
     private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection side) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
-        IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
+        if (!(tTileEntity instanceof IGregTechTileEntity tTile)) return 0;
         if (tTile.getMetaTileEntity() instanceof MTELargeTurbineBase && tTile.getFrontFacing() == side) {
             if (tTile.isActive()) return 1;
             return ((MTELargeTurbineBase) tTile.getMetaTileEntity()).hasTurbine() ? 2 : 3;

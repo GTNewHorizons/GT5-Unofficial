@@ -582,7 +582,7 @@ public final class ModItems {
         // LFTR Control Circuit
         itemCircuitLFTR = new CoreItem(
             "itemCircuitLFTR",
-            "" + EnumChatFormatting.GREEN + "Control Circuit",
+            EnumChatFormatting.GREEN + "Control Circuit",
             AddToCreativeTab.tabMisc,
             1,
             0,

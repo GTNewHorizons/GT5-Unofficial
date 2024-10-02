@@ -282,7 +282,7 @@ public abstract class AbstractProcessingLogic<P extends AbstractProcessingLogic<
 
     /**
      * Override to perform additional logic when recipe starts.
-     *
+     * <p>
      * This is called when the recipe processing logic has finished all
      * checks, consumed all inputs, but has not yet set the outputs to
      * be produced. Returning a result other than SUCCESSFUL will void

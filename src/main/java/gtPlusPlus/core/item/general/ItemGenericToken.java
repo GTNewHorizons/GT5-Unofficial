@@ -91,11 +91,10 @@ public class ItemGenericToken extends CoreItem {
         sizes[1][3] = mRarities.size();
         sizes[1][4] = mCustomNameColours.size();
         // sizes[1][5] = mIcons.size();
-        boolean b = sizes[0][0] > sizes[1][0] && sizes[0][1] > sizes[1][1]
+        return sizes[0][0] > sizes[1][0] && sizes[0][1] > sizes[1][1]
             && sizes[0][2] > sizes[1][2]
             && sizes[0][3] > sizes[1][3]
             && sizes[0][4] > sizes[1][4];
-        return b;
     }
 
     // Handle Sub items

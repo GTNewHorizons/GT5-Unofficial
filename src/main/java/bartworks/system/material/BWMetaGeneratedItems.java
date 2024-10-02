@@ -100,17 +100,15 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
                                     OrePrefixes.dust,
                                     aMaterial,
                                     aItemEntity.getEntityItem().stackSize));
-                            aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
-                            return true;
                         } else {
                             aItemEntity.setEntityItemStack(
                                 WerkstoffLoader.getCorrespondingItemStack(
                                     OrePrefixes.crushedPurified,
                                     aMaterial,
                                     aItemEntity.getEntityItem().stackSize));
-                            aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
-                            return true;
                         }
+                        aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
+                        return true;
                     }
                 }
             }

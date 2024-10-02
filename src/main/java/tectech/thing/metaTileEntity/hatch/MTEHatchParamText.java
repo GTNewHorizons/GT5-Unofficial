@@ -258,8 +258,8 @@ public class MTEHatchParamText extends MTEHatchParam {
                         parse(str);
                         return str;
                     } catch (Exception e) {
-                        return widget.getLastText()
-                            .size() > 0 ? widget.getLastText()
+                        return !widget.getLastText()
+                            .isEmpty() ? widget.getLastText()
                                 .get(0) : "";
                     }
                 })

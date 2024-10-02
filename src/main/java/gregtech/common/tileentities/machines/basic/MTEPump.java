@@ -500,7 +500,7 @@ public class MTEPump extends MTEBasicMachine {
 
         for (int i = 0; i < mInputSlotCount; i++) {
             ItemStack stack = getInputAt(i);
-            if (stack != null && GTUtility.areStacksEqual(stack, MINING_PIPE) && stack.stackSize > 0) {
+            if (GTUtility.areStacksEqual(stack, MINING_PIPE) && stack.stackSize > 0) {
                 foundPipe = true;
                 break;
             }
@@ -562,7 +562,7 @@ public class MTEPump extends MTEBasicMachine {
 
         for (int i = 0; i < mInputSlotCount; i++) {
             ItemStack stack = getInputAt(i);
-            if (stack != null && GTUtility.areStacksEqual(stack, MINING_PIPE) && stack.stackSize > 0) {
+            if (GTUtility.areStacksEqual(stack, MINING_PIPE) && stack.stackSize > 0) {
                 foundPipe = true;
                 stack.stackSize -= 1;
                 if (stack.stackSize == 0) {

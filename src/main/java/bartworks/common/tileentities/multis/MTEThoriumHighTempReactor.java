@@ -171,11 +171,11 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         this.mCasing = 0;
         return this.checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0) && this.mCasing >= 500
             && this.mMaintenanceHatches.size() == 1
-            && this.mInputHatches.size() > 0
-            && this.mOutputHatches.size() > 0
-            && this.mInputBusses.size() > 0
-            && this.mOutputBusses.size() > 0
-            && this.mEnergyHatches.size() > 0;
+            && !this.mInputHatches.isEmpty()
+            && !this.mOutputHatches.isEmpty()
+            && !this.mInputBusses.isEmpty()
+            && !this.mOutputBusses.isEmpty()
+            && !this.mEnergyHatches.isEmpty();
     }
 
     @Override
@@ -207,8 +207,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                             .min(MTEThoriumHighTempReactor.HELIUM_NEEDED - this.HeliumSupply, fluidStack.amount);
                         fluidStack.amount -= toget;
                         this.HeliumSupply += toget;
-                        if (MTEThoriumHighTempReactor.HELIUM_NEEDED == this.HeliumSupply && fluidStack.amount == 0)
-                            fluidStack = null;
                     }
                 }
             }

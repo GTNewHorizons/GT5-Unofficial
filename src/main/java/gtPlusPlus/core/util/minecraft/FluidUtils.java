@@ -31,7 +31,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 
 public class FluidUtils {
 
-    private static HashMap<String, Fluid> sFluidCache = new HashMap<>();
+    private static final HashMap<String, Fluid> sFluidCache = new HashMap<>();
 
     public static FluidStack getWater(final int amount) {
         return FluidUtils.getFluidStack("water", amount);
@@ -506,7 +506,7 @@ public class FluidUtils {
             aGenerateCell);
     }
 
-    public static final Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName,
+    public static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName,
         final int MeltingPoint, final short[] RGBA, ItemStack dustStack, final ItemStack dustStack2,
         final int amountPerItem, final boolean aGenerateCell) {
         if (dustStack == null) {
@@ -637,10 +637,7 @@ public class FluidUtils {
         if (aFStack5 != null) {
             return aFStack5;
         }
-        if (aFStack6 != null) {
-            return aFStack6;
-        }
-        return null;
+        return aFStack6;
     }
 
     public static FluidStack getWildcardFluidStack(Materials aMaterial, int amount) {
@@ -654,11 +651,7 @@ public class FluidUtils {
             return aFStack2;
         } else if (aFStack3 != null) {
             return aFStack3;
-        } else if (aFStack4 != null) {
-            return aFStack4;
-        } else {
-            return null;
-        }
+        } else return aFStack4;
     }
 
     public static FluidStack getAir(int aAmount) {

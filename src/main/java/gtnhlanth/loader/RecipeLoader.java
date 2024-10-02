@@ -377,15 +377,30 @@ public class RecipeLoader {
         // Target Holder
         GameRegistry.addShapedRecipe(
             new ItemStack(LanthItemList.TARGET_HOLDER),
-            new Object[] { "MCM", "MHM", "MCM", 'M', WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1), 'H',
-                ItemList.Hull_LuV.get(1), 'C', ItemList.Conveyor_Module_LuV.get(1) });
+            "MCM",
+            "MHM",
+            "MCM",
+            'M',
+            WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1),
+            'H',
+            ItemList.Hull_LuV.get(1),
+            'C',
+            ItemList.Conveyor_Module_LuV.get(1));
 
         GameRegistry.addShapedRecipe(
 
             new ItemStack(LanthItemList.FOCUS_HOLDER),
-            new Object[] { "MCM", "R R", "MHM", 'M', WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1), 'C',
-                ItemList.Conveyor_Module_LuV.get(1), 'R', ItemList.Robot_Arm_LuV.get(1), 'H',
-                ItemList.Hull_LuV.get(1) });
+            "MCM",
+            "R R",
+            "MHM",
+            'M',
+            WerkstoffMaterialPool.MuMetal.get(OrePrefixes.plateDense, 1),
+            'C',
+            ItemList.Conveyor_Module_LuV.get(1),
+            'R',
+            ItemList.Robot_Arm_LuV.get(1),
+            'H',
+            ItemList.Hull_LuV.get(1));
 
         // Focus Input Bus
         GameRegistry.addShapedRecipe(
@@ -3376,7 +3391,7 @@ public class RecipeLoader {
         /**
          * 1/9 Ce + 3 Lu + 5 Sapphire = 8 LuAG Blend 1/9 Ce + 3 Lu + 10 Green Sapphire = 8 LuAG Blend 2/9 Ce + 6 Lu + 25
          * Alumina + 9 Oxygen = 12 LuAG Blend
-         *
+         * <p>
          * 1 Ce + 60 Lu + 100 Sapphire = 160 LuAG Blend 1 Ce + 60 Lu +200 Green Sapphire = 160 LuAG Blend
          *
          */
@@ -4094,7 +4109,6 @@ public class RecipeLoader {
 
     public static void removeCeriumChemicalBath() {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
-        HashSet<GTRecipe> reAdd = new HashSet<>(5000);
 
         GTLog.out.println(Tags.MODID + ": marking recipes in chem bath for removal!");
         for (GTRecipe recipe : chemicalBathRecipes.getAllRecipes()) {
@@ -4122,12 +4136,8 @@ public class RecipeLoader {
         GTLog.out.println(Tags.MODID + ": regenerating chem bath recipes");
         chemicalBathRecipes.getBackend()
             .removeRecipes(remove);
-        reAdd.forEach(chemicalBathRecipes::add);
         chemicalBathRecipes.getBackend()
             .reInit();
-
-        remove.clear();
-        reAdd.clear();
 
         GTLog.out.println("Chemical Bath done!");
     }

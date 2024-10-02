@@ -109,7 +109,7 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (uuid == null || uuid.length() == 0) {
+            if (uuid == null || uuid.isEmpty()) {
                 String name = aBaseMetaTileEntity.getOwnerName();
                 if (!("Player".equals(name))) {
                     uuid = TecTech.proxy.getUUID(name);

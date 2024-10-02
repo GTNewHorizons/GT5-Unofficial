@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -316,7 +315,6 @@ public class EIGIC2Bucket extends EIGBucket {
                                 ItemStack newSupport = potentialBlockStack.copy();
                                 newSupport.stackSize = 1;
                                 this.supportItems = new ItemStack[] { newSupport };
-                                keepLooking = false;
                                 crop.updateNutrientsForBlockUnder();
                                 break blockLoop;
                             }
@@ -602,7 +600,6 @@ public class EIGIC2Bucket extends EIGBucket {
         // Create kernel out of our growth speeds
         double[] kernel = tabulate(speeds, 1.0d / speeds.length);
         double[] convolutionTarget = new double[signal.length];
-        LinkedList<Double> P = new LinkedList<Double>();
 
         // Perform convolutions on the signal until it's too weak to be recognised.
         double p, avgRolls = 1;
@@ -620,7 +617,7 @@ public class EIGIC2Bucket extends EIGBucket {
 
     /**
      * Creates an array that corresponds to the amount of times a number appears in a list.
-     *
+     * <p>
      * Ex: {1,2,3,4} -> {0,1,1,1,1}, {0,2,2,4} -> {1,0,2,0,1}
      *
      * @param bin        The number list to tabulate

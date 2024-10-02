@@ -39,10 +39,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
 
     public LFTRSpargingNEIHandler() {
         this.transferRects.add(
-            new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(65, 13, 36, 18),
-                this.getOverlayIdentifier(),
-                new Object[0]));
+            new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), this.getOverlayIdentifier()));
         if (!NEIGTPPConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
                 GTValues.GT,
@@ -83,8 +80,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        this.transferRects
-            .add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getOverlayIdentifier(), new Object[0]));
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(72, 14, 22, 16), getOverlayIdentifier()));
     }
 
     public List<GasSpargingRecipeNEI> getCache() {
@@ -178,7 +174,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
     public void drawExtras(int aRecipeIndex) {
         final long tEUt = ((GasSpargingRecipeNEI) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
         final long tDuration = ((GasSpargingRecipeNEI) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
-        drawText(10, 73, "Total: " + MathUtils.formatNumbers((long) (tDuration * tEUt)) + " EU", -16777216);
+        drawText(10, 73, "Total: " + MathUtils.formatNumbers(tDuration * tEUt) + " EU", -16777216);
         drawText(10, 83, "Usage: " + MathUtils.formatNumbers(tEUt) + " EU/t", -16777216);
         drawText(
             10,
@@ -233,7 +229,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
         return currenttip;
     }
 
-    public class FixedPositionedStack extends PositionedStack {
+    public static class FixedPositionedStack extends PositionedStack {
 
         public final int mChance;
         public boolean permutated = false;
@@ -444,16 +440,8 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
 
         @Override
         public int compareTo(CachedRecipe o) {
-            boolean b = GasSpargingRecipeNEI.class.isInstance(o);
-            if (b) {
-                GasSpargingRecipeNEI p = (GasSpargingRecipeNEI) o;
-                if (p.mOutputs.size() > this.mOutputs.size()) {
-                    return 1;
-                } else if (p.mOutputs.size() == this.mOutputs.size()) {
-                    return 0;
-                } else {
-                    return -1;
-                }
+            if (o instanceof GasSpargingRecipeNEI p) {
+                return Integer.compare(p.mOutputs.size(), this.mOutputs.size());
             }
             return 0;
         }
@@ -461,14 +449,9 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
         @Override
         public boolean equals(Object obj) {
             if (obj != null) {
-                if (GasSpargingRecipeNEI.class.isInstance(obj)) {
-                    GasSpargingRecipeNEI p = (GasSpargingRecipeNEI) obj;
-                    if (p != null) {
-                        if (GTUtility.areStacksEqual(p.mInputs.get(0).item, this.mInputs.get(0).item, true)) {
-                            if (p.mOutputs.size() == this.mOutputs.size()) {
-                                return true;
-                            }
-                        }
+                if (obj instanceof GasSpargingRecipeNEI p) {
+                    if (GTUtility.areStacksEqual(p.mInputs.get(0).item, this.mInputs.get(0).item, true)) {
+                        return p.mOutputs.size() == this.mOutputs.size();
                     }
                 }
             }

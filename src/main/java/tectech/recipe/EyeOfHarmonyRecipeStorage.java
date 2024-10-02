@@ -40,11 +40,11 @@ public class EyeOfHarmonyRecipeStorage {
         private static final long serialVersionUID = -1634011860327553337L;
 
         {
-            ModBlocks.blocks.forEach((dimString, dimBlock) -> { put(dimBlock, dimString); });
+            ModBlocks.blocks.forEach((dimString, dimBlock) -> put(dimBlock, dimString));
         }
     };
 
-    private final HashMap<String, EyeOfHarmonyRecipe> recipeHashMap = new HashMap<String, EyeOfHarmonyRecipe>() {
+    private final HashMap<String, EyeOfHarmonyRecipe> recipeHashMap = new HashMap<>() {
 
         private static final long serialVersionUID = -3501819612517400500L;
 
@@ -175,7 +175,7 @@ public class EyeOfHarmonyRecipeStorage {
         double mainMultiplier = (timeCalculator(10) * (6 * 64));
         double probability = 1.0 / validMaterialList.size();
 
-        validMaterialList.forEach((material) -> { processHelper(outputMap, material, mainMultiplier, probability); });
+        validMaterialList.forEach((material) -> processHelper(outputMap, material, mainMultiplier, probability));
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
 

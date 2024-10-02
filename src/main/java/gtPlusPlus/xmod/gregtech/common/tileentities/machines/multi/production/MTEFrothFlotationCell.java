@@ -276,7 +276,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
 
     @Override
     public boolean isRecipeLockingEnabled() {
-        return lockedMaterialName != null && !lockedMaterialName.equals("");
+        return lockedMaterialName != null && !lockedMaterialName.isEmpty();
     }
 
     @Override

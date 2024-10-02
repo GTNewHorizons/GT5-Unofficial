@@ -225,7 +225,7 @@ public abstract class MTEBoilerBase extends MTEBasicTank {
             }
             if ((aTick % 10L) == 0L) {
                 if (this.mTemperature > 100) {
-                    if ((this.mFluid == null) || (!GTModHandler.isWater(this.mFluid)) || (this.mFluid.amount <= 0)) {
+                    if ((!GTModHandler.isWater(this.mFluid)) || (this.mFluid.amount <= 0)) {
                         this.mHadNoWater = true;
                     } else {
                         if (this.mHadNoWater) {

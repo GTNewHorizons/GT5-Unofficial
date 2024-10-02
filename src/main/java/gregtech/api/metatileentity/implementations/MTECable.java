@@ -210,7 +210,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public int getProgresstime() {
-        return (int) mTransferredAmperage * 64;
+        return mTransferredAmperage * 64;
     }
 
     @Override

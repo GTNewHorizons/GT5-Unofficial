@@ -36,7 +36,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
     private static IModelCustomExt blackholeModel;
     private static ResourceLocation blackholeTexture;
-    private static float modelScale = .5f;
+    private static final float modelScale = .5f;
 
     private ShaderProgram laserProgram;
     private static int u_LaserCameraPosition = -1, u_LaserColor = -1, u_LaserModelMatrix = -1;

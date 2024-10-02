@@ -18,8 +18,8 @@ public class StructureVBO {
 
     private String[][] structure;
 
-    private HashSet<Character> values = new HashSet<>();
-    private HashMap<Character, Pair<Block, Integer>> mapper = new HashMap<>();
+    private final HashSet<Character> values = new HashSet<>();
+    private final HashMap<Character, Pair<Block, Integer>> mapper = new HashMap<>();
 
     public StructureVBO assignStructure(String[][] structure) {
         this.structure = structure;

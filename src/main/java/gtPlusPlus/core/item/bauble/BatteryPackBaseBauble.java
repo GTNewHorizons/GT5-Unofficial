@@ -135,7 +135,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
             try {
 
                 if (this.getCharge(aBaubleStack) >= getTransferLimit(aBaubleStack)) {
-                    // Try Iterate Armour Slots of Player
+                    // Try To Iterate Armour Slots of Player
                     if (aPlayer instanceof EntityPlayer) {
 
                         // amour
@@ -145,7 +145,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                                     continue;
                                 }
                                 if (ChargingHelper.isItemValid(aInvStack)) {
-                                    double aTransferRate = 0;
+                                    double aTransferRate;
                                     final IElectricItem electricItem = (IElectricItem) aInvStack.getItem();
                                     if (electricItem != null) {
                                         aTransferRate = electricItem.getTransferLimit(aInvStack);
@@ -166,28 +166,17 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                                                                 false);
                                                             ElectricItem.manager
                                                                 .discharge(aBaubleStack, d, mTier, false, true, false);
-                                                            // Logger.INFO("Charging " + aInvStack.getDisplayName() + "
-                                                            // | " + d + " | "+electricItem.getMaxCharge(aInvStack));
                                                         }
-                                                    } else {
-                                                        // Logger.INFO("5");
                                                     }
-                                                } else {
-                                                    // Logger.INFO("4");
                                                 }
-                                            } else {
-                                                // Logger.INFO("3");
                                             }
 
-                                        } else {
-                                            // Logger.INFO("1");
                                         }
+
                                     }
                                 }
                             }
-                            if (this.getCharge(aBaubleStack) > 0) {
-                                continue;
-                            } else {
+                            if (!(this.getCharge(aBaubleStack) > 0)) {
                                 break;
                             }
                         }
@@ -221,36 +210,22 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                                                                 .charge(aInvStack, aTransferRate, mTier, false, false);
                                                             ElectricItem.manager
                                                                 .discharge(aBaubleStack, d, mTier, false, true, false);
-                                                            // Logger.INFO("Charging " + aInvStack.getDisplayName() + "
-                                                            // | " + d + " | "+electricItem.getMaxCharge(aInvStack));
                                                         }
-                                                    } else {
-                                                        // Logger.INFO("5");
                                                     }
-                                                } else {
-                                                    // Logger.INFO("4");
                                                 }
-                                            } else {
-                                                // Logger.INFO("3");
                                             }
 
-                                        } else {
-                                            // Logger.INFO("1");
                                         }
                                     }
                                 }
                             }
-                            if (this.getCharge(aBaubleStack) > 0) {
-                                continue;
-                            } else {
+                            if (!(this.getCharge(aBaubleStack) > 0)) {
                                 break;
                             }
                         }
                     }
                 }
-            } catch (Throwable t) {
-
-            }
+            } catch (Throwable ignored) {}
         }
     }
 
