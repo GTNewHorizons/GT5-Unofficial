@@ -66,17 +66,21 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiSolidifier>
     implements ISurvivalConstructable {
 
-    protected final String MS_LEFT_MID = mName + "leftmid";
-    protected final String MS_RIGHT_MID = mName + "rightmid";
-    protected final String MS_END = mName + "end";
+    private static final String MS_LEFT_MID = "leftmid";
+    private static final String MS_RIGHT_MID = "rightmid";
+    private static final String MS_END = "end";
 
-    private final int PARALLELS_PER_WIDTH = 3;
+    private static final int PARALLELS_PER_WIDTH = 3;
+    private static final double DECAY_RATE = 0.025;
 
     private byte glassTier = 0;
-    private static final double decay_rate = 0.025;
+    protected int mWidth;
+    private int mCasingAmount;
+    private float speedup = 1;
+    private int runningTickCounter = 0;
 
-    private final String STRUCTURE_PIECE_MAIN = "main";
-    private final IStructureDefinition<MTEMultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureDefinition<MTEMultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMultiSolidifier>builder()
         .addShape(
             MS_LEFT_MID,
@@ -238,9 +242,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         buildPiece(MS_END, stackSize, hintsOnly, (-tTotalWidth - 2) * 2 + 4, 4, 0);
     }
 
-    protected int mWidth;
-    protected int nWidth;
-
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
@@ -287,9 +288,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         return STRUCTURE_DEFINITION;
     }
 
-    protected int mCasing;
-    private int mCasingAmount;
-
     private void onCasingAdded() {
         mCasingAmount++;
     }
@@ -334,32 +332,23 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .setEuModifier(0.8F);
     }
 
-    private float speedup = 1;
-    private int tickcount = 0;
-
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        tickcount++;
-        if (tickcount % 10 == 0 && speedup < 3) {
-            tickcount = 0;
+        runningTickCounter++;
+        if (runningTickCounter % 10 == 0 && speedup < 3) {
+            runningTickCounter = 0;
             speedup += 0.025F;
         }
         return super.onRunningTick(aStack);
     }
 
-    private int tickcounts = 0;
-
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (mMaxProgresstime == 0 && speedup > 1) {
-                tickcounts++;
-                if (tickcounts % 5 == 0) {
-                    tickcounts = 0;
-                    speedup = (float) Math.max(1, speedup - decay_rate);
-                }
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+        if (mMaxProgresstime == 0 && speedup > 1) {
+            if (aTick % 5 == 0) {
+                speedup = (float) Math.max(1, speedup - DECAY_RATE);
             }
         }
     }
