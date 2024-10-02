@@ -124,7 +124,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
             .clone();
 
         // Check if there is output in slot.
-        Boolean hasOutput = false;
+        boolean hasOutput = false;
         if (aInputs[ContainerVolumetricFlaskSetter.SLOT_OUTPUT] != null) {
             hasOutput = true;
             if (aInputs[ContainerVolumetricFlaskSetter.SLOT_OUTPUT].stackSize >= 16) {
