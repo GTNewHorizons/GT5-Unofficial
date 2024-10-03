@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableList;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
@@ -1181,8 +1180,6 @@ public enum OrePrefixes {
         } else if (name().startsWith("battery")) {
             new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
         }
-
-        GregTechAPI.sGTCompleteLoad.add(this::onLoadComplete);
     }
 
     public static boolean isInstanceOf(String aName, OrePrefixes aPrefix) {
@@ -1301,9 +1298,6 @@ public enum OrePrefixes {
         return mOreProcessing.add(aRegistrator);
     }
 
-    // Hack to prevent duplicate registry of oredicted materials
-    HashSet<Materials> used = new HashSet<>();
-
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
         if (aMaterial == null) {
@@ -1347,10 +1341,6 @@ public enum OrePrefixes {
                     + GTUtility.getClassName(tRegistrator));
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }
-    }
-
-    public void onLoadComplete() {
-        used = null;
     }
 
     public Object get(Object aMaterial) {
