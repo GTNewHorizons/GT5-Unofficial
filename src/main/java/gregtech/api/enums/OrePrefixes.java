@@ -3,7 +3,6 @@ package gregtech.api.enums;
 import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.GTValues.D2;
 import static gregtech.api.enums.GTValues.M;
-import static gregtech.api.util.GTRecipeBuilder.DEBUG_MODE_COLLISION;
 
 import java.util.ArrayList;
 import java.util.Arrays;
