@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
@@ -44,9 +43,44 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.config.MachineStats;
 
 public class MTECleanroom extends MTETooltipMultiBlockBase
     implements IConstructable, ISecondaryDescribable, ICleanroom {
+
+    /**
+     * Maximum width (horizontal size) of the cleanroom. Includes walls.
+     */
+    public static final int MAX_WIDTH = 15;
+
+    /**
+     * Maximum height of the cleanroom. Includes floor and ceiling.
+     */
+    public static final int MAX_HEIGHT = 15;
+
+    /**
+     * Minimum number of plascrete blocks. Read from config file.
+     */
+    public static int MIN_CASING_COUNT = 20;
+
+    /**
+     * Maximum percentage of plascrete blocks which can be replaced by other blocks. Read from config file.
+     */
+    public static int MAX_REPLACEMENT_PERCENTAGE = 30;
+
+    /**
+     * List of other blocks allowed in the cleanroom.
+     * Format of entries is either just the block's unlocalized name, or <unlocalized name>:<meta>. The former matches
+     * all blocks of that name regardless of meta value. Read from config file.
+     */
+    public static final HashSet<String> ALLOWED_BLOCKS = new HashSet<>();
+
+    // Plascrete blocks.
+    protected static Block CASING_BLOCK;
+    protected static final int CASING_META = 2;
+    // Filter casings.
+    protected static Block FILTER_BLOCK;
+    protected static final int FILTER_META = 11;
 
     private final Set<ICleanroomReceiver> cleanroomReceivers = new HashSet<>();
     private int mHeight = -1;
@@ -94,7 +128,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addInfo("Can accept 2A from an LV energy hatch.")
             .addInfo("Will overclock and gain efficiency faster starting from HV.")
             .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Warning:")
+            .addInfo(EnumChatFormatting.DARK_RED + "Warning:")
             .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
             .addInfo("Each maintenance issue reduces maximum efficiency by 10%.")
             .addInfo("Generating any pollution inside causes the cleanroom to shut down.")
@@ -123,7 +157,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     + "IC2"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + "). Must be properly closed, no gaps allowed!")
+                    + "). Keep closed, no gaps allowed or efficiency will drop!")
             .addStructureInfo(
                 "- Elevators (" + EnumChatFormatting.ITALIC
                     + "OpenBlocks"
@@ -135,7 +169,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + ").")
-            .addStructureInfo("See config/GregTech/Cleanroom.cfg for more valid blocks.")
+            .addStructureInfo("See config/GregTech/MachineStats.cfg for more valid blocks.")
             .addStructureInfo(
                 EnumChatFormatting.YELLOW
                     + "All non-plascrete blocks now share the same limit. Feel free to mix and match!")
@@ -182,12 +216,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
      * Structure check
      */
 
-    // Plascrete blocks.
-    protected static Block CASING_BLOCK;
-    protected static final int CASING_META = 2;
-    // Filter casings.
-    protected static Block FILTER_BLOCK;
-    protected static final int FILTER_META = 11;
     // Extent in horizontal directions. Specifically the offset from the controller to each wall.
     // Min values will be negative, Max values positive.
     protected int dxMin = 0, dxMax = 0, dzMin = 0, dzMax = 0, dyMin = 0;
@@ -369,8 +397,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                 } else if (getGlassTier(block, meta) >= 4) {
                     // EV+ glass.
                     ++addedOther;
-                } else if (allowedBlocks.contains(block.getUnlocalizedName())
-                    || allowedBlocks.contains(block.getUnlocalizedName() + ":" + meta)) {
+                } else if (ALLOWED_BLOCKS.contains(block.getUnlocalizedName())
+                    || ALLOWED_BLOCKS.contains(block.getUnlocalizedName() + ":" + meta)) {
                         // Another allowed block.
                         ++addedOther;
                     } else {
@@ -415,15 +443,15 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
      * 2 = upper x coordinate (east).
      * 3 = upper z coordinate (south).
      * If the door is opened, a 4 is added to this value.
-     *
+     * <p>
      * The meta of the top part of the door determines which way the door opens.
      * 8 = opens counterclockwise.
      * 9 = opens clockwise.
-     *
+     * <p>
      * Therefore, to find out where in the block the door currently is, we need to know both the top and the
      * bottom part, as a door that is "closed" on the north side can "open" to either the west or east side.
      * In both cases the meta of the bottom part will be the same (5).
-     *
+     * <p>
      * This method takes the coordinates of a door block (it is already assumed that this is a door), and returns the
      * direction where the door is. Return value is the same as a default closed door: 0 = west, 1 = north, 2 = east, 3
      * = north.
@@ -487,8 +515,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         } else if (getGlassTier(block, meta) >= 4) {
             // EV+ glass.
             ++otherCount;
-        } else if (allowedBlocks.contains(block.getUnlocalizedName())
-            || allowedBlocks.contains(block.getUnlocalizedName() + ":" + meta)) {
+        } else if (ALLOWED_BLOCKS.contains(block.getUnlocalizedName())
+            || ALLOWED_BLOCKS.contains(block.getUnlocalizedName() + ":" + meta)) {
                 // Another allowed block.
                 ++otherCount;
             } else if (block instanceof ic2.core.block.BlockIC2Door) {
@@ -601,9 +629,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         casingCount = 0;
         otherCount = 0;
         isDoorOpen = false;
-
-        if (CASING_BLOCK == null) CASING_BLOCK = GregTechAPI.sBlockReinforced;
-        if (FILTER_BLOCK == null) FILTER_BLOCK = GregTechAPI.sBlockCasings3;
 
         if (debugCleanroom) GTLog.out.println("Cleanroom: Starting structure check.");
 
@@ -748,74 +773,14 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
      * Configurable values.
      */
 
-    private static final String cfgCategory = "cleanroom";
+    @Override
+    public void onConfigLoad() {
+        MIN_CASING_COUNT = MachineStats.cleanroom.minCasingCount;
+        MAX_REPLACEMENT_PERCENTAGE = MachineStats.cleanroom.maxReplacementPercentage;
+        ALLOWED_BLOCKS.clear();
+        Collections.addAll(ALLOWED_BLOCKS, MachineStats.cleanroom.allowedBlocks);
 
-    /**
-     * Maximum width (horizontal size) of the cleanroom. Includes walls.
-     */
-    public static int MAX_WIDTH = 15;
-    private static final String cfgKeyMaxWidth = "MaximumWidth";
-
-    /**
-     * Maximum height of the cleanroom. Includes floor and ceiling.
-     */
-    public static int MAX_HEIGHT = 15;
-    private static final String cfgKeyMaxHeight = "MaximumHeight";
-
-    /**
-     * Minimum number of plascrete blocks. Read from config.
-     */
-    protected static int MIN_CASING_COUNT = 20;
-    private static final String cfgKeyMinCasingCount = "MinimumCasingCount";
-
-    /**
-     * Maximum percentage of plascrete blocks which can be replaced by other blocks. Read from config.
-     */
-    protected static int MAX_REPLACEMENT_PERCENTAGE = 30;
-    private static final String cfgKeyMaxReplacementPercentage = "MaximumReplacementPercentage";
-
-    /**
-     * List of other blocks allowed in the cleanroom.
-     * Format of entries is either just the block's unlocalized name, or <unlocalized name>:<meta>. The former matches
-     * all blocks of that name regardless of meta value. Read from config.
-     */
-    protected static final HashSet<String> allowedBlocks = new HashSet<>();
-    private static final String cfgKeyAllowedBlocks = "AllowedBlocks";
-
-    public static void loadConfig(Configuration cfg) {
-        MAX_WIDTH = cfg
-            .get(cfgCategory, cfgKeyMaxWidth, 15, "Maximum width (horizontal size) of a cleanroom. Includes walls.")
-            .getInt();
-
-        MAX_HEIGHT = cfg
-            .get(cfgCategory, cfgKeyMaxHeight, 15, "Maximum height of a cleanroom. Includes floor and ceiling.")
-            .getInt();
-
-        MIN_CASING_COUNT = cfg
-            .get(cfgCategory, cfgKeyMinCasingCount, 20, "Minimum number of plascrete blocks in a valid cleanroom.")
-            .getInt();
-
-        MAX_REPLACEMENT_PERCENTAGE = cfg.get(
-            cfgCategory,
-            cfgKeyMaxReplacementPercentage,
-            30,
-            "Maximum percentage of plascrete blocks which can be replaced by other valid blocks: glass, doors, hatches, etc.")
-            .getInt();
-
-        allowedBlocks.clear();
-        Collections.addAll(
-            allowedBlocks,
-            cfg.get(
-                cfgCategory,
-                cfgKeyAllowedBlocks,
-                new String[] { "BW_GlasBlocks", // All Bart glass (including HV tier)
-                    "tile.openblocks.elevator", "tile.openblocks.elevator_rotating", // Elevators
-                    "tile.blockTravelAnchor", // Travel anchors
-                    "tile.blockCosmeticOpaque:2", // Warded glass (usually HV tier)
-                    "tile.extrautils:etherealglass" },
-                "List of other blocks allowed as a part of the cleanroom. Format: <block name> or <block name>:<meta>.")
-                .getStringList());
-
-        cfg.save();
+        CASING_BLOCK = GregTechAPI.sBlockReinforced;
+        FILTER_BLOCK = GregTechAPI.sBlockCasings3;
     }
 }
