@@ -1308,26 +1308,9 @@ public enum OrePrefixes {
             return;
         }
 
-        if (aMaterial == Materials._NULL && !mIsSelfReferencing && mIsMaterialBased) {
+        if (!((aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
+            && GTUtility.isStackValid(aStack))) {
             return;
-        }
-
-        if (!GTUtility.isStackValid(aStack)) {
-            return;
-        }
-
-        if (aMaterial != Materials._NULL) {
-            if (!used.add(aMaterial)) {
-                if (DEBUG_MODE_COLLISION) {
-                    GTLog.out
-                        .println("Attempted duplicate recipe registration by " + aModName + " for " + aOreDictName);
-                }
-                return;
-            } else {
-                if (DEBUG_MODE_COLLISION) {
-                    GTLog.out.println("New recipe registration by " + aModName + " for " + aOreDictName);
-                }
-            }
         }
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
