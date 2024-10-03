@@ -42,6 +42,7 @@ import cofh.asmhooks.block.BlockWater;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -51,6 +52,8 @@ import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 
 public class GTStructureUtility {
 
@@ -71,10 +74,16 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> ofAnyWater() {
         return new IStructureElement<>() {
 
+            final Block distilledWater = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
-                return block == Blocks.water || block instanceof BlockWater || block instanceof BlockTickingWater;
+                if (block == Blocks.water || block == distilledWater) return true;
+                if (Mods.COFHCore.isModLoaded()) {
+                    return block instanceof BlockWater || block instanceof BlockTickingWater;
+                }
+                return false;
             }
 
             @Override
