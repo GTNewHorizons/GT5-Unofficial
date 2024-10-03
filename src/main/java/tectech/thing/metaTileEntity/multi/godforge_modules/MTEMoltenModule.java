@@ -59,6 +59,11 @@ public class MTEMoltenModule extends MTEBaseModule {
                 if (recipe.mSpecialValue > getHeat()) {
                     return CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
                 }
+
+                if (recipe.mEUt > getProcessingVoltage()) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+
                 wirelessEUt = (long) recipe.mEUt * getMaxParallel();
                 if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
@@ -73,7 +78,7 @@ public class MTEMoltenModule extends MTEBaseModule {
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setHeatOC(true)
                     .setHeatDiscount(true)
-                    .setMachineHeat(getHeatForOC())
+                    .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
                     .setHeatDiscountMultiplier(getHeatEnergyDiscount())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
 

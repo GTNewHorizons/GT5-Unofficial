@@ -40,7 +40,14 @@ public final class TTUtility {
         String strNum = abs.toString();
         int exponent = strNum.length() - 1;
         return (number.signum() == -1 ? "-" : "") + strNum.charAt(0) + "." + strNum.substring(1, 3) + "e" + exponent;
+    }
 
+    public static String toExponentForm(long number) {
+        long abs = Math.abs(number);
+        String strNum = Long.toString(abs);
+        int exponent = strNum.length() - 1;
+        return (Long.signum(number) == -1 ? "-" : "") + strNum
+            .charAt(0) + "." + strNum.substring(1, 3) + "e" + exponent;
     }
 
     public static int bitStringToInt(String bits) {
