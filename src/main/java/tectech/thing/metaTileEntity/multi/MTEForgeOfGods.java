@@ -2997,10 +2997,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (!widget.isClient()) {
                     UpdateRenderer();
-                    widget.getContext()
-                        .closeWindow(STAR_COLOR_CONFIG_WINDOW_ID);
-                    widget.getContext()
-                        .openSyncedWindow(STAR_COLOR_CONFIG_WINDOW_ID);
+                    reopenWindow(widget, STAR_COLOR_CONFIG_WINDOW_ID);
                 }
             })
                 .setSize(35, 15)
