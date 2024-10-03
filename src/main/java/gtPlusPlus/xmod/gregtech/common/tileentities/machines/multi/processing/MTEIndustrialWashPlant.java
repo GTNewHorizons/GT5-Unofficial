@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -14,6 +13,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,8 +42,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -146,13 +149,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                         .casingIndex(getCasingTextureIndex())
                         .dot(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                .addElement(
-                    'w',
-                    ofChain(
-                        isAir(),
-                        ofBlockAnyMeta(Blocks.water),
-                        ofBlockAnyMeta(Blocks.flowing_water),
-                        ofBlockAnyMeta(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater))))
+                .addElement('w', ofChain(isAir(), ofAnyWater(true)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -342,8 +339,11 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                         // Utils.LOG_WARNING("Found Water");
                     } else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
                         ++tAmount;
-                        ++tAmount;
                         // Utils.LOG_WARNING("Found Distilled Water");
+                    } else if (Mods.COFHCore.isModLoaded()) {
+                        if (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater) {
+                            ++tAmount;
+                        }
                     }
                 }
             }

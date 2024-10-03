@@ -37,7 +37,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             {
                 if (GTOreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L) != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.Wood, 1L))
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L))
                         .fluidInputs(
                             Materials.SeedOil
@@ -53,7 +53,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 {
                     if (GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L) != null) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.Iron, 1L))
+                            .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
                             .fluidInputs(
                                 Materials.FierySteel
@@ -68,7 +68,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 {
                     if (GTOreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L) != null) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.Iron, 1L))
+                            .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L))
                             .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GTValues.M)) * TICKS)
                             .eut((int) TierEU.LV / 2)
@@ -81,7 +81,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 {
                     if (GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L) != null) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.WroughtIron, 1L))
+                            .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
                             .fluidInputs(
                                 Materials.FierySteel
@@ -96,7 +96,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 {
                     if (GTOreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L) != null) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.WroughtIron, 1L))
+                            .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L))
                             .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GTValues.M)) * TICKS)
                             .eut((int) TierEU.LV / 2)
@@ -109,7 +109,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 {
                     if (GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L) != null) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.Steel, 1L))
+                            .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
                             .fluidInputs(
                                 Materials.FierySteel
@@ -124,7 +124,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 {
                     if (GTOreDictUnificator.get(aPrefix, Materials.SteelMagnetic, 1L) != null) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.Steel, 1L))
+                            .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.SteelMagnetic, 1L))
                             .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GTValues.M)) * TICKS)
                             .eut((int) TierEU.LV / 2)
@@ -137,7 +137,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             {
                 if (GTOreDictUnificator.get(aPrefix, Materials.NeodymiumMagnetic, 1L) != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.Neodymium, 1L))
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.NeodymiumMagnetic, 1L))
                         .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GTValues.M)) * TICKS)
                         .eut((int) TierEU.HV / 2)
@@ -149,7 +149,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             {
                 if (GTOreDictUnificator.get(aPrefix, Materials.SamariumMagnetic, 1L) != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.Samarium, 1L))
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.SamariumMagnetic, 1L))
                         .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GTValues.M)) * TICKS)
                         .eut((int) TierEU.IV / 2)
@@ -162,7 +162,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             {
                 if (GTOreDictUnificator.get(aPrefix, Materials.TengamAttuned, 1L) != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTOreDictUnificator.get(aPrefix, Materials.TengamPurified, 1L))
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.TengamAttuned, 1L))
                         .duration(((int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GTValues.M)) * TICKS)
                         .eut((int) TierEU.RECIPE_UHV)
