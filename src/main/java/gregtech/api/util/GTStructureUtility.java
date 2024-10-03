@@ -71,7 +71,7 @@ public class GTStructureUtility {
         return ofHatchAdder(aHatchAdder, aTextureIndex, StructureLibAPI.getBlockHint(), aDots - 1);
     }
 
-    public static <T> IStructureElement<T> ofAnyWater() {
+    public static <T> IStructureElement<T> ofAnyWater(boolean allowFlowing) {
         return new IStructureElement<>() {
 
             final Block distilledWater = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
@@ -80,6 +80,7 @@ public class GTStructureUtility {
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
                 if (block == Blocks.water || block == distilledWater) return true;
+                if (allowFlowing && block == Blocks.flowing_water) return true;
                 if (Mods.COFHCore.isModLoaded()) {
                     return block instanceof BlockWater || block instanceof BlockTickingWater;
                 }

@@ -149,7 +149,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                         .casingIndex(getCasingTextureIndex())
                         .dot(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                .addElement('w', ofChain(isAir(), ofAnyWater()))
+                .addElement('w', ofChain(isAir(), ofAnyWater(true)))
                 .build();
         }
         return STRUCTURE_DEFINITION;

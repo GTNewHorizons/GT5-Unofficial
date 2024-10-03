@@ -143,7 +143,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         // Sterile Water Plant Casing
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 4))
         .addElement('E', ofFrame(Materials.Adamantium))
-        .addElement('W', ofAnyWater())
+        .addElement('W', ofAnyWater(false))
         // Tinted industrial glass
         .addElement('G', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
         .build();
