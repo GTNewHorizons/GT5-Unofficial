@@ -1322,7 +1322,7 @@ public enum OrePrefixes {
             return;
         }
 
-        if (!aOreDictName.startsWith("stone") && aMaterial != Materials._NULL) {
+        if (aMaterial != Materials._NULL) {
             if (!used.add(aMaterial)) {
                 if (DEBUG_MODE_COLLISION) {
                     GTLog.out
