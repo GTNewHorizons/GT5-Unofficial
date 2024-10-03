@@ -28,6 +28,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -334,6 +337,10 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
                     tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
                     if (tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
                         ++tAmount;
+                    } else if (Mods.COFHCore.isModLoaded()) {
+                        if (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater) {
+                            ++tAmount;
+                        }
                     }
                 }
             }

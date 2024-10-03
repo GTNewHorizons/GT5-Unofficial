@@ -88,7 +88,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         .linkedListValues()
         .build();
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
-    private int sparkCount = 10;
+    private int sparkCount = 20;
 
     // Face icons
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -748,7 +748,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         sparkCount--;
         if (sparkCount == 0 && ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
             IGregTechTileEntity mte = getBaseMetaTileEntity();
-            sparkCount = 10;
+            sparkCount = 20;
             if (!sparkList.isEmpty()) {
                 NetworkDispatcher.INSTANCE.sendToAllAround(
                     new RendererMessage.RendererData(sparkList),
