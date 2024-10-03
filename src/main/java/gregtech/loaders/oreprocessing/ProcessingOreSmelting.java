@@ -183,7 +183,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     1L);
                 if ((tStack == null) && (!aMaterial.contains(SubTag.SMELTING_TO_GEM)))
                     tStack = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
-                GTModHandler.addSmeltingRecipe(GTOreDictUnificator.get(aPrefix, aMaterial, 1L), tStack);
+                GTModHandler.addSmeltingRecipe(aStack, tStack);
             }
         }
     }

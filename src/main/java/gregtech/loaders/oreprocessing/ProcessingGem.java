@@ -69,7 +69,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     // need to avoid iridium exploit
                     if (aMaterial != Materials.Iridium) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 9))
+                            .itemInputs(GTUtility.copyAmount(9, aStack))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                             .duration(15 * SECONDS)
                             .eut(2)

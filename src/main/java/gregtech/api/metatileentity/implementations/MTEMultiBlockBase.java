@@ -811,7 +811,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(getMaxInputAmps());
-        logic.setAmperageOC(mEnergyHatches.size() != 1);
+        logic.setAmperageOC(mExoticEnergyHatches.size() > 0 || mEnergyHatches.size() != 1);
     }
 
     protected boolean supportsCraftingMEBuffer() {
