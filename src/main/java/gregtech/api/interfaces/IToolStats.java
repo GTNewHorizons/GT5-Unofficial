@@ -198,7 +198,7 @@ public interface IToolStats {
 
     default String getToolTypeName() {
         return null;
-    };
+    }
 
     default byte getMaxMode() {
         return 1;

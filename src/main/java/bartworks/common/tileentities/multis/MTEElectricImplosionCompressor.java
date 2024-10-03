@@ -65,15 +65,15 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.MainMod;
 import bartworks.client.renderer.EICPistonVisualizer;
 import bartworks.common.configs.Configuration;
-import bartworks.common.net.EICPacket;
+import bartworks.common.net.PacketEIC;
 import bartworks.util.Coords;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -352,9 +352,9 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
         if (pistonEnabled && aBaseMetaTileEntity.isActive() && aTick % 20 == 0) {
             if (aBaseMetaTileEntity.isClientSide()) this.animatePiston(aBaseMetaTileEntity);
-            else if (aBaseMetaTileEntity.hasMufflerUpgrade()) MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+            else if (aBaseMetaTileEntity.hasMufflerUpgrade()) GTValues.NW.sendPacketToAllPlayersInRange(
                 aBaseMetaTileEntity.getWorld(),
-                new EICPacket(
+                new PacketEIC(
                     new Coords(
                         aBaseMetaTileEntity.getXCoord(),
                         aBaseMetaTileEntity.getYCoord(),
@@ -466,7 +466,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
         }
 
-        isOK = isOK && this.mMaintenanceHatches.size() == 1 && energyHatches.size() >= 1;
+        isOK = isOK && this.mMaintenanceHatches.size() == 1 && !energyHatches.isEmpty();
         if (isOK) {
             this.activatePiston();
             return true;

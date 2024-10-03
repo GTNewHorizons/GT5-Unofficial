@@ -416,7 +416,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null || !(aMetaTileEntity instanceof MTEHatchInput)) {
+        if (!(aMetaTileEntity instanceof MTEHatchInput)) {
             return false;
         } else {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);

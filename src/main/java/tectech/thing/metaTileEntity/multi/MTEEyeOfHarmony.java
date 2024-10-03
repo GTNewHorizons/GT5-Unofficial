@@ -46,7 +46,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -914,21 +913,17 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
         // Make sure there are no energy hatches.
         {
-            if (mEnergyHatches.size() > 0) {
+            if (!mEnergyHatches.isEmpty()) {
                 return false;
             }
 
-            if (mExoticEnergyHatches.size() > 0) {
+            if (!mExoticEnergyHatches.isEmpty()) {
                 return false;
             }
         }
 
         // Make sure there are 2 input hatches.
-        if (mInputHatches.size() != 2) {
-            return false;
-        }
-
-        return true;
+        return mInputHatches.size() == 2;
     }
 
     private boolean animationsEnabled = true;
@@ -1854,7 +1849,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_EYE_OF_HARMONY_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EYE_OF_HARMONY_LOOP;
     }
 }

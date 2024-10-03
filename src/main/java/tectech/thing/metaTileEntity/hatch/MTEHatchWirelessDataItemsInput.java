@@ -12,11 +12,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.google.common.collect.ImmutableList;
 
@@ -27,6 +24,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.common.WirelessDataStore;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
@@ -89,11 +87,8 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
-            clientLocale = "en_US";
+        if (aPlayer instanceof EntityPlayerMPAccessor) {
+            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
         return true;
     }

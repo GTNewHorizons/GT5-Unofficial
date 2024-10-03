@@ -40,7 +40,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -344,11 +343,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
         // Make sure there are no energy hatches
         {
-            if (mEnergyHatches.size() > 0) {
+            if (!mEnergyHatches.isEmpty()) {
                 return false;
             }
 
-            if (mExoticEnergyHatches.size() > 0) {
+            if (!mExoticEnergyHatches.isEmpty()) {
                 return false;
             }
         }
@@ -411,7 +410,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 startRecipeProcessing();
                 FluidStack[] fluidInHatch = null;
                 boolean fuelDrained = false;
-                if (mInputHatches != null && mInputHatches.size() != 0) {
+                if (mInputHatches != null && !mInputHatches.isEmpty()) {
                     fluidInHatch = this.getStoredFluids()
                         .toArray(new FluidStack[0]);
                 }
@@ -423,7 +422,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (upgrades[29]) {
                     maxModuleCount += 4;
                 }
-                if (mInputBusses.size() != 0) {
+                if (!mInputBusses.isEmpty()) {
                     if (internalBattery == 0) {
                         MTEHatchInputBus inputBus = mInputBusses.get(0);
                         ItemStack[] inputBusInventory = inputBus.getRealInventory();
@@ -497,7 +496,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 }
 
                 // Do module calculations and checks
-                if (moduleHatches.size() > 0 && internalBattery > 0 && moduleHatches.size() <= maxModuleCount) {
+                if (!moduleHatches.isEmpty() && internalBattery > 0 && moduleHatches.size() <= maxModuleCount) {
                     for (MTEBaseModule module : moduleHatches) {
                         if (allowModuleConnection(module, this)) {
                             module.connect();
@@ -735,7 +734,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public void onRemoval() {
-        if (moduleHatches != null && moduleHatches.size() > 0) {
+        if (moduleHatches != null && !moduleHatches.isEmpty()) {
             for (MTEBaseModule module : moduleHatches) {
                 module.disconnect();
             }
@@ -1405,11 +1404,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private int currentColorCode = 0;
     private int currentMilestoneBG = 0;
     private int gravitonShardCost = 0;
-    private int[][] prereqUpgrades = new int[31][];
+    private final int[][] prereqUpgrades = new int[31][];
     private int[] followupUpgrades = new int[] {};
     private boolean isUpradeSplitStart = false;
     private boolean doesCurrentUpgradeRequireExtraMats = false;
-    private boolean[] allPrereqRequired = new boolean[31];
+    private final boolean[] allPrereqRequired = new boolean[31];
     private boolean[] upgrades = new boolean[31];
     private boolean[] materialPaidUpgrades = new boolean[7];
 
@@ -2348,22 +2347,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         IItemHandlerModifiable upgradeMatsHandler = new ItemStackHandler(12);
         int uniqueItems = inputs.length;
         for (int i = 0; i < 12; i++) {
-            int index = i;
-            int cleanDiv4 = index / 4;
+            int cleanDiv4 = i / 4;
             if (i < uniqueItems) {
-                ItemStack stack = inputs[index];
+                ItemStack stack = inputs[i];
                 if (stack != null) {
                     stack = stack.copy();
                     stack.stackSize = 1;
-                    upgradeMatsHandler.setStackInSlot(index, stack);
+                    upgradeMatsHandler.setStackInSlot(i, stack);
                 }
                 builder.widget(
                     new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
-                        .setPos(5 + cleanDiv4 * 36, 6 + index % 4 * 18)
+                        .setPos(5 + cleanDiv4 * 36, 6 + i % 4 * 18)
                         .setSize(18, 18));
                 columnList.get(cleanDiv4)
                     .addChild(
-                        new SlotWidget(upgradeMatsHandler, index).setAccess(false, false)
+                        new SlotWidget(upgradeMatsHandler, i).setAccess(false, false)
                             .disableInteraction());
                 columnList.get(cleanDiv4 + 3)
                     .addChild(
@@ -2373,7 +2371,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             } else {
                 builder.widget(
                     new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_DISABLED)
-                        .setPos(5 + cleanDiv4 * 36, 6 + index % 4 * 18)
+                        .setPos(5 + cleanDiv4 * 36, 6 + i % 4 * 18)
                         .setSize(18, 18));
             }
         }
@@ -3276,7 +3274,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public void reduceBattery(int amount) {
         if (internalBattery - amount <= 0) {
             internalBattery = 0;
-            if (moduleHatches.size() > 0) {
+            if (!moduleHatches.isEmpty()) {
                 for (MTEBaseModule module : moduleHatches) {
                     module.disconnect();
                 }
@@ -3427,7 +3425,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_GOD_FORGE_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_GOD_FORGE_LOOP;
     }
 }

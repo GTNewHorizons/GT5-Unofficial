@@ -173,12 +173,10 @@ public abstract class BWOreLayer extends GTWorldgen {
     }
 
     private boolean shouldPlace(Random aRandom, int cX, int eX, int tX, int cZ, int eZ, int tZ) {
-        if (aRandom.nextInt(
+        return aRandom.nextInt(
             Math.max(1, Math.max(MathHelper.abs_int(cZ - tZ), MathHelper.abs_int(eZ - tZ)) / this.mDensity)) == 0
             || aRandom.nextInt(
-                Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0)
-            return true;
-        return false;
+                Math.max(1, Math.max(MathHelper.abs_int(cX - tX), MathHelper.abs_int(eX - tX)) / this.mDensity)) == 0;
     }
 
     public boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean isSmallOre) {

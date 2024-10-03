@@ -176,7 +176,7 @@ public class GTForestryCompat {
                 if ((resources.length == 1) && (tRecipe.getFluidOutput() != null) && (resources[0] != null)) {
                     Item input = resources[0].getItem();
                     if (input == Items.pumpkin_seeds || input == Items.melon_seeds || input == Items.wheat_seeds)
-                        return;
+                        continue;
                     GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
                     recipeBuilder.itemInputs(resources[0]);
                     if (tRecipe.getRemnants() != null) {

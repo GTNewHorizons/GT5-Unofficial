@@ -16,7 +16,7 @@ import gregtech.api.util.GTLanguageManager;
 /**
  * The glass is split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
- *
+ * <p>
  * This class hosts various special types of tiered glass with not many tiers.
  */
 public class BlockGlass1 extends BlockCasingsAbstract {

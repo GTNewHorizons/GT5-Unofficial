@@ -45,7 +45,6 @@ import bartworks.common.loaders.RecipeLoader;
 import bartworks.common.loaders.RegisterGlassTiers;
 import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
-import bartworks.common.net.BWNetwork;
 import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
@@ -105,8 +104,6 @@ public final class MainMod {
 
     @Mod.Instance(MainMod.MOD_ID)
     public static MainMod instance;
-
-    public static BWNetwork BW_Network_instance = new BWNetwork();
 
     public MainMod() {
 

@@ -133,13 +133,12 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
         long tier = -1;
         long tCurrent = 0;
         long tEnergyMax = 0;
-        for (int i = 0; i < mInventory.length; i++) {
-            if (mInventory[i] == null || mInventory[i].stackSize != 1) {
-                continue;
-            }
-            CapacitorComponent cap = componentBinds.get(TTUtility.getUniqueIdentifier(mInventory[i]));
-            if (cap != null && cap.tier > tier) {
-                tier = cap.tier;
+        for (ItemStack stack : mInventory) {
+            if (stack != null && stack.stackSize == 1) {
+                CapacitorComponent cap = componentBinds.get(TTUtility.getUniqueIdentifier(stack));
+                if (cap != null && cap.tier > tier) {
+                    tier = cap.tier;
+                }
             }
         }
         if (tier >= 0) {

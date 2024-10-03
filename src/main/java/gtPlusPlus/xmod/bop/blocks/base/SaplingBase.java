@@ -48,10 +48,6 @@ public class SaplingBase extends BlockSapling {
         this.setCreativeTab(AddToCreativeTab.tabBOP);
     }
 
-    private void setVanillaVariable(Object toSet, Object value) {
-        toSet = value;
-    }
-
     /**
      * Gets the block's texture. Args: side, meta
      */

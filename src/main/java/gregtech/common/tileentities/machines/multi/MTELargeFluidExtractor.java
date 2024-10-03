@@ -176,6 +176,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
             if (mGlassTier < 10 && energyHatch.getTierForStructure() > mGlassTier) {
                 mStructureBadGlassTier = true;
+                break;
             }
         }
 
@@ -203,10 +204,9 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         logic.setAmperageOC(true);
         logic.setAvailableVoltage(this.getMaxInputEu());
         logic.setAvailableAmperage(1);
-
-        logic.setEuModifier((float) (getEUMultiplier()));
+        logic.setEuModifier(getEUMultiplier());
         logic.setMaxParallel(getParallels());
-        logic.setSpeedBonus(1.0f / (float) (getSpeedBonus()));
+        logic.setSpeedBonus(1.0f / getSpeedBonus());
     }
 
     @Override
@@ -390,16 +390,15 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public String[] getInfoData() {
-        var data = new ArrayList<String>();
 
-        data.addAll(Arrays.asList(super.getInfoData()));
+        ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(String.format("Max Parallels: %s%d%s", YELLOW, getParallels(), RESET));
         data.add(String.format("Heating Coil Speed Bonus: +%s%.0f%s %%", YELLOW, getCoilSpeedBonus() * 100, RESET));
         data.add(String.format("Total Speed Multiplier: %s%.0f%s %%", YELLOW, getSpeedBonus() * 100, RESET));
         data.add(String.format("Total EU/t Multiplier: %s%.0f%s %%", YELLOW, getEUMultiplier() * 100, RESET));
 
-        return data.toArray(new String[data.size()]);
+        return data.toArray(new String[0]);
     }
 
     public int getParallels() {

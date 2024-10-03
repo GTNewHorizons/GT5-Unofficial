@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -184,8 +183,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
         if (checkPiece(mName, 4, 2, 0) && mCasing >= 64
             && checkMeta > 0
-            && mInputHatches.size() >= 1
-            && mOutputBusses.size() >= 1) {
+            && !mInputHatches.isEmpty()
+            && !mOutputBusses.isEmpty()) {
             mLevel = checkMeta - 1;
             for (MTEHatchInput inputHatch : mInputHatches) {
                 if (inputHatch.mTier < mLevel) {
@@ -396,7 +395,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_ALGAE_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_ALGAE_LOOP;
     }
 }

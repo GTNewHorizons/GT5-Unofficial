@@ -774,6 +774,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return this.mRenderID;
+        return mRenderID;
     }
 }

@@ -215,6 +215,7 @@ import bartworks.common.tileentities.tiered.MTEEnergyDistributor;
 import bartworks.common.tileentities.tiered.MTEGiantOutputHatch;
 import bartworks.common.tileentities.tiered.MTEHumongousInputHatch;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.processingLoaders.LoadItemContainers;
 import bwcrossmod.galacticgreg.MTEVoidMiners;
 import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserBox;
 import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserDynamo;
@@ -648,5 +649,7 @@ public class ItemRegistry {
                     amps).getStackForm(1L);
             }
         }
+
+        LoadItemContainers.run();
     }
 }

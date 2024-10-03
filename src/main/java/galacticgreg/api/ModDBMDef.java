@@ -10,8 +10,8 @@ import net.minecraft.block.Block;
 public class ModDBMDef {
 
     private String _targetBlockName;
-    private int _targetMeta;
-    private boolean _canAlwaysReplace;
+    private final int _targetMeta;
+    private final boolean _canAlwaysReplace;
 
     public String getBlockName() {
         return _targetBlockName;
@@ -27,7 +27,7 @@ public class ModDBMDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Check if the given Block is equal to the block in this instance
      *
      * @param pBlock the Block in question
@@ -43,7 +43,7 @@ public class ModDBMDef {
 
     /**
      * Internal function
-     *
+     * <p>
      * Check if the given Block is equal to the block in this instance and matches the metadata
      *
      * @param pBlock the block in question
@@ -64,8 +64,7 @@ public class ModDBMDef {
     public boolean equals(Object other) {
         if (other == null) return false;
         if (other == this) return true;
-        if (!(other instanceof ModDBMDef)) return false;
-        ModDBMDef otherModDBMDef = (ModDBMDef) other;
+        if (!(other instanceof ModDBMDef otherModDBMDef)) return false;
         return (otherModDBMDef._targetBlockName.equals(_targetBlockName) && otherModDBMDef._targetMeta == _targetMeta);
     }
 

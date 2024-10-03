@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -73,7 +72,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return (IMetaTileEntity) new MTEIndustrialVacuumFreezer(this.mName);
+        return new MTEIndustrialVacuumFreezer(this.mName);
     }
 
     @Override
@@ -259,7 +258,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_ADV_FREEZER_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_ADV_FREEZER_LOOP;
     }
 }

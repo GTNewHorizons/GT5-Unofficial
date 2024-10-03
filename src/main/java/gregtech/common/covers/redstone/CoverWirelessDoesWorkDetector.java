@@ -43,8 +43,7 @@ public class CoverWirelessDoesWorkDetector
 
     private static byte computeSignalBasedOnActivity(ActivityTransmitterData coverVariable, ICoverable tileEntity) {
 
-        if (tileEntity instanceof IMachineProgress) {
-            IMachineProgress mProgress = (IMachineProgress) tileEntity;
+        if (tileEntity instanceof IMachineProgress mProgress) {
             boolean inverted = coverVariable.invert;
             int signal = 0;
 

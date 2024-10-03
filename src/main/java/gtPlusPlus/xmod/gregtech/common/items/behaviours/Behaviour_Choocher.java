@@ -16,7 +16,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class Behaviour_Choocher extends BehaviourNone {
 
-    private boolean isWrench = true;
+    private final boolean isWrench = true;
     private final BehaviourWrench wrench = new BehaviourWrench(150);
     private final Behaviour_Prospecting_Ex prospecting = new Behaviour_Prospecting_Ex(10, 1250);
     private final String mTooltip1 = GTLanguageManager

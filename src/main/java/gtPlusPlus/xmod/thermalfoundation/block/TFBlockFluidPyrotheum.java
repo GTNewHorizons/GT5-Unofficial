@@ -52,13 +52,8 @@ public class TFBlockFluidPyrotheum extends BlockFluidInteractive {
         for (int i = 0; i < 8; i++) {
             this.addInteraction(Blocks.stone_stairs, i, Blocks.stone_brick_stairs, i);
         }
-        final String str1 = "Fluid.Pyrotheum";
-        String str2 = "Enable this for Fluid Pyrotheum to be worse than lava.";
         effect = true;
-
-        str2 = "Enable this for Fluid Pyrotheum Source blocks to gradually fall downwards.";
         enableSourceFall = true;
-
         return true;
     }
 

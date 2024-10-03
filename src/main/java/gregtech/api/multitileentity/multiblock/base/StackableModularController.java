@@ -49,7 +49,7 @@ public abstract class StackableModularController<C extends StackableModularContr
     @Override
     public void resetMucCount() {
         Map<UpgradeCasings, int[]> mucCounters = getMucMap();
-        mucCounters.forEach((type, casingCount) -> { Arrays.fill(casingCount, 0); });
+        mucCounters.forEach((type, casingCount) -> Arrays.fill(casingCount, 0));
     }
 
     // Returns the cheapest MUC that is possible for the multi, which gets the minimum bonuses.

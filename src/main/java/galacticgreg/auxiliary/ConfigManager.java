@@ -14,7 +14,7 @@ import galacticgreg.GalacticGreg;
 public abstract class ConfigManager {
 
     private File _mainconfigDir = null;
-    private File _blocksconfigDir = null;
+    private final File _blocksconfigDir = null;
     private String _mModCollection = "";
     private String _mModID = "";
 

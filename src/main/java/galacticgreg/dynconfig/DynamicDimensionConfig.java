@@ -31,7 +31,7 @@ public class DynamicDimensionConfig {
         public boolean RandomizeNumLootItems;
     }
 
-    private static Map<String, AsteroidConfig> _mDynamicAsteroidMap = new HashMap<>();
+    private static final Map<String, AsteroidConfig> _mDynamicAsteroidMap = new HashMap<>();
 
     public static AsteroidConfig getAsteroidConfig(ModDimensionDef pDimDef) {
         return _mDynamicAsteroidMap.getOrDefault(pDimDef.getDimIdentifier(), null);

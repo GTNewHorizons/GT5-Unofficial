@@ -22,7 +22,7 @@ public class Inventory extends UpgradeCasing {
 
     private String inventoryName = "inventory";
     private int inventorySize;
-    private InventoryType type = InventoryType.Both;
+    private final InventoryType type = InventoryType.Both;
 
     public String getCustomInventoryName() {
         return inventoryName;

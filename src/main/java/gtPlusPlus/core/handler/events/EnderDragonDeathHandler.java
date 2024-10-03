@@ -35,7 +35,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
                 event.entityLiving.entityDropItem(
                     MaterialsElements.STANDALONE.DRAGON_METAL.getNugget(aAmount),
                     MathUtils.randFloat(0, 1));
-                aCountTotal = +aAmount;
+                aCountTotal = aAmount;
             }
         } else if (mChaoseDragonClass != null && mChaoseDragonClass.isInstance(event.entityLiving)) {
             for (int y = 0; y < MathUtils.randInt(100, 200); y++) {
@@ -43,7 +43,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
                 event.entityLiving.entityDropItem(
                     MaterialsElements.STANDALONE.DRAGON_METAL.getIngot(aAmount),
                     MathUtils.randFloat(0, 1));
-                aCountTotal = +aAmount;
+                aCountTotal = aAmount;
             }
         } else if (event.entityLiving instanceof EntityDragon) {
             for (int y = 0; y < MathUtils.randInt(25, 50); y++) {
@@ -51,7 +51,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
                 event.entityLiving.entityDropItem(
                     MaterialsElements.STANDALONE.DRAGON_METAL.getNugget(aAmount),
                     MathUtils.randFloat(0, 1));
-                aCountTotal = +aAmount;
+                aCountTotal = aAmount;
             }
         }
         if (aCountTotal > 0) {
