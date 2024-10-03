@@ -19,6 +19,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -36,6 +37,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -63,6 +66,35 @@ public class GTStructureUtility {
     public static <T> IStructureElementNoPlacement<T> ofHatchAdder(IGTHatchAdder<T> aHatchAdder, int aTextureIndex,
         int aDots) {
         return ofHatchAdder(aHatchAdder, aTextureIndex, StructureLibAPI.getBlockHint(), aDots - 1);
+    }
+
+    public static <T> IStructureElement<T> ofAnyWater() {
+        return new IStructureElement<>() {
+
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                return block == Blocks.water || block instanceof BlockWater || block instanceof BlockTickingWater;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                world.setBlock(x, y, z, Blocks.water, 0, 2);
+                return true;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticle(world, x, y, z, Blocks.water, 0);
+                return true;
+            }
+
+            @Override
+            public IStructureElement.BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z,
+                ItemStack trigger, AutoPlaceEnvironment env) {
+                return IStructureElement.BlocksToPlace.create(Blocks.water, 0);
+            }
+        };
     }
 
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
