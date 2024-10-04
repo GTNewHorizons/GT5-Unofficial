@@ -577,8 +577,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 pending.assembleTask = BUILD_ASSEMBLING_POOL.submit(() -> {
                     List<PendingBlock> blocks = pending.manipulator.getPendingBlocks();
 
-                    Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(Comparator.comparing((UniqueIdentifier id) -> id.modId)
-                        .thenComparing(id -> id.name));
+                    Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(
+                        Comparator.comparing((UniqueIdentifier id) -> id.modId)
+                            .thenComparing(id -> id.name));
                     Comparator<PendingBlock> comparePending = Comparator.comparingInt((PendingBlock b) -> b.buildOrder)
                         .thenComparing(Comparator.nullsFirst(Comparator.comparing(b -> b.blockId, blockId)))
                         .thenComparingInt(b -> b.metadata);

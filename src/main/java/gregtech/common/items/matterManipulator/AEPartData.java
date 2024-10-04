@@ -4,6 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.google.gson.JsonElement;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
@@ -24,10 +29,6 @@ import appeng.parts.p2p.PartP2PTunnel;
 import appeng.parts.p2p.PartP2PTunnelNormal;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class AEPartData {
 
@@ -59,8 +60,9 @@ public class AEPartData {
 
         if (part instanceof IConfigurableObject configurable && configurable.getConfigManager() != null) {
             NBTTagCompound settings = new NBTTagCompound();
-            configurable.getConfigManager().writeToNBT(settings);
-            mSettings = settings.hasNoTags() ? null :  NBTState.toJsonObject(settings);
+            configurable.getConfigManager()
+                .writeToNBT(settings);
+            mSettings = settings.hasNoTags() ? null : NBTState.toJsonObject(settings);
         }
 
         if (part instanceof PartP2PTunnel tunnel) {
@@ -70,16 +72,16 @@ public class AEPartData {
 
         if (part instanceof ISegmentedInventory segmentedInventory) {
             IInventory upgrades = segmentedInventory.getInventoryByName("upgrades");
-    
+
             if (upgrades != null) {
                 mAEUpgrades = GTUtility.streamInventory(upgrades)
                     .filter(x -> x != null)
                     .map(PortableItemStack::new)
                     .toArray(PortableItemStack[]::new);
             }
-    
+
             IInventory config = segmentedInventory.getInventoryByName("config");
-    
+
             if (config != null) {
                 mConfig = GTUtility.streamInventory(config)
                     .filter(x -> x != null)
@@ -92,10 +94,12 @@ public class AEPartData {
 
     public Class<? extends IPart> getPartClass() {
         if (mPartClass == null) {
-            if (mPart.toStack().getItem() instanceof IPartItem partItem) {
+            if (mPart.toStack()
+                .getItem() instanceof IPartItem partItem) {
                 IPart part = partItem.createPartFromItemStack(mPart.toStack());
-    
-                mPartClass = Optional.ofNullable(part).map(IPart::getClass);
+
+                mPartClass = Optional.ofNullable(part)
+                    .map(IPart::getClass);
             }
         }
 
@@ -124,13 +128,14 @@ public class AEPartData {
             part = partHost.getPart(side);
         }
 
-        if (part instanceof PartP2PTunnel<?> tunnel) {
+        if (part instanceof PartP2PTunnel<?>tunnel) {
             long freq = mP2PFreq == null ? 0 : mP2PFreq;
 
             tunnel.output = true;
 
             try {
-                final P2PCache p2p = tunnel.getProxy().getP2P();
+                final P2PCache p2p = tunnel.getProxy()
+                    .getP2P();
                 p2p.updateFreq(tunnel, freq);
             } catch (final GridAccessException e) {
                 tunnel.setFrequency(freq);
@@ -144,8 +149,10 @@ public class AEPartData {
         }
 
         if (part instanceof IConfigurableObject configurable && configurable.getConfigManager() != null) {
-            NBTTagCompound settings = mSettings == null ? new NBTTagCompound() : (NBTTagCompound) NBTState.toNbt(mSettings);
-            configurable.getConfigManager().readFromNBT(settings);
+            NBTTagCompound settings = mSettings == null ? new NBTTagCompound()
+                : (NBTTagCompound) NBTState.toNbt(mSettings);
+            configurable.getConfigManager()
+                .readFromNBT(settings);
         }
 
         if (part instanceof ISegmentedInventory segmentedInventory) {
@@ -213,7 +220,12 @@ public class AEPartData {
 
     public ItemStack getEffectivePartStack() {
         if (isAttunable() && isP2P()) {
-            return AEApi.instance().definitions().parts().p2PTunnelME().maybeStack(1).get();
+            return AEApi.instance()
+                .definitions()
+                .parts()
+                .p2PTunnelME()
+                .maybeStack(1)
+                .get();
         } else {
             return mPart.toStack();
         }

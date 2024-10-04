@@ -5,6 +5,11 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
+
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -17,20 +22,18 @@ import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-
 public class BoxRenderer {
-    
+
     public static final BoxRenderer INSTANCE = new BoxRenderer();
 
     private final ShaderProgram program;
     private final int time_location;
 
     public BoxRenderer() {
-        program = new ShaderProgram(GregTech.resourceDomain, "shaders/fancybox.vert.glsl", "shaders/fancybox.frag.glsl");
+        program = new ShaderProgram(
+            GregTech.resourceDomain,
+            "shaders/fancybox.vert.glsl",
+            "shaders/fancybox.frag.glsl");
 
         time_location = program.getUniformLocation("time");
     }
@@ -60,7 +63,8 @@ public class BoxRenderer {
     }
 
     public void drawAround(AxisAlignedBB aabb, Vector3f colour) {
-        aabb = aabb.copy().expand(0.01, 0.01, 0.01);
+        aabb = aabb.copy()
+            .expand(0.01, 0.01, 0.01);
 
         tes.setColorRGBA_F(colour.x, colour.y, colour.z, 0.5f);
 
@@ -144,7 +148,7 @@ public class BoxRenderer {
 
     public void finish() {
         List<QuadView> quads = TessellatorManager.stopCapturingToPooledQuads();
-        
+
         QuadViewComparator quadSorter = new QuadViewComparator();
         quads.sort(quadSorter);
 
@@ -159,10 +163,10 @@ public class BoxRenderer {
         program.use();
 
         // this should only be done once a frame, but there aren't any side effects from calling it more
-        GL20.glUniform1f(time_location, (((float)(System.currentTimeMillis() % 2500)) / 1000f));
+        GL20.glUniform1f(time_location, (((float) (System.currentTimeMillis() % 2500)) / 1000f));
         check();
 
-        try(VertexBuffer buffer = new VertexBuffer(DefaultVertexFormat.POSITION_COLOR_TEXTURE, GL11.GL_QUADS);) {
+        try (VertexBuffer buffer = new VertexBuffer(DefaultVertexFormat.POSITION_COLOR_TEXTURE, GL11.GL_QUADS);) {
             buffer.upload(bytes);
             buffer.render();
         }
