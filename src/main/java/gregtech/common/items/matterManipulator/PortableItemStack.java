@@ -43,7 +43,7 @@ public class PortableItemStack {
                 metadata == null ? 0 : metadata);
         }
 
-        return itemStack;
+        return itemStack.copy();
     }
 
     @Override
