@@ -3,25 +3,21 @@ package gregtech.common.items.matterManipulator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.joml.Vector3i;
 
 import com.mojang.authlib.GameProfile;
 
-import gregtech.api.util.Lazy;
 import gregtech.common.items.matterManipulator.NBTState.Config;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
@@ -37,7 +33,7 @@ public class BlockAnalyzer {
             return null;
         }
 
-        TileAnalysisResult result = new TileAnalysisResult(context.getFakePlayer(), te);
+        TileAnalysisResult result = new TileAnalysisResult(context, te);
 
         return result.doesAnything() ? result : null;
     }
@@ -85,8 +81,7 @@ public class BlockAnalyzer {
     }
 
     public static interface IBlockAnalysisContext {
-
-        public Supplier<EntityPlayer> getFakePlayer();
+        public EntityPlayer getFakePlayer();
 
         public TileEntity getTileEntity();
     }
@@ -94,20 +89,22 @@ public class BlockAnalyzer {
     public static class BlockAnalysisContext implements IBlockAnalysisContext {
 
         public World world;
-        public final Lazy<FakePlayer> fakePlayer;
+        public EntityPlayer fakePlayer;
         public Vector3i voxel;
 
         public BlockAnalysisContext(World world) {
             this.world = world;
-            fakePlayer = new Lazy<>(
-                () -> new FakePlayer(
-                    (WorldServer) world,
-                    new GameProfile(UUID.randomUUID(), "BlockAnalyzer Fake Player")));
         }
 
         @Override
-        public Supplier<EntityPlayer> getFakePlayer() {
-            return fakePlayer::get;
+        public EntityPlayer getFakePlayer() {
+            if (fakePlayer == null) {
+                fakePlayer = new FakePlayer(
+                    (WorldServer) world,
+                    new GameProfile(UUID.randomUUID(), "BlockAnalyzer Fake Player"));
+            }
+
+            return fakePlayer;
         }
 
         @Override
@@ -118,7 +115,7 @@ public class BlockAnalyzer {
 
     public static interface IBlockApplyContext extends IBlockAnalysisContext {
 
-        public EntityPlayer getPlacingPlayer();
+        public EntityPlayer getRealPlayer();
 
         public boolean tryApplyAction(double complexity);
 
@@ -136,18 +133,17 @@ public class BlockAnalyzer {
         public EntityPlayer player;
         public PendingBuild build;
         public ItemStack manipulator;
-        public Lazy<FakePlayer> fakePlayer;
+        public FakePlayer fakePlayer;
 
         public static final double EU_PER_ACTION = 8192;
 
         @Override
-        public Supplier<EntityPlayer> getFakePlayer() {
+        public EntityPlayer getFakePlayer() {
             if (fakePlayer == null) {
-                fakePlayer = new Lazy<>(
-                    () -> new FakePlayer((WorldServer) player.getEntityWorld(), player.getGameProfile()));
+                fakePlayer = new FakePlayer((WorldServer) player.getEntityWorld(), player.getGameProfile());
             }
 
-            return fakePlayer::get;
+            return fakePlayer;
         }
 
         @Override
@@ -156,7 +152,7 @@ public class BlockAnalyzer {
         }
 
         @Override
-        public EntityPlayer getPlacingPlayer() {
+        public EntityPlayer getRealPlayer() {
             return player;
         }
 
@@ -188,25 +184,5 @@ public class BlockAnalyzer {
         public void givePlayerFluids(FluidStack... fluids) {
             build.givePlayerFluids(fluids);
         }
-    }
-
-    static ForgeDirection nullIfUnknown(ForgeDirection dir) {
-        return dir == ForgeDirection.UNKNOWN ? null : dir;
-    }
-
-    static void emptyInventory(IBlockApplyContext context, IInventory inv) {
-        int size = inv.getSizeInventory();
-
-        for (int i = 0; i < size; i++) {
-            ItemStack stack = inv.getStackInSlot(i);
-
-            if (stack != null && stack.getItem() != null) {
-                inv.setInventorySlotContents(i, null);
-
-                context.givePlayerItems(stack);
-            }
-        }
-
-        inv.markDirty();
     }
 }
