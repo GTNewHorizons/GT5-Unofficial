@@ -59,16 +59,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     public static final int MAX_HEIGHT = 15;
 
     /**
-     * Minimum number of plascrete blocks. Read from config file.
-     */
-    public static int MIN_CASING_COUNT = 20;
-
-    /**
-     * Maximum percentage of plascrete blocks which can be replaced by other blocks. Read from config file.
-     */
-    public static int MAX_REPLACEMENT_PERCENTAGE = 30;
-
-    /**
      * List of other blocks allowed in the cleanroom.
      * Format of entries is either just the block's unlocalized name, or <unlocalized name>:<meta>. The former matches
      * all blocks of that name regardless of meta value. Read from config file.
@@ -145,7 +135,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addOtherStructurePart(
                 "Plascrete Blocks",
                 "Edges of top layer, all walls and floor. Minimum " + EnumChatFormatting.GOLD
-                    + MIN_CASING_COUNT
+                    + MachineStats.cleanroom.minCasingCount
                     + EnumChatFormatting.GRAY
                     + ".")
             .addEnergyHatch("Any Plascrete Block. Exactly one.")
@@ -153,7 +143,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addStructureSeparator()
             .addStructureInfo(
                 "Up to " + EnumChatFormatting.GOLD
-                    + MAX_REPLACEMENT_PERCENTAGE
+                    + MachineStats.cleanroom.maxReplacementPercentage
                     + "%"
                     + EnumChatFormatting.GRAY
                     + " of plascrete blocks can be replaced by other valid blocks.")
@@ -641,12 +631,12 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             return false;
         }
 
-        if (casingCount < MIN_CASING_COUNT) {
+        if (casingCount < MachineStats.cleanroom.minCasingCount) {
             if (debugCleanroom) GTLog.out.println("Cleanroom: Not enough plascrete blocks.");
             return false;
         }
 
-        if ((otherCount * 100) / (casingCount + otherCount) > MAX_REPLACEMENT_PERCENTAGE) {
+        if ((otherCount * 100) / (casingCount + otherCount) > MachineStats.cleanroom.maxReplacementPercentage) {
             if (debugCleanroom) GTLog.out.println("Cleanroom: Too many non-plascrete blocks.");
             return false;
         }
@@ -748,8 +738,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
 
     @Override
     public void onConfigLoad() {
-        MIN_CASING_COUNT = MachineStats.cleanroom.minCasingCount;
-        MAX_REPLACEMENT_PERCENTAGE = MachineStats.cleanroom.maxReplacementPercentage;
         ALLOWED_BLOCKS.clear();
         Collections.addAll(ALLOWED_BLOCKS, MachineStats.cleanroom.allowedBlocks);
 
