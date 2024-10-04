@@ -97,6 +97,23 @@ public class BreweryRecipes implements Runnable {
             if (IndustrialCraft2.isModLoaded()) {
                 waterArray = new Fluid[] { FluidRegistry.WATER, GTModHandler.getDistilledWater(1L)
                     .getFluid() };
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(new ItemStack(Blocks.red_mushroom, 1, 0))
+                    .fluidInputs(new FluidStack(GTModHandler.getDistilledWater(1), 750))
+                    .fluidOutputs(getFluidStack("potion.poison", 750))
+                    .duration(6 * SECONDS + 8 * TICKS)
+                    .eut(4)
+                    .addTo(brewingRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(new ItemStack(Items.reeds, 1, 0))
+                    .fluidInputs(new FluidStack(GTModHandler.getDistilledWater(1), 750))
+                    .fluidOutputs(getFluidStack("potion.reedwater", 750))
+                    .duration(6 * SECONDS + 8 * TICKS)
+                    .eut(4)
+                    .addTo(brewingRecipes);
+
             } else {
                 waterArray = new Fluid[] { FluidRegistry.WATER };
             }
@@ -230,14 +247,6 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(new ItemStack(Blocks.red_mushroom, 1, 0))
-                    .fluidInputs(new FluidStack(tFluid, 750))
-                    .fluidOutputs(getFluidStack("potion.poison", 750))
-                    .duration(6 * SECONDS + 8 * TICKS)
-                    .eut(4)
-                    .addTo(brewingRecipes);
-
-                GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.fish, 1, 3))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.poison.strong", 750))
@@ -249,14 +258,6 @@ public class BreweryRecipes implements Runnable {
                     .itemInputs(ItemList.IC2_Grin_Powder.get(1L))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.poison.strong", 750))
-                    .duration(6 * SECONDS + 8 * TICKS)
-                    .eut(4)
-                    .addTo(brewingRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(new ItemStack(Items.reeds, 1, 0))
-                    .fluidInputs(new FluidStack(tFluid, 750))
-                    .fluidOutputs(getFluidStack("potion.reedwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
                     .addTo(brewingRecipes);

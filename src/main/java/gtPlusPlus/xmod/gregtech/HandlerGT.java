@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech;
 
-import static gregtech.api.enums.Mods.AdvancedSolarPanel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,8 +87,6 @@ public class HandlerGT {
         MetaGTProxy.fixIC2FluidNames();
         RecipeLoaderAlgaeFarm.generateRecipes();
         RecipeLoaderTreeFarm.generateRecipes();
-        if (AdvancedSolarPanel.isModLoaded()) {
-            RecipeLoaderMolecularTransformer.run();
-        }
+        RecipeLoaderMolecularTransformer.run();
     }
 }

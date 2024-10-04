@@ -191,7 +191,7 @@ public class PlatinumSludgeOverHaul {
             .fluidOutputs(FormicAcid.getFluidOrGas(2000))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
 
         // AquaRegia
         GTValues.RA.stdBuilder()
@@ -251,7 +251,7 @@ public class PlatinumSludgeOverHaul {
             .fluidOutputs(AmmoniumChloride.getFluidOrGas(1000))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(9))

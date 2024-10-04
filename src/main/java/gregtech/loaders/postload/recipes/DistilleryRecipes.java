@@ -89,14 +89,6 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Biomass.getFluid(40L))
-            .fluidOutputs(Materials.Ethanol.getFluid(12L))
-            .duration(16 * TICKS)
-            .eut(24)
-            .addTo(distilleryRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(Materials.Biomass.getFluid(40L))
             .fluidOutputs(Materials.Water.getFluid(12L))
@@ -275,14 +267,6 @@ public class DistilleryRecipes implements Runnable {
             .eut(24)
             .addTo(distilleryRecipes);
         // Dimethylbenzene
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(5))
-            .fluidInputs(Materials.WoodTar.getFluid(200))
-            .fluidOutputs(Materials.Dimethylbenzene.getFluid(30))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))

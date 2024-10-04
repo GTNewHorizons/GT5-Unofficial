@@ -574,11 +574,5 @@ public class CrackRecipeAdder {
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(material.get(OrePrefixes.stick, 1), GTUtility.getIntegratedCircuit(3))
-            .itemOutputs(material.get(OrePrefixes.wireFine, 4))
-            .duration(2 * SECONDS + 10 * TICKS)
-            .eut(4)
-            .addTo(wiremillRecipes);
     }
 }

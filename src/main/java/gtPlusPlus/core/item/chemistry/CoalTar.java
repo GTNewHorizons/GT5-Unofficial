@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
@@ -86,7 +87,7 @@ public class CoalTar extends ItemPackage {
     public static void recipeCreateEthylbenzene() {
         // C2H4 + C6H6 = C8H10
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 2), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 2), GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2))
             .fluidInputs(FluidUtils.getFluidStack("benzene", 2000))
             .fluidOutputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 2000))
@@ -95,13 +96,13 @@ public class CoalTar extends ItemPackage {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 2), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 2), GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2))
             .fluidInputs(FluidUtils.getFluidStack("ethylene", 2000))
             .fluidOutputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 2000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
     }
 
     public static void recipeCoalToCoalTar() {

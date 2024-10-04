@@ -59,7 +59,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
 
         final Material[] badMaterials = { MaterialsFluorides.THORIUM_HEXAFLUORIDE,
             MaterialsFluorides.THORIUM_TETRAFLUORIDE, MaterialsAlloy.BLOODSTEEL, MaterialsNuclides.LiFBeF2ThF4UF4,
-            MaterialsNuclides.LiFBeF2ZrF4UF4, MaterialsNuclides.LiFBeF2ZrF4U235 };
+            MaterialsNuclides.LiFBeF2ZrF4UF4, MaterialsNuclides.LiFBeF2ZrF4U235, MaterialsAlloy.NITINOL_60 };
         for (final Material R : badMaterials) {
             if (M == R) {
                 return;
