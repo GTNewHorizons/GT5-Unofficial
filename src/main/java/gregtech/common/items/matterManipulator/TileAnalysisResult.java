@@ -173,7 +173,8 @@ public class TileAnalysisResult {
                 if (inputBus.disableFilter) mGTFlags |= GT_INPUT_BUS_NO_FILTERING;
             }
 
-            if (mte instanceof IItemLockable lockable && lockable.acceptsItemLock() && lockable.getLockedItem() != null) {
+            if (mte instanceof IItemLockable lockable && lockable.acceptsItemLock()
+                && lockable.getLockedItem() != null) {
                 mGTItemLock = new PortableItemStack(lockable.getLockedItem());
             }
 
@@ -202,7 +203,7 @@ public class TileAnalysisResult {
                     // If an IDataCopyable needs to send a message, it wouldn't work with a fake player anyways.
                     // Since this is called from a worker thread, we can't just use the real player here.
                     NBTTagCompound data = copyable.getCopiedData(null);
-    
+
                     if (data != null && !data.hasNoTags()) {
                         mGTData = NBTState.toJsonObject(data);
                     }
@@ -350,25 +351,29 @@ public class TileAnalysisResult {
                 if (multi.supportsVoidProtection()) {
                     boolean protectFluids = (mGTFlags & GT_MULTI_PROTECT_FLUIDS) != 0;
                     boolean protectItems = (mGTFlags & GT_MULTI_PROTECT_ITEMS) != 0;
-    
+
                     VoidingMode voidingMode = null;
-    
+
                     for (VoidingMode mode : VoidingMode.values()) {
                         if (mode.protectFluid == protectFluids && mode.protectItem == protectItems) {
                             voidingMode = mode;
                             break;
                         }
                     }
-    
+
                     if (voidingMode != null) {
                         multi.setVoidingMode(voidingMode);
                     } else {
-                        throw new RuntimeException("This should never happen. protectFluids=" + protectFluids + ", protectItems=" + protectItems);
+                        throw new RuntimeException(
+                            "This should never happen. protectFluids=" + protectFluids
+                                + ", protectItems="
+                                + protectItems);
                     }
                 }
 
                 if (multi.supportsBatchMode()) multi.setBatchMode((mGTFlags & GT_MULTI_BATCH_MODE) != 0);
-                if (multi.supportsInputSeparation()) multi.setInputSeparation((mGTFlags & GT_MULTI_INPUT_SEPARATION) != 0);
+                if (multi.supportsInputSeparation())
+                    multi.setInputSeparation((mGTFlags & GT_MULTI_INPUT_SEPARATION) != 0);
                 if (multi.supportsSingleRecipeLocking()) multi.setRecipeLocking((mGTFlags & GT_MULTI_RECIPE_LOCK) != 0);
             }
 
@@ -399,17 +404,20 @@ public class TileAnalysisResult {
                     IPart part = partHost.getPart(dir);
                     AEPartData expected = mAEParts[dir.ordinal()];
 
-                    ItemId actualItem = part == null ? null : ItemId.createWithoutNBT(part.getItemStack(PartItemStack.Break));
-                    ItemId expectedItem = expected == null ? null : ItemId.createWithoutNBT(expected.getEffectivePartStack());
+                    ItemId actualItem = part == null ? null
+                        : ItemId.createWithoutNBT(part.getItemStack(PartItemStack.Break));
+                    ItemId expectedItem = expected == null ? null
+                        : ItemId.createWithoutNBT(expected.getEffectivePartStack());
 
-                    boolean isAttunable = part instanceof PartP2PTunnelNormal && expected != null && expected.isAttunable();
+                    boolean isAttunable = part instanceof PartP2PTunnelNormal && expected != null
+                        && expected.isAttunable();
 
                     if (!isAttunable) {
                         if ((expectedItem == null || !Objects.equals(actualItem, expectedItem)) && actualItem != null) {
                             removePart(ctx, partHost, dir);
                             actualItem = null;
                         }
-    
+
                         if (actualItem == null && expectedItem != null) {
                             if (!installPart(ctx, partHost, dir, expected)) {
                                 return false;
@@ -423,11 +431,7 @@ public class TileAnalysisResult {
                         }
                     }
 
-                    Platform.notifyBlocksOfNeighbors(
-                        te.getWorldObj(),
-                        te.xCoord,
-                        te.yCoord,
-                        te.zCoord);
+                    Platform.notifyBlocksOfNeighbors(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
                 }
             }
         }
@@ -536,56 +540,33 @@ public class TileAnalysisResult {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         TileAnalysisResult other = (TileAnalysisResult) obj;
-        if (mConnections != other.mConnections)
-            return false;
-        if (mGTColour != other.mGTColour)
-            return false;
-        if (mGTFront != other.mGTFront)
-            return false;
-        if (mGTMainFacing != other.mGTMainFacing)
-            return false;
-        if (mGTFlags != other.mGTFlags)
-            return false;
-        if (mGTFacing != other.mGTFacing)
-            return false;
-        if (!Arrays.equals(mCovers, other.mCovers))
-            return false;
-        if (mStrongRedstone != other.mStrongRedstone)
-            return false;
+        if (mConnections != other.mConnections) return false;
+        if (mGTColour != other.mGTColour) return false;
+        if (mGTFront != other.mGTFront) return false;
+        if (mGTMainFacing != other.mGTMainFacing) return false;
+        if (mGTFlags != other.mGTFlags) return false;
+        if (mGTFacing != other.mGTFacing) return false;
+        if (!Arrays.equals(mCovers, other.mCovers)) return false;
+        if (mStrongRedstone != other.mStrongRedstone) return false;
         if (mGTCustomName == null) {
-            if (other.mGTCustomName != null)
-                return false;
-        } else if (!mGTCustomName.equals(other.mGTCustomName))
-            return false;
-        if (mAEColour != other.mAEColour)
-            return false;
-        if (mAEUp != other.mAEUp)
-            return false;
-        if (mAEForward != other.mAEForward)
-            return false;
+            if (other.mGTCustomName != null) return false;
+        } else if (!mGTCustomName.equals(other.mGTCustomName)) return false;
+        if (mAEColour != other.mAEColour) return false;
+        if (mAEUp != other.mAEUp) return false;
+        if (mAEForward != other.mAEForward) return false;
         if (mAEConfig == null) {
-            if (other.mAEConfig != null)
-                return false;
-        } else if (!mAEConfig.equals(other.mAEConfig))
-            return false;
-        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades))
-            return false;
+            if (other.mAEConfig != null) return false;
+        } else if (!mAEConfig.equals(other.mAEConfig)) return false;
+        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades)) return false;
         if (mAECustomName == null) {
-            if (other.mAECustomName != null)
-                return false;
-        } else if (!mAECustomName.equals(other.mAECustomName))
-            return false;
-        if (!Arrays.equals(mAEParts, other.mAEParts))
-            return false;
+            if (other.mAECustomName != null) return false;
+        } else if (!mAECustomName.equals(other.mAECustomName)) return false;
+        if (!Arrays.equals(mAEParts, other.mAEParts)) return false;
         return true;
     }
 
-    
 }
