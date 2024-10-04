@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import static advsolar.utils.MTRecipeManager.transformerRecipes;
 import static gregtech.api.enums.Mods.AdvancedSolarPanel;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalaxySpace;
@@ -101,7 +100,6 @@ public class RecipeLoaderMolecularTransformer {
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
 
-        transformerRecipes.clear();
         if (AdvancedSolarPanel.isModLoaded() && GalaxySpace.isModLoaded()) {
 
             GTValues.RA.stdBuilder()
