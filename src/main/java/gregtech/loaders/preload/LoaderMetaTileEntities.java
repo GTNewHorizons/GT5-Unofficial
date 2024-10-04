@@ -12392,7 +12392,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         makeWires(Materials.Nickel, 1320, 3L, 6L, 3L, GTValues.V[2], true, false);
         makeWires(Materials.Cupronickel, 1340, 3L, 6L, 2L, GTValues.V[2], true, false);
         makeWires(Materials.Copper, 1360, 2L, 4L, 1L, GTValues.V[2], true, false);
-        makeWires(Materials.AnnealedCopper, 1380, 2L, 4L, 1L, GTValues.V[2], true, false);
+        makeWires(Materials.AnnealedCopper, 1380, 1L, 2L, 1L, GTValues.V[2], true, false);
 
         makeWires(Materials.Kanthal, 1400, 3L, 6L, 4L, GTValues.V[3], true, false);
         makeWires(Materials.Gold, 1420, 2L, 4L, 3L, GTValues.V[3], true, false);
