@@ -17,6 +17,10 @@ public class TileEntityForgeOfGods extends TileEntity {
     private int ringCount = 1;
     private float colorR = .7f, colorG = .8f, colorB = 1f, gamma = 3f;
     private float rotAngle = 0, rotAxisX = 1, rotAxisY = 0, rotAxisZ = 0;
+    private int rainbowR = 255, rainbowG = 0, rainbowB = 0;
+    private int rainbowState = 0;
+    private boolean rainbowMode = false;
+    private int rainbowCycleSpeed = 1;
 
     private static final String NBT_TAG = "FOG:";
     private static final String ROTATION_SPEED_NBT_TAG = NBT_TAG + "ROTATION";
@@ -30,6 +34,8 @@ public class TileEntityForgeOfGods extends TileEntity {
     private static final String ROT_AXIS_X_NBT_TAG = NBT_TAG + "ROT_AXIS_X";
     private static final String ROT_AXIS_Y_NBT_TAG = NBT_TAG + "ROT_AXIS_Y";
     private static final String ROT_AXIS_Z_NBT_TAG = NBT_TAG + "ROT_AXIS_Z";
+    private static final String RAINBOW_MODE_NBT_TAG = NBT_TAG + "RAINBOW_MODE";
+    private static final String RAINBOW_MODE_CYCLE_SPEED_NBT_TAG = NBT_TAG + "RAINBOW_MODE_CYCLE_SPEED";
 
     public static final float BACK_PLATE_DISTANCE = -121.5f, BACK_PLATE_RADIUS = 13f;
 
@@ -60,15 +66,15 @@ public class TileEntityForgeOfGods extends TileEntity {
     }
 
     public float getColorR() {
-        return colorR;
+        return rainbowMode ? rainbowR / 255f : colorR;
     }
 
     public float getColorG() {
-        return colorG;
+        return rainbowMode ? rainbowG / 255f : colorG;
     }
 
     public float getColorB() {
-        return colorB;
+        return rainbowMode ? rainbowB / 255f : colorB;
     }
 
     public float getGamma() {
@@ -84,6 +90,15 @@ public class TileEntityForgeOfGods extends TileEntity {
         colorG = g;
         colorB = b;
         this.gamma = gamma;
+    }
+
+    public void setRainbowMode(boolean state, int cycleSpeed) {
+        this.rainbowMode = state;
+        this.rainbowCycleSpeed = cycleSpeed;
+    }
+
+    public boolean getRainbowMode() {
+        return rainbowMode;
     }
 
     public int getRingCount() {
@@ -157,6 +172,51 @@ public class TileEntityForgeOfGods extends TileEntity {
         return y0 + ((x - x0) * (y1 - y0)) / (x1 - x0);
     }
 
+    public void incrementRainbowColors() {
+        if (rainbowState == 0) {
+            rainbowG += rainbowCycleSpeed;
+            if (rainbowG >= 255) {
+                rainbowG = 255;
+                rainbowState = 1;
+            }
+        }
+        if (rainbowState == 1) {
+            rainbowR -= rainbowCycleSpeed;
+            if (rainbowR <= 0) {
+                rainbowR = 0;
+                rainbowState = 2;
+            }
+        }
+        if (rainbowState == 2) {
+            rainbowB += rainbowCycleSpeed;
+            if (rainbowB >= 255) {
+                rainbowB = 255;
+                rainbowState = 3;
+            }
+        }
+        if (rainbowState == 3) {
+            rainbowG -= rainbowCycleSpeed;
+            if (rainbowG <= 0) {
+                rainbowG = 0;
+                rainbowState = 4;
+            }
+        }
+        if (rainbowState == 4) {
+            rainbowR += rainbowCycleSpeed;
+            if (rainbowR >= 255) {
+                rainbowR = 255;
+                rainbowState = 5;
+            }
+        }
+        if (rainbowState == 5) {
+            rainbowB -= rainbowCycleSpeed;
+            if (rainbowB <= 0) {
+                rainbowB = 0;
+                rainbowState = 0;
+            }
+        }
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
@@ -171,6 +231,8 @@ public class TileEntityForgeOfGods extends TileEntity {
         compound.setFloat(ROT_AXIS_X_NBT_TAG, rotAxisX);
         compound.setFloat(ROT_AXIS_Y_NBT_TAG, rotAxisY);
         compound.setFloat(ROT_AXIS_Z_NBT_TAG, rotAxisZ);
+        compound.setBoolean(RAINBOW_MODE_NBT_TAG, rainbowMode);
+        compound.setInteger(RAINBOW_MODE_CYCLE_SPEED_NBT_TAG, rainbowCycleSpeed);
     }
 
     @Override
@@ -190,6 +252,8 @@ public class TileEntityForgeOfGods extends TileEntity {
         rotAxisX = compound.getFloat(ROT_AXIS_X_NBT_TAG);
         rotAxisY = compound.getFloat(ROT_AXIS_Y_NBT_TAG);
         rotAxisZ = compound.getFloat(ROT_AXIS_Z_NBT_TAG);
+        rainbowMode = compound.getBoolean(RAINBOW_MODE_NBT_TAG);
+        rainbowCycleSpeed = compound.getInteger(RAINBOW_MODE_CYCLE_SPEED_NBT_TAG);
     }
 
     @Override

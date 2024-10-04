@@ -43,6 +43,8 @@ public class BaseRecipeLoader {
             new Extractor().run();
             new ResearchStationAssemblyLine().run();
             new Godforge().run();
+        } else {
+            Godforge.runDevEnvironmentRecipes();
         }
     }
 }

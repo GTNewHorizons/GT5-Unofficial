@@ -649,7 +649,7 @@ public class ItemUtils {
                     returnValues[i] = oreDictList.get(i);
                 }
             }
-            return returnValues.length > 0 ? returnValues : null;
+            return returnValues;
         } else {
             return null;
         }
