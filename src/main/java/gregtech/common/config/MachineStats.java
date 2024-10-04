@@ -174,11 +174,13 @@ public class MachineStats {
     public static class Cleanroom {
 
         @Config.Comment("Minimum number of plascrete blocks in a valid cleanroom.")
+        @Config.RangeInt(min = 0)
         @Config.DefaultInt(20)
         @Config.RequiresMcRestart
         public int minCasingCount;
 
         @Config.Comment("Maximum percentage of plascrete blocks which can be replaced by other valid blocks: glass, doors, hatches, etc.")
+        @Config.RangeInt(min = 0, max = 100)
         @Config.DefaultInt(30)
         @Config.RequiresMcRestart
         public int maxReplacementPercentage;
