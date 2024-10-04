@@ -21,19 +21,14 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
 
     public ProcessingPlank() {
         OrePrefixes.plank.add(this);
-        gtWoodPlank = GTOreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1);
     }
 
     // Gross nasty hack to prevent spam registry of oredicted colored woods
     private boolean registeredEXU = false;
 
-    // Another hack because gt wood "plates" have the same oredict as wood planks do...
-    private ItemStack gtWoodPlank;
-
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aStack.isItemEqual(gtWoodPlank)) return;
         if (aModName != null && aModName.equals("ExtraUtilities")) {
             if (registeredEXU) return;
             else registeredEXU = true;

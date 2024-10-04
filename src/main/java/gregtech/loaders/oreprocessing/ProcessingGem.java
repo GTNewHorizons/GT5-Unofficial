@@ -50,7 +50,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean aFuelPower = aMaterial.mFuelPower > 0;
 
         // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
-        if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt || aMaterial == Materials.Spodumene || aMaterial == Materials.NetherQuartz) return;
+        if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt
+            || aMaterial == Materials.Spodumene
+            || aMaterial == Materials.NetherQuartz) return;
 
         switch (aPrefix) {
             case gem -> {
