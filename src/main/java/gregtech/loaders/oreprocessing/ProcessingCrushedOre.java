@@ -75,8 +75,8 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     break;
                 }
 
-                // Blacklist materials which are handled by Werkstoff loader
-                if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt || aMaterial == Materials.Spodumene)
+                // Blacklist materials which are handled by Werkstoff loader and coal, which has an override
+                if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt || aMaterial == Materials.Spodumene || aMaterial == Materials.Coal)
                     return;
 
                 switch (aMaterial.mName) {
