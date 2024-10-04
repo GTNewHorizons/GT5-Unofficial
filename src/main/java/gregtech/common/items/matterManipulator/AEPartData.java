@@ -2,44 +2,54 @@ package gregtech.common.items.matterManipulator;
 
 import java.util.Arrays;
 import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
+import java.util.Optional;
 
 import com.google.gson.JsonElement;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
-import appeng.api.implementations.items.IMemoryCard;
+import appeng.api.AEApi;
 import appeng.api.implementations.items.IUpgradeModule;
-import appeng.api.implementations.items.MemoryCardMessages;
+import appeng.api.implementations.tiles.ISegmentedInventory;
+import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
+import appeng.api.parts.IPartItem;
 import appeng.api.parts.PartItemStack;
+import appeng.api.util.IConfigurableObject;
+import appeng.helpers.ICustomNameObject;
 import appeng.helpers.IOreFilterable;
-import appeng.parts.AEBasePart;
+import appeng.me.GridAccessException;
+import appeng.me.cache.P2PCache;
 import appeng.parts.automation.UpgradeInventory;
+import appeng.parts.p2p.PartP2PTunnel;
+import appeng.parts.p2p.PartP2PTunnelNormal;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class AEPartData {
 
     public PortableItemStack mPart;
     public String mSettingsName = null;
-    public JsonElement mSettings = null, mMemoryCardData = null;
-    public PortableItemStack[] mAEUpgrades = null, mConfig = null;
-    public String mOreDict = null;
+    public JsonElement mSettings = null;
     public String mCustomName = null;
 
-    public transient ItemStack partStack;
+    public PortableItemStack[] mAEUpgrades = null, mConfig = null;
+    public String mOreDict = null;
 
-    public AEPartData(EntityPlayer fakePlayer, AEBasePart part) {
-        mPart = new PortableItemStack(part.getItemStack(PartItemStack.Break));
+    public Boolean mP2POutput = null;
+    public Long mP2PFreq = null;
 
-        mCustomName = part.hasCustomName() ? part.getCustomName() : null;
+    private transient Optional<Class<? extends IPart>> mPartClass;
+
+    public AEPartData(IPart part) {
+        mPart = new PortableItemStack(part.getItemStack(PartItemStack.Wrench));
+
+        if (part instanceof ICustomNameObject customName) {
+            mCustomName = customName.hasCustomName() ? customName.getCustomName() : null;
+        }
 
         if (part instanceof IOreFilterable filterable) {
             mOreDict = filterable.getFilter();
@@ -47,48 +57,99 @@ public class AEPartData {
             if ("".equals(mOreDict)) mOreDict = null;
         }
 
-        fakePlayer.inventory.mainInventory[0] = new ItemStack(new FakeMemoryCard());
-
-        part.onShiftActivate(fakePlayer, Vec3.createVectorHelper(0, 0, 0));
-
-        fakePlayer.inventory.mainInventory[0] = null;
-
-        IInventory upgrades = part.getInventoryByName("upgrades");
-
-        if (upgrades != null) {
-            mAEUpgrades = GTUtility.streamInventory(upgrades)
-                .filter(x -> x != null)
-                .map(PortableItemStack::new)
-                .toArray(PortableItemStack[]::new);
+        if (part instanceof IConfigurableObject configurable && configurable.getConfigManager() != null) {
+            NBTTagCompound settings = new NBTTagCompound();
+            configurable.getConfigManager().writeToNBT(settings);
+            mSettings = settings.hasNoTags() ? null :  NBTState.toJsonObject(settings);
         }
 
-        IInventory config = part.getInventoryByName("config");
+        if (part instanceof PartP2PTunnel tunnel) {
+            mP2POutput = tunnel.isOutput();
+            mP2PFreq = tunnel.getFrequency();
+        }
 
-        if (config != null) {
-            mConfig = GTUtility.streamInventory(config)
-                .filter(x -> x != null)
-                .map(PortableItemStack::withoutStackSize)
-                .distinct()
-                .toArray(PortableItemStack[]::new);
+        if (part instanceof ISegmentedInventory segmentedInventory) {
+            IInventory upgrades = segmentedInventory.getInventoryByName("upgrades");
+    
+            if (upgrades != null) {
+                mAEUpgrades = GTUtility.streamInventory(upgrades)
+                    .filter(x -> x != null)
+                    .map(PortableItemStack::new)
+                    .toArray(PortableItemStack[]::new);
+            }
+    
+            IInventory config = segmentedInventory.getInventoryByName("config");
+    
+            if (config != null) {
+                mConfig = GTUtility.streamInventory(config)
+                    .filter(x -> x != null)
+                    .map(PortableItemStack::withoutStackSize)
+                    .distinct()
+                    .toArray(PortableItemStack[]::new);
+            }
         }
     }
 
+    public Class<? extends IPart> getPartClass() {
+        if (mPartClass == null) {
+            if (mPart.toStack().getItem() instanceof IPartItem partItem) {
+                IPart part = partItem.createPartFromItemStack(mPart.toStack());
+    
+                mPartClass = Optional.ofNullable(part).map(IPart::getClass);
+            }
+        }
+
+        return mPartClass.orElse(null);
+    }
+
+    public boolean isPartSubclassOf(Class<? extends IPart> superclass) {
+        return superclass.isAssignableFrom(getPartClass());
+    }
+
+    public boolean isP2P() {
+        return isPartSubclassOf(PartP2PTunnel.class);
+    }
+
+    public boolean isAttunable() {
+        return isPartSubclassOf(PartP2PTunnelNormal.class);
+    }
+
     public boolean updatePart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side) {
-        if (partHost.getPart(side) instanceof AEBasePart part) {
-            if (mCustomName != null) part.setCustomName(mCustomName);
+        IPart part = partHost.getPart(side);
 
-            EntityPlayer fakePlayer = context.getFakePlayer()
-                .get();
+        if (part instanceof PartP2PTunnelNormal && isAttunable()) {
+            partHost.removePart(side, true);
 
-            fakePlayer.inventory.mainInventory[0] = new ItemStack(new FakeMemoryCard());
+            partHost.addPart(mPart.toStack(), side, context.getRealPlayer());
+            part = partHost.getPart(side);
+        }
 
-            part.onActivate(fakePlayer, Vec3.createVectorHelper(0, 0, 0));
+        if (part instanceof PartP2PTunnel<?> tunnel) {
+            long freq = mP2PFreq == null ? 0 : mP2PFreq;
 
-            fakePlayer.inventory.mainInventory[0] = null;
+            tunnel.output = true;
 
-            UpgradeInventory upgradeInv = (UpgradeInventory) part.getInventoryByName("upgrades");
+            try {
+                final P2PCache p2p = tunnel.getProxy().getP2P();
+                p2p.updateFreq(tunnel, freq);
+            } catch (final GridAccessException e) {
+                tunnel.setFrequency(freq);
+            }
 
-            if (upgradeInv != null) {
+            tunnel.onTunnelConfigChange();
+        }
+
+        if (part instanceof ICustomNameObject customName) {
+            if (mCustomName != null) customName.setCustomName(mCustomName);
+        }
+
+        if (part instanceof IConfigurableObject configurable && configurable.getConfigManager() != null) {
+            NBTTagCompound settings = mSettings == null ? new NBTTagCompound() : (NBTTagCompound) NBTState.toNbt(mSettings);
+            configurable.getConfigManager().readFromNBT(settings);
+        }
+
+        if (part instanceof ISegmentedInventory segmentedInventory) {
+            if (segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgradeInv) {
                 ItemStackMap<Long> targetMap = GTUtility.getItemStackHistogram(
                     Arrays.stream(mAEUpgrades)
                         .map(PortableItemStack::toStack)
@@ -99,7 +160,7 @@ public class AEPartData {
                         .toArray(ItemStack[]::new));
 
                 if (!targetMap.equals(actualMap)) {
-                    BlockAnalyzer.emptyInventory(context, upgradeInv);
+                    emptyInventory(context, upgradeInv);
 
                     targetMap.replaceAll((item, amount) -> {
                         if (item.getItem() instanceof IUpgradeModule upgrade) {
@@ -125,7 +186,7 @@ public class AEPartData {
                 }
             }
 
-            IInventory config = part.getInventoryByName("config");
+            IInventory config = segmentedInventory.getInventoryByName("config");
 
             if (config != null) {
                 for (int i = 0; i < config.getSizeInventory(); i++) {
@@ -141,17 +202,21 @@ public class AEPartData {
 
                 config.markDirty();
             }
+        }
 
-            if (part instanceof IOreFilterable filterable) {
-                filterable.setFilter(mOreDict == null ? "" : mOreDict);
-            }
+        if (part instanceof IOreFilterable filterable) {
+            filterable.setFilter(mOreDict == null ? "" : mOreDict);
         }
 
         return true;
     }
 
-    public ItemStack getPartStack() {
-        return mPart.toStack();
+    public ItemStack getEffectivePartStack() {
+        if (isAttunable() && isP2P()) {
+            return AEApi.instance().definitions().parts().p2PTunnelME().maybeStack(1).get();
+        } else {
+            return mPart.toStack();
+        }
     }
 
     @Override
@@ -161,7 +226,6 @@ public class AEPartData {
         result = prime * result + ((mPart == null) ? 0 : mPart.hashCode());
         result = prime * result + ((mSettingsName == null) ? 0 : mSettingsName.hashCode());
         result = prime * result + ((mSettings == null) ? 0 : mSettings.hashCode());
-        result = prime * result + ((mMemoryCardData == null) ? 0 : mMemoryCardData.hashCode());
         result = prime * result + Arrays.hashCode(mAEUpgrades);
         result = prime * result + Arrays.hashCode(mConfig);
         result = prime * result + ((mOreDict == null) ? 0 : mOreDict.hashCode());
@@ -184,9 +248,6 @@ public class AEPartData {
         if (mSettings == null) {
             if (other.mSettings != null) return false;
         } else if (!mSettings.equals(other.mSettings)) return false;
-        if (mMemoryCardData == null) {
-            if (other.mMemoryCardData != null) return false;
-        } else if (!mMemoryCardData.equals(other.mMemoryCardData)) return false;
         if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades)) return false;
         if (!Arrays.equals(mConfig, other.mConfig)) return false;
         if (mOreDict == null) {
@@ -198,27 +259,19 @@ public class AEPartData {
         return true;
     }
 
-    private class FakeMemoryCard extends Item implements IMemoryCard {
+    static void emptyInventory(IBlockApplyContext context, IInventory inv) {
+        int size = inv.getSizeInventory();
 
-        @Override
-        public void setMemoryCardContents(ItemStack is, String SettingsName, NBTTagCompound data) {
-            AEPartData.this.mSettingsName = SettingsName;
-            AEPartData.this.mMemoryCardData = NBTState.toJsonObject(data);
+        for (int i = 0; i < size; i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+
+            if (stack != null && stack.getItem() != null) {
+                inv.setInventorySlotContents(i, null);
+
+                context.givePlayerItems(stack);
+            }
         }
 
-        @Override
-        public String getSettingsName(ItemStack is) {
-            return AEPartData.this.mSettingsName;
-        }
-
-        @Override
-        public NBTTagCompound getData(ItemStack is) {
-            return (NBTTagCompound) NBTState.toNbt(AEPartData.this.mMemoryCardData);
-        }
-
-        @Override
-        public void notifyUser(EntityPlayer player, MemoryCardMessages msg) {
-
-        }
+        inv.markDirty();
     }
 }
