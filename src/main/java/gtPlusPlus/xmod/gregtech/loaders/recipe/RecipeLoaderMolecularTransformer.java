@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.molecularTransformerRecipes;
 
+import advsolar.utils.MTRecipeManager;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -100,45 +101,48 @@ public class RecipeLoaderMolecularTransformer {
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
 
-        if (AdvancedSolarPanel.isModLoaded() && GalaxySpace.isModLoaded()) {
+        if (AdvancedSolarPanel.isModLoaded()) {
+            MTRecipeManager.transformerRecipes.clear();
+            if (GalaxySpace.isModLoaded()) {
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
-                .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
-                .duration(30 * SECONDS)
-                .eut(TierEU.RECIPE_EV)
-                .addTo(molecularTransformerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 0))
-                .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
-                .duration(7 * SECONDS + 10 * TICKS)
-                .eut(TierEU.RECIPE_IV)
-                .addTo(molecularTransformerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 1))
-                .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
-                .duration(1 * SECONDS + 18 * TICKS)
-                .eut(TierEU.RECIPE_LuV)
-                .addTo(molecularTransformerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 2))
-                .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
-                .duration(10 * TICKS)
-                .eut(TierEU.RECIPE_ZPM)
-                .addTo(molecularTransformerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 3))
-                .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
-                .duration(3 * TICKS)
-                .eut(TierEU.RECIPE_UV)
-                .addTo(molecularTransformerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 4))
-                .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
-                .duration(1 * TICKS)
-                .eut(TierEU.RECIPE_UHV)
-                .addTo(molecularTransformerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
+                    .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
+                    .duration(30 * SECONDS)
+                    .eut(TierEU.RECIPE_EV)
+                    .addTo(molecularTransformerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 0))
+                    .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
+                    .duration(7 * SECONDS + 10 * TICKS)
+                    .eut(TierEU.RECIPE_IV)
+                    .addTo(molecularTransformerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 1))
+                    .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
+                    .duration(1 * SECONDS + 18 * TICKS)
+                    .eut(TierEU.RECIPE_LuV)
+                    .addTo(molecularTransformerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 2))
+                    .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
+                    .duration(10 * TICKS)
+                    .eut(TierEU.RECIPE_ZPM)
+                    .addTo(molecularTransformerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 3))
+                    .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
+                    .duration(3 * TICKS)
+                    .eut(TierEU.RECIPE_UV)
+                    .addTo(molecularTransformerRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 4))
+                    .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
+                    .duration(1 * TICKS)
+                    .eut(TierEU.RECIPE_UHV)
+                    .addTo(molecularTransformerRecipes);
 
+            }
         }
     }
 }
