@@ -1528,12 +1528,6 @@ public class RecipesGregTech {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
-        RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.MeatRaw, 1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
 
         RA.stdBuilder()
             .itemInputs(ItemList.FusionComputer_UV.get(9))
