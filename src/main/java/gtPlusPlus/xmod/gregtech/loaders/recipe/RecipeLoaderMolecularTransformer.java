@@ -41,18 +41,22 @@ public class RecipeLoaderMolecularTransformer {
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         // GT Cheese(and pams cheese) -> GalactiCraft Cheese
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Food_Cheese.get(1L))
-            .itemOutputs(GTModHandler.getModItem(GalacticraftCore.ID, "item.cheeseCurd", 1L))
-            .duration(16 * SECONDS + 6 * TICKS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(molecularTransformerRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(PamsHarvestCraft.ID, "cheeseItem", 1L))
-            .itemOutputs(GTModHandler.getModItem(GalacticraftCore.ID, "item.cheeseCurd", 1L))
-            .duration(16 * SECONDS + 6 * TICKS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(molecularTransformerRecipes);
+        if (GalacticraftCore.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Food_Cheese.get(1L))
+                .itemOutputs(GTModHandler.getModItem(GalacticraftCore.ID, "item.cheeseCurd", 1L))
+                .duration(16 * SECONDS + 6 * TICKS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(molecularTransformerRecipes);
+            if (PamsHarvestCraft.isModLoaded()) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTModHandler.getModItem(PamsHarvestCraft.ID, "cheeseItem", 1L))
+                    .itemOutputs(GTModHandler.getModItem(GalacticraftCore.ID, "item.cheeseCurd", 1L))
+                    .duration(16 * SECONDS + 6 * TICKS)
+                    .eut(TierEU.RECIPE_IV)
+                    .addTo(molecularTransformerRecipes);
+            }
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L))
