@@ -30,7 +30,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
 
-        if (aMaterial == Materials.Ichorium) {
+        if (aMaterial == Materials.Ichorium || aMaterial == Materials.NetherQuartz) {
             return;
         }
 
@@ -159,9 +159,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(5 * SECONDS)
                 .eut(24)
                 .addTo(hammerRecipes);
-        }
-
-        if (tStack2 != null && aMaterial != Materials.NetherQuartz) {
             if (tStack3 != null)
                 GTModHandler.addShapelessCraftingRecipe(tStack3, new Object[] { OrePrefixes.block.get(aMaterial) });
             GTModHandler.addShapelessCraftingRecipe(tStack2, new Object[] { OrePrefixes.block.get(aMaterial) });
