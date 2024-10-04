@@ -145,15 +145,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         GTValues.RA.stdBuilder()
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
-                                GTUtility.copyOrNull(tPlanks),
-                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                            .fluidInputs(Materials.Lubricant.getFluid(1L))
-                            .duration(10 * SECONDS)
-                            .eut(8)
-                            .addTo(cutterRecipes);
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
-                            .itemOutputs(
                                 GTUtility.copyAmount(
                                     GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
@@ -209,16 +200,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             if (tStack != null) {
                 ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                 if (tPlanks != null) {
-                    tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .itemOutputs(
-                            GTUtility.copyOrNull(tPlanks),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                        .fluidInputs(Materials.Lubricant.getFluid(1L))
-                        .duration(10 * SECONDS)
-                        .eut(8)
-                        .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
