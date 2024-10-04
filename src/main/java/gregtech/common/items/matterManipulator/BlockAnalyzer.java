@@ -81,6 +81,7 @@ public class BlockAnalyzer {
     }
 
     public static interface IBlockAnalysisContext {
+
         public EntityPlayer getFakePlayer();
 
         public TileEntity getTileEntity();
