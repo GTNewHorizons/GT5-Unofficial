@@ -42,7 +42,7 @@ public class Util {
     }
 
     public static ItemStack[] toItemStackArray(List<ItemStack> stacksList) {
-        if (stacksList.size() == 0) {
+        if (stacksList.isEmpty()) {
             return null;
         }
 
@@ -55,7 +55,7 @@ public class Util {
     }
 
     public static FluidStack[] toFluidStackArray(List<FluidStack> stacksList) {
-        if (stacksList.size() == 0) {
+        if (stacksList.isEmpty()) {
             return null;
         }
 

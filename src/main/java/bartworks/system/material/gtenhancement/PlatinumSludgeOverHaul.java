@@ -1030,7 +1030,6 @@ public class PlatinumSludgeOverHaul {
         PlatinumSludgeOverHaul.runHelperrecipes();
     }
 
-    @SuppressWarnings("deprecation")
     private static void replaceHVCircuitMaterials() {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Redstone.getDust(1), Materials.Electrum.getDust(1), GTUtility.getIntegratedCircuit(1))

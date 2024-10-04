@@ -69,8 +69,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
     private int machineTemp = 0; // Coolant temperature
 
-    private ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
 
@@ -276,7 +276,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         outputRate = 0;
 
         ArrayList<FluidStack> tFluidInputs = this.getStoredFluids();
-        if (tFluidInputs.size() == 0) {
+        if (tFluidInputs.isEmpty()) {
             this.doRandomMaintenanceDamage(); // Penalise letting coolant run dry
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
             return false;
@@ -490,7 +490,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + Float.toString(mEfficiency / 100.0F)
+                + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
 
@@ -569,9 +569,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     private static float calculateTemperatureFactor(int fluidTemp) {
-
-        float factor = (float) Math.pow(1.1, 0.2 * fluidTemp);
-        return factor;
+        return (float) Math.pow(1.1, 0.2 * fluidTemp);
     }
 
     /*
@@ -612,7 +610,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                     return false;
                 }
                 break;
-            } ;
+            }
 
             length += 2;
         }
@@ -678,7 +676,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         }
 
-        int finalOutput = survivialBuildPiece(
+        return survivialBuildPiece(
             STRUCTURE_PIECE_END,
             stackSize,
             3,
@@ -688,8 +686,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             env,
             false,
             true);
-
-        return finalOutput;
     }
 
     @Override

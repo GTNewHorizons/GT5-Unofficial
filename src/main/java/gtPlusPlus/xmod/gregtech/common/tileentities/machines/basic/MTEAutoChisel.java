@@ -40,14 +40,14 @@ public class MTEAutoChisel extends MTEBasicMachine {
             "Chisels things, Gregtech style",
             1,
             1,
-            new ITexture[] { new GTRenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-                new GTRenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
-                new GTRenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
-                new GTRenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
-                new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
-                new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab),
-                new GTRenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                new GTRenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
+            new GTRenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+            new GTRenderedTexture(BlockIcons.OVERLAY_SIDE_MASSFAB),
+            new GTRenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE),
+            new GTRenderedTexture(BlockIcons.OVERLAY_FRONT_MULTI_SMELTER),
+            new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
+            new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab),
+            new GTRenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+            new GTRenderedTexture(BlockIcons.OVERLAY_BOTTOM_MASSFAB));
     }
 
     public MTEAutoChisel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -90,8 +90,8 @@ public class MTEAutoChisel extends MTEBasicMachine {
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return hasValidCache(aStack, this.getSpecialSlot(), false) ? true
-            : super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) && hasChiselResults(aStack);
+        return hasValidCache(aStack, this.getSpecialSlot(), false)
+            || super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) && hasChiselResults(aStack);
     }
 
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
@@ -108,7 +108,7 @@ public class MTEAutoChisel extends MTEBasicMachine {
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
     private static boolean hasChiselResults(ItemStack from) {
         List<ItemStack> results = getItemsForChiseling(from);
-        return results.size() > 0;
+        return !results.isEmpty();
     }
 
     private static List<ItemStack> getItemsForChiseling(ItemStack aStack) {

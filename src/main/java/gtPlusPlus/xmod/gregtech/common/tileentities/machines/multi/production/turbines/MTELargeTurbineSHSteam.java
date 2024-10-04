@@ -14,7 +14,6 @@ import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 
-@SuppressWarnings("deprecation")
 public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
 
     public boolean achievement = false;

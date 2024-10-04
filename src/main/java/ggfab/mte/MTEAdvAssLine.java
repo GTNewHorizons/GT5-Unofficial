@@ -463,7 +463,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (checkMachine() && (mEnergyHatches.size() > 0 || mExoticEnergyHatches.size() > 0)) {
+        if (checkMachine() && (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty())) {
             long oV = inputVoltage, oEut = inputEUt;
             inputVoltage = Integer.MAX_VALUE;
             inputEUt = 0;
@@ -776,14 +776,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                     .calculate();
                 int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
 
-                OverclockCalculator laserOCCalculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                     .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                     .setEutIncreasePerOCSupplier(
                         overclock -> 4 + LASER_OVERCLOCK_PENALTY_FACTOR * Math.max(overclock - normalOverclockCount, 0))
                     .setParallel(originalMaxParallel)
                     .setEUt(inputEUt / recipe.mInputs.length);
-
-                calculator = laserOCCalculator;
             } else {
                 calculator = normalOCCalculator;
             }

@@ -19,22 +19,19 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
     public Random rand = new Random();
     int[] red = new int[] { 255, 50, 50, 192 };
     int[] cyan = new int[] { 0, 220, 220, 160 };
-    int counter = 0;
+
+    final long frameTimeNanos = 10_000_000L;
+    final int loopFrameCount = 200;
+    final int glitchedDurationCount = 40;
+    final int glitchMoveFrameCount = 5;
+
     double offsetRed = 0;
     double offsetCyan = 0;
 
-    private void applyGlitchEffect(ItemRenderType type, boolean shouldModulateColor, int[] color, IIcon... icons) {
-        double offset;
+    private void applyGlitchEffect(ItemRenderType type, boolean shouldModulateColor, double offset, int[] color,
+        IIcon... icons) {
         for (IIcon icon : icons) {
             if (icon == null) continue;
-            if (counter % 2 == 0) {
-                offset = offsetRed;
-            } else {
-                offset = offsetCyan;
-            }
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
-
             Tessellator t = Tessellator.instance;
 
             if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
@@ -50,11 +47,7 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
                 t.addVertexWithUV(16 + offset, 0 + offset, 0, icon.getMaxU(), icon.getMinV());
                 t.draw();
             }
-
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
         }
-        counter++;
     }
 
     @Override
@@ -63,10 +56,10 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
         short metaData = (short) item.getItemDamage();
         if (!(item.getItem() instanceof IGT_ItemWithMaterialRenderer itemRenderer)) return;
 
-        int currentFrame = (int) ((System.nanoTime() % 4_000_000_000L) / 20_000_000L);
-        boolean timing = currentFrame <= 20;
+        int currentFrame = (int) ((System.nanoTime() % (frameTimeNanos * loopFrameCount)) / frameTimeNanos);
+        boolean timing = currentFrame <= glitchedDurationCount;
 
-        if (timing && currentFrame % 5 == 0) {
+        if (timing && currentFrame % glitchMoveFrameCount == 0) {
             offsetRed = rand.nextDouble() * 1.7 * Math.signum(rand.nextGaussian());
             offsetCyan = rand.nextDouble() * 1.7 * Math.signum(rand.nextGaussian());
         }
@@ -87,8 +80,6 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
                 modulation[2] / 255.0F,
                 modulation[3] / 255.0F);
         }
-
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         if (itemIcon != null) {
             markNeedsAnimationUpdate(itemIcon);
@@ -114,10 +105,9 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
 
         if (type == ItemRenderType.INVENTORY && timing) {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            applyGlitchEffect(type, shouldModulateColor, cyan, itemIcon, overlay);
+            applyGlitchEffect(type, shouldModulateColor, offsetCyan, cyan, itemIcon, overlay);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            applyGlitchEffect(type, shouldModulateColor, red, itemIcon, overlay);
-
+            applyGlitchEffect(type, shouldModulateColor, offsetRed, red, itemIcon, overlay);
         }
         GL11.glDisable(GL11.GL_BLEND);
     }

@@ -1003,7 +1003,7 @@ public enum OreMixes {
 
     public final OreMixBuilder oreMixBuilder;
 
-    private OreMixes(OreMixBuilder oreMixBuilder) {
+    OreMixes(OreMixBuilder oreMixBuilder) {
         this.oreMixBuilder = oreMixBuilder;
     }
 

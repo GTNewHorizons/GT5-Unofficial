@@ -28,7 +28,7 @@ public class InventoryDataPacket extends DataPacket<ItemStack[]> {
                     stacks.add(stack);
                 }
             }
-            return stacks.size() > 0 ? stacks.toArray(TTRecipeAdder.nullItem) : null;
+            return !stacks.isEmpty() ? stacks.toArray(TTRecipeAdder.nullItem) : null;
         }
         return null;
     }

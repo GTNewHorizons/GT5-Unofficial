@@ -40,7 +40,7 @@ public class RecipeRemovals {
         Item aU;
         Collection<GTRecipe> aAssRecipes = RecipeMaps.assemblerRecipes.getAllRecipes();
         // 170, 172, 174, 176
-        if (aAssRecipes.size() > 0) {
+        if (!aAssRecipes.isEmpty()) {
             for (GTRecipe aG : aAssRecipes) {
                 if (ArrayUtils.isNotEmpty(aG.mOutputs)) {
                     for (ItemStack aI : aG.mOutputs) {

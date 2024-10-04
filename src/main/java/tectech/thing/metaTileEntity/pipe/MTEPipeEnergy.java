@@ -4,6 +4,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -85,6 +86,144 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
         return false;
     }
 
+    public void updateNeighboringNetworks() {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
+
+            if (gregTechTileEntity != null
+                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                neighbor.updateNetwork(true);
+            }
+        }
+    }
+
+    public void updateNetwork(boolean nestedCall) {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        active = false;
+
+        mConnections = 0;
+        connectionCount = 0;
+
+        if (aBaseMetaTileEntity.getColorization() < 0) {
+            return;
+        }
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            final ForgeDirection oppositeSide = side.getOpposite();
+
+            TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
+            if (tTileEntity instanceof IColoredTileEntity coloredTileEntity) {
+                byte tColor = coloredTileEntity.getColorization();
+                if (tColor != aBaseMetaTileEntity.getColorization()) {
+                    continue;
+                }
+            }
+            if (tTileEntity instanceof PowerLogicHost host) {
+                PowerLogic logic = host.getPowerLogic(oppositeSide);
+                if (logic != null && logic.canUseLaser()) {
+                    mConnections |= side.flag;
+                    connectionCount++;
+                    continue;
+                }
+            }
+            if (tTileEntity instanceof IConnectsToEnergyTunnel tunnel && tunnel.canConnect(oppositeSide)) {
+                mConnections |= side.flag;
+                connectionCount++;
+            } else if (tTileEntity instanceof IGregTechTileEntity gregTechTileEntity
+                && gregTechTileEntity.getMetaTileEntity() instanceof IConnectsToEnergyTunnel tunnel) {
+                    if (tunnel.canConnect(oppositeSide)) {
+                        mConnections |= side.flag;
+                        connectionCount++;
+                    }
+                }
+        }
+
+        if (!nestedCall) updateNeighboringNetworks();
+    }
+
+    @Override
+    public void onColorChangeServer(byte aColor) {
+        this.updateNetwork(false);
+        super.onColorChangeServer(aColor);
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
+
+            if (gregTechTileEntity != null
+                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                neighbor.mConnections &= ~side.getOpposite().flag;
+                neighbor.connectionCount--;
+            }
+        }
+
+        super.onBlockDestroyed();
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        this.updateNetwork(false);
+        super.onFirstTick(aBaseMetaTileEntity);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if ((aTick & 31) == 31) {
+                if (TecTech.RANDOM.nextInt(15) == 0) {
+                    NetworkDispatcher.INSTANCE.sendToAllAround(
+                        new PipeActivityMessage.PipeActivityData(this),
+                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                        aBaseMetaTileEntity.getXCoord(),
+                        aBaseMetaTileEntity.getYCoord(),
+                        aBaseMetaTileEntity.getZCoord(),
+                        256);
+                }
+            }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
+            aBaseMetaTileEntity.issueTextureUpdate();
+        }
+    }
+
+    @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
+        float aY, float aZ, ItemStack aTool) {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        if (this.isConnectedAtSide(wrenchingSide)) {
+            this.mConnections &= ~wrenchingSide.flag;
+            this.connectionCount--;
+
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(wrenchingSide);
+
+            if (gregTechTileEntity != null
+                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                neighbor.mConnections &= ~wrenchingSide.getOpposite().flag;
+                neighbor.connectionCount--;
+            }
+
+        } else {
+            this.mConnections |= wrenchingSide.flag;
+            this.connectionCount++;
+
+            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(wrenchingSide);
+
+            if (gregTechTileEntity != null
+                && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                neighbor.mConnections |= wrenchingSide.getOpposite().flag;
+                neighbor.connectionCount--;
+            }
+        }
+
+        return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+    }
+
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
         active = nbtTagCompound.getBoolean("eActive");
@@ -108,84 +247,16 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
     @Override
     public String[] getDescription() {
         return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.pipe.energystream.desc.0"), // Laser
-                                                                                                                       // tunneling
-                                                                                                                       // device.
+            // tunneling
+            // device.
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
                 + translateToLocal("gt.blockmachines.pipe.energystream.desc.1"), // Bright Vacuum!!!
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.2"), // Must be
-                                                                                                     // painted to
-                                                                                                     // work
+            // painted to
+            // work
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.pipe.energystream.desc.3") // Do not split
-                                                                                                    // or turn
+            // or turn
         };
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        onPostTick(aBaseMetaTileEntity, 31);
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if ((aTick & 31) == 31) {
-                if (TecTech.RANDOM.nextInt(15) == 0) {
-                    NetworkDispatcher.INSTANCE.sendToAllAround(
-                        new PipeActivityMessage.PipeActivityData(this),
-                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        256);
-                }
-                if (active) {
-                    active = false;
-                }
-                mConnections = 0;
-                connectionCount = 0;
-                if (aBaseMetaTileEntity.getColorization() < 0) {
-                    return;
-                }
-                for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                    final ForgeDirection oppositeSide = side.getOpposite();
-                    // if (!aBaseMetaTileEntity.getCoverBehaviorAtSide(b0).alwaysLookConnected(b0,
-                    // aBaseMetaTileEntity.getCoverIDAtSide(b0), aBaseMetaTileEntity.getCoverDataAtSide(b0),
-                    // aBaseMetaTileEntity)) {
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
-                    if (tTileEntity instanceof IColoredTileEntity) {
-                        // if (aBaseMetaTileEntity.getColorization() >= 0) {
-                        byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
-                        if (tColor != aBaseMetaTileEntity.getColorization()) {
-                            continue;
-                        }
-                        // }
-                    }
-                    if (tTileEntity instanceof PowerLogicHost) {
-                        PowerLogic logic = ((PowerLogicHost) tTileEntity).getPowerLogic(oppositeSide);
-                        if (logic != null && logic.canUseLaser()) {
-                            mConnections |= 1 << side.ordinal();
-                            connectionCount++;
-                            continue;
-                        }
-                    }
-                    if (tTileEntity instanceof IConnectsToEnergyTunnel
-                        && ((IConnectsToEnergyTunnel) tTileEntity).canConnect(oppositeSide)) {
-                        mConnections |= 1 << side.ordinal();
-                        connectionCount++;
-                    } else if (tTileEntity instanceof IGregTechTileEntity
-                        && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
-                            if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
-                                .canConnect(oppositeSide)) {
-                                mConnections |= 1 << side.ordinal();
-                                connectionCount++;
-                            }
-                        }
-                }
-            }
-
-        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
     }
 
     @Override
@@ -213,6 +284,12 @@ public class MTEPipeEnergy extends MetaPipeEntity implements IConnectsToEnergyTu
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x2) != 0)
+            return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    }
+
+    public AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         float tSpace = (1f - 0.5f) / 2;
         float tSide0 = tSpace;
         float tSide1 = 1f - tSpace;

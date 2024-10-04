@@ -101,7 +101,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                         aCharSlot++;
                         aLoggingInfo[aInfoSlot++] = mInfo;
                     } else {
-                        aRecipePairs.add(new Pair<>(' ', (ItemStack) null));
+                        aRecipePairs.add(new Pair<>(' ', null));
                         Logger.RECIPE("Storing ' ' with an object of type null");
                         aChar[aMemSlot++] = ' ';
                         aLoggingInfo[aInfoSlot++] = "Empty";
@@ -115,8 +115,8 @@ public class ShapedRecipe implements IRecipeMutableAccess {
 
                     for (Pair<Character, Object> h : aRecipePairs) {
                         if (h.getKey() != null) {
-                            aGridWhole.append(String.valueOf(h.getKey()));
-                            Logger.RECIPE("Adding '" + String.valueOf(h.getKey()) + "' to aGridWhole.");
+                            aGridWhole.append(h.getKey());
+                            Logger.RECIPE("Adding '" + h.getKey() + "' to aGridWhole.");
                         }
                     }
 
@@ -194,7 +194,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                             o = ((ItemStack) o).copy();
                         }
 
-                        mVarags2[counter2] = (char) c;
+                        mVarags2[counter2] = c;
                         mVarags2[counter2 + 1] = o;
                         counter2 += 2;
                     }

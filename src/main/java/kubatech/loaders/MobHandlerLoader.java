@@ -183,7 +183,6 @@ public class MobHandlerLoader {
                     if (infernalstacks != null) {
                         ItemStack infernalstack = infernalstacks.get(rnd.nextInt(infernalstacks.size()))
                             .copy();
-                        // noinspection ConstantConditions
                         EnchantmentHelper.addRandomEnchantment(
                             rnd,
                             infernalstack,

@@ -287,18 +287,17 @@ public class CI {
     public static String getTieredComponent(OrePrefixes type, int tier) {
         Object material = getMaterialFromTier(tier);
         if (material != null) {
+            String materialName;
             if (material instanceof Materials) {
                 // return (ItemStack) type.get(material);
-                String materialName = ((Materials) material).mDefaultLocalName;
-                Logger.INFO("Searching for a component named " + type.name() + materialName);
+                materialName = ((Materials) material).mDefaultLocalName;
                 // return ItemUtils.getItemStackOfAmountFromOreDict(type.name()+materialName, 1);
-                return (type.name() + materialName);
             } else {
-                String materialName = (Utils.sanitizeString(((Material) material).getLocalizedName()));
-                Logger.INFO("Searching for a component named " + type.name() + materialName);
+                materialName = (Utils.sanitizeString(((Material) material).getLocalizedName()));
                 // return ItemUtils.getItemStackOfAmountFromOreDict(type.name()+materialName, 1);
-                return (type.name() + materialName);
             }
+            Logger.INFO("Searching for a component named " + type.name() + materialName);
+            return (type.name() + materialName);
         }
         Logger.INFO("[Components] Failed getting a tiered component. " + type.name() + " | " + tier);
         return null;
@@ -517,8 +516,7 @@ public class CI {
         if (aPrefix == OrePrefixes.liquid) {
             int aMatID = (aTier == 0 || aTier == 2 || aTier == 5 || aTier == 8 ? 0
                 : (aTier == 1 || aTier == 3 || aTier == 6 || aTier == 9 ? 1 : 2));
-            ItemStack aCell = aMaster[aMatID][aTier].getCell(aAmount);
-            return aCell;
+            return aMaster[aMatID][aTier].getCell(aAmount);
         }
 
         if (aPrefix == OrePrefixes.circuit) {

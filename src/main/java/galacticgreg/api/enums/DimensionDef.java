@@ -222,7 +222,7 @@ public enum DimensionDef {
 
     public final ModDimensionDef modDimensionDef;
 
-    private DimensionDef(ModDimensionDef modDimDef) {
+    DimensionDef(ModDimensionDef modDimDef) {
         this.modDimensionDef = modDimDef;
     }
 }

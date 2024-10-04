@@ -35,13 +35,11 @@ public class RecipeSC extends GTRecipe {
     @Override
     public ItemStack getRepresentativeOutput(int aIndex) {
 
-        ArrayList<ItemStack> mOutputsWithParticle = new ArrayList<>();
-
         ItemStack particleStack = new ItemStack(LanthItemList.PARTICLE_ITEM);
 
         Items.ender_pearl.setDamage(particleStack, this.particleId);
 
-        mOutputsWithParticle.addAll(Arrays.asList(mOutputs));
+        ArrayList<ItemStack> mOutputsWithParticle = new ArrayList<>(Arrays.asList(mOutputs));
         mOutputsWithParticle.add(particleStack);
 
         ItemStack[] mOutputsWithParticleArray = mOutputsWithParticle.toArray(new ItemStack[0]);

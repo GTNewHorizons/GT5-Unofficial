@@ -190,7 +190,6 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
             if (tickingComponents) {
                 if (this.heat > comp.maxHeat) {
                     mInventory[i] = null;
-                    continue;
                 } else if (comp.subZero || this.heat >= 0) {
                     heat += (1f + comp.coolConstant * this.heat / 100000f)
                         * (comp.heatConstant > 0 ? comp.heatConstant * overclock * overvolt * overvolt : -10f);

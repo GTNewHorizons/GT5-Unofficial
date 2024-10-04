@@ -57,7 +57,7 @@ public class MaterialStack implements Cloneable {
         if (materialStack.mMaterial.mMaterialList.size() > 1) {
             return true;
         }
-        if (materialStack.mMaterial.mMaterialList.size() == 0) {
+        if (materialStack.mMaterial.mMaterialList.isEmpty()) {
             return false;
         }
         return isMaterialListComplex(materialStack.mMaterial.mMaterialList.get(0));

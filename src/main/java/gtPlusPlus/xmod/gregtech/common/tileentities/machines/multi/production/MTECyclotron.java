@@ -264,7 +264,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mOutputBusses.size() > 0) {
+        if (!this.mOutputBusses.isEmpty()) {
             for (MTEHatchOutputBus g : this.mOutputBusses) {
                 if (g != null) {
                     for (ItemStack s : g.mInventory) {

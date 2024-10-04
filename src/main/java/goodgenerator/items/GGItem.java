@@ -115,10 +115,10 @@ public class GGItem extends Item {
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({ "unchecked" })
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
-        if (tooltips.size() > 0) {
+        if (!tooltips.isEmpty()) {
             p_77624_3_.addAll(tooltips);
         }
-        if (tooltipses.size() > 0) {
+        if (!tooltipses.isEmpty()) {
             int meta = p_77624_1_.getItemDamage();
             if (tooltipses.size() - 1 < meta) meta = tooltipses.size() - 1;
             p_77624_3_.add(tooltipses.get(meta));

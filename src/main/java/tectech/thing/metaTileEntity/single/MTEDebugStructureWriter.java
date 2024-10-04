@@ -273,7 +273,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
             xPos,
             40);
         builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> { size = !size; })
+            new ButtonWidget().setOnClick((clickData, widget) -> size = !size)
                 .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, 58));
@@ -283,8 +283,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
         int changeNumberShift, int changeNumber, int xPos, int yPos) {
         builder.widget(
             new ButtonWidget()
-                .setOnClick(
-                    (clickData, widget) -> { setter.accept(clickData.shift ? changeNumberShift : changeNumber); })
+                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? changeNumberShift : changeNumber))
                 .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
                 .setSize(18, 18)
                 .setPos(xPos, yPos));

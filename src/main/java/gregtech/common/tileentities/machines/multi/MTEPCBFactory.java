@@ -105,7 +105,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final String ocTier1Upgrade = "ocTier1Upgrade";
     private static final String ocTier2Upgrade = "ocTier2Upgrade";
     private float mRoughnessMultiplier = 1;
-    private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0, mCurrentParallel = 0, mMaxParallel = 0;
+    private int mTier = 1;
+    private int mSetTier = 1;
+    private int mUpgradesInstalled = 0;
+    private final int mCurrentParallel = 0;
+    private int mMaxParallel = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private final int[] mBioOffsets = new int[] { -5, -1 };
     private final int[] mOCTier1Offsets = new int[] { 2, -11 };
