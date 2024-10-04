@@ -1310,7 +1310,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder("InfinityPlasma")
+        GTFluidFactory.builder("plasma.infinity")
             .withLocalizedName("Infinity Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()

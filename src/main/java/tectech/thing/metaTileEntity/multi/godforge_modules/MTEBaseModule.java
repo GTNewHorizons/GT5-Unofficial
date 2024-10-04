@@ -55,6 +55,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import tectech.thing.gui.TecTechUITextures;
+import tectech.thing.metaTileEntity.multi.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class MTEBaseModule extends TTMultiblockBase {
@@ -66,6 +67,7 @@ public class MTEBaseModule extends TTMultiblockBase {
     protected boolean isMultiStepPlasmaCapable = false;
     protected boolean isMagmatterCapable = false;
     private boolean isVoltageConfigUnlocked = false;
+    private boolean isInversionUnlocked = false;
     protected UUID userUUID;
     protected int machineHeat = 0;
     protected int overclockHeat = 0;
@@ -81,6 +83,7 @@ public class MTEBaseModule extends TTMultiblockBase {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VOLTAGE_WINDOW_ID = 9;
+    private static final int GENERAL_INFO_WINDOW_ID = 10;
     private static final int TEXTURE_INDEX = 960;
     protected static final String TOOLTIP_BAR = EnumChatFormatting.AQUA
         + "--------------------------------------------------------------------------";
@@ -216,6 +219,10 @@ public class MTEBaseModule extends TTMultiblockBase {
         isVoltageConfigUnlocked = unlocked;
     }
 
+    public void setInversionConfig(boolean inversion) {
+        isInversionUnlocked = inversion;
+    }
+
     public void setPowerTally(BigInteger amount) {
         powerTally = amount;
     }
@@ -315,6 +322,19 @@ public class MTEBaseModule extends TTMultiblockBase {
                 .setPos(75, 94)
                 .setSize(100, 10));
 
+        builder.widget(
+            new ButtonWidget().setOnClick(
+                (data, widget) -> {
+                    if (!widget.isClient()) widget.getContext()
+                        .openSyncedWindow(GENERAL_INFO_WINDOW_ID);
+                })
+                .setSize(18, 18)
+                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.clickhere"))
+                .setPos(172, 67)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        buildContext.addSyncedWindow(GENERAL_INFO_WINDOW_ID, this::createGeneralInfoWindow);
+
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))
@@ -391,6 +411,10 @@ public class MTEBaseModule extends TTMultiblockBase {
                         new FakeSyncWidget.LongSyncer(this::getProcessingVoltage, this::setProcessingVoltage),
                         builder));
         return builder.build();
+    }
+
+    protected ModularWindow createGeneralInfoWindow(final EntityPlayer player) {
+        return MTEForgeOfGods.createGeneralInfoWindow(() -> isInversionUnlocked, val -> isInversionUnlocked = val);
     }
 
     @Override
