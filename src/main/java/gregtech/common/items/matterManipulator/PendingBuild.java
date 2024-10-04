@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
@@ -58,7 +57,6 @@ import gregtech.api.interfaces.tileentity.IRedstoneEmitter;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.FluidId;
 import gregtech.api.util.GTUtility.ItemId;
-import gregtech.api.util.Lazy;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import ic2.api.item.ElectricItem;
@@ -496,9 +494,11 @@ public class PendingBuild {
 
     private void consumeItemsFromPending(ItemStackMap<Long> requestedItems, boolean simulate) {
         requestedItems.replaceAll((item, amount) -> {
-            if (amount == 0) return 0l;
+            if (amount == null || amount == 0) return 0l;
 
-            long available = pendingItems.get(ItemId.create(item));
+            Long available = pendingItems.get(ItemId.create(item));
+
+            if (available == null || available == 0) return amount;
 
             long toRemove = Math.min(available, amount);
 
@@ -521,7 +521,7 @@ public class PendingBuild {
         ItemStack[] inv = placingPlayer.inventory.mainInventory;
 
         requestedItems.replaceAll((item, amountLong) -> {
-            if (amountLong == 0) return 0l;
+            if (amountLong == null || amountLong == 0) return 0l;
 
             int remaining = amountLong > Integer.MAX_VALUE ? Integer.MAX_VALUE : amountLong.intValue();
             int initial = remaining;
@@ -564,7 +564,7 @@ public class PendingBuild {
         }
 
         requestedItems.replaceAll((item, amount) -> {
-            if (amount == 0) return 0l;
+            if (amount == null || amount == 0) return 0l;
 
             IAEItemStack result = manipulator.storageGrid.getItemInventory()
                 .extractItems(
@@ -578,7 +578,7 @@ public class PendingBuild {
     }
 
     private static boolean areBlocksBasicallyEqual(PendingBlock a, PendingBlock b) {
-        return a.block == b.block && a.metadata == b.metadata;
+        return a.getBlock() == b.getBlock() && a.metadata == b.metadata;
     }
 
     private static boolean areStacksBasicallyEqual(ItemStack a, ItemStack b) {
@@ -771,10 +771,7 @@ public class PendingBuild {
 
         public static final double EU_PER_ACTION = 8192;
 
-        private final Lazy<EntityPlayer> fakePlayer = new Lazy<>(
-            () -> new FakePlayer(
-                (WorldServer) PendingBuild.this.placingPlayer.worldObj,
-                PendingBuild.this.placingPlayer.getGameProfile()));
+        private EntityPlayer fakePlayer;
 
         public ItemStack manipulatorItemStack;
         public PendingBlock pendingBlock;
@@ -784,7 +781,13 @@ public class PendingBuild {
         }
 
         @Override
-        public Supplier<EntityPlayer> getFakePlayer() {
+        public EntityPlayer getFakePlayer() {
+            if (fakePlayer == null) {
+                fakePlayer = new FakePlayer(
+                    (WorldServer) PendingBuild.this.placingPlayer.worldObj,
+                    PendingBuild.this.placingPlayer.getGameProfile());
+            }
+
             return fakePlayer;
         }
 
@@ -798,7 +801,7 @@ public class PendingBuild {
         }
 
         @Override
-        public EntityPlayer getPlacingPlayer() {
+        public EntityPlayer getRealPlayer() {
             return placingPlayer;
         }
 

@@ -38,12 +38,13 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.MouseEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.libraries.com.google.common.collect.MapMaker;
@@ -237,7 +238,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     case MARK_CUT_A -> "Marking first cut corner";
                     case MARK_CUT_B -> "Marking second cut corner";
                     case MARK_PASTE -> "Marking paste location";
-                    case SCAN -> "Scan";
                 });
             }
 
@@ -577,8 +577,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 pending.assembleTask = BUILD_ASSEMBLING_POOL.submit(() -> {
                     List<PendingBlock> blocks = pending.manipulator.getPendingBlocks();
 
-                    Comparator<UniqueIdentifier> blockId = Comparator.comparing((UniqueIdentifier id) -> id.modId)
-                        .thenComparing(id -> id.name);
+                    Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(Comparator.comparing((UniqueIdentifier id) -> id.modId)
+                        .thenComparing(id -> id.name));
                     Comparator<PendingBlock> comparePending = Comparator.comparingInt((PendingBlock b) -> b.buildOrder)
                         .thenComparing(Comparator.nullsFirst(Comparator.comparing(b -> b.blockId, blockId)))
                         .thenComparingInt(b -> b.metadata);
@@ -930,7 +930,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void renderSelection(RenderHandEvent event) {
+    public void renderSelection(RenderWorldLastEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         ItemStack held = player.getHeldItem();
 
@@ -954,7 +954,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         }
     }
 
-    private void renderGeom(RenderHandEvent event, NBTState state, EntityPlayer player) {
+    private void renderGeom(RenderWorldLastEvent event, NBTState state, EntityPlayer player) {
         Location coordA = state.config.getCoordA(player);
         Location coordB = state.config.getCoordB(player);
         state.config.coordA = coordA;
@@ -1035,7 +1035,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         }
     }
 
-    private void renderRegions(RenderHandEvent event, NBTState state, EntityPlayer player) {
+    private void renderRegions(RenderWorldLastEvent event, NBTState state, EntityPlayer player) {
         Location sourceA = state.config.coordA;
         Location sourceB = state.config.coordB;
         Location paste = state.config.coordC;
@@ -1045,20 +1045,20 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 case MARK_COPY_A:
                 case MARK_CUT_A: {
                     sourceA = new Location(player.worldObj, Config.getLookingAtLocation(player));
-                    GL11.glColor4f(0.0F, 0.0F, 1.0F, 0.75F);
+                    GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
                     drawRulers(player, sourceA, false, event.partialTicks);
                     break;
                 }
                 case MARK_COPY_B:
                 case MARK_CUT_B: {
                     sourceB = new Location(player.worldObj, Config.getLookingAtLocation(player));
-                    GL11.glColor4f(0.0F, 0.0F, 1.0F, 0.75F);
+                    GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
                     drawRulers(player, sourceB, false, event.partialTicks);
                     break;
                 }
                 case MARK_PASTE: {
                     paste = new Location(player.worldObj, Config.getLookingAtLocation(player));
-                    GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
+                    GL11.glColor4f(0.75f, 0.5f, 0.15f, 0.75F);
                     drawRulers(player, paste, false, event.partialTicks);
                     break;
                 }
@@ -1078,14 +1078,15 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
         Vector3i deltas = null;
 
+        BoxRenderer.INSTANCE.start(event.partialTicks);
+
         if (isSourceAValid && isSourceBValid) {
             Objects.requireNonNull(sourceA);
             Objects.requireNonNull(sourceB);
 
             deltas = Config.getRegionDeltas(sourceA, sourceB);
 
-            GL11.glColor4f(0.0F, 0.0F, 1.0F, 0.75F);
-            drawAABB(player, Config.getBoundingBox(sourceA, deltas), event.partialTicks);
+            BoxRenderer.INSTANCE.drawAround(Config.getBoundingBox(sourceA, deltas), new Vector3f(0.15f, 0.6f, 0.75f));
 
             AboveHotbarHUD.renderTextAboveHotbar(
                 String.format(
@@ -1101,12 +1102,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         if (isPasteValid) {
             Objects.requireNonNull(paste);
 
-            GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
-            if (deltas != null) {
-                drawAABB(player, Config.getBoundingBox(paste, deltas), event.partialTicks);
-            } else {
-                drawAABB(player, Config.getBoundingBox(paste, new Vector3i()), event.partialTicks);
-            }
+            Vector3i deltas2 = deltas == null ? new Vector3i() : deltas;
+
+            BoxRenderer.INSTANCE.drawAround(Config.getBoundingBox(paste, deltas2), new Vector3f(0.75f, 0.5f, 0.15f));
 
             boolean spawn = (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS
                 || !Objects.equals(DRAWN_CONFIG, state.config);
@@ -1134,6 +1132,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 StructureLibAPI.endHinting(player.worldObj);
             }
         }
+
+        BoxRenderer.INSTANCE.finish();
     }
 
     private void drawBox(EntityPlayer player, Location l, float partialTickTime) {
@@ -1150,7 +1150,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glLineWidth(2.0F);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDepthMask(false);
         float f1 = 0.002F;
 
         double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) partialTickTime;
@@ -1161,7 +1160,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .getOffsetBoundingBox(-d0, -d1, -d2),
             -1);
 
-        GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
     }

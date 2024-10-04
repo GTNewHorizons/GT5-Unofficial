@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -22,29 +21,47 @@ import appeng.api.parts.IPartHost;
 import appeng.api.parts.PartItemStack;
 import appeng.api.util.AEColor;
 import appeng.helpers.ICustomNameObject;
-import appeng.parts.AEBasePart;
+import appeng.parts.p2p.PartP2PTunnelNormal;
 import appeng.tile.AEBaseTile;
 import appeng.tile.networking.TileCableBus;
+import appeng.util.Platform;
 import appeng.util.SettingsFrom;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import gregtech.GTMod;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
+import gregtech.api.interfaces.metatileentity.IFluidLockable;
+import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.covers.CoverInfo;
+import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockAnalysisContext;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class TileAnalysisResult {
 
-    public Byte mConnections = null;
-    public Byte mGTColour = null;
+    public byte mConnections = 0;
+    public byte mGTColour = -1;
     public ForgeDirection mGTFront = null, mGTMainFacing = null;
-    public Byte mGTBasicIOFlags = null;
+    public short mGTFlags = 0;
     public ExtendedFacing mGTFacing = null;
     public CoverData[] mCovers = null;
-    public Byte mStrongRedstone = null;
+    public byte mStrongRedstone = 0;
     public String mGTCustomName = null;
+    public byte mGTGhostCircuit = 0;
+    public PortableItemStack mGTItemLock = null;
+    public String mGTFluidLock = null;
+    public int mGTMode = 0;
+    public JsonElement mGTData = null;
 
     public AEColor mAEColour = null;
     public ForgeDirection mAEUp = null, mAEForward = null;
@@ -54,11 +71,19 @@ public class TileAnalysisResult {
     public AEPartData[] mAEParts = null;
 
     private static int counter = 0;
-    public static final byte GT_BASIC_IO_PUSH_ITEMS = (byte) (0b1 << counter++);
-    public static final byte GT_BASIC_IO_PUSH_FLUIDS = (byte) (0b1 << counter++);
-    public static final byte GT_BASIC_IO_DISABLE_FILTER = (byte) (0b1 << counter++);
-    public static final byte GT_BASIC_IO_DISABLE_MULTISTACK = (byte) (0b1 << counter++);
-    public static final byte GT_BASIC_IO_INPUT_FROM_OUTPUT_SIDE = (byte) (0b1 << counter++);
+    private static final short GT_BASIC_IO_PUSH_ITEMS = (short) (0b1 << counter++);
+    private static final short GT_BASIC_IO_PUSH_FLUIDS = (short) (0b1 << counter++);
+    private static final short GT_BASIC_IO_DISABLE_FILTER = (short) (0b1 << counter++);
+    private static final short GT_BASIC_IO_DISABLE_MULTISTACK = (short) (0b1 << counter++);
+    private static final short GT_BASIC_IO_INPUT_FROM_OUTPUT_SIDE = (short) (0b1 << counter++);
+    private static final short GT_INPUT_BUS_NO_SORTING = (short) (0b1 << counter++);
+    private static final short GT_INPUT_BUS_NO_LIMITING = (short) (0b1 << counter++);
+    private static final short GT_INPUT_BUS_NO_FILTERING = (short) (0b1 << counter++);
+    private static final short GT_MULTI_PROTECT_ITEMS = (short) (0b1 << counter++);
+    private static final short GT_MULTI_PROTECT_FLUIDS = (short) (0b1 << counter++);
+    private static final short GT_MULTI_BATCH_MODE = (short) (0b1 << counter++);
+    private static final short GT_MULTI_INPUT_SEPARATION = (short) (0b1 << counter++);
+    private static final short GT_MULTI_RECIPE_LOCK = (short) (0b1 << counter++);
 
     private static final ForgeDirection[] ALL_DIRECTIONS = ForgeDirection.values();
 
@@ -66,7 +91,7 @@ public class TileAnalysisResult {
 
     }
 
-    public TileAnalysisResult(Supplier<EntityPlayer> fakePlayer, TileEntity te) {
+    public TileAnalysisResult(IBlockAnalysisContext context, TileEntity te) {
         if (te instanceof IGregTechTileEntity gte) {
             IMetaTileEntity mte = gte.getMetaTileEntity();
 
@@ -83,7 +108,7 @@ public class TileAnalysisResult {
                 if (basicMachine.mDisableMultiStack) flags |= GT_BASIC_IO_DISABLE_MULTISTACK;
                 if (basicMachine.mAllowInputFromOutputSide) flags |= GT_BASIC_IO_INPUT_FROM_OUTPUT_SIDE;
 
-                if (flags != 0) mGTBasicIOFlags = flags;
+                if (flags != 0) mGTFlags = flags;
             }
 
             if (mte instanceof IConnectable connectable) {
@@ -103,7 +128,7 @@ public class TileAnalysisResult {
 
                 mGTFacing = alignment != null ? alignment.getExtendedFacing() : null;
             } else {
-                mGTFront = BlockAnalyzer.nullIfUnknown(gte.getFrontFacing());
+                mGTFront = nullIfUnknown(gte.getFrontFacing());
             }
 
             CoverData[] covers = new CoverData[6];
@@ -122,16 +147,75 @@ public class TileAnalysisResult {
             }
 
             if (hasCover) mCovers = covers;
-            if (strongRedstone != 0) mStrongRedstone = strongRedstone;
+            mStrongRedstone = strongRedstone;
 
             if (mte instanceof ICustomNameObject customName && customName.hasCustomName()) {
                 mGTCustomName = customName.getCustomName();
             }
+
+            if (mte instanceof IConfigurationCircuitSupport ghostCircuit && ghostCircuit.allowSelectCircuit()) {
+                ItemStack circuit = mte.getStackInSlot(ghostCircuit.getCircuitSlot());
+
+                if (circuit == null || circuit.getItem() == null) {
+                    mGTGhostCircuit = 0;
+                } else if (circuit.getItem() == ItemList.Circuit_Integrated.getItem()) {
+                    mGTGhostCircuit = (byte) Items.feather.getDamage(circuit);
+                } else if (circuit.getItem() == GregtechItemList.Circuit_BioRecipeSelector.getItem()) {
+                    mGTGhostCircuit = (byte) (Items.feather.getDamage(circuit) + 24);
+                } else if (circuit.getItem() == GregtechItemList.Circuit_T3RecipeSelector.getItem()) {
+                    mGTGhostCircuit = (byte) (Items.feather.getDamage(circuit) + 48);
+                }
+            }
+
+            if (mte instanceof MTEHatchInputBus inputBus) {
+                if (inputBus.disableSort) mGTFlags |= GT_INPUT_BUS_NO_SORTING;
+                if (inputBus.disableLimited) mGTFlags |= GT_INPUT_BUS_NO_LIMITING;
+                if (inputBus.disableFilter) mGTFlags |= GT_INPUT_BUS_NO_FILTERING;
+            }
+
+            if (mte instanceof IItemLockable lockable && lockable.acceptsItemLock() && lockable.getLockedItem() != null) {
+                mGTItemLock = new PortableItemStack(lockable.getLockedItem());
+            }
+
+            if (mte instanceof MTEHatchOutput outputHatch) {
+                mGTMode = outputHatch.getMode();
+            }
+
+            if (mte instanceof IFluidLockable lockable && lockable.isFluidLocked()) {
+                mGTFluidLock = lockable.getLockedFluidName();
+            }
+
+            if (mte instanceof MTEMultiBlockBase multi) {
+                mGTMode = multi.machineMode;
+
+                if (multi.getVoidingMode().protectFluid) mGTFlags |= GT_MULTI_PROTECT_FLUIDS;
+                if (multi.getVoidingMode().protectItem) mGTFlags |= GT_MULTI_PROTECT_ITEMS;
+
+                if (multi.isBatchModeEnabled()) mGTFlags |= GT_MULTI_BATCH_MODE;
+                if (multi.isInputSeparationEnabled()) mGTFlags |= GT_MULTI_INPUT_SEPARATION;
+                if (multi.isRecipeLockingEnabled()) mGTFlags |= GT_MULTI_RECIPE_LOCK;
+            }
+
+            if (mte instanceof IDataCopyable copyable) {
+                try {
+                    // There's no reason for this EntityPlayer parameter besides sending chat messages.
+                    // If an IDataCopyable needs to send a message, it wouldn't work with a fake player anyways.
+                    // Since this is called from a worker thread, we can't just use the real player here.
+                    NBTTagCompound data = copyable.getCopiedData(null);
+    
+                    if (data != null && !data.hasNoTags()) {
+                        mGTData = NBTState.toJsonObject(data);
+                    }
+                } catch (Throwable t) {
+                    // Probably an NPE, but we're catching Throwable just to be safe
+                    GTMod.GT_FML_LOGGER.error("Could not copy IDataCopyable's data", t);
+                }
+            }
         }
 
         if (te instanceof AEBaseTile ae) {
-            mAEUp = BlockAnalyzer.nullIfUnknown(ae.getUp());
-            mAEForward = BlockAnalyzer.nullIfUnknown(ae.getForward());
+            mAEUp = nullIfUnknown(ae.getUp());
+            mAEForward = nullIfUnknown(ae.getForward());
             mAEConfig = NBTState.toJsonObject(ae.downloadSettings(SettingsFrom.MEMORY_CARD));
             mAECustomName = !(ae instanceof TileCableBus) && ae.hasCustomName() ? ae.getCustomName() : null;
 
@@ -139,9 +223,9 @@ public class TileAnalysisResult {
                 mAEParts = new AEPartData[ALL_DIRECTIONS.length];
 
                 for (ForgeDirection dir : ALL_DIRECTIONS) {
-                    if (partHost.getPart(dir) instanceof AEBasePart basePart) {
-                        mAEParts[dir.ordinal()] = new AEPartData(fakePlayer.get(), basePart);
-                    }
+                    IPart part = partHost.getPart(dir);
+
+                    if (part != null) mAEParts[dir.ordinal()] = new AEPartData(part);
                 }
             }
         }
@@ -160,20 +244,18 @@ public class TileAnalysisResult {
         if (te instanceof IGregTechTileEntity gte) {
             IMetaTileEntity mte = gte.getMetaTileEntity();
 
-            if (mGTColour != null) {
-                gte.setColorization(mGTColour);
-            }
+            gte.setColorization(mGTColour);
 
             if (mte instanceof MTEBasicMachine basicMachine) {
                 if (mGTMainFacing != null) basicMachine.mMainFacing = mGTMainFacing;
 
                 mGTMainFacing = basicMachine.mMainFacing;
 
-                basicMachine.mItemTransfer = (mGTBasicIOFlags & GT_BASIC_IO_PUSH_ITEMS) != 0;
-                basicMachine.mFluidTransfer = (mGTBasicIOFlags & GT_BASIC_IO_PUSH_FLUIDS) != 0;
-                basicMachine.mDisableFilter = (mGTBasicIOFlags & GT_BASIC_IO_DISABLE_FILTER) != 0;
-                basicMachine.mDisableMultiStack = (mGTBasicIOFlags & GT_BASIC_IO_DISABLE_MULTISTACK) != 0;
-                basicMachine.mAllowInputFromOutputSide = (mGTBasicIOFlags & GT_BASIC_IO_INPUT_FROM_OUTPUT_SIDE) != 0;
+                basicMachine.mItemTransfer = (mGTFlags & GT_BASIC_IO_PUSH_ITEMS) != 0;
+                basicMachine.mFluidTransfer = (mGTFlags & GT_BASIC_IO_PUSH_FLUIDS) != 0;
+                basicMachine.mDisableFilter = (mGTFlags & GT_BASIC_IO_DISABLE_FILTER) != 0;
+                basicMachine.mDisableMultiStack = (mGTFlags & GT_BASIC_IO_DISABLE_MULTISTACK) != 0;
+                basicMachine.mAllowInputFromOutputSide = (mGTFlags & GT_BASIC_IO_INPUT_FROM_OUTPUT_SIDE) != 0;
             }
 
             if (mte instanceof IConnectable connectable) {
@@ -218,13 +300,84 @@ public class TileAnalysisResult {
                     }
                 }
 
-                if (mStrongRedstone != null) {
+                if (mStrongRedstone != -1) {
                     gte.setRedstoneOutputStrength(dir, (mStrongRedstone & dir.flag) != 0);
                 }
             }
 
             if (mte instanceof ICustomNameObject customName && mGTCustomName != null) {
                 customName.setCustomName(mGTCustomName);
+            }
+
+            if (mte instanceof IConfigurationCircuitSupport ghostCircuit && ghostCircuit.allowSelectCircuit()) {
+                ItemStack circuit = null;
+
+                if (mGTGhostCircuit > 48) {
+                    circuit = GregtechItemList.Circuit_T3RecipeSelector.getWithDamage(0, mGTGhostCircuit - 48);
+                } else if (mGTGhostCircuit > 24) {
+                    circuit = GregtechItemList.Circuit_BioRecipeSelector.getWithDamage(0, mGTGhostCircuit - 24);
+                } else if (mGTGhostCircuit > 0) {
+                    circuit = ItemList.Circuit_Integrated.getWithDamage(0, mGTGhostCircuit);
+                }
+
+                mte.setInventorySlotContents(ghostCircuit.getCircuitSlot(), circuit);
+                mte.markDirty();
+            }
+
+            if (mte instanceof MTEHatchInputBus inputBus) {
+                inputBus.disableSort = (mGTFlags & GT_INPUT_BUS_NO_SORTING) != 0;
+                inputBus.disableLimited = (mGTFlags & GT_INPUT_BUS_NO_LIMITING) != 0;
+                inputBus.disableFilter = (mGTFlags & GT_INPUT_BUS_NO_FILTERING) != 0;
+            }
+
+            if (mte instanceof IItemLockable lockable && lockable.acceptsItemLock()) {
+                ItemStack lockedItem = mGTItemLock == null ? null : mGTItemLock.toStack();
+
+                lockable.setLockedItem(lockedItem);
+            }
+
+            if (mte instanceof MTEHatchOutput outputHatch) {
+                outputHatch.mMode = (byte) mGTMode;
+            }
+
+            if (mte instanceof IFluidLockable lockable && lockable.isFluidLocked()) {
+                lockable.setLockedFluidName(mGTFluidLock);
+            }
+
+            if (mte instanceof MTEMultiBlockBase multi) {
+                mGTMode = multi.machineMode;
+
+                if (multi.supportsVoidProtection()) {
+                    boolean protectFluids = (mGTFlags & GT_MULTI_PROTECT_FLUIDS) != 0;
+                    boolean protectItems = (mGTFlags & GT_MULTI_PROTECT_ITEMS) != 0;
+    
+                    VoidingMode voidingMode = null;
+    
+                    for (VoidingMode mode : VoidingMode.values()) {
+                        if (mode.protectFluid == protectFluids && mode.protectItem == protectItems) {
+                            voidingMode = mode;
+                            break;
+                        }
+                    }
+    
+                    if (voidingMode != null) {
+                        multi.setVoidingMode(voidingMode);
+                    } else {
+                        throw new RuntimeException("This should never happen. protectFluids=" + protectFluids + ", protectItems=" + protectItems);
+                    }
+                }
+
+                if (multi.supportsBatchMode()) multi.setBatchMode((mGTFlags & GT_MULTI_BATCH_MODE) != 0);
+                if (multi.supportsInputSeparation()) multi.setInputSeparation((mGTFlags & GT_MULTI_INPUT_SEPARATION) != 0);
+                if (multi.supportsSingleRecipeLocking()) multi.setRecipeLocking((mGTFlags & GT_MULTI_RECIPE_LOCK) != 0);
+            }
+
+            if (mte instanceof IDataCopyable copyable) {
+                NBTTagCompound data = mGTData == null ? new NBTTagCompound() : (NBTTagCompound) NBTState.toNbt(mGTData);
+
+                if (!copyable.pasteCopiedData(ctx.getRealPlayer(), data)) {
+                    return false;
+                }
             }
         }
 
@@ -246,18 +399,21 @@ public class TileAnalysisResult {
                     IPart part = partHost.getPart(dir);
                     AEPartData expected = mAEParts[dir.ordinal()];
 
-                    ItemId actualItem = part == null ? null
-                        : ItemId.createWithoutNBT(part.getItemStack(PartItemStack.Break));
-                    ItemId expectedItem = expected == null ? null : ItemId.createWithoutNBT(expected.getPartStack());
+                    ItemId actualItem = part == null ? null : ItemId.createWithoutNBT(part.getItemStack(PartItemStack.Break));
+                    ItemId expectedItem = expected == null ? null : ItemId.createWithoutNBT(expected.getEffectivePartStack());
 
-                    if ((expectedItem == null || !Objects.equals(actualItem, expectedItem)) && actualItem != null) {
-                        removePart(ctx, partHost, dir);
-                        actualItem = null;
-                    }
+                    boolean isAttunable = part instanceof PartP2PTunnelNormal && expected != null && expected.isAttunable();
 
-                    if (actualItem == null && expectedItem != null) {
-                        if (!installPart(ctx, partHost, dir, expected)) {
-                            return false;
+                    if (!isAttunable) {
+                        if ((expectedItem == null || !Objects.equals(actualItem, expectedItem)) && actualItem != null) {
+                            removePart(ctx, partHost, dir);
+                            actualItem = null;
+                        }
+    
+                        if (actualItem == null && expectedItem != null) {
+                            if (!installPart(ctx, partHost, dir, expected)) {
+                                return false;
+                            }
                         }
                     }
 
@@ -266,6 +422,12 @@ public class TileAnalysisResult {
                             return false;
                         }
                     }
+
+                    Platform.notifyBlocksOfNeighbors(
+                        te.getWorldObj(),
+                        te.xCoord,
+                        te.yCoord,
+                        te.zCoord);
                 }
             }
         }
@@ -329,7 +491,7 @@ public class TileAnalysisResult {
 
     private boolean installPart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side,
         AEPartData partData) {
-        ItemStack partStack = partData.getPartStack();
+        ItemStack partStack = partData.getEffectivePartStack();
 
         if (!partHost.canAddPart(partStack, side)) {
             return false;
@@ -337,7 +499,7 @@ public class TileAnalysisResult {
 
         context.tryConsumeItems(partStack);
 
-        if (partHost.addPart(partStack, side, context.getPlacingPlayer()) == null) {
+        if (partHost.addPart(partStack, side, context.getRealPlayer()) == null) {
             context.givePlayerItems(partStack);
             return false;
         }
@@ -345,18 +507,22 @@ public class TileAnalysisResult {
         return true;
     }
 
+    private static ForgeDirection nullIfUnknown(ForgeDirection dir) {
+        return dir == ForgeDirection.UNKNOWN ? null : dir;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((mConnections == null) ? 0 : mConnections.hashCode());
-        result = prime * result + ((mGTColour == null) ? 0 : mGTColour.hashCode());
+        result = prime * result + mConnections;
+        result = prime * result + mGTColour;
         result = prime * result + ((mGTFront == null) ? 0 : mGTFront.hashCode());
         result = prime * result + ((mGTMainFacing == null) ? 0 : mGTMainFacing.hashCode());
-        result = prime * result + ((mGTBasicIOFlags == null) ? 0 : mGTBasicIOFlags.hashCode());
+        result = prime * result + mGTFlags;
         result = prime * result + ((mGTFacing == null) ? 0 : mGTFacing.hashCode());
         result = prime * result + Arrays.hashCode(mCovers);
-        result = prime * result + ((mStrongRedstone == null) ? 0 : mStrongRedstone.hashCode());
+        result = prime * result + mStrongRedstone;
         result = prime * result + ((mGTCustomName == null) ? 0 : mGTCustomName.hashCode());
         result = prime * result + ((mAEColour == null) ? 0 : mAEColour.hashCode());
         result = prime * result + ((mAEUp == null) ? 0 : mAEUp.hashCode());
@@ -370,40 +536,56 @@ public class TileAnalysisResult {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         TileAnalysisResult other = (TileAnalysisResult) obj;
-        if (mConnections == null) {
-            if (other.mConnections != null) return false;
-        } else if (!mConnections.equals(other.mConnections)) return false;
-        if (mGTColour == null) {
-            if (other.mGTColour != null) return false;
-        } else if (!mGTColour.equals(other.mGTColour)) return false;
-        if (mGTFront != other.mGTFront) return false;
-        if (mGTMainFacing != other.mGTMainFacing) return false;
-        if (mGTBasicIOFlags == null) {
-            if (other.mGTBasicIOFlags != null) return false;
-        } else if (!mGTBasicIOFlags.equals(other.mGTBasicIOFlags)) return false;
-        if (mGTFacing != other.mGTFacing) return false;
-        if (!Arrays.equals(mCovers, other.mCovers)) return false;
-        if (mStrongRedstone == null) {
-            if (other.mStrongRedstone != null) return false;
-        } else if (!mStrongRedstone.equals(other.mStrongRedstone)) return false;
+        if (mConnections != other.mConnections)
+            return false;
+        if (mGTColour != other.mGTColour)
+            return false;
+        if (mGTFront != other.mGTFront)
+            return false;
+        if (mGTMainFacing != other.mGTMainFacing)
+            return false;
+        if (mGTFlags != other.mGTFlags)
+            return false;
+        if (mGTFacing != other.mGTFacing)
+            return false;
+        if (!Arrays.equals(mCovers, other.mCovers))
+            return false;
+        if (mStrongRedstone != other.mStrongRedstone)
+            return false;
         if (mGTCustomName == null) {
-            if (other.mGTCustomName != null) return false;
-        } else if (!mGTCustomName.equals(other.mGTCustomName)) return false;
-        if (mAEColour != other.mAEColour) return false;
-        if (mAEUp != other.mAEUp) return false;
-        if (mAEForward != other.mAEForward) return false;
+            if (other.mGTCustomName != null)
+                return false;
+        } else if (!mGTCustomName.equals(other.mGTCustomName))
+            return false;
+        if (mAEColour != other.mAEColour)
+            return false;
+        if (mAEUp != other.mAEUp)
+            return false;
+        if (mAEForward != other.mAEForward)
+            return false;
         if (mAEConfig == null) {
-            if (other.mAEConfig != null) return false;
-        } else if (!mAEConfig.equals(other.mAEConfig)) return false;
-        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades)) return false;
+            if (other.mAEConfig != null)
+                return false;
+        } else if (!mAEConfig.equals(other.mAEConfig))
+            return false;
+        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades))
+            return false;
         if (mAECustomName == null) {
-            if (other.mAECustomName != null) return false;
-        } else if (!mAECustomName.equals(other.mAECustomName)) return false;
-        if (!Arrays.equals(mAEParts, other.mAEParts)) return false;
+            if (other.mAECustomName != null)
+                return false;
+        } else if (!mAECustomName.equals(other.mAECustomName))
+            return false;
+        if (!Arrays.equals(mAEParts, other.mAEParts))
+            return false;
         return true;
     }
+
+    
 }
