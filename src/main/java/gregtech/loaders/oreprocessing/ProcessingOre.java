@@ -205,7 +205,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                     Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
         }
 
-        if (tCrushed != null) {
+        if (tCrushed != null && aMaterial != Materials.Knightmetal) {
             GTValues.RA.stdBuilder()
                 .itemInputs(aOreStack)
                 .itemOutputs(GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed))
