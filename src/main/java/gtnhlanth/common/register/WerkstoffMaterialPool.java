@@ -1859,8 +1859,7 @@ public class WerkstoffMaterialPool implements Runnable {
         subscriptNumbers("(Ce)Lu3Al5O12"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MATERIAL,
-        new Werkstoff.GenerationFeatures().disable()
-            .addGems(),
+        new Werkstoff.GenerationFeatures().addGems(),
         offsetID5 + 39,
         TextureSet.SET_GEM_VERTICAL);
 
