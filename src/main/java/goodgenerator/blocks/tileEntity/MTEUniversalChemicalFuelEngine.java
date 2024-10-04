@@ -280,7 +280,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Probably makes: " + EnumChatFormatting.RED
+        info[4] = "Currently makes: " + EnumChatFormatting.RED
             + GTUtility.formatNumbers(this.getPowerFlow())
             + EnumChatFormatting.RESET
             + " EU/t";

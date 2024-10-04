@@ -891,7 +891,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 + GTUtility.formatNumbers(getBaseMetaTileEntity().getEUCapacity())
                 + EnumChatFormatting.RESET
                 + " EU",
-            "Probably uses: " + EnumChatFormatting.RED
+            "Currently uses: " + EnumChatFormatting.RED
                 + GTUtility.formatNumbers(mEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t at "
