@@ -27,6 +27,9 @@ public class BlockCactusCharcoal extends Block {
         this.setBlockName("blockCactusCharcoal");
         this.setStepSound(soundTypeStone);
         GameRegistry.registerBlock(this, ItemBlockMeta.class, "blockCactusCharcoal");
+        for (int i = 0; i < textureArray.length; i++) {
+            ItemUtils.registerFuel(new ItemStack(Item.getItemFromBlock(this), 1, i), 4000 * (int) Math.pow(9, i));
+        }
     }
 
     @Override
@@ -46,9 +49,7 @@ public class BlockCactusCharcoal extends Block {
     @Override
     public void getSubBlocks(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
         for (int i = 0; i < textureArray.length; i++) {
-            ItemStack is = new ItemStack(item, 1, i);
-            ItemUtils.registerFuel(is, 4000 * (int) Math.pow(9, i));
-            list.add(is);
+            list.add(new ItemStack(item, 1, i));
         }
     }
 
