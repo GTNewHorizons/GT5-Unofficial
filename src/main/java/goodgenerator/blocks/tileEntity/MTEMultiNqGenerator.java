@@ -279,7 +279,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Currently makes: " + EnumChatFormatting.RED
+        info[4] = "Currently generates: " + EnumChatFormatting.RED
             + GTUtility.formatNumbers(Math.abs(this.trueOutput))
             + EnumChatFormatting.RESET
             + " EU/t";
