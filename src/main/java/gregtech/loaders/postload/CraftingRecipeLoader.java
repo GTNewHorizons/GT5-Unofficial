@@ -338,6 +338,25 @@ public class CraftingRecipeLoader implements Runnable {
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
             new Object[] { "R R", "RhR", 'R', OrePrefixes.ring.get(Materials.Steel) });
 
+        GTModHandler.addCraftingRecipe(
+            getModItem(IndustrialCraft2.ID, "itemArmorBronzeBoots", 1, 0),
+            bits,
+            new Object[] { "R R", "RhR", 'R', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L) });
+        GTModHandler.addCraftingRecipe(
+            getModItem(IndustrialCraft2.ID, "itemArmorBronzeChestplate", 1, 0),
+            bits,
+            new Object[] { "RhR", "RRR", "RRR", 'R',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L) });
+        GTModHandler.addCraftingRecipe(
+            getModItem(IndustrialCraft2.ID, "itemArmorBronzeLegs", 1, 0),
+            bits,
+            new Object[] { "RRR", "RhR", "R R", 'R',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L) });
+        GTModHandler.addCraftingRecipe(
+            getModItem(IndustrialCraft2.ID, "itemArmorBronzeHelmet", 1, 0),
+            bits,
+            new Object[] { "RRR", "RhR", 'R', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L) });
+
         GTLog.out.println("GTMod: Adding Wool and Color releated Recipes.");
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(Blocks.wool, 1, 1),

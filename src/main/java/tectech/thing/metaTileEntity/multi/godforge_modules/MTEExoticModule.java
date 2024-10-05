@@ -91,12 +91,12 @@ public class MTEExoticModule extends MTEBaseModule {
     List<FluidStack> inputPlasmas = new ArrayList<>();
     private GTRecipe plasmaRecipe = null;
     private BigInteger powerForRecipe = BigInteger.ZERO;
-    private static RecipeMap<RecipeMapBackend> tempRecipeMap = RecipeMapBuilder.of("godforgeExoticTempRecipeMap")
+    private static final RecipeMap<RecipeMapBackend> tempRecipeMap = RecipeMapBuilder.of("godforgeExoticTempRecipeMap")
         .maxIO(0, 0, 7, 2)
         .disableRegisterNEI()
         .build();
     private static final int NUMBER_OF_INPUTS = 7;
-    private static final int INPUT_LIST_WINDOW_ID = 10;
+    private static final int INPUT_LIST_WINDOW_ID = 11;
 
     public MTEExoticModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -633,6 +633,11 @@ public class MTEExoticModule extends MTEBaseModule {
 
     private void setMagmatterMode(boolean enabled) {
         magmatterMode = enabled;
+    }
+
+    @Override
+    protected boolean filtersFluid() {
+        return false;
     }
 
     @Override

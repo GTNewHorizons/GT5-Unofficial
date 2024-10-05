@@ -51,7 +51,7 @@ public enum DimensionBlockMetaDefinitionList {
 
     public final List<ModDBMDef> DBMDefList;
 
-    private DimensionBlockMetaDefinitionList(ModDBMDef... DBMDefArray) {
+    DimensionBlockMetaDefinitionList(ModDBMDef... DBMDefArray) {
         DBMDefList = Arrays.asList(DBMDefArray);
     }
 }

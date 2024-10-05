@@ -22,7 +22,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.everglades.dimension.DimensionEverglades;
-import gtPlusPlus.xmod.gregtech.HandlerGT;
 
 public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
 
@@ -83,18 +82,14 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
         boolean GC_UNUSED3, Material aPrimary, Material aSecondary, Material aBetween, Material aSporadic) {
         super(aName, sList, aDefault);
         Logger.WORLD("Creating Ore Layer Object");
-        this.mOverworld = HandlerGT.sCustomWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "Overworld", aOverworld);
-        this.mNether = HandlerGT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Nether", aNether);
-        this.mEnd = HandlerGT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "TheEnd", aEnd);
+        this.mOverworld = aOverworld;
+        this.mNether = aNether;
+        this.mEnd = aEnd;
         this.mMinY = 5;
-        this.mMaxY = (short) 14;
-        this.mWeight = ((short) HandlerGT.sCustomWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
-        this.mDensity = ((short) HandlerGT.sCustomWorldgenFile
-            .get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
-        this.mSize = ((short) Math
-            .max(1, HandlerGT.sCustomWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
+        this.mMaxY = 14;
+        this.mWeight = (short) aWeight;
+        this.mDensity = (short) aDensity;
+        this.mSize = (short) Math.max(1, aSize);
         this.mPrimary = aPrimary;
         this.mSecondary = aSecondary;
         this.mBetween = aBetween;
@@ -492,9 +487,7 @@ public class WorldGen_GT_Ore_Layer extends WorldGen_GT {
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, DimensionEverglades.blockSecondaryFiller)
             || tBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.sandstone)) {
 
-            if (aWorld.setBlock(aX, aY, aZ, aMetaData, 0, 3)) {
-                return true;
-            }
+            return aWorld.setBlock(aX, aY, aZ, aMetaData, 0, 3);
         }
         return false;
     }

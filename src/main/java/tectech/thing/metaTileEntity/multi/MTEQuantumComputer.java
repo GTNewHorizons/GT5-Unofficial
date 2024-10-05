@@ -22,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +33,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -235,14 +235,6 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && wirelessModeEnabled && aTick % 20 == 0) {
-            WirelessComputationPacket.updatePacket(aBaseMetaTileEntity, aTick);
-        }
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && mMachine
@@ -346,7 +338,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             }
 
             for (MTEHatchDataOutput o : eOutputData) {
-                o.q = pack;
+                o.providePacket(pack);
             }
         }
     }
@@ -439,9 +431,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return MTENetworkSwitch.activitySound;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
     }
 
     @Override
@@ -570,7 +561,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             data.add("Wireless mode: " + EnumChatFormatting.GREEN + "enabled");
             data.add(
                 "Total wireless computation available: " + EnumChatFormatting.YELLOW
-                    + wirelessComputationPacket.getTotalComputationStored());
+                    + wirelessComputationPacket.getAvailableComputationStored());
         } else {
             data.add("Wireless mode: " + EnumChatFormatting.RED + "disabled");
         }

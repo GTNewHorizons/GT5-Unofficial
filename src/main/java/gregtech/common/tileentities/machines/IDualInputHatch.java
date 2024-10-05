@@ -17,5 +17,5 @@ public interface IDualInputHatch {
 
     Optional<IDualInputInventory> getFirstNonEmptyInventory();
 
-    public boolean supportsFluids();
+    boolean supportsFluids();
 }

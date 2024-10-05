@@ -34,7 +34,6 @@ import com.google.common.collect.HashBiMap;
 
 import bartworks.API.recipe.BWNBTDependantCraftingRecipe;
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.ASM.BWCoreStaticReplacementMethodes;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import bartworks.util.Pair;
@@ -48,6 +47,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.mixin.hooks.BWCoreStaticReplacementMethodes;
 
 public class CircuitImprintLoader {
 
@@ -65,14 +65,10 @@ public class CircuitImprintLoader {
     public static void run() {
         HashSet<GTRecipe> toRem = new HashSet<>();
         HashSet<GTRecipe> toAdd = new HashSet<>();
-
         deleteCALRecipesAndTags();
         rebuildCircuitAssemblerMap(toRem, toAdd);
         exchangeRecipesInList(toRem, toAdd);
         makeCircuitImprintRecipes();
-
-        toRem = null;
-        toAdd = null;
     }
 
     private static void reAddOriginalRecipes() {
@@ -282,14 +278,7 @@ public class CircuitImprintLoader {
         BWCoreStaticReplacementMethodes.clearRecentlyUsedRecipes();
         RecipeMaps.slicerRecipes.getBackend()
             .removeRecipes(gtrecipeWorldCache);
-        recipeWorldCache.forEach(r -> {
-            try {
-                BWUtil.getGTBufferedRecipeList()
-                    .remove(r);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        GTModHandler.sBufferRecipeList.removeAll(recipeWorldCache);
         recipeWorldCache.clear();
         gtrecipeWorldCache.clear();
     }

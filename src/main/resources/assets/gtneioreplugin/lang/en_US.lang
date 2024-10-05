@@ -93,8 +93,8 @@ gtnop.ore.null.name=None
 
 
 # vein types
-gtnop.ore.vein.name=Vein 
-gtnop.ore.asteroid.name=Asteriod
+gtnop.ore.vein.name=Vein
+gtnop.ore.asteroid.name=Asteroid
 gtnop.ore.custom.name=Custom
 
 # items

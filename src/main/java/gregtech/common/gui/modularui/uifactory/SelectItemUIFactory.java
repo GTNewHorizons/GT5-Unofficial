@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
@@ -167,14 +168,14 @@ public class SelectItemUIFactory {
                 }
             }.setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
-                    setSelected(index);
+                    setSelected(index, widget);
                 } else {
-                    setSelected(UNSELECTED);
+                    setSelected(UNSELECTED, widget);
                 }
                 selectedCallback.accept(getCandidate(getSelected()));
             })
                 .setSynced(false, false)
-                .dynamicTooltip(() -> GuiHelper.getItemTooltip(stacks.get(index)))
+                .dynamicTooltip(() -> getItemTooltips(index))
                 .setUpdateTooltipEveryTick(true)
                 .setBackground(
                     () -> new IDrawable[] {
@@ -207,12 +208,16 @@ public class SelectItemUIFactory {
         return selected;
     }
 
-    public void setSelected(int selected) {
+    public void setSelected(int selected, Widget widget) {
         if (selected == this.selected) return;
         int newSelected = GTUtility.clamp(selected, UNSELECTED, stacks.size() - 1);
         if (noDeselect && newSelected == UNSELECTED) return;
 
         this.selected = newSelected;
+    }
+
+    protected List<String> getItemTooltips(final int index) {
+        return GuiHelper.getItemTooltip(stacks.get(index));
     }
 
     private ItemStack getCandidate(int listIndex) {

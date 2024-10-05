@@ -1,9 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator.sapling_Rainforest;
@@ -22,8 +22,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-import mods.railcraft.common.items.RailcraftToolItems;
 
 public class CompressorRecipes implements Runnable {
 
@@ -306,7 +304,7 @@ public class CompressorRecipes implements Runnable {
                     .get(OrePrefixes.plateSuperdense, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1))
             // Require stabilized black hole
             .metadata(CompressionTierKey.INSTANCE, 2)
-            .duration(15 * MINUTES)
+            .duration(1 * HOURS + 15 * MINUTES)
             .eut(TierEU.RECIPE_UXV)
             .addTo(compressorRecipes);
 
@@ -316,14 +314,5 @@ public class CompressorRecipes implements Runnable {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
-
-        if (Railcraft.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(RailcraftToolItems.getCoalCoke(9))
-                .itemOutputs(EnumCube.COKE_BLOCK.getItem())
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-        }
     }
 }

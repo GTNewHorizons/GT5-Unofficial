@@ -4,13 +4,17 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.Names;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -22,7 +26,6 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,16 +36,17 @@ import gregtech.api.util.FishPondFakeRecipe;
 import gregtech.api.util.SemiFluidFuelHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.commands.CommandEnableDebugWhileRunning;
 import gtPlusPlus.core.common.CommonProxy;
-import gtPlusPlus.core.config.ConfigHandler;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
-import gtPlusPlus.plugin.manager.CoreManager;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
+import gtPlusPlus.plugin.fixes.vanilla.VanillaBedHeightFix;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -54,6 +58,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
     modid = Names.G_T_PLUS_PLUS,
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
+    guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
     dependencies = "required-after:Forge;" + " after:TConstruct;"
         + " after:dreamcraft;"
         + " after:IC2;"
@@ -73,7 +78,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
         + " after:TGregworks;"
         + " after:StevesCarts;"
         + " required-after:gtnhlib@[0.0.10,);")
-public class GTplusplus implements ActionListener {
+public class GTplusplus {
 
     public enum INIT_PHASE {
 
@@ -106,6 +111,13 @@ public class GTplusplus implements ActionListener {
         }
     }
 
+    static {
+        try {
+            ConfigurationManager.registerConfig(Configuration.class);
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static INIT_PHASE CURRENT_LOAD_PHASE = INIT_PHASE.SUPER;
 
     @Mod.Instance(Names.G_T_PLUS_PLUS)
@@ -136,18 +148,13 @@ public class GTplusplus implements ActionListener {
         INIT_PHASE.SUPER.setPhaseActive(true);
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         INIT_PHASE.PRE_INIT.setPhaseActive(true);
-        // Load all class objects within the plugin package.
-        CoreManager.veryEarlyInit();
         PacketHandler.init();
 
         // Give this a go mate.
         setupMaterialBlacklist();
-
-        // Handle GT++ Config
-        ConfigHandler.handleConfigFile(event);
 
         // Check for Dev
         GTPPCore.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
@@ -155,29 +162,29 @@ public class GTplusplus implements ActionListener {
         proxy.preInit(event);
         Logger.INFO("Setting up our own GTProxy.");
         MetaGTProxy.preInit();
-        CoreManager.preInit();
+        AgrichemFluids.preInit();
+        fixVanillaOreDict();
+        new VanillaBedHeightFix();
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void init(final FMLInitializationEvent event) {
         INIT_PHASE.INIT.setPhaseActive(true);
         proxy.init(event);
         proxy.registerNetworkStuff();
         MetaGTProxy.init();
-        CoreManager.init();
         // Used by foreign players to generate .lang files for translation.
-        if (GTPPCore.ConfigSwitches.dumpItemAndBlockData) {
+        if (Configuration.debug.dumpItemAndBlockData) {
             LocaleUtils.generateFakeLocaleFile();
         }
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void postInit(final FMLPostInitializationEvent event) {
         INIT_PHASE.POST_INIT.setPhaseActive(true);
         proxy.postInit(event);
         BookHandler.runLater();
         MetaGTProxy.postInit();
-        CoreManager.postInit();
 
         Logger.INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         Logger.INFO(
@@ -208,21 +215,11 @@ public class GTplusplus implements ActionListener {
     @EventHandler
     public synchronized void serverStarting(final FMLServerStartingEvent event) {
         INIT_PHASE.SERVER_START.setPhaseActive(true);
-        event.registerServerCommand(new CommandEnableDebugWhileRunning());
         if (Thaumcraft.isModLoaded()) {
             event.registerServerCommand(new CommandDumpAspects());
         }
-        CoreManager.serverStart();
         INIT_PHASE.STARTED.setPhaseActive(true);
     }
-
-    @Mod.EventHandler
-    public synchronized void serverStopping(final FMLServerStoppingEvent event) {
-        CoreManager.serverStop();
-    }
-
-    @Override
-    public void actionPerformed(final ActionEvent arg0) {}
 
     /**
      * This {@link EventHandler} is called after the {@link FMLPostInitializationEvent} stages of all loaded mods
@@ -232,7 +229,7 @@ public class GTplusplus implements ActionListener {
      * @param event - The {@link EventHandler} object passed through from FML to {@link #GTplusplus()}'s
      *              {@link #instance}.
      */
-    @Mod.EventHandler
+    @EventHandler
     public void onLoadComplete(FMLLoadCompleteEvent event) {
         proxy.onLoadComplete(event);
         generateGregtechRecipeMaps();
@@ -240,27 +237,25 @@ public class GTplusplus implements ActionListener {
 
     protected void generateGregtechRecipeMaps() {
 
-        int[] mInvalidCount = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-
         RecipeGenBlastSmelterGTNH.generateGTNHBlastSmelterRecipesFromEBFList();
         FishPondFakeRecipe.generateFishPondRecipes();
         SemiFluidFuelHandler.generateFuels();
 
-        mInvalidCount[0] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.centrifugeRecipes, GTPPRecipeMaps.centrifugeNonCellRecipes);
-        mInvalidCount[1] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.electrolyzerRecipes, GTPPRecipeMaps.electrolyzerNonCellRecipes);
-        mInvalidCount[2] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.vacuumFreezerRecipes, GTPPRecipeMaps.advancedFreezerRecipes);
-        mInvalidCount[3] = RecipeGenMultisUsingFluidInsteadOfCells
+        RecipeGenMultisUsingFluidInsteadOfCells
             .generateRecipesNotUsingCells(RecipeMaps.mixerRecipes, GTPPRecipeMaps.mixerNonCellRecipes);
-        mInvalidCount[4] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.chemicalDehydratorRecipes,
             GTPPRecipeMaps.chemicalDehydratorNonCellRecipes);
-        mInvalidCount[5] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.coldTrapRecipes,
             GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
-        mInvalidCount[6] = RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
+        RecipeGenMultisUsingFluidInsteadOfCells.generateRecipesNotUsingCells(
             GTPPRecipeMaps.reactorProcessingUnitRecipes,
             GTPPRecipeMaps.nuclearSaltProcessingPlantRecipes);
     }
@@ -346,7 +341,7 @@ public class GTplusplus implements ActionListener {
         sMissingItemMappings.put("miscutils:oreFluorite", GameRegistry.findItem(GTPlusPlus.ID, "oreFluoriteF"));
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void missingMapping(FMLMissingMappingsEvent event) {
         processMissingMappings();
         for (MissingMapping mapping : event.getAll()) {
@@ -378,5 +373,40 @@ public class GTplusplus implements ActionListener {
     private static void remap(Block block, FMLMissingMappingsEvent.MissingMapping mapping) {
         mapping.remap(block);
         Logger.INFO("Remapping block " + mapping.name + " to " + GTPlusPlus.ID + ":" + block.getUnlocalizedName());
+    }
+
+    private static void fixVanillaOreDict() {
+        registerToOreDict(ItemUtils.getSimpleStack(Items.blaze_rod), "rodBlaze");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.nether_wart), "cropNetherWart");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.reeds), "sugarcane");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.paper), "paper");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.ender_pearl), "enderpearl");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.bone), "bone");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.gunpowder), "gunpowder");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.string), "string");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.nether_star), "netherStar");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.leather), "leather");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.feather), "feather");
+        registerToOreDict(ItemUtils.getSimpleStack(Items.egg), "egg");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.end_stone), "endstone");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.vine), "vine");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.cactus), "blockCactus");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.grass), "grass");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.obsidian), "obsidian");
+        registerToOreDict(ItemUtils.getSimpleStack(Blocks.crafting_table), "workbench");
+    }
+
+    private static void registerToOreDict(ItemStack aStack, String aString) {
+        if (aStack.getItem() == Items.blaze_rod) {
+            Logger
+                .INFO("Registering " + aStack.getDisplayName() + " to OreDictionary under the tag '" + aString + "'.");
+        } else {
+            Logger.INFO(
+                "Registering " + aStack.getDisplayName()
+                    + " to OreDictionary under the tag '"
+                    + aString
+                    + "'. (Added to Forge in 1.8.9)");
+        }
+        ItemUtils.addItemToOreDictionary(aStack, aString);
     }
 }

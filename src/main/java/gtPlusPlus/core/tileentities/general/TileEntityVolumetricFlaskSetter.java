@@ -124,7 +124,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
             .clone();
 
         // Check if there is output in slot.
-        Boolean hasOutput = false;
+        boolean hasOutput = false;
         if (aInputs[ContainerVolumetricFlaskSetter.SLOT_OUTPUT] != null) {
             hasOutput = true;
             if (aInputs[ContainerVolumetricFlaskSetter.SLOT_OUTPUT].stackSize >= 16) {
@@ -220,7 +220,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                     }
                 }
             }
-            continue;
         }
         return false;
     }
@@ -378,7 +377,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
     @Override
     public boolean hasCustomInventoryName() {
-        return (this.customName != null) && !this.customName.equals("");
+        return (this.customName != null) && !this.customName.isEmpty();
     }
 
     @Override

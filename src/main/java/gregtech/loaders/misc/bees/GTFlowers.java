@@ -26,7 +26,7 @@ public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeTyp
 
     FLAMING;
 
-    protected boolean dominant;
+    private final boolean dominant;
 
     GTFlowers() {
         dominant = true;
@@ -67,9 +67,8 @@ public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeTyp
     }
 
     public ItemStack[] getItemStacks() {
-        switch (this) {
-            case FLAMING:
-                return new ItemStack[] { new ItemStack(Blocks.fire) };
+        if (this == GTFlowers.FLAMING) {
+            return new ItemStack[] { new ItemStack(Blocks.fire) };
         }
         return new ItemStack[0];
     }
@@ -86,9 +85,8 @@ public enum GTFlowers implements IFlowerProvider, IAlleleFlowers, IChromosomeTyp
             return false;
         }
 
-        switch (this) {
-            case FLAMING:
-                return block == Blocks.fire;
+        if (this == GTFlowers.FLAMING) {
+            return block == Blocks.fire;
         }
         return false;
     }

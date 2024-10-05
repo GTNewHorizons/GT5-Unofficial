@@ -51,6 +51,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -255,9 +256,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         if (!aEntities.isEmpty()) {
             for (EntityLivingBase aFoundEntity : aEntities) {
                 if (aFoundEntity instanceof EntityPlayer aPlayer) {
-                    if (PlayerUtils.isCreative(aPlayer) || !PlayerUtils.canTakeDamage(aPlayer)) {
-                        continue;
-                    } else {
+                    if (!PlayerUtils.isCreative(aPlayer) && PlayerUtils.canTakeDamage(aPlayer)) {
                         if (aFoundEntity.getHealth() > 0) {
                             EntityUtils.doDamage(aFoundEntity, mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
                             if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
@@ -400,7 +399,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIsaMill;
+        return Configuration.pollution.pollutionPerSecondMultiIsaMill;
     }
 
     @Override

@@ -6,5 +6,5 @@ public enum GUITypes {
     Tile,
     Entity;
 
-    private GUITypes() {}
+    GUITypes() {}
 }

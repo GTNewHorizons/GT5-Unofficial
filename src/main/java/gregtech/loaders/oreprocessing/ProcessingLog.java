@@ -125,14 +125,12 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             if ((GTUtility.areStacksEqual(
                 GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
-                addPyrolyeOvenRecipes(aStack);
                 GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, aStack));
             }
             for (int i = 0; i < 32767; i++) {
                 if ((GTUtility.areStacksEqual(
                     GTModHandler.getSmeltingOutput(new ItemStack(aStack.getItem(), 1, i), false, null),
                     new ItemStack(Items.coal, 1, 1)))) {
-                    addPyrolyeOvenRecipes(aStack);
                     GTModHandler.removeFurnaceSmelting(new ItemStack(aStack.getItem(), 1, i));
                 }
                 ItemStack tStack = GTModHandler.getRecipeOutput(new ItemStack(aStack.getItem(), 1, i));
@@ -144,15 +142,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                     if (tPlanks != null) {
                         tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
-                            .itemOutputs(
-                                GTUtility.copyOrNull(tPlanks),
-                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                            .fluidInputs(Materials.Lubricant.getFluid(1L))
-                            .duration(10 * SECONDS)
-                            .eut(8)
-                            .addTo(cutterRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
@@ -205,23 +194,12 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             if ((GTUtility.areStacksEqual(
                 GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
-                addPyrolyeOvenRecipes(aStack);
                 GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, aStack));
             }
             ItemStack tStack = GTModHandler.getRecipeOutput(GTUtility.copyAmount(1, aStack));
             if (tStack != null) {
                 ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                 if (tPlanks != null) {
-                    tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .itemOutputs(
-                            GTUtility.copyOrNull(tPlanks),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
-                        .fluidInputs(Materials.Lubricant.getFluid(1L))
-                        .duration(10 * SECONDS)
-                        .eut(8)
-                        .addTo(cutterRecipes);
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
                         .itemOutputs(
@@ -271,7 +249,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         if ((GTUtility.areStacksEqual(
             GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
             new ItemStack(Items.coal, 1, 1)))) {
-            addPyrolyeOvenRecipes(aStack);
             GTModHandler.removeFurnaceSmelting(GTUtility.copyAmount(1, aStack));
         }
     }

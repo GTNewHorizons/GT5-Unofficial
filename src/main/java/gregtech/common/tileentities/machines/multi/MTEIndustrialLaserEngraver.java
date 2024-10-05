@@ -245,6 +245,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
+            .addInfo("Can perform recipes up to laser source tier + 1")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
             .addInfo("Only accepts borosilicate glass (no, really)")
@@ -309,9 +310,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         if (mCasingAmount < 35) return false;
         if (laserSource == null) return false;
         if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
-        if (glassTier < VoltageIndex.UMV && laserSource.mTier > glassTier) return false;
-
-        return true;
+        return glassTier >= VoltageIndex.UMV || laserSource.mTier <= glassTier;
     }
 
     private static String getUniqueIdentifier(ItemStack is) {
@@ -326,7 +325,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (laserTier < VoltageIndex.UXV && recipe.mEUt > GTValues.V[laserTier]) {
+                if (laserTier < VoltageIndex.UXV && recipe.mEUt > (GTValues.V[laserTier + 1])) {
                     return SimpleCheckRecipeResult.ofFailure("laser_insufficient");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -592,7 +591,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         lensColors.put("gt.bwMetaGeneratedlens10023", Colors.Red);
         lensColors.put("gt.bwMetaGeneratedlens11499", Colors.Green);
         lensColors.put("gt.bwMetaGeneratedlens11358", Colors.Red);
-        lensColors.put("MU-metaitem.0132140", Colors.Purple);
         lensColors.put("MU-metaitem.0132140", Colors.Purple);
 
         //

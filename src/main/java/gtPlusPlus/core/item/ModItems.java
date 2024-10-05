@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item;
 
+import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
@@ -66,7 +67,6 @@ import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.materials.DustDecayable;
 import gtPlusPlus.core.item.tool.misc.ItemGregtechPump;
 import gtPlusPlus.core.item.wearable.WearableLoader;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -81,7 +81,6 @@ import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.everglades.GTPPEverglades;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
@@ -276,28 +275,16 @@ public final class ModItems {
             MaterialGenerator.generate(MaterialsElements.getInstance().SELENIUM); // LFTR byproduct
             MaterialGenerator.generate(MaterialsElements.getInstance().BROMINE);
             MaterialGenerator.generate(MaterialsElements.getInstance().KRYPTON); // LFTR byproduct
-            MaterialGenerator.generate(MaterialsElements.getInstance().STRONTIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().ZIRCONIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().RUTHENIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().IODINE); // LFTR byproduct
-            MaterialGenerator.generate(MaterialsElements.getInstance().HAFNIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().DYSPROSIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().ERBIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().PRASEODYMIUM);
-            MaterialGenerator.generate(MaterialsElements.getInstance().TELLURIUM); // LFTR byproduct
-            MaterialGenerator.generate(MaterialsElements.getInstance().RHODIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().RHENIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().THALLIUM);
             MaterialGenerator.generate(MaterialsElements.getInstance().GERMANIUM);
 
             // RADIOACTIVE ELEMENTS
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().POLONIUM, false);
-            // MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADON, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().RADIUM, false);
-            MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().PROMETHIUM, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().PROTACTINIUM, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().CURIUM, false);
-            MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().CALIFORNIUM, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().NEPTUNIUM, false);
             MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().FERMIUM, false);
 
@@ -311,8 +298,6 @@ public final class ModItems {
             // lithium a
             // strong requirement for the possible use in lithium fluoride reactors.
             MaterialGenerator.generate(MaterialsElements.getInstance().LITHIUM7, false);
-            // Thorium-232 is the most stable isotope of Thorium, purified for nuclear fuel use in this case.
-            MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().THORIUM232);
             // Production of 233U (through the neutron irradiation of 232Th) invariably produces small amounts of 232U
             // as an impurity
             // because of parasitic (n,2n) reactions on uranium-233 itself, or on protactinium-233, or on thorium-232:
@@ -597,7 +582,7 @@ public final class ModItems {
         // LFTR Control Circuit
         itemCircuitLFTR = new CoreItem(
             "itemCircuitLFTR",
-            "" + EnumChatFormatting.GREEN + "Control Circuit",
+            EnumChatFormatting.GREEN + "Control Circuit",
             AddToCreativeTab.tabMisc,
             1,
             0,
@@ -607,9 +592,7 @@ public final class ModItems {
             false,
             null);
 
-        if (GTPPCore.ConfigSwitches.enableMachine_Pollution) {
-            itemBasicTurbine = new ItemBasicScrubberTurbine();
-        }
+        itemBasicTurbine = new ItemBasicScrubberTurbine();
 
         // Zirconium
         // Cinter Pellet.
@@ -643,55 +626,53 @@ public final class ModItems {
         // //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 
         // Load Tree Farmer
-        if (GTPPCore.ConfigSwitches.enableMultiblock_TreeFarmer) { // https://en.wikipedia.org/wiki/UAN
-            dustFertUN18 = ItemUtils
-                .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
-            dustFertUN32 = ItemUtils
-                .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
+        // https://en.wikipedia.org/wiki/UAN
+        dustFertUN18 = ItemUtils
+            .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
+        dustFertUN32 = ItemUtils
+            .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
 
-            if (Forestry.isModLoaded()) {
-                ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
-                ItemStack temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
-                if (temp1 != null && temp2 != null) {
-                    fluidFertBasic = FluidUtils.generateFluidNonMolten(
-                        "Fertiliser",
-                        "Fertiliser",
-                        32,
-                        new short[] { 45, 170, 45, 100 },
-                        temp1,
-                        null,
-                        true);
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(temp2)
-                        .fluidOutputs(new FluidStack(fluidFertBasic, 36))
-                        .duration(5 * TICKS)
-                        .eut(16)
-                        .addTo(fluidExtractionRecipes);
-                }
+        if (Forestry.isModLoaded()) {
+            ItemStack temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
+            ItemStack temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);
+            if (temp1 != null && temp2 != null) {
+                fluidFertBasic = FluidUtils.generateFluidNonMolten(
+                    "Fertiliser",
+                    "Fertiliser",
+                    32,
+                    new short[] { 45, 170, 45, 100 },
+                    temp1,
+                    null,
+                    true);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(temp2)
+                    .fluidOutputs(new FluidStack(fluidFertBasic, 36))
+                    .duration(5 * TICKS)
+                    .eut(16)
+                    .addTo(fluidExtractionRecipes);
             }
-            fluidFertUN32 = FluidUtils.generateFluidNonMolten(
-                "UN32Fertiliser",
-                "UN-32 Fertiliser",
-                24,
-                new short[] { 55, 190, 55, 100 },
-                null,
-                null,
-                true);
-            fluidFertUN18 = FluidUtils.generateFluidNonMolten(
-                "UN18Fertiliser",
-                "UN-18 Fertiliser",
-                22,
-                new short[] { 60, 155, 60, 100 },
-                null,
-                null,
-                true);
-
-            /*
-             * GT_Values.RA.addMixerRecipe( arg0, //Item In arg1, arg2, arg3, arg4, //Fluid in arg5, //Fluid Out arg6,
-             * //Item out arg7, //Eu arg8); //Time
-             */
-
         }
+        fluidFertUN32 = FluidUtils.generateFluidNonMolten(
+            "UN32Fertiliser",
+            "UN-32 Fertiliser",
+            24,
+            new short[] { 55, 190, 55, 100 },
+            null,
+            null,
+            true);
+        fluidFertUN18 = FluidUtils.generateFluidNonMolten(
+            "UN18Fertiliser",
+            "UN-18 Fertiliser",
+            22,
+            new short[] { 60, 155, 60, 100 },
+            null,
+            null,
+            true);
+
+        /*
+         * GT_Values.RA.addMixerRecipe( arg0, //Item In arg1, arg2, arg3, arg4, //Fluid in arg5, //Fluid Out arg6,
+         * //Item out arg7, //Eu arg8); //Time
+         */
 
         // Juice
         FluidUtils.generateFluidNonMolten(
@@ -789,19 +770,9 @@ public final class ModItems {
         // Milled Ore Processing
         new MilledOreProcessing();
 
-        // IC2 Exp
-        Logger.INFO("IndustrialCraft2 Found - Loading Resources.");
-
-        // Baubles Mod Test
-        try {
-            final Class<?> baublesTest = ReflectionUtils.getClass("baubles.api.IBauble");
-            if (baublesTest != null) {
-                CompatBaubles.run();
-            } else {
-                Logger.INFO("Baubles Not Found - Skipping Resources.");
-            }
-        } catch (final Throwable T) {
-            Logger.INFO("Baubles Not Found - Skipping Resources.");
+        // Baubles
+        if (Baubles.isModLoaded()) {
+            CompatBaubles.run();
         }
 
         // Buffer Cores!
@@ -903,16 +874,12 @@ public final class ModItems {
 
         // Small Springs
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.MARAGING250);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.NICHROME);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.STABALLOY);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.STEEL_BLACK);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.BLACK_TITANIUM);
 
         // Fine Wire
         MaterialUtils
             .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.STANDALONE.WHITE_METAL);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.getInstance().PALLADIUM);
         MaterialUtils
             .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.getInstance().ZIRCONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.LEAGRISIUM);
@@ -984,12 +951,10 @@ public final class ModItems {
         }
 
         // A plate of Europium.
-        if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null)
-            && GTPPCore.ConfigSwitches.enableCustom_Pipes) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null) {
             itemPlateEuropium = new BaseItemPlate(MaterialsElements.getInstance().EUROPIUM);
         }
-        if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null)
-            && GTPPCore.ConfigSwitches.enableCustom_Pipes) {
+        if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) {
             itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialsElements.getInstance().EUROPIUM);
         }
 

@@ -1,12 +1,10 @@
 package tectech.mechanics.pipe;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
@@ -43,25 +41,21 @@ public class PipeActivityMessage implements IMessage {
     }
 
     @Override
-    public void fromBytes(ByteBuf pBuffer) {
-        NBTTagCompound tTag = ByteBufUtils.readTag(pBuffer);
-        mPosX = tTag.getInteger("posx");
-        mPosY = tTag.getInteger("posy");
-        mPosZ = tTag.getInteger("posz");
-        mPosD = tTag.getInteger("posd");
-        mActive = tTag.getInteger("active");
+    public void fromBytes(ByteBuf buffer) {
+        mPosX = buffer.readInt();
+        mPosY = buffer.readInt();
+        mPosZ = buffer.readInt();
+        mPosD = buffer.readInt();
+        mActive = buffer.readInt();
     }
 
     @Override
-    public void toBytes(ByteBuf pBuffer) {
-        NBTTagCompound tFXTag = new NBTTagCompound();
-        tFXTag.setInteger("posx", mPosX);
-        tFXTag.setInteger("posy", mPosY);
-        tFXTag.setInteger("posz", mPosZ);
-        tFXTag.setInteger("posd", mPosD);
-        tFXTag.setInteger("active", mActive);
-
-        ByteBufUtils.writeTag(pBuffer, tFXTag);
+    public void toBytes(ByteBuf buffer) {
+        buffer.writeInt(mPosX);
+        buffer.writeInt(mPosY);
+        buffer.writeInt(mPosZ);
+        buffer.writeInt(mPosD);
+        buffer.writeInt(mActive);
     }
 
     public static class PipeActivityQuery extends PipeActivityMessage {
@@ -104,10 +98,10 @@ public class PipeActivityMessage implements IMessage {
         public IMessage handleClientMessage(EntityPlayer pPlayer, PipeActivityData pMessage, MessageContext pCtx) {
             if (pPlayer.worldObj.provider.dimensionId == pMessage.mPosD) {
                 TileEntity te = pPlayer.worldObj.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
-                if (te instanceof IGregTechTileEntity) {
-                    IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (meta instanceof IActivePipe) {
-                        ((IActivePipe) meta).setActive(pMessage.mActive == 1);
+                if (te instanceof IGregTechTileEntity gregTile) {
+                    IMetaTileEntity meta = gregTile.getMetaTileEntity();
+                    if (meta instanceof IActivePipe activePipe) {
+                        activePipe.setActive(pMessage.mActive == 1);
                     }
                 }
             }
@@ -122,10 +116,10 @@ public class PipeActivityMessage implements IMessage {
             World world = DimensionManager.getWorld(pMessage.mPosD);
             if (world != null) {
                 TileEntity te = world.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
-                if (te instanceof IGregTechTileEntity) {
-                    IMetaTileEntity meta = ((IGregTechTileEntity) te).getMetaTileEntity();
-                    if (meta instanceof IActivePipe) {
-                        pMessage.mActive = ((IActivePipe) meta).getActive() ? 1 : 0;
+                if (te instanceof IGregTechTileEntity gregTile) {
+                    IMetaTileEntity meta = gregTile.getMetaTileEntity();
+                    if (meta instanceof IActivePipe activePipe) {
+                        pMessage.mActive = activePipe.getActive() ? 1 : 0;
                         return new PipeActivityData(pMessage);
                     }
                 }

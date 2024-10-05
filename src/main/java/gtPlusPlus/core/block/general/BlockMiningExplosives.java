@@ -2,8 +2,6 @@ package gtPlusPlus.core.block.general;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -72,14 +70,6 @@ public class BlockMiningExplosives extends BlockTNT {
     }
 
     /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    @Override
-    public int quantityDropped(final Random random) {
-        return 1;
-    }
-
-    /**
      * Called upon the block being destroyed by an explosion
      */
     @Override
@@ -103,7 +93,7 @@ public class BlockMiningExplosives extends BlockTNT {
      */
     @Override
     public void onBlockDestroyedByPlayer(final World world, final int x, final int y, final int z, final int meta) {
-        this.func_150114_a(world, x, y, z, meta, (EntityLivingBase) null);
+        this.func_150114_a(world, x, y, z, meta, null);
     }
 
     // TODO Spawns Primed TNT?
@@ -175,19 +165,11 @@ public class BlockMiningExplosives extends BlockTNT {
         }
     }
 
-    /**
-     * Return whether this block can drop from an explosion.
-     */
-    @Override
-    public boolean canDropFromExplosion(final Explosion bang) {
-        return false;
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iconRegister) {
-        this.blockIcon = iconRegister.registerIcon(GTPlusPlus.ID + ":" + "chrono/" + "MetalSheet2");
-        this.textureTop = iconRegister.registerIcon(GTPlusPlus.ID + ":" + "chrono/" + "MetalFunnel");
-        this.textureBottom = iconRegister.registerIcon(GTPlusPlus.ID + ":" + "chrono/" + "MetalPanel");
+        this.blockIcon = iconRegister.registerIcon(GTPlusPlus.ID + ":chrono/MetalSheet2");
+        this.textureTop = iconRegister.registerIcon(GTPlusPlus.ID + ":chrono/MetalFunnel");
+        this.textureBottom = iconRegister.registerIcon(GTPlusPlus.ID + ":chrono/MetalPanel");
     }
 }

@@ -2,13 +2,13 @@ package gtnhlanth.common.beamline;
 
 public class BeamInformation {
 
-    private float energy; // in keV
-    private int rate;
+    private final float energy; // in keV
+    private final int rate;
 
-    private Particle particle;
-    private int particleId;
+    private final Particle particle;
+    private final int particleId;
 
-    private float focus;
+    private final float focus;
 
     public BeamInformation(float energy, int rate, int particleId, float focus) {
         this.energy = energy;

@@ -110,7 +110,6 @@ import bartworks.system.material.werkstoff_loaders.recipe.GemLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.MetalLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.MoltenCellLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.MultipleMetalLoader;
-import bartworks.system.material.werkstoff_loaders.recipe.OreLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.RawOreLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.SimpleMetalLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.ToolLoader;
@@ -320,6 +319,8 @@ public class WerkstoffLoader {
     public static final Werkstoff Ferberite = new Werkstoff(
         new short[] { 0xB0, 0xB0, 0xB0, 0 },
         "Ferberite",
+        Werkstoff.Types.getDefaultStatForType(Werkstoff.Types.COMPOUND)
+            .setElektrolysis(false),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures(),
         11,
@@ -384,6 +385,8 @@ public class WerkstoffLoader {
     public static final Werkstoff Huebnerit = new Werkstoff(
         new short[] { 0x80, 0x60, 0x60, 0 },
         "Huebnerite",
+        Werkstoff.Types.getDefaultStatForType(Werkstoff.Types.COMPOUND)
+            .setElektrolysis(false),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures(),
         17,
@@ -1046,6 +1049,7 @@ public class WerkstoffLoader {
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
             .addMetalItems()
+            .addCraftingMetalWorkingItems()
             .enforceUnification(),
         64,
         TextureSet.SET_METALLIC
@@ -1233,6 +1237,7 @@ public class WerkstoffLoader {
             .onlyDust()
             .addMetalItems()
             .addMolten()
+            .addCraftingMetalWorkingItems()
             .enforceUnification(),
         78,
         TextureSet.SET_METALLIC);
@@ -1657,7 +1662,7 @@ public class WerkstoffLoader {
             }
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
-                new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new OreLoader(), new RawOreLoader(),
+                new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new RawOreLoader(),
                 new CrushedLoader(), new CraftingMaterialLoader(), new CellLoader(), new MoltenCellLoader(),
                 new MultipleMetalLoader(), new MetalLoader(), new BlockLoader() };
 

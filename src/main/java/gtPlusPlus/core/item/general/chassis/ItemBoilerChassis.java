@@ -13,11 +13,10 @@ import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
 
 public class ItemBoilerChassis extends Item {
 
-    public IIcon[] icons = new IIcon[1];
+    public IIcon[] icons = new IIcon[3];
 
     public ItemBoilerChassis() {
         super();
@@ -30,12 +29,14 @@ public class ItemBoilerChassis extends Item {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        this.icons[0] = reg.registerIcon(GTPlusPlus.ID + ":" + "itemBoilerChassis");
+        this.icons[0] = reg.registerIcon(GTPlusPlus.ID + ":itemBoilerChassis1");
+        this.icons[1] = reg.registerIcon(GTPlusPlus.ID + ":itemBoilerChassis2");
+        this.icons[2] = reg.registerIcon(GTPlusPlus.ID + ":itemBoilerChassis3");
     }
 
     @Override
     public IIcon getIconFromDamage(int meta) {
-        return this.icons[0];
+        return this.icons[meta];
     }
 
     @Override
@@ -53,20 +54,5 @@ public class ItemBoilerChassis extends Item {
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
         return StatCollector.translateToLocalFormatted("item.itemBoilerChassis.name", tItem.getItemDamage());
-    }
-
-    @Override // TODO
-    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-        int meta = stack.getItemDamage();
-        if (meta == 0) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(10, 110, 30);
-        } else if (meta == 1) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(150, 180, 35);
-        } else if (meta == 2) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 85, 40);
-        } else if (meta == 3) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 100, 50);
-        }
-        return HEX_OxFFFFFF;
     }
 }

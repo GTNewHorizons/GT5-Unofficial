@@ -48,19 +48,22 @@ public enum Mixin {
             .setSide(Side.BOTH)),
     VanillaAccessors(new Builder("Adds various accessors")
         .addMixinClasses(
-            "minecraft.VanillaShapedRecipeMixin",
-            "minecraft.VanillaShapelessRecipeMixin",
-            "minecraft.ForgeShapedRecipeMixin",
-            "minecraft.ForgeShapelessRecipeMixin",
-            "minecraft.PotionMixin")
+            "minecraft.accessors.BlockStemMixin",
+            "minecraft.accessors.VanillaShapedRecipeMixin",
+            "minecraft.accessors.VanillaShapelessRecipeMixin",
+            "minecraft.accessors.ForgeShapedRecipeMixin",
+            "minecraft.accessors.ForgeShapelessRecipeMixin",
+            "minecraft.accessors.PotionMixin",
+            "minecraft.accessors.EntityPlayerMPMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
         .setSide(Side.BOTH)),
-    BlockStemMixin(new Builder("Stem Crop Block Accessor").addMixinClasses("minecraft.BlockStemMixin")
-        .addTargetedMod(VANILLA)
+    IC2_MACHINE_WRENCHING(new Builder("Changes the behavior of the wrenching mechanic for IC2 machines")
+        .addMixinClasses("ic2.MixinDamageDropped", "ic2.MixinHarvestTool", "ic2.MixinItemDropped")
+        .addTargetedMod(TargetedMod.IC2)
         .setApplyIf(() -> true)
-        .setPhase(Phase.EARLY)
+        .setPhase(Phase.LATE)
         .setSide(Side.BOTH));
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");

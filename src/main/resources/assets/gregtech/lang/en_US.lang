@@ -621,6 +621,17 @@ GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
 GT5U.item.tank.locked_to=Content locked to %s
 
+gt.behaviour.paintspray.infinite.gui.header=Select a Color
+gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
+gt.behaviour.paintspray.infinite.gui.solvent=Solvent
+
+gt.behaviour.paintspray.infinite.tooltip.infinite=Infinite uses
+gt.behaviour.paintspray.infinite.tooltip.more_info=Hold SHIFT for more information
+gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
+gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
+gt.behaviour.paintspray.infinite.tooltip.lock=Sneak Middle Click: Lock or unlock spray can
+gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
+
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
 GT5U.hatch.disableMultiStack.true=Multi Stack Input §cOff§r
@@ -646,7 +657,7 @@ GT5U.multiblock.efficiency=Efficiency
 GT5U.multiblock.problems=Problems
 GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.maxtier=Max Tier
-GT5U.multiblock.usage=Probably uses
+GT5U.multiblock.usage=Currently uses
 GT5U.multiblock.parallelism=Max Parallel
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
@@ -752,10 +763,10 @@ GT5U.waila.cover.current_facing=Current Facing
 GT5U.waila.energy.stored=Stored: §a%s§r EU / §e%s§r EU
 GT5U.waila.energy.avg_in_with_amperage=Average Input: §a%s§r EU/t (%sA %s)
 GT5U.waila.energy.avg_out_with_amperage=Average Output: §c%s§r EU/t (%sA %s)
-GT5U.waila.energy.use=Probably uses: §e%s§r EU/t (%s)
-GT5U.waila.energy.use_with_amperage=Probably uses: §e%s§r EU/t (%sA %s)
-GT5U.waila.energy.produce=Probably generates: §a%s§r EU/t (%s)
-GT5U.waila.energy.produce_with_amperage=Probably generates: §a%s§r EU/t (%sA %s)
+GT5U.waila.energy.use=Currently uses: §e%s§r EU/t (%s)
+GT5U.waila.energy.use_with_amperage=Currently uses: §e%s§r EU/t (%sA %s)
+GT5U.waila.energy.produce=Currently generates: §a%s§r EU/t (%s)
+GT5U.waila.energy.produce_with_amperage=Currently generates: §a%s§r EU/t (%sA %s)
 GT5U.waila.stocking_bus.auto_pull.enabled=Auto-Pull from ME: Enabled
 GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
@@ -1658,14 +1669,15 @@ GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
 GT5U.gui.text.no_tools=§7Missing applicable tools
 
 # Cover Overflow Valve
-GTPP.gui.text.cover_overflow_valve_overflow_point=§7Overflow Point
-GTPP.gui.text.cover_overflow_valve_voiding_rate=§7Voiding Rate
-GTPP.gui.text.cover_overflow_valve_allow_fluid_input=§7Allow Fluid Input
-GTPP.gui.text.cover_overflow_valve_block_fluid_input=§7Block Fluid Input
-GTPP.gui.text.cover_overflow_valve_allow_fluid_output=§7Allow Fluid Output
-GTPP.gui.text.cover_overflow_valve_block_fluid_output=§7Block Fluid Output
-GTPP.gui.text.cover_overflow_valve_l_per_second=§7L/s
-GTPP.gui.text.cover_overflow_valve_l_per_update=§7L/update
+GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L
+GTPP.gui.text.cover_overflow_valve_overflow_point=Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_liter=L
+GTPP.gui.text.cover_overflow_valve_l_per_update=L/update
 
 GTPP.EBF.heat=Heat capacity
 
@@ -1680,8 +1692,8 @@ GTPP.multiblock.progress=Progress
 GTPP.multiblock.efficiency=Efficiency
 GTPP.multiblock.problems=Problems
 GTPP.multiblock.mei=Max Energy Income
-GTPP.multiblock.usage=Probably uses
-GTPP.multiblock.generation=Probably generates
+GTPP.multiblock.usage=Currently uses
+GTPP.multiblock.generation=Currently generates
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
@@ -1689,7 +1701,7 @@ GTPP.multiblock.multimachine.fluid=Fluid Mode. Does fermenter (circuit 20), flui
 GTPP.multiblock.multimachine.misc=Misc. Mode. Does precision laser engraver (circuit 20), autoclave (circuit 21) and fluid solidifier (circuit 22).
 
 
-GTPP.waila.steam.use=Probably uses: §e%s§r L/s Steam
+GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount

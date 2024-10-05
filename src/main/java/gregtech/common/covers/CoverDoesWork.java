@@ -20,9 +20,9 @@ import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public class CoverDoesWork extends CoverBehavior {
 
-    private static int FLAG_INVERTED = 0x1;
-    private static int FLAG_PROGRESS = 0x2;
-    private static int FLAG_ENABLED = 0x4;
+    private static final int FLAG_INVERTED = 0x1;
+    private static final int FLAG_PROGRESS = 0x2;
+    private static final int FLAG_ENABLED = 0x4;
 
     public CoverDoesWork(ITexture coverTexture) {
         super(coverTexture);
@@ -37,8 +37,7 @@ public class CoverDoesWork extends CoverBehavior {
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
-        if ((aTileEntity instanceof IMachineProgress)) {
-            IMachineProgress mProgress = (IMachineProgress) aTileEntity;
+        if ((aTileEntity instanceof IMachineProgress mProgress)) {
             boolean inverted = isFlagSet(aCoverVariable, FLAG_INVERTED);
             int signal = 0;
 

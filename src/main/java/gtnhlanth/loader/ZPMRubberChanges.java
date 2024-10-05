@@ -40,18 +40,7 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class ZPMRubberChanges implements Runnable {
 
-    @SuppressWarnings("unchecked")
     public void run() {
-
-        List<IRecipe> bufferedRecipeList = null;
-
-        try {
-            bufferedRecipeList = (List<IRecipe>) FieldUtils
-                .getDeclaredField(GTModHandler.class, "sBufferRecipeList", true)
-                .get(null);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
 
         HashSet<ItemStack> ZPMPlusComponents = new HashSet<>();
         OrePrefixes[] RubberGenerated = { plate };
@@ -77,7 +66,7 @@ public class ZPMRubberChanges implements Runnable {
             GTLog.out.print(component.getDisplayName() + " ");
         }
 
-        replaceAllRecipes(ZPMPlusComponents, RubberGenerated, bufferedRecipeList);
+        replaceAllRecipes(ZPMPlusComponents, RubberGenerated, GTModHandler.sBufferRecipeList);
     }
 
     private static void replaceAllRecipes(Collection<ItemStack> ZPMPlusComponents, OrePrefixes[] RubberGenerated,
@@ -125,7 +114,7 @@ public class ZPMRubberChanges implements Runnable {
                     || customItemList.toString()
                         .contains("UEV"))
                     && (boolean) hasnotBeenSet.invoke(customItemList))
-                    ZPMPlusComponents.add((ItemStack) get.invoke(customItemList, 1, new Object[0]));
+                    ZPMPlusComponents.add(get.invoke(customItemList, 1, new Object[0]));
             }
         } catch (IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
             e.printStackTrace();
@@ -383,7 +372,7 @@ public class ZPMRubberChanges implements Runnable {
         boolean replaced = false;
         for (int i = 0; i < stacks.length; i++) {
             if (!GTUtility.isStackValid(stacks[i])) {
-                if (stacks[i] instanceof ArrayList && ((ArrayList) stacks[i]).size() > 0) {
+                if (stacks[i] instanceof ArrayList && !((ArrayList) stacks[i]).isEmpty()) {
                     if (GTUtility.areStacksEqual(stack, (ItemStack) ((ArrayList) stacks[i]).get(0), true))
                         if (!replace) return true;
                         else {
@@ -395,7 +384,7 @@ public class ZPMRubberChanges implements Runnable {
                             GTLog.out.print("Replaced recipe!: " + stack.getDisplayName() + " ");
                         }
 
-                } else continue;
+                }
             } else if (GTUtility.areStacksEqual(stack, (ItemStack) stacks[i], true)) if (!replace) return true;
             else {
                 int amount = ((ItemStack) stacks[i]).stackSize;

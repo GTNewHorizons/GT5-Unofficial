@@ -10,7 +10,6 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
-import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
@@ -110,7 +109,6 @@ public class RecipesGregTech {
         cyclotronRecipes();
         blastSmelterRecipes();
         extruderRecipes();
-        cuttingSawRecipes();
         breweryRecipes();
         laserEngraverRecipes();
         assemblyLineRecipes();
@@ -679,15 +677,6 @@ public class RecipesGregTech {
             .addTo(brewingRecipes);
     }
 
-    private static void cuttingSawRecipes() {
-        RA.stdBuilder()
-            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("blockMeatRaw", 1))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("plateMeatRaw", 9))
-            .duration(16 * TICKS)
-            .eut(TierEU.RECIPE_ULV)
-            .addTo(cutterRecipes);
-    }
-
     private static void electrolyzerRecipes() {
         RA.stdBuilder()
             .itemInputs(ItemUtils.getSimpleStack(ModItems.dustDecayedRadium226, 1))
@@ -984,17 +973,6 @@ public class RecipesGregTech {
             .fluidOutputs(Materials.Styrene.getFluid(1000L), Materials.Hydrogen.getGas(2000))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // Short-cut Styrene
-        // C6H6 + C2H4 = C8H8 + 2H
-        RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(24))
-            .itemOutputs()
-            .fluidInputs(Materials.Ethylene.getGas(500L), Materials.Benzene.getFluid(500L))
-            .fluidOutputs(Materials.Styrene.getFluid(500L), Materials.Hydrogen.getGas(1000))
-            .duration(12 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
             .addTo(multiblockChemicalReactorRecipes);
     }
 
@@ -1427,14 +1405,6 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(fluidExtractionRecipes);
 
-        // Ender Fluid
-        RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(Items.ender_pearl))
-            .fluidOutputs(FluidUtils.getFluidStack("ender", 250))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(fluidExtractionRecipes);
-
         // Blazing Pyrotheum
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L))
@@ -1558,12 +1528,6 @@ public class RecipesGregTech {
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
-        RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 9L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.MeatRaw, 1L))
-            .duration(15 * SECONDS)
-            .eut(2)
-            .addTo(compressorRecipes);
 
         RA.stdBuilder()
             .itemInputs(ItemList.FusionComputer_UV.get(9))
@@ -1574,13 +1538,6 @@ public class RecipesGregTech {
     }
 
     private static void macerationRecipes() {
-
-        RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.MeatRaw, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.MeatRaw, 9L))
-            .duration(44 * SECONDS)
-            .eut(4)
-            .addTo(maceratorRecipes);
 
         if (ItemUtils.simpleMetaStack("chisel:limestone", 0, 1) != null) {
             RA.stdBuilder()

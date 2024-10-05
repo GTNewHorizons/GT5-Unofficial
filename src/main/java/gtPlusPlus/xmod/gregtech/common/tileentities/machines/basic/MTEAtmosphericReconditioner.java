@@ -21,6 +21,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -67,20 +68,20 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             "Making sure you don't live in Gwalior - Uses 2A",
             3,
             0,
-            new ITexture[] { new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
-                new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
-                new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab),
-                new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast),
-                new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB) });
-        mPollutionEnabled = PollutionUtils.isPollutionEnabled();
+            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
+            new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
+            new GTRenderedTexture(TexturesGtBlock.Overlay_MatterFab),
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast),
+            new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
+            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB));
+        mPollutionEnabled = GTMod.gregtechproxy.mPollution;
     }
 
     public MTEAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 2, aDescription, aTextures, 2, 0);
-        mPollutionEnabled = PollutionUtils.isPollutionEnabled();
+        mPollutionEnabled = GTMod.gregtechproxy.mPollution;
     }
 
     @Override
@@ -240,9 +241,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
                             // Only check every 30s.
                             if (!isIdle && aTick % (20L * 30) == 0L) {
-                                mPollutionEnabled = PollutionUtils.isPollutionEnabled();
+                                mPollutionEnabled = GTMod.gregtechproxy.mPollution;
                                 // Clear out pollution if it's disabled, because I am a nice gal.
-                                if (!PollutionUtils.isPollutionEnabled()) {
+                                if (!GTMod.gregtechproxy.mPollution) {
                                     PollutionUtils.nullifyPollution(this.getBaseMetaTileEntity());
                                 }
                             }
@@ -263,8 +264,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                                     Logger.INFO("mOptimalAirFlow[1]:" + mOptimalAirFlow);
 
                                     // Calculate The Voltage we are running
-                                    long tVoltage = drainEU;
-                                    byte tTier = (byte) Math.max(1, GTUtility.getTier(tVoltage));
+                                    byte tTier = (byte) Math.max(1, GTUtility.getTier(drainEU));
 
                                     // Check Sides for Air,
                                     // More air means more pollution processing.
@@ -294,15 +294,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
                                         Logger.INFO("mCurrentPollution[4]:" + mCurrentPollution);
                                         Logger.INFO("mCurrentPollution[5]:" + reduction);
-                                        if (reduction <= mCurrentPollution) {
-                                            // Clean some Air.
-                                            toRemove = reduction;
-                                        } else {
-                                            // Makes sure we don't get negative pollution.
-                                            toRemove = mCurrentPollution;
-                                        }
 
-                                        toRemove = toRemove / 2;
+                                        toRemove = Math.min(reduction, mCurrentPollution) / 2;
                                         Logger.INFO("mCurrentPollution[6]:" + toRemove);
 
                                         // We are good to clean
@@ -390,21 +383,13 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 mCurrentChunkPollution += getPollutionInChunk(r);
             }
         }
-        if (mCurrentChunkPollution > 0) {
-            mHasPollution = true;
-        } else {
-            mHasPollution = false;
-        }
+        mHasPollution = mCurrentChunkPollution > 0;
         return mCurrentChunkPollution;
     }
 
     public int getPollutionInChunk(Chunk aChunk) {
         int mCurrentChunkPollution = PollutionUtils.getPollution(aChunk);
-        if (mCurrentChunkPollution > 0) {
-            mHasPollution = true;
-        } else {
-            mHasPollution = false;
-        }
+        mHasPollution = mCurrentChunkPollution > 0;
         return mCurrentChunkPollution;
     }
 
@@ -572,9 +557,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     public boolean removePollution(int toRemove) {
 
-        if (this == null || this.getBaseMetaTileEntity() == null
-            || this.getBaseMetaTileEntity()
-                .getWorld() == null) {
+        if (this.getBaseMetaTileEntity() == null || this.getBaseMetaTileEntity()
+            .getWorld() == null) {
             return false;
         }
 
@@ -739,10 +723,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 if (aStack.getItem() instanceof ItemBasicScrubberTurbine) {
                     return true;
                 }
-                if (aStack.getItem() instanceof MetaGeneratedTool && aStack.getItemDamage() >= 170
-                    && aStack.getItemDamage() <= 179) {
-                    return true;
-                }
+                return aStack.getItem() instanceof MetaGeneratedTool && aStack.getItemDamage() >= 170
+                    && aStack.getItemDamage() <= 179;
             }
         }
         return false;
@@ -764,8 +746,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     @Override
     public String[] getInfoData() {
-        ArrayList<String> aTooltipSuper = new ArrayList<>();
-        aTooltipSuper.addAll(Arrays.asList(super.getInfoData()));
+        ArrayList<String> aTooltipSuper = new ArrayList<>(Arrays.asList(super.getInfoData()));
         int mAirSides = getFreeSpaces();
         int reduction = 0;
 

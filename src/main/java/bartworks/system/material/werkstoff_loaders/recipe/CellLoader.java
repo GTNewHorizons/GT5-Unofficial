@@ -166,7 +166,7 @@ public class CellLoader implements IWerkstoffRunnable {
                         null,
                         null,
                         new FluidStack[] { null },
-                        new FluidStack[] { flOutputs.size() > 0 ? flOutputs.get(0) : null },
+                        new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                         (int) Math.max(
                             1L,
                             Math.abs(
@@ -192,7 +192,7 @@ public class CellLoader implements IWerkstoffRunnable {
                         null,
                         null,
                         new FluidStack[] { null },
-                        new FluidStack[] { flOutputs.size() > 0 ? flOutputs.get(0) : null },
+                        new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                         (int) Math.max(
                             1L,
                             Math.abs(

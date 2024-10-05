@@ -77,8 +77,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     private long euCapacity = 0;
     private long euLastCycle = 0;
     private float annihilationEfficiency = 0f;
+    public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
 
-    private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<AntimatterGenerator>>() {
+    private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<AntimatterGenerator> computeValue(Class<?> type) {
@@ -124,7 +125,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     .extFacing()
                     .glow()
                     .build()));
-    };
+    }
 
     private boolean addLaserSource(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
@@ -202,7 +203,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             float efficiency = Math
                 .min(((float) antimatter / (float) catalystCount), ((float) catalystCount / (float) antimatter));
             this.annihilationEfficiency = efficiency;
-            generatedEU = (long) ((Math.pow(antimatter, modifier) * 1e12) * efficiency);
+            generatedEU = (long) ((Math.pow(antimatter, modifier) * ANTIMATTER_FUEL_VALUE) * efficiency);
         }
 
         if (wirelessEnabled && modifier >= 1.03F) {
@@ -277,7 +278,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new AntimatterGenerator(this.MAIN_NAME);
+        return new AntimatterGenerator(MAIN_NAME);
     }
 
     @Override
@@ -328,7 +329,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + "voided"
                     + EnumChatFormatting.GRAY)
             .addSeparator()
-            .addInfo("Antimatter base energy value: 1,000,000,000 EU/L")
+            .addInfo("Antimatter base energy value: " + GTUtility.formatNumbers(ANTIMATTER_FUEL_VALUE) + " EU/L")
             .addInfo("Energy production is exponentially increased depending on the matter used:")
             .addInfo("Molten Copper: 1.00")
             .addInfo("Molten SC UIV Base: 1.02")

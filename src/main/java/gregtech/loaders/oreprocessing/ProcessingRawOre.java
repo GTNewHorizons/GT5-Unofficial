@@ -30,6 +30,10 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         if (aMaterial == Materials.Oilsands) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -76,7 +80,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                     : tIngot;
         ItemStack tDust = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
         ItemStack tCleaned = GTOreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
-        ItemStack tCrushed = GTOreDictUnificator.get(OrePrefixes.crushed, tMaterial, (long) aMaterial.mOreMultiplier);
+        ItemStack tCrushed = GTOreDictUnificator.get(OrePrefixes.crushed, tMaterial, aMaterial.mOreMultiplier);
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
@@ -84,7 +88,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 OrePrefixes.dustImpure,
                 tMaterial,
                 GTUtility.copyAmount(aMaterial.mOreMultiplier, tCleaned, tDust, tGem),
-                (long) aMaterial.mOreMultiplier);
+                aMaterial.mOreMultiplier);
         }
 
         for (Materials tMat : aMaterial.mOreByProducts) {

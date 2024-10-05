@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.IPlantable;
 
-import gregtech.mixin.interfaces.IBlockStemAccesor;
+import gregtech.mixin.interfaces.accessors.IBlockStemAccessor;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.IEIGBucketFactory;
@@ -113,7 +113,7 @@ public class EIGStemBucket extends EIGBucket {
             0,
             0);
         if (!(stemBlock instanceof BlockStem)) return;
-        Block cropBlock = ((IBlockStemAccesor) stemBlock).getCropBlock();
+        Block cropBlock = ((IBlockStemAccessor) stemBlock).gt5u$getCropBlock();
         if (cropBlock == null || cropBlock == Blocks.air) return;
         // if we know some crops needs a specific metadata, remap here
         int metadata = 0;

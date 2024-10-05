@@ -15,17 +15,16 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -144,7 +143,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         // Sterile Water Plant Casing
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 4))
         .addElement('E', ofFrame(Materials.Adamantium))
-        .addElement('W', ofBlock(Blocks.water, 0))
+        .addElement('W', ofAnyWater(false))
         // Tinted industrial glass
         .addElement('G', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
         .build();
@@ -482,7 +481,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     }
 
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_COAGULATION_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_COAGULATION_LOOP;
     }
 }

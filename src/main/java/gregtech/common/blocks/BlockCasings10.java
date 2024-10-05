@@ -32,9 +32,9 @@ public class BlockCasings10 extends BlockCasingsAbstract {
             .addStringLocalization(getUnlocalizedName() + ".11.name", "Extreme Density Space-Bending Casing");
         GTLanguageManager
             .addStringLocalization(getUnlocalizedName() + ".12.name", "Background Radiation Absorbent Casing");
-
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Solidifier Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Solidifier Radiator");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Reinforced Wooden Casing");
 
         ItemList.Casing_Electromagnetic_Separator.set(new ItemStack(this, 1, 0));
         ItemList.Casing_Laser.set(new ItemStack(this, 1, 1));
@@ -51,6 +51,7 @@ public class BlockCasings10 extends BlockCasingsAbstract {
         ItemList.Background_Radiation_Casing.set(new ItemStack(this, 1, 12));
         ItemList.Casing_Fluid_Solidifier.set(new ItemStack(this, 1, 13));
         ItemList.Radiator_Fluid_Solidifier.set(new ItemStack(this, 1, 14));
+        ItemList.Casing_Reinforced_Wood.set(new ItemStack(this, 1, 15));
     }
 
     @Override
@@ -77,6 +78,8 @@ public class BlockCasings10 extends BlockCasingsAbstract {
             case 12 -> Textures.BlockIcons.RADIATION_ABSORBENT_CASING.getIcon();
             case 13 -> Textures.BlockIcons.MACHINE_CASING_MS160.getIcon();
             case 14 -> Textures.BlockIcons.RADIATOR_MS160.getIcon();
+            case 15 -> ordinalSide > 1 ? Textures.BlockIcons.CASING_REINFORCED_WOOD.getIcon()
+                : Textures.BlockIcons.CASING_REINFORCED_WOOD_TOP.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

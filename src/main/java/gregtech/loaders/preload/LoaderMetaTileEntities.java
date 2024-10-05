@@ -1039,6 +1039,7 @@ import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
 import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
@@ -1621,6 +1622,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 BLACKHOLE_COMPRESSOR_CONTROLLER.ID,
                 "multimachine.blackholecompressor",
                 "Pseudostable Black Hole Containment Field").getStackForm(1));
+
+        ItemList.Machine_Multi_IndustrialBrewery.set(
+            new MTEIndustrialBrewery(INDUSTRIAL_BREWERY_CONTROLLER.ID, "multimachine.brewery", "Big Barrel Brewery")
+                .getStackForm(1));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
@@ -12387,7 +12392,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         makeWires(Materials.Nickel, 1320, 3L, 6L, 3L, GTValues.V[2], true, false);
         makeWires(Materials.Cupronickel, 1340, 3L, 6L, 2L, GTValues.V[2], true, false);
         makeWires(Materials.Copper, 1360, 2L, 4L, 1L, GTValues.V[2], true, false);
-        makeWires(Materials.AnnealedCopper, 1380, 2L, 4L, 1L, GTValues.V[2], true, false);
+        makeWires(Materials.AnnealedCopper, 1380, 1L, 2L, 1L, GTValues.V[2], true, false);
 
         makeWires(Materials.Kanthal, 1400, 3L, 6L, 4L, GTValues.V[3], true, false);
         makeWires(Materials.Gold, 1420, 2L, 4L, 3L, GTValues.V[3], true, false);

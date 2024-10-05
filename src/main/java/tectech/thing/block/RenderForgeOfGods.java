@@ -37,11 +37,12 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
     private static ShaderProgram starProgram;
     private static IModelCustom starModel;
-    private static float modelNormalize = .0067f * 2;
+    private static final float modelNormalize = .0067f * 2;
 
     private static boolean initialized = false;
+    private static boolean failedInit = false;
     private static int u_Color = -1, u_ModelMatrix = -1, u_Gamma = -1;
-    private Matrix4fStack starModelMatrix = new Matrix4fStack(3);
+    private final Matrix4fStack starModelMatrix = new Matrix4fStack(3);
 
     private static ShaderProgram beamProgram;
     private static int a_VertexID = -1;
@@ -51,7 +52,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     private static int beam_vboID = -1;
     private static int maxSegments = -1;
     private static final int beamSegmentQuads = 16;
-    private static Matrix4fStack beamModelMatrix = new Matrix4fStack(2);
+    private static final Matrix4fStack beamModelMatrix = new Matrix4fStack(2);
 
     private VertexBuffer ringOne, ringTwo, ringThree;
     // These are nudges/translations for each ring to align with the structure
@@ -402,13 +403,24 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
+        if (failedInit) return;
         if (!(tile instanceof TileEntityForgeOfGods forgeTile)) return;
         if (forgeTile.getRingCount() < 1) return;
 
+        // If something ever fails, just early return and never try again this session
         if (!initialized) {
             init();
-            initRings();
-            if (!initialized) return;
+            if (!initialized) {
+                failedInit = true;
+                return;
+            }
+            try {
+                initRings();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                failedInit = true;
+                return;
+            }
         }
 
         // Based on system time to prevent tps issues from causing stutters
@@ -416,6 +428,10 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         // But prevent bypassing the pause menu
         long millis = System.currentTimeMillis() % (1000 * 36000);
         float timer = millis / (50f); // to ticks
+
+        if (forgeTile.getRainbowMode()) {
+            forgeTile.incrementRainbowColors();
+        }
 
         RenderEntireStar(forgeTile, x, y, z, timer);
         RenderRings(forgeTile, x, y, z, timer);

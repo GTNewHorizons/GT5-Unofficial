@@ -125,10 +125,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
      * Check if the internal cache can still fit more items in it
      */
     public boolean canAcceptItem() {
-        if (getCachedAmount() < getCacheCapacity()) {
-            return true;
-        }
-        return false;
+        return getCachedAmount() < getCacheCapacity();
     }
 
     /**

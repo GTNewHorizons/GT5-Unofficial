@@ -279,7 +279,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Probably makes: " + EnumChatFormatting.RED
+        info[4] = "Currently generates: " + EnumChatFormatting.RED
             + GTUtility.formatNumbers(Math.abs(this.trueOutput))
             + EnumChatFormatting.RESET
             + " EU/t";
@@ -338,7 +338,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     public void addAutoEnergy(long outputPower) {
-        if (this.eDynamoMulti.size() > 0) for (MTEHatch tHatch : this.eDynamoMulti) {
+        if (!this.eDynamoMulti.isEmpty()) for (MTEHatch tHatch : this.eDynamoMulti) {
             long voltage = tHatch.maxEUOutput();
             long power = voltage * tHatch.maxAmperesOut();
             long outputAmperes;
@@ -352,7 +352,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                 addEnergyOutput_EM(outputPower, 1);
             }
         }
-        if (this.mDynamoHatches.size() > 0) for (MTEHatch tHatch : this.mDynamoHatches) {
+        if (!this.mDynamoHatches.isEmpty()) for (MTEHatch tHatch : this.mDynamoHatches) {
             long voltage = tHatch.maxEUOutput();
             long power = voltage * tHatch.maxAmperesOut();
             long outputAmperes;

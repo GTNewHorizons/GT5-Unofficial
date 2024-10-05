@@ -22,7 +22,6 @@ import java.util.Locale;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -80,10 +79,12 @@ import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
 import gregtech.common.blocks.BlockWormholeRender;
 import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.items.ItemAdvancedSensorCard;
 import gregtech.common.items.ItemDepletedCell;
 import gregtech.common.items.ItemFluidDisplay;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.ItemNeutronReflector;
+import gregtech.common.items.ItemSensorCard;
 import gregtech.common.items.ItemTierDrone;
 import gregtech.common.items.ItemVolumetricFlask;
 import gregtech.common.items.ItemWirelessHeadphones;
@@ -179,25 +180,18 @@ public class LoaderGTBlockFluid implements Runnable {
 
         ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", "Volumetric flask", 1000));
 
-        Item tItem = (Item) GTUtility.callConstructor(
-            "gregtech.common.items.ItemSensorCard",
-            0,
-            null,
-            false,
-            new Object[] { "sensorcard", "GregTech Sensor Card" });
-        ItemList.NC_SensorCard.set(
-            tItem == null ? new GTGenericItem("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed")
-                : tItem);
-
-        Item advSensorCard = (Item) GTUtility
-            .callConstructor("gregtech.common.items.ItemAdvancedSensorCard", 0, null, false);
-        ItemList.NC_AdvancedSensorCard.set(
-            advSensorCard == null
-                ? new GTGenericItem(
+        if (Mods.IC2NuclearControl.isModLoaded()) {
+            ItemList.NC_SensorCard.set(new ItemSensorCard("sensorcard", "GregTech Sensor Card"));
+            ItemList.NC_AdvancedSensorCard.set(new ItemAdvancedSensorCard());
+        } else {
+            ItemList.NC_SensorCard
+                .set(new GTGenericItem("sensorcard", "GregTech Sensor Card", "Nuclear Control not installed"));
+            ItemList.NC_AdvancedSensorCard.set(
+                new GTGenericItem(
                     "advancedsensorcard",
                     "GregTech Advanced Sensor Card",
-                    "Nuclear Control not installed")
-                : advSensorCard);
+                    "Nuclear Control not installed"));
+        }
 
         ItemList.Neutron_Reflector.set(new ItemNeutronReflector("neutronreflector", "Iridium Neutron Reflector", 0));
         ItemList.Reactor_Coolant_He_1
@@ -241,12 +235,12 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Depleted_Thorium_1.set(new ItemDepletedCell("ThoriumcellDep", "Fuel Rod (Depleted Thorium)", 1));
         ItemList.Depleted_Thorium_2
             .set(new ItemDepletedCell("Double_ThoriumcellDep", "Dual Fuel Rod (Depleted Thorium)", 1)); // TODO
-                                                                                                        // CHECK
-                                                                                                        // num
+        // CHECK
+        // num
         ItemList.Depleted_Thorium_4
             .set(new ItemDepletedCell("Quad_ThoriumcellDep", "Quad Fuel Rod (Depleted Thorium)", 1)); // TODO
-                                                                                                      // CHECK
-                                                                                                      // num
+        // CHECK
+        // num
         ItemList.ThoriumCell_1.set(
             new ItemRadioactiveCellIC(
                 "Thoriumcell",
@@ -1316,7 +1310,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder("InfinityPlasma")
+        GTFluidFactory.builder("plasma.infinity")
             .withLocalizedName("Infinity Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
@@ -2038,20 +2032,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L), new ItemStack(Items.flint, 1))
             .outputChances(10000, 1000)
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.furnace, 1, WILDCARD))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.lit_furnace, 1, WILDCARD))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);

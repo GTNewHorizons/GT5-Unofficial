@@ -323,16 +323,17 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private @Nullable AENetworkProxy gridProxy = null;
 
     // holds all internal inventories
-    private PatternSlot[] internalInventory = new PatternSlot[MAX_PATTERN_COUNT];
+    private final PatternSlot[] internalInventory = new PatternSlot[MAX_PATTERN_COUNT];
 
     // a hash map for faster lookup of pattern slots, not necessarily all valid.
-    private Map<ICraftingPatternDetails, PatternSlot> patternDetailsPatternSlotMap = new HashMap<>(MAX_PATTERN_COUNT);
+    private final Map<ICraftingPatternDetails, PatternSlot> patternDetailsPatternSlotMap = new HashMap<>(
+        MAX_PATTERN_COUNT);
 
     private boolean needPatternSync = true;
     private boolean justHadNewItems = false;
 
     private String customName = null;
-    private boolean supportFluids;
+    private final boolean supportFluids;
     private boolean additionalConnection = false;
     private boolean disablePatternOptimization = false;
 
@@ -571,15 +572,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         // Migrate from 4x8 to 4x9 pattern inventory
         int oldPatternCount = 4 * 8;
         int oldSlotManual = oldPatternCount + 1;
-        int oldSlotCircuit = oldPatternCount;
 
         if (internalInventory[oldSlotManual] == null && mInventory[oldSlotManual] != null) {
             mInventory[SLOT_MANUAL_START] = mInventory[oldSlotManual];
             mInventory[oldSlotManual] = null;
         }
-        if (internalInventory[oldSlotCircuit] == null && mInventory[oldSlotCircuit] != null) {
-            mInventory[SLOT_CIRCUIT] = mInventory[oldSlotCircuit];
-            mInventory[oldSlotCircuit] = null;
+        if (internalInventory[oldPatternCount] == null && mInventory[oldPatternCount] != null) {
+            mInventory[SLOT_CIRCUIT] = mInventory[oldPatternCount];
+            mInventory[oldPatternCount] = null;
         }
 
         // reconstruct patternDetailsPatternSlotMap

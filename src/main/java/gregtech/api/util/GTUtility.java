@@ -62,7 +62,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
@@ -364,21 +363,6 @@ public class GTUtility {
         return null;
     }
 
-    public static Object callConstructor(String aClass, int aConstructorIndex, Object aReplacementObject,
-        boolean aLogErrors, Object... aParameters) {
-        try {
-            return callConstructor(
-                Class.forName(aClass),
-                aConstructorIndex,
-                aReplacementObject,
-                aLogErrors,
-                aParameters);
-        } catch (Throwable e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
-        }
-        return aReplacementObject;
-    }
-
     public static Object callConstructor(Class<?> aClass, int aConstructorIndex, Object aReplacementObject,
         boolean aLogErrors, Object... aParameters) {
         if (aConstructorIndex < 0) {
@@ -401,31 +385,12 @@ public class GTUtility {
         return aReplacementObject;
     }
 
-    public static String capitalizeString(String aString) {
-        if (aString != null && aString.length() > 0) return aString.substring(0, 1)
-            .toUpperCase() + aString.substring(1);
-        return E;
-    }
-
-    public static boolean getPotion(EntityLivingBase aPlayer, int aPotionIndex) {
-        try {
-            Field tPotionHashmap = null;
-
-            Field[] fields = EntityLiving.class.getDeclaredFields();
-
-            for (Field field : fields) {
-                if (field.getType() == HashMap.class) {
-                    tPotionHashmap = field;
-                    tPotionHashmap.setAccessible(true);
-                    break;
-                }
-            }
-
-            if (tPotionHashmap != null) return ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).get(aPotionIndex) != null;
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
+    public static String capitalizeString(String s) {
+        if (s != null && !s.isEmpty()) {
+            return s.substring(0, 1)
+                .toUpperCase() + s.substring(1);
         }
-        return false;
+        return "";
     }
 
     public static String getClassName(Object aObject) {
@@ -436,26 +401,6 @@ public class GTUtility {
                 aObject.getClass()
                     .getName()
                     .lastIndexOf(".") + 1);
-    }
-
-    public static void removePotion(EntityLivingBase aPlayer, int aPotionIndex) {
-        try {
-            Field tPotionHashmap = null;
-
-            Field[] fields = EntityLiving.class.getDeclaredFields();
-
-            for (Field field : fields) {
-                if (field.getType() == HashMap.class) {
-                    tPotionHashmap = field;
-                    tPotionHashmap.setAccessible(true);
-                    break;
-                }
-            }
-
-            if (tPotionHashmap != null) ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).remove(aPotionIndex);
-        } catch (Throwable e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
     }
 
     public static boolean getFullInvisibility(EntityPlayer aPlayer) {
@@ -1698,7 +1643,7 @@ public class GTUtility {
     /**
      * Move up to maxAmount amount of fluid from source to dest, with optional filtering via allowMove. note that this
      * filter cannot bypass filtering done by IFluidHandlers themselves.
-     *
+     * <p>
      * this overload will assume the fill side is the opposite of drainSide
      *
      * @param source    tank to drain from. method become noop if this is null
@@ -1947,7 +1892,7 @@ public class GTUtility {
             tmp = aFluid.getFluid()
                 .getID();
         } catch (Exception e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
@@ -2958,7 +2903,7 @@ public class GTUtility {
         ItemStack rStack = copy(aStack);
         if (isStackInvalid(rStack)) return null;
         else if (aAmount < 0) aAmount = 0;
-        rStack.stackSize = (int) aAmount;
+        rStack.stackSize = aAmount;
         return rStack;
     }
 
@@ -3399,7 +3344,7 @@ public class GTUtility {
                 EnumChatFormatting.GOLD + GTUtility.trans("166", "Is valid Beacon Pyramid Material")
                     + EnumChatFormatting.RESET);
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this block's info.§r"));
+            tList.add("§cAn exception was thrown while fetching this block's info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -3428,7 +3373,7 @@ public class GTUtility {
                 }
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this tile's fluid tank info.§r"));
+            tList.add("§cAn exception was thrown while fetching this tile's fluid tank info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3444,7 +3389,7 @@ public class GTUtility {
                 if (temp != null) tList.addAll(temp);
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this block's debug info.§r"));
+            tList.add("§cAn exception was thrown while fetching this block's debug info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3499,7 +3444,7 @@ public class GTUtility {
                 }
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this leaves' info.§r"));
+            tList.add("§cAn exception was thrown while fetching this leaves' info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3551,7 +3496,7 @@ public class GTUtility {
                 }
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this crop's info.§r"));
+            tList.add("§cAn exception was thrown while fetching this crop's info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3563,7 +3508,7 @@ public class GTUtility {
                 tList.addAll(Arrays.asList(info.getInfoData()));
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's info.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -3577,7 +3522,7 @@ public class GTUtility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's owner.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's owner.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -3620,7 +3565,7 @@ public class GTUtility {
                         + " EU");
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's energy info.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's energy info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -3635,7 +3580,7 @@ public class GTUtility {
                 if (tString != null && !tString.equals(E)) tList.add(tString);
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's covers.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's covers.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3667,7 +3612,7 @@ public class GTUtility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's progress.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's progress.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3683,7 +3628,7 @@ public class GTUtility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's upgrades.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's upgrades.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3705,7 +3650,7 @@ public class GTUtility {
                         + " EU");
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's IC2 energy info.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's IC2 energy info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3722,7 +3667,7 @@ public class GTUtility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's EU conduction info.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's EU conduction info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3750,7 +3695,7 @@ public class GTUtility {
                             + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's IC@ wrenchability.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's IC@ wrenchability.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3770,7 +3715,7 @@ public class GTUtility {
                 }
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this device's alignment info.§r"));
+            tList.add("§cAn exception was thrown while fetching this device's alignment info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -3795,7 +3740,7 @@ public class GTUtility {
                         + EnumChatFormatting.RESET);
             }
         } catch (Throwable e) {
-            tList.add(String.format("§cAn exception was thrown while fetching this reactor's info.§r"));
+            tList.add("§cAn exception was thrown while fetching this reactor's info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;
@@ -4321,14 +4266,14 @@ public class GTUtility {
                     tPageText.append((tPageText.length() == 0) ? "" : aListDelimiter)
                         .append(list[i]);
 
-                if (tPageText.length() > 0) {
+                if (tPageText.length() != 0) {
                     String tPageCounter = tTotalPages > 1 ? String.format(aPageFormatter, tPage + 1, tTotalPages) : "";
                     NBTTagString tPageTag = new NBTTagString(String.format(aPageHeader, tPageCounter) + tPageText);
                     aBook.appendTag(tPageTag);
                 }
 
                 ++tPage;
-            } while (tPageText.length() > 0);
+            } while (tPageText.length() != 0);
         }
 
         public static void addEnchantment(ItemStack aStack, Enchantment aEnchantment, int aLevel) {

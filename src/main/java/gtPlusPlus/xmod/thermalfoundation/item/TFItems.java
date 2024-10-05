@@ -7,9 +7,9 @@ import cofh.core.item.ItemBase;
 import cofh.core.item.ItemBucket;
 import cofh.core.util.energy.FurnaceFuelHandler;
 import cofh.core.util.fluid.BucketHandler;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thermalfoundation.block.TFBlocks;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
@@ -45,9 +45,8 @@ public class TFItems {
         dustPyrotheum = itemMaterial.addOreDictItem(3, "dustPyrotheum");
         dustCryotheum = itemMaterial.addOreDictItem(4, "dustCryotheum");
 
-        if (ReflectionUtils.doesClassExist("cofh.core.util.energy.FurnaceFuelHandler")) {
-            FurnaceFuelHandler.registerFuel(dustPyrotheum, 2400); // cofh.core.util.energy.FurnaceFuelHandler.registerFuel(ItemStack,
-                                                                  // int)
+        if (Mods.COFHCore.isModLoaded()) {
+            FurnaceFuelHandler.registerFuel(dustPyrotheum, 2400);
         }
 
         ItemUtils.addItemToOreDictionary(rodBlizz, "stickBlizz");

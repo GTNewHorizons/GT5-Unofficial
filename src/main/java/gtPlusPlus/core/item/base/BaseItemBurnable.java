@@ -3,8 +3,6 @@ package gtPlusPlus.core.item.base;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseItemBurnable extends CoreItem {
@@ -16,14 +14,10 @@ public class BaseItemBurnable extends CoreItem {
         super(unlocalizedName, creativeTab, stackSize, maxDmg, description);
         this.itemName = displayName;
         this.meta = meta;
-        if (oredictName != null && !oredictName.equals("")) {
+        if (oredictName != null && !oredictName.isEmpty()) {
             registerOrdictionary(oredictName);
         }
-        registerFuel(burnTime);
-    }
-
-    public void registerFuel(int burn) {
-        GTPPCore.burnables.add(new Pair<>(burn, ItemUtils.getSimpleStack(this, 1)));
+        ItemUtils.registerFuel(ItemUtils.getSimpleStack(this, 1), burnTime);
     }
 
     public final void registerOrdictionary(String name) {
