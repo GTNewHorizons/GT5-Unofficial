@@ -12,9 +12,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.*;
+import gregtech.common.blocks.ItemMachines;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -49,12 +53,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GTCoverNone;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
-import gregtech.api.util.GTGCCompat;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverSolarPanel;
@@ -262,6 +260,25 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             && (!GTMod.gregtechproxy.gt6Cable || mCheckConnections)) {
             checkConnections();
         }
+        System.out.printf("Still kicking! %f %d %d`\n", this.mThickNess, this.mAmperage, this.mVoltage);
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
+        final ItemStack handItem = aPlayer.inventory.getCurrentItem();
+        System.out.println(this.getThickNess() + ": success 1");
+        IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+        if (meta instanceof MTECable a) {
+            World world = this.getBaseMetaTileEntity().getWorld();
+            // world.getBlock((int) aX, (int) aY, (int) aZ)
+            world.setBlock(
+                this.getBaseMetaTileEntity().getXCoord(),
+                this.getBaseMetaTileEntity().getYCoord(),
+                this.getBaseMetaTileEntity().getZCoord(),
+                Blocks.air);
+            System.out.print("Success 2 !");
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     @Override
