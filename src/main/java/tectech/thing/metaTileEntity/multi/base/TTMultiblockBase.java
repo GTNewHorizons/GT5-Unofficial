@@ -419,7 +419,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
-            (getPowerFlow() * eAmpereFlow <= 0 ? "Probably uses: " : "Probably makes: ") + EnumChatFormatting.RED
+            (getPowerFlow() * eAmpereFlow <= 0 ? "Currently uses: " : "Currently generates: ") + EnumChatFormatting.RED
                 + GTUtility.formatNumbers(Math.abs(getPowerFlow()))
                 + EnumChatFormatting.RESET
                 + " EU/t at "
