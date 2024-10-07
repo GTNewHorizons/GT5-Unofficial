@@ -681,66 +681,66 @@ public class RecipeLoader {
 
             if (mask.getLensColour() == null) { // CR Recipe
 
-                if (mask == MaskList.PPIC) {
+                if (mask == MaskList.PrPIC) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            new ItemStack(LanthItemList.maskMap.get(MaskList.NPIC)),
-                            Materials.IndiumGalliumPhosphide.getDust(64))
-                        .fluidInputs(Materials.Sunnarium.getMolten(1440L))
-                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PPIC)))
+                            new ItemStack(LanthItemList.maskMap.get(MaskList.PIC)),
+                            Materials.IndiumGalliumPhosphide.getDust(2))
+                        .fluidInputs(Materials.VanadiumGallium.getMolten(288L))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
                         .addTo(UniversalChemical); // This is incredibly boring and doesn't make much sense, fix at some
                                                    // point. Maybe engrave again from precursor?
 
-                } else if (mask == MaskList.HPIC) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            new ItemStack(LanthItemList.maskMap.get(MaskList.PIC)),
-                            Materials.IndiumGalliumPhosphide.getDust(2))
-                        .fluidInputs(Materials.VanadiumGallium.getMolten(288L))
-                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.HPIC)))
-                        .duration(60 * GTRecipeBuilder.SECONDS)
-                        .eut(mask.getEngraverEUt())
-                        .requiresCleanRoom()
-                        .addTo(UniversalChemical);
-
-                } else if (mask == MaskList.UHPIC) {
-
+                } else if (mask == MaskList.PrHPIC) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             new ItemStack(LanthItemList.maskMap.get(MaskList.HPIC)),
                             Materials.IndiumGalliumPhosphide.getDust(8))
-                        .fluidInputs(Materials.Naquadah.getMolten(576L))
-                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.UHPIC)))
+                        .fluidInputs(Materials.Naquadah.getMolten(576))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrHPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
                         .addTo(UniversalChemical);
 
-                } else if (mask == MaskList.NCPU) {
+                } else if (mask == MaskList.PrNPIC) {
+
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(
+                            new ItemStack(LanthItemList.maskMap.get(MaskList.NPIC)),
+                            Materials.IndiumGalliumPhosphide.getDust(64))
+                        .fluidInputs(Materials.Sunnarium.getMolten(1440L))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNPIC)))
+                        .duration(60 * GTRecipeBuilder.SECONDS)
+                        .eut(mask.getEngraverEUt())
+                        .requiresCleanRoom()
+                        .addTo(UniversalChemical);
+
+                } else if (mask == MaskList.PrCPU) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             new ItemStack(LanthItemList.maskMap.get(MaskList.CPU)),
                             GTUtility.copyAmount(16, Ic2Items.carbonFiber))
                         .fluidInputs(Materials.Glowstone.getMolten(576L))
-                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrCPU)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
                         .addTo(UniversalChemical);
 
-                } else if (mask == MaskList.QBIT) {
+                } else if (mask == MaskList.PrNCPU) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)),
                             Materials.IndiumGalliumPhosphide.getDust(1))
                         .fluidInputs(Materials.Radon.getGas(50L))
-                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.QBIT)))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNCPU)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
@@ -749,7 +749,7 @@ public class RecipeLoader {
                     GTValues.RA.stdBuilder()
                         .itemInputs(new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)), ItemList.QuantumEye.get(2))
                         .fluidInputs(Materials.GalliumArsenide.getMolten(288L))
-                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.QBIT)))
+                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNCPU)))
                         .duration(45 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
@@ -1066,7 +1066,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Water.getFluid(3000))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(6000))
-            .itemInputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 4))
+            .itemInputs(WerkstoffMaterialPool.LanthaniumChloride.get(OrePrefixes.dust, 8))
             .itemOutputs(WerkstoffMaterialPool.LanthanumOxide.get(OrePrefixes.dust, 1))
             .duration(10 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_HV)
