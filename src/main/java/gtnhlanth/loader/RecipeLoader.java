@@ -692,8 +692,7 @@ public class RecipeLoader {
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
                         .requiresCleanRoom()
-                        .addTo(UniversalChemical); // This is incredibly boring and doesn't make much sense, fix at some
-                                                   // point. Maybe engrave again from precursor?
+                        .addTo(UniversalChemical);
 
                 } else if (mask == MaskList.PrHPIC) {
                     GTValues.RA.stdBuilder()
