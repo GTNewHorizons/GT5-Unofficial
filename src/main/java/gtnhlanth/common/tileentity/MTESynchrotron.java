@@ -770,7 +770,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
         outputRate = (int) (inputRate * getOutputRatetio(voltageFactor, this.antennaeTier));
 
         if (outputRate == 0) {
-            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_rate"));
+            stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.low_input_eut"));
             return false;
         }
 

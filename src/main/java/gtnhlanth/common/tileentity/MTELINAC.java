@@ -311,7 +311,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         mMaxProgresstime = 1 * TickTime.SECOND;
         // Consume the input tier's corresponding practical voltage instead of the maximum suggested by the logic
-        mEUt = (int) -GTValues.VP[(int) this.getInputVoltageTier()];
+        mEUt = (int) (-this.getMaxInputVoltage() / GTValues.V[(int) this.getInputVoltageTier()]
+                * GTValues.VP[(int) this.getInputVoltageTier()]);
 
         // Particle stays the same with this multiblock
         outputParticle = particleId;
