@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -74,7 +76,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     private UUID owner_uuid;
     private boolean wirelessEnabled = false;
     private boolean canUseWireless = true;
-    private long euCapacity = 0;
     private long euLastCycle = 0;
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
@@ -178,6 +179,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         if (i == 2 && containedAntimatter > 0 && catalystFluid != null) {
             createEU(containedAntimatter, catalystFluid);
         }
+        // Crash if only one fluid supplied.
+        if ((containedAntimatter == 0 & catalystFluid!= null) | (containedAntimatter > 0 & catalystFluid == null)) {
+            this.annihilationEfficiency = 0;
+            this.euLastCycle = 0;
+            this.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
+            return SimpleCheckRecipeResult
+                .ofFailurePersistOnShutdown("matter_imbalance");
+        }
 
         endRecipeProcessing();
         return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -208,6 +217,12 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
         if (wirelessEnabled && modifier >= 1.03F) {
             // Clamp the EU to the maximum of the hatches so wireless cannot bypass the limitations
+            long euCapacity = 0;
+            for (MTEHatch tHatch : getExoticEnergyHatches()) {
+                if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
+                    euCapacity += tLaserSource.maxEUStore();
+                }
+            }
             generatedEU = Math.min(generatedEU, euCapacity);
             this.euLastCycle = generatedEU;
             addEUToGlobalEnergyMap(owner_uuid, generatedEU);
@@ -224,12 +239,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.euCapacity = 0;
-        for (MTEHatch tHatch : getExoticEnergyHatches()) {
-            if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
-                this.euCapacity += tLaserSource.maxEUStore();
-            }
-        }
         return checkPiece(MAIN_NAME, 17, 41, 0);
     }
 
