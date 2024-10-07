@@ -42,17 +42,6 @@ public class MultiblockTooltipBuilder {
     private static final String TAB = "   ";
     private static final String COLON = ": ";
     private static final String SEPARATOR = ", ";
-
-    private final List<String> iLines;
-    private final List<String> sLines;
-    private final List<String> hLines;
-    private final SetMultimap<Integer, String> hBlocks;
-
-    private String[] iArray;
-    private String[] sArray;
-    private String[] hArray;
-
-    // Localized tooltips
     private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
     private static final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private static final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
@@ -78,6 +67,15 @@ public class MultiblockTooltipBuilder {
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
+
+    private List<String> iLines;
+    private List<String> sLines;
+    private List<String> hLines;
+    private SetMultimap<Integer, String> hBlocks;
+
+    private String[] iArray;
+    private String[] sArray;
+    private String[] hArray;
 
     public MultiblockTooltipBuilder() {
         iLines = new LinkedList<>();
@@ -717,6 +715,11 @@ public class MultiblockTooltipBuilder {
                 .stream()
                 .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
             .toArray(String[]::new);
+        // free memory
+        iLines = null;
+        sLines = null;
+        hLines = null;
+        hBlocks = null;
         return this;
     }
 
