@@ -195,10 +195,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     protected static final String STRUCTURE_PIECE_SECOND_RING_AIR = "second_ring_air";
     protected static final String STRUCTURE_PIECE_THIRD_RING = "third_ring";
     protected static final String STRUCTURE_PIECE_THIRD_RING_AIR = "third_ring_air";
-    private static final String SCANNER_INFO_BAR = EnumChatFormatting.BLUE
+    private static final String SCANNER_INFO_BAR = EnumChatFormatting.BLUE.toString() + EnumChatFormatting.STRIKETHROUGH
         + "--------------------------------------------";
-    private static final String TOOLTIP_BAR = EnumChatFormatting.AQUA
-        + "--------------------------------------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
         : GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
 
@@ -3068,7 +3066,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Stellar Forge")
             .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo("Controller block for the Godforge, a massive structure harnessing the thermal,")
             .addInfo("gravitational and kinetic energy of a stabilised neutron star for material processing.")
             .addInfo(
@@ -3078,7 +3076,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + "which utilize the star to energize materials")
             .addInfo("to varying degrees, ranging from regular smelting to matter degeneration.")
             .addInfo("EU requirements for all modules are handled via wireless energy directly.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo(
                 "This multiblock has an " + EnumChatFormatting.GOLD
                     + "extensive upgrade tree "
@@ -3096,12 +3094,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + EnumChatFormatting.GRAY
                     + "These upgrades can be unlocked by reaching")
             .addInfo("certain milestones and/or spending materials.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo(
                 EnumChatFormatting.GREEN
                     + "Clicking on the logo in the controller gui opens an extensive information window,")
             .addInfo("explaining everything there is to know about this multiblock.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .beginStructureBlock(127, 29, 186, false)
             .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
@@ -3201,11 +3199,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + " Graviton Flow Modulator")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "36" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Hatch")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus (ME)")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .toolTipFinisher(CommonValues.GODFORGE_MARK);
         return tt;
     }

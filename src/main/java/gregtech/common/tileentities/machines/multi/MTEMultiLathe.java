@@ -17,7 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_G
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -231,16 +230,10 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         return rTexture;
     }
 
-    private static final String TOOLTIP_BAR = GOLD
-        + "---------------------------------------------------------------------------------------";
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Lathe")
-            .addInfo(TOOLTIP_BAR)
-            .addInfo("Controller Block for the Industrial Precision Lathe.")
-            .addInfo(TOOLTIP_BAR)
             .addInfo(BLUE + "Allows more parallel recipes based on item pipe casing parallel and voltage.")
             .addInfo("Max Parallel Recipes = Item Pipe Casing Parallel + (Voltage Tier * 2).")
             .addInfo(BLUE + "Increases processing speed based on item pipe casing speed and voltage.")

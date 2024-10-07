@@ -25,6 +25,7 @@ import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.STRIKETHROUGH;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.math.BigInteger;
@@ -101,8 +102,6 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     public static final boolean EOH_DEBUG_MODE = false;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
     private static final double SPACETIME_FAILURE_BASE = 2;
-    private static final String TOOLTIP_BAR = GOLD
-        + "---------------------------------------------------------------------------------------";
 
     // Region variables.
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
@@ -973,12 +972,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Spacetime Manipulator, EOH")
-            .addInfo(TOOLTIP_BAR)
             .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
             .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
             .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
             .addInfo("your wireless EU network.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
             .addInfo("recipe once per second. It will store this internally, you can see the totals by")
             .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
@@ -1032,24 +1030,24 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + "%"
                     + GRAY
                     + " per tier (additive).")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance.")
             .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
             .addInfo(GREEN + "Overflow ratio = (Stored fluid / Recipe requirement) - 1")
             .addInfo(GREEN + "Adjustment value = 1 - exp(-(30 * Overflow ratio)^2)")
             .addInfo("The Adjustment value is then subtracted from the total yield and recipe chance.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
             .addInfo("at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the")
             .addInfo("yield. Failure fluid is exempt.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo("This multiblock can only output to ME output buses/hatches.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus.")
             .addInfo(
                 "E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected.")
             .addInfo("All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo(
                 "If a recipe fails the EOH will output " + GREEN
                     + "Success chance * "
@@ -1062,7 +1060,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addInfo(
                 MaterialsUEVplus.SpaceTime.getLocalizedNameForItem("%material")
                     + " instead of fluid/item outputs and output as much EU as a successful recipe.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo(
                 "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus.")
             .addInfo(
@@ -1097,7 +1095,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + GRAY
                     + ".")
             .addInfo("The success or failure of each parallel is determined independently.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator()
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
             .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block.")
             .addSeparator()
@@ -1116,12 +1114,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Stabilisation Field Generator.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "138" + EnumChatFormatting.GRAY + " Spacetime Compression Field Generator.")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 2 + EnumChatFormatting.GRAY + " input hatches.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output hatch.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .beginStructureBlock(33, 33, 33, false)
             .toolTipFinisher(AuthorColen.substring(8) + EnumChatFormatting.GRAY + "&" + CommonValues.TEC_MARK_EM);
         return tt;
@@ -1548,7 +1546,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     @Override
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        str.add(GOLD + "---------------- Control Block Statistics ----------------");
+        str.add(
+            GOLD.toString() + STRIKETHROUGH
+                + "-------------"
+                + RESET
+                + GOLD
+                + " Control Block Statistics "
+                + STRIKETHROUGH
+                + "-------------");
         if (spacetimeCompressionFieldMetadata < 0) {
             str.add("Spacetime Compression Field Grade: None");
         } else {
@@ -1586,12 +1591,26 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + RESET
                     + ")");
         }
-        str.add(GOLD + "----------------- Internal Storage ----------------");
+        str.add(
+            GOLD.toString() + STRIKETHROUGH
+                + "-----------------"
+                + RESET
+                + GOLD
+                + " Internal Storage "
+                + STRIKETHROUGH
+                + "----------------");
         validFluidMap.forEach(
             (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
         str.add(BLUE + "Astral Array Fabricators" + RESET + " : " + RED + formatNumbers(astralArrayAmount));
         if (recipeRunning) {
-            str.add(GOLD + "---------------------- Other Stats ---------------");
+            str.add(
+                GOLD.toString() + STRIKETHROUGH
+                    + "-----------------"
+                    + RESET
+                    + GOLD
+                    + " Other Stats "
+                    + STRIKETHROUGH
+                    + "-----------------");
             str.add("Recipe Success Chance: " + RED + formatNumbers(100 * successChance) + RESET + "%");
             str.add("Recipe Yield: " + RED + formatNumbers(100 * yield) + RESET + "%");
             str.add(
@@ -1637,7 +1656,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
             str.add("Estimated EU/t: " + RED + toStandardForm(euPerTick) + RESET + " EU/t");
         }
-        str.add(GOLD + "-----------------------------------------------------");
+        str.add(GOLD.toString() + STRIKETHROUGH + "-----------------------------------------------------");
         return str.toArray(new String[0]);
     }
 

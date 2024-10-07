@@ -122,13 +122,12 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add a separator line like this:<br>
-     * -----------------------------------------
+     * Add an empty line
      *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator() {
-        iLines.add("-----------------------------------------");
+        iLines.add(" ");
         return this;
     }
 

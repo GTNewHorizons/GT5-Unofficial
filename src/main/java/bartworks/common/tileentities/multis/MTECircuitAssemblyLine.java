@@ -162,19 +162,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addInfo("Controller block for the Circuit Assembly Line")
             .addInfo("Change Mode with Screwdriver")
             .addInfo("Does not lose efficiency when overclocked")
-            .addInfo(
-                "--------- " + EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("chat.cal.mode.0")
-                    + EnumChatFormatting.GRAY
-                    + " --------")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.0") + ":")
             .addInfo("Imprint this machine with a Circuit Imprint,")
             .addInfo("by putting the imprint in the controller")
             .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
-            .addInfo(
-                "--------- " + EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("chat.cal.mode.1")
-                    + EnumChatFormatting.GRAY
-                    + " --------")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.1") + ":")
             .addInfo(
                 "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
                     + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH

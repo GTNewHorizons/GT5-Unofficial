@@ -544,7 +544,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             "Maintenance Status: " + ((getRepairStatus() == getIdealStatus())
                 ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
                 : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
-        ll.add("---------------------------------------------");
+        ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
 
         return ll.toArray(new String[0]);
     }

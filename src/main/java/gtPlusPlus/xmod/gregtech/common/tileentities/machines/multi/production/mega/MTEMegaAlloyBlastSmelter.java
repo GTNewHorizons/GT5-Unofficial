@@ -342,7 +342,12 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 .getEUCapacity();
         }
 
-        return new String[] { "------------ Critical Information ------------",
+        return new String[] {
+            EnumChatFormatting.STRIKETHROUGH + "------------"
+                + EnumChatFormatting.RESET
+                + " Critical Information "
+                + EnumChatFormatting.STRIKETHROUGH
+                + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime)
@@ -383,7 +388,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             "Parallels: " + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET,
             "Speed Bonus: " + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET,
             "Energy Discount: " + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET,
-            "-----------------------------------------" };
+            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
     @Override

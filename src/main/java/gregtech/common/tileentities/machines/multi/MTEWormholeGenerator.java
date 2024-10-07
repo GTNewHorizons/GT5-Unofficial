@@ -32,6 +32,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -967,15 +968,12 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        data.add("-----------------------");
+        data.add(EnumChatFormatting.STRIKETHROUGH + "-----------------------");
         data.add("Wormhole Generator Info");
 
         if (mStructureBadGlassTier) {
             data.add("§cStructure errors:§r");
-
-            if (mStructureBadGlassTier) {
-                data.add("§cGlass tier must be greater than or equal to the energy hatch tiers.§r");
-            }
+            data.add("§cGlass tier must be greater than or equal to the energy hatch tiers.§r");
         }
 
         if (mLink == null) {
@@ -1049,7 +1047,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             // spotless:on
         }
 
-        data.add("-----------------------");
+        data.add(EnumChatFormatting.STRIKETHROUGH + "-----------------------");
 
         return data.toArray(new String[0]);
     }

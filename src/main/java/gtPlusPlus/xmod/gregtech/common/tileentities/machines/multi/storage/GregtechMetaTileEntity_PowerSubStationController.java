@@ -704,7 +704,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 + errorCode
                 + EnumChatFormatting.RESET
                 + "]",
-            "----------------------", "Stats for Nerds",
+            EnumChatFormatting.STRIKETHROUGH + "----------------------", "Stats for Nerds",
             "Average Input: " + EnumChatFormatting.BLUE
                 + GTUtility.formatNumbers(this.getAverageEuAdded())
                 + EnumChatFormatting.RESET
