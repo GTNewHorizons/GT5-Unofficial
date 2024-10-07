@@ -121,12 +121,11 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInfo("in the parallel menu. All inputs will scale, except time.")
             .addInfo("All EU is deducted from wireless EU networks only.")
             .addInfo(AuthorColen)
-            .addSeparator()
             .beginStructureBlock(5, 7, 5, false)
             .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
             .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
             .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

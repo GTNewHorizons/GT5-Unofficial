@@ -99,7 +99,6 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addInfo("Steam production requires the SOFC to heat up completely first")
             .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
             .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
-            .addSeparator()
             .beginStructureBlock(3, 3, 5, false)
             .addController("Front center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 12, false)
@@ -110,7 +109,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addInputHatch("Fuel, any casing")
             .addInputHatch("Oxygen, any casing")
             .addOutputHatch("Superheated Steam, any casing")
-            .toolTipFinisher("KekzTech");
+            .toolTipFinisher();
         return tt;
     }
 

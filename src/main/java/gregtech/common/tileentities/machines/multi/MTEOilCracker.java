@@ -121,7 +121,6 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             .addInfo("Steam - Outputs 50% more cracked fluid")
             .addInfo("(Values compared to cracking in the Chemical Reactor)")
             .addInfo("Place the appropriate circuit in the controller or an input bus")
-            .addSeparator()
             .beginStructureBlock(5, 3, 3, true)
             .addController("Front center")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 18, 21, false)
@@ -135,7 +134,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             .addStructureInfo("Input/Output Hatches must be on opposite sides!")
             .addInputBus("Any middle ring casing, optional for programmed circuit automation")
             .addStructureHint("GT5U.cracker.io_side")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

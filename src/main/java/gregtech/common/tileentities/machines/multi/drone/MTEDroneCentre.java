@@ -198,8 +198,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addCasingInfoExactly("Any tiered glass", 6, false)
             .addInputBus("Any Titanium Casing", 1)
             .addStructureInfo("No maintenance hatch needed")
-            .addSeparator()
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -245,7 +245,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addInfo(DARK_AQUA + "reduces processing time to 57% of the recipe time, making the machine 175% faster.")
             .addInfo(BLUE + "Only uses 80% of the EU/T normally required.")
             .addInfo(AuthorVolence)
-            .addSeparator()
             .beginStructureBlock(7, 5, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
@@ -256,7 +255,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
             .addMufflerHatch("Any Solid Steel Casing", 1)
             .addOtherStructurePart("4 Item Pipe Casings", "Center of the glass", 4)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

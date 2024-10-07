@@ -148,7 +148,6 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
             .addInfo("Outputs 1L of Steam per 1L of SC Steam as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfo("SC Turbine Casing", 24)
@@ -156,7 +155,7 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Supercritical Fluid, Side centered", 2)
             .addOutputHatch("Superheated Steam, Side centered", 3)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -5,7 +5,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
-import static gregtech.api.enums.GTValues.AuthorEvgenWarGold;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -325,7 +325,6 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .addSeparator()
             .beginStructureBlock(6, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -351,8 +350,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
                     + " Steel Block"
                     + EnumChatFormatting.RED
                     + " from GregTech")
-            .addStructureInfo("")
-            .toolTipFinisher(AuthorEvgenWarGold);
+            .toolTipFinisher(GTValues.AuthorEvgenWarGold);
         return tt;
     }
 

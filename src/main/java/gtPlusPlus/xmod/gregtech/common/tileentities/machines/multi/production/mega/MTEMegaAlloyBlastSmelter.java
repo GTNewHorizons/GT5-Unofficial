@@ -315,16 +315,10 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY)
             .beginStructureBlock(11, 20, 11, false)
-            .addStructureInfo("This structure is too complex! See schematic for details.")
             .addMaintenanceHatch("Around the controller", 2)
             .addOtherStructurePart("Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch", "Bottom Casing", 1)
             .addMufflerHatch("1 in the center of the top layer", 3)
-            .toolTipFinisher(
-                EnumChatFormatting.AQUA + "MadMan310 "
-                    + EnumChatFormatting.GRAY
-                    + "via "
-                    + EnumChatFormatting.RED
-                    + "GT++");
+            .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
 

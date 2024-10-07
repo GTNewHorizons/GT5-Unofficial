@@ -262,7 +262,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Pulse Manipulators: Recipe Tier Allowed (check NEI for the tier of each recipe)")
             .addInfo("Shielding Cores: Focusing Tier (equal to or higher than recipe tier to allow focus)")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(15, 21, 15, true)
             .addController("Bottom Center")
             .addCasingInfoMin("Bulk Production Frame", 80, false)
@@ -288,11 +287,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     + EnumChatFormatting.GRAY
                     + " side of Controller")
             .toolTipFinisher(
-                GTValues.AuthorBlueWeabo + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GREEN
-                    + " + Steelux"
-                    + EnumChatFormatting.RESET
-                    + " - [GT++]");
+                GTValues.AuthorBlueWeabo + EnumChatFormatting.RESET + " & " + EnumChatFormatting.GREEN + "Steelux");
         return tt;
     }
 

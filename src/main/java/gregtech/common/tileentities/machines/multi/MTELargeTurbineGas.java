@@ -62,7 +62,6 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
             .addInfo("See the Advanced Large Gas Turbine as the next, uncapped, option")
             // .addInfo("The excess fuel that gets consumed will be voided!")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Stainless Steel Turbine Casing", 8, 30, false)
@@ -71,7 +70,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
             .addMufflerHatch("Side centered", 2)
             .addInputHatch("Gas Fuel, Side centered", 2)
             .addOtherStructurePart("Air", "3x3 area in front of controller")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -1,6 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION3;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION3_GLOW;
 
@@ -75,9 +74,6 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
                     + "Tech"
                     + EnumChatFormatting.GRAY
                     + " Energy/Laser Hatches!")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .addCasingInfo("Fusion Machine Casing MK II", 1664)
             .addCasingInfo("Advanced Compact Fusion Coil", 560)
             .addCasingInfo("Neutronium Frame Box", 128)
@@ -90,7 +86,7 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
                 "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

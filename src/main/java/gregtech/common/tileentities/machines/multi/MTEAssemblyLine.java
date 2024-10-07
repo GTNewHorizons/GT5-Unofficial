@@ -136,7 +136,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addInfo("Used to make complex machine parts (LuV+)")
             .addInfo("Does not make Assembler items")
             .addInfo("Recipe tier is at most Energy Hatch tier + 1.")
-            .addSeparator()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
@@ -153,7 +152,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addInputHatch("Any layer 1 casing", 3)
             .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
             .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

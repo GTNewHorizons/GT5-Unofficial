@@ -210,7 +210,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     + " & "
                     + EnumChatFormatting.DARK_AQUA
                     + "TheEpicGamer274")
-            .addSeparator()
             .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
             .addCasingInfoMin("Solidifier Casing", 146, false)
@@ -222,7 +221,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

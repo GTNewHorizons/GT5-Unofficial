@@ -367,8 +367,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addOutputHatch(
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
                 1)
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

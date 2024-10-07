@@ -46,6 +46,7 @@ public class Variables {
         return b.toString();
     }
 
+    @Deprecated
     public static final String StructureHologram = "To see the structure, use a " + EnumChatFormatting.BLUE
         + "Structure"
         + EnumChatFormatting.DARK_BLUE

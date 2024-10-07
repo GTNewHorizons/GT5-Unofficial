@@ -82,7 +82,6 @@ public class MTEFusionComputer2 extends MTEFusionComputer {
             .addInfo("8192EU/t and 20M EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
-            .addSeparator()
             .beginStructureBlock(15, 3, 15, false)
             .addController("See diagram when placed")
             .addCasingInfoRange("Fusion Machine Casing", 79, 123, false)
@@ -92,7 +91,7 @@ public class MTEFusionComputer2 extends MTEFusionComputer {
             .addInputHatch("2-16, Specified casings", 1)
             .addOutputHatch("1-16, Specified casings", 3)
             .addStructureInfo("ALL Hatches must be ZPM or better")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

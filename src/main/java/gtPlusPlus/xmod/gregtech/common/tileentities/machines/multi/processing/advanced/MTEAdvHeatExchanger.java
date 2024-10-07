@@ -41,7 +41,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -118,7 +117,6 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             .addInfo("Lava: 32,000 L/s, maximum 64,000 L/s, max output 5,120,000 SH Steam/s")
             .addInfo("A circuit in the controller lowers the SH Steam threshold and efficiency")
             .addInfo("3.75% reduction and 1.5% efficiency loss per circuit config over 1")
-            .addSeparator()
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front bottom")
             .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
@@ -128,7 +126,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             .addInputHatch("Distilled water, any bottom layer casing", 1)
             .addOutputHatch("Cold fluid, top center", 3)
             .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

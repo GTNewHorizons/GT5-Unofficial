@@ -34,7 +34,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -71,7 +70,6 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
             .addInfo("Only uses 80% of the EU/t normally required")
             .addInfo("Processes eight items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 2, 3, false)
             .addController("Front Center")
             .addCasingInfoMin("Thermal Processing Casings/Noise Hazard Sign Blocks", 8, false)
@@ -80,7 +78,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
             .addEnergyHatch("Bottom Casing", 1)
             .addMaintenanceHatch("Bottom Casing", 1)
             .addMufflerHatch("Bottom Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

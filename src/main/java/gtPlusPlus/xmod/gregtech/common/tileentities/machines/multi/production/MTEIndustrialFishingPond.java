@@ -50,7 +50,6 @@ import gregtech.api.util.ReflectionUtil;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -110,7 +109,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             .addInfo("Need to be filled with water.")
             .addInfo("Will automatically fill water from input hatch.")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Aquatic Casings", 64, false)
@@ -120,7 +118,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

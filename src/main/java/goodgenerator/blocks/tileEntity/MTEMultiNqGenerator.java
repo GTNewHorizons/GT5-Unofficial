@@ -2,7 +2,6 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.main.GGConfigLoader.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -430,16 +429,13 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             .addInfo(String.format("Molten Naquadah | %dx power | 20 L/s", ExcitedLiquidCoe[2]))
             .addInfo(String.format("Molten Atomic Separation Catalyst | %dx power | 20 L/s", ExcitedLiquidCoe[1]))
             .addInfo(String.format("Spatially Enlarged Fluid | %dx power | 20 L/s", ExcitedLiquidCoe[0]))
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom")
             .addDynamoHatch("Any bottom layer casing, only accept ONE!")
             .addInputHatch("Any bottom layer casing")
             .addOutputHatch("Any bottom layer casing")
             .addMaintenanceHatch("Any bottom layer casing")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

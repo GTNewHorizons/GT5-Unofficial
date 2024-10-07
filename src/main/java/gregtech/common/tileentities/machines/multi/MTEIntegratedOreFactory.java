@@ -195,7 +195,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Processing time is dependent on mode.")
             .addInfo("Use a screwdriver to switch mode.")
             .addInfo("Sneak click with screwdriver to void the stone dust.")
-            .addSeparator()
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
             .addStructureInfo("128 Advanced Iridium Plated Machine Casing")
@@ -210,7 +209,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
             .addMufflerHatch("Output Pollution", 3)
             .addOutputBus("Output products", 4)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

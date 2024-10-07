@@ -202,7 +202,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addInfo(BLUE + "Energy consumption = Recipe Consumption * (12 - Pipe Casing Tier) / 12.")
             .addInfo("Each coil level makes the machine 25% faster than singleblock machines of the same voltage.")
             .addInfo(AuthorVolence)
-            .addSeparator()
             .beginStructureBlock(7, 7, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Pressure Containment Casings", 128, false)
@@ -215,7 +214,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addEnergyHatch("Any of the Pressure Containment Casings", 1)
             .addMaintenanceHatch("Any of the Pressure Containment Casings", 1)
             .addMufflerHatch("Any of the Pressure Containment Casings", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

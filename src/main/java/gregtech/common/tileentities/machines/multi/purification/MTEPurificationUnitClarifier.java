@@ -208,7 +208,6 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
             .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(11, 4, 11, false)
-            .addSeparator()
             .addCasingInfoRangeColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -241,8 +240,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addStructureInfo("Requires water to be placed in the structure.")
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

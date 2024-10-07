@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -62,6 +61,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
@@ -1098,8 +1098,6 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addSeparator()
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
             .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block.")
-            .addSeparator()
-            .addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spatial Structure Casing.")
             .addStructureInfo(
@@ -1121,7 +1119,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
             .addStructureInfo("")
             .beginStructureBlock(33, 33, 33, false)
-            .toolTipFinisher(AuthorColen.substring(8) + EnumChatFormatting.GRAY + "&" + CommonValues.TEC_MARK_EM);
+            .toolTipFinisher(GTValues.AuthorColen);
         return tt;
     }
 

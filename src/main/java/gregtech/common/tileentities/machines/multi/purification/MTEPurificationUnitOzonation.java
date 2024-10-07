@@ -241,7 +241,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOtherStructurePart("Input Hatch (Ozone)", EnumChatFormatting.GOLD + "1", 2)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

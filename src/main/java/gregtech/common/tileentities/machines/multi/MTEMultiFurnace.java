@@ -98,7 +98,6 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addInfo("Smelts up to 8-8192 items at once")
             .addInfo("Items smelted increases with coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front bottom")
             .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
@@ -108,7 +107,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addMufflerHatch("Top Middle", 2)
             .addInputBus("Any bottom casing", 1)
             .addOutputBus("Any bottom casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

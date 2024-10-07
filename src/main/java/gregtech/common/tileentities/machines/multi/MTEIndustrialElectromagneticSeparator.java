@@ -223,7 +223,6 @@ public class MTEIndustrialElectromagneticSeparator
                     + "Ba"
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "ps")
-            .addSeparator()
             .beginStructureBlock(7, 6, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
@@ -234,7 +233,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

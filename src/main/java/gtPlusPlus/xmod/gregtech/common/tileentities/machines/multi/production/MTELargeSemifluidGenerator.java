@@ -41,7 +41,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemifluidGenerator>
@@ -74,7 +73,6 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             .addInfo("Default: Produces 2048EU/t at 100% efficiency")
             .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front Center")
             .addCasingInfoMin("Stable Titanium Machine Casing", 16, false)
@@ -84,7 +82,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
             .addDynamoHatch("Back Center", 2)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

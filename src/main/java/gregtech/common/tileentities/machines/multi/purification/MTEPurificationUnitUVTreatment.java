@@ -303,8 +303,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             .addOtherStructurePart("Input Hatch, Output Hatch", EnumChatFormatting.GOLD + "1+", 1)
             .addOtherStructurePart("Lens Housing", EnumChatFormatting.GOLD + "1", 2)
             .addOtherStructurePart("Lens Indicator", EnumChatFormatting.GOLD + "1", 3)
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

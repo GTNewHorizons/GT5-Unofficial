@@ -43,7 +43,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import tectech.util.CommonValues;
 
 public class MTESmeltingModule extends MTEBaseModule {
 
@@ -239,9 +238,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
             .addInfo("The desired method of processing can be selected in the gui.")
             .addInfo("This module is specialized towards speed and high heat levels.")
-            .addSeparator()
             .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY
@@ -254,7 +251,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(CommonValues.GODFORGE_MARK);
+            .toolTipFinisher();
         return tt;
     }
 

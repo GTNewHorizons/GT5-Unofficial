@@ -65,7 +65,6 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
             .addInfo("Outputs Distilled Water as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Turbine Casing", 8, 31, false)
@@ -73,7 +72,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Steam, Side centered", 2)
             .addOutputHatch("Distilled Water, Side centered", 2)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

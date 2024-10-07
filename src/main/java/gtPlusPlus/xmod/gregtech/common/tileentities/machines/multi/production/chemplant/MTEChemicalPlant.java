@@ -135,7 +135,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addInfo("Controller Block for the Chemical Plant")
             .addInfo("Heavy Industry, now right at your doorstep!")
             .addInfo("Please read the user manual for more information on construction and usage")
-            .addSeparator()
             .addController("Bottom Center")
             .addStructureHint("Catalyst Housing", 1)
             .addInputBus("Bottom Casing", 1)
@@ -148,7 +147,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addSubChannelUsage("machine", "tier machine casing")
             .addSubChannelUsage("coil", "heating coil blocks")
             .addSubChannelUsage("pipe", "pipe casing blocks")
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

@@ -19,7 +19,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.Variables.buildAuthorList;
 
 import java.util.Arrays;
@@ -49,7 +48,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.BlockLoader;
 import kubatech.loaders.DEFCRecipes;
@@ -145,8 +143,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addInfo("Machine can be overclocked by using casings above the recipe tier:")
             .addInfo("Recipe time is divided by number of tiers above the recipe")
             .addInfo("Normal EU OC still applies !")
-            .addInfo(StructureHologram)
-            .addSeparator()
             .beginStructureBlock(5, 10, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Naquadah Alloy Fusion Casing", 19, false)
@@ -161,7 +157,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addOutputHatch("Any bottom casing", 1)
             .addEnergyHatch("Any bottom casing", 1)
             .addMaintenanceHatch("Any bottom casing", 1)
-            .toolTipFinisher(Tags.MODNAME);
+            .toolTipFinisher();
         return tt;
     }
 

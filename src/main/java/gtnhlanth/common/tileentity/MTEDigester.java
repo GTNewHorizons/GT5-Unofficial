@@ -208,8 +208,6 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         tt.addMachineType("Digester")
             .addInfo("Controller block for the Digester")
             .addInfo("Input ores and fluid, output water.")
-            .addInfo(DescTextLocalization.BLUEPRINT_INFO)
-            .addSeparator()
             .addController("Front bottom")
             .addInputHatch("Hint block with dot 1")
             .addInputBus("Hint block with dot 1")
@@ -217,7 +215,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
             .addOutputBus("Hint block with dot 1")
             .addMaintenanceHatch("Hint block with dot 1")
             .addMufflerHatch("Hint block with dot 1")
-            .toolTipFinisher("GTNH: Lanthanides");
+            .toolTipFinisher();
         return tt;
     }
 

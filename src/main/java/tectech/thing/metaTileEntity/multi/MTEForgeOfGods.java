@@ -118,7 +118,6 @@ import tectech.thing.metaTileEntity.multi.godforge_modules.MTEExoticModule;
 import tectech.thing.metaTileEntity.multi.godforge_modules.MTEMoltenModule;
 import tectech.thing.metaTileEntity.multi.godforge_modules.MTEPlasmaModule;
 import tectech.thing.metaTileEntity.multi.godforge_modules.MTESmeltingModule;
-import tectech.util.CommonValues;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
@@ -3099,9 +3098,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 EnumChatFormatting.GREEN
                     + "Clicking on the logo in the controller gui opens an extensive information window,")
             .addInfo("explaining everything there is to know about this multiblock.")
-            .addSeparator()
             .beginStructureBlock(127, 29, 186, false)
-            .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
                 "Total blocks needed for the structure with " + EnumChatFormatting.DARK_PURPLE
                     + "1"
@@ -3203,8 +3200,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Hatch")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus (ME)")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
-            .addStructureInfo("")
-            .toolTipFinisher(CommonValues.GODFORGE_MARK);
+            .toolTipFinisher();
         return tt;
     }
 

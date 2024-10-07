@@ -1,6 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
 import net.minecraft.block.Block;
@@ -74,9 +73,6 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
                     + "Tech"
                     + EnumChatFormatting.GRAY
                     + " Energy/Laser Hatches!")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .addCasingInfo("Fusion Machine Casing MK III", 1664)
             .addCasingInfo("Compact Fusion Coil MK-II Prototype", 560)
             .addCasingInfo("Infinity Catalyst Frame Box", 128)
@@ -89,7 +85,7 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
                 "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.multis;
 
 import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -272,7 +271,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInfo("Valid blocks: Neutronium, Infinity, Transcendent Metal, Spacetime, Universium")
             .addInfo("Minimum allowed energy hatch tier is one below recipe tier")
             .addInfo("Supports " + TT + " energy hatches")
-            .addSeparator()
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front 3rd layer center")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
@@ -285,7 +283,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInputHatch("Any bottom casing", 1)
             .addOutputBus("Any bottom casing", 1)
             .addEnergyHatch("Bottom middle and/or top middle", 2)
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 

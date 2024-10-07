@@ -70,7 +70,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.MovingAverageLong;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -128,14 +127,13 @@ public class GregtechMetaTileEntity_PowerSubStationController
             .addInfo("Hatches can be placed nearly anywhere")
             .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
             .addInfo("Supports voltages >= UHV using MAX tier components.")
-            .addSeparator()
             .addController("Bottom Center")
             .addCasingInfoMin("Sub-Station External Casings", 10, false)
             .addDynamoHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addSubChannelUsage("capacitor", "Vanadium Capacitor Cell Tier")
             .addSubChannelUsage("height", "Height of structure")
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

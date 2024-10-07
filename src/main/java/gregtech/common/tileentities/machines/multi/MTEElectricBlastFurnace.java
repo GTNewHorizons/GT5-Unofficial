@@ -126,7 +126,6 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
             .addInfo("Additionally gives +100K for every tier past MV")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
@@ -140,7 +139,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addOutputHatch("Fluid outputs, Any bottom layer casing")
             .addOutputHatch("Pollution gases (CO2/CO/SO2), Any top layer casing", 1)
             .addStructureInfo("Pollution gas output amount scales with Muffler Hatch tier")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

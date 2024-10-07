@@ -40,7 +40,6 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static kubatech.api.Variables.Author;
-import static kubatech.api.Variables.StructureHologram;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -279,8 +278,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("When in ritual mode and the Well Of Suffering ritual is built directly centered on the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
-            .addInfo(StructureHologram)
-            .addSeparator()
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
@@ -292,7 +289,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addOutputHatch("Any bottom casing", 1)
             .addEnergyHatch("Any bottom casing", 1)
             .addMaintenanceHatch("Any bottom casing", 1)
-            .toolTipFinisher(Tags.MODNAME);
+            .toolTipFinisher();
         return tt;
     }
 

@@ -2,7 +2,6 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.ArrayList;
@@ -201,15 +200,12 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                     + EnumChatFormatting.GRAY
                     + ".")
             .addInfo("The efficiency is up to 150%.")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .beginStructureBlock(5, 4, 9, false)
             .addMaintenanceHatch("Hint block with dot 1")
             .addMufflerHatch("Hint block with dot 2 (fill all slots with mufflers)")
             .addInputHatch("Hint block with dot 3 (fill all slots with input hatches)")
             .addDynamoHatch("Hint block with dot 4")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

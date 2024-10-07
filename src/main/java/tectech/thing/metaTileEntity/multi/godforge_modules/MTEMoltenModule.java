@@ -27,7 +27,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.util.CommonValues;
 
 public class MTEMoltenModule extends MTEBaseModule {
 
@@ -159,9 +158,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
             .addInfo("as a regular solid instead.")
             .addInfo("This module is specialized towards parallel processing.")
-            .addSeparator()
             .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY
@@ -175,7 +172,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(CommonValues.GODFORGE_MARK);
+            .toolTipFinisher();
         return tt;
     }
 

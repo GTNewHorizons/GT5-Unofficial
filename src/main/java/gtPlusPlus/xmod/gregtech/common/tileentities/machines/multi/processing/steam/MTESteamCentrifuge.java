@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.s
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.GTValues.AuthorEvgenWarGold;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
@@ -34,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -331,7 +331,6 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -355,8 +354,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
             .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Steel Firebox Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addStructureInfo("")
-            .toolTipFinisher(AuthorEvgenWarGold);
+            .toolTipFinisher(GTValues.AuthorEvgenWarGold);
         return tt;
     }
 

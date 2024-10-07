@@ -33,7 +33,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static kubatech.api.Variables.Author;
-import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
 import java.io.IOException;
@@ -115,7 +114,6 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import kubatech.Tags;
 import kubatech.api.EIGDynamicInventory;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
@@ -317,9 +315,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addInfo("[IC2] You need to also input block that is required under the crop")
             .addInfo("Output mode: machine will take planted seeds and output them");
         EIGModes.addTooltipInfo(tt);
-        tt.addInfo(StructureHologram)
-            .addSeparator()
-            .beginStructureBlock(5, 6, 5, false)
+        tt.beginStructureBlock(5, 6, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 70, false)
             .addOtherStructurePart("Borosilicate Glass", "Hollow two middle layers")
@@ -332,7 +328,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addOutputBus("Any casing (Except inner bottom ones)", 1)
             .addInputHatch("Any casing (Except inner bottom ones)", 1)
             .addEnergyHatch("Any casing (Except inner bottom ones)", 1)
-            .toolTipFinisher(Tags.MODNAME);
+            .toolTipFinisher();
         return tt;
     }
 

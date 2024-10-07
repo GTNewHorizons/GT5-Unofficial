@@ -96,7 +96,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addInfo("Time required to reach full efficiency is proportional to")
             .addInfo("the height of empty space within")
             .addInfo("Machines that cause pollution aren't allowed to be put in.")
-            .addSeparator()
             .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
             .addController("Top center")
             .addCasingInfoRange("Plascrete", 20, 1007, false)
@@ -113,7 +112,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addStructureInfo("Up to 10 Machine Hulls for Item & Energy transfer through walls")
             .addStructureInfo("You can also use Diodes for more power")
             .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

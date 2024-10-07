@@ -1,6 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 
@@ -73,9 +72,6 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
                     + "Tech"
                     + EnumChatFormatting.GRAY
                     + " Energy/Laser Hatches!")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .addCasingInfo("LuV Machine Casing", 1664)
             .addCasingInfo("Ameliorated Superconduct Coil", 560)
             .addCasingInfo("Naquadah Alloy Frame Boxes", 128)
@@ -88,7 +84,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
                 "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

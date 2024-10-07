@@ -77,7 +77,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -135,7 +134,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             .addInfo("Energy input tier multiplies output further")
             .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoMin(mCasingName, 8, false)
@@ -146,7 +144,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
             .addMufflerHatch("Any casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

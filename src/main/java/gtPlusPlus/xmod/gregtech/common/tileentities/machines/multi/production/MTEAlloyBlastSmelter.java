@@ -37,7 +37,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -84,7 +83,6 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
             .addInfo("Accepts only one Energy Hatch")
             .addInfo("Circuit for recipe goes in the Input Bus or GUI slot")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 4, 3, true)
             .addController("Bottom Center")
             .addCasingInfoMin("Blast Smelter Casings", 5, false)
@@ -95,7 +93,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

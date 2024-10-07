@@ -197,7 +197,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         tt.addInfo("Requires (length + 1)kL/s of coolant")
-            .addSeparator()
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController("Front bottom")
             .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 325, 1285, false)
@@ -213,8 +212,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addOutputHatch(addDotText(2))
             .addOtherStructurePart("Beamline Input Hatch", addDotText(3))
             .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
-
-            .toolTipFinisher("GTNH: Lanthanides");
+            .toolTipFinisher();
         return tt;
     }
 

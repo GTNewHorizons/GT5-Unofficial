@@ -486,7 +486,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "Degasser Control Hatch",
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
                 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

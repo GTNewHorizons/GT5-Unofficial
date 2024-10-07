@@ -808,8 +808,6 @@ gt.blockmachines.debug.tt.writer.desc.2=ABC轴沿机器正面确定
 tt.keyword.ID=ID
 #Example: 32EU at 1A
 tt.keyword.at=
-# Structure is too complex
-tt.keyword.Structure.StructureTooComplex=结构太复杂了！
 # Any X
 tt.keyword.Structure.AnyComputerCasing=任意电子计算机械方块
 tt.keyword.Structure.AnyHighPowerCasing=任意超能机械方块

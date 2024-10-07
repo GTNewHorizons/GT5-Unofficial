@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -141,7 +140,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             .addInfo("Reactor will take 4 800L/t of coolant multiplied by efficiency")
             .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
             .addInfo("One Operation takes 9 hours")
-            .addSeparator()
             .beginStructureBlock(11, 12, 11, true)
             .addController("Front bottom center")
             .addCasingInfoMin("Radiation Proof Casings", 500, false)
@@ -152,7 +150,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             .addOutputHatch("Any bottom layer casing", 1)
             .addEnergyHatch("Any bottom layer casing", 1)
             .addMaintenanceHatch("Any bottom layer casing", 1)
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 

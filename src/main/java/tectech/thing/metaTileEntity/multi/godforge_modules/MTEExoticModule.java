@@ -73,7 +73,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.gui.TecTechUITextures;
-import tectech.util.CommonValues;
 import tectech.util.GodforgeMath;
 
 public class MTEExoticModule extends MTEBaseModule {
@@ -653,9 +652,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
             .addInfo("requires a fully upgraded Godforge.")
             .addInfo("This module is specialized towards acquisition of unique materials.")
-            .addSeparator()
             .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY
@@ -671,7 +668,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Hatch")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
-            .toolTipFinisher(CommonValues.GODFORGE_MARK);
+            .toolTipFinisher();
         return tt;
     }
 

@@ -3,7 +3,6 @@ package goodgenerator.blocks.tileEntity;
 import static bartworks.util.BWTooltipReference.TT;
 import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -346,9 +345,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addInfo("Imprecise (MK-0) = 16x, MK-I = 32x, MK-II = 64x, MK-III = 128x, MK-IV = 256x")
             .addInfo("Supports " + TT + " energy hatches")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .beginStructureBlock(9, 5, 5, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Machine Casing", 21, true)
@@ -361,7 +357,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addEnergyHatch("Any Casing")
             .addMufflerHatch("Any Casing")
             .addMaintenanceHatch("Any Casing")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

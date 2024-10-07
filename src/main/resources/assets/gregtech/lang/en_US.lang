@@ -16,7 +16,7 @@ GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s�
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 
 # Multiblock Tooltip Builder Keywords
-# Context can be found in the class gregtech.api.util.GT_Multiblock_Tooltip_Builder
+# Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
 GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)

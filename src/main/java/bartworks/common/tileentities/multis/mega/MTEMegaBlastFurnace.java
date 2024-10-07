@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.*;
@@ -189,7 +188,6 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     + EnumChatFormatting.GRAY
                     + " Laser Hatches.")
             .addPollutionAmount(20 * this.getPollutionPerTick(null))
-            .addSeparator()
             .beginStructureBlock(15, 20, 15, true)
             .addController("3rd layer center")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 279, false)
@@ -206,7 +204,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
             .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
             .addOutputHatch("Platline fluids, Any bottom layer casing")
             .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 

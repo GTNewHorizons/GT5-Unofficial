@@ -31,7 +31,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -68,7 +67,6 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
             .addInfo("Only uses 90% of the EU/t normally required")
             .addInfo("Processes eight items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(5, 6, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Top/Bottom layer: Multi-use Casings", 34, false)
@@ -80,7 +78,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
             .addEnergyHatch("Any Multi-use Casing", 1)
             .addMaintenanceHatch("Any Multi-use Casing", 1)
             .addMufflerHatch("Any Multi-use Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

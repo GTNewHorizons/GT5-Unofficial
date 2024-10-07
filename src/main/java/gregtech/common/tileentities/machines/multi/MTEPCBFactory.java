@@ -862,7 +862,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Trace size can be changed to modify the material usage and machine speed.")
             .addInfo(AuthorBlueWeabo)
             .beginStructureBlock(30, 38, 13, false)
-            .addSeparator()
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addEnergyHatch(
                 EnumChatFormatting.GOLD + "1"
@@ -956,7 +955,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
             .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

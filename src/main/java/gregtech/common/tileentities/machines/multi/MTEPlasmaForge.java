@@ -619,9 +619,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + EnumChatFormatting.GRAY
                     + " as fast as it builds up.")
             .addInfo(AuthorColen)
-            .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
-            .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
@@ -633,7 +631,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 EnumChatFormatting.GOLD + "2,121"
                     + EnumChatFormatting.GRAY
                     + " Dimensionally transcendent casings required.")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + "1"
@@ -683,8 +681,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + max_input_bus
                     + EnumChatFormatting.GRAY
                     + " output busses.")
-            .addStructureInfo("--------------------------------------------")
-            .toolTipFinisher("Gregtech");
+            .addStructureInfo("")
+            .toolTipFinisher();
         return tt;
     }
 

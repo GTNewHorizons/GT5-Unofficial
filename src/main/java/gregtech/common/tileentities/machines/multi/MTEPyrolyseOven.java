@@ -102,7 +102,6 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
             .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front center")
             .addCasingInfoRange("Pyrolyse Oven Casing", 60, 80, false)
@@ -114,7 +113,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
             .addInputHatch("Center 3x1x3 area in top layer", 2)
             .addOutputBus("Any bottom layer casing", 1)
             .addOutputHatch("Any bottom layer casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

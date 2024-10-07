@@ -66,7 +66,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import ggfab.ConfigurationHandler;
-import ggfab.GGConstants;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -320,7 +319,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                     + " * total laser overclock count)")
             .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick.")
             .addInfo("EU/t is (number of slices working) * (overclocked EU/t)")
-            .addSeparator()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
@@ -337,7 +335,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInputHatch("Any layer 1 casing", 3)
             .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
             .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
-            .toolTipFinisher(GGConstants.GGMARK);
+            .toolTipFinisher();
         return tt;
     }
 

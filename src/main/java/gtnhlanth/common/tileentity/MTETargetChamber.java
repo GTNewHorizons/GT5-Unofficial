@@ -13,7 +13,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
@@ -185,10 +184,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         tt.addMachineType("Collision Chamber")
             .addInfo("Controller block for the Target Chamber")
             .addInfo("Hitting things with other things")
-
-            .addInfo(BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Grate Machine Casing", 29, false)
@@ -205,7 +201,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInputBus(addDotText(3))
             .addOutputBus(addDotText(4))
             .addOtherStructurePart("Beamline Input Hatch", addDotText(5))
-            .toolTipFinisher("GTNH: Lanthanides");
+            .toolTipFinisher();
         return tt;
     }
 

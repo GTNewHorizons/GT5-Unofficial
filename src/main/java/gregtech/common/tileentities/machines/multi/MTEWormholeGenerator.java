@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -942,10 +941,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInfo("EU will only be transferred if there is space in the laser source hatch.")
             .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side.")
             .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started.")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
             .beginStructureBlock(7, 9, 7, false)
-            .addSeparator()
             .addCasingInfoExactly("Molecular Casing", 2 * 12, false)
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
@@ -957,7 +953,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
             .addStructureInfo("§rThe glass tier limits the hatch tier.")
             .addSubChannelUsage("glass", "Borosilicate Glass Tier")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         // spotless:on
 
         return tt;

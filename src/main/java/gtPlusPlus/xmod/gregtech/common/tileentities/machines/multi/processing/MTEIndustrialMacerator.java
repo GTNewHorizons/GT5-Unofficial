@@ -48,7 +48,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -103,7 +102,6 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             .addInfo("Maximum of n*tier parallels, LV = Tier 1, MV = Tier 2, etc.")
             .addInfo("n=2 initially. n=8 after inserting Maceration Upgrade Chip.")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 6, 3, true)
             .addController("Bottom center")
             .addCasingInfoMin("Maceration Stack Casings (After upgrade)", 26, false)
@@ -113,7 +111,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             .addMaintenanceHatch("Any casing", 1)
             .addOutputBus("One per layer except bottom layer", 2)
             .addMufflerHatch("Any casing except bottom layer", 2)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

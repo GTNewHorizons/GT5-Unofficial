@@ -98,7 +98,6 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
             .addInfo("Will pull back the pipes after it finishes that layer")
             .addInfo("Radius is " + getRadius() + " blocks")
-            .addSeparator()
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -109,7 +108,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addInputBus("Mining Pipes, optional, any base casing", 1)
             .addInputHatch("GT Concrete, any base casing", 1)
             .addOutputBus("Mining Pipes, optional, any base casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -114,7 +114,6 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
             .addInfo("Read the wiki article to understand how it works")
             .addInfo("Then go to the Discord to understand the wiki")
-            .addSeparator()
             .beginStructureBlock(3, 4, 3, false)
             .addController("Front bottom")
             .addCasingInfoRange("Stable Titanium Machine Casing", 20, 32, false)
@@ -124,7 +123,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             .addInputHatch("Distilled water, any casing", 1)
             .addOutputHatch("Cold fluid, top center", 3)
             .addOutputHatch("Steam/SH Steam, any casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -74,14 +74,13 @@ public class MTEBrickedBlastFurnace extends MTEPrimitiveBlastFurnace implements 
                 .addInfo("Usable for Steel and general Pyrometallurgy")
                 .addInfo("Has a useful interface, unlike other gregtech multis")
                 .addPollutionAmount(GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)
-                .addSeparator()
                 .beginStructureBlock(3, 4, 3, true)
                 .addController("Front center")
                 .addOtherStructurePart("Firebricks", "Everything except the controller")
                 .addStructureInfo("The top block is also empty")
                 .addStructureInfo("You can share the walls of GT multis, so")
                 .addStructureInfo("each additional one costs less, up to 4")
-                .toolTipFinisher("Gregtech");
+                .toolTipFinisher();
         }
         return tooltipBuilder;
     }

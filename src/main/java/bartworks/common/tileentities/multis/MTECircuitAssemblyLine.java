@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -64,7 +63,6 @@ import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
-import bartworks.util.BWTooltipReference;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -175,9 +173,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                     + EnumChatFormatting.GRAY)
             .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1.")
             .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
-            .addInfo("")
-            .addSeparator()
-            .addInfo(BWTooltipReference.TT_BLUEPRINT)
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
@@ -199,7 +194,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addOutputBus("As specified in final slice on layer 1", 4)
             .addOtherStructurePart(getColoredTierNameFromTier((byte) 4) + "+ Tier Glass", "As specified on layer 2", 5)
             .addMaintenanceHatch("Any layer 1 casing", 2)
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 

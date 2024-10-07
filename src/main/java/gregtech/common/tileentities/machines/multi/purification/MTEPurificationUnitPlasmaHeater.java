@@ -397,8 +397,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
             .addOtherStructurePart("Input Hatch (Coolant)", EnumChatFormatting.GOLD + "1", 2)
             .addOtherStructurePart("Input Hatch (Plasma)", EnumChatFormatting.GOLD + "1", 3)
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         return tt;
     }
 

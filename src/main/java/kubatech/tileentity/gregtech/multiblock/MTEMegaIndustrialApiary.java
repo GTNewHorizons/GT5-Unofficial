@@ -36,7 +36,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.Variables.buildAuthorList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
@@ -126,7 +125,6 @@ import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import kubatech.Tags;
 import kubatech.api.DynamicInventory;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
@@ -329,8 +327,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo("  - Base processing time: 1 minute")
             .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5))
             .addInfo("  - Can overclock")
-            .addInfo(StructureHologram)
-            .addSeparator()
             .beginStructureBlock(15, 17, 15, false)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Bronze Plated Bricks", 190, false)
@@ -342,7 +338,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
-            .toolTipFinisher(Tags.MODNAME);
+            .toolTipFinisher();
         return tt;
     }
 

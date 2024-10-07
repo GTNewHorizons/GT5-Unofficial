@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -192,16 +191,13 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
             .addInfo("Please use the Primitive Rotor")
             .addInfo("Macerates 16 items at a time")
-            .addInfo("The structure is too complex!")
-            .addInfo("Follow the StructureLib hologram projector to build the main structure.")
-            .addSeparator()
             .beginStructureBlock(7, 12, 7, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Hardened Clay block", 40, false)
             .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
             .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
             .addStructureHint("Primitive Kinetic Shaftbox", 1)
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 
