@@ -297,7 +297,8 @@ public class MTEMeteorMiner extends MTEEnhancedMultiBlockBase<MTEMeteorMiner> im
             .addInfo("Controller Block for the Meteor Miner!")
             .addInfo(
                 "To work properly the center of the meteor has to be 32 blocks above the highest block of the multi.")
-            .addInfo("The laser will mine in a radius of up to 30 blocks in each direction from the center of the meteor.")
+            .addInfo(
+                "The laser will mine in a radius of up to 30 blocks in each direction from the center of the meteor.")
             .addInfo("All the chunks involved must be chunkloaded.")
             .addInfo("The laser will automatically set its radius based on the meteorite,")
             .addInfo("if it doesn't find any it will wait for a meteor to spawn, considering the block")
