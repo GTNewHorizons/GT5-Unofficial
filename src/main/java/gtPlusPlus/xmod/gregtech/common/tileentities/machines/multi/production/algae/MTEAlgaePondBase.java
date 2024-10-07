@@ -43,24 +43,23 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ReflectionUtil;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderAlgaeFarm;
+import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipesAlgaeFarm;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
+
+    // TODO add a NEI handler for this machine
 
     private int mLevel = -1;
     private int mCasing;
@@ -336,8 +335,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             @Nonnull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                return GTStreamUtil
-                    .ofNullable(RecipeLoaderAlgaeFarm.getTieredRecipeFromCache(mLevel, isUsingCompost(inputItems)));
+                return GTStreamUtil.ofNullable(RecipesAlgaeFarm.getTieredRecipe(mLevel, inputItems));
             }
 
             @NotNull
@@ -350,18 +348,6 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             }
         }.setEuModifier(0F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
-    }
-
-    private boolean isUsingCompost(ItemStack[] aItemInputs) {
-        ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1);
-        for (ItemStack i : aItemInputs) {
-            if (GTUtility.areStacksEqual(aCompost, i)) {
-                if (i.stackSize >= RecipeLoaderAlgaeFarm.compostForTier(mLevel)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private int getCasingTier() {
