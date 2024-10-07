@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -60,10 +58,12 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import kekztech.client.gui.KTUITextures;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
@@ -180,12 +180,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             createEU(containedAntimatter, catalystFluid);
         }
         // Crash if only one fluid supplied.
-        if ((containedAntimatter == 0 & catalystFluid!= null) | (containedAntimatter > 0 & catalystFluid == null)) {
+        if ((containedAntimatter == 0 & catalystFluid != null) | (containedAntimatter > 0 & catalystFluid == null)) {
             this.annihilationEfficiency = 0;
             this.euLastCycle = 0;
             this.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
-            return SimpleCheckRecipeResult
-                .ofFailurePersistOnShutdown("matter_imbalance");
+            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("matter_imbalance");
         }
 
         endRecipeProcessing();
