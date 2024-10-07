@@ -3394,6 +3394,14 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .eut(64)
             .addTo(fluidSolidifierRecipes);
+        
+        GTValues.RA.stdBuilder()
+        	.fluidInputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1000))
+        	.fluidOutputs(Materials.SuperCoolant.getFluid(1000))
+        	.duration(10 * SECONDS)
+        	.eut(TierEU.RECIPE_EV)
+        	.addTo(vacuumFreezerRecipes);
+        	
 
         // TODO Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG)
         /**

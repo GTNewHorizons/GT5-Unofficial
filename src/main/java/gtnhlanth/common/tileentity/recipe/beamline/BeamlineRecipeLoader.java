@@ -50,8 +50,8 @@ public class BeamlineRecipeLoader {
             Materials.SuperCoolant.getFluid(1L)
                 .getFluid()
                 .getName(),
-            Materials.Water.getFluid(1L)
-                .getFluid());
+            WerkstoffMaterialPool.HotSuperCoolant
+                .getFluidOrGas(1000).getFluid());
 
         /*
          * ELECTRON
