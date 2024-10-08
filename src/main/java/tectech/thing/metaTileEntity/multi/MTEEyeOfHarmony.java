@@ -1098,6 +1098,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addSeparator()
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
             .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block.")
+            .beginStructureBlock(33, 33, 33, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spatial Structure Casing.")
             .addStructureInfo(
@@ -1117,8 +1118,6 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output hatch.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
-            .addStructureInfo("")
-            .beginStructureBlock(33, 33, 33, false)
             .toolTipFinisher(GTValues.AuthorColen);
         return tt;
     }
