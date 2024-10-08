@@ -19,7 +19,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static kubatech.api.Variables.buildAuthorList;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -139,7 +139,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Crafter")
             .addInfo("Controller Block for the Draconic Evolution Fusion Crafter")
-            .addInfo(buildAuthorList("kuba6000", "Prometheus0000"))
             .addInfo("Machine can be overclocked by using casings above the recipe tier:")
             .addInfo("Recipe time is divided by number of tiers above the recipe")
             .addInfo("Normal EU OC still applies !")
@@ -157,7 +156,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addOutputHatch("Any bottom casing", 1)
             .addEnergyHatch("Any bottom casing", 1)
             .addMaintenanceHatch("Any bottom casing", 1)
-            .toolTipFinisher();
+            .toolTipFinisher(GTValues.AuthorKuba, "Prometheus0000");
         return tt;
     }
 

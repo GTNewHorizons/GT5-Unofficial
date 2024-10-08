@@ -191,25 +191,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInfo("Gain " + PARALLELS_PER_WIDTH + " Parallels per Width Expansion and Multiplied by Voltage Tier")
             .addInfo("Energy Hatch Based on Glass Tier, UMV Glass Unlocks all")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .addInfo(AuthorOmdaCZ)
-            .addInfo(
-                "With the Help Of" + " "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Four"
-                    + EnumChatFormatting.RESET
-                    + ", "
-                    + EnumChatFormatting.AQUA
-                    + "GDCloud"
-                    + EnumChatFormatting.RESET
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "Ba"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "ps"
-                    + EnumChatFormatting.RESET
-                    + " & "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "TheEpicGamer274")
             .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
             .addCasingInfoMin("Solidifier Casing", 146, false)
@@ -221,7 +202,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher();
+            .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
 

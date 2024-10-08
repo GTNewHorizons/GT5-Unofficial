@@ -188,7 +188,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("There is a chance per second that the drone will crash.")
             .addInfo("Chance is determined by drone tier: T1-1/28800, T2-1/172800, T3-0")
             .addInfo("If machine is too far, remote control would not available")
-            .addInfo(AuthorSilverMoon)
             .addSeparator()
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center")
@@ -198,7 +197,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addCasingInfoExactly("Any tiered glass", 6, false)
             .addInputBus("Any Titanium Casing", 1)
             .addStructureInfo("No maintenance hatch needed")
-            .toolTipFinisher();
+            .toolTipFinisher(AuthorSilverMoon);
         return tt;
     }
 

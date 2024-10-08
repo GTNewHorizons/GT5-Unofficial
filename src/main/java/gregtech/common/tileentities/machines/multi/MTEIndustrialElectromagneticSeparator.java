@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
@@ -34,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -226,13 +226,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher(
-                AuthorFourIsTheNumber + EnumChatFormatting.GRAY
-                    + " & "
-                    + EnumChatFormatting.GOLD
-                    + "Ba"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "ps");
+            .toolTipFinisher(GTValues.AuthorFourIsTheNumber, GTValues.authorBaps);
         return tt;
     }
 

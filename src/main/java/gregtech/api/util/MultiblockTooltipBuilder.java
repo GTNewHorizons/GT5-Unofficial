@@ -64,7 +64,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
     private static final String TT_todisplay = StatCollector.translateToLocal("GT5U.MBTT.Display");
     private static final String TT_structurehint = StatCollector.translateToLocal("GT5U.MBTT.StructureHint");
-    private static final String TT_author = StatCollector.translateToLocal("GT5U.MBTT.Mod");
+    private static final String TT_addedBy = StatCollector.translateToLocal("GT5U.MBTT.Mod");
     private static final String TT_air = StatCollector.translateToLocal("GT5U.MBTT.Air");
     private static final String TT_StructureComplex = StatCollector.translateToLocal("GT5U.MBTT.Structure.Complex");
     private static final String TT_SeeStructure1 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure1");
@@ -693,21 +693,16 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Call at the very end.<br>
-     * Adds a separator line followed with information on how to display the structure guidelines.<br>
-     * Ends the building process.
-     */
-    public MultiblockTooltipBuilder toolTipFinisher() {
-        return addSeparator().toolTipFinisher(null);
-    }
-
-    /**
-     * Call at the very end.<br>
-     * Adds a final line with the mod name and information on how to display the structure guidelines.<br>
+     * Adds a line jump.<br>
+     * Adds information on how to display the structure guidelines.<br>
+     * Adds credit for creators of this multi, if any.<br>
+     * <p>
      * Ends the building process.
      *
-     * @param author Formatted name of the creator of this multiblock machine, can be null
+     * @param authors Formatted names of the creators of this multiblock machine - if any
      */
-    public MultiblockTooltipBuilder toolTipFinisher(@Nullable String author) {
+    public MultiblockTooltipBuilder toolTipFinisher(@Nullable String... authors) {
+        this.addSeparator();
         iLines.add(
             TT_hold + " "
                 + EnumChatFormatting.BOLD
@@ -716,15 +711,28 @@ public class MultiblockTooltipBuilder {
                 + EnumChatFormatting.GRAY
                 + " "
                 + TT_todisplay);
-        if (author != null && !author.isEmpty()) {
-            final String oldAuthorTag = "Author: ";
-            if (author.startsWith(oldAuthorTag)) {
-                // to support all the values in GTValues that already
-                // have Author at the start
-                iLines.add((TT_author + COLON + EnumChatFormatting.GREEN + author.substring(oldAuthorTag.length())));
-            } else {
-                iLines.add(TT_author + COLON + EnumChatFormatting.GREEN + author);
+        if (authors != null && authors.length > 0) {
+            final String authorTag = "Author: ";
+            final StringBuilder sb = new StringBuilder();
+            sb.append(TT_addedBy);
+            sb.append(COLON);
+            for (int i = 0; i < authors.length; i++) {
+                String author = authors[i];
+                if (author.startsWith(authorTag)) {
+                    // to support all the values in GTValues
+                    // that already have Author at the start
+                    sb.append(author.substring(authorTag.length()));
+                } else {
+                    sb.append(author);
+                }
+                if (i != authors.length - 1) {
+                    sb.append(EnumChatFormatting.RESET);
+                    sb.append(EnumChatFormatting.GRAY);
+                    sb.append(" & ");
+                    sb.append(EnumChatFormatting.GREEN);
+                }
             }
+            iLines.add(sb.toString());
         }
         hLines.add(TT_structurehint);
         sLines.add(" ");

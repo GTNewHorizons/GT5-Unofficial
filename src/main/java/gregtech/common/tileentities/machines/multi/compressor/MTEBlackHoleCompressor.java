@@ -392,7 +392,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addOutputBus("Any Radiation Absorbent Casing", 1)
             .addInputHatch("Any Radiation Absorbent Casing", 1)
             .addEnergyHatch("Any Radiation Absorbent Casing", 1)
-            .toolTipFinisher(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie);
+            .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }
 

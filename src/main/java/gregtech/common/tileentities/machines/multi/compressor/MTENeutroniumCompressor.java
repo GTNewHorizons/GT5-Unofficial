@@ -164,7 +164,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             .addOutputBus("Any Neutronium Casing", 1)
             .addEnergyHatch("Any Neutronium Casing", 1)
             .addMaintenanceHatch("Any Neutronium Casing", 1)
-            .toolTipFinisher(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie);
+            .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }
 

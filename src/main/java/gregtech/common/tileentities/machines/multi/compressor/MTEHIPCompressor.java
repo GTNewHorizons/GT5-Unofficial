@@ -277,7 +277,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addOutputBus("Pipe Casings on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
-            .toolTipFinisher(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie);
+            .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }
 

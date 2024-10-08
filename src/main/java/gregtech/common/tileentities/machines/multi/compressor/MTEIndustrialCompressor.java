@@ -11,7 +11,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -157,7 +156,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             .addOutputBus("Pipe Casings on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
-            .toolTipFinisher(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie);
+            .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }
 

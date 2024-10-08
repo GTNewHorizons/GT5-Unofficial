@@ -286,8 +286,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     + "Right"
                     + EnumChatFormatting.GRAY
                     + " side of Controller")
-            .toolTipFinisher(
-                GTValues.AuthorBlueWeabo + EnumChatFormatting.RESET + " & " + EnumChatFormatting.GREEN + "Steelux");
+            .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
     }
 

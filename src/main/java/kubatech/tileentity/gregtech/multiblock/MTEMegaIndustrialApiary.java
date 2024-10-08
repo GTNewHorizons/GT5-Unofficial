@@ -36,7 +36,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static kubatech.api.Variables.buildAuthorList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -293,7 +292,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Mega Apiary")
             .addInfo("Controller block for Industrial Apicultural Acclimatiser and Drone Domestication Station")
-            .addInfo(buildAuthorList("kuba6000", "Runakai"))
             .addInfo("The ideal home for your bees")
             .addInfo("Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)")
             .addInfo("Use screwdriver + shift to change operation mode (NORMAL/SWARMER)")
@@ -338,7 +336,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
-            .toolTipFinisher();
+            .toolTipFinisher(GTValues.AuthorKuba, "Runakai");
         return tt;
     }
 
