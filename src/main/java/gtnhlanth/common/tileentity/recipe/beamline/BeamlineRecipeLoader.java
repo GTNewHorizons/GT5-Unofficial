@@ -3,14 +3,10 @@ package gtnhlanth.common.tileentity.recipe.beamline;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -18,6 +14,11 @@ import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public class BeamlineRecipeLoader {
 
@@ -110,35 +111,55 @@ public class BeamlineRecipeLoader {
 
             if (mask.getProducedItem() == null) // Blank or error
                 continue;
+            
+            if (mask.getTCTargetItem() == null) { // Wafer TC recipe
+            	
+            	 int index = 0;
+                 for (ItemList wafer : VIABLE_WAFERS) {
 
-            int index = 0;
-            for (ItemList wafer : VIABLE_WAFERS) {
+                     index++;
 
-                index++;
+                     if (!Arrays.asList(mask.getForbiddenWafers())
+                         .contains(wafer)) {
 
-                if (!Arrays.asList(mask.getForbiddenWafers())
-                    .contains(wafer)) {
+                         BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
+                             wafer.get(1),
+                             GTUtility.copyAmountUnsafe((int) Math.pow(2, index + 2), mask.getProducedItem()),
+                             new ItemStack(LanthItemList.maskMap.get(mask), 0),
+                             1,
+                             mask.getBaselineAmount() * (int) Math.pow(Math.sqrt(3), index - 1), // 3x recipe amount increase
+                                                                                                 // per 2 increases in wafer
+                                                                                                 // tier. This greatly
+                                                                                                 // incentivises the use of
+                                                                                                 // higher tier boule wafer
+                                                                                                 // recipes
+                             mask.getMinEnergy(),
+                             mask.getMaxEnergy(),
+                             mask.getMinFocus(),
+                             1,
+                             1920);
 
-                    BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
-                        wafer.get(1),
-                        GTUtility.copyAmountUnsafe((int) Math.pow(2, index + 2), mask.getProducedItem()),
-                        new ItemStack(LanthItemList.maskMap.get(mask), 0),
-                        1,
-                        mask.getBaselineAmount() * (int) Math.pow(Math.sqrt(3), index - 1), // 3x recipe amount increase
-                                                                                            // per 2 increases in wafer
-                                                                                            // tier. This greatly
-                                                                                            // incentivises the use of
-                                                                                            // higher tier boule wafer
-                                                                                            // recipes
-                        mask.getMinEnergy(),
-                        mask.getMaxEnergy(),
-                        mask.getMinFocus(),
-                        1,
-                        1920);
+                     }
 
-                }
-
+                 }
+            
+                 continue;
+      
             }
+            
+            // Non-wafer recipes
+        	
+        	BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
+                    GTUtility.copyAmountUnsafe(1, mask.getTCTargetItem()),
+                    GTUtility.copyAmountUnsafe(4, mask.getProducedItem()),
+                    new ItemStack(LanthItemList.maskMap.get(mask), 0),
+                    1,
+                    mask.getBaselineAmount(),                                                              
+                    mask.getMinEnergy(),
+                    mask.getMaxEnergy(),
+                    mask.getMinFocus(),
+                    1,
+                    (int) TierEU.RECIPE_LuV);
 
             /*
              * if (!Arrays.asList(MaskList.CPU.getForbiddenWafers()).contains(wafer)) {
