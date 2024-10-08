@@ -458,7 +458,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 25, 17, false)
             .addCasingInfoRangeColored(
                 "Heat-Resistant Trinium Plated Casing",
@@ -486,7 +485,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "Degasser Control Hatch",
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
                 1)
-            .toolTipFinisher();
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

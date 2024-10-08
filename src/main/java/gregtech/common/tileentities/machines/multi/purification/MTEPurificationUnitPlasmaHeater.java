@@ -359,7 +359,6 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "supercritical while evaporating any remaining contaminants, ready for filtration.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(23, 15, 15, false)
             .addCasingInfoExactlyColored(
                 "Reinforced Sterile Water Plant Casing",
@@ -397,7 +396,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
             .addOtherStructurePart("Input Hatch (Coolant)", EnumChatFormatting.GOLD + "1", 2)
             .addOtherStructurePart("Input Hatch (Plasma)", EnumChatFormatting.GOLD + "1", 3)
-            .toolTipFinisher();
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

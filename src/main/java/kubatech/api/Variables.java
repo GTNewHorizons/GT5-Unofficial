@@ -29,6 +29,7 @@ import kubatech.api.utils.StringUtils;
 
 public class Variables {
 
+    @Deprecated // use GTValues.authorkuba
     public static final String Author = "Author: "
         + StringUtils.applyRainbow("kuba6000", 0, EnumChatFormatting.BOLD.toString());
 

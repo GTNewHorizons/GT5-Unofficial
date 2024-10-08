@@ -50,10 +50,9 @@ public class DistillationTower extends StackableController<DistillationTower, Di
         tt.addMachineType("Distillation Tower")
             .addInfo("Controller block for the Distillation Tower")
             .addInfo("Can be specialised to be a mega structure")
-            .addInfo(GTValues.Authorminecraft7771)
             .beginStructureBlock(5, 3, 3, false)
             .addController("Front center")
-            .toolTipFinisher();
+            .toolTipFinisher(GTValues.Authorminecraft7771);
         return tt;
     }
 

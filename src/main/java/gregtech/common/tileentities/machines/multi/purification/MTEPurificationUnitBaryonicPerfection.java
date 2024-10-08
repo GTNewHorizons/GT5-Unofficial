@@ -333,7 +333,6 @@ public class MTEPurificationUnitBaryonicPerfection
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 17, 17, false)
             .addCasingInfoMinColored(
                 "Quark Exclusion Casing",
@@ -370,7 +369,7 @@ public class MTEPurificationUnitBaryonicPerfection
             .addInputHatch("Any Quark Exclusion Casing", 1)
             .addOutputBus("Any Quark Exclusion Casing", 1)
             .addOutputHatch("Any Quark Exclusion Casing", 1)
-            .toolTipFinisher();
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

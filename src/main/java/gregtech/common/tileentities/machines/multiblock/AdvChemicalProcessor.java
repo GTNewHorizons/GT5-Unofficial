@@ -188,7 +188,6 @@ public class AdvChemicalProcessor
             .addInfo("By using the whitelist filter a recipe can push its output")
             .addInfo("to a different recipes input to chain them")
             .addInfo("Disclaimer: Still WIP - Use at your own risk")
-            .addInfo(GTValues.Authorminecraft7771)
             .beginStructureBlock(5, 3, 3, false)
             .addController("Front center")
             .addCasingInfoExactly("PTFE Pipe Machine Casing", 8, false)
@@ -196,7 +195,7 @@ public class AdvChemicalProcessor
             .addCasingInfoExactly("EV+ Glass", 3, true)
             .addCasingInfoExactly("Motor Casing", 3, true)
             .addCasingInfoExactly("Chemical Casing", 27, false)
-            .toolTipFinisher();
+            .toolTipFinisher(GTValues.Authorminecraft7771);
         return tt;
     }
 

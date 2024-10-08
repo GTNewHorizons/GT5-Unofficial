@@ -216,13 +216,6 @@ public class MTEIndustrialElectromagneticSeparator
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
             .addInfo("With Tengam electromagnet, multiamp (NOT laser) hatches are allowed")
-            .addInfo(
-                AuthorFourIsTheNumber + EnumChatFormatting.GRAY
-                    + " & "
-                    + EnumChatFormatting.GOLD
-                    + "Ba"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "ps")
             .beginStructureBlock(7, 6, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
@@ -233,7 +226,13 @@ public class MTEIndustrialElectromagneticSeparator
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher();
+            .toolTipFinisher(
+                AuthorFourIsTheNumber + EnumChatFormatting.GRAY
+                    + " & "
+                    + EnumChatFormatting.GOLD
+                    + "Ba"
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "ps");
         return tt;
     }
 

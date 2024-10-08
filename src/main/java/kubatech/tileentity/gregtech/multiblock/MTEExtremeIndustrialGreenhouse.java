@@ -32,7 +32,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static kubatech.api.Variables.Author;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
 import java.io.IOException;
@@ -294,7 +293,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
         tt.addMachineType("Crop Farm")
             .addInfo("Controller block for the Extreme Industrial Greenhouse")
-            .addInfo(Author)
             .addInfo("Grow your crops like a chad!")
             .addInfo("Use screwdriver to enable/change/disable setup mode")
             .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
@@ -328,7 +326,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addOutputBus("Any casing (Except inner bottom ones)", 1)
             .addInputHatch("Any casing (Except inner bottom ones)", 1)
             .addEnergyHatch("Any casing (Except inner bottom ones)", 1)
-            .toolTipFinisher();
+            .toolTipFinisher(GTValues.AuthorKuba);
         return tt;
     }
 

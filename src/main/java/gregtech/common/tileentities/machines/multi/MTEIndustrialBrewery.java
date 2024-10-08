@@ -150,7 +150,6 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
             .addInfo("Controller Block for the Big Barrel Brewery")
             .addInfo("50% faster than singleblock machines of the same voltage")
             .addInfo("Gains 4 parallels per voltage tier")
-            .addInfo(AuthorFourIsTheNumber)
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
@@ -162,7 +161,7 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
             .addOutputHatch("Any Wooden Casing", 1)
             .addEnergyHatch("Any Wooden Casing", 1)
             .addMaintenanceHatch("Any Wooden Casing", 1)
-            .toolTipFinisher();
+            .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
 
