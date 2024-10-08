@@ -94,7 +94,6 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Grows Algae!")
-            .addInfo("Controller Block for the Algae Farm")
             .addInfo("Provide compost to boost production by one tier")
             .addInfo("Does not require power or maintenance")
             .addInfo("All Machine Casings must be the same tier, this dictates machine speed.")

@@ -236,7 +236,6 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Dissolution Tank")
-            .addInfo("Controller block for the Dissolution Tank")
             .addInfo("Input Water and Fluid, output Fluid")
             .addInfo("You must input the Fluids at the correct Ratio")
             .addController("Front bottom")

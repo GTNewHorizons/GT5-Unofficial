@@ -106,7 +106,6 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
-            .addInfo("Controller block for the Coolant Tower.")
             .addInfo("Turn Steam back to Distilled Water.")
             .addController("Mid of the second layer.")
             .addInputHatch("Input Hatch", 1)

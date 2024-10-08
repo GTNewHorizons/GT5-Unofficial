@@ -320,7 +320,6 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Presser")
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")

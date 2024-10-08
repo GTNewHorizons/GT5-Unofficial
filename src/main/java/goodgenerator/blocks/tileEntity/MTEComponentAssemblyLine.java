@@ -213,7 +213,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High-Capacity Component Assembler")
-            .addInfo("Controller block for the Component Assembly Line.")
             .addInfo("Assembles basic components (motors, pumps, etc.) in large batches.")
             .addInfo(
                 "The " + EnumChatFormatting.BOLD

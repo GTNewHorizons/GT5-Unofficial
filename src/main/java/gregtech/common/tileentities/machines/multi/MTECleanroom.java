@@ -87,7 +87,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cleanroom")
-            .addInfo("Controller block for the Cleanroom")
             .addInfo("Consumes 40 EU/t when first turned on")
             .addInfo("and 4 EU/t once at 100% efficiency")
             .addInfo("If you use an LV energy hatch, it will actually accept 2A instead of just 1A.")

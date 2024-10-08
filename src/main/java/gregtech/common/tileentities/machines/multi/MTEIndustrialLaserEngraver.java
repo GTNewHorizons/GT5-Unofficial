@@ -241,7 +241,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Laser Engraver")
-            .addInfo("Controller Block for the Hyper-Intensity Laser Engraver")
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")

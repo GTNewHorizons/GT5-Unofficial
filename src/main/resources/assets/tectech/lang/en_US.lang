@@ -645,7 +645,6 @@ gt.blockcasingsBA0.8.desc.1=Who wouldn't want a 32k epoxy multi?
 #Multiblocks
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
-gt.blockmachines.multimachine.em.transformer.desc.0=Controller block of the Active Transformer
 gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
 gt.blockmachines.multimachine.em.transformer.desc.3=Will explode if broken while running
@@ -767,7 +766,6 @@ gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elementa
 gt.blockmachines.multimachine.em.research.type=Research Station, Scanner
 gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
-gt.blockmachines.multimachine.em.research.desc.0=Controller block of the Research Station
 gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembling Line Recipes
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written

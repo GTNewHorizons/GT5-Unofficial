@@ -233,7 +233,6 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Water Pump")
             .addInfo("Pumps Water based on humidity")
             .addInfo("Has 2 tiers: Bronze and Steel")
             .addInfo("Steel tier extracts 2x Water")

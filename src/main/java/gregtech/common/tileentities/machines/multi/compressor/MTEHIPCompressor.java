@@ -199,7 +199,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Compressor")
-            .addInfo("Controller Block for the Hot Isostatic Pressurization Unit")
             .addInfo("HIP Unit heats up while running")
             .addInfo(
                 "When it reaches maximum heat, it becomes " + EnumChatFormatting.DARK_RED

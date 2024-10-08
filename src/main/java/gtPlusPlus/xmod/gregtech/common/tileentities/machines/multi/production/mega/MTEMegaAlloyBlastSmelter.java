@@ -284,7 +284,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker")
-            .addInfo("Controller block for the Mega Alloy Blast Smelter")
             .addInfo(
                 "Runs the same recipes as the normal ABS, except with up to " + EnumChatFormatting.BOLD
                     + EnumChatFormatting.UNDERLINE

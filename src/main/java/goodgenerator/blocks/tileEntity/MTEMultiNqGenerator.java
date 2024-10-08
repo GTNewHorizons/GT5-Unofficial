@@ -402,7 +402,6 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Reactor")
-            .addInfo("Controller block for the Naquadah Reactor")
             .addInfo("Environmentally Friendly!")
             .addInfo("Generate power from high-energy liquids.")
             .addInfo(

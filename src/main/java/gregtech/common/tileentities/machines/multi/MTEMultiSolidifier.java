@@ -183,7 +183,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
-            .addInfo("Controller Block for the Fluid Shaper")
             .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
             .addInfo("Decays at double the Rate that it Speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")

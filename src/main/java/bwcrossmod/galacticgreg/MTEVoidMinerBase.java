@@ -134,7 +134,6 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Miner")
-            .addInfo("Controller Block for the Void Miner " + GTValues.VN[this.getMinTier()])
             .addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t")
             .addInfo(
                 "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")

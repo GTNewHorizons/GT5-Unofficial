@@ -81,7 +81,6 @@ public class MTEIndustrialPlatePress extends GTPPMultiBlockBase<MTEIndustrialPla
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for Advanced Bending & Forming")
             .addInfo("500% faster than using single block machines of the same voltage")
             .addInfo("Processes four items per voltage tier")
             .addInfo("Circuit for recipe goes in the Input Bus")

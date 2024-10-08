@@ -104,7 +104,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Matter Fabricator")
             .addInfo("Speed: +0% | EU Usage: 80%")
             .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
             .addInfo("Produces UU-A, UU-M & Scrap")

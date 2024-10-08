@@ -843,7 +843,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Circuit Board Fabricator")
-            .addInfo("Controller for the PCB Factory")
             .addInfo(
                 EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD
                     + "IMPORTANT!"

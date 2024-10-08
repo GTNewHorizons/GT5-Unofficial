@@ -182,7 +182,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Collision Chamber")
-            .addInfo("Controller block for the Target Chamber")
             .addInfo("Hitting things with other things")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .beginStructureBlock(5, 5, 6, true)

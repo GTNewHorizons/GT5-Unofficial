@@ -132,7 +132,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Chemical Plant")
             .addInfo("Heavy Industry, now right at your doorstep!")
             .addInfo("Please read the user manual for more information on construction and usage")
             .addController("Bottom Center")

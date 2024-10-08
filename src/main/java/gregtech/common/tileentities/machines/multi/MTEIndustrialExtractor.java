@@ -163,7 +163,6 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Extractor")
-            .addInfo("Controller Block for the Dissection Apparatus")
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Only uses 85% of the EU/t normally required")
             .addInfo("Gains 8 parallels per tier of Item Pipe Casing")

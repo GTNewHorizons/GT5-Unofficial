@@ -192,7 +192,6 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Essentia Smeltery")
-            .addInfo("Controller block for the Large Essentia Smeltery")
             .addInfo("Necessary evil.")
             .addInfo("Advanced Essentia smelting technology.")
             .addInfo("Max parallel dictated by structure size and Essentia Diffusion Cell tier")

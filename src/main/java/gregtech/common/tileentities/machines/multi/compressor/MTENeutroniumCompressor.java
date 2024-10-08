@@ -149,7 +149,6 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutronium Compressor")
-            .addInfo("Controller Block for the Neutronium Compressor")
             .addInfo("Has a static 8 parallels")
             .addInfo("Capable of compressing matter into " + EnumChatFormatting.GOLD + "singularities")
             .addInfo("More advanced singularities will require even stronger compression...")

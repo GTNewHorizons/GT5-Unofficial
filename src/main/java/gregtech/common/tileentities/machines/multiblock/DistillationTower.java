@@ -48,7 +48,6 @@ public class DistillationTower extends StackableController<DistillationTower, Di
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillation Tower")
-            .addInfo("Controller block for the Distillation Tower")
             .addInfo("Can be specialised to be a mega structure")
             .beginStructureBlock(5, 3, 3, false)
             .addController("Front center")

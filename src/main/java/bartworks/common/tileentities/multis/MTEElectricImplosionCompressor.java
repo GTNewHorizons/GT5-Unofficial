@@ -264,7 +264,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor")
             .addInfo("Explosions are fun")
-            .addInfo("Controller block for the Electric Implosion Compressor")
             .addInfo("Uses electricity instead of Explosives")
             .addInfo("Can parallel up to 4^(Tier - 1)")
             .addInfo("Tier is determined by containment block")

@@ -78,7 +78,6 @@ public class MTEFusionComputer1 extends MTEFusionComputer {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("It's over 9000!!!")
-            .addInfo("Controller block for the Fusion Reactor Mk I")
             .addInfo("2048EU/t and 10M EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")

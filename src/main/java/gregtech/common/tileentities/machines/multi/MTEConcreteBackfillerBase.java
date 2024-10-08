@@ -93,7 +93,6 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Concrete Backfiller")
-            .addInfo("Controller Block for the " + aStructureName)
             .addInfo("Will fill in areas below it with light concrete. This goes through walls")
             .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
             .addInfo("Will pull back the pipes after it finishes that layer")

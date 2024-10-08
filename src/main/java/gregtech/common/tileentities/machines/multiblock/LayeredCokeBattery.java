@@ -241,7 +241,6 @@ public class LayeredCokeBattery
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
-            .addInfo("Controller for the Layered Coke Battery")
             .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
             .addController("Bottom Front Center")
             .addCasingInfoExactly("Test Casing", 60, false)

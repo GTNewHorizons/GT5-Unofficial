@@ -275,8 +275,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.type")) // Machine Type: Research
                                                                                               // Station, Scanner
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.0")) // Controller block of
-                                                                                           // the Research Station
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1")) // Used to scan Data
                                                                                            // Sticks for
             // Assembling Line Recipes

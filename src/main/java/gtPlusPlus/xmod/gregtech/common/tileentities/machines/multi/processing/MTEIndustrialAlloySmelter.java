@@ -115,7 +115,6 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Industrial Alloy Smelter")
             .addInfo("Gains one parallel per voltage tier")
             .addInfo("Gains one multiplier per coil tier")
             .addInfo("Parallel = Tier * Coil Tier")

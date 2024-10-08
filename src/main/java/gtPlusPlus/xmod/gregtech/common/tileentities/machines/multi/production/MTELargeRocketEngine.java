@@ -97,7 +97,6 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Large Rocket Engine")
             .addInfo("Generating Power from Rocket Fuels - Supports TecTech Multi-Amp Dynamos!")
             .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
             .addInfo("Produces as much energy as you put fuel in, with optional boosting")

@@ -152,7 +152,6 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bacterial Vat")
-            .addInfo("Controller block for the Bacterial Vat")
             .addInfo("For maximum efficiency boost keep the Output Hatch always half filled!")
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")

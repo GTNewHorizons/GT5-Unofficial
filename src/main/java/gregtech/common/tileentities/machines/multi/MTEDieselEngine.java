@@ -97,7 +97,6 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Combustion Generator")
-            .addInfo("Controller block for the Large Combustion Engine")
             .addInfo("Supply Diesel Fuels and 1000L of Lubricant per hour to run")
             .addInfo("Supply 40L/s of Oxygen to boost output (optional)")
             .addInfo("Default: Produces 2048EU/t at 100% fuel efficiency")

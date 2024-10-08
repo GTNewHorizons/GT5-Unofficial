@@ -187,7 +187,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Ore Processor")
-            .addInfo("Controller Block for the Integrated Ore Factory")
             .addInfo("It is OP. I mean ore processor.")
             .addInfo("Do all ore processing in one step.")
             .addInfo("Can process up to 1024 ores at a time.")

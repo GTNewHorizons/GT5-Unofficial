@@ -141,7 +141,6 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Breeder Reactor")
-            .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)")
             .addInfo("You can clear internal buffer by changing the mode with a screwdriver")
             .addInfo("Needs a constant supply of coolant while running")
             .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")

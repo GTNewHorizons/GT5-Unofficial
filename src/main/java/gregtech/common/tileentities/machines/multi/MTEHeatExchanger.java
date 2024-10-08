@@ -108,7 +108,6 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger")
-            .addInfo("Controller Block for the Large Heat Exchanger")
             .addInfo("More complicated than a Fusion Reactor. Seriously")
             .addInfo("Inputs are Hot Coolant or Lava")
             .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")

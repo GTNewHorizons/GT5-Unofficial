@@ -96,7 +96,6 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
-            .addInfo("Controller block for the Pyrolyse Oven")
             .addInfo("Industrial Charcoal producer")
             .addInfo("Processing speed scales linearly with Coil tier:")
             .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")

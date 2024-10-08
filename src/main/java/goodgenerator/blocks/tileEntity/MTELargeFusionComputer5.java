@@ -43,7 +43,6 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("Galaxy Collapse.")
-            .addInfo("Controller block for the Compact Fusion Reactor MK-V.")
             .addInfo(
                 EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
                     + EnumChatFormatting.GRAY

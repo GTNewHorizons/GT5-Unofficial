@@ -127,9 +127,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.transformer.name")) // Machine Type:
                                                                                                  // Transformer
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.0")) // Controller block of
-                                                                                              // the
-            // Active Transformer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
                                                                                               // and from any
                                                                                               // voltage

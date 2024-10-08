@@ -78,8 +78,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Alloy Blast Smelter")
-            .addInfo("Allows Complex GT++ alloys to be created")
+            .addInfo("Allows Complex alloys to be created")
             .addInfo("Accepts only one Energy Hatch")
             .addInfo("Circuit for recipe goes in the Input Bus or GUI slot")
             .addPollutionAmount(getPollutionPerSecond(null))

@@ -180,7 +180,6 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Fuel Refinery")
-            .addInfo("Controller block for the Naquadah Fuel Refinery")
             .addInfo("But at what cost?")
             .addInfo("Produces naquadah fuels.")
             .addInfo("Needs field restriction coils to control the fatal radiation.")

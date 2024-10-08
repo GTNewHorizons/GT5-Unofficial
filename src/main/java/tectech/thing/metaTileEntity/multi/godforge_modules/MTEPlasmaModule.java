@@ -221,7 +221,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Fabricator")
-            .addInfo("Controller block for the Heliothermal Plasma Fabricator, a module of the Godforge.")
+            .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for extreme temperature matter ionization.")
             .addSeparator()

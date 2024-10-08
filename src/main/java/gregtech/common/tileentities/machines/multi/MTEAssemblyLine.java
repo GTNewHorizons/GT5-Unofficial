@@ -132,7 +132,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Assembling Line")
-            .addInfo("Controller block for the Assembling Line")
             .addInfo("Used to make complex machine parts (LuV+)")
             .addInfo("Does not make Assembler items")
             .addInfo("Recipe tier is at most Energy Hatch tier + 1.")

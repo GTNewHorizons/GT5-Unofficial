@@ -211,7 +211,6 @@ public class MTEIndustrialElectromagneticSeparator
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Electromagnetic Separator/Polarizer")
-            .addInfo("Controller Block for the Magnetic Flux Exhibitor")
             .addInfo("Use screwdriver to switch mode")
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")

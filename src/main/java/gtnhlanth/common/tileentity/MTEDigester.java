@@ -206,7 +206,6 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Digester")
-            .addInfo("Controller block for the Digester")
             .addInfo("Input ores and fluid, output water.")
             .addController("Front bottom")
             .addInputHatch("Hint block with dot 1")

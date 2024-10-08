@@ -66,7 +66,6 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Large Semifluid Generator")
             .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run.")
             .addInfo("Supply 80L of Oxygen per second to boost output (optional).")

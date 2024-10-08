@@ -643,7 +643,7 @@ public class MTEExoticModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Exotic Matter Producer")
-            .addInfo("Controller block for the Heliofusion Exoticizer, a module of the Godforge.")
+            .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for ultra high temperature matter degeneration.")
             .addSeparator()

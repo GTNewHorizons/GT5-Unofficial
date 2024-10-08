@@ -46,7 +46,6 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("Millions of nuclear.")
-            .addInfo("Controller block for the Compact Fusion Reactor MK-III.")
             .addInfo(
                 EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
                     + EnumChatFormatting.GRAY

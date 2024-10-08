@@ -181,7 +181,6 @@ public class AdvChemicalProcessor
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor")
-            .addInfo("Controller block for the Advanced Chemical Processor")
             .addInfo("Does not lose efficiency when overclocked")
             .addInfo("Accepts fluids instead of fluid cells")
             .addInfo("Can do multiple different recipes at once")

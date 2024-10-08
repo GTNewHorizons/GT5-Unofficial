@@ -121,7 +121,6 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Pump")
-            .addInfo("Controller Block for the Oil/Gas/Fluid Drilling Rig " + (tierSuffix != null ? tierSuffix : ""))
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .addInfo("Use a Screwdriver to configure range")
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")

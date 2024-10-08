@@ -361,7 +361,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Nanite Fabricator")
-            .addInfo("Controller block for the Nano Forge")
             .addInfo("Requires insane amounts of power to create nanites. Each tier")
             .addInfo("the multi gains a new building next to it. The nanite in the")
             .addInfo("controller slot controls the tier.")

@@ -47,7 +47,6 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor")
             .addInfo("Explosions are fun")
-            .addInfo("Controller block for the Implosion Compressor")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")

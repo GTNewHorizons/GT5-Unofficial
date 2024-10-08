@@ -105,7 +105,6 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the XL Heat Exchanger")
             .addInfo("More complicated than a Fusion Reactor. Seriously")
             .addInfo("But you know this by now, right?")
             .addInfo("Works as fast as 32 Large Heat Exchangers")

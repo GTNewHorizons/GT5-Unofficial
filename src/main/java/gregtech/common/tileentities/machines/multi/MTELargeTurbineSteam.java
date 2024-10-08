@@ -60,7 +60,6 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine")
-            .addInfo("Controller block for the Large Steam Turbine")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Outputs Distilled Water as well as producing power")
             .addInfo("Power output depends on turbine and fitting")

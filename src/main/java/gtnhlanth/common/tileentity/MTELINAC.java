@@ -183,7 +183,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addInfo("Use a lower temperature coolant to improve output focus")
             .addInfo("Output energy does not scale for input energies higher than 7500 keV")
             // .addInfo("Extendable, with a minimum length of 18 blocks")
-            .addInfo(DescTextLocalization.BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addInfo("Valid Coolants:");
 

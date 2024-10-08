@@ -129,7 +129,6 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Sparge Tower")
-            .addInfo("Controller block for the Sparging Tower")
             .addInfo("Runs gases through depleted molten salts to extract precious fluids")
             .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
             .addInfo("Fluids are only put out at the correct height")

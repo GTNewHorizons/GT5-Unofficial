@@ -143,7 +143,6 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Compressor")
-            .addInfo("Controller Block for the Large Electric Compressor")
             .addInfo("100% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 90% of the EU/t normally required")
             .addInfo("Gains 2 parallels per voltage tier")

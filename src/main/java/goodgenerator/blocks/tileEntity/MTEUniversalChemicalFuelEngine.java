@@ -181,7 +181,6 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Engine")
-            .addInfo("Controller block for the Chemical Engine")
             .addInfo("BURNING BURNING BURNING")
             .addInfo("Use combustible liquid to generate power.")
             .addInfo("You need to supply Combustion Promoter to keep it running.")

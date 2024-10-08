@@ -181,7 +181,6 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator")
-            .addInfo("Controller block for the Neutron Activator")
             .addInfo("Superluminal-velocity Motion.")
             .addInfo("The minimum height of the Speeding Pipe Casing is 4.")
             .addInfo("Per extra Speeding Pipe Casing will give time discount.")

@@ -147,7 +147,6 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Brewery")
-            .addInfo("Controller Block for the Big Barrel Brewery")
             .addInfo("50% faster than singleblock machines of the same voltage")
             .addInfo("Gains 4 parallels per voltage tier")
             .beginStructureBlock(3, 5, 3, true)

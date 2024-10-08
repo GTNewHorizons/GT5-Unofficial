@@ -70,9 +70,8 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor")
-            .addInfo("Controller block for the Chemical Reactor")
-            .addInfo("What molecule do you want to synthesize")
-            .addInfo("Or you want to replace something in this molecule")
+            .addInfo("What molecule do you want to synthesize ?")
+            .addInfo("Or you want to replace something in this molecule ?")
             .addInfo(
                 GTValues.TIER_COLORS[8] + GTValues.VN[8]
                     + EnumChatFormatting.GRAY

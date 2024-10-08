@@ -272,7 +272,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
         // spotless:off
         tt.addMachineType("Fluid Extractor")
-            .addInfo("Controller block for the Large Fluid Extractor")
             .addInfo(String.format(
                 "%d%% faster than single block machines of the same voltage",
                 (int) Math.round((BASE_SPEED_BONUS - 1) * 100)

@@ -66,7 +66,6 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Processes Logs and Coal into Charcoal and Coal Coke.")
-            .addInfo("Controller Block for the Industrial Coke Oven")
             .addInfo("Gain 4% energy discount per voltage tier")
             .addInfo("Process 12x materials with Heat Resistant Casings")
             .addInfo("Or 24x materials with Heat Proof Casings")

@@ -94,7 +94,6 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Furnace")
-            .addInfo("Controller Block for the Multi Smelter")
             .addInfo("Smelts up to 8-8192 items at once")
             .addInfo("Items smelted increases with coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))

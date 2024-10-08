@@ -138,7 +138,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Crafter")
-            .addInfo("Controller Block for the Draconic Evolution Fusion Crafter")
             .addInfo("Machine can be overclocked by using casings above the recipe tier:")
             .addInfo("Recipe time is divided by number of tiers above the recipe")
             .addInfo("Normal EU OC still applies !")

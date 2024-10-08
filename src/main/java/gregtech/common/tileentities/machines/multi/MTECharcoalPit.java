@@ -245,7 +245,6 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Charcoal Pile Igniter")
-            .addInfo("Controller for the Charcoal Pit")
             .addInfo("Converts Logs into Brittle Charcoal blocks")
             .addInfo("Will automatically start when valid")
             .addPollutionAmount(getPollutionPerSecond(null))

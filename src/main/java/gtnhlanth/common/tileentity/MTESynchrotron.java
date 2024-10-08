@@ -492,7 +492,6 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Accelerator")
-            .addInfo("Controller block for the Synchrotron")
             .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation,")
             .addInfo("in the form of photons")
             .addInfo("Antenna Casings can be one of two tiers, upgrade them to improve output rate and energy scaling")

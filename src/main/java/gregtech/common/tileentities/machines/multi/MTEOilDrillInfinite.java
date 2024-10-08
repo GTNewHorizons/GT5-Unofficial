@@ -28,7 +28,6 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Pump")
-            .addInfo("Controller Block for the Infinite Oil/Gas/Fluid Drilling Rig ")
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")

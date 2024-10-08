@@ -115,8 +115,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
-        tt.addMachineType("Boiler")
-            .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler");
+        tt.addMachineType("Boiler");
         // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones
         // that do not (Bronze and Steel)
         if (isSuperheated()) {

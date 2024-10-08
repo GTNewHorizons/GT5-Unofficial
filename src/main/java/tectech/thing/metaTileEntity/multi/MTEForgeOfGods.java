@@ -3066,8 +3066,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         tt.addMachineType("Stellar Forge")
             .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short.")
             .addSeparator()
-            .addInfo("Controller block for the Godforge, a massive structure harnessing the thermal,")
-            .addInfo("gravitational and kinetic energy of a stabilised neutron star for material processing.")
+            .addInfo("A massive structure harnessing the thermal, gravitational and")
+            .addInfo("kinetic energy of a stabilised neutron star for material processing.")
             .addInfo(
                 "This multiblock can house " + EnumChatFormatting.RED
                     + "up to 16 modules "

@@ -118,7 +118,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller block for the Tree Growth Simulator")
             .addInfo("Farms and harvests trees using EU")
             .addInfo("Place a sapling in the controller slot")
             .addInfo("Place a tool in an input bus")

@@ -100,7 +100,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Fishing Pond")
             .addInfo("Can process (Tier + 1) * 2 recipes")
             .addInfo("Put a numbered circuit into the input bus.")
             .addInfo("Circuit " + FISH_MODE + " for Fish")

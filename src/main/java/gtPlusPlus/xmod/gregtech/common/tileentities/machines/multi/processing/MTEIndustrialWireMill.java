@@ -64,7 +64,6 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Industrial Wire Factory")
             .addInfo("200% faster than using single block machines of the same voltage")
             .addInfo("Only uses 75% of the EU/t normally required")
             .addInfo("Processes four items per voltage tier")

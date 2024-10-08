@@ -150,7 +150,7 @@ public class MTEMoltenModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Smelter")
-            .addInfo("Controller block for the Helioflux Melting Core, a module of the Godforge.")
+            .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for high temperature material liquefaction.")
             .addSeparator()

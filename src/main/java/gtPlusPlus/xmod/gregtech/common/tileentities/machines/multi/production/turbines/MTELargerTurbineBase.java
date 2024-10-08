@@ -148,7 +148,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected final MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the XL " + getTurbineType() + " Turbine")
             .addInfo("Runs as fast as 16 Large Turbines of the same type, takes the space of 12")
             .addInfo("Right-click with screwdriver to enable loose fit")
             .addInfo("Optimal flow will increase or decrease depending on fitting")

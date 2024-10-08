@@ -113,7 +113,6 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cracker")
-            .addInfo("Controller block for the Oil Cracking Unit")
             .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
             .addInfo("More efficient than the Chemical Reactor")
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")

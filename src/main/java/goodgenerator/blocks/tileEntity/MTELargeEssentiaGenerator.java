@@ -465,7 +465,6 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Essentia Generator")
-            .addInfo("Controller block for the Large Essentia Generator")
             .addInfo("Maybe some Thaumaturges are upset by it. . .")
             .addInfo("Transform Essentia into energy!")
             .addInfo("The Diffusion Cell determines the highest hatch tier that the LEG can accept.")

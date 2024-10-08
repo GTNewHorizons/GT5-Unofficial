@@ -281,7 +281,6 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Extreme Temperature Fluctuation Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(

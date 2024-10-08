@@ -204,7 +204,6 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger/Plasma Heat Exchanger")
-            .addInfo("Controller block for the Extreme Heat Exchanger.")
             .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
             .addInfo("Output SC Steam/SH Steam/Steam.")
             .addInfo("Check NEI for more info.")

@@ -131,7 +131,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High Temperature Reactor")
-            .addInfo("Controller block for the Thorium High Temperature Reactor (THTR)")
             .addInfo("Needs to be primed with " + GTUtility.formatNumbers(HELIUM_NEEDED) + " of helium")
             .addInfo("Needs a constant supply of coolant while running")
             .addInfo("Needs at least 100k Fuel pebbles to start operation (can hold up to 675k pebbles)")

@@ -42,7 +42,6 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Combustion Generator")
-            .addInfo("Controller block for the Extreme Combustion Engine")
             .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
             .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
             .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")

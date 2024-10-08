@@ -43,7 +43,6 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
-            .addInfo("Controller block for the Fusion Reactor Mk V")
             .addInfo("524,288EU/t and 1.28B EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")

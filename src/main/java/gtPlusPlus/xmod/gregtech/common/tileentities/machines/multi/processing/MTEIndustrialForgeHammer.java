@@ -79,7 +79,6 @@ public class MTEIndustrialForgeHammer extends GTPPMultiBlockBase<MTEIndustrialFo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Industrial Forge Hammer")
             .addInfo("Speed: +100% | EU Usage: 100% | Parallel: Tier x Anvil Tier x 8")
             .addInfo("T1 - Vanilla Anvil");
         if (Railcraft.isModLoaded()) {

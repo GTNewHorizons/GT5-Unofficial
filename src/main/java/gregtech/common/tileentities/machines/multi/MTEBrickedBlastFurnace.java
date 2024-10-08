@@ -70,7 +70,6 @@ public class MTEBrickedBlastFurnace extends MTEPrimitiveBlastFurnace implements 
         if (tooltipBuilder == null) {
             tooltipBuilder = new MultiblockTooltipBuilder();
             tooltipBuilder.addMachineType("Blast Furnace")
-                .addInfo("Controller Block for the Bricked Blast Furnace")
                 .addInfo("Usable for Steel and general Pyrometallurgy")
                 .addInfo("Has a useful interface, unlike other gregtech multis")
                 .addPollutionAmount(GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)

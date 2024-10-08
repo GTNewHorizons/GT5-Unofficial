@@ -232,7 +232,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         })
         .build();
 
-    @SuppressWarnings("unused")
     public MTEMegaIndustrialApiary(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -291,7 +290,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Mega Apiary")
-            .addInfo("Controller block for Industrial Apicultural Acclimatiser and Drone Domestication Station")
             .addInfo("The ideal home for your bees")
             .addInfo("Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)")
             .addInfo("Use screwdriver + shift to change operation mode (NORMAL/SWARMER)")

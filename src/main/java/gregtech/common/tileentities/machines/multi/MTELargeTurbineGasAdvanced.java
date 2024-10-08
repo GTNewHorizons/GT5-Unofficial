@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -56,8 +57,7 @@ public class MTELargeTurbineGasAdvanced extends MTELargeTurbine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Turbine")
-            .addInfo("Warning: This is an experimental multiblock, subject to changes ")
-            .addInfo("Controller block for the Large Advanced Gas Turbine")
+            .addInfo(EnumChatFormatting.DARK_RED + "Warning: This is an experimental multiblock, subject to changes ")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Only accepts gases above 800k EU/bucket")
             .addInfo("Has no maximum EU/t output, only depends on the Dynamo Hatch")

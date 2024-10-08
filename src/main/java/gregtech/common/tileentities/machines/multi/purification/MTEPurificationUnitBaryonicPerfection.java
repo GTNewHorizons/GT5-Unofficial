@@ -260,7 +260,6 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Absolute Baryonic Perfection Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(

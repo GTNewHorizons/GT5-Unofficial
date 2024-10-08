@@ -260,7 +260,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Powered Spawner, EEC")
-            .addInfo("Controller block for the Extreme Entity Crusher")
             .addInfo("Spawns and kills monsters for you.")
             .addInfo("You have to insert the powered spawner in the controller.")
             .addInfo("Base energy usage: 2,000 EU/t")

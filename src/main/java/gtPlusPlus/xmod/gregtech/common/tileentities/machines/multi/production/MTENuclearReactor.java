@@ -88,7 +88,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
+            .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor")
             .addInfo("Produces energy and new elements from Radioactive Beta Decay!")
             .addInfo("Input LFTB and a molten salt as fuel, and match the 4 Buffered Dynamo Hatches:")
             .addInfo("LFTR Fuel 1 (4 EV Hatches), LFTR Fuel 2 (4 IV Hatches), LFTR Fuel 3 (4 LuV Hatches)")

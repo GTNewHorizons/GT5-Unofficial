@@ -230,7 +230,7 @@ public class MTESmeltingModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, Furnace")
-            .addInfo("Controller block for the Helioflare Power Forge, a module of the Godforge.")
+            .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for basic smelting operations at various temperatures.")
             .addSeparator()

@@ -85,7 +85,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Large Grinding Machine")
             .addInfo("Grind ores.")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 7, false)
