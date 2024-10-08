@@ -365,7 +365,9 @@ public class BioRecipes {
 
         // Craft into Wood Pellets
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2), ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(2),
+                ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 24))
             .duration(2 * SECONDS + 8 * TICKS)
             .eut(8)
@@ -389,7 +391,9 @@ public class BioRecipes {
 
         // Plastic
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(16), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(16),
+                ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4))
             .fluidInputs(
                 FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 500),
                 FluidUtils.getFluidStack(BioRecipes.mPropionicAcid, 500))
@@ -462,7 +466,9 @@ public class BioRecipes {
 
         // Assembler Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(3), ItemUtils.getOrePrefixStack(OrePrefixes.dust, Materials.Wood, 50))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(3),
+                ItemUtils.getOrePrefixStack(OrePrefixes.dust, Materials.Wood, 50))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodBrick, 1))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(16)
@@ -643,7 +649,9 @@ public class BioRecipes {
         if (OreDictUtils.containsValidEntries("cropSugarbeet")) {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(4), ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 4))
+                .itemInputs(
+                    GTUtility.getIntegratedCircuit(4),
+                    ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 4))
                 .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000))
                 .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
                 .duration(30 * SECONDS)
@@ -1083,7 +1091,9 @@ public class BioRecipes {
     private static void recipeMethane() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(12), ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 10))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(12),
+                ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 10))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 500))
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mMethane, 500))
             .duration(5 * SECONDS)
