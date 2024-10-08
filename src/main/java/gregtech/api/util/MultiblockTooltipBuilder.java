@@ -64,6 +64,9 @@ public class MultiblockTooltipBuilder {
     private static final String TT_structurehint = StatCollector.translateToLocal("GT5U.MBTT.StructureHint");
     private static final String TT_mod = StatCollector.translateToLocal("GT5U.MBTT.Mod");
     private static final String TT_air = StatCollector.translateToLocal("GT5U.MBTT.Air");
+    private static final String TT_StructureComplex = StatCollector.translateToLocal("GT5U.MBTT.Structure.Complex");
+    private static final String TT_SeeStructure1 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure1");
+    private static final String TT_SeeStructure2 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure2");
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
@@ -704,6 +707,18 @@ public class MultiblockTooltipBuilder {
                 + TT_todisplay);
         iLines.add(TT_mod + COLON + EnumChatFormatting.GREEN + mod + EnumChatFormatting.GRAY);
         hLines.add(TT_structurehint);
+        sLines.add(" ");
+        sLines.add(EnumChatFormatting.WHITE + TT_StructureComplex);
+        sLines.add(
+            EnumChatFormatting.WHITE + TT_SeeStructure1
+                + EnumChatFormatting.BLUE
+                + " Structure"
+                + EnumChatFormatting.DARK_BLUE
+                + "Lib "
+                + EnumChatFormatting.RESET
+                + EnumChatFormatting.WHITE
+                + TT_SeeStructure2);
+        // create the final arrays
         iArray = iLines.toArray(new String[0]);
         sArray = sLines.toArray(new String[0]);
         // e.getKey() - 1 because 1 dot is meta 0.
