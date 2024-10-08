@@ -128,7 +128,6 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Transformer")
-            .addInfo("Controller block for the Manual Trafo")
             .addInfo("Operates in 4 diffrent modes:")
             .addInfo("Mode 1: Circuit 0 in controller: Direct-Upstep")
             .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
