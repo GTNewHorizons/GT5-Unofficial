@@ -80,7 +80,7 @@ public class RecipesRareEarthProcessing {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
-                CI.getNumberedBioCircuit(2))
+                GTUtility.getIntegratedCircuit(2))
             .itemOutputs(ItemUtils.getSimpleStack(ModItems.cellHydrogenChlorideMix, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)

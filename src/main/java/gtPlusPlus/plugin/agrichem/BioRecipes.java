@@ -46,6 +46,7 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.item.ModItems;
@@ -100,19 +101,19 @@ public class BioRecipes {
     private static Fluid mAcetone;
 
     private static ItemStack getGreenAlgaeRecipeChip() {
-        return getBioChip(4);
+        return GTUtility.getIntegratedCircuit(4);
     }
 
     private static ItemStack getBrownAlgaeRecipeChip() {
-        return getBioChip(8);
+        return GTUtility.getIntegratedCircuit(8);
     }
 
     private static ItemStack getGoldenBrownAlgaeRecipeChip() {
-        return getBioChip(12);
+        return GTUtility.getIntegratedCircuit(12);
     }
 
     private static ItemStack getRedAlgaeRecipeChip() {
-        return getBioChip(16);
+        return GTUtility.getIntegratedCircuit(16);
     }
 
     private static ItemStack getBioChip(int aID) {
@@ -364,7 +365,7 @@ public class BioRecipes {
 
         // Craft into Wood Pellets
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(2), ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12))
+            .itemInputs(GTUtility.getIntegratedCircuit(2), ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 12))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 24))
             .duration(2 * SECONDS + 8 * TICKS)
             .eut(8)
@@ -388,7 +389,7 @@ public class BioRecipes {
 
         // Plastic
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(16), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4))
+            .itemInputs(GTUtility.getIntegratedCircuit(16), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4))
             .fluidInputs(
                 FluidUtils.getFluidStack(BioRecipes.mAceticAcid, 500),
                 FluidUtils.getFluidStack(BioRecipes.mPropionicAcid, 500))
@@ -425,7 +426,7 @@ public class BioRecipes {
 
         // Assembly Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(2), ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 8))
+            .itemInputs(GTUtility.getIntegratedCircuit(2), ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 8))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodBrick, 2))
             .duration(5 * SECONDS)
             .eut(8)
@@ -450,7 +451,7 @@ public class BioRecipes {
                 1200);
         }
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 2), getBioChip(3))
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 2), GTUtility.getIntegratedCircuit(3))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("gemCharcoal", 3))
             .eut(16)
             .duration(6 * SECONDS)
@@ -461,7 +462,7 @@ public class BioRecipes {
 
         // Assembler Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(3), ItemUtils.getOrePrefixStack(OrePrefixes.dust, Materials.Wood, 50))
+            .itemInputs(GTUtility.getIntegratedCircuit(3), ItemUtils.getOrePrefixStack(OrePrefixes.dust, Materials.Wood, 50))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mWoodBrick, 1))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(16)
@@ -472,7 +473,7 @@ public class BioRecipes {
 
         // Assembler Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(2), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4))
+            .itemInputs(GTUtility.getIntegratedCircuit(2), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 4))
             .itemOutputs(ItemUtils.getSimpleStack(Items.paper, 4))
             .duration(2 * SECONDS)
             .eut(16)
@@ -497,7 +498,7 @@ public class BioRecipes {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(4),
+                GTUtility.getIntegratedCircuit(4),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 4L))
@@ -522,7 +523,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedBioCircuit(14))
+            .itemInputs(GTUtility.getIntegratedCircuit(14))
             .fluidInputs(FluidUtils.getFluidStack(mFermentationBase, 1000))
             .fluidOutputs(FluidUtils.getFluidStack(mAceticAcid, 1000))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 2))
@@ -593,7 +594,7 @@ public class BioRecipes {
             }
             if (ItemUtils.checkForInvalidItems(a)) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(getBioChip(2), ItemUtils.getSimpleStack(a, 10))
+                    .itemInputs(GTUtility.getIntegratedCircuit(2), ItemUtils.getSimpleStack(a, 10))
                     .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000))
                     .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
                     .duration(30 * SECONDS)
@@ -606,7 +607,7 @@ public class BioRecipes {
         for (ItemStack a : aSeeds) {
             if (ItemUtils.checkForInvalidItems(a)) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(getBioChip(3), ItemUtils.getSimpleStack(a, 20))
+                    .itemInputs(GTUtility.getIntegratedCircuit(3), ItemUtils.getSimpleStack(a, 20))
                     .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000))
                     .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
                     .duration(30 * SECONDS)
@@ -619,7 +620,7 @@ public class BioRecipes {
 
         // Sugar Cane
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(4), ItemUtils.getSimpleStack(Items.reeds, 32))
+            .itemInputs(GTUtility.getIntegratedCircuit(4), ItemUtils.getSimpleStack(Items.reeds, 32))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000))
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
             .duration(30 * SECONDS)
@@ -628,7 +629,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(5),
+                GTUtility.getIntegratedCircuit(5),
                 ItemUtils.getSimpleStack(Items.reeds, 32),
                 ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 2))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000))
@@ -642,7 +643,7 @@ public class BioRecipes {
         if (OreDictUtils.containsValidEntries("cropSugarbeet")) {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(getBioChip(4), ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 4))
+                .itemInputs(GTUtility.getIntegratedCircuit(4), ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 4))
                 .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 1000))
                 .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
                 .duration(30 * SECONDS)
@@ -651,7 +652,7 @@ public class BioRecipes {
                 .addTo(chemicalPlantRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    getBioChip(5),
+                    GTUtility.getIntegratedCircuit(5),
                     ItemUtils.getItemStackOfAmountFromOreDict("cropSugarbeet", 4),
                     ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 2))
                 .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mThermalWater, 2000))
@@ -666,7 +667,7 @@ public class BioRecipes {
         // Produce Acetone, Butanol and Ethanol
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(5),
+                GTUtility.getIntegratedCircuit(5),
                 ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 6),
                 ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 16))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 48000))
@@ -700,7 +701,7 @@ public class BioRecipes {
     private static void recipeEthanol() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(BioRecipes.getBioChip(2))
+            .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mFermentationBase, 1000))
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mEthanol, 100))
             .duration(20 * SECONDS)
@@ -729,7 +730,7 @@ public class BioRecipes {
     private static void recipeSodiumHydroxide() {
         // NaCl·H2O = NaOH + Cl + H
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(4))
+            .itemInputs(GTUtility.getIntegratedCircuit(4))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 3))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mSalineWater, 1000))
             .fluidOutputs(
@@ -741,7 +742,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
         // Na + H2O = NaOH + H
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(5), ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 5))
+            .itemInputs(GTUtility.getIntegratedCircuit(5), ItemUtils.getItemStackOfAmountFromOreDict("dustSodium", 5))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mSodiumHydroxide, 15))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000))
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mHydrogen, 5000))
@@ -758,7 +759,7 @@ public class BioRecipes {
             // Na2CO3 + Al2O3 =C= 2NaAlO2 + CO2
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    getBioChip(18),
+                    GTUtility.getIntegratedCircuit(18),
                     ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 1),
                     ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
                     ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 5))
@@ -773,7 +774,7 @@ public class BioRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(18),
+                GTUtility.getIntegratedCircuit(18),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustCoal", 2),
                 ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 6),
                 ItemUtils.getSimpleStack(AgriculturalChem.mAluminiumPellet, 5))
@@ -859,7 +860,7 @@ public class BioRecipes {
         for (String aOreName : aOreNames) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    CI.getNumberedBioCircuit(14),
+                    GTUtility.getIntegratedCircuit(14),
                     ItemUtils.getSimpleStack(aOreCache.get(aOreName), aOreData2.get(aOreName)))
                 .itemOutputs(
                     ItemUtils.getSimpleStack(
@@ -958,7 +959,7 @@ public class BioRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(7),
+                GTUtility.getIntegratedCircuit(7),
                 ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 10),
                 ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 6))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000))
@@ -969,7 +970,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(7),
+                GTUtility.getIntegratedCircuit(7),
                 ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 2),
                 ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 10))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 5000))
@@ -985,7 +986,7 @@ public class BioRecipes {
 
         // 2NH3 + CO2 = CH4N2O + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(9))
+            .itemInputs(GTUtility.getIntegratedCircuit(9))
             .fluidInputs(
                 FluidUtils.getFluidStack(BioRecipes.mAmmonia, 600),
                 FluidUtils.getFluidStack(BioRecipes.mCarbonDioxide, 300))
@@ -997,7 +998,7 @@ public class BioRecipes {
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(9))
+            .itemInputs(GTUtility.getIntegratedCircuit(9))
             .fluidInputs(
                 FluidUtils.getFluidStack(BioRecipes.mUrea, 200),
                 FluidUtils.getFluidStack(BioRecipes.mFormaldehyde, 200))
@@ -1013,7 +1014,7 @@ public class BioRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(3),
+                GTUtility.getIntegratedCircuit(3),
                 ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 5),
                 ItemUtils.getSimpleStack(Blocks.dirt, 1))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mRawBioResin, 1))
@@ -1028,7 +1029,7 @@ public class BioRecipes {
     private static void recipeLiquidResin() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(3), ItemUtils.getSimpleStack(AgriculturalChem.mRawBioResin, 1))
+            .itemInputs(GTUtility.getIntegratedCircuit(3), ItemUtils.getSimpleStack(AgriculturalChem.mRawBioResin, 1))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mEthanol, 200))
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 500))
             .duration(5 * SECONDS)
@@ -1036,7 +1037,7 @@ public class BioRecipes {
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(3), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 8))
+            .itemInputs(GTUtility.getIntegratedCircuit(3), ItemUtils.getSimpleStack(AgriculturalChem.mCellulosePulp, 8))
             .itemOutputs(ItemUtils.getSimpleStack(Ic2Items.resin, 32))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mLiquidResin, 144))
             .duration(60 * SECONDS)
@@ -1052,7 +1053,7 @@ public class BioRecipes {
             aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertForestry, 32);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    getBioChip(11),
+                    GTUtility.getIntegratedCircuit(11),
                     ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
                     ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8))
                 .itemOutputs(aFert)
@@ -1067,7 +1068,7 @@ public class BioRecipes {
         aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertIC2, 32);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(12),
+                GTUtility.getIntegratedCircuit(12),
                 ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 16),
                 ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 8))
             .itemOutputs(aFert)
@@ -1082,7 +1083,7 @@ public class BioRecipes {
     private static void recipeMethane() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(12), ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 10))
+            .itemInputs(GTUtility.getIntegratedCircuit(12), ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 10))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mDistilledWater, 500))
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mMethane, 500))
             .duration(5 * SECONDS)
@@ -1091,7 +1092,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(13),
+                GTUtility.getIntegratedCircuit(13),
                 ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 8),
                 ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 6),
                 ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 4))
@@ -1108,7 +1109,7 @@ public class BioRecipes {
 
         // 6CH4 = C6H6 + 18H
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(19), CI.getGreenCatalyst(0))
+            .itemInputs(GTUtility.getIntegratedCircuit(19), CI.getGreenCatalyst(0))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mMethane, 6000))
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mBenzene, 1000), Materials.Hydrogen.getGas(18000))
             .duration(8 * SECONDS)
@@ -1122,7 +1123,7 @@ public class BioRecipes {
 
         // C8H10 = C8H8 + 2H
         GTValues.RA.stdBuilder()
-            .itemInputs(getBioChip(20), CI.getGreenCatalyst(0))
+            .itemInputs(GTUtility.getIntegratedCircuit(20), CI.getGreenCatalyst(0))
             .fluidInputs(FluidUtils.getFluidStack(BioRecipes.mEthylbenzene, 100))
             .fluidOutputs(FluidUtils.getFluidStack(BioRecipes.mStyrene, 100), Materials.Hydrogen.getGas(200))
             .duration(16 * SECONDS)
