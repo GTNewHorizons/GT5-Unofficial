@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -301,8 +302,9 @@ public class Godforge implements Runnable {
             // Single step
             ItemStack[] solids_t2_1step = { MaterialsElements.STANDALONE.RHUGNOR.getDust(1),
                 MaterialsElements.STANDALONE.DRAGON_METAL.getDust(1),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getDust(1), Materials.CosmicNeutronium.getDust(1),
-                Materials.Draconium.getDust(1), Materials.DraconiumAwakened.getDust(1), Materials.Ichorium.getDust(1) };
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getDust(1), Materials.Bedrockium.getDust(1),
+                Materials.CosmicNeutronium.getDust(1), Materials.Draconium.getDust(1),
+                Materials.DraconiumAwakened.getDust(1), Materials.Ichorium.getDust(1), };
 
             FluidStack[] molten_t2_1step = convertToFluid(solids_t2_1step);
 
@@ -310,8 +312,9 @@ public class Godforge implements Runnable {
                 new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 144),
                 new FluidStack(MaterialsElements.STANDALONE.DRAGON_METAL.getPlasma(), 144),
                 new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 144),
-                Materials.CosmicNeutronium.getPlasma(144), Materials.Draconium.getPlasma(144),
-                Materials.DraconiumAwakened.getPlasma(144), Materials.Ichorium.getPlasma(144) };
+                Materials.Bedrockium.getPlasma(144), Materials.CosmicNeutronium.getPlasma(144),
+                Materials.Draconium.getPlasma(144), Materials.DraconiumAwakened.getPlasma(144),
+                Materials.Ichorium.getPlasma(144), };
 
             for (int i = 0; i < solids_t2_1step.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -340,14 +343,16 @@ public class Godforge implements Runnable {
 
             // Multi-step
             ItemStack[] solids_t2_xstep = { MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
-                Materials.Tritanium.getDust(1), Materials.Flerovium.getDust(1), Materials.Neutronium.getDust(1) };
+                Materials.Tritanium.getDust(1), Materials.Flerovium.getDust(1), Materials.Neutronium.getDust(1),
+                Materials.Infinity.getDust(1), MaterialsUEVplus.SixPhasedCopper.getDust(1), };
 
             FluidStack[] molten_t2_xstep = convertToFluid(solids_t2_xstep);
 
             FluidStack[] solid_plasmas_t2_xstep = {
                 new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 144),
                 Materials.Tritanium.getPlasma(144), Materials.Flerovium.getPlasma(144),
-                Materials.Neutronium.getPlasma(144), };
+                Materials.Neutronium.getPlasma(144), Materials.Infinity.getPlasma(144),
+                MaterialsUEVplus.SixPhasedCopper.getPlasma(144), };
 
             for (int i = 0; i < solids_t2_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -459,7 +464,7 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(Materials.Iron.getDust(1))
                 .fluidInputs(Materials.Iron.getMolten(1), Materials.Bismuth.getMolten(1))
-                .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(144))
+                .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(576))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -653,6 +658,9 @@ public class Godforge implements Runnable {
         exoticModuleMagmatterItemMap.put(Materials.Ichorium.getDustTiny(1), 100000);
         exoticModuleMagmatterItemMap.put(Materials.Neutronium.getDustTiny(1), 100000);
         exoticModuleMagmatterItemMap.put(Materials.Flerovium.getDustTiny(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.Bedrockium.getDustTiny(1), 100000);
+        exoticModuleMagmatterItemMap.put(Materials.Infinity.getDustTiny(1), 100000);
+        exoticModuleMagmatterItemMap.put(MaterialsUEVplus.SixPhasedCopper.getDustTiny(1), 100000);
 
         // GT++ materials
         exoticModuleMagmatterItemMap.put(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getTinyDust(1), 100000);
@@ -746,6 +754,17 @@ public class Godforge implements Runnable {
                     ItemList.Robot_Arm_UMV.get(64), ItemList.Conveyor_Module_UMV.get(64) });
         }
 
+    }
+
+    public static void runDevEnvironmentRecipes() {
+        // put something in here to not crash the game in dev environment when opening the manual insertion window
+        godforgeUpgradeMats.put(0, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(5, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(7, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(11, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(26, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(29, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(30, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
     }
 
     public static void initMoltenModuleRecipes() {
