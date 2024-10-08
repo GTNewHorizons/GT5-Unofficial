@@ -120,7 +120,6 @@ public class MultiblockTooltipBuilder {
      * @param infoStrings The lines to be added.
      * @return Instance this method was called on.
      */
-
     public MultiblockTooltipBuilder addInfoAll(String... infoStrings) {
         iLines.addAll(Arrays.asList(infoStrings));
         return this;
@@ -144,6 +143,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addPollutionAmount(int pollution) {
+        if (pollution == 0) return this;
         iLines.add(
             TT_causes + COLON + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
         return this;
