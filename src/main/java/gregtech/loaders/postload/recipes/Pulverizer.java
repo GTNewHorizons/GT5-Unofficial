@@ -336,7 +336,6 @@ public class Pulverizer implements Runnable {
                 .duration(22 * SECONDS + 10 * TICKS)
                 .eut(8)
                 .recipeCategory(RecipeCategories.maceratorRecycling)
-
                 .addTo(maceratorRecipes);
 
             // Stainless Steel
@@ -725,6 +724,5 @@ public class Pulverizer implements Runnable {
             .duration(20 * SECONDS)
             .eut(4)
             .addTo(maceratorRecipes);
-
     }
 }
