@@ -14,7 +14,6 @@ import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOL
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_VENT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
-import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.EXPLODE;
 import static gregtech.api.util.GTRecipeConstants.ON_FIRE;
 import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
@@ -76,6 +75,7 @@ import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.GTClientPreference;
@@ -1079,7 +1079,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             getBaseMetaTileEntity().setOnFire();
             return DID_NOT_FIND_RECIPE;
         }
-        if (tRecipe.getMetadataOrDefault(COMPRESSION_TIER, 0) > 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        if (tRecipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0)
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (GTMod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;

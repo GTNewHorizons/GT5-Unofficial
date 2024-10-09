@@ -95,7 +95,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private final int[] fluidConsumptions = { 0, 0, 0, 0 };
 
     public static final String MAIN_NAME = "antimatterForge";
-    private final int speed = 100;
+    private final int speed = 20;
     private long rollingCost = 0L;
     private boolean isLoadedChunk;
     public GTRecipe mLastRecipe;
