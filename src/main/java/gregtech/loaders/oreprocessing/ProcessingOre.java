@@ -36,6 +36,10 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         boolean tIsRich = false;
 
         // For Sake of god of balance!
@@ -201,7 +205,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                     Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
         }
 
-        if (tCrushed != null) {
+        if (tCrushed != null && aMaterial != Materials.Knightmetal) {
             GTValues.RA.stdBuilder()
                 .itemInputs(aOreStack)
                 .itemOutputs(GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed))

@@ -187,7 +187,6 @@ import bartworks.common.blocks.BWBlocksGlass;
 import bartworks.common.blocks.BWBlocksGlass2;
 import bartworks.common.blocks.BWMachineBlockContainer;
 import bartworks.common.blocks.BWTileEntityContainer;
-import bartworks.common.configs.ConfigHandler;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.items.ItemCircuitProgrammer;
 import bartworks.common.items.ItemRockCutter;
@@ -216,6 +215,7 @@ import bartworks.common.tileentities.tiered.MTEEnergyDistributor;
 import bartworks.common.tileentities.tiered.MTEGiantOutputHatch;
 import bartworks.common.tileentities.tiered.MTEHumongousInputHatch;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.processingLoaders.LoadItemContainers;
 import bwcrossmod.galacticgreg.MTEVoidMiners;
 import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserBox;
 import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserDynamo;
@@ -410,8 +410,7 @@ public class ItemRegistry {
         // GT2 stuff
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BWItemBlocks.class, "BW_ItemBlocks");
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[1], BWItemBlocks.class, "GT_LESU_CASING");
-        if (ConfigHandler.teslastaff)
-            GameRegistry.registerItem(ItemRegistry.TESLASTAFF, ItemRegistry.TESLASTAFF.getUnlocalizedName());
+        GameRegistry.registerItem(ItemRegistry.TESLASTAFF, ItemRegistry.TESLASTAFF.getUnlocalizedName());
 
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_LV, ItemRegistry.ROCKCUTTER_LV.getUnlocalizedName());
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_MV, ItemRegistry.ROCKCUTTER_MV.getUnlocalizedName());
@@ -650,5 +649,7 @@ public class ItemRegistry {
                     amps).getStackForm(1L);
             }
         }
+
+        LoadItemContainers.run();
     }
 }

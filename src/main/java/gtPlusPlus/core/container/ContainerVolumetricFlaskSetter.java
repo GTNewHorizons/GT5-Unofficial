@@ -104,7 +104,7 @@ public class ContainerVolumetricFlaskSetter extends Container {
     @Override
     public ItemStack transferStackInSlot(final EntityPlayer par1EntityPlayer, final int par2) {
         ItemStack var3 = null;
-        final Slot var4 = (Slot) this.inventorySlots.get(par2);
+        final Slot var4 = this.inventorySlots.get(par2);
 
         if ((var4 != null) && var4.getHasStack()) {
             final ItemStack var5 = var4.getStack();
@@ -120,7 +120,7 @@ public class ContainerVolumetricFlaskSetter extends Container {
              */
 
             if (var5.stackSize == 0) {
-                var4.putStack((ItemStack) null);
+                var4.putStack(null);
             } else {
                 var4.onSlotChanged();
             }
@@ -159,8 +159,8 @@ public class ContainerVolumetricFlaskSetter extends Container {
     @Override
     public void updateProgressBar(int par1, int par2) {
         super.updateProgressBar(par1, par2);
-        switch (par1) {
-            case 0 -> mCustomValue = (short) par2;
+        if (par1 == 0) {
+            mCustomValue = (short) par2;
         }
     }
 

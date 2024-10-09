@@ -22,7 +22,7 @@ import galacticgreg.schematics.SpaceSchematic.BaseStructureInfo;
  */
 public class SpaceSchematicWrapper implements ISpaceObjectGenerator {
 
-    private SpaceSchematic _mSchematic;
+    private final SpaceSchematic _mSchematic;
     private Vec3 _mCenter = Vec3.createVectorHelper(0, 0, 0);
     private List<StructureInformation> _mFinalizedStructure;
 
@@ -31,7 +31,7 @@ public class SpaceSchematicWrapper implements ISpaceObjectGenerator {
     }
 
     public boolean isCalculated() {
-        return _mFinalizedStructure != null && _mFinalizedStructure.size() > 0;
+        return _mFinalizedStructure != null && !_mFinalizedStructure.isEmpty();
     }
 
     /**

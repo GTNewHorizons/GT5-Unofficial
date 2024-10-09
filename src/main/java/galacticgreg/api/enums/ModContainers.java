@@ -13,7 +13,7 @@ public enum ModContainers {
 
     public final ModContainer modContainer;
 
-    private ModContainers(ModContainer modContainer) {
+    ModContainers(ModContainer modContainer) {
         this.modContainer = modContainer;
     }
 }

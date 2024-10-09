@@ -135,7 +135,7 @@ public class TeleporterDimensionMod extends Teleporter {
             if (flag) {
                 this.destinationCoordinateCache
                     .add(j1, new Teleporter.PortalPosition(i, j, k, this.worldServerInstance.getTotalWorldTime()));
-                this.destinationCoordinateKeys.add(Long.valueOf(j1));
+                this.destinationCoordinateKeys.add(j1);
             }
 
             double d11 = i + 0.5D;
@@ -457,7 +457,7 @@ public class TeleporterDimensionMod extends Teleporter {
         }
     }
 
-    public class PortalPosition extends ChunkCoordinates {
+    public static class PortalPosition extends ChunkCoordinates {
 
         /**
          * The worldtime at which this PortalPosition was last verified

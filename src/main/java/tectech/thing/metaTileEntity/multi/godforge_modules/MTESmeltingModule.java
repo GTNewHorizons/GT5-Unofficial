@@ -75,6 +75,11 @@ public class MTESmeltingModule extends MTEBaseModule {
         return Arrays.asList(RecipeMaps.blastFurnaceRecipes, RecipeMaps.furnaceRecipes);
     }
 
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
+    }
+
     long wirelessEUt = 0;
 
     @Override
@@ -87,6 +92,10 @@ public class MTESmeltingModule extends MTEBaseModule {
 
                 if (recipe.mSpecialValue > getHeat()) {
                     return CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+                }
+
+                if (recipe.mEUt > getProcessingVoltage()) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
 
                 wirelessEUt = (long) recipe.mEUt * getMaxParallel();
@@ -121,7 +130,7 @@ public class MTESmeltingModule extends MTEBaseModule {
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setHeatOC(true)
                     .setHeatDiscount(true)
-                    .setMachineHeat(getHeatForOC())
+                    .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
                     .setHeatDiscountMultiplier(getHeatEnergyDiscount())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
@@ -200,9 +209,16 @@ public class MTESmeltingModule extends MTEBaseModule {
                 + formatNumbers(mMaxProgresstime / 20)
                 + RESET
                 + " s");
-        str.add("Currently using: " + RED + formatNumbers(EUt) + RESET + " EU/t");
+        str.add(
+            "Currently using: " + RED
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0")
+                + RESET
+                + " EU/t");
         str.add(YELLOW + "Max Parallel: " + RESET + formatNumbers(getMaxParallel()));
-        str.add(YELLOW + "Current Parallel: " + RESET + formatNumbers(currentParallel));
+        str.add(
+            YELLOW + "Current Parallel: "
+                + RESET
+                + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0"));
         str.add(YELLOW + "Heat Capacity: " + RESET + formatNumbers(getHeat()));
         str.add(YELLOW + "Effective Heat Capacity: " + RESET + formatNumbers(getHeatForOC()));
         str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));

@@ -63,6 +63,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -912,21 +913,17 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
         // Make sure there are no energy hatches.
         {
-            if (mEnergyHatches.size() > 0) {
+            if (!mEnergyHatches.isEmpty()) {
                 return false;
             }
 
-            if (mExoticEnergyHatches.size() > 0) {
+            if (!mExoticEnergyHatches.isEmpty()) {
                 return false;
             }
         }
 
         // Make sure there are 2 input hatches.
-        if (mInputHatches.size() != 2) {
-            return false;
-        }
-
-        return true;
+        return mInputHatches.size() == 2;
     }
 
     private boolean animationsEnabled = true;
@@ -1690,15 +1687,22 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey(PLANET_BLOCK)) {
-            tooltip.add(
-                1,
-                GTLanguageManager.addStringLocalization("EOH_Controller_PlanetBlock", "Current Planet Block: ") + AQUA
-                    + new ItemStack(
-                        ModBlocks.getBlock(
-                            stack.getTagCompound()
-                                .getString(PLANET_BLOCK))).getDisplayName());
+        if (stack.hasTagCompound()) {
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (nbt.hasKey(PLANET_BLOCK)) {
+                tooltip.add(
+                    1,
+                    GTLanguageManager.addStringLocalization("EOH_Controller_PlanetBlock", "Current Planet Block: ")
+                        + AQUA
+                        + new ItemStack(ModBlocks.getBlock(nbt.getString(PLANET_BLOCK))).getDisplayName());
+            }
+            if (nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG) > 0) {
+                tooltip.add(
+                    1,
+                    GTLanguageManager
+                        .addStringLocalization("EOH_Controller_AstralArrayAmount", "Stored Astral Arrays: ") + AQUA
+                        + formatNumbers(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG)));
+            }
         }
     }
 
@@ -1841,5 +1845,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EYE_OF_HARMONY_LOOP;
     }
 }

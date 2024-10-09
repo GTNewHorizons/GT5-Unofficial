@@ -51,6 +51,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
 
 public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable {
@@ -210,10 +212,10 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             .addInfo(BLUE_PRINT_INFO)
             .addSeparator()
             .addController("Front bottom")
-            .addOtherStructurePart("Input Hatch", "Distilled water. Any bottom left/right side casing", 1)
-            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam. Any top layer casing", 2)
-            .addOtherStructurePart("Input Hatch", "Hot fluid or plasma. Front middle on 4th layer", 3)
-            .addOtherStructurePart("Output Hatch", "Cold fluid. Back middle on 4th layer", 4)
+            .addOtherStructurePart("Input Hatch", "distilled water", 1)
+            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
+            .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
+            .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
             .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false)
             .toolTipFinisher("Good Generator");
@@ -223,18 +225,26 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
         tRunningRecipe = null;
-        if (mHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.SUCCESSFUL;
+        FluidStack hotFluid = null;
+        if (mHotFluidHatch instanceof MTEHatchInputME inputME) {
+            FluidStack[] fluids = inputME.getStoredFluids();
+            if (fluids.length > 0) {
+                hotFluid = fluids[0];
+            }
+        } else {
+            hotFluid = mHotFluidHatch.getFluid();
+        }
+        if (hotFluid == null) return CheckRecipeResultRegistry.SUCCESSFUL;
         ExtremeHeatExchangerRecipe tRecipe = (ExtremeHeatExchangerRecipe) GoodGeneratorRecipeMaps.extremeHeatExchangerFuels
             .getBackend()
-            .findFuel(mHotFluidHatch.getFluid());
+            .findFuel(hotFluid);
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         tRunningRecipe = tRecipe;
-        this.hotName = mHotFluidHatch.getFluid()
-            .getFluid()
+        this.hotName = hotFluid.getFluid()
             .getName();
         int tMaxConsume = tRecipe.getMaxHotFluidConsume();
         int transformed_threshold = tRecipe.mSpecialValue;
-        int tRealConsume = Math.min(tMaxConsume, mHotFluidHatch.getFluid().amount);
+        int tRealConsume = Math.min(tMaxConsume, hotFluid.amount);
         double penalty = 0.0d;
         double efficiency = 1d;
         int shs_reduction_per_config = 150;
@@ -255,7 +265,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
 
         this.mMaxProgresstime = 20;
         this.mEUt = (int) (tRecipe.getEUt() * efficiency * ((double) tRealConsume / (double) tMaxConsume));
-        mHotFluidHatch.drain(tRealConsume, true);
+        // the 3-arg drain will work on both normal hatch and ME hatch
+        mHotFluidHatch.drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), tRealConsume), true);
         mCooledFluidHatch.fill(new FluidStack(tRecipe.getCooledFluid(), tRealConsume), true);
         this.mEfficiencyIncrease = 160;
 
@@ -268,8 +279,18 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             Fluid tReadySteam = transformed ? tRunningRecipe.getHeatedSteam() : tRunningRecipe.getNormalSteam();
             int waterAmount = (int) (this.mEUt / getUnitSteamPower(tReadySteam.getName())) / 160;
             if (waterAmount < 0) return false;
-            if (depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
-                addOutput(new FluidStack(tReadySteam, waterAmount * 160));
+            int steamToOutput;
+            startRecipeProcessing();
+            boolean isDepleteSuccess = depleteInput(GTModHandler.getDistilledWater(waterAmount));
+            endRecipeProcessing();
+            if (isDepleteSuccess) {
+                if (tRunningRecipe.mFluidInputs[0].getUnlocalizedName()
+                    .contains("plasma")) {
+                    steamToOutput = waterAmount * 160 / 1000;
+                } else {
+                    steamToOutput = waterAmount * 160;
+                }
+                addOutput(new FluidStack(tReadySteam, steamToOutput));
             } else {
                 GTLog.exp.println(this.mName + " had no more Distilled water!");
                 mHotFluidHatch.getBaseMetaTileEntity()
@@ -281,16 +302,13 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     }
 
     public double getUnitSteamPower(String steam) {
-        switch (steam) {
-            case "steam":
-                return 0.5;
-            case "ic2superheatedsteam":
-                return 1;
-            case "supercriticalsteam":
-                return 100;
-            default:
-                return -1;
-        }
+        return switch (steam) {
+            case "steam" -> 0.5;
+            case "ic2superheatedsteam" -> 1;
+            case "supercriticalsteam" -> 100;
+            case "densesupercriticalsteam" -> 1;
+            default -> -1;
+        };
     }
 
     @Override
@@ -415,6 +433,22 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
 
         public IGTHatchAdder<? super MTEExtremeHeatExchanger> adder() {
             return adder;
+        }
+    }
+
+    @Override
+    public void startRecipeProcessing() {
+        super.startRecipeProcessing();
+        if (mHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mHotFluidHatch.isValid()) {
+            aware.startRecipeProcessing();
+        }
+    }
+
+    @Override
+    public void endRecipeProcessing() {
+        super.endRecipeProcessing();
+        if (mHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mHotFluidHatch.isValid()) {
+            aware.endRecipeProcessing(this);
         }
     }
 }

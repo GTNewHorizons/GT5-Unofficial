@@ -78,21 +78,23 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
     @Override
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         super.drawNEIOverlays(neiCachedRecipe);
+        // Just to make sure these are only added once, otherwise these keep getting added every display tick
+        if (neiCachedRecipe.mInputs.size() == 1) {
+            // Display flocculation chemical
+            neiCachedRecipe.mInputs.add(
+                new PositionedStack(
+                    GTUtility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(100000L), true),
+                    5,
+                    -1,
+                    false));
 
-        // Display flocculation chemical
-        neiCachedRecipe.mInputs.add(
-            new PositionedStack(
-                GTUtility.getFluidDisplayStack(Materials.PolyAluminiumChloride.getFluid(100000L), true),
-                5,
-                -1,
-                false));
-
-        // Display waste output
-        neiCachedRecipe.mOutputs.add(
-            new PositionedStack(
-                GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(100000L), true),
-                147,
-                48,
-                false));
+            // Display waste output
+            neiCachedRecipe.mOutputs.add(
+                new PositionedStack(
+                    GTUtility.getFluidDisplayStack(Materials.FlocculationWasteLiquid.getFluid(100000L), true),
+                    147,
+                    48,
+                    false));
+        }
     }
 }

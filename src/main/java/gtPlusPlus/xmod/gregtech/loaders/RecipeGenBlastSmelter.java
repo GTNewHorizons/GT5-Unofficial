@@ -16,11 +16,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.recipe.GTPPRecipeCategories;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -36,7 +36,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
 
     static {
-        MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+        MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
     }
 
     public RecipeGenBlastSmelter(final Material M) {
@@ -59,7 +59,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
 
         final Material[] badMaterials = { MaterialsFluorides.THORIUM_HEXAFLUORIDE,
             MaterialsFluorides.THORIUM_TETRAFLUORIDE, MaterialsAlloy.BLOODSTEEL, MaterialsNuclides.LiFBeF2ThF4UF4,
-            MaterialsNuclides.LiFBeF2ZrF4UF4, MaterialsNuclides.LiFBeF2ZrF4U235 };
+            MaterialsNuclides.LiFBeF2ZrF4UF4, MaterialsNuclides.LiFBeF2ZrF4U235, MaterialsAlloy.NITINOL_60 };
         for (final Material R : badMaterials) {
             if (M == R) {
                 return;
@@ -136,7 +136,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                     .fluidOutputs(M.getFluidStack(fluidAmount))
                     .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1))
                     .eut(aVoltage)
-                    .recipeCategory(GTPPRecipeCategories.absNonAlloyRecipes)
+                    .recipeCategory(RecipeCategories.absNonAlloyRecipes)
                     .addTo(alloyBlastSmelterRecipes);
             } else {
                 Logger.WARNING("[BAS] Failed.");
@@ -223,8 +223,7 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                     M.getComposites()
                         .get(irc)
                         .getDustStack(r))) {
-                final int xr = r;
-                if ((xr > 0) && (xr <= 100)) {
+                if (r > 0 && r <= 100) {
                     final int mathmatics = (r * 1000);
                     componentsFluid = FluidUtils.getFluidStack(
                         M.getComposites()

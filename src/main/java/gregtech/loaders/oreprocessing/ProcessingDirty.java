@@ -27,9 +27,16 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         OrePrefixes.dirtyGravel.add(this);
     }
 
+    private boolean didPersulfate = false;
+    private boolean didMercury = false;
+
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         net.minecraft.item.ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aStack))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L))
@@ -106,18 +113,22 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .eut(48)
             .addTo(thermalCentrifugeRecipes);
 
+        didPersulfate = false;
+        didMercury = false;
+
         addChemicalBathRecipes(aMaterial, aMaterial, aStack, aPrefix);
 
         for (Materials tMaterial : aMaterial.mOreByProducts) {
             addChemicalBathRecipes(aMaterial, tMaterial, aStack, aPrefix);
         }
+
     }
 
     private void addChemicalBathRecipes(Materials material, Materials byproduct, ItemStack stack, OrePrefixes prefix) {
         OrePrefixes chemicalBathPrefix = prefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified
             : OrePrefixes.dustPure;
 
-        if (byproduct.contains(SubTag.WASHING_MERCURY)) {
+        if (byproduct.contains(SubTag.WASHING_MERCURY) && !didMercury) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
@@ -129,8 +140,10 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);
+
+            didMercury = true;
         }
-        if (byproduct.contains(SubTag.WASHING_MERCURY_99_PERCENT)) {
+        if (byproduct.contains(SubTag.WASHING_MERCURY_99_PERCENT) && !didMercury) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
@@ -142,8 +155,10 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);
+
+            didMercury = true;
         }
-        if (byproduct.contains(SubTag.WASHING_SODIUMPERSULFATE)) {
+        if (byproduct.contains(SubTag.WASHING_SODIUMPERSULFATE) && !didPersulfate) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(
@@ -155,6 +170,8 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(40 * SECONDS)
                 .eut(8)
                 .addTo(chemicalBathRecipes);
+
+            didPersulfate = true;
         }
     }
 }

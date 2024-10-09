@@ -12,7 +12,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -25,6 +25,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -35,6 +38,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -68,7 +72,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return (IMetaTileEntity) new MTEIndustrialVacuumFreezer(this.mName);
+        return new MTEIndustrialVacuumFreezer(this.mName);
     }
 
     @Override
@@ -168,7 +172,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     public void updateSlots() {
-        for (MTEHatchCustomFluidBase tHatch : filterValidMTEs(mCryotheumHatches)) tHatch.updateSlots();
+        for (MTEHatchCustomFluidBase tHatch : validMTEList(mCryotheumHatches)) tHatch.updateSlots();
         super.updateSlots();
     }
 
@@ -215,7 +219,7 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialVacuumFreezer;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialVacuumFreezer;
     }
 
     @Override
@@ -250,5 +254,11 @@ public class MTEIndustrialVacuumFreezer extends GTPPMultiBlockBase<MTEIndustrial
                 }
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_ADV_FREEZER_LOOP;
     }
 }

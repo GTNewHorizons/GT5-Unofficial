@@ -46,6 +46,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
             0,
             new String[] { CommonValues.TEC_MARK_GENERAL,
                 translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
+                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
                 translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
                     + EnumChatFormatting.YELLOW
                     + GTUtility.formatNumbers(amps * V[tier])
@@ -252,9 +253,10 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-        return true;
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        GTUIInfos.openGTTileEntityUI(this.getBaseMetaTileEntity(), aPlayer);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override

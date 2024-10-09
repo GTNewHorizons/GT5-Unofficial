@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
@@ -334,13 +335,6 @@ public class CentrifugeRecipes implements Runnable {
             .fluidOutputs(Materials.Methane.getGas(576))
             .duration(3 * MINUTES + 50 * SECONDS + 8 * TICKS)
             .eut(5)
-            .addTo(centrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(60))
-            .duration(10 * SECONDS)
-            .eut(20)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -697,7 +691,7 @@ public class CentrifugeRecipes implements Runnable {
             .eut(5)
             .addTo(centrifugeRecipes);
 
-        if (Thaumcraft.isModLoaded()) {
+        if (Thaumcraft.isModLoaded() && Forestry.isModLoaded()) {
             // air
 
             GTValues.RA.stdBuilder()
@@ -771,7 +765,7 @@ public class CentrifugeRecipes implements Runnable {
                 .addTo(centrifugeRecipes);
         }
 
-        if (ExtraUtilities.isModLoaded()) {
+        if (ExtraUtilities.isModLoaded() && Forestry.isModLoaded()) {
             // Caelestis red
 
             GTValues.RA.stdBuilder()

@@ -14,8 +14,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTLanguageManager;
@@ -26,6 +28,14 @@ import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
+@Optional.InterfaceList(
+    value = {
+        @Optional.Interface(
+            iface = "shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor",
+            modid = Mods.Names.I_C2_NUCLEAR_CONTROL),
+        @Optional.Interface(
+            iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
+            modid = Mods.Names.I_C2_NUCLEAR_CONTROL) })
 public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPanelDataSource {
 
     private static final UUID CARD_TYPE = new UUID(0L, 41L);

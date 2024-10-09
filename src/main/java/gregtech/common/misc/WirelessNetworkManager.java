@@ -14,8 +14,9 @@ public class WirelessNetworkManager {
 
     public static void strongCheckOrAddUser(UUID user_uuid) {
         SpaceProjectManager.checkOrCreateTeam(user_uuid);
+        user_uuid = SpaceProjectManager.getLeader(user_uuid);
         if (!GlobalEnergy.containsKey(user_uuid)) {
-            GlobalEnergy.put(SpaceProjectManager.getLeader(user_uuid), BigInteger.ZERO);
+            GlobalEnergy.put(user_uuid, BigInteger.ZERO);
         }
     }
 

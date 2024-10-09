@@ -1,9 +1,10 @@
 package gregtech.api.util;
 
+import java.util.ArrayList;
+
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.TierEU;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.data.ArrayUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -35,9 +36,7 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
     @Override
     public boolean equals(Object o) {
         if (o instanceof GasSpargingRecipe i) {
-            if (this.mInputGas.equals(i.mInputGas) && this.mInputSpentFuel.equals(i.mInputSpentFuel)) {
-                return true;
-            }
+            return this.mInputGas.equals(i.mInputGas) && this.mInputSpentFuel.equals(i.mInputSpentFuel);
         }
         return false;
     }
@@ -56,48 +55,36 @@ public class GasSpargingRecipe implements Comparable<GasSpargingRecipe> {
     }
 
     public boolean isValid() {
-        if (mInputGas == null || mInputGas.amount <= 0
-            || mInputSpentFuel == null
-            || mInputSpentFuel.amount <= 0
-            || mFluidOutputs == null
-            || mFluidOutputs.length < 1
-            || mMaxOutputQuantity == null
-            || mMaxOutputQuantity.length < 1
-            || mFluidOutputs.length != mMaxOutputQuantity.length) {
-            return false;
-        }
-        return true;
+        return mInputGas != null && mInputGas.amount > 0
+            && mInputSpentFuel != null
+            && mInputSpentFuel.amount > 0
+            && mFluidOutputs != null
+            && mFluidOutputs.length >= 1
+            && mMaxOutputQuantity != null
+            && mMaxOutputQuantity.length >= 1
+            && mFluidOutputs.length == mMaxOutputQuantity.length;
     }
 
     public boolean containsInputs(FluidStack aSpargeGas, FluidStack aSpentFuel) {
         if (aSpargeGas != null && aSpargeGas.getFluid()
             .equals(this.mInputGas.getFluid())) {
-            if (aSpentFuel != null && aSpentFuel.getFluid()
-                .equals(this.mInputSpentFuel.getFluid())) {
-                return true;
-            }
+            return aSpentFuel != null && aSpentFuel.getFluid()
+                .equals(this.mInputSpentFuel.getFluid());
         }
         return false;
     }
 
     @Override
     public int compareTo(GasSpargingRecipe o) {
-        if (o.mFluidOutputs.length > this.mFluidOutputs.length) {
-            return 1;
-        } else if (o.mFluidOutputs.length == this.mFluidOutputs.length) {
-            return 0;
-        } else {
-            return -1;
-        }
+        return Integer.compare(o.mFluidOutputs.length, this.mFluidOutputs.length);
     }
 
     public String[] getRecipeInfo() {
-        AutoMap<String> result = new AutoMap<>();
-        result.put("Input " + ItemUtils.getArrayStackNames(mFluidInputs));
-        result.put("Output " + ItemUtils.getArrayStackNames(mFluidOutputs));
-        result.put("Duration: " + mDuration);
-        result.put("EU/t: " + mEUt);
-        String s[] = result.toArray();
-        return s;
+        ArrayList<String> result = new ArrayList<>();
+        result.add("Input " + ItemUtils.getArrayStackNames(mFluidInputs));
+        result.add("Output " + ItemUtils.getArrayStackNames(mFluidOutputs));
+        result.add("Duration: " + mDuration);
+        result.add("EU/t: " + mEUt);
+        return result.toArray(new String[] {});
     }
 }

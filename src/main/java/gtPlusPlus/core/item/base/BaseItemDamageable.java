@@ -86,7 +86,7 @@ public class BaseItemDamageable extends Item {
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        if ((this.itemName == null) || this.itemName.equals("")) {
+        if ((this.itemName == null) || this.itemName.isEmpty()) {
             return super.getItemStackDisplayName(tItem);
         }
         return this.itemName;
@@ -101,7 +101,7 @@ public class BaseItemDamageable extends Item {
         return true;
     }
 
-    public static final long getItemDamage(final ItemStack aStack) {
+    public static long getItemDamage(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("Damage");
@@ -114,7 +114,7 @@ public class BaseItemDamageable extends Item {
         return 0L;
     }
 
-    public static final boolean setItemDamage(final ItemStack aStack, final long aDamage) {
+    public static boolean setItemDamage(final ItemStack aStack, final long aDamage) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("Damage");
@@ -142,11 +142,7 @@ public class BaseItemDamageable extends Item {
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         int dmg = (int) getItemDamage(stack);
-        if (dmg <= 20) {
-            return false;
-        } else {
-            return true;
-        }
+        return dmg > 20;
     }
 
     public static ItemStack damageItem(ItemStack item) {
@@ -154,10 +150,8 @@ public class BaseItemDamageable extends Item {
             long currentUse = BaseItemDamageable.getItemDamage(item);
             if (currentUse >= 0 && currentUse <= 250) {
                 BaseItemDamageable.setItemDamage(item, currentUse + 1);
-                return item;
-            } else {
-                return item;
             }
+            return item;
         }
         return null;
     }

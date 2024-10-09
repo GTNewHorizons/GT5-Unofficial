@@ -541,7 +541,7 @@ public enum SmallOres {
 
     public final SmallOreBuilder smallOreBuilder;
 
-    private SmallOres(gregtech.common.SmallOreBuilder smallOreBuilder) {
+    SmallOres(gregtech.common.SmallOreBuilder smallOreBuilder) {
         this.smallOreBuilder = smallOreBuilder;
     }
 

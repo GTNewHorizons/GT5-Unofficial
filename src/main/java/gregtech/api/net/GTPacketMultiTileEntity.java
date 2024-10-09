@@ -18,14 +18,14 @@ import gregtech.api.net.data.MultiTileEntityProcess;
 import gregtech.api.net.data.PacketData;
 import io.netty.buffer.ByteBuf;
 
-public class GTPacketMultiTileEntity extends GTPacketNew {
+public class GTPacketMultiTileEntity extends GTPacket {
 
     private final Set<PacketData<MultiTileEntityProcess>> data = new HashSet<>();
     public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY_INDEX = B[4],
         INVENTORY_NAME_ID = B[5], BOOLEANS = B[6], SOUND = B[7];
 
-    public GTPacketMultiTileEntity(boolean reference) {
-        super(reference);
+    public GTPacketMultiTileEntity() {
+        super();
     }
 
     @Override
@@ -97,11 +97,11 @@ public class GTPacketMultiTileEntity extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput in) {
+    public GTPacket decode(ByteArrayDataInput in) {
         Objects.requireNonNull(in);
         final int packetFeatures = in.readInt();
 
-        final GTPacketMultiTileEntity packet = new GTPacketMultiTileEntity(false);
+        final GTPacketMultiTileEntity packet = new GTPacketMultiTileEntity();
 
         if (containsBit(packetFeatures, CoordinateData.COORDINATE_DATA_ID)) {
             packet.addData(new CoordinateData());

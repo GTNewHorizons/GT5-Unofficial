@@ -65,7 +65,7 @@ public class RecipeUtils {
 
         try {
             int size = CompatHandler.mRecipesToGenerate.size();
-            CompatHandler.mRecipesToGenerate.put(new InternalRecipeObject(o, resultItem, false));
+            CompatHandler.mRecipesToGenerate.add(new InternalRecipeObject(o, resultItem, false));
             // Utils.LOG_WARNING("Success! Added a recipe for "+resultItem.getDisplayName());
             if (CompatHandler.mRecipesToGenerate.size() > size) {
                 if (!CompatHandler.areInitItemsLoaded) {
@@ -134,7 +134,6 @@ public class RecipeUtils {
             if ((is != null) && (is.getItem() == I)) {
                 items.remove();
                 Logger.RECIPE("Remove a recipe with " + I.getUnlocalizedName() + " as output.");
-                continue;
             }
         }
         Logger.RECIPE("All recipes should be gone?");
@@ -171,7 +170,7 @@ public class RecipeUtils {
         }
 
         int size = CompatHandler.mGtRecipesToGenerate.size();
-        CompatHandler.mGtRecipesToGenerate.put(new InternalRecipeObject(o, OutputItem, true));
+        CompatHandler.mGtRecipesToGenerate.add(new InternalRecipeObject(o, OutputItem, true));
 
         if (CompatHandler.mGtRecipesToGenerate.size() > size) {
             if (!CompatHandler.areInitItemsLoaded) {
@@ -195,10 +194,7 @@ public class RecipeUtils {
             return false;
         }
         // let gregtech handle shapeless recipes.
-        if (GTModHandler.addShapelessCraftingRecipe(OutputItem, inputItems)) {
-            return true;
-        }
-        return false;
+        return GTModHandler.addShapelessCraftingRecipe(OutputItem, inputItems);
     }
 
     public static boolean generateMortarRecipe(ItemStack aStack, ItemStack aOutput) {
@@ -254,12 +250,8 @@ public class RecipeUtils {
 
             Logger.RECIPE("Using " + validCounter + " valid inputs and " + invalidCounter + " invalid inputs.");
             ShapedRecipe r = new ShapedRecipe(aFiltered, mOutput);
-            if (r != null && r.mRecipe != null) {
-                isValid = true;
-            } else {
-                isValid = false;
-            }
-            mRecipe = r != null ? r.mRecipe : null;
+            isValid = r.mRecipe != null;
+            mRecipe = r.mRecipe;
         }
 
         @Override
@@ -298,7 +290,7 @@ public class RecipeUtils {
             int tList_sS = tList.size();
 
             for (int i = 0; i < tList_sS; ++i) {
-                IRecipe tRecipe = (IRecipe) tList.get(i);
+                IRecipe tRecipe = tList.get(i);
                 if (!aNotRemoveShapelessRecipes
                     || !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)) {
                     if (aOnlyRemoveNativeHandlers) {
@@ -341,7 +333,7 @@ public class RecipeUtils {
     private static boolean addShapedRecipe(Object[] Inputs, ItemStack aOutputStack) {
         Object[] Slots = new Object[9];
 
-        String aFullString = "";
+        StringBuilder aFullString = new StringBuilder();
         String aFullStringExpanded = "abcdefghi";
 
         for (int i = 0; i < 9; i++) {
@@ -349,23 +341,23 @@ public class RecipeUtils {
 
             if (o instanceof ItemStack) {
                 Slots[i] = ItemUtils.getSimpleStack((ItemStack) o, 1);
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Item) {
                 Slots[i] = ItemUtils.getSimpleStack((Item) o, 1);
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof Block) {
                 Slots[i] = ItemUtils.getSimpleStack((Block) o, 1);
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof String) {
                 Slots[i] = o;
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o instanceof ItemData aData) {
                 ItemStack aStackFromGT = ItemUtils.getOrePrefixStack(aData.mPrefix, aData.mMaterial.mMaterial, 1);
                 Slots[i] = aStackFromGT;
-                aFullString += aFullStringExpanded.charAt(i);
+                aFullString.append(aFullStringExpanded.charAt(i));
             } else if (o == null) {
                 Slots[i] = null;
-                aFullString += " ";
+                aFullString.append(" ");
             } else {
                 Slots[i] = null;
                 Logger.INFO(
@@ -380,9 +372,9 @@ public class RecipeUtils {
         String aRow1 = aFullString.substring(0, 3);
         String aRow2 = aFullString.substring(3, 6);
         String aRow3 = aFullString.substring(6, 9);
-        Logger.RECIPE("" + aRow1);
-        Logger.RECIPE("" + aRow2);
-        Logger.RECIPE("" + aRow3);
+        Logger.RECIPE(aRow1);
+        Logger.RECIPE(aRow2);
+        Logger.RECIPE(aRow3);
 
         String[] aStringData = new String[] { aRow1, aRow2, aRow3 };
         Object[] aDataObject = new Object[19];
@@ -415,7 +407,7 @@ public class RecipeUtils {
         ShapedOreRecipe aRecipe = new ShapedOreRecipe(aOutputStack, aDataObject);
 
         int size = CompatHandler.mRecipesToGenerate.size();
-        CompatHandler.mRecipesToGenerate.put(new InternalRecipeObject2(aRecipe));
+        CompatHandler.mRecipesToGenerate.add(new InternalRecipeObject2(aRecipe));
         if (CompatHandler.mRecipesToGenerate.size() > size) {
             if (!CompatHandler.areInitItemsLoaded) {
                 RegistrationHandler.recipesSuccess++;
@@ -436,11 +428,7 @@ public class RecipeUtils {
         public InternalRecipeObject2(ShapedOreRecipe aRecipe) {
             mRecipe = aRecipe;
             mOutput = aRecipe.getRecipeOutput();
-            if (mOutput != null) {
-                this.isValid = true;
-            } else {
-                this.isValid = false;
-            }
+            this.isValid = mOutput != null;
         }
 
         @Override

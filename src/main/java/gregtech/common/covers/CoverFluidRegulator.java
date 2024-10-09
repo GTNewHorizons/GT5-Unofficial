@@ -62,8 +62,6 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
 
     public CoverFluidRegulator(int aTransferRate, ITexture coverTexture) {
         super(FluidRegulatorData.class, coverTexture);
-        if (aTransferRate > (-1 >>> (Integer.SIZE - SPEED_LENGTH)))
-            throw new IllegalArgumentException("aTransferRate too big: " + aTransferRate);
         this.mTransferRate = aTransferRate;
     }
 
@@ -93,17 +91,14 @@ public class CoverFluidRegulator extends CoverBehaviorBase<CoverFluidRegulator.F
             final IFluidHandler tTank1;
             final IFluidHandler tTank2;
             final ForgeDirection directionFrom;
-            final ForgeDirection directionTo;
             if (aCoverVariable.speed > 0) {
                 tTank2 = aTileEntity.getITankContainerAtSide(side);
                 tTank1 = (IFluidHandler) aTileEntity;
                 directionFrom = side;
-                directionTo = side.getOpposite();
             } else {
                 tTank1 = aTileEntity.getITankContainerAtSide(side);
                 tTank2 = (IFluidHandler) aTileEntity;
                 directionFrom = side.getOpposite();
-                directionTo = side;
             }
             if (tTank1 != null && tTank2 != null) {
                 allowFluid = true;

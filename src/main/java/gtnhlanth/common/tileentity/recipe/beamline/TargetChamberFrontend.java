@@ -81,8 +81,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
          * posList.add(posParticle); posList.addAll(UIHelper.getGridPositions(itemInputCount - 1, 36, 28, 3));
          */
 
-        List<Pos2d> posList = Util.getGridPositions(itemInputCount, 8, 20, 3, 1, 20);
-        return posList;
+        return Util.getGridPositions(itemInputCount, 8, 20, 3, 1, 20);
     }
 
     private String getEUtDisplay(OverclockCalculator calculator) {

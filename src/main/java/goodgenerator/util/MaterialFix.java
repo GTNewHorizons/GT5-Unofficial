@@ -2,14 +2,11 @@ package goodgenerator.util;
 
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
-import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -20,47 +17,9 @@ import gregtech.api.util.GTUtility;
 public class MaterialFix {
 
     public static void MaterialFluidExtractionFix(Werkstoff material) {
-        if (material.hasItemType(OrePrefixes.ingot)) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(material.get(OrePrefixes.ingot))
-                .fluidOutputs(material.getMolten(144))
-                .duration(1 * SECONDS + 12 * TICKS)
-                .eut(8)
-                .addTo(fluidExtractionRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Ingot.get(0))
-                .fluidInputs(material.getMolten(144))
-                .itemOutputs(material.get(OrePrefixes.ingot))
-                .duration(1 * SECONDS + 12 * TICKS)
-                .eut(TierEU.RECIPE_MV / 2)
-                .addTo(fluidSolidifierRecipes);
-        }
-        if (material.hasItemType(OrePrefixes.plate)) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(material.get(OrePrefixes.plate))
-                .fluidOutputs(material.getMolten(144))
-                .duration(1 * SECONDS + 12 * TICKS)
-                .eut(8)
-                .addTo(fluidExtractionRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Plate.get(0))
-                .fluidInputs(material.getMolten(144))
-                .itemOutputs(material.get(OrePrefixes.plate))
-                .duration(1 * SECONDS + 12 * TICKS)
-                .eut(TierEU.RECIPE_MV / 2)
-                .addTo(fluidSolidifierRecipes);
-        }
         if (material.hasItemType(OrePrefixes.gearGtSmall)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.get(OrePrefixes.gearGtSmall))
-                .fluidOutputs(material.getMolten(144))
-                .duration(1 * SECONDS + 12 * TICKS)
-                .eut(8)
-                .addTo(fluidExtractionRecipes);
-        }
-        if (material.hasItemType(OrePrefixes.stickLong)) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(material.get(OrePrefixes.stickLong))
                 .fluidOutputs(material.getMolten(144))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(8)
@@ -71,14 +30,6 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.spring))
                 .fluidOutputs(material.getMolten(144))
                 .duration(1 * SECONDS + 12 * TICKS)
-                .eut(8)
-                .addTo(fluidExtractionRecipes);
-        }
-        if (material.hasItemType(OrePrefixes.stick)) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(material.get(OrePrefixes.stick))
-                .fluidOutputs(material.getMolten(72))
-                .duration(16 * TICKS)
                 .eut(8)
                 .addTo(fluidExtractionRecipes);
         }
@@ -158,14 +109,6 @@ public class MaterialFix {
         if (material.hasItemType(OrePrefixes.screw)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.get(OrePrefixes.screw))
-                .fluidOutputs(material.getMolten(16))
-                .duration(4 * TICKS)
-                .eut(8)
-                .addTo(fluidExtractionRecipes);
-        }
-        if (material.hasItemType(OrePrefixes.nugget)) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(material.get(OrePrefixes.nugget))
                 .fluidOutputs(material.getMolten(16))
                 .duration(4 * TICKS)
                 .eut(8)
@@ -305,49 +248,11 @@ public class MaterialFix {
                         .addTo(benderRecipes);
                 }
             }
-            if (tMaterial.hasItemType(OrePrefixes.stick)) {
-                if (tMaterial.hasItemType(OrePrefixes.cellMolten)) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(ItemList.Shape_Mold_Rod.get(0))
-                        .fluidInputs(tMaterial.getMolten(72))
-                        .itemOutputs(tMaterial.get(OrePrefixes.stick, 1))
-                        .duration(
-                            Math.max(
-                                tMaterial.getStats()
-                                    .getMass() >> 1,
-                                1L) * TICKS)
-                        .eut(TierEU.RECIPE_HV)
-                        .addTo(fluidSolidifierRecipes);
-                }
-            }
             if (tMaterial.hasItemType(OrePrefixes.stickLong)) {
-                if (tMaterial.hasItemType(OrePrefixes.cellMolten)) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0))
-                        .fluidInputs(tMaterial.getMolten(144))
-                        .itemOutputs(tMaterial.get(OrePrefixes.stickLong, 1))
-                        .duration(
-                            Math.max(
-                                tMaterial.getStats()
-                                    .getMass(),
-                                1L) * TICKS)
-                        .eut(TierEU.RECIPE_HV)
-                        .addTo(fluidSolidifierRecipes);
-                }
                 if (tMaterial.hasItemType(OrePrefixes.stick)) {
                     GTModHandler.addCraftingRecipe(
                         tMaterial.get(OrePrefixes.stickLong, 1),
                         new Object[] { "PhP", 'P', tMaterial.get(OrePrefixes.stick, 1) });
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(tMaterial.get(OrePrefixes.stick, 2))
-                        .itemOutputs(tMaterial.get(OrePrefixes.stickLong, 1))
-                        .duration(
-                            Math.max(
-                                tMaterial.getStats()
-                                    .getMass(),
-                                1L) * TICKS)
-                        .eut(TierEU.RECIPE_LV / 2)
-                        .addTo(hammerRecipes);
                 }
             }
             if (tMaterial.hasItemType(OrePrefixes.spring)) {
@@ -381,12 +286,5 @@ public class MaterialFix {
                     .addTo(benderRecipes);
             }
         }
-        Materials tUHV = Materials.Longasssuperconductornameforuhvwire;
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, tUHV, 2))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stickLong, tUHV, 1))
-            .duration(Math.max(tUHV.getMass(), 1L) * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(hammerRecipes);
     }
 }

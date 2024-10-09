@@ -73,7 +73,7 @@ public enum GTPP_BranchDefinition {
         return Arrays.copyOf(defaultTemplate, defaultTemplate.length);
     }
 
-    private final void setBranchProperties(IAllele[] template) {
+    private void setBranchProperties(IAllele[] template) {
         this.mBranchProperties.accept(template);
     }
 

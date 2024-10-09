@@ -179,7 +179,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 if (aList != null) aList.add(tTranslated);
             } else {
                 String tTranslated = GTLanguageManager.addStringLocalization(tKey, tDescLine);
-                if (aList != null) aList.add(tTranslated.equals("") ? tDescLine : tTranslated);
+                if (aList != null) aList.add(tTranslated.isEmpty() ? tDescLine : tTranslated);
             }
         }
     }
@@ -371,6 +371,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
             final int tDamage = container.getItemDamage();
             final IMetaTileEntity tMetaTile = GregTechAPI.METATILEENTITIES[tDamage];
             if (!(tMetaTile instanceof MTEDigitalTankBase)) {
+                return 0;
+            }
+            if (container.stackSize > 1) {
                 return 0;
             }
             if (container.stackTagCompound == null) container.stackTagCompound = new NBTTagCompound();

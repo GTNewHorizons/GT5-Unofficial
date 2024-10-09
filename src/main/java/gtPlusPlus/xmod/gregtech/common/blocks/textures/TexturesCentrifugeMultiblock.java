@@ -8,55 +8,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialCentrifuge;
 
 public class TexturesCentrifugeMultiblock {
-
-    private static CustomIcon GT8_1_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE1");
-    private static CustomIcon GT8_1 = new CustomIcon("iconsets/LARGECENTRIFUGE1");
-    private static CustomIcon GT8_2_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE2");
-    private static CustomIcon GT8_2 = new CustomIcon("iconsets/LARGECENTRIFUGE2");
-    private static CustomIcon GT8_3_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE3");
-    private static CustomIcon GT8_3 = new CustomIcon("iconsets/LARGECENTRIFUGE3");
-    private static CustomIcon GT8_4_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE4");
-    private static CustomIcon GT8_4 = new CustomIcon("iconsets/LARGECENTRIFUGE4");
-    private static CustomIcon GT8_5_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
-    private static CustomIcon GT8_5 = new CustomIcon("iconsets/LARGECENTRIFUGE5");
-    private static CustomIcon GT8_6_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE6");
-    private static CustomIcon GT8_6 = new CustomIcon("iconsets/LARGECENTRIFUGE6");
-    private static CustomIcon GT8_7_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE7");
-    private static CustomIcon GT8_7 = new CustomIcon("iconsets/LARGECENTRIFUGE7");
-    private static CustomIcon GT8_8_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE8");
-    private static CustomIcon GT8_8 = new CustomIcon("iconsets/LARGECENTRIFUGE8");
-    private static CustomIcon GT8_9_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE9");
-    private static CustomIcon GT8_9 = new CustomIcon("iconsets/LARGECENTRIFUGE9");
-
-    private static CustomIcon frontFace_0 = (GT8_1);
-    private static CustomIcon frontFaceActive_0 = (GT8_1_Active);
-    private static CustomIcon frontFace_1 = (GT8_2);
-    private static CustomIcon frontFaceActive_1 = (GT8_2_Active);
-    private static CustomIcon frontFace_2 = (GT8_3);
-    private static CustomIcon frontFaceActive_2 = (GT8_3_Active);
-    private static CustomIcon frontFace_3 = (GT8_4);
-    private static CustomIcon frontFaceActive_3 = (GT8_4_Active);
-    private static CustomIcon frontFace_4 = (GT8_5);
-    private static CustomIcon frontFaceActive_4 = (GT8_5_Active);
-    private static CustomIcon frontFace_5 = (GT8_6);
-    private static CustomIcon frontFaceActive_5 = (GT8_6_Active);
-    private static CustomIcon frontFace_6 = (GT8_7);
-    private static CustomIcon frontFaceActive_6 = (GT8_7_Active);
-    private static CustomIcon frontFace_7 = (GT8_8);
-    private static CustomIcon frontFaceActive_7 = (GT8_8_Active);
-    private static CustomIcon frontFace_8 = (GT8_9);
-    private static CustomIcon frontFaceActive_8 = (GT8_9_Active);
-
-    CustomIcon[] CENTRIFUGE = new CustomIcon[] { frontFace_0, frontFace_1, frontFace_2, frontFace_3, frontFace_4,
-        frontFace_5, frontFace_6, frontFace_7, frontFace_8 };
-
-    CustomIcon[] CENTRIFUGE_ACTIVE = new CustomIcon[] { frontFaceActive_0, frontFaceActive_1, frontFaceActive_2,
-        frontFaceActive_3, frontFaceActive_4, frontFaceActive_5, frontFaceActive_6, frontFaceActive_7,
-        frontFaceActive_8 };
 
     public IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
         final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
@@ -143,9 +97,9 @@ public class TexturesCentrifugeMultiblock {
     public IIcon getIconByIndex(IMetaTileEntity aMetaTileEntity, int aIndex) {
         if (isUsingAnimatedTexture(aMetaTileEntity)) {
             if (isCentrifugeRunning(aMetaTileEntity)) {
-                return this.CENTRIFUGE_ACTIVE[aIndex].getIcon();
+                return TexturesGtBlock.CENTRIFUGEACTIVE[aIndex].getIcon();
             }
         }
-        return this.CENTRIFUGE[aIndex].getIcon();
+        return TexturesGtBlock.CENTRIFUGE[aIndex].getIcon();
     }
 }

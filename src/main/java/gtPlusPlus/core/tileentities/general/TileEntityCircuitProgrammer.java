@@ -1,5 +1,7 @@
 package gtPlusPlus.core.tileentities.general;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -10,7 +12,6 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.slots.SlotIntegratedCircuit;
@@ -47,9 +48,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
     public final boolean hasCircuitToConfigure() {
         for (ItemStack i : this.getInventory()
             .getInventory()) {
-            if (i == null) {
-                continue;
-            } else {
+            if (i != null) {
                 return true;
             }
         }
@@ -65,15 +64,12 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
             .getInventory()
             .clone();
         // Check if there is output in slot.
-        Boolean hasOutput = false;
-        if (aInputs[25] != null) {
-            hasOutput = true;
-        }
-        AutoMap<Integer> aValidSlots = new AutoMap<>();
+        boolean hasOutput = aInputs[25] != null;
+        ArrayList<Integer> aValidSlots = new ArrayList<>();
         int aSlotCount = 0;
         for (ItemStack i : aInputs) {
             if (i != null) {
-                aValidSlots.put(aSlotCount);
+                aValidSlots.add(aSlotCount);
             }
             aSlotCount++;
         }
@@ -126,7 +122,6 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                     }
                 }
             }
-            continue;
         }
         return false;
     }
@@ -143,7 +138,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                 }
                 this.tickCount++;
             }
-        } catch (final Throwable t) {}
+        } catch (final Throwable ignored) {}
     }
 
     public boolean anyPlayerInRange() {
@@ -282,7 +277,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 
     @Override
     public boolean hasCustomInventoryName() {
-        return (this.customName != null) && !this.customName.equals("");
+        return (this.customName != null) && !this.customName.isEmpty();
     }
 
     @Override

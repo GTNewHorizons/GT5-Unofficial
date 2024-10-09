@@ -53,7 +53,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
     private static final IStructureDefinition<MTESourceChamber> STRUCTURE_DEFINITION;
 
-    private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
 
@@ -126,6 +126,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Source")
             .addInfo("Controller block for the Source Chamber")
+            .addInfo("Output energy scales with EU/t up to the point shown in the recipe")
             .addInfo(BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addSeparator()
@@ -179,8 +180,10 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         long tVoltageMaxTier = this.getMaxInputVoltage(); // Used to keep old math the same
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
-        RecipeSC tRecipe = (RecipeSC) BeamlineRecipeAdder2.instance.SourceChamberRecipes
-            .findRecipe(this.getBaseMetaTileEntity(), false, tVoltageActual, new FluidStack[] {}, tItems);
+        RecipeSC tRecipe = (RecipeSC) BeamlineRecipeAdder2.instance.SourceChamberRecipes.findRecipeQuery()
+            .items(tItems)
+            .voltage(tVoltageActual)
+            .find();
 
         if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItems)) return false; // Consumes
                                                                                                              // input
@@ -313,7 +316,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + Float.toString(mEfficiency / 100.0F)
+                + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")

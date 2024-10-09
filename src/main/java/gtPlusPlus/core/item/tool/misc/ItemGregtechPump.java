@@ -51,7 +51,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -73,12 +72,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (aStack == null || aPlayer == null || aWorld == null || aWorld.isRemote) {
             return false;
         }
-        if (!aWorld.isRemote && tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ)) {
-            return true;
-        } else {
-            // return super.onItemUse(aStack, aPlayer, aWorld, aX, aY, aZ, a4, p_77648_8_, p_77648_9_, p_77648_10_);
-            return false;
-        }
+        return tryDrainTile(aStack, aWorld, aPlayer, aX, aY, aZ);
     }
 
     @Override
@@ -605,11 +599,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if ((aMetaValue < 0) || (aMetaValue >= 32766) || (aBehavior == null)) {
             return this;
         }
-        ArrayList<IItemBehaviour<ItemGregtechPump>> tList = this.mItemBehaviors.get((short) aMetaValue);
-        if (tList == null) {
-            tList = new ArrayList<>(1);
-            this.mItemBehaviors.put((short) aMetaValue, tList);
-        }
+        ArrayList<IItemBehaviour<ItemGregtechPump>> tList = this.mItemBehaviors
+            .computeIfAbsent((short) aMetaValue, k -> new ArrayList<>(1));
         tList.add(aBehavior);
         return this;
     }
@@ -649,7 +640,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
                         GTOreDictUnificator.addToBlacklist(rStack);
-                        continue;
                     }
                 }
             }
@@ -682,7 +672,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                     if (tUseOreDict) {
                         GTOreDictUnificator.registerOre(tRandomData, rStack);
-                        continue;
                     }
                 }
             }
@@ -734,7 +723,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             String fluidname = aFluid.getFluid()
                 .getName();
             int amount = aFluid.amount;
-            if (fluidname != null && fluidname.length() > 0 && amount > 0) {
+            if (fluidname != null && !fluidname.isEmpty() && amount > 0) {
                 NBTUtils.setString(aStack, "mFluid", fluidname);
                 NBTUtils.setInteger(aStack, "mFluidAmount", amount);
             }
@@ -778,8 +767,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 .getInteger("mCapacity");
         }
         int aMeta = this.getCorrectMetaForItemstack(container);
-        int aCapacity = (aMeta == 0 ? 2000 : (aMeta == 1 ? 8000 : (aMeta == 2 ? 32000 : 128000)));
-        return aCapacity;
+        return aMeta == 0 ? 2000 : aMeta == 1 ? 8000 : aMeta == 2 ? 32000 : 128000;
     }
 
     public int fill(ItemStack container, FluidStack resource) {
@@ -816,12 +804,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             if (aStoredFluid == null) {
                 Logger.INFO("Pump is empty, filling with tank fluids.");
                 FluidStack toConsume;
-                int amountToConsume = 0;
-                if (resource.amount >= aCapacity) {
-                    amountToConsume = aCapacity;
-                } else {
-                    amountToConsume = resource.amount;
-                }
+                int amountToConsume = Math.min(resource.amount, aCapacity);
                 toConsume = FluidUtils.getFluidStack(resource, amountToConsume);
                 if (toConsume != null && amountToConsume > 0) {
                     storeFluid(container, toConsume);
@@ -983,10 +966,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         if (discharge(aStack, removal, aTier, true, true, false) > 0) {
                             didDrain = true;
                         }
-                    } else if (aTier == 0) {
-                        didDrain = true;
                     } else {
-                        didDrain = false;
+                        didDrain = aTier == 0;
                     }
 
                     if (didDrain) {
@@ -1140,9 +1121,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return getStoredFluidOfVanillaTank((IFluidTank) aTileEntity);
         }
         FluidStack f;
-        AutoMap<FluidTankInfo[]> m = new AutoMap<>();
+        ArrayList<FluidTankInfo[]> m = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            m.put(aTileEntity.getTankInfo(ForgeDirection.getOrientation(i)));
+            m.add(aTileEntity.getTankInfo(ForgeDirection.getOrientation(i)));
         }
         if (m.get(0) != null && m.get(0)[0] != null && m.get(0)[0].fluid != null) {
             return m.get(0)[0].fluid;
@@ -1182,7 +1163,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             } else {
 
                 // Rewrite Fluid handling for Vanilla type tanks
-                if (!IFluidHandler.class.isInstance(aTileEntity)) {
+                if (!(aTileEntity instanceof IFluidHandler)) {
                     Logger.INFO("Tile Was not an instance of IFluidHandler.");
                     return false;
                 }

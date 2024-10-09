@@ -92,7 +92,7 @@ public class WorldgenGTOreLayer extends GTWorldgen {
         if (this.mEnd) {
             allowedProviders.add(WorldProviderEnd.class);
         }
-        mAllowedProviders = allowedProviders.toArray(new Class[allowedProviders.size()]);
+        mAllowedProviders = allowedProviders.toArray(new Class[0]);
     }
 
     @Override

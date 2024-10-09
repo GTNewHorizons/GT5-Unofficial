@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,10 +39,13 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -273,7 +277,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
      */
     public int getPollutionReduction() {
         int reduction = 100;
-        for (MTEHatchMuffler tHatch : filterValidMTEs(mMufflerHatches)) {
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
             reduction = Math.min(tHatch.calculatePollutionReduction(100), reduction);
         }
         return reduction;
@@ -288,7 +292,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         int mPollutionReduction = getPollutionReduction();
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -393,5 +397,11 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     @Override
     public boolean supportsBatchMode() {
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EBF_LOOP;
     }
 }

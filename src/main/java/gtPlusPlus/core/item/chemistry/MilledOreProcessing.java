@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -8,7 +9,7 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,18 +19,15 @@ import biomesoplenty.api.content.BOPCBlocks;
 import biomesoplenty.api.content.BOPCItems;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.api.objects.data.Quad;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.MaterialsOther;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -209,139 +207,6 @@ public class MilledOreProcessing extends ItemPackage {
         Logger.INFO("Adding Ore Milling content");
     }
 
-    private static void addMiscRecipes() {
-
-        /*
-         * First 5
-         */
-
-        // milledSphalerite
-        registerOreDataForMilledType(
-            SphaleriteFlotationFroth,
-            MaterialsElements.getInstance().ZINC,
-            180,
-            MaterialsElements.getInstance().IRON,
-            120,
-            MaterialsElements.getInstance().INDIUM,
-            64,
-            MaterialsElements.getInstance().GERMANIUM,
-            15);
-        // milledChalcopyrite
-        registerOreDataForMilledType(
-            ChalcopyriteFlotationFroth,
-            MaterialsElements.getInstance().COPPER,
-            180,
-            MaterialsElements.getInstance().IRON,
-            120,
-            MaterialsElements.getInstance().CADMIUM,
-            50,
-            MaterialsElements.getInstance().INDIUM,
-            10);
-        // milledNickel
-        registerOreDataForMilledType(
-            NickelFlotationFroth,
-            MaterialsElements.getInstance().NICKEL,
-            150,
-            MaterialsElements.getInstance().COBALT,
-            120,
-            MaterialsElements.getInstance().RHODIUM,
-            32,
-            MaterialsElements.getInstance().RUTHENIUM,
-            16);
-        // milledPlatinum
-        registerOreDataForMilledType(
-            PlatinumFlotationFroth,
-            MaterialsElements.getInstance().PLATINUM,
-            120,
-            MaterialsElements.getInstance().RHODIUM,
-            60,
-            MaterialsElements.getInstance().SELENIUM,
-            40,
-            MaterialsElements.getInstance().TELLURIUM,
-            10);
-        // milledPentlandite
-        registerOreDataForMilledType(
-            PentlanditeFlotationFroth,
-            MaterialsElements.getInstance().IRON,
-            150,
-            MaterialsElements.getInstance().NICKEL,
-            100,
-            MaterialsElements.getInstance().PROMETHIUM,
-            20,
-            MaterialsElements.getInstance().HAFNIUM,
-            10);
-
-        /*
-         * Second 5
-         */
-        // milledRedstone
-        registerOreDataForMilledType(
-            RedstoneFlotationFroth,
-            MaterialsOther.REDSTONE,
-            300,
-            MaterialsElements.getInstance().CHROMIUM,
-            60,
-            MaterialUtils.generateMaterialFromGtENUM(Materials.Firestone),
-            45,
-            MaterialsElements.getInstance().DYSPROSIUM,
-            16);
-        // milledSpessartine
-        registerOreDataForMilledType(
-            SpessartineFlotationFroth,
-            MaterialsElements.getInstance().MANGANESE,
-            150,
-            MaterialsElements.getInstance().ALUMINIUM,
-            90,
-            MaterialsElements.getInstance().OSMIUM,
-            30,
-            MaterialsElements.getInstance().STRONTIUM,
-            20);
-        // milledGrossular
-        registerOreDataForMilledType(
-            GrossularFlotationFroth,
-            MaterialsElements.getInstance().CALCIUM,
-            180,
-            MaterialsElements.getInstance().ALUMINIUM,
-            110,
-            MaterialsElements.getInstance().TUNGSTEN,
-            60,
-            MaterialsElements.getInstance().THALLIUM,
-            15);
-        // milledAlmandine
-        registerOreDataForMilledType(
-            AlmandineFlotationFroth,
-            MaterialsElements.getInstance().ALUMINIUM,
-            150,
-            MaterialsElements.getInstance().MAGNESIUM,
-            75,
-            MaterialsElements.getInstance().YTTRIUM,
-            25,
-            MaterialsElements.getInstance().YTTERBIUM,
-            15);
-        // milledPyrope
-        registerOreDataForMilledType(
-            PyropeFlotationFroth,
-            MaterialsElements.getInstance().MAGNESIUM,
-            110,
-            MaterialsElements.getInstance().MANGANESE,
-            70,
-            MaterialUtils.generateMaterialFromGtENUM(Materials.Borax),
-            60,
-            MaterialsElements.getInstance().RHENIUM,
-            20);
-        // milledMonazite TODO
-        registerOreDataForMilledType(
-            MonaziteFlotationFroth,
-            MaterialsElements.getInstance().ERBIUM,
-            64,
-            MaterialsElements.getInstance().LANTHANUM,
-            32,
-            MaterialsElements.getInstance().LUTETIUM,
-            16,
-            MaterialsElements.getInstance().EUROPIUM,
-            8);
-    }
-
     @Override
     public String errorMessage() {
         return "Failed to generate recipes for OreMillingProc.";
@@ -349,7 +214,6 @@ public class MilledOreProcessing extends ItemPackage {
 
     @Override
     public boolean generateRecipes() {
-        addMiscRecipes();
         addPineOilExtraction();
         addFlotationRecipes();
         addVacuumFurnaceRecipes();
@@ -361,97 +225,179 @@ public class MilledOreProcessing extends ItemPackage {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(SphaleriteFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 52),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 56),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 64),
+                MaterialsElements.getInstance().GERMANIUM.getDust(15))
             .fluidInputs(FluidUtils.getFluidStack(SphaleriteFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(ChalcopyriteFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 52),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 56),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 50),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 10))
             .fluidInputs(FluidUtils.getFluidStack(ChalcopyriteFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(NickelFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 22),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 56),
+                MaterialsElements.getInstance().RHODIUM.getDust(32),
+                MaterialsElements.getInstance().RUTHENIUM.getDust(16))
             .fluidInputs(FluidUtils.getFluidStack(NickelFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(PlatinumFlotationFroth))
+            .itemOutputs(
+                PTMetallicPowder.get(OrePrefixes.dust, 64),
+                PTMetallicPowder.get(OrePrefixes.dust, 64),
+                MaterialsElements.getInstance().RHODIUM.getDust(60),
+                MaterialsElements.getInstance().SELENIUM.getDust(40),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tellurium, 10))
             .fluidInputs(FluidUtils.getFluidStack(PlatinumFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(PentlanditeFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 22),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 36),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Promethium, 20),
+                MaterialsElements.getInstance().HAFNIUM.getDust(10))
             .fluidInputs(FluidUtils.getFluidStack(PentlanditeFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(RedstoneFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 44),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 60),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Firestone, 45),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Dysprosium, 16))
             .fluidInputs(FluidUtils.getFluidStack(RedstoneFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(SpessartineFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 22),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 26),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 30),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Strontium, 20))
             .fluidInputs(FluidUtils.getFluidStack(SpessartineFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(GrossularFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 52),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 46),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 60),
+                MaterialsElements.getInstance().THALLIUM.getDust(15))
             .fluidInputs(FluidUtils.getFluidStack(GrossularFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(AlmandineFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 22),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 11),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Yttrium, 25),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ytterbium, 15))
             .fluidInputs(FluidUtils.getFluidStack(AlmandineFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 5500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(PyropeFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 46),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 6),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Borax, 60),
+                MaterialsElements.getInstance().RHENIUM.getDust(20))
             .fluidInputs(FluidUtils.getFluidStack(PyropeFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 3500)
             .duration(2 * MINUTES)
             .addTo(vacuumFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(aCircuitID++))
-            .itemOutputs(getOutputsFromMap(MonaziteFlotationFroth))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Erbium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lanthanum, 32),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 16),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Europium, 8))
             .fluidInputs(FluidUtils.getFluidStack(MonaziteFlotationFroth, 4000))
             .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 2000), FluidUtils.getWater(2000))
             .eut((int) TierEU.RECIPE_UV)
@@ -642,10 +588,10 @@ public class MilledOreProcessing extends ItemPackage {
     }
 
     private void addPineOilExtraction() {
-        AutoMap<ItemStack> aLogs = new AutoMap<>();
-        AutoMap<ItemStack> aLeaves = new AutoMap<>();
-        AutoMap<ItemStack> aSaplings = new AutoMap<>();
-        AutoMap<ItemStack> aPinecones = new AutoMap<>();
+        ArrayList<ItemStack> aLogs = new ArrayList<>();
+        ArrayList<ItemStack> aLeaves = new ArrayList<>();
+        ArrayList<ItemStack> aSaplings = new ArrayList<>();
+        ArrayList<ItemStack> aPinecones = new ArrayList<>();
 
         ItemStack aCrushedPine = ItemUtils.getSimpleStack(AgriculturalChem.mCrushedPine, 1);
 
@@ -722,7 +668,7 @@ public class MilledOreProcessing extends ItemPackage {
 
     public boolean addRecipe(ItemStack aInput, ItemStack aOutput1, int[] aChances, int aTime, int aEU) {
         aOutput1 = GTOreDictUnificator.get(true, aOutput1);
-        ItemStack aOutputs[] = new ItemStack[4];
+        ItemStack[] aOutputs = new ItemStack[4];
         for (int i = 0; i < aChances.length; i++) {
             aOutputs[i] = aOutput1;
         }
@@ -745,10 +691,10 @@ public class MilledOreProcessing extends ItemPackage {
 
     public static ItemStack[] cleanArray(ItemStack[] input) {
         int aArraySize = input.length;
-        AutoMap<ItemStack> aCleanedItems = new AutoMap<>();
+        ArrayList<ItemStack> aCleanedItems = new ArrayList<>();
         for (ItemStack checkStack : input) {
             if (ItemUtils.checkForInvalidItems(checkStack)) {
-                aCleanedItems.put(checkStack);
+                aCleanedItems.add(checkStack);
             }
         }
         ItemStack[] aOutput = new ItemStack[aCleanedItems.size()];
@@ -759,87 +705,5 @@ public class MilledOreProcessing extends ItemPackage {
             }
         }
         return aOutput;
-    }
-
-    private static final HashMap<String, Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>>> aMilledFluidMap = new HashMap<>();
-
-    public static void registerOreDataForMilledType(Fluid aMilledFluid, Materials aOutput1, int aPerc1,
-        Materials aOutput2, int aPerc2, Materials aOutput3, int aPerc3, Materials aOutput4, int aPerc4) {
-        registerOreDataForMilledType(
-            aMilledFluid,
-            MaterialUtils.generateMaterialFromGtENUM(aOutput1),
-            aPerc1,
-            MaterialUtils.generateMaterialFromGtENUM(aOutput2),
-            aPerc2,
-            MaterialUtils.generateMaterialFromGtENUM(aOutput3),
-            aPerc3,
-            MaterialUtils.generateMaterialFromGtENUM(aOutput4),
-            aPerc4);
-    }
-
-    public static void registerOreDataForMilledType(Fluid aMilledFluid, Material aOutput1, int aPerc1,
-        Material aOutput2, int aPerc2, Material aOutput3, int aPerc3, Material aOutput4, int aPerc4) {
-
-        Pair<Material, Integer> aFluidOutput1 = new Pair<>(aOutput1, aPerc1);
-        Pair<Material, Integer> aFluidOutput2 = new Pair<>(aOutput2, aPerc2);
-        Pair<Material, Integer> aFluidOutput3 = new Pair<>(aOutput3, aPerc3);
-        Pair<Material, Integer> aFluidOutput4 = new Pair<>(aOutput4, aPerc4);
-        Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>> aDataQuad = new Quad<>(
-            aFluidOutput1,
-            aFluidOutput2,
-            aFluidOutput3,
-            aFluidOutput4);
-        aMilledFluidMap.put(aMilledFluid.getUnlocalizedName(), aDataQuad);
-    }
-
-    private static ItemStack[] getOutputsFromMap(Fluid aFluid) {
-        String aKey = aFluid.getUnlocalizedName();
-        return getArrayFromQuad(aMilledFluidMap.get(aKey));
-    }
-
-    private static ItemStack[] getArrayFromQuad(
-        Quad<Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>, Pair<Material, Integer>> aData) {
-        AutoMap<ItemStack> aOutputs = new AutoMap<>();
-        for (Object aPair : aData.values()) {
-            if (aPair != null && Pair.class.isInstance(aPair)) {
-                Pair aObj = (Pair) aPair;
-                Material aMat = (Material) aObj.getKey();
-                int aCount = (int) aObj.getValue();
-                aOutputs.addAll(getItemStackFromPair(aMat, aCount));
-            }
-        }
-        ItemStack[] aRealOutputArray = new ItemStack[aOutputs.size()];
-        int aIndex = 0;
-        for (ItemStack aStack : aOutputs) {
-            aRealOutputArray[aIndex++] = aStack;
-        }
-        return aRealOutputArray;
-    }
-
-    private static AutoMap<ItemStack> getItemStackFromPair(Material aMat, Integer aCount) {
-        AutoMap<ItemStack> aOutputs = new AutoMap<>();
-        if (aCount > 64) {
-            AutoMap<Integer> sizes = getStackSizes(aCount);
-            for (int aSplitSize : sizes) {
-                ItemStack aDustStack = aMat.getDust(aSplitSize);
-                aOutputs.put(aDustStack);
-            }
-        } else {
-            ItemStack aDustStack = aMat.getDust(aCount);
-            aOutputs.put(aDustStack);
-        }
-        return aOutputs;
-    }
-
-    private static AutoMap<Integer> getStackSizes(int aBigSize) {
-        AutoMap<Integer> aSizes = new AutoMap<>();
-        if (aBigSize <= 64) {
-            aSizes.add(aBigSize);
-        } else {
-            for (int i = aBigSize; i > 0; i -= 64) {
-                aSizes.add(i);
-            }
-        }
-        return aSizes;
     }
 }

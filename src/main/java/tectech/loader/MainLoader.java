@@ -1,26 +1,14 @@
 package tectech.loader;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.enums.Mods.TwilightForest;
 import static tectech.TecTech.LOGGER;
-import static tectech.TecTech.configTecTech;
 import static tectech.TecTech.creativeTabTecTech;
 import static tectech.TecTech.proxy;
-import static tectech.loader.TecTechConfig.DEBUG_MODE;
-
-import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.ProgressManager;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
-import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTRecipe;
 import tectech.TecTech;
 import tectech.loader.gui.CreativeTabTecTech;
 import tectech.loader.recipe.BaseRecipeLoader;
@@ -47,14 +35,18 @@ public final class MainLoader {
         } catch (Throwable t) {
             LOGGER.error("Loading textures...", t);
         }
+
+        ProgressManager.ProgressBar progressBarPreload = ProgressManager.push("TecTech Preload", 1);
+
+        progressBarPreload.step("Regular Things");
+        new ThingsLoader().run();
+        LOGGER.info("Block/Item Init Done");
+
+        ProgressManager.pop(progressBarPreload);
     }
 
     public static void load() {
-        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 6);
-
-        progressBarLoad.step("Regular Things");
-        new ThingsLoader().run();
-        LOGGER.info("Block/Item Init Done");
+        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 5);
 
         progressBarLoad.step("Machine Things");
         new MachineLoader().run();
@@ -80,7 +72,7 @@ public final class MainLoader {
     }
 
     public static void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 4);
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 2);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
         if (NewHorizonsCoreMod.isModLoaded()) {
@@ -100,104 +92,6 @@ public final class MainLoader {
         progressBarPostLoad.step("Recipes");
         new BaseRecipeLoader().run();
         TecTech.LOGGER.info("Recipe Init Done");
-
-        if (!configTecTech.DISABLE_BLOCK_HARDNESS_NERF) {
-            progressBarPostLoad.step("Nerf blocks blast resistance");
-            adjustTwilightBlockResistance();
-            TecTech.LOGGER.info("Blocks nerf done");
-        } else {
-            progressBarPostLoad.step("Do not nerf blocks blast resistance");
-            TecTech.LOGGER.info("Blocks were not nerfed");
-        }
-
-        // ProgressManager.pop(progressBarPostLoad);
-    }
-
-    public static void addAfterGregTechPostLoadRunner() {
-        GregTechAPI.sAfterGTPostload.add(() -> {
-            if (TecTech.configTecTech.NERF_FUSION) {
-                FixBrokenFusionRecipes();
-            }
-        });
-    }
-
-    private static void FixBrokenFusionRecipes() {
-        HashMap<Fluid, Fluid> binds = new HashMap<>();
-        for (Materials material : Materials.values()) {
-            FluidStack p = material.getPlasma(1);
-            if (p != null) {
-                if (DEBUG_MODE) {
-                    LOGGER.info("Found Plasma of " + material.mName);
-                }
-                if (material.mElement != null && (material.mElement.mProtons >= Materials.Iron.mElement.mProtons
-                    || -material.mElement.mProtons >= Materials.Iron.mElement.mProtons
-                    || material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons
-                    || -material.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
-                    if (DEBUG_MODE) {
-                        LOGGER.info("Attempting to bind " + material.mName);
-                    }
-                    if (material.getMolten(1) != null) {
-                        binds.put(
-                            p.getFluid(),
-                            material.getMolten(1)
-                                .getFluid());
-                    } else if (material.getGas(1) != null) {
-                        binds.put(
-                            p.getFluid(),
-                            material.getGas(1)
-                                .getFluid());
-                    } else if (material.getFluid(1) != null) {
-                        binds.put(
-                            p.getFluid(),
-                            material.getFluid(1)
-                                .getFluid());
-                    } else {
-                        binds.put(
-                            p.getFluid(),
-                            Materials.Iron.getMolten(1)
-                                .getFluid());
-                    }
-                }
-            }
-        }
-        for (GTRecipe r : RecipeMaps.fusionRecipes.getAllRecipes()) {
-            Fluid fluid = binds.get(r.mFluidOutputs[0].getFluid());
-            if (fluid != null) {
-                if (DEBUG_MODE) {
-                    LOGGER.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
-                }
-                r.mFluidOutputs[0] = new FluidStack(fluid, r.mFluidOutputs[0].amount);
-            }
-            fluid = binds.get(r.mFluidInputs[0].getFluid());
-            if (fluid != null) {
-                if (DEBUG_MODE) {
-                    LOGGER.info("Fixing plasma use in Recipe " + r.mFluidInputs[0].getUnlocalizedName());
-                }
-                r.mFluidInputs[0] = new FluidStack(fluid, r.mFluidInputs[0].amount);
-            }
-            fluid = binds.get(r.mFluidInputs[1].getFluid());
-            if (fluid != null) {
-                if (DEBUG_MODE) {
-                    LOGGER.info("Fixing plasma use in Recipe " + r.mFluidInputs[1].getUnlocalizedName());
-                }
-                r.mFluidInputs[1] = new FluidStack(fluid, r.mFluidInputs[1].amount);
-            }
-        }
-    }
-
-    private static void safeSetResistance(Block block, float resistance) {
-        if (block != null) {
-            block.setResistance(resistance);
-        }
-    }
-
-    private static void adjustTwilightBlockResistance() {
-        if (TwilightForest.isModLoaded()) {
-            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFShield"), 30);
-            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFThorns"), 10);
-            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFTowerTranslucent"), 30);
-            safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFDeadrock"), 5);
-        }
     }
 
     public static void onLoadCompleted() {

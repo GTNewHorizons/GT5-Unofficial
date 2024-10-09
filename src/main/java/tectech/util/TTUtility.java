@@ -1,7 +1,5 @@
 package tectech.util;
 
-import static gregtech.api.enums.GTValues.V;
-
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.Formatter;
@@ -12,6 +10,7 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTMod;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 
 /**
@@ -41,7 +40,14 @@ public final class TTUtility {
         String strNum = abs.toString();
         int exponent = strNum.length() - 1;
         return (number.signum() == -1 ? "-" : "") + strNum.charAt(0) + "." + strNum.substring(1, 3) + "e" + exponent;
+    }
 
+    public static String toExponentForm(long number) {
+        long abs = Math.abs(number);
+        String strNum = Long.toString(abs);
+        int exponent = strNum.length() - 1;
+        return (Long.signum(number) == -1 ? "-" : "") + strNum
+            .charAt(0) + "." + strNum.substring(1, 3) + "e" + exponent;
     }
 
     public static int bitStringToInt(String bits) {
@@ -95,26 +101,23 @@ public final class TTUtility {
         return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ':' + is.getUnlocalizedName();
     }
 
-    public static byte getTier(long l) {
-        byte b = -1;
-
-        do {
-            ++b;
-            if (b >= V.length) {
-                return b;
-            }
-        } while (l > V[b]);
-
-        return b;
-    }
-
-    public static void setTier(int tier, Object me) {
+    public static void setTier(int tier, Object o) {
+        // TODO why is it using reflection to change a final field from GREGTECH ?
+        if (!(o instanceof MTETieredMachineBlock)) {
+            GTMod.GT_FML_LOGGER.error(
+                "Could not set tier as object " + o.getClass()
+                    .getName() + " isn't instance of MTETieredMachineBlock");
+            return;
+        }
         try {
             Field field = MTETieredMachineBlock.class.getField("mTier");
             field.setAccessible(true);
-            field.set(me, (byte) tier);
+            field.set(o, (byte) tier);
         } catch (Exception e) {
-            // e.printStackTrace();
+            GTMod.GT_FML_LOGGER.error(
+                "Could not set tier of " + o.getClass()
+                    .getName(),
+                e);
         }
     }
 

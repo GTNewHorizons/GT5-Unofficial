@@ -281,10 +281,7 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
         }
 
         // return true if it's a block of the material
-        if (tAssociation.mPrefix == OrePrefixes.block && tAssociation.mMaterial.mMaterial == mBlock) {
-            return true;
-        }
-        return false;
+        return tAssociation.mPrefix == OrePrefixes.block && tAssociation.mMaterial.mMaterial == mBlock;
     }
 
     @Override

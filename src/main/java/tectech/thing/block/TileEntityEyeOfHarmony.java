@@ -148,7 +148,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
 
             float xAngle = generateRandomFloat(-MAX_ANGLE, MAX_ANGLE);
             float zAngle = generateRandomFloat(-MAX_ANGLE, MAX_ANGLE);
-            index += 1.0;
+            index += 1;
             float distance = index + generateRandomFloat(-0.2f, 0.2f);
             float scale = generateRandomFloat(0.2f, 0.9f);
             float rotationSpeed = generateRandomFloat(0.5f, 1.5f);

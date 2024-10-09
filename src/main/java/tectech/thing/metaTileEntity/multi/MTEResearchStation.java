@@ -8,7 +8,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -32,7 +32,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -63,6 +62,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.recipe.TecTechRecipeMaps;
@@ -77,7 +77,6 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-@SuppressWarnings("unchecked")
 public class MTEResearchStation extends TTMultiblockBase implements ISurvivalConstructable {
 
     public static final String machine = "EM Machinery";
@@ -179,7 +178,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (MTEHatchObjectHolder rack : filterValidMTEs(eHolders)) {
+        for (MTEHatchObjectHolder rack : validMTEList(eHolders)) {
             rack.getBaseMetaTileEntity()
                 .setActive(false);
         }
@@ -189,7 +188,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             return false;
         }
 
-        for (MTEHatchObjectHolder rack : filterValidMTEs(eHolders)) {
+        for (MTEHatchObjectHolder rack : validMTEList(eHolders)) {
             rack.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
@@ -322,13 +321,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : filterValidMTEs(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
-        for (MTEHatchEnergyMulti tHatch : filterValidMTEs(eEnergyMulti)) {
+        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -538,11 +537,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         super.onRightclick(aBaseMetaTileEntity, aPlayer);
 
         if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
-            try {
-                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-                clientLocale = (String) FieldUtils.readField(player, "translator", true);
-            } catch (Exception e) {
-                clientLocale = "en_US";
+            if (aPlayer instanceof EntityPlayerMPAccessor) {
+                clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
             }
         } else {
             return true;

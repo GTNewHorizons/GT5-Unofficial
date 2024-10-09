@@ -147,7 +147,7 @@ public abstract class MTETreeFarmerBase extends MTETieredMachineBlock {
     }
 
     public ITexture[] getBottom(final byte aColor) {
-        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log) };
+        return new ITexture[] { new GTRenderedTexture(TexturesGtBlock.Sterile_Casing) };
     }
 
     public ITexture[] getTop(final byte aColor) {

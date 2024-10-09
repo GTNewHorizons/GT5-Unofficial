@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -23,6 +24,10 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         if (aMaterial.mMacerateInto == null) {
             return;
         }

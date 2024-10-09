@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.base.itemblock;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,22 +13,20 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.data.AutoMap;
 
 public class ItemBlockMeta extends ItemBlockWithMetadata {
 
     private final Block mBlock;
-    private HashMap<Integer, AutoMap<String>> aTooltips = new LinkedHashMap<>();
+    private final HashMap<Integer, ArrayList<String>> aTooltips = new LinkedHashMap<>();
 
     public ItemBlockMeta(final Block aBlock) {
         super(aBlock, aBlock);
         this.mBlock = aBlock;
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
-        if (aBlock instanceof ITileTooltip aTooltip) {
-            // aTooltips.put(aTooltip.getTooltipID(), aTooltip.getTooltipMap());
-        }
+        // if (aBlock instanceof ITileTooltip aTooltip) {
+        // aTooltips.put(aTooltip.getTooltipID(), aTooltip.getTooltipMap());
+        // }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -36,11 +35,9 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
         Block aThis = Block.getBlockFromItem(stack.getItem());
         if (aThis != null) {
             if (!aTooltips.isEmpty()) {
-                AutoMap<String> h = aTooltips.get(stack.getItemDamage());
+                ArrayList<String> h = aTooltips.get(stack.getItemDamage());
                 if (h != null && !h.isEmpty()) {
-                    for (String s : h) {
-                        list.add(s);
-                    }
+                    list.addAll(h);
                 }
             }
         }

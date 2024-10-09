@@ -9,7 +9,7 @@ public enum EIGSetupPhase {
     public final int id;
     public final String name;
 
-    private EIGSetupPhase(int id, String name) {
+    EIGSetupPhase(int id, String name) {
         this.id = id;
         this.name = name;
     }

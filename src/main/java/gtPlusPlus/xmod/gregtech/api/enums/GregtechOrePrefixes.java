@@ -8,6 +8,7 @@ import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -143,7 +144,7 @@ public enum GregtechOrePrefixes {
      */
     public int mMaterialGenerationBits = 0;
 
-    private GregtechOrePrefixes(final String aRegularLocalName, final String aLocalizedMaterialPre,
+    GregtechOrePrefixes(final String aRegularLocalName, final String aLocalizedMaterialPre,
         final String aLocalizedMaterialPost, final boolean aIsUnificatable, final boolean aIsMaterialBased,
         final boolean aIsSelfReferencing, final boolean aIsContainer, final boolean aDontUnificateActively,
         final boolean aIsUsedForBlocks, final boolean aAllowNormalRecycling, final boolean aGenerateDefaultItem,
@@ -277,18 +278,6 @@ public enum GregtechOrePrefixes {
         return "";
     }
 
-    public static GregtechOrePrefixes getPrefix(final String aPrefixName) {
-        return getPrefix(aPrefixName, null);
-    }
-
-    public static GregtechOrePrefixes getPrefix(final String aPrefixName, final GregtechOrePrefixes aReplacement) {
-        final Object tObject = GTUtility.getFieldContent(GregtechOrePrefixes.class, aPrefixName, false, false);
-        if ((tObject != null) && (tObject instanceof GregtechOrePrefixes)) {
-            return (GregtechOrePrefixes) tObject;
-        }
-        return aReplacement;
-    }
-
     public static Materials getMaterial(final String aOre) {
         return Materials.get(stripPrefix(aOre));
     }
@@ -302,7 +291,7 @@ public enum GregtechOrePrefixes {
     }
 
     public static boolean isInstanceOf(final String aName, final GregtechOrePrefixes aPrefix) {
-        return aName == null ? false : aName.startsWith(aPrefix.toString());
+        return aName != null && aName.startsWith(aPrefix.toString());
     }
 
     public boolean add(final ItemStack aStack) {
@@ -422,9 +411,9 @@ public enum GregtechOrePrefixes {
          * at a location where it shouldn't happen.
          * <p/>
          * Mainly for preventing NullPointer Exceptions and providing Default Values.
-         *
+         * <p>
          * Unknown Material Components. Dead End Section.
-         *
+         * <p>
          * Alkalus Range 730-799 & 970-998 (aMetaItemSubID, TextureSet, aToolSpeed, aToolDurability, aToolQuality,
          * aTypes, R, G, B, Alpha, aLocalName, aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp,
          * aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider, aColor
@@ -432,7 +421,7 @@ public enum GregtechOrePrefixes {
          *
          */
         _NULL(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", 0, 0, 0, 0, false, false, 1, 1, 1,
-            Dyes._NULL, Element._NULL, Arrays.asList(getTcAspectStack(TCAspects.VACUOS.name(), 1))),
+            Dyes._NULL, Element._NULL, Collections.singletonList(getTcAspectStack(TCAspects.VACUOS.name(), 1))),
 
         // Lapis(526, TextureSet.SET_LAPIS, 1.0F, 0, 1, 1 | 4 | 8, 70, 70, 220, 0, "Lapis", 0, 0, -1, 0, false, false,
         // 3, 1, 1, Dyes.dyeBlue, 2, Arrays.asList(new MaterialStack(Materials.Lazurite, 12), new
@@ -471,7 +460,7 @@ public enum GregtechOrePrefixes {
             Arrays.asList(getTcAspectStack(TCAspects.ELECTRUM, 8), getTcAspectStack(TCAspects.MACHINA, 8))),
 
         Superconductor(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 190, 240, 190, 0, "Superconductor", 0, 0, -1, 0, false,
-            false, 1, 1, 1, Dyes.dyeGreen, Arrays.asList(getTcAspectStack(TCAspects.ELECTRUM, 8))),
+            false, 1, 1, 1, Dyes.dyeGreen, Collections.singletonList(getTcAspectStack(TCAspects.ELECTRUM, 8))),
 
         Staballoy(30, TextureSet.SET_ROUGH, 10.0F, 5120, 4, 1 | 2 | 16 | 32 | 64 | 128, 68, 75, 66, 0, "Staballoy", 0,
             0, 1500, 2800, true, false, 1, 3, 1, Dyes.dyeGreen, 2,
@@ -717,7 +706,7 @@ public enum GregtechOrePrefixes {
          */
         public final Fluid mStandardMoltenFluid = null;
 
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final boolean aUnificatable) {
             this.mUnificatable = aUnificatable;
             this.mMaterialInto = this;
@@ -735,7 +724,7 @@ public enum GregtechOrePrefixes {
             }
         }
 
-        private GT_Materials(final GT_Materials aMaterialInto, final boolean aReRegisterIntoThis) {
+        GT_Materials(final GT_Materials aMaterialInto, final boolean aReRegisterIntoThis) {
             this.mUnificatable = false;
             this.mDefaultLocalName = aMaterialInto.mDefaultLocalName;
             this.mMaterialInto = aMaterialInto.mMaterialInto;
@@ -767,7 +756,7 @@ public enum GregtechOrePrefixes {
          * @param aBlastFurnaceRequired If this requires a Blast Furnace.
          * @param aColor                Vanilla MC Wool Color which comes the closest to this.
          */
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -799,7 +788,7 @@ public enum GregtechOrePrefixes {
             }
         }
 
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -833,7 +822,7 @@ public enum GregtechOrePrefixes {
         /**
          * @param aElement The Element Enum represented by this Material
          */
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -872,7 +861,7 @@ public enum GregtechOrePrefixes {
             this.mAspects.addAll(aAspects);
         }
 
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -905,7 +894,7 @@ public enum GregtechOrePrefixes {
                 null);
         }
 
-        private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
+        GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed,
             final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG,
             final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower,
             final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired,
@@ -936,11 +925,12 @@ public enum GregtechOrePrefixes {
                 aColor);
             this.mExtraData = aExtraData;
             this.mMaterialList.addAll(aMaterialList);
-            this.mChemicalFormula = "";
+            final StringBuilder sb = new StringBuilder();
             for (final MaterialStack tMaterial : this.mMaterialList) {
-                this.mChemicalFormula += tMaterial.toString();
+                sb.append(tMaterial.toString());
             }
-            this.mChemicalFormula = this.mChemicalFormula.replaceAll("_", "-");
+            this.mChemicalFormula = sb.toString()
+                .replaceAll("_", "-");
 
             int tAmountOfComponents = 0, tMeltingPoint = 0;
             for (final MaterialStack tMaterial : this.mMaterialList) {
@@ -968,18 +958,6 @@ public enum GregtechOrePrefixes {
             } else {
                 this.mAspects.addAll(aAspects);
             }
-        }
-
-        public static GT_Materials get(final String aMaterialName) {
-            final Object tObject = GTUtility.getFieldContent(GT_Materials.class, aMaterialName, false, false);
-            if ((tObject != null) && (tObject instanceof GT_Materials)) {
-                return (GT_Materials) tObject;
-            }
-            return _NULL;
-        }
-
-        public static GT_Materials getRealMaterial(final String aMaterialName) {
-            return get(aMaterialName).mMaterialInto;
         }
 
         /**

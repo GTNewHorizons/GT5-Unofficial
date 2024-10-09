@@ -58,6 +58,11 @@ componentAssemblyLineCasing.10.name=Component Assembly Line Casing (UIV)
 componentAssemblyLineCasing.11.name=Component Assembly Line Casing (UMV)
 componentAssemblyLineCasing.12.name=Component Assembly Line Casing (UXV)
 componentAssemblyLineCasing.13.name=Component Assembly Line Casing (MAX)
+magneticFluxCasing.0.name=Magnetic Flux Casing
+gravityStabilizationCasing.0.name=Gravity Stabilization Casing
+antimatterContainmentCasing.0.name=Antimatter Containment Casing
+protomatterActivationCoil.0.name=Protomatter Activation Coil
+antimatterAnnihilationMatrix.0.name=Antimatter Annihilation Matrix
 
 #Items
 item.radiationProtectionPlate.name=Radiation Proof Plate
@@ -313,6 +318,12 @@ gui.YOTTank.button.void=Void Excess
 gui.YOTTank.button.locking=Fluid locking
 gui.LargeFusion.0=Energy Capacity:
 gui.LargeFusion.1=Stored Energy:
+gui.AntimatterForge.0=Contained Antimatter
+gui.AntimatterForge.1=Passive Consumption
+gui.AntimatterForge.2=Active Consumption
+gui.AntimatterForge.3=Antimatter Change
+gui.AntimatterGenerator.0=EU Produced
+gui.AntimatterGenerator.1=Efficiency
 gt.blockmachines.LargeFusionComputerPP.cfgi.0=Batch Size
 gt.blockmachines.YottaFluidTank.cfgi.0=Tick rate (Update I/O every x ticks)
 
