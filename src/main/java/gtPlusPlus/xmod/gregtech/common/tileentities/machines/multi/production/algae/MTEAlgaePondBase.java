@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -40,7 +39,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -398,9 +396,12 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     private static boolean isUsingCompost(ItemStack[] aItemInputs, int aTier) {
         ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1);
+        final int compostForTier = compostForTier(aTier);
+        int compostFound = 0;
         for (ItemStack i : aItemInputs) {
             if (GTUtility.areStacksEqual(aCompost, i)) {
-                if (i.stackSize >= compostForTier(aTier)) {
+                compostFound += i.stackSize;
+                if (compostFound >= compostForTier) {
                     return true;
                 }
             }
@@ -446,10 +447,9 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     private static final int[] aDurations = new int[] { 2000, 1800, 1600, 1400, 1200, 1000, 512, 256, 128, 64, 32, 16,
         8, 4, 2, 1 };
-    private static final Random random = new XSTR();
 
     private static int getRecipeDuration(int aTier) {
-        final float randFloat = random.nextFloat();
+        final float randFloat = GTPPCore.RANDOM.nextFloat();
         float randMult;
         if (randFloat < 0.96237624) randMult = 1f;
         else if (randFloat < 0.9912871) randMult = 2f;
@@ -522,10 +522,6 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             }
         }
 
-        final ItemStack[] aOutputs = new ItemStack[outputList.size()];
-        for (int i = 0; i < outputList.size(); i++) {
-            aOutputs[i] = outputList.get(i);
-        }
-        return aOutputs;
+        return outputList.toArray(new ItemStack[0]);
     }
 }
