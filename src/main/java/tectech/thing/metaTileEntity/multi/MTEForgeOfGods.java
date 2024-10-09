@@ -1398,7 +1398,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(5, 30)
                     .setSize(140, 30))
             .widget(
-                TextWidget.dynamicText(() -> currentMilestone(currentMilestoneID))
+                TextWidget.dynamicText(() -> currentMilestoneLevel(currentMilestoneID))
                     .setScale(0.7f)
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setTextAlignment(Alignment.Center)
@@ -3538,11 +3538,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 + suffix);
     }
 
-    private Text currentMilestone(int milestoneID) {
+    private Text currentMilestoneLevel(int milestoneID) {
+        int milestoneLevel = inversion ? milestoneProgress[milestoneID] : Math.min(milestoneProgress[milestoneID], 7);
         return new Text(
             translateToLocal("gt.blockmachines.multimachine.FOG.milestoneprogress") + ": "
                 + EnumChatFormatting.GRAY
-                + milestoneProgress[milestoneID]);
+                + milestoneLevel);
     }
 
     private Text milestoneProgressText(int milestoneID) {
