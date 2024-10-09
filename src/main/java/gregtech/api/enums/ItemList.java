@@ -226,11 +226,11 @@ public enum ItemList implements IItemContainer {
     Large_Fluid_Cell_Osmium,
     Large_Fluid_Cell_Neutronium,
     ThermosCan_Empty,
-    ThermosCan_Dark_Coffee,
-    ThermosCan_Dark_Cafe_au_lait,
     ThermosCan_Coffee,
-    ThermosCan_Cafe_au_lait,
-    ThermosCan_Lait_au_cafe,
+    ThermosCan_Sweet_Coffee,
+    ThermosCan_Latte,
+    ThermosCan_Sweet_Latte,
+    ThermosCan_Sweet_Jesus_Latte,
     ThermosCan_Dark_Chocolate_Milk,
     ThermosCan_Chocolate_Milk,
     ThermosCan_Tea,
@@ -445,6 +445,12 @@ public enum ItemList implements IItemContainer {
     FluidRegulator_LuV,
     FluidRegulator_ZPM,
     FluidRegulator_UV,
+    FluidRegulator_UHV,
+    FluidRegulator_UEV,
+    FluidRegulator_UIV,
+    FluidRegulator_UMV,
+    FluidRegulator_UXV,
+    FluidRegulator_MAX,
 
     Conveyor_Module_LV,
     Conveyor_Module_MV,
@@ -1475,11 +1481,15 @@ public enum ItemList implements IItemContainer {
     Electromagnet_Samarium,
     Electromagnet_Tengam,
 
+    Hatch_Antimatter,
+
     Machine_Multi_Canner,
     Machine_Multi_Solidifier,
 
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
+
+    Casing_Reinforced_Wood,
 
     Machine_Multi_IndustrialCompressor,
     Machine_Multi_HIPCompressor,
@@ -1497,6 +1507,8 @@ public enum ItemList implements IItemContainer {
     Hawking_Glass,
     Black_Hole_Opener,
     Black_Hole_Closer,
+
+    Machine_Multi_IndustrialBrewery,
 
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
@@ -2712,7 +2724,7 @@ public enum ItemList implements IItemContainer {
         StringBuilder tCamelCasedDisplayNameBuilder = new StringBuilder();
         final String[] tDisplayNameWords = aDisplayName.split("\\W");
         for (String tWord : tDisplayNameWords) {
-            if (tWord.length() > 0) tCamelCasedDisplayNameBuilder.append(
+            if (!tWord.isEmpty()) tCamelCasedDisplayNameBuilder.append(
                 tWord.substring(0, 1)
                     .toUpperCase(Locale.US));
             if (tWord.length() > 1) tCamelCasedDisplayNameBuilder.append(

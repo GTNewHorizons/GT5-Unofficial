@@ -37,8 +37,7 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
-        if (aBlock instanceof ITextureBlock) {
-            ITextureBlock tc = (ITextureBlock) aBlock;
+        if (aBlock instanceof ITextureBlock tc) {
             aBlock.setBlockBoundsForItemRender();
             aRenderer.setRenderBoundsFromBlock(aBlock);
             renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tc.getTexture(aBlock, metadata, DOWN), true);
@@ -61,10 +60,9 @@ public class BlockRenderHandler implements ISimpleBlockRenderingHandler {
         RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GTMod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
-        if (aBlock instanceof ITextureBlock) {
+        if (aBlock instanceof ITextureBlock tc) {
             aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
-            ITextureBlock tc = (ITextureBlock) aBlock;
             renderNegativeYFacing(
                 aWorld,
                 aRenderer,

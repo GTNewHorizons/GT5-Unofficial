@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.IGuiHandler;
-import detrav.events.DetravLoginEventHandler;
 import detrav.gui.DetravScannerGUI;
 
 /**
@@ -12,32 +11,21 @@ import detrav.gui.DetravScannerGUI;
  */
 public class CommonProxy implements IGuiHandler {
 
-    public void onLoad() {
+    public void onLoad() {}
 
-    }
-
-    public void onPostLoad() {
-        DetravLoginEventHandler.register();
-    }
+    public void onPostLoad() {}
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        switch (ID) {
-            case DetravScannerGUI.GUI_ID:
-                return null;
-            default:
-                return null;
-        }
+        return null;
     }
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        switch (ID) {
-            case DetravScannerGUI.GUI_ID:
-                return new DetravScannerGUI();
-            default:
-                return null;
+        if (ID == DetravScannerGUI.GUI_ID) {
+            return new DetravScannerGUI();
         }
+        return null;
     }
 
     public void openProspectorGUI() {

@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,7 +20,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGregtechLogo {
@@ -165,8 +166,8 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
         return mTotalSlotCount - 1;
     }
 
-    public final AutoMap<ItemStack> getContentUsageSlots() {
-        AutoMap<ItemStack> aItems = new AutoMap<>();
+    public final ArrayList<ItemStack> getContentUsageSlots() {
+        ArrayList<ItemStack> aItems = new ArrayList<>();
         for (int i = mInputslotCount; i < mTotalSlotCount; i++) {
             if (mInventory[i] != null) {
                 aItems.add(mInventory[i]);
@@ -210,7 +211,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
                 // Then Move stack to Usage slots
                 for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
                     if (mInventory[i] == null) {
-                        if ((aFoundMatching && aAllowMultiOfSameTypeInUsageSlots) || !aFoundMatching) {
+                        if (!aFoundMatching || aAllowMultiOfSameTypeInUsageSlots) {
                             mInventory[i] = aStackToMove;
                             aDidSet = true;
                             Logger.INFO("Moving new stack to usage slots.");
@@ -248,7 +249,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
      *
      * @return
      */
-    public abstract AutoMap<ItemStack> getItemsValidForUsageSlots();
+    public abstract ArrayList<ItemStack> getItemsValidForUsageSlots();
 
     /**
      * Checks if the given item is valid for Usage Slots. Can be overridden for easier handling if you already have

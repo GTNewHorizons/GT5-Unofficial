@@ -42,7 +42,7 @@ public class BaseItemPlate_OLD extends Item {
         this.setMaxStackSize(64);
         this.colour = colour;
         this.materialName = materialName;
-        if (mChemicalFormula.equals("") || mChemicalFormula.equals("NullFormula")) {
+        if (mChemicalFormula.isEmpty() || mChemicalFormula.equals("NullFormula")) {
             this.chemicalNotation = StringUtils.subscript(materialName);
         } else {
             this.chemicalNotation = StringUtils.subscript(mChemicalFormula);
@@ -53,7 +53,7 @@ public class BaseItemPlate_OLD extends Item {
         if (this.unlocalName.toLowerCase()
             .contains("itemplate")) {
             temp = this.unlocalName.replace("itemP", "p");
-            if ((temp != null) && !temp.equals("")) {
+            if ((temp != null) && !temp.isEmpty()) {
                 GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
             }
         }

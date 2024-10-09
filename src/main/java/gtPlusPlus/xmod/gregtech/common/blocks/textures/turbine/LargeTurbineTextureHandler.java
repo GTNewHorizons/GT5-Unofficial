@@ -383,16 +383,12 @@ public class LargeTurbineTextureHandler {
 
     public static boolean isUsingAnimatedTexture(TileEntity tTileEntity) {
         boolean aVal = true;
-        IGregTechTileEntity aTile;
-        if (tTileEntity instanceof IGregTechTileEntity) {
-            aTile = (IGregTechTileEntity) tTileEntity;
-            if (aTile != null) {
-                final IMetaTileEntity aMetaTileEntity = aTile.getMetaTileEntity();
-                if (aMetaTileEntity != null && aMetaTileEntity instanceof MTEHatchTurbine) {
-                    aVal = ((MTEHatchTurbine) aMetaTileEntity).getBaseMetaTileEntity()
-                        .isActive();
-                    // Logger.INFO("Returning "+aVal+" as Rotor Assembly controller status");
-                }
+        if (tTileEntity instanceof IGregTechTileEntity aTile) {
+            final IMetaTileEntity aMetaTileEntity = aTile.getMetaTileEntity();
+            if (aMetaTileEntity instanceof MTEHatchTurbine) {
+                aVal = aMetaTileEntity.getBaseMetaTileEntity()
+                    .isActive();
+                // Logger.INFO("Returning "+aVal+" as Rotor Assembly controller status");
             }
         }
         return aVal;
@@ -401,7 +397,7 @@ public class LargeTurbineTextureHandler {
     public static MTEHatchTurbine isTurbineHatch(final IGregTechTileEntity aTileEntity) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity != null && aMetaTileEntity instanceof MTEHatchTurbine) {
+            if (aMetaTileEntity instanceof MTEHatchTurbine) {
                 return (MTEHatchTurbine) aMetaTileEntity;
             }
         }

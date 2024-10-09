@@ -14,10 +14,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -25,9 +23,8 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gregtech.api.util.TurbineStatCalculator;
 
-@SuppressWarnings("deprecation")
 public class MTELargeTurbineGas extends MTELargerTurbineBase {
 
     private static final HashSet<Fluid> BLACKLIST = new HashSet<>();
@@ -111,25 +108,27 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
     }
 
     @Override
-    long fluidIntoPower(ArrayList<FluidStack> aFluids, long aOptFlow, int aBaseEff, float[] flowMultipliers) {
-        if (aFluids.size() >= 1) {
+    long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
+        if (!aFluids.isEmpty()) {
             int tEU = 0;
             int actualOptimalFlow = 0;
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             // log("Fuel Value of "+aFluids.get(0).getLocalizedName()+" is "+fuelValue+"eu");
-            if (aOptFlow < fuelValue) {
+            if (turbine.getOptimalGasEUt() < fuelValue) {
                 // turbine too weak and/or fuel too powerful
                 // at least consume 1L
                 this.realOptFlow = 1;
                 // wastes the extra fuel and generate aOptFlow directly
                 depleteInput(new FluidStack(firstFuelType, 1));
                 this.storedFluid += 1;
-                return GTUtility.safeInt((long) aOptFlow * (long) aBaseEff / 10000L);
+                return GTUtility.safeInt((long) (turbine.getOptimalGasEUt()));
             }
 
-            actualOptimalFlow = GTUtility.safeInt((long) (aOptFlow * (double) flowMultipliers[1] / fuelValue));
+            actualOptimalFlow = GTUtility.safeInt(
+                (long) (getSpeedMultiplier()
+                    * ((isLooseMode() ? turbine.getOptimalLooseGasFlow() : turbine.getOptimalGasFlow()) / fuelValue)));
             this.realOptFlow = actualOptimalFlow;
 
             int remainingFlow = GTUtility.safeInt((long) (actualOptimalFlow * 1.25f)); // Allowed to use up to 125% of
@@ -153,13 +152,12 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
             if (totalFlow <= 0) return 0;
             tEU = GTUtility.safeInt((long) totalFlow * fuelValue);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L);
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
                 tEU *= efficiency;
-                tEU = GTUtility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             }
+            tEU = GTUtility
+                .safeInt((long) (tEU * (isLooseMode() ? turbine.getLooseGasEfficiency() : turbine.getGasEfficiency())));
 
             return tEU;
         }
@@ -194,15 +192,5 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
     @Override
     protected String getCasingName() {
         return "Reinforced Gas Turbine Casing";
-    }
-
-    @Override
-    protected ITexture getTextureFrontFace() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
-    }
-
-    @Override
-    protected ITexture getTextureFrontFaceActive() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
     }
 }

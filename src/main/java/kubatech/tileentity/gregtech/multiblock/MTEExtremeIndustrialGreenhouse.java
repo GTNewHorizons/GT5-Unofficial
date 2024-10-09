@@ -31,7 +31,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static kubatech.api.Variables.Author;
 import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
@@ -87,6 +87,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -141,7 +142,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
      * Summary:
      * Accelerators in EIG are a bit cheaper than on the crop field (4 amps instead of 6 amps)
      * There are 4 crops touching the accelerator (1 AMP for 1 accelerated crop)
-     *
+     * <p>
      * Changing T one number down will buff the EIG twice, as well as changing it up will nerf the EIG twice
      * (That is because accelerators are imperfectly scaled in game LV = 2x, MV = 4x, ...)
      */
@@ -693,7 +694,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         if (bucket.getSeedCount() <= 0) return true;
 
         // check if we have an ME output bus to output to.
-        for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+        for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
             if (!(tHatch instanceof MTEHatchOutputBusME)) continue;
             for (ItemStack stack : bucket.tryRemoveSeed(bucket.getSeedCount(), false)) {
                 ((MTEHatchOutputBusME) tHatch).store(stack);
@@ -709,7 +710,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .build();
         if (helper.getMaxParallel() > 0) {
             for (ItemStack toOutput : bucket.tryRemoveSeed(helper.getMaxParallel(), false)) {
-                for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+                for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
                     if (tHatch.storeAll(toOutput)) break;
                 }
             }
@@ -985,7 +986,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     ItemStack suppertItem = outputs[i];
                     if (!player.inventory.addItemStackToInventory(suppertItem)) {
                         player.entityDropItem(suppertItem, 0.f);
-                    } ;
+                    }
                 }
                 if (bucket.getSeedCount() <= 0) this.buckets.remove(bucket);
                 return ret;
@@ -1017,12 +1018,17 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
                 .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(140, 4)
+                .setPos(140, 91)
                 .setSize(55, 16));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, null);
-        builder.widget(screenElements.setEnabled(w -> !isInInventory));
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(screenElements.setPos(10, 0))
+                .setPos(0, 7)
+                .setSize(190, 79)
+                .setEnabled(w -> !isInInventory));
 
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))

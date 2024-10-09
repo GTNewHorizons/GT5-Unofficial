@@ -53,6 +53,7 @@ import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.GTValues;
@@ -205,7 +206,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
     }
 
     protected boolean tryOutputAll(List<ItemStack> list) {
-        return tryOutputAll(list, l -> Collections.singletonList((ItemStack) l));
+        return tryOutputAll(list, l -> Collections.singletonList(l));
     }
 
     protected <Y> boolean tryOutputAll(List<Y> list, Function<Y, List<ItemStack>> mappingFunction) {
@@ -310,8 +311,12 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
                 .setPos(173, 167 - 1));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
-        drawTexts(screenElements, slotWidgets.size() > 0 ? slotWidgets.get(0) : null);
-        builder.widget(screenElements);
+        drawTexts(screenElements, !slotWidgets.isEmpty() ? slotWidgets.get(0) : null);
+        builder.widget(
+            new Scrollable().setVerticalScroll()
+                .widget(screenElements.setPos(10, 0))
+                .setPos(0, 7)
+                .setSize(190, 79));
 
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))

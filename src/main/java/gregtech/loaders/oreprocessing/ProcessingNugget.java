@@ -29,6 +29,8 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        // Blacklist materials which are handled by Werkstoff loader
+        if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
 
         if (aMaterial.contains(SubTag.SMELTING_TO_GEM)
             && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L) != null) {

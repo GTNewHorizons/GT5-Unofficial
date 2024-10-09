@@ -14,7 +14,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -335,7 +335,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         int paras = getBaseMetaTileEntity().isActive() ? processingLogic.getCurrentParallels() : 0;
         int moreSpeed = (int) ((1 - speedBonus) * 100);
         int lessEnergy = (int) ((1 - energyDiscount) * 100);
-        for (MTEHatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()

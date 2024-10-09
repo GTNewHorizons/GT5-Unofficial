@@ -228,6 +228,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
+                break;
             case "Basalt":
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(3))

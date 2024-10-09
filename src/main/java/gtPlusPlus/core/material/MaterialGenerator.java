@@ -2,6 +2,7 @@ package gtPlusPlus.core.material;
 
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -13,7 +14,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -63,7 +63,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenShapedCrafting;
 
 public class MaterialGenerator {
 
-    public static final AutoMap<Set<RunnableWithInfo<Material>>> mRecipeMapsToGenerate = new AutoMap<>();
+    public static final ArrayList<Set<RunnableWithInfo<Material>>> mRecipeMapsToGenerate = new ArrayList<>();
 
     @SuppressWarnings("unused")
     private static volatile Item temp;
@@ -82,10 +82,7 @@ public class MaterialGenerator {
         FluidStack rFluidOut, Integer aTime, Integer aEu) {
 
         RecipeGenFluidCanning g = new RecipeGenFluidCanning(false, aEmpty, aFullContainer, aFluidIn, null, null, 0);
-        if (g != null && g.valid()) {
-            return true;
-        }
-        return false;
+        return g != null && g.valid();
     }
 
     public static void generate(final Material matInfo) {
@@ -116,7 +113,7 @@ public class MaterialGenerator {
             }
 
             if (matInfo.getState() == MaterialState.SOLID) {
-                if (generateEverything == true) {
+                if (generateEverything) {
                     if (sRadiation >= 1) {
                         tempBlock = new BlockBaseModular(matInfo, BlockTypes.STANDARD);
                         temp = new BaseItemIngot(matInfo);
@@ -156,7 +153,7 @@ public class MaterialGenerator {
                     temp = new BaseItemPlateDouble(matInfo);
                 }
             } else if (matInfo.getState() == MaterialState.LIQUID) {
-                if (generateEverything == true) {
+                if (generateEverything) {
                     tempBlock = new BlockBaseModular(matInfo, BlockTypes.STANDARD);
                 }
                 temp = new BaseItemIngot(matInfo);
@@ -197,8 +194,7 @@ public class MaterialGenerator {
             return true;
 
         } catch (final Throwable t) {
-
-            Logger.MATERIALS("" + matInfo.getLocalizedName() + " failed to generate.");
+            Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
             return false;
         }
     }
@@ -304,7 +300,7 @@ public class MaterialGenerator {
             new RecipeGenPlasma(matInfo);
 
         } catch (final Throwable t) {
-            Logger.MATERIALS("" + matInfo.getLocalizedName() + " failed to generate.");
+            Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
         }
     }
 
@@ -324,8 +320,7 @@ public class MaterialGenerator {
 
             final String unlocalizedName = matInfo.getUnlocalizedName();
             final String materialName = matInfo.getLocalizedName();
-            final short[] C = customRGB;
-            final Integer Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+            final Integer Colour = Utils.rgbtoHexValue(customRGB[0], customRGB[1], customRGB[2]);
 
             if (Colour == null) {
                 Logger.DEBUG_MATERIALS("Invalid Material while constructing " + materialName + ".");
@@ -421,7 +416,7 @@ public class MaterialGenerator {
             new RecipeGenPlasma(matInfo);
             return true;
         } catch (final Throwable t) {
-            Logger.MATERIALS("" + matInfo.getLocalizedName() + " failed to generate.");
+            Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
             t.printStackTrace();
             return false;
         }

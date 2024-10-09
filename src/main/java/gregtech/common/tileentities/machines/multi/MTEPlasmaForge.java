@@ -18,7 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
@@ -32,7 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -850,13 +849,13 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
         // If there is more than 1 TT energy hatch, the structure check will fail.
         // If there is a TT hatch and a normal hatch, the structure check will fail.
-        if (mExoticEnergyHatches.size() > 0) {
-            if (mEnergyHatches.size() > 0) return false;
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
             if (mExoticEnergyHatches.size() > 1) return false;
         }
 
         // If there is 0 or more than 2 energy hatches structure check will fail.
-        if (mEnergyHatches.size() > 0) {
+        if (!mEnergyHatches.isEmpty()) {
             if (mEnergyHatches.size() > 2) return false;
 
             // Check will also fail if energy hatches are not of the same tier.
@@ -869,7 +868,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         }
 
         // If there are no energy hatches or TT energy hatches, structure will fail to form.
-        if ((mEnergyHatches.size() == 0) && (mExoticEnergyHatches.size() == 0)) return false;
+        if ((mEnergyHatches.isEmpty()) && (mExoticEnergyHatches.isEmpty())) return false;
 
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
@@ -907,7 +906,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         long storedEnergy = 0;
         long maxEnergy = 0;
 
-        for (MTEHatch tHatch : filterValidMTEs(mExoticEnergyHatches)) {
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -1113,8 +1112,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_PLASMAFORGE_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_PLASMAFORGE_LOOP;
     }
 
     @Override

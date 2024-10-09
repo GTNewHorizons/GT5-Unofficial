@@ -13,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.data.FileUtils;
@@ -23,7 +22,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 public class ThreadAspectScanner extends Thread {
 
     public static boolean mDoWeScan = false;
-    private static final Map<String, AutoMap<ItemStack>> mAllGameContent = new HashMap<>();
+    private static final Map<String, ArrayList<ItemStack>> mAllGameContent = new HashMap<>();
     public final File mAspectCacheFile;
 
     public ThreadAspectScanner() {
@@ -52,11 +51,11 @@ public class ThreadAspectScanner extends Thread {
                 }
             }
         }
-        AutoMap<ItemStack> m = new AutoMap<>();
+        ArrayList<ItemStack> m = new ArrayList<>();
         if (mAllGameContent.containsKey(nameKey)) {
             m = mAllGameContent.get(nameKey);
         }
-        m.put(aStack);
+        m.add(aStack);
         mAllGameContent.put(nameKey, m);
     }
 
@@ -92,7 +91,7 @@ public class ThreadAspectScanner extends Thread {
                     if (item.getHasSubtypes()) {
                         List q1 = new ArrayList();
                         item.getSubItems(item, item.getCreativeTab(), q1);
-                        if (q1 != null && q1.size() > 0) {
+                        if (q1 != null && !q1.isEmpty()) {
                             for (int e = 0; e < q1.size(); e++) {
                                 ItemStack check = ItemUtils.simpleMetaStack(item, e, 1);
                                 if (check != null) {
@@ -118,20 +117,18 @@ public class ThreadAspectScanner extends Thread {
             for (String key : y) {
                 // Logger.INFO("Looking for key: "+key);
                 if (mAllGameContent.containsKey(key)) {
-                    AutoMap<ItemStack> group = mAllGameContent.get(key);
+                    ArrayList<ItemStack> group = mAllGameContent.get(key);
                     if (group == null || group.size() <= 0) {
                         continue;
                     }
                     for (ItemStack stack : group) {
                         thaumcraft.api.aspects.AspectList a = thaumcraft.common.lib.crafting.ThaumcraftCraftingManager
                             .getObjectTags(stack);
-                        if (a == null) {
-                            continue;
-                        } else {
-                            AutoMap<Pair<String, Integer>> aspectPairs = new AutoMap<>();
+                        if (a != null) {
+                            ArrayList<Pair<String, Integer>> aspectPairs = new ArrayList<>();
                             for (thaumcraft.api.aspects.Aspect c : a.getAspectsSortedAmount()) {
                                 if (c != null) {
-                                    aspectPairs.put(new Pair<>(c.getName(), a.getAmount(c)));
+                                    aspectPairs.add(new Pair<>(c.getName(), a.getAmount(c)));
                                 }
                             }
                             try {

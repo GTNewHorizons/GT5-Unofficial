@@ -29,7 +29,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.GTRenderedTexture;
 import tectech.Reference;
 import tectech.TecTech;
-import tectech.loader.TecTechConfig;
+import tectech.loader.ConfigHandler;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
@@ -133,13 +133,12 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
         long tier = -1;
         long tCurrent = 0;
         long tEnergyMax = 0;
-        for (int i = 0; i < mInventory.length; i++) {
-            if (mInventory[i] == null || mInventory[i].stackSize != 1) {
-                continue;
-            }
-            CapacitorComponent cap = componentBinds.get(TTUtility.getUniqueIdentifier(mInventory[i]));
-            if (cap != null && cap.tier > tier) {
-                tier = cap.tier;
+        for (ItemStack stack : mInventory) {
+            if (stack != null && stack.stackSize == 1) {
+                CapacitorComponent cap = componentBinds.get(TTUtility.getUniqueIdentifier(stack));
+                if (cap != null && cap.tier > tier) {
+                    tier = cap.tier;
+                }
             }
         }
         if (tier >= 0) {
@@ -220,7 +219,7 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
             this.current = current;
             this.energyMax = energyMax;
             componentBinds.put(unlocalizedName, this);
-            if (TecTechConfig.DEBUG_MODE) {
+            if (ConfigHandler.debug.DEBUG_MODE) {
                 TecTech.LOGGER.info("Tesla Capacitor registered: " + unlocalizedName);
             }
         }

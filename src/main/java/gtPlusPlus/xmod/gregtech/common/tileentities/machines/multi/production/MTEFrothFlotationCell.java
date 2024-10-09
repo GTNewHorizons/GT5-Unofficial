@@ -43,6 +43,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -181,7 +182,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiFrothFlotationCell;
+        return Configuration.pollution.pollutionPerSecondMultiFrothFlotationCell;
     }
 
     @Override
@@ -275,7 +276,7 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
 
     @Override
     public boolean isRecipeLockingEnabled() {
-        return lockedMaterialName != null && !lockedMaterialName.equals("");
+        return lockedMaterialName != null && !lockedMaterialName.isEmpty();
     }
 
     @Override

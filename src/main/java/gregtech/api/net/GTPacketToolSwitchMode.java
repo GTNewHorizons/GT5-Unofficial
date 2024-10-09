@@ -11,12 +11,12 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.items.MetaGeneratedTool;
 import io.netty.buffer.ByteBuf;
 
-public class GTPacketToolSwitchMode extends GTPacketNew {
+public class GTPacketToolSwitchMode extends GTPacket {
 
     private EntityPlayerMP player;
 
     public GTPacketToolSwitchMode() {
-        super(true);
+        super();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class GTPacketToolSwitchMode extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketToolSwitchMode();
     }
 

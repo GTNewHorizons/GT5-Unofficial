@@ -15,9 +15,7 @@ package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.ingot;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -31,13 +29,6 @@ public class MetalLoader implements IWerkstoffRunnable {
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(ingot)) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot, 9))
-                .itemOutputs(werkstoff.get(block))
-                .duration(15 * SECONDS)
-                .eut(2)
-                .addTo(compressorRecipes);
-
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 9), ItemList.Shape_Extruder_Block.get(0))
                 .itemOutputs(werkstoff.get(block))

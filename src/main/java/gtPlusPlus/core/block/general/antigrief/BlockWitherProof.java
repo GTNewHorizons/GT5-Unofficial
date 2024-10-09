@@ -7,8 +7,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -73,8 +71,7 @@ public class BlockWitherProof extends Block {
         if ((entity == null) || !entity.isEntityAlive()) {
             return false;
         }
-        if ((entity instanceof EntityWither) || (entity instanceof EntityDragon)
-            || (entity instanceof IBossDisplayData)) {
+        if (entity instanceof IBossDisplayData) {
             return false;
         } else {
             return super.canEntityDestroy(world, x, y, z, entity);
@@ -109,7 +106,7 @@ public class BlockWitherProof extends Block {
     @Override
     public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World p_149737_2_, int p_149737_3_,
         int p_149737_4_, int p_149737_5_) {
-        if (aPlayer != null && aPlayer instanceof EntityPlayerMP) {
+        if (aPlayer instanceof EntityPlayerMP) {
             return 1f;
         }
         return -1f;
@@ -131,10 +128,7 @@ public class BlockWitherProof extends Block {
         if ((entity == null) || !entity.isEntityAlive()) {
             return;
         }
-        if ((entity instanceof EntityWither) || (entity instanceof EntityDragon)
-            || (entity instanceof IBossDisplayData)) {
-            return;
-        } else {
+        if (!(entity instanceof IBossDisplayData)) {
             super.onEntityCollidedWithBlock(world, x, y, z, entity);
         }
     }
@@ -147,7 +141,7 @@ public class BlockWitherProof extends Block {
 
     @Override
     public boolean canHarvestBlock(EntityPlayer player, int meta) {
-        if (player != null && player instanceof EntityPlayerMP) {
+        if (player instanceof EntityPlayerMP) {
             return true;
         }
         return super.canHarvestBlock(player, meta);

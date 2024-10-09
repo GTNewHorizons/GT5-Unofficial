@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -133,13 +132,6 @@ public class FluidExtractorRecipes implements Runnable {
             .outputChances(10000)
             .fluidOutputs(Materials.Water.getFluid(100L))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 3))
-            .fluidOutputs(Materials.Mercury.getFluid(1000L))
-            .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
@@ -538,29 +530,31 @@ public class FluidExtractorRecipes implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
 
-        // Beecombs fluid extractor recipes
-        // xenon
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(combs, 1, 134))
-            .fluidOutputs(getFluidStack("xenon", 250))
-            .duration(2 * SECONDS + 10 * TICKS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(fluidExtractionRecipes);
+        if (Forestry.isModLoaded()) {
+            // Beecombs fluid extractor recipes
+            // xenon
+            GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(combs, 1, 134))
+                .fluidOutputs(getFluidStack("xenon", 250))
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(fluidExtractionRecipes);
 
-        // neon
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(combs, 1, 135))
-            .fluidOutputs(getFluidStack("neon", 250))
-            .duration(15 * TICKS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(fluidExtractionRecipes);
+            // neon
+            GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(combs, 1, 135))
+                .fluidOutputs(getFluidStack("neon", 250))
+                .duration(15 * TICKS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(fluidExtractionRecipes);
 
-        // krpton
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(combs, 1, 136))
-            .fluidOutputs(getFluidStack("krypton", 250))
-            .duration(1 * SECONDS + 5 * TICKS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(fluidExtractionRecipes);
+            // krpton
+            GTValues.RA.stdBuilder()
+                .itemInputs(new ItemStack(combs, 1, 136))
+                .fluidOutputs(getFluidStack("krypton", 250))
+                .duration(1 * SECONDS + 5 * TICKS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(fluidExtractionRecipes);
+        }
     }
 }

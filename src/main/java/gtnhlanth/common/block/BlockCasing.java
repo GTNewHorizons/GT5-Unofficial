@@ -18,7 +18,7 @@ public class BlockCasing extends Block {
     @SideOnly(Side.CLIENT)
     protected IIcon[] texture;
 
-    private String name;
+    private final String name;
 
     public BlockCasing(String name) {
         super(Material.iron);

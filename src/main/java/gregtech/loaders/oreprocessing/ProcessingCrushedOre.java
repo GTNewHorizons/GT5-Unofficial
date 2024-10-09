@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -25,6 +26,10 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            return;
+        }
+
         switch (aPrefix) {
             case crushedCentrifuged -> {
                 GTValues.RA.stdBuilder()
@@ -69,6 +74,11 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 if (tGem == null) {
                     break;
                 }
+
+                // Blacklist materials which are handled by Werkstoff loader and coal, which has an override
+                if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt
+                    || aMaterial == Materials.Spodumene
+                    || aMaterial == Materials.Coal) return;
 
                 switch (aMaterial.mName) {
                     case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" -> GTValues.RA

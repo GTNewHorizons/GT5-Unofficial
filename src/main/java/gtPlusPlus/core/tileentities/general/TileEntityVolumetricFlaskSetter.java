@@ -1,5 +1,7 @@
 package gtPlusPlus.core.tileentities.general;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -11,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
 import gtPlusPlus.core.inventories.InventoryVolumetricFlaskSetter;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -123,18 +124,18 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
             .clone();
 
         // Check if there is output in slot.
-        Boolean hasOutput = false;
+        boolean hasOutput = false;
         if (aInputs[ContainerVolumetricFlaskSetter.SLOT_OUTPUT] != null) {
             hasOutput = true;
             if (aInputs[ContainerVolumetricFlaskSetter.SLOT_OUTPUT].stackSize >= 16) {
                 return false;
             }
         }
-        AutoMap<Integer> aValidSlots = new AutoMap<>();
+        ArrayList<Integer> aValidSlots = new ArrayList<>();
         int aSlotCount = 0;
         for (ItemStack i : aInputs) {
             if (i != null) {
-                aValidSlots.put(aSlotCount);
+                aValidSlots.add(aSlotCount);
             }
             aSlotCount++;
         }
@@ -219,7 +220,6 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                     }
                 }
             }
-            continue;
         }
         return false;
     }
@@ -377,7 +377,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
 
     @Override
     public boolean hasCustomInventoryName() {
-        return (this.customName != null) && !this.customName.equals("");
+        return (this.customName != null) && !this.customName.isEmpty();
     }
 
     @Override

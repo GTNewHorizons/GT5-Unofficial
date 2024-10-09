@@ -2,9 +2,12 @@ package ggfab;
 
 import static gregtech.api.enums.ToolDictNames.*;
 import static gregtech.common.items.IDMetaTool01.*;
-import static gregtech.common.items.MetaGeneratedTool01.*;
+import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
 import net.minecraft.item.ItemStack;
+
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -27,9 +30,19 @@ import gregtech.api.util.ProcessingArrayManager;
     modid = GGConstants.MODID,
     version = GGConstants.VERSION,
     name = GGConstants.MODNAME,
+    guiFactory = "ggfab.GGFabGUIFactory",
     acceptedMinecraftVersions = "[1.7.10]",
     dependencies = "required-after:IC2;required-before:gregtech")
 public class GigaGramFab {
+
+    static {
+        try {
+            ConfigurationManager.registerConfig(ConfigurationHandler.class);
+
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public GigaGramFab() {
         // initialize the textures
@@ -126,7 +139,6 @@ public class GigaGramFab {
         });
         GregTechAPI.sBeforeGTPostload.add(new ComponentRecipeLoader());
         GregTechAPI.sBeforeGTPostload.add(new SingleUseToolRecipeLoader());
-        ConfigurationHandler.INSTANCE.init(event.getSuggestedConfigurationFile());
 
         initDumbItem1();
     }
@@ -140,46 +152,43 @@ public class GigaGramFab {
     private void initDumbItem1() {
         GGMetaItemDumbItems i1 = new GGMetaItemDumbItems("ggfab.d1");
         int id = 0;
-        {
-            int idShape = 30;
-            final int budget = idShape;
-            String prefix = "One_Use_craftingTool";
-            String prefix2 = "Shape_One_Use_craftingTool";
-            for (GGItemList i : GGItemList.values()) {
-                ItemStack stack = null;
-                if (i.name()
-                    .startsWith(prefix)) {
+        int idShape = 30;
+        final int budget = idShape;
+        String prefix = "One_Use_craftingTool";
+        String prefix2 = "Shape_One_Use_craftingTool";
+        for (GGItemList i : GGItemList.values()) {
+            ItemStack stack = null;
+            if (i.name()
+                .startsWith(prefix)) {
+                stack = i1.addItem(
+                    id++,
+                    "Single Use " + GGUtils.processSentence(
+                        i.name()
+                            .substring(prefix.length()),
+                        ' ',
+                        true,
+                        true),
+                    null,
+                    i,
+                    i.name()
+                        .substring("One_Use_".length()));
+            } else if (i.name()
+                .startsWith(prefix2)) {
                     stack = i1.addItem(
-                        id++,
-                        "Single Use " + GGUtils.processSentence(
+                        idShape++,
+                        "Tool Casting Mold (" + GGUtils.processSentence(
                             i.name()
-                                .substring(prefix.length()),
+                                .substring(prefix2.length()),
                             ' ',
                             true,
-                            true),
+                            true) + ")",
                         null,
-                        i,
-                        i.name()
-                            .substring("One_Use_".length()));
-                } else if (i.name()
-                    .startsWith(prefix2)) {
-                        stack = i1.addItem(
-                            idShape++,
-                            "Tool Casting Mold (" + GGUtils.processSentence(
-                                i.name()
-                                    .substring(prefix2.length()),
-                                ' ',
-                                true,
-                                true) + ")",
-                            null,
-                            i);
-                    }
-                if (stack != null) {
-                    i.set(stack);
+                        i);
                 }
+            if (stack != null) {
+                i.set(stack);
             }
-            if (id >= budget || idShape >= 2 * budget || idShape - id != budget) throw new AssertionError();
-            id = budget * 2;
         }
+        if (id >= budget || idShape >= 2 * budget || idShape - id != budget) throw new AssertionError();
     }
 }

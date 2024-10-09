@@ -31,6 +31,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -174,7 +175,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
         mCasing = 0;
         if (checkPiece(mName, 1, 7, 0) && mCasing >= 7) {
             if (this.mInputHatches.size() >= 2 && this.mInputHatches.size() <= 4
-                && this.mOutputHatches.size() >= 1
+                && !this.mOutputHatches.isEmpty()
                 && this.mOutputHatches.size() <= 2
                 && this.mMufflerHatches.size() == 1
                 && this.mMaintenanceHatches.size() == 1
@@ -198,7 +199,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiRefinery;
+        return Configuration.pollution.pollutionPerSecondMultiRefinery;
     }
 
     @Override

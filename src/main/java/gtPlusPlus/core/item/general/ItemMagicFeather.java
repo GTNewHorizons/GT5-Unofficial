@@ -91,7 +91,7 @@ public class ItemMagicFeather extends CoreItem {
                     aBeaconData);
             }
         }
-        return aBeaconData.size() > 0;
+        return !aBeaconData.isEmpty();
     }
 
     private static void findSuitableBeacon(EntityPlayer player, Collection<TileEntity> tileEntities,

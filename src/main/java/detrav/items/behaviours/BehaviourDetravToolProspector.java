@@ -1,5 +1,7 @@
 package detrav.items.behaviours;
 
+import static gregtech.api.enums.Mods.VisualProspecting;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,7 +32,6 @@ import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
@@ -64,7 +65,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         int aZ, int aSide, float hitX, float hitY, float hitZ) {
 
         SplittableRandom aRandom = new SplittableRandom();
-        int chance = ((1 + aStack.getItemDamage()) * 8) > 100 ? 100 : (1 + aStack.getItemDamage()) * 8;
+        int chance = Math.min(((1 + aStack.getItemDamage()) * 8), 100);
 
         if (aWorld.isRemote) return false;
 
@@ -82,7 +83,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
 
-                if (Mods.VisualProspecting.isModLoaded()) {
+                if (VisualProspecting.isModLoaded()) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                         (EntityPlayerMP) aPlayer,
                         new ArrayList<>(),
@@ -98,7 +99,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 .getMaterial() == Material.ground
             || aWorld.getBlock(aX, aY, aZ) == GregTechAPI.sBlockOres1) {
             if (!aWorld.isRemote) {
-                prospectChunks((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
+                prospectChunks(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
             }
             return true;
         }
@@ -113,7 +114,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         badluck = 0;
         ores = new HashMap<>();
 
-        int range = ((DetravMetaGeneratedTool01) aItem).getHarvestLevel(aStack, "") / 2 + (aStack.getItemDamage() / 4);
+        int range = aItem.getHarvestLevel(aStack, "") / 2 + (aStack.getItemDamage() / 4);
         if ((range % 2) == 0) {
             range += 1; // kinda not needed here, divide takes it out, but we put it back in with the range+1 in the
                         // loop
@@ -162,7 +163,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         }
 
         // List to hold unsorted scanner messages
-        List<ChatComponentText> oreMessages = new ArrayList<ChatComponentText>();
+        List<ChatComponentText> oreMessages = new ArrayList<>();
 
         for (String key : ores.keySet()) {
             int value = ores.get(key);
@@ -177,7 +178,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             StatCollector.translateToLocal("detrav.scanner.distance.texts.1"),
             StatCollector.translateToLocal("detrav.scanner.distance.texts.0"));
 
-        List<ChatComponentText> oreMessagesSorted = new ArrayList<ChatComponentText>();
+        List<ChatComponentText> oreMessagesSorted = new ArrayList<>();
         oreMessagesSorted.add(new ChatComponentText(CHAT_MSG_SEPARATOR));
 
         // Sort ore messages by distance, separated by -----
@@ -213,7 +214,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             aPlayer.addChatMessage(msg);
         }
 
-        if (Mods.VisualProspecting.isModLoaded()) {
+        if (VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                 (EntityPlayerMP) aPlayer,
                 VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
@@ -249,7 +250,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             addChatMassageByValue(aPlayer, value, key);
         }
 
-        if (Mods.VisualProspecting.isModLoaded()) {
+        if (VisualProspecting.isModLoaded()) {
             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                 (EntityPlayerMP) aPlayer,
                 VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
@@ -266,8 +267,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                                                                                                           // aTileEntity)
     {
         if (aTileEntity != null) {
-            if (aTileEntity instanceof TileEntityOres) {
-                TileEntityOres gt_entity = (TileEntityOres) aTileEntity;
+            if (aTileEntity instanceof TileEntityOres gt_entity) {
                 short meta = gt_entity.getMetaData();
                 String format = LanguageRegistry.instance()
                     .getStringLocalization("gt.blockores." + meta + ".name");
@@ -298,7 +298,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                     if (tBlock instanceof BlockOresAbstract) {
                         TileEntity tTileEntity = aChunk.getTileEntityUnsafe(x, y, z);
                         if ((tTileEntity instanceof TileEntityOres) && ((TileEntityOres) tTileEntity).mNatural) {
-                            tMetaID = (short) ((TileEntityOres) tTileEntity).getMetaData();
+                            tMetaID = ((TileEntityOres) tTileEntity).getMetaData();
                             try {
                                 String format = LanguageRegistry.instance()
                                     .getStringLocalization(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
@@ -414,7 +414,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             .add(new ChatComponentText(name + StatCollector.translateToLocal("detrav.scanner.found.texts.5")));
     }
 
-    public static int getPolution(World aWorld, int aX, int aZ) {
+    public static int getPollution(World aWorld, int aX, int aZ) {
         return Pollution.getPollution(aWorld.getChunkFromBlockCoords(aX, aZ));
     }
 }

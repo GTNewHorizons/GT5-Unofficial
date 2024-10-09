@@ -117,8 +117,8 @@
       "dependencies": []
     },
     {
-      "modid": "GT++",
-      "name": "miscutils",
+      "modid": "miscutils",
+      "name": "GT++",
       "description": "Adds over 100 new Multiblocks, Machines, etc to Gregtech.",
       "credits": "",
       "logoFile": "",

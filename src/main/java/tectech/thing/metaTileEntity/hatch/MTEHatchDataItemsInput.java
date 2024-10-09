@@ -15,13 +15,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
@@ -29,6 +26,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.objects.GTRenderedTexture;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.mechanics.dataTransport.InventoryDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.recipe.TTRecipeAdder;
@@ -89,11 +87,8 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
-            clientLocale = "en_US";
+        if (aPlayer instanceof EntityPlayerMPAccessor) {
+            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
         return true;
     }
@@ -184,7 +179,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
                     stacks.add(stack);
                 }
             }
-            if (stacks.size() > 0) {
+            if (!stacks.isEmpty()) {
                 this.stacks = stacks.toArray(TTRecipeAdder.nullItem);
             }
         }

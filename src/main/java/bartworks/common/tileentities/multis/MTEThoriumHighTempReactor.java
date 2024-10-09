@@ -19,7 +19,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -171,11 +171,11 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         this.mCasing = 0;
         return this.checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0) && this.mCasing >= 500
             && this.mMaintenanceHatches.size() == 1
-            && this.mInputHatches.size() > 0
-            && this.mOutputHatches.size() > 0
-            && this.mInputBusses.size() > 0
-            && this.mOutputBusses.size() > 0
-            && this.mEnergyHatches.size() > 0;
+            && !this.mInputHatches.isEmpty()
+            && !this.mOutputHatches.isEmpty()
+            && !this.mInputBusses.isEmpty()
+            && !this.mOutputBusses.isEmpty()
+            && !this.mEnergyHatches.isEmpty();
     }
 
     @Override
@@ -207,8 +207,6 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                             .min(MTEThoriumHighTempReactor.HELIUM_NEEDED - this.HeliumSupply, fluidStack.amount);
                         fluidStack.amount -= toget;
                         this.HeliumSupply += toget;
-                        if (MTEThoriumHighTempReactor.HELIUM_NEEDED == this.HeliumSupply && fluidStack.amount == 0)
-                            fluidStack = null;
                     }
                 }
             }
@@ -290,7 +288,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         int takecoolant = this.coolanttaking;
         int drainedamount = 0;
 
-        for (MTEHatchInput tHatch : filterValidMTEs(mInputHatches)) {
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
             if (tLiquid != null && tLiquid.isFluidEqual(FluidRegistry.getFluidStack("ic2coolant", 1))) {
                 FluidStack drained = tHatch.drain(takecoolant, true);

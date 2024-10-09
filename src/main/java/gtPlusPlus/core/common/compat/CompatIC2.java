@@ -4,14 +4,14 @@ import static gtPlusPlus.core.handler.CompatHandler.RemoveRecipeQueue;
 
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.core.lib.GTPPCore.ConfigSwitches;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class CompatIC2 {
 
-    private static ItemStack itemCropnalyzer = ItemUtils.simpleMetaStack("IC2:itemCropnalyzer", 0, 1);
-    private static ItemStack itemSolarHelmet = ItemUtils.simpleMetaStack("IC2:itemSolarHelmet", 0, 1);
+    private static final ItemStack itemCropnalyzer = ItemUtils.simpleMetaStack("IC2:itemCropnalyzer", 0, 1);
+    private static final ItemStack itemSolarHelmet = ItemUtils.simpleMetaStack("IC2:itemSolarHelmet", 0, 1);
 
     public static ShapedRecipeObject Cropnalyzer = new ShapedRecipeObject(
         "ore:cableGt02Copper",
@@ -42,7 +42,7 @@ public class CompatIC2 {
 
     private static void run() {
 
-        if (ConfigSwitches.disableIC2Recipes) {
+        if (Configuration.machines.disableIC2Recipes) {
 
             // Remove these.
             RemoveRecipeQueue.add("IC2:itemCable");

@@ -2,6 +2,8 @@ package gtPlusPlus.core.block.general;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockContainer;
@@ -18,7 +20,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
 
@@ -46,7 +47,7 @@ public class BlockSuperLight extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "SwirlBigBlue");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":SwirlBigBlue");
     }
 
     /**
@@ -143,7 +144,7 @@ public class BlockSuperLight extends BlockContainer {
 
             aLitBlocks = new int[50][10][50][1];
             int aLitCounter = 0;
-            AutoMap<BlockPos> aBlocksToUpdate = new AutoMap<>();
+            ArrayList<BlockPos> aBlocksToUpdate = new ArrayList<>();
             Logger.INFO("Trying to relight area.");
 
             BlockPos aStartIterationPoint = new BlockPos(
@@ -169,14 +170,14 @@ public class BlockSuperLight extends BlockContainer {
                                 }
                                 // Turning Lights on
                                 else if (enable && aLight == 0) {
-                                    aBlocksToUpdate.put(new BlockPos(xOff, yOff, zOff, this.worldObj));
+                                    aBlocksToUpdate.add(new BlockPos(xOff, yOff, zOff, this.worldObj));
                                     this.worldObj
                                         .setBlock(xOff, yOff, zOff, ModBlocks.MatterFabricatorEffectBlock, 0, 3);
                                     aLitCounter++;
                                 }
                                 // Turning Lights off
                                 else if (!enable && aLight > 0) {
-                                    aBlocksToUpdate.put(new BlockPos(xOff, yOff, zOff, this.worldObj));
+                                    aBlocksToUpdate.add(new BlockPos(xOff, yOff, zOff, this.worldObj));
                                     if (aBlockGet instanceof BlockLightGlass) {
                                         Logger.INFO("Dimmed air.");
                                         this.worldObj.setBlock(xOff, yOff, zOff, Blocks.air, 0, 3);

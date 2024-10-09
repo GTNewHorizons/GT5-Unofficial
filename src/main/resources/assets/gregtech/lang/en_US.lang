@@ -531,7 +531,7 @@ GT5U.gui.text.drill_exhausted=§dDrill has exhausted all resources
 GT5U.gui.text.drill_generic_finished=§7Mining pipes have been retracted
 GT5U.gui.text.drill_retract_pipes_finished=§7Operation aborted
 GT5U.gui.text.backfiller_no_concrete=§7No liquid concrete
-GT5U.gui.text.no_black_hole=§7Black hole is not active
+GT5U.gui.text.no_black_hole=§7Requires an active black hole
 GT5U.gui.text.unstable_black_hole=§7Black hole is unstable
 GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.backfiller_working=§aPouring concrete
@@ -578,6 +578,36 @@ GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
+GT5U.gui.config.client=Client
+GT5U.gui.config.client.color_modulation=Color Modulation
+GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
+GT5U.gui.config.client.color_modulation.construction_foam=Construction Foam
+GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
+GT5U.gui.config.client.interface=Interface
+GT5U.gui.config.client.preference=Preference
+GT5U.gui.config.client.render=Render
+GT5U.gui.config.client.waila=Waila
+GT5U.gui.config.client.nei=NEI
+GT5U.gui.config.client.nei.recipe_categories=Recipe Categories
+GT5U.gui.config.gregtech=Gregtech
+GT5U.gui.config.gregtech.debug=Debug
+GT5U.gui.config.gregtech.features=Features
+GT5U.gui.config.gregtech.general=General
+GT5U.gui.config.gregtech.harvest_level=Harvest Level
+GT5U.gui.config.gregtech.machines=Machines
+GT5U.gui.config.gregtech.ore_drop_behavior=Ore Drop Behavior
+GT5U.gui.config.gregtech.pollution=Pollution
+GT5U.gui.config.machine_stats=Machine Stats
+GT5U.gui.config.machine_stats.bronze_solar_boiler=Bronze Solar Boiler
+GT5U.gui.config.machine_stats.steel_solar_boiler=Steel Solar Boiler
+GT5U.gui.config.machine_stats.machines=Machines
+GT5U.gui.config.machine_stats.microwave_energy_transmitter=Microwave Energy Transmitter
+GT5U.gui.config.machine_stats.mass_fabricator=Mass Fabricator
+GT5U.gui.config.machine_stats.teleporter=Teleporter
+GT5U.gui.config.worldgen=Worldgen
+GT5U.gui.config.worldgen.end_asteroids=End Asteroids
+GT5U.gui.config.worldgen.general=General
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -590,6 +620,17 @@ GT5U.item.cable.max_amperage=Max Amperage
 GT5U.item.cable.loss=Loss/Meter/Ampere
 GT5U.item.cable.eu_volt=EU-Volt
 GT5U.item.tank.locked_to=Content locked to %s
+
+gt.behaviour.paintspray.infinite.gui.header=Select a Color
+gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
+gt.behaviour.paintspray.infinite.gui.solvent=Solvent
+
+gt.behaviour.paintspray.infinite.tooltip.infinite=Infinite uses
+gt.behaviour.paintspray.infinite.tooltip.more_info=Hold SHIFT for more information
+gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
+gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
+gt.behaviour.paintspray.infinite.tooltip.lock=Sneak Middle Click: Lock or unlock spray can
+gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
 
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
@@ -616,9 +657,9 @@ GT5U.multiblock.efficiency=Efficiency
 GT5U.multiblock.problems=Problems
 GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.maxtier=Max Tier
-GT5U.multiblock.usage=Probably uses
-GT5U.multiblock.parallelism=Max Parallels
-GT5U.multiblock.curparallelism=Current Parallels
+GT5U.multiblock.usage=Currently uses
+GT5U.multiblock.parallelism=Max Parallel
+GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
 GT5U.multiblock.speed=Speed
 GT5U.multiblock.fluidPipeTier=Fluid Pipe Tier
@@ -722,10 +763,10 @@ GT5U.waila.cover.current_facing=Current Facing
 GT5U.waila.energy.stored=Stored: §a%s§r EU / §e%s§r EU
 GT5U.waila.energy.avg_in_with_amperage=Average Input: §a%s§r EU/t (%sA %s)
 GT5U.waila.energy.avg_out_with_amperage=Average Output: §c%s§r EU/t (%sA %s)
-GT5U.waila.energy.use=Probably uses: §e%s§r EU/t (%s)
-GT5U.waila.energy.use_with_amperage=Probably uses: §e%s§r EU/t (%sA %s)
-GT5U.waila.energy.produce=Probably generates: §a%s§r EU/t (%s)
-GT5U.waila.energy.produce_with_amperage=Probably generates: §a%s§r EU/t (%sA %s)
+GT5U.waila.energy.use=Currently uses: §e%s§r EU/t (%s)
+GT5U.waila.energy.use_with_amperage=Currently uses: §e%s§r EU/t (%sA %s)
+GT5U.waila.energy.produce=Currently generates: §a%s§r EU/t (%s)
+GT5U.waila.energy.produce_with_amperage=Currently generates: §a%s§r EU/t (%sA %s)
 GT5U.waila.stocking_bus.auto_pull.enabled=Auto-Pull from ME: Enabled
 GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
@@ -1416,7 +1457,9 @@ for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
 for.bees.species.dragonblood=Dragonblood
 
-for.bees.authority.machinist=Diddy & Nilau
+for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Diddy & Noila
+
+for.bees.authority.machinist=Diddy & Noila
 
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension
@@ -1625,6 +1668,17 @@ GT5U.gui.text.machine_locked_to_different_recipe=§7Machine is already locked to
 GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
 GT5U.gui.text.no_tools=§7Missing applicable tools
 
+# Cover Overflow Valve
+GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L
+GTPP.gui.text.cover_overflow_valve_overflow_point=Overflow Point
+GTPP.gui.text.cover_overflow_valve_voiding_rate=Voiding Rate
+GTPP.gui.text.cover_overflow_valve_allow_fluid_input=Allow Fluid Input
+GTPP.gui.text.cover_overflow_valve_block_fluid_input=Block Fluid Input
+GTPP.gui.text.cover_overflow_valve_allow_fluid_output=Allow Fluid Output
+GTPP.gui.text.cover_overflow_valve_block_fluid_output=Block Fluid Output
+GTPP.gui.text.cover_overflow_valve_liter=L
+GTPP.gui.text.cover_overflow_valve_l_per_update=L/update
+
 GTPP.EBF.heat=Heat capacity
 
 GTPP.machines.tier=Tier
@@ -1638,8 +1692,8 @@ GTPP.multiblock.progress=Progress
 GTPP.multiblock.efficiency=Efficiency
 GTPP.multiblock.problems=Problems
 GTPP.multiblock.mei=Max Energy Income
-GTPP.multiblock.usage=Probably uses
-GTPP.multiblock.generation=Probably generates
+GTPP.multiblock.usage=Currently uses
+GTPP.multiblock.generation=Currently generates
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
@@ -1647,7 +1701,7 @@ GTPP.multiblock.multimachine.fluid=Fluid Mode. Does fermenter (circuit 20), flui
 GTPP.multiblock.multimachine.misc=Misc. Mode. Does precision laser engraver (circuit 20), autoclave (circuit 21) and fluid solidifier (circuit 22).
 
 
-GTPP.waila.steam.use=Probably uses: §e%s§r L/t Steam
+GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount

@@ -37,7 +37,7 @@ public class GUIPestKiller extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(final int i, final int j) {
         if (mTileKiller != null) {
-            this.fontRendererObj.drawString(I18n.format(mTileKiller.getInventoryName(), new Object[0]), 4, 6, 4210752);
+            this.fontRendererObj.drawString(I18n.format(mTileKiller.getInventoryName()), 4, 6, 4210752);
             drawFluidTank(mTileKiller.getTank(), 134, 35);
         }
     }
@@ -77,7 +77,7 @@ public class GUIPestKiller extends GuiContainer {
                     if (aTank != null && aTank.getFluidAmount() > 0) {
                         aPercentage = MathUtils.findPercentage(aTank.getFluidAmount(), aTank.getCapacity());
                         // Logger.INFO("Percent = "+aPercentage);
-                        aFrameHeight = (int) (aPercentage / aDivisor);
+                        // aFrameHeight = (int) (aPercentage / aDivisor);
                         // Logger.INFO("Frame Height = "+aFrameHeight);
                     }
                     this.fontRendererObj.drawString("Tier: 0", 4, 18, 4210752);
@@ -99,7 +99,7 @@ public class GUIPestKiller extends GuiContainer {
                     this.fontRendererObj.drawString("Range: 5x5", 4, 30, 4210752);
                     this.fontRendererObj.drawString("Poison: ", 4, 42, 4210752);
                     this.fontRendererObj.drawString(
-                        "" + aTile.getTank()
+                        aTile.getTank()
                             .getFluid()
                             .getLocalizedName(),
                         4,
@@ -127,7 +127,7 @@ public class GUIPestKiller extends GuiContainer {
                     this.fontRendererObj.drawString("Range: 9x9", 4, 30, 4210752);
                     this.fontRendererObj.drawString("Poison: ", 4, 42, 4210752);
                     this.fontRendererObj.drawString(
-                        "" + aTile.getTank()
+                        aTile.getTank()
                             .getFluid()
                             .getLocalizedName(),
                         4,

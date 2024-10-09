@@ -38,6 +38,7 @@ import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
@@ -194,7 +195,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
     // lets make sure the user isn't trying to make something from a block that doesn't have this as a valid target
     private static boolean hasChiselResults(ItemStack from) {
         List<ItemStack> results = getItemsForChiseling(from);
-        return results.size() > 0;
+        return !results.isEmpty();
     }
 
     private static List<ItemStack> getItemsForChiseling(ItemStack aStack) {
@@ -325,7 +326,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTPPCore.ConfigSwitches.pollutionPerSecondMultiIndustrialChisel;
+        return Configuration.pollution.pollutionPerSecondMultiIndustrialChisel;
     }
 
     @Override

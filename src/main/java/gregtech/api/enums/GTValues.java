@@ -524,7 +524,6 @@ public class GTValues {
     public static boolean alwaysReloadChunkloaders = false;
 
     public static boolean debugChunkloaders = false;
-    public static boolean cls_enabled;
     public static final Set<String> mCTMEnabledBlock = new HashSet<>();
     public static final Set<String> mCTMDisabledBlock = new HashSet<>();
 
@@ -638,7 +637,7 @@ public class GTValues {
 
     public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
-    public static final String AuthorTheEpicGamer274 = "Author: " + "TheEpicGamer274";
+    public static final String AuthorTheEpicGamer274 = "Author: " + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
     public static final String AuthorFourIsTheNumber = "Author: " + EnumChatFormatting.LIGHT_PURPLE
         + EnumChatFormatting.ITALIC
         + "Four"

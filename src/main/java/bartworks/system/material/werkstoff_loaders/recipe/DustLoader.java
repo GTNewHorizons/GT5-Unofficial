@@ -13,12 +13,10 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustSmall;
 import static gregtech.api.enums.OrePrefixes.dustTiny;
-import static gregtech.api.enums.OrePrefixes.gem;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.ingotHot;
 import static gregtech.api.enums.OrePrefixes.nugget;
@@ -63,14 +61,14 @@ public class DustLoader implements IWerkstoffRunnable {
             List<FluidStack> flOutputs = new ArrayList<>();
             List<ItemStack> stOutputs = new ArrayList<>();
             HashMap<ISubTagContainer, Pair<Integer, Integer>> tracker = new HashMap<>();
+
+            Werkstoff.Stats werkstoffStats = werkstoff.getStats();
+
             int cells = 0;
 
             if (werkstoff.getGenerationFeatures()
-                .hasMixerRecipes()
-                || werkstoff.getStats()
-                    .isElektrolysis()
-                || werkstoff.getStats()
-                    .isCentrifuge()
+                .hasMixerRecipes() || werkstoffStats.isElektrolysis()
+                || werkstoffStats.isCentrifuge()
                 || werkstoff.getGenerationFeatures()
                     .hasChemicalRecipes()) {
                 for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents()
@@ -184,8 +182,7 @@ public class DustLoader implements IWerkstoffRunnable {
                 ItemStack input = werkstoff.get(dust);
                 input.stackSize = werkstoff.getContents()
                     .getKey();
-                if (werkstoff.getStats()
-                    .isElektrolysis()) {
+                if (werkstoffStats.isElektrolysis()) {
                     GTRecipe tRecipe = new GTRecipe(
                         true,
                         new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
@@ -193,15 +190,13 @@ public class DustLoader implements IWerkstoffRunnable {
                         null,
                         null,
                         new FluidStack[] { null },
-                        new FluidStack[] { flOutputs.size() > 0 ? flOutputs.get(0) : null },
+                        new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                         (int) Math.max(
                             1L,
                             Math.abs(
-                                werkstoff.getStats()
-                                    .getProtons()
-                                    / werkstoff.getContents()
-                                        .getValue()
-                                        .size())),
+                                werkstoffStats.getProtons() / werkstoff.getContents()
+                                    .getValue()
+                                    .size())),
                         Math.min(
                             4,
                             werkstoff.getContents()
@@ -210,10 +205,8 @@ public class DustLoader implements IWerkstoffRunnable {
                             * 30,
                         0);
                     RecipeMaps.electrolyzerRecipes.add(tRecipe);
-                    RecipeMaps.electrolyzerNonCellRecipes.add(tRecipe);
                 }
-                if (werkstoff.getStats()
-                    .isCentrifuge()) {
+                if (werkstoffStats.isCentrifuge()) {
                     RecipeMaps.centrifugeRecipes.add(
                         new GTRecipe(
                             true,
@@ -222,15 +215,13 @@ public class DustLoader implements IWerkstoffRunnable {
                             null,
                             null,
                             new FluidStack[] { null },
-                            new FluidStack[] { flOutputs.size() > 0 ? flOutputs.get(0) : null },
+                            new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                             (int) Math.max(
                                 1L,
                                 Math.abs(
-                                    werkstoff.getStats()
-                                        .getMass()
-                                        / werkstoff.getContents()
-                                            .getValue()
-                                            .size())),
+                                    werkstoffStats.getMass() / werkstoff.getContents()
+                                        .getValue()
+                                        .size())),
                             Math.min(
                                 4,
                                 werkstoff.getContents()
@@ -238,30 +229,6 @@ public class DustLoader implements IWerkstoffRunnable {
                                     .size())
                                 * 5,
                             0));
-                    GTRecipe tRecipe = new GTRecipe(
-                        false,
-                        stOutputs.toArray(new ItemStack[0]),
-                        new ItemStack[] { input },
-                        null,
-                        null,
-                        new FluidStack[] { flOutputs.size() > 0 ? flOutputs.get(0) : null },
-                        null,
-                        (int) Math.max(
-                            1L,
-                            Math.abs(
-                                werkstoff.getStats()
-                                    .getProtons()
-                                    / werkstoff.getContents()
-                                        .getValue()
-                                        .size())),
-                        Math.min(
-                            4,
-                            werkstoff.getContents()
-                                .getValue()
-                                .size())
-                            * 30,
-                        0);
-                    RecipeMaps.centrifugeNonCellRecipes.add(tRecipe);
                 }
                 if (werkstoff.getGenerationFeatures()
                     .hasChemicalRecipes()) {
@@ -274,11 +241,9 @@ public class DustLoader implements IWerkstoffRunnable {
                             (int) Math.max(
                                 1L,
                                 Math.abs(
-                                    werkstoff.getStats()
-                                        .getProtons()
-                                        / werkstoff.getContents()
-                                            .getValue()
-                                            .size())))
+                                    werkstoffStats.getProtons() / werkstoff.getContents()
+                                        .getValue()
+                                        .size())))
                         .eut(
                             Math.min(
                                 4,
@@ -301,16 +266,14 @@ public class DustLoader implements IWerkstoffRunnable {
                             new ItemStack[] { input },
                             null,
                             null,
-                            new FluidStack[] { flOutputs.size() > 0 ? flOutputs.get(0) : null },
+                            new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                             null,
                             (int) Math.max(
                                 1L,
                                 Math.abs(
-                                    werkstoff.getStats()
-                                        .getMass()
-                                        / werkstoff.getContents()
-                                            .getValue()
-                                            .size())),
+                                    werkstoffStats.getMass() / werkstoff.getContents()
+                                        .getValue()
+                                        .size())),
                             Math.min(
                                 4,
                                 werkstoff.getContents()
@@ -318,30 +281,6 @@ public class DustLoader implements IWerkstoffRunnable {
                                     .size())
                                 * 5,
                             0));
-                    GTRecipe tRecipe = new GTRecipe(
-                        false,
-                        stOutputs.toArray(new ItemStack[0]),
-                        new ItemStack[] { input },
-                        null,
-                        null,
-                        new FluidStack[] { flOutputs.size() > 0 ? flOutputs.get(0) : null },
-                        null,
-                        (int) Math.max(
-                            1L,
-                            Math.abs(
-                                werkstoff.getStats()
-                                    .getProtons()
-                                    / werkstoff.getContents()
-                                        .getValue()
-                                        .size())),
-                        Math.min(
-                            4,
-                            werkstoff.getContents()
-                                .getValue()
-                                .size())
-                            * 30,
-                        0);
-                    RecipeMaps.mixerNonCellRecipes.add(tRecipe);
                 }
             }
 
@@ -386,112 +325,67 @@ public class DustLoader implements IWerkstoffRunnable {
                 .eut(4)
                 .addTo(packagerRecipes);
 
-            if (werkstoff.hasItemType(ingot) && !werkstoff.getStats()
-                .isBlastFurnace()) {
+            if (werkstoff.hasItemType(ingot) && !werkstoffStats.isBlastFurnace()) {
                 GTModHandler.addSmeltingRecipe(werkstoff.get(dust), werkstoff.get(ingot));
                 GTModHandler.addSmeltingRecipe(werkstoff.get(dustTiny), werkstoff.get(nugget));
-            } else if (werkstoff.hasItemType(ingot) && werkstoff.getStats()
-                .isBlastFurnace()
-                && werkstoff.getStats()
-                    .getMeltingPoint() != 0) {
-                        if (werkstoff.contains(WerkstoffLoader.ANAEROBE_SMELTING)) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(11))
-                                .itemOutputs(
-                                    werkstoff.getStats()
-                                        .getMeltingPoint() < 1750 ? werkstoff.get(ingot) : werkstoff.get(ingotHot))
-                                .fluidInputs(Materials.Nitrogen.getGas(1000))
-                                .duration(
-                                    Math.max(
-                                        werkstoff.getStats()
-                                            .getMass() / 40L,
-                                        1L)
-                                        * werkstoff.getStats()
-                                            .getMeltingPoint())
-                                .eut(
-                                    werkstoff.getStats()
-                                        .getMeltingVoltage())
-                                .metadata(
-                                    COIL_HEAT,
-                                    werkstoff.getStats()
-                                        .getMeltingPoint())
-                                .addTo(blastFurnaceRecipes);
+            } else if (werkstoff.hasItemType(ingot) && werkstoffStats.isBlastFurnace()
+                && werkstoffStats.getMeltingPoint() != 0
+                && werkstoffStats.autoGenerateBlastFurnaceRecipes()) {
+                    if (werkstoff.contains(WerkstoffLoader.ANAEROBE_SMELTING)) {
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(11))
+                            .itemOutputs(
+                                werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
+                                    : werkstoff.get(ingotHot))
+                            .fluidInputs(Materials.Nitrogen.getGas(1000))
+                            .duration(Math.max(werkstoffStats.getMass() / 40L, 1L) * werkstoffStats.getMeltingPoint())
+                            .eut(werkstoffStats.getMeltingVoltage())
+                            .metadata(COIL_HEAT, werkstoffStats.getMeltingPoint())
+                            .addTo(blastFurnaceRecipes);
 
-                        } else if (werkstoff.contains(WerkstoffLoader.NOBLE_GAS_SMELTING)) {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(11))
-                                .itemOutputs(
-                                    werkstoff.getStats()
-                                        .getMeltingPoint() < 1750 ? werkstoff.get(ingot) : werkstoff.get(ingotHot))
-                                .fluidInputs(Materials.Argon.getGas(1000))
-                                .duration(
-                                    Math.max(
-                                        werkstoff.getStats()
-                                            .getMass() / 40L,
-                                        1L)
-                                        * werkstoff.getStats()
-                                            .getMeltingPoint())
-                                .eut(
-                                    werkstoff.getStats()
-                                        .getMeltingVoltage())
-                                .metadata(
-                                    COIL_HEAT,
-                                    werkstoff.getStats()
-                                        .getMeltingPoint())
-                                .addTo(blastFurnaceRecipes);
+                    } else if (werkstoff.contains(WerkstoffLoader.NOBLE_GAS_SMELTING)) {
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(11))
+                            .itemOutputs(
+                                werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
+                                    : werkstoff.get(ingotHot))
+                            .fluidInputs(Materials.Argon.getGas(1000))
+                            .duration(Math.max(werkstoffStats.getMass() / 40L, 1L) * werkstoffStats.getMeltingPoint())
+                            .eut(werkstoffStats.getMeltingVoltage())
+                            .metadata(COIL_HEAT, werkstoffStats.getMeltingPoint())
+                            .addTo(blastFurnaceRecipes);
 
-                        } else {
-                            GTValues.RA.stdBuilder()
-                                .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(1))
-                                .itemOutputs(
-                                    werkstoff.getStats()
-                                        .getMeltingPoint() < 1750 ? werkstoff.get(ingot) : werkstoff.get(ingotHot))
-                                .duration(
-                                    Math.max(
-                                        werkstoff.getStats()
-                                            .getMass() / 40L,
-                                        1L)
-                                        * werkstoff.getStats()
-                                            .getMeltingPoint())
-                                .eut(
-                                    werkstoff.getStats()
-                                        .getMeltingVoltage())
-                                .metadata(
-                                    COIL_HEAT,
-                                    werkstoff.getStats()
-                                        .getMeltingPoint())
-                                .addTo(blastFurnaceRecipes);
+                    } else {
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(1))
+                            .itemOutputs(
+                                werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
+                                    : werkstoff.get(ingotHot))
+                            .duration(Math.max(werkstoffStats.getMass() / 40L, 1L) * werkstoffStats.getMeltingPoint())
+                            .eut(werkstoffStats.getMeltingVoltage())
+                            .metadata(COIL_HEAT, werkstoffStats.getMeltingPoint())
+                            .addTo(blastFurnaceRecipes);
 
-                            if (werkstoff.getStats()
-                                .getMeltingPoint() <= 1000) {
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(werkstoff.get(dust))
-                                    .itemOutputs(werkstoff.get(ingot))
-                                    .duration(
-                                        (int) Math.max(
-                                            werkstoff.getStats()
-                                                .getMass() / 40L,
-                                            1L) * werkstoff.getStats()
-                                                .getMeltingPoint())
-                                    .eut(0)
-                                    .metadata(ADDITIVE_AMOUNT, 9)
-                                    .addTo(primitiveBlastRecipes);
-                            }
+                        if (werkstoffStats.getMeltingPoint() <= 1000) {
+                            GTValues.RA.stdBuilder()
+                                .itemInputs(werkstoff.get(dust))
+                                .itemOutputs(werkstoff.get(ingot))
+                                .duration(
+                                    (int) Math.max(werkstoffStats.getMass() / 40L, 1L)
+                                        * werkstoffStats.getMeltingPoint())
+                                .eut(0)
+                                .metadata(ADDITIVE_AMOUNT, 9)
+                                .addTo(primitiveBlastRecipes);
                         }
                     }
+                }
 
-            if (werkstoff.getStats()
-                .isBlastFurnace()
-                && werkstoff.getStats()
-                    .getMeltingPoint() > 1750) {
+            if (werkstoffStats.isBlastFurnace() && werkstoffStats.getMeltingPoint() > 1750
+                && werkstoffStats.autoGenerateVacuumFreezerRecipes()) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(ingotHot))
                     .itemOutputs(werkstoff.get(ingot))
-                    .duration(
-                        (int) Math.max(
-                            werkstoff.getStats()
-                                .getMass() * 3L,
-                            1L))
+                    .duration((int) Math.max(werkstoffStats.getMass() * 3L, 1L))
                     .eut(TierEU.RECIPE_MV)
                     .addTo(vacuumFreezerRecipes);
             }
@@ -508,16 +402,6 @@ public class DustLoader implements IWerkstoffRunnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(nugget))
                     .itemOutputs(werkstoff.get(dustTiny))
-                    .duration(20 * SECONDS)
-                    .eut(2)
-                    .addTo(maceratorRecipes);
-
-            }
-            if (werkstoff.hasItemType(ingot) || werkstoff.hasItemType(gem)) {
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(block))
-                    .itemOutputs(werkstoff.get(dust, 9))
                     .duration(20 * SECONDS)
                     .eut(2)
                     .addTo(maceratorRecipes);

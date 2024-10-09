@@ -22,7 +22,9 @@ public class TecTechUITextures {
     public static final UITexture BACKGROUND_GLOW_PURPLE = UITexture.fullImage(MODID, "gui/background/purple_glow");
     public static final UITexture BACKGROUND_GLOW_BLUE = UITexture.fullImage(MODID, "gui/background/blue_glow");
     public static final UITexture BACKGROUND_GLOW_GREEN = UITexture.fullImage(MODID, "gui/background/green_glow");
+    public static final UITexture BACKGROUND_GLOW_RED = UITexture.fullImage(MODID, "gui/background/red_glow");
     public static final UITexture BACKGROUND_GLOW_WHITE = UITexture.fullImage(MODID, "gui/background/white_glow");
+    public static final UITexture BACKGROUND_GLOW_RAINBOW = UITexture.fullImage(MODID, "gui/background/rainbow_glow");
     public static final UITexture BACKGROUND_SPACE = UITexture.fullImage(MODID, "gui/background/space");
 
     public static final UITexture BUTTON_STANDARD_16x16 = UITexture.fullImage(MODID, "gui/button/standard_16x16");
@@ -82,6 +84,11 @@ public class TecTechUITextures {
     public static final UITexture OVERLAY_BUTTON_BATTERY_OFF = UITexture
         .fullImage(MODID, "gui/overlay_button/battery_off");
     public static final UITexture OVERLAY_BUTTON_FLAG = UITexture.fullImage(MODID, "gui/overlay_button/flag");
+    public static final UITexture OVERLAY_BUTTON_HEART = UITexture.fullImage(MODID, "gui/overlay_button/heart");
+    public static final UITexture OVERLAY_BUTTON_RAINBOW_SPIRAL = UITexture
+        .fullImage(MODID, "gui/overlay_button/rainbow_spiral");
+    public static final UITexture OVERLAY_BUTTON_RAINBOW_SPIRAL_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/rainbow_spiral_off");
     public static final UITexture OVERLAY_CYCLIC_BLUE = UITexture.fullImage(MODID, "gui/overlay_button/cyclic_blue");
     public static final UITexture OVERLAY_EJECTION_LOCKED = UITexture
         .fullImage(MODID, "gui/overlay_button/eject_disabled");
@@ -162,11 +169,26 @@ public class TecTechUITextures {
     public static final UITexture PICTURE_PARAMETER_GRAY = UITexture.fullImage(MODID, "gui/picture/parameter_gray");
     public static final UITexture PICTURE_UNCERTAINTY_MONITOR_MULTIMACHINE = UITexture
         .fullImage(MODID, "gui/picture/uncertainty/monitor_multimachine");
-    public static final UITexture PICTURE_UPGRADE_CONNECTOR_FULL = UITexture.fullImage(MODID, "gui/picture/connector");
-    public static final UITexture PICTURE_UPGRADE_CONNECTOR_EMPTY = UITexture
-        .fullImage(MODID, "gui/picture/connector_empty");
-    public static final UITexture PICTURE_UPGRADE_CONNECTOR_SWITCH = UITexture
-        .fullImage(MODID, "gui/picture/connector_switch");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_PURPLE = UITexture
+        .fullImage(MODID, "gui/picture/connector_purple");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_GREEN = UITexture
+        .fullImage(MODID, "gui/picture/connector_green");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_ORANGE = UITexture
+        .fullImage(MODID, "gui/picture/connector_orange");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_BLUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_blue");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED = UITexture
+        .fullImage(MODID, "gui/picture/connector_red");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_PURPLE_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_purple_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_GREEN_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_green_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_ORANGE_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_orange_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_blue_opaque");
+    public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE = UITexture
+        .fullImage(MODID, "gui/picture/connector_red_opaque");
     public static final UITexture SLOT_OUTLINE_GREEN = UITexture.fullImage(MODID, "gui/picture/green_selector");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
         .fullImage(MODID, "gui/picture/milestone_charge");
@@ -176,6 +198,7 @@ public class TecTechUITextures {
         .fullImage(MODID, "gui/picture/milestone_catalyst");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_COMPOSITION = UITexture
         .fullImage(MODID, "gui/picture/milestone_composition");
+    public static final UITexture PICTURE_GODFORGE_THANKS = UITexture.fullImage(MODID, "gui/picture/thanks");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE_GLOW = UITexture
         .fullImage(MODID, "gui/picture/milestone_charge_glow");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION_GLOW = UITexture
@@ -188,5 +211,7 @@ public class TecTechUITextures {
     public static final UITexture PICTURE_OVERLAY_ORANGE = UITexture.fullImage(MODID, "gui/picture/overlay_orange");
     public static final UITexture PICTURE_OVERLAY_GREEN = UITexture.fullImage(MODID, "gui/picture/overlay_green");
     public static final UITexture PICTURE_OVERLAY_PURPLE = UITexture.fullImage(MODID, "gui/picture/overlay_purple");
+    public static final UITexture PICTURE_OVERLAY_RED = UITexture.fullImage(MODID, "gui/picture/overlay_red");
+    public static final UITexture PICTURE_RAINBOW_SQUARE = UITexture.fullImage(MODID, "gui/picture/rainbow_square");
 
 }

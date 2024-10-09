@@ -23,7 +23,7 @@ import galacticgreg.registry.GalacticGregRegistry;
  */
 public class ProfilingCommand implements ICommand {
 
-    private List<String> aliases;
+    private final List<String> aliases;
 
     public ProfilingCommand() {
         this.aliases = new ArrayList<>();
@@ -72,8 +72,7 @@ public class ProfilingCommand implements ICommand {
                 .isDedicatedServer())
             return true;
 
-        if (pCommandSender instanceof EntityPlayerMP) {
-            EntityPlayerMP tEP = (EntityPlayerMP) pCommandSender;
+        if (pCommandSender instanceof EntityPlayerMP tEP) {
             return MinecraftServer.getServer()
                 .getConfigurationManager()
                 .func_152596_g(tEP.getGameProfile());

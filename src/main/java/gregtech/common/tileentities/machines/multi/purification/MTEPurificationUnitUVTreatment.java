@@ -22,7 +22,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -255,6 +254,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             .addInfo("Removing a lens too early will fail the recipe.")
             .addInfo("Find the order of lenses in the recipe in NEI,")
             .addInfo("or use a portable scanner to view the currently requested lens.")
+            .addInfo("The recipe always starts at the Orundum Lens")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -515,7 +515,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     }
 
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
     }
 }

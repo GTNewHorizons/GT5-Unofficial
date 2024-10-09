@@ -28,8 +28,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -372,7 +372,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public ArrayList<ItemStack> getStoredInputs() {
         if (mode == 0) {
             ArrayList<ItemStack> rList = new ArrayList<>();
-            for (MTEHatchInputBus tHatch : filterValidMTEs(mInputBusses)) {
+            for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
                 tHatch.mRecipeMap = this.getRecipeMap();
                 for (int i = 0; i < tHatch.getBaseMetaTileEntity()
                     .getSizeInventory(); i++) {
@@ -416,7 +416,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null || !(aMetaTileEntity instanceof MTEHatchInput)) {
+        if (!(aMetaTileEntity instanceof MTEHatchInput)) {
             return false;
         } else {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);

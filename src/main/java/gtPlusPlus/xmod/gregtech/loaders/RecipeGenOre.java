@@ -25,7 +25,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -41,7 +40,7 @@ public class RecipeGenOre extends RecipeGenBase {
     public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
 
     static {
-        MaterialGenerator.mRecipeMapsToGenerate.put(mRecipeGenMap);
+        MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
     }
 
     public RecipeGenOre(final Material M) {
@@ -75,8 +74,8 @@ public class RecipeGenOre extends RecipeGenBase {
         Material bonusA = null; // Ni
         Material bonusB = null; // Tin
 
-        if (material.getComposites()
-            .size() >= 1
+        if (!material.getComposites()
+            .isEmpty()
             && material.getComposites()
                 .get(0) != null) {
             bonusA = material.getComposites()
@@ -90,9 +89,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
         // Setup Bonuses
         ArrayList<Material> aMatComp = new ArrayList<>();
-        for (Material j : MaterialUtils.getCompoundMaterialsRecursively(material)) {
-            aMatComp.add(j);
-        }
+        aMatComp.addAll(MaterialUtils.getCompoundMaterialsRecursively(material));
 
         if (aMatComp.size() < 3) {
             while (aMatComp.size() < 3) {
@@ -100,12 +97,12 @@ public class RecipeGenOre extends RecipeGenBase {
             }
         }
 
-        AutoMap<Material> amJ = new AutoMap<>();
+        ArrayList<Material> amJ = new ArrayList<>();
         int aIndexCounter = 0;
         for (Material g : aMatComp) {
             if (g.hasSolidForm()) {
                 if (getDust(g) != null && getTinyDust(g) != null) {
-                    amJ.put(g);
+                    amJ.add(g);
                 }
             }
         }
@@ -167,10 +164,10 @@ public class RecipeGenOre extends RecipeGenBase {
             bonusB = tVoltageMultiplier > 100 ? material : mStone;
         }
 
-        AutoMap<Pair<Integer, Material>> componentMap = new AutoMap<>();
+        ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
         for (MaterialStack r : material.getComposites()) {
             if (r != null) {
-                componentMap.put(new Pair<>(r.getPartsPerOneHundred(), r.getStackMaterial()));
+                componentMap.add(new Pair<>(r.getPartsPerOneHundred(), r.getStackMaterial()));
             }
         }
 
@@ -193,15 +190,6 @@ public class RecipeGenOre extends RecipeGenBase {
         ItemStack matDust = getDust(material);
         ItemStack matDustA = getDust(bonusA);
         ItemStack matDustB = getDust(bonusB);
-
-        /**
-         * Package
-         */
-        // Allow ore dusts to be packaged
-        if (ItemUtils.checkForInvalidItems(material.getSmallDust(1))
-            && ItemUtils.checkForInvalidItems(material.getTinyDust(1))) {
-            RecipeGenDustGeneration.generatePackagerRecipes(material);
-        }
 
         /**
          * Macerate
@@ -384,10 +372,10 @@ public class RecipeGenOre extends RecipeGenBase {
 
         if (!disableOptional) {
             // Process Dust
-            if (componentMap.size() > 0 && componentMap.size() <= 6) {
+            if (!componentMap.isEmpty() && componentMap.size() <= 6) {
 
-                ItemStack mInternalOutputs[] = new ItemStack[6];
-                int mChances[] = new int[6];
+                ItemStack[] mInternalOutputs = new ItemStack[6];
+                int[] mChances = new int[6];
                 int mCellCount = 0;
 
                 int mTotalCount = 0;
@@ -476,9 +464,7 @@ public class RecipeGenOre extends RecipeGenBase {
                 List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
-                for (int i = 0; i < internalOutputs.size(); i++) {
-                    chances[i] = mChances[i];
-                }
+                System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
                 ItemStack[] inputs;
                 if (emptyCell == null) {
                     inputs = new ItemStack[] { mainDust };
@@ -500,8 +486,8 @@ public class RecipeGenOre extends RecipeGenBase {
                     "[Issue][Electrolyzer] " + material.getLocalizedName()
                         + " is composed of over 6 materials, so an electrolyzer recipe for processing cannot be generated. Trying to create one for the Dehydrator instead.");
 
-                ItemStack mInternalOutputs[] = new ItemStack[9];
-                int mChances[] = new int[9];
+                ItemStack[] mInternalOutputs = new ItemStack[9];
+                int[] mChances = new int[9];
                 int mCellCount = 0;
 
                 int mTotalCount = 0;
@@ -592,9 +578,7 @@ public class RecipeGenOre extends RecipeGenBase {
                 List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
-                for (int i = 0; i < internalOutputs.size(); i++) {
-                    chances[i] = mChances[i];
-                }
+                System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
 
                 ItemStack[] inputs;
                 if (emptyCell == null) {
@@ -617,8 +601,7 @@ public class RecipeGenOre extends RecipeGenBase {
                         + " x"
                         + mainDust.stackSize
                         + ", "
-                        + (emptyCell == null ? "No Cells"
-                            : "" + emptyCell.getDisplayName() + " x" + emptyCell.stackSize));
+                        + (emptyCell == null ? "No Cells" : emptyCell.getDisplayName() + " x" + emptyCell.stackSize));
                 Logger.MATERIALS("Outputs " + ItemUtils.getArrayStackNames(mInternalOutputs));
                 Logger.MATERIALS("Time: " + ((int) Math.max(material.getMass() * 4L * 1, 1)));
                 Logger.MATERIALS("EU: " + tVoltageMultiplier);
@@ -664,7 +647,6 @@ public class RecipeGenOre extends RecipeGenBase {
             null,
             matDust);
 
-        final ItemStack normalDust = matDust;
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
 
@@ -678,28 +660,28 @@ public class RecipeGenOre extends RecipeGenBase {
             tinyDust,
             tinyDust,
             tinyDust,
-            normalDust)) {
+            matDust)) {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
         if (RecipeUtils
-            .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
+            .addShapedRecipe(matDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
             Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
         if (RecipeUtils
-            .addShapedRecipe(smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, normalDust)) {
+            .addShapedRecipe(smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, matDust)) {
             Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");
         }
 
         if (RecipeUtils
-            .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, material.getSmallDust(4))) {
+            .addShapedRecipe(null, matDust, null, null, null, null, null, null, null, material.getSmallDust(4))) {
             Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Success");
         } else {
             Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getLocalizedName() + " - Failed");

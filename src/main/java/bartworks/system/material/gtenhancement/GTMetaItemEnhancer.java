@@ -14,8 +14,6 @@
 package bartworks.system.material.gtenhancement;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.List;
@@ -29,7 +27,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import codechicken.nei.api.API;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
@@ -65,22 +62,6 @@ public class GTMetaItemEnhancer {
                     GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1));
                 FluidContainerRegistry.registerFluidContainer(emptyData);
                 GTUtility.addFluidContainerData(emptyData);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTModHandler.getModItem(Forestry.ID, "refractoryEmpty", 1))
-                    .itemOutputs(new ItemStack(moltenCapsuls, 1, i))
-                    .fluidInputs(m.getMolten(144))
-                    .duration(2 * TICKS)
-                    .eut(2)
-                    .addTo(fluidCannerRecipes);
-
-                GTValues.RA.stdBuilder()
-                    .itemInputs(new ItemStack(moltenCapsuls, 1, i))
-                    .fluidOutputs(m.getMolten(144))
-                    .duration(2 * TICKS)
-                    .eut(2)
-                    .addTo(fluidCannerRecipes);
-
             }
             if (m.getFluid(1) == null && m.getGas(1) == null || OreDictionary.doesOreNameExist("capsule" + m.mName))
                 continue;
@@ -110,22 +91,6 @@ public class GTMetaItemEnhancer {
             container);
         FluidContainerRegistry.registerFluidContainer(emptyData);
         GTUtility.addFluidContainerData(emptyData);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(container)
-            .itemOutputs(new ItemStack(filled, 1, it))
-            .fluidInputs(new FluidStack(f, amount))
-            .duration(amount / 62)
-            .eut(2)
-            .addTo(fluidCannerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(filled, 1, it))
-            .fluidOutputs(new FluidStack(f, amount))
-            .duration(amount / 62)
-            .eut(2)
-            .addTo(fluidCannerRecipes);
-
     }
 
     public static void addAdditionalOreDictToForestry() {

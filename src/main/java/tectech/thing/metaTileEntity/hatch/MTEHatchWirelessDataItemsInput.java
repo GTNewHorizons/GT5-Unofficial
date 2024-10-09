@@ -12,11 +12,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
+import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
@@ -25,12 +24,15 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.common.WirelessDataStore;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
 
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     private String clientLocale = "en_US";
+
+    private List<ItemStack> dataItems = null;
 
     public MTEHatchWirelessDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -85,11 +87,8 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
-            clientLocale = "en_US";
+        if (aPlayer instanceof EntityPlayerMPAccessor) {
+            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
         return true;
     }
@@ -118,12 +117,23 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
     @Override
     public List<ItemStack> getInventoryItems(Predicate<ItemStack> filter) {
-        WirelessDataStore wirelessData = WirelessDataStore
-            .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-        return wirelessData.downloadData()
-            .stream()
+        if (this.dataItems == null) return ImmutableList.of();
+        return this.dataItems.stream()
             .filter(stack -> stack != null && filter.test(stack))
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // Upload data packet and mark it as uploaded, so it will not be uploaded again
+            // until the data bank resets the wireless network
+            if (aTick % WirelessDataStore.DOWNLOAD_TICK == 0) {
+                WirelessDataStore wirelessDataStore = WirelessDataStore
+                    .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
+                this.dataItems = wirelessDataStore.downloadData(aTick);
+            }
+        }
     }
 
     @Override

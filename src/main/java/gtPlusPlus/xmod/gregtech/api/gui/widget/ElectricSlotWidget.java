@@ -35,6 +35,6 @@ public class ElectricSlotWidget extends SlotWidget {
             return false;
         }
         return (Info.itemEnergy.getEnergyValue(stack) > 0.0D)
-            || (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), 4, true, true, true) > 0.0D);
+            || (ElectricItem.manager.discharge(stack, Double.NaN, 4, true, true, true) > 0.0D);
     }
 }

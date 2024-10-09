@@ -353,7 +353,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
-                        GTOreDictUnificator.get("plateShirabon", 1L))
+                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 1L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UXV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(9216))
                     .duration(5 * SECONDS)
@@ -489,7 +489,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2),
-                        GTOreDictUnificator.get("plateShirabon", 2L))
+                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 2L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UXV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(9216))
                     .duration(10 * SECONDS)
@@ -625,7 +625,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 3),
-                        GTOreDictUnificator.get("plateShirabon", 3L))
+                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 3L))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UXV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(9216))
                     .duration(20 * SECONDS)
@@ -754,7 +754,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 1),
-                        GTOreDictUnificator.get("plateShirabon", 1L))
+                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 1L))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UXV.get(1))
                     .fluidInputs(Materials.Silver.getMolten(9216))
                     .duration(5 * SECONDS)
@@ -890,7 +890,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2),
-                        GTOreDictUnificator.get("plateShirabon", 2L))
+                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 2L))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UXV.get(1))
                     .fluidInputs(Materials.Electrum.getMolten(9216))
                     .duration(10 * SECONDS)
@@ -1026,7 +1026,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.BlackPlutonium, 2),
                         GTOreDictUnificator
                             .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 3),
-                        GTOreDictUnificator.get("plateShirabon", 3L))
+                        GTOreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.MagMatter, 3L))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UXV.get(1))
                     .fluidInputs(Materials.Tungsten.getMolten(9216))
                     .duration(20 * SECONDS)
@@ -2691,7 +2691,7 @@ public class Assembler implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Battery_Buffer_3by3_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemInputs(ItemList.Battery_Buffer_3by3_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
             .itemOutputs(CustomItemList.Machine_TeslaCoil_3by3_MV.get(1))
             .fluidInputs(Materials.Tin.getMolten(288))
             .duration(20 * SECONDS)

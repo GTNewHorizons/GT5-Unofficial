@@ -1,8 +1,8 @@
 package gregtech.api.util;
 
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.fishPondRecipes;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
@@ -11,62 +11,55 @@ import net.minecraftforge.common.FishingHooks;
 
 import gregtech.api.enums.GTValues;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEIndustrialFishingPond;
 
 public class FishPondFakeRecipe {
 
-    public static ArrayList<WeightedRandomFishable> fish = new ArrayList<>();
-    public static ArrayList<WeightedRandomFishable> junk = new ArrayList<>();
-    public static ArrayList<WeightedRandomFishable> treasure = new ArrayList<>();
+    public static final ArrayList<ItemStack> fish = new ArrayList<>();
+    public static final ArrayList<ItemStack> junk = new ArrayList<>();
+    public static final ArrayList<ItemStack> treasure = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
-    public static boolean generateFishPondRecipes() {
-
+    public static void generateFishPondRecipes() {
         try {
-            fish = (ArrayList<WeightedRandomFishable>) ReflectionUtils.getField(FishingHooks.class, "fish")
+            ArrayList<WeightedRandomFishable> fishList = (ArrayList<WeightedRandomFishable>) GTUtility
+                .getField(FishingHooks.class, "fish")
                 .get(null);
-            junk = (ArrayList<WeightedRandomFishable>) ReflectionUtils.getField(FishingHooks.class, "junk")
+            ArrayList<WeightedRandomFishable> junkList = (ArrayList<WeightedRandomFishable>) GTUtility
+                .getField(FishingHooks.class, "junk")
                 .get(null);
-            treasure = (ArrayList<WeightedRandomFishable>) ReflectionUtils.getField(FishingHooks.class, "treasure")
+            ArrayList<WeightedRandomFishable> treasureList = (ArrayList<WeightedRandomFishable>) GTUtility
+                .getField(FishingHooks.class, "treasure")
                 .get(null);
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            Logger.INFO("Error generating Fish Pond Recipes. [1]");
+            final Field stackField = GTUtility.getField(WeightedRandomFishable.class, "field_150711_b");
+            generateRecipesFor(MTEIndustrialFishingPond.FISH_MODE, fish, fishList, stackField);
+            generateRecipesFor(MTEIndustrialFishingPond.JUNK_MODE, junk, junkList, stackField);
+            generateRecipesFor(MTEIndustrialFishingPond.TREASURE_MODE, treasure, treasureList, stackField);
+        } catch (Exception e) {
+            Logger.INFO("Error reading the vanilla fishing loot table.");
             e.printStackTrace();
         }
+    }
 
-        AutoMap<ArrayList<WeightedRandomFishable>> mega = new AutoMap<>();
-        mega.put(fish);
-        mega.put(junk);
-        mega.put(treasure);
-
-        int mType = 14;
-        for (ArrayList<WeightedRandomFishable> f : mega.values()) {
-            for (WeightedRandomFishable weightedRandomFishable : f) {
-                if (weightedRandomFishable != null) {
-                    WeightedRandomFishable u = weightedRandomFishable;
-                    try {
-                        ItemStack t = (ItemStack) ReflectionUtils
-                            .getField(WeightedRandomFishable.class, "field_150711_b")
-                            .get(u);
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(GTUtility.getIntegratedCircuit(mType))
-                            .itemOutputs(t)
-                            .duration(5 * SECONDS)
-                            .eut(0)
-                            .ignoreCollision()
-                            .addTo(fishPondRecipes);
-                        Logger.INFO("Fishing [" + mType + "]: " + ItemUtils.getArrayStackNames(new ItemStack[] { t }));
-                    } catch (IllegalArgumentException | IllegalAccessException e1) {
-                        Logger.INFO("Error generating Fish Pond Recipes. [2]");
-                        e1.printStackTrace();
-                    }
-                }
+    private static void generateRecipesFor(int circuitType, ArrayList<ItemStack> listToFill,
+        ArrayList<WeightedRandomFishable> lootTable, Field stackField) {
+        for (WeightedRandomFishable fishable : lootTable) {
+            try {
+                ItemStack stack = (ItemStack) stackField.get(fishable);
+                listToFill.add(stack.copy());
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.getIntegratedCircuit(circuitType))
+                    .itemOutputs(stack)
+                    .duration(5 * SECONDS)
+                    .eut(0)
+                    .ignoreCollision()
+                    .addTo(GTPPRecipeMaps.fishPondRecipes);
+            } catch (IllegalArgumentException | IllegalAccessException e1) {
+                Logger.INFO("Error generating Fish Pond Recipes");
+                e1.printStackTrace();
             }
-            mType++;
         }
-
-        return true;
+        listToFill.trimToSize();
     }
 }

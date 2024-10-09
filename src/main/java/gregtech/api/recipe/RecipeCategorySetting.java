@@ -1,8 +1,5 @@
 package gregtech.api.recipe;
 
-import java.util.Locale;
-import java.util.stream.Stream;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -28,25 +25,8 @@ public enum RecipeCategorySetting {
     HIDE;
 
     public static final RecipeCategorySetting[] VALUES = values();
-    public static final String[] NAMES = Stream.of(VALUES)
-        .map(RecipeCategorySetting::toName)
-        .toArray(String[]::new);
 
     public static RecipeCategorySetting getDefault() {
         return ENABLE;
-    }
-
-    public String toName() {
-        return toString().toLowerCase(Locale.ENGLISH);
-    }
-
-    public static RecipeCategorySetting find(String name) {
-        for (RecipeCategorySetting setting : VALUES) {
-            if (setting.toName()
-                .equals(name)) {
-                return setting;
-            }
-        }
-        return getDefault();
     }
 }

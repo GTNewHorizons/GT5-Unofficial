@@ -11,8 +11,8 @@ import gregtech.api.objects.XSTR;
 
 public class WeightedCollection<E> implements Map<Integer, E> {
 
-    private NavigableMap<Integer, E> map = new TreeMap<>();
-    private Random random;
+    private final NavigableMap<Integer, E> map = new TreeMap<>();
+    private final Random random;
     private int total = 0;
 
     public WeightedCollection() {

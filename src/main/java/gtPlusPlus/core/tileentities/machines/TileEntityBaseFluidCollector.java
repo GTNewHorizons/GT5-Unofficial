@@ -1,5 +1,6 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.item.EntityItem;
@@ -19,7 +20,6 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
@@ -73,17 +73,15 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
                 fluid = null;
             }
 
-            if (this != null) {
-                FluidEvent.fireEvent(
-                    new FluidEvent.FluidDrainingEvent(
-                        fluid,
-                        this.getWorldObj(),
-                        this.xCoord,
-                        this.yCoord,
-                        this.zCoord,
-                        this.tank,
-                        0));
-            }
+            FluidEvent.fireEvent(
+                new FluidEvent.FluidDrainingEvent(
+                    fluid,
+                    this.getWorldObj(),
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    this.tank,
+                    0));
         }
         return stack;
     }
@@ -150,7 +148,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
         return MathUtils.randInt(200, 300);
     }
 
-    public abstract AutoMap<Class> aThingsToLookFor();
+    public abstract ArrayList<Class> aThingsToLookFor();
 
     public abstract void onPreLogicTick();
 
@@ -227,7 +225,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
 
     /**
      * Return the amount of fluid for this entity type
-     * 
+     *
      * @param aEntity
      * @return
      */

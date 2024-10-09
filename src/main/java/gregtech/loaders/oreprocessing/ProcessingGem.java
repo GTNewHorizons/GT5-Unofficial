@@ -9,16 +9,15 @@ import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -49,6 +48,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
         boolean aSpecialRecipeReq = aMaterial.contains(SubTag.MORTAR_GRINDABLE);
         boolean aFuelPower = aMaterial.mFuelPower > 0;
+
+        // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
+        if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt
+            || aMaterial == Materials.Spodumene
+            || aMaterial == Materials.NetherQuartz) return;
 
         switch (aPrefix) {
             case gem -> {
@@ -190,47 +194,17 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 } else {
                     if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)) {
                         // Implosion compressor recipes
-                        {
-                            if (GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1) != null) {
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack), ItemList.Block_Powderbarrel.get(16))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        GTUtility.copyAmount(3, aStack),
-                                        GTModHandler.getIC2Item("dynamite", 4, null))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack), new ItemStack(Blocks.tnt, 8))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        GTUtility.copyAmount(3, aStack),
-                                        GTModHandler.getIC2Item("industrialTnt", 2))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                            }
+                        if (GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1) != null) {
+                            GTValues.RA.stdBuilder()
+                                .itemInputs(GTUtility.copyAmount(3, aStack))
+                                .itemOutputs(
+                                    GTOreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1),
+                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
+                                .duration(1 * SECONDS)
+                                .eut(TierEU.RECIPE_LV)
+                                .metadata(ADDITIVE_AMOUNT, 8)
+                                .addTo(implosionRecipes);
                         }
-
                         // Crafting recipes
                         {
                             GTModHandler.addCraftingRecipe(
@@ -302,40 +276,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1) != null) {
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack), ItemList.Block_Powderbarrel.get(16))
+                                    .itemInputs(GTUtility.copyAmount(3, aStack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
                                         GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        GTUtility.copyAmount(3, aStack),
-                                        GTModHandler.getIC2Item("dynamite", 4, null))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack), new ItemStack(Blocks.tnt, 8))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        GTUtility.copyAmount(3, aStack),
-                                        GTModHandler.getIC2Item("industrialTnt", 2))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
+                                    .metadata(ADDITIVE_AMOUNT, 8)
                                     .addTo(implosionRecipes);
                             }
                         }
@@ -430,40 +377,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1) != null) {
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack), ItemList.Block_Powderbarrel.get(16))
+                                    .itemInputs(GTUtility.copyAmount(3, aStack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
                                         GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        GTUtility.copyAmount(3, aStack),
-                                        GTModHandler.getIC2Item("dynamite", 4, null))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack), new ItemStack(Blocks.tnt, 8))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        GTUtility.copyAmount(3, aStack),
-                                        GTModHandler.getIC2Item("industrialTnt", 2))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
+                                    .metadata(ADDITIVE_AMOUNT, 8)
                                     .addTo(implosionRecipes);
                             }
                         }
@@ -535,40 +455,13 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         {
                             if (GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1) != null) {
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack), ItemList.Block_Powderbarrel.get(16))
+                                    .itemInputs(GTUtility.copyAmount(3, aStack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
                                         GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        GTUtility.copyAmount(3, aStack),
-                                        GTModHandler.getIC2Item("dynamite", 4, null))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(GTUtility.copyAmount(3, aStack), new ItemStack(Blocks.tnt, 8))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
-                                    .addTo(implosionRecipes);
-                                GTValues.RA.stdBuilder()
-                                    .itemInputs(
-                                        GTUtility.copyAmount(3, aStack),
-                                        GTModHandler.getIC2Item("industrialTnt", 2))
-                                    .itemOutputs(
-                                        GTOreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
-                                    .duration(1 * SECONDS)
-                                    .eut(TierEU.RECIPE_LV)
+                                    .metadata(ADDITIVE_AMOUNT, 8)
                                     .addTo(implosionRecipes);
                             }
                         }

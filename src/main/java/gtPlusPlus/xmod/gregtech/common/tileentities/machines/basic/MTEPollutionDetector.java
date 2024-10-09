@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -23,10 +24,10 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
 
     int mCurrentPollution;
     int mAveragePollution;
-    int mAveragePollutionArray[] = new int[10];
+    int[] mAveragePollutionArray = new int[10];
     private int mArrayPos = 0;
     private int mTickTimer = 0;
-    private int mSecondTimer = 0;
+    private final int mSecondTimer = 0;
     private long mRedstoneLevel = 0;
 
     public MTEPollutionDetector(final int aID, final String aName, final String aNameRegional, final int aTier,
@@ -270,7 +271,7 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
     }
 
     private void showPollution(final World worldIn, final EntityPlayer playerIn) {
-        if (!PollutionUtils.isPollutionEnabled()) {
+        if (!GTMod.gregtechproxy.mPollution) {
             PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
             PlayerUtils.messagePlayer(playerIn, "This chunk contains " + getCurrentChunkPollution() + " pollution.");

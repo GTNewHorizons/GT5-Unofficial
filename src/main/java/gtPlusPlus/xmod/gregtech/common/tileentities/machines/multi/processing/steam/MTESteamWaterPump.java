@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -267,11 +266,11 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
             .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Wooden Casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
             .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "10 " + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "9 " + EnumChatFormatting.GRAY + " Wooden Casing")
             .addStructureInfo("")
             .toolTipFinisher(AuthorEvgenWarGold);
         return tt;
@@ -321,10 +320,20 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
 
+        int tierMachine = tag.getInteger("mSetTier");
+        String tierMachineText;
+        if (tierMachine == 1) {
+            tierMachineText = "Bronze";
+        } else if (tierMachine == 2) {
+            tierMachineText = "Steel";
+        } else {
+            tierMachineText = String.valueOf(tierMachine);
+        }
+
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+            StatCollector.translateToLocal("GTPP.machines.tier") + ": "
                 + EnumChatFormatting.BLUE
-                + tag.getInteger("mSetTier")
+                + tierMachineText
                 + EnumChatFormatting.RESET);
         currenttip.add(
             StatCollector.translateToLocal("GT5U.biomes.humidity") + " "
@@ -366,8 +375,8 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_WATER_PUMP_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_WATER_PUMP_LOOP;
     }
 
 }

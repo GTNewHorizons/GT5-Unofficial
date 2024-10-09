@@ -44,6 +44,7 @@ public class ItemFrames extends ItemBlock {
     public int getColorFromItemStack(ItemStack aStack, int aPass) {
         int meta = aStack.getItemDamage();
         Materials material = BlockFrameBox.getMaterial(meta);
+        if (material == null) return 0;
         return (material.mRGBa[0] << 16) | (material.mRGBa[1] << 8) | material.mRGBa[2];
     }
 

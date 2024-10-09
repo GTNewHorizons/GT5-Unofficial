@@ -17,7 +17,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 
-import bartworks.common.configs.ConfigHandler;
+import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 
 public class BWWorldGenUtil {
@@ -26,23 +26,139 @@ public class BWWorldGenUtil {
 
     public static final Block GT_TILES = GregTechAPI.sBlockMachines;
 
-    public static short getGenerator(Random rand, int tier) {
-        int meta = ConfigHandler.metasForTiers[0][tier][rand.nextInt(ConfigHandler.metasForTiers[0][tier].length)];
-        return GregTechAPI.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getGenerator(rand, tier);
+    public static int getGenerator(Random rand, int tier) {
+        int meta, randomIndex;
+        switch (tier) {
+            case 0 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.highPressureSteam.generators.length);
+                meta = Configuration.rossRuinMetas.highPressureSteam.generators[randomIndex];
+            }
+            case 1 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.lv.generators.length);
+                meta = Configuration.rossRuinMetas.lv.generators[randomIndex];
+            }
+            case 2 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.mv.generators.length);
+                meta = Configuration.rossRuinMetas.mv.generators[randomIndex];
+            }
+            case 3 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.hv.generators.length);
+                meta = Configuration.rossRuinMetas.hv.generators[randomIndex];
+            }
+            case 4 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.ev.generators.length);
+                meta = Configuration.rossRuinMetas.ev.generators[randomIndex];
+            }
+            default -> {
+                throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
+            }
+        }
+        if (GregTechAPI.METATILEENTITIES[meta] == null) {
+            throw new IllegalStateException("MetaID " + meta + " is null, please remove it from the Ross Ruin config");
+        }
+
+        return meta;
     }
 
-    public static short getBuffer(Random rand, int tier) {
-        int meta = ConfigHandler.metasForTiers[1][tier][rand.nextInt(ConfigHandler.metasForTiers[1][tier].length)];
-        return GregTechAPI.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getBuffer(rand, tier);
+    public static int getBuffer(Random rand, int tier) {
+        int meta, randomIndex;
+        switch (tier) {
+            case 0 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.highPressureSteam.buffers.length);
+                meta = Configuration.rossRuinMetas.highPressureSteam.buffers[randomIndex];
+            }
+            case 1 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.lv.buffers.length);
+                meta = Configuration.rossRuinMetas.lv.buffers[randomIndex];
+            }
+            case 2 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.mv.buffers.length);
+                meta = Configuration.rossRuinMetas.mv.buffers[randomIndex];
+            }
+            case 3 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.hv.buffers.length);
+                meta = Configuration.rossRuinMetas.hv.buffers[randomIndex];
+            }
+            case 4 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.ev.buffers.length);
+                meta = Configuration.rossRuinMetas.ev.buffers[randomIndex];
+            }
+            default -> {
+                throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
+            }
+        }
+        if (GregTechAPI.METATILEENTITIES[meta] == null) {
+            throw new IllegalStateException("MetaID " + meta + " is null, please remove it from the Ross Ruin config");
+        }
+
+        return meta;
     }
 
-    public static short getCable(Random rand, int tier) {
-        int meta = ConfigHandler.metasForTiers[2][tier][rand.nextInt(ConfigHandler.metasForTiers[2][tier].length)];
-        return GregTechAPI.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getCable(rand, tier);
+    public static int getCable(Random rand, int tier) {
+        int meta, randomIndex;
+        switch (tier) {
+            case 0 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.highPressureSteam.cables.length);
+                meta = Configuration.rossRuinMetas.highPressureSteam.cables[randomIndex];
+            }
+            case 1 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.lv.cables.length);
+                meta = Configuration.rossRuinMetas.lv.cables[randomIndex];
+            }
+            case 2 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.mv.cables.length);
+                meta = Configuration.rossRuinMetas.mv.cables[randomIndex];
+            }
+            case 3 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.hv.cables.length);
+                meta = Configuration.rossRuinMetas.hv.cables[randomIndex];
+            }
+            case 4 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.ev.cables.length);
+                meta = Configuration.rossRuinMetas.ev.cables[randomIndex];
+            }
+            default -> {
+                throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
+            }
+        }
+        if (GregTechAPI.METATILEENTITIES[meta] == null) {
+            throw new IllegalStateException("MetaID " + meta + " is null, please remove it from the Ross Ruin config");
+        }
+
+        return meta;
     }
 
-    public static short getMachine(Random rand, int tier) {
-        int meta = ConfigHandler.metasForTiers[3][tier][rand.nextInt(ConfigHandler.metasForTiers[3][tier].length)];
-        return GregTechAPI.METATILEENTITIES[meta] != null ? (short) meta : BWWorldGenUtil.getMachine(rand, tier);
+    public static int getMachine(Random rand, int tier) {
+        int meta, randomIndex;
+        switch (tier) {
+            case 0 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.highPressureSteam.machines.length);
+                meta = Configuration.rossRuinMetas.highPressureSteam.machines[randomIndex];
+            }
+            case 1 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.lv.machines.length);
+                meta = Configuration.rossRuinMetas.lv.machines[randomIndex];
+            }
+            case 2 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.mv.machines.length);
+                meta = Configuration.rossRuinMetas.mv.machines[randomIndex];
+            }
+            case 3 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.hv.machines.length);
+                meta = Configuration.rossRuinMetas.hv.machines[randomIndex];
+            }
+            case 4 -> {
+                randomIndex = rand.nextInt(Configuration.rossRuinMetas.ev.machines.length);
+                meta = Configuration.rossRuinMetas.ev.machines[randomIndex];
+            }
+            default -> {
+                throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
+            }
+        }
+        if (GregTechAPI.METATILEENTITIES[meta] == null) {
+            throw new IllegalStateException("MetaID " + meta + " is null, please remove it from the Ross Ruin config");
+        }
+
+        return meta;
     }
 }
