@@ -22,21 +22,24 @@ package kubatech;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import kubatech.api.helpers.UUIDFinder;
 import kubatech.network.LoadConfigPacket;
 import kubatech.savedata.PlayerDataManager;
 
+@EventBusSubscriber
 public class FMLEventHandler {
 
     // Gets fired only server-sided
     @SubscribeEvent
-    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!(event.player instanceof EntityPlayerMP)) return;
-        UUIDFinder.updateMapping(event.player.getCommandSenderName(), event.player.getPersistentID());
-        PlayerDataManager.initializePlayer((EntityPlayerMP) event.player);
-        kubatech.info("Sending config to " + event.player.getDisplayName());
-        kubatech.NETWORK.sendTo(LoadConfigPacket.instance, (EntityPlayerMP) event.player);
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.player instanceof EntityPlayerMP playerMP)) return;
+        UUIDFinder.updateMapping(playerMP.getCommandSenderName(), playerMP.getPersistentID());
+        PlayerDataManager.initializePlayer(playerMP);
+        kubatech.info("Sending config to " + playerMP.getDisplayName());
+        kubatech.NETWORK.sendTo(LoadConfigPacket.instance, playerMP);
     }
 }

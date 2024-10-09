@@ -17,8 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -31,6 +32,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.CoreItem;
 
+@EventBusSubscriber
 public class ItemMagicFeather extends CoreItem {
 
     public static final String NAME = "magicfeather";
@@ -50,7 +52,6 @@ public class ItemMagicFeather extends CoreItem {
             null);
         setMaxStackSize(1);
         setUnlocalizedName(GTPlusPlus.ID + ":" + NAME);
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -136,7 +137,7 @@ public class ItemMagicFeather extends CoreItem {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side != Side.SERVER || event.phase != Phase.END) {
             return;
         }
@@ -173,7 +174,7 @@ public class ItemMagicFeather extends CoreItem {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onPlayerDeath(LivingDeathEvent event) {
+    public static void onPlayerDeath(LivingDeathEvent event) {
         if (event.entityLiving == null) return;
         EntityLivingBase aEntity = event.entityLiving;
         if (!(aEntity instanceof EntityPlayer aPlayer) || aEntity.worldObj == null || aEntity.worldObj.isRemote) return;

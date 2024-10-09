@@ -6,8 +6,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
+
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -15,16 +16,13 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.common.tileentities.machines.basic.MTEMonsterRepellent;
 
+@EventBusSubscriber
 public class GTSpawnEventHandler {
 
     public static volatile List<int[]> mobReps = new CopyOnWriteArrayList<>();
     // Future Optimiztation ideas, if this isn't sufficient
     // 1: Keep a weakref list of mob repellents so we already have the tile
     // 2: Have the tick method update a HashMap of (int[], range) so we don't have to load the tile at all
-
-    public GTSpawnEventHandler() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
 
     // Range of a powered repellent
     public static int getPoweredRepellentRange(int aTier) {
@@ -37,7 +35,7 @@ public class GTSpawnEventHandler {
     }
 
     @SubscribeEvent
-    public void denyMobSpawn(CheckSpawn event) {
+    public static void denyMobSpawn(CheckSpawn event) {
         if (event.getResult() == Event.Result.DENY) return;
 
         if (event.entityLiving instanceof EntitySlime slime && !slime.hasCustomNameTag()

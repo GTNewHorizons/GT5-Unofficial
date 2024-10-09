@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Multimap;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import tectech.mechanics.spark.ThaumSpark;
 
 public interface ITeslaConnectable extends ITeslaConnectableSimple {
@@ -39,6 +42,7 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
 
     boolean teslaDrainEnergy(long teslaVoltageDrained);
 
+    @EventBusSubscriber
     class TeslaUtil {
 
         private static final HashSet<ITeslaConnectableSimple> teslaSimpleNodeSet = new HashSet<>(); // Targets for power
@@ -179,6 +183,13 @@ public interface ITeslaConnectable extends ITeslaConnectableSimple {
                 }
             }
             return origin.getTeslaOutputCurrent() - remainingAmperes;
+        }
+
+        @SubscribeEvent
+        public static void onServerTickEnd(TickEvent.ServerTickEvent event) {
+            if (event.phase == TickEvent.Phase.END) {
+                housekeep();
+            }
         }
     }
 }

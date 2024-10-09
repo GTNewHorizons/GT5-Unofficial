@@ -36,7 +36,6 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -88,7 +87,6 @@ import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
@@ -106,11 +104,8 @@ import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
-import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
-import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
-import gregtech.nei.NEIGTConfig;
 import ic2.api.tile.IWrenchable;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
@@ -169,7 +164,6 @@ public class GTClient extends GTProxy implements Runnable {
     }
 
     private final HashSet<String> mCapeList = new HashSet<>();
-    public static final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
     private final GTCapeRenderer mCapeRenderer;
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
@@ -591,12 +585,9 @@ public class GTClient extends GTProxy implements Runnable {
     public void onPreLoad() {
         super.onPreLoad();
 
-        MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
-
-        new MTEAdvDebugStructureWriter.ForgeEventHandler();
 
         final String[] arr = { "renadi", "hanakocz", "MysteryDump", "Flaver4", "x_Fame", "Peluche321",
             "Goshen_Ithilien", "manf", "Bimgo", "leagris", "IAmMinecrafter02", "Cerous", "Devilin_Pixy", "Bkarlsson87",
@@ -619,8 +610,6 @@ public class GTClient extends GTProxy implements Runnable {
             mCapeList.add(tName.toLowerCase());
         }
         new Thread(this).start();
-
-        mPollutionRenderer.preLoad();
 
         mPreference = new GTClientPreference();
 
@@ -649,8 +638,6 @@ public class GTClient extends GTProxy implements Runnable {
         new FluidDisplayStackRenderer();
         new DataStickRenderer();
         new InfiniteSprayCanRenderer();
-        MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
-        MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
     }
 
     @Override
@@ -1076,6 +1063,6 @@ public class GTClient extends GTProxy implements Runnable {
     }
 
     public static void recieveChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {
-        mPollutionRenderer.processPacket(chunk, pollution);
+        PollutionRenderer.processPacket(chunk, pollution);
     }
 }

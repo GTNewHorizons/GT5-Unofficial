@@ -1,6 +1,8 @@
 package gregtech.api.objects.blockupdate;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -8,8 +10,9 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import appeng.api.util.WorldCoord;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -20,53 +23,46 @@ import gregtech.api.enums.TickTime;
 // this is a middleware for block updates
 // Greg's BaseMetaTileEntity uses World::markBlockForUpdate() to update the texture of a machine
 // World::markBlockForUpdate() triggers block updates of all blocks within the same chunk
-// this class makes sure chunk updates are perfmormed only once even if several blocks requested update
-// (valid obly for requests made using BlockUpdateHandler::enqueueBlockUpdate)
+// this class makes sure chunk updates are performed only once even if several blocks requested update
+// (valid only for requests made using BlockUpdateHandler::enqueueBlockUpdate)
 // and introduces a per chunk cooldown to slow the things a bit
 // cause too frequent updates are not necessary for visual appearance of a block
 
 @SideOnly(Side.CLIENT)
+@EventBusSubscriber
 public class BlockUpdateHandler {
 
     public static final int MIN_UPDATE_COOLDOWN = TickTime.SECOND / 2;
     public static final int MAX_UPDATE_COOLDOWN = TickTime.SECOND;
+    private static final HashMap<ChunkCoordIntPair, WorldCoord> blocksToUpdate = new HashMap<>();
+    private static final HashMap<ChunkCoordIntPair, RandomCooldown> cooldowns = new HashMap<>();
+    private static int currentDim;
+    private static long internalTickCounter = 0;
 
-    public final static BlockUpdateHandler Instance = new BlockUpdateHandler();
+    public static void enqueueBlockUpdate(World world, WorldCoord pos) {
 
-    private BlockUpdateHandler() {
-
-        blocksToUpdate = new HashMap<>();
-        cooldowns = new HashMap<>();
-
-        FMLCommonHandler.instance()
-            .bus()
-            .register(this);
-    }
-
-    public void enqueueBlockUpdate(World world, WorldCoord pos) {
-
-        var player = getPlayer();
+        EntityClientPlayerMP player = getPlayer();
 
         if (world != player.worldObj) return;
 
-        ResetDataIfPlayerWorldChanged(player);
+        resetDataIfPlayerWorldChanged(player);
 
         blocksToUpdate.put(getBlockChunkCoords(world, pos), pos);
     }
 
     @SubscribeEvent
-    public void OnClientTickEvent(ClientTickEvent event) {
+    public static void onClientTickEvent(ClientTickEvent event) {
 
         if (event.phase != Phase.START) return;
 
-        ResetDataIfPlayerWorldChanged(getPlayer());
+        resetDataIfPlayerWorldChanged(getPlayer());
 
-        var it = blocksToUpdate.entrySet()
+        Iterator<Map.Entry<ChunkCoordIntPair, WorldCoord>> it = blocksToUpdate.entrySet()
             .iterator();
 
         while (it.hasNext()) {
 
-            var entry = it.next();
+            Map.Entry<ChunkCoordIntPair, WorldCoord> entry = it.next();
             ChunkCoordIntPair chunkCoords = entry.getKey();
             WorldCoord blockCoords = entry.getValue();
 
@@ -79,7 +75,7 @@ public class BlockUpdateHandler {
 
             if (!cooldown.hasPassed(internalTickCounter)) continue;
 
-            currWorld.markBlockForUpdate(blockCoords.x, blockCoords.y, blockCoords.z);
+            Minecraft.getMinecraft().theWorld.markBlockForUpdate(blockCoords.x, blockCoords.y, blockCoords.z);
             cooldown.set(internalTickCounter);
             it.remove();
         }
@@ -87,31 +83,26 @@ public class BlockUpdateHandler {
         ++internalTickCounter;
     }
 
-    private EntityClientPlayerMP getPlayer() {
+    private static EntityClientPlayerMP getPlayer() {
         return Minecraft.getMinecraft().thePlayer;
     }
 
-    private void ResetDataIfPlayerWorldChanged(EntityClientPlayerMP player) {
+    private static void resetDataIfPlayerWorldChanged(EntityClientPlayerMP player) {
 
         if (player == null) return;
 
-        World playerWorld = player.worldObj;
+        int playerDim = player.dimension;
 
-        if (currWorld != playerWorld) {
+        if (currentDim != playerDim) {
             blocksToUpdate.clear();
             cooldowns.clear();
-            currWorld = playerWorld;
+            currentDim = playerDim;
         }
     }
 
-    private ChunkCoordIntPair getBlockChunkCoords(World world, WorldCoord pos) {
+    private static ChunkCoordIntPair getBlockChunkCoords(World world, WorldCoord pos) {
 
         Chunk chunk = world.getChunkFromBlockCoords(pos.x, pos.z);
         return chunk.getChunkCoordIntPair();
     }
-
-    private final HashMap<ChunkCoordIntPair, WorldCoord> blocksToUpdate;
-    private final HashMap<ChunkCoordIntPair, RandomCooldown> cooldowns;
-    private World currWorld = null;
-    private long internalTickCounter = 0;
 }

@@ -27,7 +27,6 @@ import static kubatech.loaders.ItemLoader.registerItems;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -37,12 +36,10 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import gregtech.api.enums.Mods;
 import kubatech.commands.CommandHandler;
 import kubatech.config.Config;
 import kubatech.loaders.EIGBucketLoader;
 import kubatech.loaders.MTLoader;
-import kubatech.loaders.MobHandlerLoader;
 import kubatech.loaders.RecipeLoader;
 import kubatech.loaders.TCLoader;
 import kubatech.savedata.PlayerDataManager;
@@ -54,15 +51,9 @@ public class CommonProxy {
 
         Config.init(event.getModConfigurationDirectory());
         Config.synchronizeConfiguration();
-        FMLCommonHandler.instance()
-            .bus()
-            .register(new FMLEventHandler());
         MinecraftForge.EVENT_BUS.register(new PlayerDataManager());
         registerItems();
         registerBlocks();
-        if (Mods.MobsInfo.isModLoaded()) {
-            MobHandlerLoader.init();
-        }
     }
 
     public void init(FMLInitializationEvent event) {

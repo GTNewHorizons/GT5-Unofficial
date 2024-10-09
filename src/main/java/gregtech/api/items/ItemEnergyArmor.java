@@ -20,8 +20,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -54,8 +52,6 @@ public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
         mArmorAbsorbtionPercentage = aArmorAbsorbtionPercentage;
 
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
-
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     private static void setCharge(ItemStack aStack) {
@@ -274,25 +270,6 @@ public class ItemEnergyArmor extends ItemArmor implements ISpecialArmor {
     @Override
     public boolean getIsRepairable(ItemStack toBeRepaired, ItemStack repairWith) {
         return false;
-    }
-
-    // TODO: @ForgeSubscribe
-    public void onEntityLivingFallEvent(LivingFallEvent event) {
-        if (!event.entity.worldObj.isRemote && event.entity instanceof EntityPlayer player) {
-            for (int i = 0; i < 4; i++) {
-                ItemStack armor = player.inventory.armorInventory[i];
-                if (armor != null && armor.getItem() == this && (mSpecials & 2) != 0) {
-                    int distanceFactor = (int) event.distance - 3;
-                    int energyCost = (this.mDamageEnergyCost * distanceFactor) / 4;
-                    if (energyCost <= GTModHandler
-                        .dischargeElectricItem(armor, Integer.MAX_VALUE, Integer.MAX_VALUE, true, true, true)) {
-                        GTModHandler.dischargeElectricItem(armor, energyCost, Integer.MAX_VALUE, true, false, true);
-                        event.setCanceled(true);
-                        break;
-                    }
-                }
-            }
-        }
     }
 
     @Override

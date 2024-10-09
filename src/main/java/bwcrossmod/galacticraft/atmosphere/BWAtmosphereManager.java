@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
@@ -32,6 +33,7 @@ import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 
+@EventBusSubscriber
 public final class BWAtmosphereManager {
 
     private static final Map<Integer, Integer[]> COEFFICIENT_MAP = new HashMap<>();
@@ -47,8 +49,6 @@ public final class BWAtmosphereManager {
         BWAtmosphereManager.COEFFICIENT_MAP.put(8, new Integer[] { 35, 20, 15, 10, 5, 5, 5, 5 });
         BWAtmosphereManager.COEFFICIENT_MAP.put(9, new Integer[] { 35, 15, 15, 10, 5, 5, 5, 5, 5 });
     }
-
-    public static final BWAtmosphereManager INSTANCE = new BWAtmosphereManager();
 
     private static final ArrayListMultimap<Integer, Pair<ISubTagContainer, Integer>> gasConcentration = ArrayListMultimap
         .create();
@@ -106,7 +106,7 @@ public final class BWAtmosphereManager {
     }
 
     @SubscribeEvent
-    public void gcAutoRegister(GalaxyRegistry.PlanetRegisterEvent event) {
+    public static void gcAutoRegister(GalaxyRegistry.PlanetRegisterEvent event) {
         CelestialBody planet = GalaxyRegistry.getRegisteredPlanets()
             .get(event.planetName);
         for (int i = 0; i < planet.atmosphere.size(); i++) {

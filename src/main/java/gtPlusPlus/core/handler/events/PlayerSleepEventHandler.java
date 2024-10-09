@@ -7,19 +7,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
+
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.mixin.interfaces.accessors.PotionAccessor;
 import gtPlusPlus.core.util.math.MathUtils;
 
+@EventBusSubscriber
 public class PlayerSleepEventHandler {
 
     private static final ArrayList<Potion> potionBuffs = new ArrayList<>();
 
-    public static void init() {
-        MinecraftForge.EVENT_BUS.register(new PlayerSleepEventHandler());
+    static {
         potionBuffs.add(Potion.moveSpeed);
         potionBuffs.add(Potion.waterBreathing);
         potionBuffs.add(Potion.resistance);
@@ -33,7 +34,7 @@ public class PlayerSleepEventHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerWakeUp(PlayerWakeUpEvent event) {
+    public static void onPlayerWakeUp(PlayerWakeUpEvent event) {
         EntityPlayer player = event.entityPlayer;
         if (player == null || player.worldObj.isRemote) return;
         if (player.getEntityWorld()

@@ -16,9 +16,12 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import tectech.Reference;
 
+@EventBusSubscriber
 public class EnderWorldSavedData extends WorldSavedData {
 
     private static EnderWorldSavedData INSTANCE;
@@ -136,7 +139,7 @@ public class EnderWorldSavedData extends WorldSavedData {
     }
 
     @SubscribeEvent
-    public void onWorldUnload(WorldEvent.Unload event) {
+    public static void onWorldUnload(WorldEvent.Unload event) {
         if (event.world.provider.dimensionId == 0) {
             INSTANCE = null;
         }

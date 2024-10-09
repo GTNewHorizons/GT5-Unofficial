@@ -11,6 +11,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.kuba6000.mobsinfo.api.IMobExtraInfoProvider;
 import com.kuba6000.mobsinfo.api.MobDrop;
 import com.kuba6000.mobsinfo.api.MobRecipe;
@@ -24,6 +25,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
+@EventBusSubscriber
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = "mobsinfo")
 public class EntityDeathHandler implements IMobExtraInfoProvider {
 
@@ -116,7 +118,7 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
     }
 
     @SubscribeEvent
-    public void onEntityDrop(LivingDropsEvent event) {
+    public static void onEntityDrop(LivingDropsEvent event) {
         if (event == null || event.entityLiving == null) {
             return;
         }

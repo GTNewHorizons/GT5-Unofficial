@@ -20,7 +20,6 @@ import static gregtech.api.enums.Mods.BartWorks;
 import java.io.IOException;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,12 +27,10 @@ import org.apache.logging.log4j.Logger;
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
 import bartworks.API.SideReference;
-import bartworks.client.ClientEventHandler.TooltipEventHandler;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
 import bartworks.client.textures.PrefixTextureLinker;
-import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.loaders.ArtificialMicaLine;
 import bartworks.common.loaders.BioCultureLoader;
@@ -45,7 +42,6 @@ import bartworks.common.loaders.RecipeLoader;
 import bartworks.common.loaders.RegisterGlassTiers;
 import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
-import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
 import bartworks.system.material.Werkstoff;
@@ -55,7 +51,6 @@ import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.galacticgreg.VoidMinerUtility;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -137,15 +132,6 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
-        if (SideReference.Side.Client && Configuration.tooltip.addGlassTierInTooltips)
-            MinecraftForge.EVENT_BUS.register(new TooltipEventHandler());
-        ServerEventHandler serverEventHandler = new ServerEventHandler();
-        if (SideReference.Side.Server) {
-            MinecraftForge.EVENT_BUS.register(serverEventHandler);
-        }
-        FMLCommonHandler.instance()
-            .bus()
-            .register(serverEventHandler);
         BioLabLoader.run();
 
         WerkstoffLoader.runInit();

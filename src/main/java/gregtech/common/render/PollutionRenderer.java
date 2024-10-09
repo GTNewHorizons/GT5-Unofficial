@@ -15,7 +15,8 @@ import net.minecraftforge.event.world.WorldEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -26,10 +27,12 @@ import gregtech.common.entities.EntityFXPollution;
 import gregtech.common.misc.GTClientPollutionMap;
 
 @SideOnly(Side.CLIENT)
+@EventBusSubscriber
 public class PollutionRenderer {
 
-    private static GTClientPollutionMap pollutionMap;
+    private static final GTClientPollutionMap pollutionMap = new GTClientPollutionMap();
     private static int playerPollution = 0;
+    private static double lastUpdate = 0;
 
     private static final boolean DEBUG = false;
 
@@ -50,24 +53,12 @@ public class PollutionRenderer {
     private static final short[] foliageColor = { 160, 80, 15 };
 
     // TODO need to soft update some blocks, grass and leaves does more often than liquid it looks like.
-
-    public PollutionRenderer() {
-        pollutionMap = new GTClientPollutionMap();
-    }
-
-    public void preLoad() {
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(this);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(this);
-    }
-
-    public void processPacket(ChunkCoordIntPair chunk, int pollution) {
+    public static void processPacket(ChunkCoordIntPair chunk, int pollution) {
         pollutionMap.addChunkPollution(chunk.chunkXPos, chunk.chunkZPos, pollution);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void enteredWorld(WorldEvent.Load event) {
+    public static void enteredWorld(WorldEvent.Load event) {
         EntityClientPlayerMP p = Minecraft.getMinecraft().thePlayer;
         if (!event.world.isRemote || p == null) return;
         pollutionMap.reset();
@@ -112,7 +103,7 @@ public class PollutionRenderer {
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void manipulateColor(EntityViewRenderEvent.FogColors event) {
+    public static void manipulateColor(EntityViewRenderEvent.FogColors event) {
         if (!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) return;
 
         if (event.block.getMaterial() == Material.water || event.block.getMaterial() == Material.lava) return;
@@ -129,7 +120,7 @@ public class PollutionRenderer {
     private static double fogIntensityLastTick = 0;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void renderGTPollutionFog(EntityViewRenderEvent.RenderFogEvent event) {
+    public static void renderGTPollutionFog(EntityViewRenderEvent.RenderFogEvent event) {
         if (!GTMod.gregtechproxy.mRenderPollutionFog) return;
 
         if ((!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
@@ -146,7 +137,7 @@ public class PollutionRenderer {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void renderGTPollutionFog(EntityViewRenderEvent.FogDensity event) {
+    public static void renderGTPollutionFog(EntityViewRenderEvent.FogDensity event) {
         if (!GTMod.gregtechproxy.mRenderPollutionFog) return;
 
         if (!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) return;
@@ -160,10 +151,8 @@ public class PollutionRenderer {
         event.setCanceled(true);
     }
 
-    private double lastUpdate = 0;
-
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onRenderTick(TickEvent.RenderTickEvent event) {
+    public static void onRenderTick(TickEvent.RenderTickEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null) return;
         EntityClientPlayerMP player = mc.thePlayer;
@@ -202,7 +191,7 @@ public class PollutionRenderer {
 
     // Adding dirt particles in the air
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (!GTMod.gregtechproxy.mRenderDirtParticles) return;
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null) return;
@@ -240,7 +229,7 @@ public class PollutionRenderer {
         }
     }
 
-    private void drawPollution(String text, int off) {
+    private static void drawPollution(String text, int off) {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);

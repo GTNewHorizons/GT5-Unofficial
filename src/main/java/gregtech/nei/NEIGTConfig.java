@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
@@ -37,6 +38,7 @@ import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 
+@EventBusSubscriber
 public class NEIGTConfig implements IConfigureNEI {
 
     /**
@@ -122,7 +124,7 @@ public class NEIGTConfig implements IConfigureNEI {
     }
 
     @SubscribeEvent
-    public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
+    public static void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
         if (RECIPE_CATALYST_INDEX == null) {
             // This method will be called earlier than #loadConfig
             generateRecipeCatalystIndex();
@@ -146,7 +148,7 @@ public class NEIGTConfig implements IConfigureNEI {
             });
     }
 
-    private HandlerInfo.Builder createHandlerInfoBuilderTemplate(RecipeCategory recipeCategory) {
+    private static HandlerInfo.Builder createHandlerInfoBuilderTemplate(RecipeCategory recipeCategory) {
         return new HandlerInfo.Builder(
             recipeCategory.unlocalizedName,
             recipeCategory.ownerMod.getName(),

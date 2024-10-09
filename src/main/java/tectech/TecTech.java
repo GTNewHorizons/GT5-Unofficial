@@ -1,11 +1,8 @@
 package tectech;
 
-import net.minecraftforge.common.MinecraftForge;
-
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -19,7 +16,6 @@ import tectech.loader.ConfigHandler;
 import tectech.loader.MainLoader;
 import tectech.loader.gui.CreativeTabTecTech;
 import tectech.loader.thing.MuTeLoader;
-import tectech.mechanics.enderStorage.EnderWorldSavedData;
 import tectech.proxy.CommonProxy;
 import tectech.recipe.EyeOfHarmonyRecipeStorage;
 import tectech.recipe.TecTechRecipeMaps;
@@ -58,7 +54,7 @@ public class TecTech {
     public static final LogHelper LOGGER = new LogHelper(Reference.MODID);
     public static CreativeTabTecTech creativeTabTecTech;
 
-    public static EnderWorldSavedData enderWorldSavedData;
+    // public static EnderWorldSavedData enderWorldSavedData;
 
     /**
      * For Loader.isModLoaded checks during the runtime
@@ -71,13 +67,6 @@ public class TecTech {
     @SuppressWarnings("unused")
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         LOGGER.setDebugOutput(true);
-
-        enderWorldSavedData = new EnderWorldSavedData();
-        FMLCommonHandler.instance()
-            .bus()
-            .register(enderWorldSavedData);
-        MinecraftForge.EVENT_BUS.register(enderWorldSavedData);
-        TecTechEventHandlers.init();
 
         TecTechRecipeMaps.init();
         MainLoader.preLoad();

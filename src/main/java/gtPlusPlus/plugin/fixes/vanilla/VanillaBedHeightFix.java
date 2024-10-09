@@ -4,8 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -13,11 +14,12 @@ import gregtech.asm.GTCorePlugin;
 import gtPlusPlus.api.objects.Logger;
 
 // TODO move this as a mixin in hodgepodge
+@EventBusSubscriber
 public class VanillaBedHeightFix {
 
-    private final Method mSleepInBedAt;
+    private static final Method mSleepInBedAt;
 
-    public VanillaBedHeightFix() {
+    static {
         Method m = null;
         try {
             m = EntityPlayer.class.getDeclaredMethod(
@@ -29,7 +31,6 @@ public class VanillaBedHeightFix {
         if (m != null) {
             mSleepInBedAt = m;
             Logger.INFO("Registering Bed Height Fix.");
-            MinecraftForge.EVENT_BUS.register(this);
         } else {
             mSleepInBedAt = null;
         }
@@ -42,7 +43,7 @@ public class VanillaBedHeightFix {
      * @param evt - The event where a player sleeps
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void playerSleepInBed(PlayerSleepInBedEvent evt) {
+    public static void playerSleepInBed(PlayerSleepInBedEvent evt) {
         Logger.WARNING("Sleep Event Detected. Player is sleeping at Y: " + evt.y);
         if (evt.y <= 0) {
             int correctY = 256 + evt.y;

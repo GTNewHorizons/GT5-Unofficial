@@ -7,6 +7,8 @@ import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
@@ -22,6 +24,7 @@ import gtneioreplugin.plugin.gregtech5.PluginGT5UndergroundFluid;
 import gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
 
 @SuppressWarnings("unused")
+@EventBusSubscriber
 public class NEIPluginConfig implements IConfigureNEI {
 
     @Override
@@ -58,7 +61,7 @@ public class NEIPluginConfig implements IConfigureNEI {
     }
 
     @SubscribeEvent
-    public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
+    public static void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
         // Though first two handlers are already registered in NEI jar, we need to re-register
         // because new DimensionDisplayItems made tabs a bit taller.
         Map<String, ItemStack> handlers = new HashMap<>();

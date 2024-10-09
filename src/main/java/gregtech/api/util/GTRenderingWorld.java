@@ -13,19 +13,21 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * Provide a fake IBlockAccess to support CTM. Facade are supposed to set these when they are placed/received by client.
  */
+@EventBusSubscriber(side = Side.CLIENT)
 public class GTRenderingWorld implements IBlockAccess {
 
     private static final GTRenderingWorld INSTANCE = new GTRenderingWorld();
@@ -35,11 +37,6 @@ public class GTRenderingWorld implements IBlockAccess {
     private final Map<ChunkPosition, BlockInfo> infos = new HashMap<>();
     private final Map<ChunkCoordIntPair, Set<ChunkPosition>> index = new HashMap<>();
     private IBlockAccess mWorld = Minecraft.getMinecraft().theWorld;
-
-    private GTRenderingWorld() {
-        new FMLEventHandler();
-        new ForgeEventHandler();
-    }
 
     public static GTRenderingWorld getInstance() {
         return INSTANCE;
@@ -126,42 +123,27 @@ public class GTRenderingWorld implements IBlockAccess {
         return getBlock(x, y, z).isSideSolid(this, x, y, z, side);
     }
 
-    public class FMLEventHandler {
-
-        public FMLEventHandler() {
-            FMLCommonHandler.instance()
-                .bus()
-                .register(this);
-        }
-
-        @SubscribeEvent(priority = EventPriority.HIGHEST)
-        public void onRenderTickStart(TickEvent.RenderTickEvent e) {
-            if (e.phase == TickEvent.Phase.START) mWorld = Minecraft.getMinecraft().theWorld;
-        }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onRenderTickStart(TickEvent.RenderTickEvent e) {
+        if (e.phase == TickEvent.Phase.START) INSTANCE.mWorld = Minecraft.getMinecraft().theWorld;
     }
 
-    public class ForgeEventHandler {
+    @SubscribeEvent
+    public static void onChunkUnloaded(ChunkEvent.Unload e) {
+        if (!e.world.isRemote) return;
+        Map<ChunkCoordIntPair, Set<ChunkPosition>> index = INSTANCE.index;
+        Set<ChunkPosition> set = INSTANCE.index.remove(
+            e.getChunk()
+                .getChunkCoordIntPair());
+        if (set != null) INSTANCE.infos.keySet()
+            .removeAll(set);
+    }
 
-        private ForgeEventHandler() {
-            MinecraftForge.EVENT_BUS.register(this);
-        }
-
-        @SubscribeEvent
-        public void onChunkUnloaded(ChunkEvent.Unload e) {
-            if (!e.world.isRemote) return;
-            Set<ChunkPosition> set = index.remove(
-                e.getChunk()
-                    .getChunkCoordIntPair());
-            if (set != null) infos.keySet()
-                .removeAll(set);
-        }
-
-        @SubscribeEvent
-        public void onWorldUnloaded(WorldEvent.Unload e) {
-            if (!e.world.isRemote) return;
-            infos.clear();
-            index.clear();
-        }
+    @SubscribeEvent
+    public static void onWorldUnloaded(WorldEvent.Unload e) {
+        if (!e.world.isRemote) return;
+        INSTANCE.infos.clear();
+        INSTANCE.index.clear();
     }
 
     private static class BlockInfo {

@@ -352,7 +352,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
                     if (mNeedsUpdate) {
                         if (GTMod.gregtechproxy.mUseBlockUpdateHandler) {
-                            BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, getLocation());
+                            BlockUpdateHandler.enqueueBlockUpdate(worldObj, getLocation());
                         } else {
                             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                         }

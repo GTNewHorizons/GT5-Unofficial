@@ -5,17 +5,20 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.MouseEvent;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.items.MetaBaseItem;
 
+@EventBusSubscriber(side = Side.CLIENT)
 public class GTMouseEventHandler {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void onMouseEvent(MouseEvent event) {
+    public static void onMouseEvent(MouseEvent event) {
         final EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
         if (player == null || player.isDead) {

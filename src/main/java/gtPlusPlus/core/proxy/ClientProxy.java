@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.RenderFireball;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -38,7 +37,6 @@ import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
-import gtPlusPlus.nei.NEIGTPPConfig;
 import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
 import ic2.core.item.ItemFluidCell;
@@ -58,7 +56,6 @@ public class ClientProxy extends CommonProxy {
         new CustomItemBlockRenderer();
         new MachineBlockRenderer();
         new FlaskRenderer();
-        MinecraftForge.EVENT_BUS.register(new NEIGTPPConfig());
         super.init(e);
     }
 

@@ -13,13 +13,10 @@
 
 package bwcrossmod.galacticraft;
 
-import net.minecraftforge.common.MinecraftForge;
-
 import bartworks.API.SideReference;
 import bartworks.common.configs.Configuration;
 import bartworks.system.oregen.BWWorldGenRoss128b;
 import bartworks.system.oregen.BWWorldGenRoss128ba;
-import bwcrossmod.galacticraft.atmosphere.BWAtmosphereManager;
 import bwcrossmod.galacticraft.solarsystems.Ross128SolarSystem;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -54,7 +51,6 @@ public class GalacticraftProxy {
     private static void commonpreInit(FMLPreInitializationEvent e) {
         BWWorldGenRoss128b.initOres();
         BWWorldGenRoss128ba.init_Ores();
-        MinecraftForge.EVENT_BUS.register(BWAtmosphereManager.INSTANCE);
     }
 
     public static void init(FMLInitializationEvent e) {

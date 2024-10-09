@@ -2252,8 +2252,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                         "CRAM: Time spent checking " + (System.nanoTime() - startTime) / 1000 + " microseconds");
                 }
             }
-
-            Pollution.onWorldTick(aEvent);
         }
     }
 

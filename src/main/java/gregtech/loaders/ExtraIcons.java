@@ -6,8 +6,11 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber
 public class ExtraIcons {
 
     private static final String LARGE_FLUID_CELL_CUSTOM = "large_fluid_cell_custom";
@@ -22,7 +25,7 @@ public class ExtraIcons {
     public static IIcon neutroniumLargeCellInner;
 
     @SubscribeEvent
-    public void regIcons(TextureStitchEvent.Pre event) {
+    public static void regIcons(TextureStitchEvent.Pre event) {
         TextureMap reg = event.map;
         if (reg.getTextureType() == 1) { // are for items
             steelLargeCellInner = reg.registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "steel_inner"));

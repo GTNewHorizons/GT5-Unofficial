@@ -29,10 +29,11 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.WorldEvent;
+
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -47,6 +48,7 @@ import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTUtility;
 import gregtech.common.render.PollutionRenderer;
 
+@EventBusSubscriber
 public class Pollution {
 
     private static final Storage STORAGE = new Storage();
@@ -77,28 +79,43 @@ public class Pollution {
     private static final short cycleLen = 1200;
     private final World world;
     private boolean blank = true;
-    public static int mPlayerPollution;
 
     private static final int POLLUTIONPACKET_MINVALUE = 1000;
 
-    private static GT_PollutionEventHandler EVENT_HANDLER;
-
     public Pollution(World world) {
         this.world = world;
+    }
 
-        if (EVENT_HANDLER == null) {
-            EVENT_HANDLER = new GT_PollutionEventHandler();
-            MinecraftForge.EVENT_BUS.register(EVENT_HANDLER);
+    @SubscribeEvent
+    public static void onWorldTick(TickEvent.WorldTickEvent event) {
+        // return if pollution disabled
+        if (!event.side.isServer()) return;
+        if (event.phase == TickEvent.Phase.START) return;
+        final Pollution pollutionInstance = dimensionWisePollution.get(event.world.provider.dimensionId);
+        if (pollutionInstance == null) return;
+        pollutionInstance.tickPollutionInWorld((int) (event.world.getTotalWorldTime() % cycleLen));
+    }
+
+    @SubscribeEvent
+    public static void chunkWatch(ChunkWatchEvent.Watch event) {
+        World world = event.player.worldObj;
+        if (STORAGE.isCreated(world, event.chunk)) {
+            int pollution = STORAGE.get(world, event.chunk)
+                .getAmount();
+            if (pollution > POLLUTIONPACKET_MINVALUE)
+                GTValues.NW.sendToPlayer(new GTPacketPollution(event.chunk, pollution), event.player);
         }
     }
 
-    public static void onWorldTick(TickEvent.WorldTickEvent aEvent) { // called from proxy
-        // return if pollution disabled
-        if (!GTMod.gregtechproxy.mPollution) return;
-        if (aEvent.phase == TickEvent.Phase.START) return;
-        final Pollution pollutionInstance = dimensionWisePollution.get(aEvent.world.provider.dimensionId);
-        if (pollutionInstance == null) return;
-        pollutionInstance.tickPollutionInWorld((int) (aEvent.world.getTotalWorldTime() % cycleLen));
+    @SubscribeEvent
+    public static void onWorldLoad(WorldEvent.Load e) {
+        // super class loads everything lazily. We force it to load them all.
+        if (!e.world.isRemote) STORAGE.loadAll(e.world);
+    }
+
+    @EventBusSubscriber.Condition
+    public static boolean register() {
+        return GTMod.gregtechproxy.mPollution;
     }
 
     private void tickPollutionInWorld(int aTickID) { // called from method above
@@ -411,27 +428,6 @@ public class Pollution {
             e.getChunk(),
             e.getData()
                 .getInteger("GTPOLLUTION"));
-    }
-
-    public static class GT_PollutionEventHandler {
-
-        @SubscribeEvent
-        public void chunkWatch(ChunkWatchEvent.Watch event) {
-            if (!GTMod.gregtechproxy.mPollution) return;
-            World world = event.player.worldObj;
-            if (STORAGE.isCreated(world, event.chunk)) {
-                int pollution = STORAGE.get(world, event.chunk)
-                    .getAmount();
-                if (pollution > POLLUTIONPACKET_MINVALUE)
-                    GTValues.NW.sendToPlayer(new GTPacketPollution(event.chunk, pollution), event.player);
-            }
-        }
-
-        @SubscribeEvent
-        public void onWorldLoad(WorldEvent.Load e) {
-            // super class loads everything lazily. We force it to load them all.
-            if (!e.world.isRemote) STORAGE.loadAll(e.world);
-        }
     }
 
     @ParametersAreNonnullByDefault

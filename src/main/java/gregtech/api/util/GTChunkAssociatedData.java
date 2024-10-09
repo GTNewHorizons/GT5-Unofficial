@@ -35,10 +35,11 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
 import org.apache.commons.io.FileUtils;
+
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.GTValues;
@@ -63,6 +64,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
  * @author glease
  */
 @ParametersAreNonnullByDefault
+@EventBusSubscriber
 public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IData> {
 
     private static final Map<String, GTChunkAssociatedData<?>> instances = new ConcurrentHashMap<>();
@@ -75,12 +77,6 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
                 / 3));
     private static final ExecutorService IO_WORKERS = Executors.newWorkStealingPool(IO_PARALLELISM);
     private static final Pattern FILE_PATTERN = Pattern.compile("(.+)\\.(-?\\d+)\\.(-?\\d+)\\.dat");
-
-    static {
-        // register event handler
-        new EventHandler();
-    }
-
     protected final String mId;
     protected final Class<T> elementtype;
     private final int regionLength;
@@ -469,26 +465,19 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
         }
     }
 
-    public static class EventHandler {
-
-        private EventHandler() {
-            MinecraftForge.EVENT_BUS.register(this);
+    @SubscribeEvent
+    public static void onWorldSave(WorldEvent.Save e) {
+        for (GTChunkAssociatedData<?> d : instances.values()) {
+            d.save(e.world);
         }
+    }
 
-        @SubscribeEvent
-        public void onWorldSave(WorldEvent.Save e) {
-            for (GTChunkAssociatedData<?> d : instances.values()) {
-                d.save(e.world);
-            }
-        }
-
-        @SubscribeEvent
-        public void onWorldUnload(WorldEvent.Unload e) {
-            for (GTChunkAssociatedData<?> d : instances.values()) {
-                // there is no need to explicitly do a save here
-                // forge will send a WorldEvent.Save on server thread before this event is distributed
-                d.masterMap.remove(e.world.provider.dimensionId);
-            }
+    @SubscribeEvent
+    public static void onWorldUnload(WorldEvent.Unload e) {
+        for (GTChunkAssociatedData<?> d : instances.values()) {
+            // there is no need to explicitly do a save here
+            // forge will send a WorldEvent.Save on server thread before this event is distributed
+            d.masterMap.remove(e.world.provider.dimensionId);
         }
     }
 }

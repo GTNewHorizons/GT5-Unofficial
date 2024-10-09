@@ -5,12 +5,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -33,10 +33,6 @@ import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.core.handler.CompatIntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
-import gtPlusPlus.core.handler.events.EntityDeathHandler;
-import gtPlusPlus.core.handler.events.MolecularTransformerTooltipNotice;
-import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -46,12 +42,8 @@ import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
+@EventBusSubscriber
 public class CommonProxy implements IFuelHandler {
-
-    public CommonProxy() {
-        // Should Register Gregtech Materials I've Made
-        MinecraftForge.EVENT_BUS.register(this);
-    }
 
     public void preInit(final FMLPreInitializationEvent e) {
         Logger.INFO("Doing some house cleaning.");
@@ -81,20 +73,6 @@ public class CommonProxy implements IFuelHandler {
 
     public void init(final FMLInitializationEvent e) {
         CI.init();
-
-        if (Mods.AdvancedSolarPanel.isModLoaded()) {
-            MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
-        }
-        // Handles Sleep Benefits
-        PlayerSleepEventHandler.init();
-        // Handles Magic Feather
-        MinecraftForge.EVENT_BUS.register(ModItems.itemMagicFeather);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(ModItems.itemMagicFeather);
-        MinecraftForge.EVENT_BUS.register(new EnderDragonDeathHandler());
-        MinecraftForge.EVENT_BUS.register(new EntityDeathHandler());
-
         // Compat Handling
         CompatHandler.registerMyModsOreDictEntries();
         CompatHandler.intermodOreDictionarySupport();
@@ -221,7 +199,7 @@ public class CommonProxy implements IFuelHandler {
 
     @Optional.Method(modid = Mods.Names.BAUBLES)
     @SubscribeEvent
-    public void onPlayerAttacked(LivingAttackEvent event) {
+    public static void onPlayerAttacked(LivingAttackEvent event) {
         if (!(event.entityLiving instanceof EntityPlayer player)) {
             return;
         }

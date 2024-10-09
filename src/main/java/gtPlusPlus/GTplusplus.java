@@ -46,7 +46,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.data.LocaleUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.block.AgrichemFluids;
-import gtPlusPlus.plugin.fixes.vanilla.VanillaBedHeightFix;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -164,7 +163,6 @@ public class GTplusplus {
         MetaGTProxy.preInit();
         AgrichemFluids.preInit();
         fixVanillaOreDict();
-        new VanillaBedHeightFix();
     }
 
     @EventHandler

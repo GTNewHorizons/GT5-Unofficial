@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.event.NEIRegisterHandlerInfosEvent;
@@ -19,6 +21,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
+@EventBusSubscriber
 public class NEIGTPPConfig implements IConfigureNEI {
 
     public static boolean sIsAdded = true;
@@ -80,7 +83,7 @@ public class NEIGTPPConfig implements IConfigureNEI {
     }
 
     @SubscribeEvent
-    public void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
+    public static void registerHandlerInfo(NEIRegisterHandlerInfosEvent event) {
         event.registerHandlerInfo(
             new HandlerInfo.Builder("gtpp.recipe.lftr.sparging", GTPPCore.name, Mods.GTPlusPlus.ID)
                 .setDisplayStack(GregtechItemList.Controller_Sparge_Tower.get(1))

@@ -12,11 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -44,6 +44,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 
+@EventBusSubscriber(side = Side.CLIENT)
 public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements IAddGregtechLogo, IAddUIWidgets {
 
     private static final HashMap<MTEAdvDebugStructureWriter, BoundHighlighter> bondingBoxes = new HashMap<>(1);
@@ -338,19 +339,11 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
         return false;
     }
 
-    public static class ForgeEventHandler {
-
-        public ForgeEventHandler() {
-            MinecraftForge.EVENT_BUS.register(this);
-        }
-
-        @SuppressWarnings("unused")
-        @SideOnly(Side.CLIENT)
-        @SubscribeEvent
-        public void onRenderWorldLast(RenderWorldLastEvent e) {
-            for (BoundHighlighter boundingBox : bondingBoxes.values()) {
-                boundingBox.renderHighlightedBlock(e);
-            }
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onRenderWorldLast(RenderWorldLastEvent e) {
+        for (BoundHighlighter boundingBox : bondingBoxes.values()) {
+            boundingBox.renderHighlightedBlock(e);
         }
     }
 

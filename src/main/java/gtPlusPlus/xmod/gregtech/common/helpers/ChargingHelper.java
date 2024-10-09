@@ -15,6 +15,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import baubles.api.BaublesApi;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -36,15 +38,16 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEWirelessCh
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
+@EventBusSubscriber
 public class ChargingHelper {
 
     private static final Map<String, Pair<MTEWirelessCharger, Byte>> mValidPlayers = new HashMap<>();
-    protected static Map<BlockPos, MTEWirelessCharger> mChargerMap = new HashMap<>();
-    private int mTickTimer = 0;
+    private static final Map<BlockPos, MTEWirelessCharger> mChargerMap = new HashMap<>();
+    private static int mTickTimer = 0;
     private static final int mTickMultiplier = 20;
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onServerTick(ServerTickEvent event) {
+    public static void onServerTick(ServerTickEvent event) {
         if (++mTickTimer % mTickMultiplier == 0) {
             if (Utils.isServer()) {
                 for (EntityPlayer mPlayerMan : PlayerUtils.getOnlinePlayers()) {
@@ -55,7 +58,7 @@ public class ChargingHelper {
     }
 
     @SuppressWarnings("unused")
-    private void doPlayerChargeTick(EntityPlayer mPlayerMan) {
+    private static void doPlayerChargeTick(EntityPlayer mPlayerMan) {
         try {
             long mVoltage;
             long mEuStored;
@@ -178,7 +181,7 @@ public class ChargingHelper {
         }
     }
 
-    private boolean canCharge(MTEWirelessCharger charger, EntityPlayer chargeablePlayer,
+    private static boolean canCharge(MTEWirelessCharger charger, EntityPlayer chargeablePlayer,
         Map<String, UUID> longRangeChargers, Map<String, UUID> shortRangeChargers) {
         if (charger.getMode() == 0) {
             return !longRangeChargers.isEmpty() && longRangeChargers.containsKey(chargeablePlayer.getDisplayName());
@@ -192,7 +195,7 @@ public class ChargingHelper {
         }
     }
 
-    private double calculateDistance(MTEWirelessCharger mEntityTemp, EntityPlayer mPlayerMan) {
+    private static double calculateDistance(MTEWirelessCharger mEntityTemp, EntityPlayer mPlayerMan) {
         if (mEntityTemp == null || mPlayerMan == null) {
             return 0;
         }
@@ -201,14 +204,14 @@ public class ChargingHelper {
             mEntityTemp.getPositionOfEntity(mPlayerMan));
     }
 
-    private void chargeItems(@Nonnull MTEWirelessCharger mEntity, ItemStack[] mItems) {
+    private static void chargeItems(@Nonnull MTEWirelessCharger mEntity, ItemStack[] mItems) {
         if (mItems == null || mItems.length == 0) {
             return;
         }
         chargeItemsEx(mEntity, mItems);
     }
 
-    private void chargeItemsEx(@Nonnull MTEWirelessCharger mEntity, ItemStack[] mItems) {
+    private static void chargeItemsEx(@Nonnull MTEWirelessCharger mEntity, ItemStack[] mItems) {
         // Bad Inventory
         if (mItems == null || mItems.length == 0) {
             return;

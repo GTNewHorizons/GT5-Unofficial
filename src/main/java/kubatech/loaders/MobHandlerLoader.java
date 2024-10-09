@@ -36,11 +36,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.MinecraftForge;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.kuba6000.mobsinfo.api.IChanceModifier;
 import com.kuba6000.mobsinfo.api.MobDrop;
 import com.kuba6000.mobsinfo.api.MobRecipe;
@@ -51,22 +48,13 @@ import com.kuba6000.mobsinfo.api.event.PreMobsRegistrationEvent;
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.util.GTUtility;
-import kubatech.Tags;
 import kubatech.config.Config;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
 
+@EventBusSubscriber
 public class MobHandlerLoader {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Mob Handler Loader]");
-
-    private static MobHandlerLoader instance = null;
-
-    public static void init() {
-        instance = new MobHandlerLoader();
-        MinecraftForge.EVENT_BUS.register(instance);
-    }
-
-    public static Map<String, MobEECRecipe> recipeMap = new HashMap<>();
+    public static final Map<String, MobEECRecipe> recipeMap = new HashMap<>();
 
     public static class MobEECRecipe {
 
@@ -203,13 +191,13 @@ public class MobHandlerLoader {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public void onPreMobsRegistration(PreMobsRegistrationEvent event) {
+    public static void onPreMobsRegistration(PreMobsRegistrationEvent event) {
         recipeMap.clear();
     }
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public void onPostMobRegistration(PostMobRegistrationEvent event) {
+    public static void onPostMobRegistration(PostMobRegistrationEvent event) {
         if (!event.drops.isEmpty() && event.recipe.isUsableInVial) {
             for (MobDrop drop : event.drops) {
                 if (drop.playerOnly) {
@@ -229,7 +217,7 @@ public class MobHandlerLoader {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public void onMobNEIRegistration(MobNEIRegistrationEvent event) {
+    public static void onMobNEIRegistration(MobNEIRegistrationEvent event) {
         MobEECRecipe recipe = recipeMap.get(event.mobName);
         if (recipe != null) {
             event.additionalInformation.addAll(

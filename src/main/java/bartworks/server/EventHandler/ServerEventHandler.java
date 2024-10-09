@@ -18,6 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
 import bartworks.API.SideReference;
 import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
@@ -30,19 +32,18 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 
+@EventBusSubscriber
 public class ServerEventHandler {
 
-    // MinecraftForge.EVENT_BUS
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
+    public static void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
         if (event == null || !(event.entity instanceof EntityPlayerMP) || !SideReference.Side.Server) return;
         GTValues.NW.sendToPlayer(new PacketOreDictCache(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
         GTValues.NW.sendToPlayer(new PacketServerJoined(null), (EntityPlayerMP) event.entity);
     }
 
-    // FMLCommonHandler.instance().bus()
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
+    public static void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
         if (event == null || !(event.player instanceof EntityPlayerMP)
             || event.player.worldObj.getTotalWorldTime() % 20 != 0) return;
 

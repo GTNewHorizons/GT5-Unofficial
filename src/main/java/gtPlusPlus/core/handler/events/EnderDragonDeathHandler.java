@@ -7,6 +7,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.kuba6000.mobsinfo.api.IMobExtraInfoProvider;
 import com.kuba6000.mobsinfo.api.MobDrop;
 import com.kuba6000.mobsinfo.api.MobRecipe;
@@ -18,6 +19,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
+@EventBusSubscriber
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = "mobsinfo")
 public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
 
@@ -27,7 +29,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
         .getClass("com.brandon3055.draconicevolution.common.entity.EntityCustomDragon");
 
     @SubscribeEvent
-    public void onEntityDrop(LivingDropsEvent event) {
+    public static void onEntityDrop(LivingDropsEvent event) {
         int aCountTotal = 0;
         if (mHardcoreDragonClass != null && mHardcoreDragonClass.isInstance(event.entityLiving)) {
             for (int y = 0; y < MathUtils.randInt(100, 250); y++) {
