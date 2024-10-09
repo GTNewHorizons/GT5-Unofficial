@@ -255,7 +255,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public int getMaxParallelRecipes() {
-        return (this.mSize * 8 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (this.mSize * (mPlasmaMode ? 8 : 1) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
