@@ -150,14 +150,13 @@ public class GodforgeMath {
         }
 
         if (godforge.isUpgradeActive(6)) {
+            fuelFactorMultiplier = 1 + calculateEffectiveFuelFactor(godforge) / 15f;
             if (godforge.isUpgradeActive(13)) {
                 if (isMoltenOrSmeltingWithUpgrade) {
-                    fuelFactorMultiplier = 1 + calculateEffectiveFuelFactor(godforge) / 15f * 3;
+                    fuelFactorMultiplier *= 3;
                 } else {
-                    fuelFactorMultiplier = 1 + calculateEffectiveFuelFactor(godforge) / 15f * 2;
+                    fuelFactorMultiplier *= 2;
                 }
-            } else {
-                fuelFactorMultiplier = 1 + calculateEffectiveFuelFactor(godforge) / 15f;
             }
         }
 
@@ -197,7 +196,7 @@ public class GodforgeMath {
         double maxBatteryDiscount = 1;
 
         if (godforge.isUpgradeActive(8)) {
-            maxBatteryDiscount = 1 - (1 - Math.pow(1.001, -0.01 * godforge.getMaxBatteryCharge())) / 20;
+            maxBatteryDiscount = 1 - (1 - Math.pow(1.05, -0.01 * godforge.getMaxBatteryCharge())) / 20;
         }
 
         if (godforge.isUpgradeActive(19)) {
@@ -211,12 +210,12 @@ public class GodforgeMath {
         }
 
         if (module instanceof MTEExoticModule) {
-            if (!godforge.isUpgradeActive(25)) {
-                fillRatioDiscount = 1;
-                maxBatteryDiscount = 1;
-            } else {
+            if (godforge.isUpgradeActive(25)) {
                 fillRatioDiscount = Math.sqrt(fillRatioDiscount);
                 maxBatteryDiscount = Math.sqrt(maxBatteryDiscount);
+            } else {
+                fillRatioDiscount = 1;
+                maxBatteryDiscount = 1;
             }
         }
 
@@ -224,7 +223,7 @@ public class GodforgeMath {
     }
 
     public static void calculateProcessingVoltageForModules(MTEBaseModule module, MTEForgeOfGods godforge) {
-        long voltage = Integer.MAX_VALUE;
+        long voltage = 2_000_000_000;
 
         if (godforge.isUpgradeActive(4)) {
             voltage += calculateEffectiveFuelFactor(godforge) * 100_000_000L;
