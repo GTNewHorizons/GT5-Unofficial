@@ -149,7 +149,7 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
             .addInfo("Use screwdriver to adjust fitting of turbine")
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
-            .addCasingInfo("SC Turbine Casing", 24)
+            .addCasingInfoMin("SC Turbine Casing", 24, false)
             .addDynamoHatch("Back center", 1)
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Supercritical Fluid, Side centered", 2)

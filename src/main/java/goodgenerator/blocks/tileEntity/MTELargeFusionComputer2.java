@@ -72,10 +72,10 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
                     + "Tech"
                     + EnumChatFormatting.GRAY
                     + " Energy/Laser Hatches!")
-            .addCasingInfo("Fusion Machine Casing", 1664)
-            .addCasingInfo("Compact Fusion Coil", 560)
-            .addCasingInfo("Duranium Frame Box", 128)
-            .addCasingInfo("Iridium Reinforced Borosilicate Glass Block", 63)
+            .addCasingInfoMin("Fusion Machine Casing", 1664, false)
+            .addCasingInfoMin("Compact Fusion Coil", 560, false)
+            .addCasingInfoMin("Duranium Frame Box", 128, false)
+            .addCasingInfoMin("Iridium Reinforced Borosilicate Glass Block", 63, false)
             .addEnergyHatch("1-32, Hint block with dot 2", 2)
             .addInputHatch("1-16, Hint block with dot 1", 1)
             .addOutputHatch("1-16, Hint block with dot 1", 1)
