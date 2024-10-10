@@ -3770,6 +3770,7 @@ public class MTERecipeLoader implements Runnable {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
+
     }
 
     private static void registerShapelessCraftingRecipes() {

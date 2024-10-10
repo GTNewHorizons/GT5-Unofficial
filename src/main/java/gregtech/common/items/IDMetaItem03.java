@@ -192,6 +192,8 @@ public enum IDMetaItem03 {
     Quark_Creation_Catalyst_Bottom(239),
     Quark_Creation_Catalyst_Top(240),
     Quark_Creation_Catalyst_Unaligned(241),
+    MeteorMinerSchematic1(242),
+    MeteorMinerSchematic2(243),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),

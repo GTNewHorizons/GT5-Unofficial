@@ -1489,6 +1489,10 @@ public enum ItemList implements IItemContainer {
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
 
+    MeteorMiner,
+    MeteorMinerSchematic1,
+    MeteorMinerSchematic2,
+
     Casing_Reinforced_Wood,
 
     Machine_Multi_IndustrialCompressor,
@@ -1512,6 +1516,7 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_IndustrialLaserEngraver,
     Laser_Plate,
+    Laser_Beacon,
     Casing_Laser,
 
     Machine_Multi_IndustrialExtractor,
