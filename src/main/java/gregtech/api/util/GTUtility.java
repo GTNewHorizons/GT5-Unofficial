@@ -120,6 +120,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
@@ -1774,6 +1775,59 @@ public class GTUtility {
             GTOreDictUnificator.get_nocopy(aStack1),
             GTOreDictUnificator.get_nocopy(aStack2),
             aIgnoreNBT);
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(ItemStack[] stacks) {
+        return getItemStackHistogram(stacks, true);
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(ItemStack[] stacks, boolean NBTSensitive) {
+        ItemStackMap<Long> histogram = new ItemStackMap<>(NBTSensitive);
+
+        if (stacks == null) return histogram;
+
+        for (ItemStack stack : stacks) {
+            if (stack == null) continue;
+            histogram.merge(stack, (long) stack.stackSize, (Long a, Long b) -> a + b);
+        }
+
+        return histogram;
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(Iterable<ItemStack> stacks) {
+        return getItemStackHistogram(stacks, true);
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(Iterable<ItemStack> stacks, boolean NBTSensitive) {
+        ItemStackMap<Long> histogram = new ItemStackMap<>(NBTSensitive);
+
+        if (stacks == null) return histogram;
+
+        for (ItemStack stack : stacks) {
+            if (stack == null) continue;
+            histogram.merge(stack, (long) stack.stackSize, (Long a, Long b) -> a + b);
+        }
+
+        return histogram;
+    }
+
+    public static ArrayList<ItemStack> getStacksOfSize(ItemStackMap<Long> map, int maxStackSize) {
+        ArrayList<ItemStack> list = new ArrayList<>();
+
+        map.forEach((item, amount) -> {
+            while (amount > 0) {
+                int toRemove = Math
+                    .min(amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue(), maxStackSize);
+
+                ItemStack copy = item.copy();
+                copy.stackSize = toRemove;
+                list.add(copy);
+
+                amount -= toRemove;
+            }
+        });
+
+        return list;
     }
 
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
@@ -4614,6 +4668,11 @@ public class GTUtility {
             .mapToObj(list::getCompoundTagAt);
     }
 
+    public static Stream<ItemStack> streamInventory(IInventory inv) {
+        return IntStream.range(0, inv.getSizeInventory())
+            .mapToObj(inv::getStackInSlot);
+    }
+
     public static boolean equals(ItemStack[] a, ItemStack[] b) {
         // because stupid mojang didn't override equals for us
         if (a == null && b == null) return true;
@@ -4818,8 +4877,83 @@ public class GTUtility {
         @Nonnull
         public ItemStack getItemStack() {
             ItemStack itemStack = new ItemStack(item(), 1, metaData());
-            itemStack.setTagCompound(nbt());
+            NBTTagCompound nbt = nbt();
+            itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
             return itemStack;
+        }
+
+        @Nonnull
+        public ItemStack getItemStack(int stackSize) {
+            ItemStack itemStack = new ItemStack(item(), stackSize, metaData());
+            NBTTagCompound nbt = nbt();
+            itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
+            return itemStack;
+        }
+    }
+
+    @AutoValue
+    public abstract static class FluidId {
+
+        public static FluidId create(NBTTagCompound tag) {
+            return new AutoValue_GTUtility_FluidId(
+                FluidRegistry.getFluid(tag.getString("FluidName")),
+                tag.hasKey("Tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
+                tag.hasKey("Amount", Constants.NBT.TAG_INT) ? tag.getInteger("Amount") : null);
+        }
+
+        public NBTTagCompound writeToNBT() {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setString("FluidName", fluid().getName());
+            if (nbt() != null) tag.setTag("Tag", nbt());
+            Integer amount = amount();
+            if (amount != null) tag.setInteger("Amount", amount);
+            return tag;
+        }
+
+        public static FluidId create(FluidStack fluidStack) {
+            return createWithCopy(fluidStack.getFluid(), null, fluidStack.tag);
+        }
+
+        public static FluidId createWithAmount(FluidStack fluidStack) {
+            return createWithCopy(fluidStack.getFluid(), (Integer) fluidStack.amount, fluidStack.tag);
+        }
+
+        public static FluidId create(Fluid fluid) {
+            return createNoCopy(fluid, null, null);
+        }
+
+        public static FluidId createWithCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+            return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
+        }
+
+        /**
+         * This method does not copy the NBT tag.
+         */
+        public static FluidId createNoCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+            return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
+        }
+
+        protected abstract Fluid fluid();
+
+        @Nullable
+        protected abstract NBTTagCompound nbt();
+
+        @Nullable
+        protected abstract Integer amount();
+
+        @Nonnull
+        public FluidStack getFluidStack() {
+            NBTTagCompound nbt = nbt();
+            return new FluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+        }
+
+        @Nonnull
+        public FluidStack getFluidStack(int amount) {
+            NBTTagCompound nbt = nbt();
+            return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
     }
 
