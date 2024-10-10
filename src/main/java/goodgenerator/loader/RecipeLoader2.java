@@ -449,7 +449,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T8.get(1))
-            .metadata(RESEARCH_TIME, 180 * HOURS)
+            .metadata(RESEARCH_TIME, 18 * HOURS)
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UHV.get(8),
@@ -470,7 +470,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T9.get(1))
-            .metadata(RESEARCH_TIME, 360 * HOURS)
+            .metadata(RESEARCH_TIME, 36 * HOURS)
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UEV.get(8),
