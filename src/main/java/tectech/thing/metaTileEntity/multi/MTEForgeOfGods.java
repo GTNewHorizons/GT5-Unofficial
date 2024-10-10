@@ -200,7 +200,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final String TOOLTIP_BAR = EnumChatFormatting.AQUA
         + "--------------------------------------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
-        : GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
+        : GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 1);
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         // 1000 blocks max per placement.
