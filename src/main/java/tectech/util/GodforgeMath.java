@@ -196,7 +196,7 @@ public class GodforgeMath {
         double maxBatteryDiscount = 1;
 
         if (godforge.isUpgradeActive(8)) {
-            maxBatteryDiscount = 1 - (1 - Math.pow(1.05, -0.01 * godforge.getMaxBatteryCharge())) / 20;
+            maxBatteryDiscount = 1 - (1 - Math.pow(1.05, -0.05 * godforge.getMaxBatteryCharge())) / 20;
         }
 
         if (godforge.isUpgradeActive(19)) {
