@@ -543,12 +543,17 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         }
         if (oreBlock instanceof BlockOresAbstract) {
             TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(posX, posY, posZ);
-            if (tTileEntity instanceof TileEntityOres && ((TileEntityOres) tTileEntity).mMetaData >= 16000) {
-                // GTLog.out.println("Running Small Ore");
-                return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
+            if (tTileEntity instanceof TileEntityOres tTileEntityOres) {
+                if (tTileEntityOres.mMetaData >= 16000) {
+                    // Small ore
+                    return oreBlock
+                        .getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
+                } else {
+                    return tTileEntityOres.getSilkTouchDrops(oreBlock);
+                }
             }
         }
-        // GTLog.out.println("Running Normal Ore");
+        // Regular ore
         return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, 0);
     }
 
