@@ -40,6 +40,7 @@ public class BWTooltipReference {
     public static final String MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS = MULTIBLOCK_ADDED_VIA_BARTWORKS
         .apply(GREEN + "bartimaeusnek");
 
+    @Deprecated
     public static final String TT_BLUEPRINT = "To see the structure, use a " + TT + " Blueprint on the Controller!";
 
 }

@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -466,20 +465,16 @@ public class MTELargeEssentiaGenerator extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Essentia Generator")
-            .addInfo("Controller block for the Large Essentia Generator")
             .addInfo("Maybe some Thaumaturges are upset by it. . .")
             .addInfo("Transform Essentia into energy!")
             .addInfo("The Diffusion Cell determines the highest hatch tier that the LEG can accept.")
             .addInfo("Supports normal Dynamo Hatches or TecTech ones for up to 64A, but no Laser Hatches.")
             .addInfo("You can find more information about this generator in the Thaumonomicon.")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .addMaintenanceHatch("Hint block with dot 1", 1)
             .addInputHatch("Hint block with dot 1", 1)
             .addDynamoHatch("Hint block with dot 1", 1)
             .addOtherStructurePart("Essentia Input Hatch", "Essentia Input", 1)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

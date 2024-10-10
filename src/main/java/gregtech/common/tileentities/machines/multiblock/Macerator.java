@@ -78,8 +78,6 @@ public class Macerator extends StackableController<Macerator, MaceratorProcessin
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Macerator")
-            .addInfo("Controller for the Macerator")
-            .addSeparator()
             .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
             .addController("Bottom Front Center")
             .addCasingInfoExactly("Test Casing", 60, false)
@@ -90,7 +88,7 @@ public class Macerator extends StackableController<Macerator, MaceratorProcessin
             .addOutputBus("Any non-optional external facing casing on the stacks")
             .addStructureInfo(
                 String.format("Stackable middle stacks between %d-%d time(s).", getMinStacks(), getMaxStacks()))
-            .toolTipFinisher("Wildcard");
+            .toolTipFinisher();
         return tt;
     }
 

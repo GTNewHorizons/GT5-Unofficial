@@ -32,7 +32,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISurvivalConstructable {
@@ -64,7 +63,6 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
             .addInfo("Only one Energy Hatch is allowed per Processing Unit")
             .addInfo("All recipe times in this multi are very long, watch out!")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 9, 3, false)
             .addController("Bottom Center")
             .addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
@@ -79,7 +77,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
             .addStructureInfo("Muffler's Tier must be IV+")
             .addStructureInfo("2-4x Input Hatches, 1-2x Output Hatches")
             .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

@@ -42,14 +42,12 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Combustion Generator")
-            .addInfo("Controller block for the Extreme Combustion Engine")
             .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
             .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
             .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
             .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
             .addInfo("You need to wait for it to reach 300% to output full power")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casing", 16, 22, false)
@@ -62,7 +60,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
             .addInputHatch("HOG, next to a Gear Box", 1)
             .addInputHatch("Lubricant, next to a Gear Box", 1)
             .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

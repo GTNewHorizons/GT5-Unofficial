@@ -377,10 +377,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addInfo("Nothing special just override me")
-            .toolTipFinisher(CommonValues.TEC_MARK_GENERAL);
-        return tt;
+        return new MultiblockTooltipBuilder().addInfo("MISSING TOOLTIP")
+            .toolTipFinisher();
     }
 
     /**

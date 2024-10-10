@@ -119,14 +119,12 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace")
-            .addInfo("Controller block for the Electric Blast Furnace")
             .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
             .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
             .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
             .addInfo("Additionally gives +100K for every tier past MV")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
@@ -140,7 +138,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addOutputHatch("Fluid outputs, Any bottom layer casing")
             .addOutputHatch("Pollution gases (CO2/CO/SO2), Any top layer casing", 1)
             .addStructureInfo("Pollution gas output amount scales with Muffler Hatch tier")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -138,7 +138,6 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
             .addInfo(
                 EnumChatFormatting.GOLD
                     + "On the way to be slowly removed. Use it strictly if you have no alternative.")
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casing", 14, 24, false)
@@ -148,7 +147,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
             .addInputHatch("Any casing", 1)
             .addOutputBus("Any casing", 1)
             .addOutputHatch("Any casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

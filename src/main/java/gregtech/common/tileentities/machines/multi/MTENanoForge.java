@@ -361,38 +361,33 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Nanite Fabricator")
-            .addInfo("Controller block for the Nano Forge")
             .addInfo("Requires insane amounts of power to create nanites. Each tier")
             .addInfo("the multi gains a new building next to it. The nanite in the")
             .addInfo("controller slot controls the tier.")
-            .addInfo("--------------------------------------------")
+            .addSeparator()
             .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
             .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 2)
             .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 3)
-            .addInfo("--------------------------------------------")
+            .addSeparator()
             .addInfo("If a recipe's tier is lower than the tier of the Nano Forge")
             .addInfo("it gains " + EnumChatFormatting.RED + "perfect overclock" + EnumChatFormatting.GRAY + ".")
-            .addInfo(AuthorBlueWeabo)
-            .addSeparator()
             .beginStructureBlock(30, 38, 13, false)
-            .addStructureInfo("Nano Forge Structure is too complex! See schematic for details.")
-            .addStructureInfo("--------------------------------------------")
             .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.GRAY)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "527" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "171" + EnumChatFormatting.GRAY + " Stellar Alloy Frame Box")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.GRAY)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "148" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "16" + EnumChatFormatting.GRAY + " Assembling Line Casing")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .addStructureInfo("Tier " + EnumChatFormatting.DARK_PURPLE + 3 + EnumChatFormatting.GRAY)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "228" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "84" + EnumChatFormatting.GRAY + " Stellar Alloy Frame Box")
             .addStructureInfo(EnumChatFormatting.GOLD + "16" + EnumChatFormatting.GRAY + " Assembling Line Casing")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + "1"
@@ -436,8 +431,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                     + "+"
                     + EnumChatFormatting.GRAY
                     + " output busses.")
-            .addStructureInfo("--------------------------------------------")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }
 

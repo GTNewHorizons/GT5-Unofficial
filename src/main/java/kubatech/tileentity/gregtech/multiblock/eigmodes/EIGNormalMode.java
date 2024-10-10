@@ -2,6 +2,8 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 
 import static kubatech.api.utils.StringUtils.voltageTooltipFormatted;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
@@ -68,7 +70,8 @@ public class EIGNormalMode extends EIGMode {
         double fertilizerBonusMultiplier = this.getFertilizerBoost() * 100;
         String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
 
-        return builder.addInfo("-------------------- NORMAL CROPS --------------------")
+        return builder.addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + "Normal Crops:")
             .addInfo("Minimal voltage tier: " + minVoltageTier)
             .addInfo("Starting with " + this.getStartingSlotCount() + " slot")
             .addInfo(

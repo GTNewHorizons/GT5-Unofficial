@@ -225,7 +225,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 + EnumChatFormatting.WHITE
                 + GTUtility.formatNumbers(getWaterTier())
                 + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the High Energy Laser Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
@@ -272,7 +271,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(13, 9, 9, true)
             .addCasingInfoRangeColored(
                 "Naquadria-Reinforced Water Plant Casing",
@@ -303,8 +301,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             .addOtherStructurePart("Input Hatch, Output Hatch", EnumChatFormatting.GOLD + "1+", 1)
             .addOtherStructurePart("Lens Housing", EnumChatFormatting.GOLD + "1", 2)
             .addOtherStructurePart("Lens Indicator", EnumChatFormatting.GOLD + "1", 3)
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

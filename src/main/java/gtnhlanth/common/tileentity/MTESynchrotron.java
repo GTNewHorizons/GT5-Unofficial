@@ -492,12 +492,10 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Accelerator")
-            .addInfo("Controller block for the Synchrotron")
             .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation,")
             .addInfo("in the form of photons")
             .addInfo("Antenna Casings can be one of two tiers, upgrade them to improve output rate and energy scaling")
             .addInfo("Minimum input focus: " + MIN_INPUT_FOCUS)
-            .addInfo(DescTextLocalization.BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
 
             .addInfo("Use a lower temperature coolant to improve output focus")
@@ -513,7 +511,6 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
         }
 
         tt.addInfo("Requires 32 kL/s of coolant")
-            .addSeparator()
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front middle")
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 676, false)
@@ -528,8 +525,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
             .addInputHatch(addDotText(4))
             .addOutputHatch(addDotText(5))
             .addEnergyHatch(addDotText(6))
-
-            .toolTipFinisher("GTNH: Lanthanides");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -29,6 +29,7 @@ import kubatech.api.utils.StringUtils;
 
 public class Variables {
 
+    @Deprecated // use GTValues.authorkuba
     public static final String Author = "Author: "
         + StringUtils.applyRainbow("kuba6000", 0, EnumChatFormatting.BOLD.toString());
 
@@ -46,6 +47,7 @@ public class Variables {
         return b.toString();
     }
 
+    @Deprecated
     public static final String StructureHologram = "To see the structure, use a " + EnumChatFormatting.BLUE
         + "Structure"
         + EnumChatFormatting.DARK_BLUE

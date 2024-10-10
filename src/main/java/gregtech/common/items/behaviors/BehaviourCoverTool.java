@@ -93,7 +93,10 @@ public class BehaviourCoverTool extends BehaviourNone {
     private void doCopy(TileEntity aTileEntity, World aWorld, int aX, int aY, int aZ, ForgeDirection side, float hitX,
         float hitY, float hitZ, List aList) {
         aList.add(
-            "----- X: " + EnumChatFormatting.AQUA
+            EnumChatFormatting.STRIKETHROUGH + "-----"
+                + EnumChatFormatting.RESET
+                + " X: "
+                + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(aX)
                 + EnumChatFormatting.RESET
                 + " Y: "
@@ -108,7 +111,9 @@ public class BehaviourCoverTool extends BehaviourNone {
                 + EnumChatFormatting.AQUA
                 + aWorld.provider.dimensionId
                 + EnumChatFormatting.RESET
-                + " -----");
+                + " "
+                + EnumChatFormatting.STRIKETHROUGH
+                + "-----");
         if (aTileEntity instanceof ICoverable tCoverable) {
             final ForgeDirection tSide = tCoverable.getCoverItemAtSide(side) != null ? side
                 : tCoverable.getCoverItemAtSide(GTUtility.determineWrenchingSide(side, hitX, hitY, hitZ)) != null

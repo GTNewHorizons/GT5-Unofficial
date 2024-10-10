@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.multis;
 
 import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -129,13 +128,11 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Transformer")
-            .addInfo("Controller block for the Manual Trafo")
             .addInfo("Operates in 4 diffrent modes:")
             .addInfo("Mode 1: Circuit 0 in controller: Direct-Upstep")
             .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
             .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
             .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)")
-            .addSeparator()
             .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false)
             .addController("Front bottom center")
             .addCasingInfoMin("MV Machine Casing", 0, false)
@@ -144,11 +141,12 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
             .addMaintenanceHatch("Any bottom layer casing", 1)
             .addEnergyHatch("Any bottom layer casing", 1)
             .addDynamoHatch("Any top layer casing", 2)
-            .addStructureInfo("---------TAPPED MODE---------")
+            .addStructureInfo("")
+            .addStructureInfo("Tapped Mode :")
             .addEnergyHatch("Touching Transformer-Winding Blocks", 3)
             .addDynamoHatch("Touching Transformer-Winding Blocks", 3)
             .addStructureInfo("Hatches touching Transformer-Winding Blocks must be tiered from bottom to top")
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 

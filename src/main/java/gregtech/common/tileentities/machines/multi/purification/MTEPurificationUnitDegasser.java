@@ -292,7 +292,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Residual Decontaminant Degasser Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
@@ -458,7 +457,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 25, 17, false)
             .addCasingInfoRangeColored(
                 "Heat-Resistant Trinium Plated Casing",
@@ -486,7 +484,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "Degasser Control Hatch",
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
                 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

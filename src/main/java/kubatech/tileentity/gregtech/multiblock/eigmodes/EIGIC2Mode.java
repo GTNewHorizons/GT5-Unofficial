@@ -3,6 +3,8 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 import static kubatech.api.utils.StringUtils.voltageTooltipFormatted;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_ACCELERATOR_TIER;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
@@ -71,7 +73,8 @@ public class EIGIC2Mode extends EIGMode {
         double fertilizerBonusMultiplier = this.getFertilizerBoost() * 100;
         String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
 
-        return builder.addInfo("---------------------- IC2 CROPS ---------------------")
+        return builder.addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + "IC2 Crops:")
             .addInfo("Minimal voltage tier: " + minVoltageTier)
             .addInfo("Minimal glass tier: " + minGlassTier)
             .addInfo("Starting with " + this.getStartingSlotCount() + " slot")

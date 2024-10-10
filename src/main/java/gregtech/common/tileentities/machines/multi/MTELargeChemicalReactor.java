@@ -101,10 +101,8 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor")
-            .addInfo("Controller block for the Large Chemical Reactor")
             .addInfo("Does not lose efficiency when overclocked")
             .addInfo("Accepts fluids instead of fluid cells")
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, false)
             .addController("Front center")
             .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
@@ -117,7 +115,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             .addOutputBus("Any casing", 1, 2)
             .addOutputHatch("Any casing", 1, 2)
             .addStructureInfo("You can have multiple hatches/busses")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -1546,7 +1546,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEAssemblyLine(ASSEMBLING_LINE_CONTROLLER.ID, "multimachine.assemblyline", "Assembling Line")
                 .getStackForm(1L));
         ItemList.Machine_Multi_DieselEngine.set(
-            new MTEDieselEngine(COMBUSTION_ENGINE_CONTROLLER.ID, "multimachine.dieselengine", "Combustion Engine")
+            new MTEDieselEngine(COMBUSTION_ENGINE_CONTROLLER.ID, "multimachine.dieselengine", "Large Combustion Engine")
                 .getStackForm(1L));
         ItemList.Machine_Multi_ExtremeDieselEngine.set(
             new MTEExtremeDieselEngine(

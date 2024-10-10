@@ -85,8 +85,6 @@ public class MTEBaseModule extends TTMultiblockBase {
     private static final int VOLTAGE_WINDOW_ID = 9;
     private static final int GENERAL_INFO_WINDOW_ID = 10;
     private static final int TEXTURE_INDEX = 960;
-    protected static final String TOOLTIP_BAR = EnumChatFormatting.AQUA
-        + "--------------------------------------------------------------------------";
 
     public MTEBaseModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

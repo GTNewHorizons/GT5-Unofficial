@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -107,14 +106,11 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
-            .addInfo("Controller block for the Coolant Tower.")
             .addInfo("Turn Steam back to Distilled Water.")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .addController("Mid of the second layer.")
             .addInputHatch("Input Hatch", 1)
             .addOutputHatch("Output Hatch", 1)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -241,7 +241,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Laser Engraver")
-            .addInfo("Controller Block for the Hyper-Intensity Laser Engraver")
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
@@ -252,8 +251,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("UMV glass accepts all laser source hatches")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
-            .addInfo(AuthorFourIsTheNumber)
-            .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front Center")
             .addCasingInfoMin("Laser Containment Casing", 35, false)
@@ -267,7 +264,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
 

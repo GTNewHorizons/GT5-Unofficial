@@ -19,8 +19,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static kubatech.api.Variables.StructureHologram;
-import static kubatech.api.Variables.buildAuthorList;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -49,7 +48,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.BlockLoader;
 import kubatech.loaders.DEFCRecipes;
@@ -140,13 +138,9 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Crafter")
-            .addInfo("Controller Block for the Draconic Evolution Fusion Crafter")
-            .addInfo(buildAuthorList("kuba6000", "Prometheus0000"))
             .addInfo("Machine can be overclocked by using casings above the recipe tier:")
             .addInfo("Recipe time is divided by number of tiers above the recipe")
             .addInfo("Normal EU OC still applies !")
-            .addInfo(StructureHologram)
-            .addSeparator()
             .beginStructureBlock(5, 10, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Naquadah Alloy Fusion Casing", 19, false)
@@ -161,7 +155,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addOutputHatch("Any bottom casing", 1)
             .addEnergyHatch("Any bottom casing", 1)
             .addMaintenanceHatch("Any bottom casing", 1)
-            .toolTipFinisher(Tags.MODNAME);
+            .toolTipFinisher(GTValues.AuthorKuba, "Prometheus0000");
         return tt;
     }
 

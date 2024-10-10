@@ -272,7 +272,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
         // spotless:off
         tt.addMachineType("Fluid Extractor")
-            .addInfo("Controller block for the Large Fluid Extractor")
             .addInfo(String.format(
                 "%d%% faster than single block machines of the same voltage",
                 (int) Math.round((BASE_SPEED_BONUS - 1) * 100)
@@ -300,7 +299,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 EnumChatFormatting.GRAY
             ))
             .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers.")
-            .addSeparator()
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front Center (Bottom Layer)")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
@@ -313,7 +311,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             .addOutputHatch("Any Robust Tungstensteel Machine Casing", 1)
             .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
             .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         // spotless:on
 
         return tt;
