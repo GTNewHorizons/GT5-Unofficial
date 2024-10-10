@@ -604,6 +604,7 @@ GT5U.gui.config.machine_stats.machines=Machines
 GT5U.gui.config.machine_stats.microwave_energy_transmitter=Microwave Energy Transmitter
 GT5U.gui.config.machine_stats.mass_fabricator=Mass Fabricator
 GT5U.gui.config.machine_stats.teleporter=Teleporter
+GT5U.gui.config.machine_stats.cleanroom=Cleanroom
 GT5U.gui.config.worldgen=Worldgen
 GT5U.gui.config.worldgen.end_asteroids=End Asteroids
 GT5U.gui.config.worldgen.general=General

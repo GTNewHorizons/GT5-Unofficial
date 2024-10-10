@@ -128,6 +128,7 @@ public class MultiblockTooltipBuilder {
      * -----------------------------------------
      *
      * @return Instance this method was called on.
+     * @see #addStructureSeparator()
      */
     public MultiblockTooltipBuilder addSeparator() {
         iLines.add("-----------------------------------------");
@@ -662,6 +663,18 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
         sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        return this;
+    }
+
+    /**
+     * Add a separator line like this, to the structural hint:<br>
+     * -----------------------------------------
+     *
+     * @return Instance this method was called on.
+     * @see #addSeparator()
+     */
+    public MultiblockTooltipBuilder addStructureSeparator() {
+        sLines.add(TAB + "-----------------------------------------");
         return this;
     }
 
