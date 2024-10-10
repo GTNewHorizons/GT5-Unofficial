@@ -20,7 +20,6 @@ import gtPlusPlus.xmod.gregtech.loaders.GTPPBlocks;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingAngleGrinder;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
 import gtPlusPlus.xmod.gregtech.loaders.misc.AddCustomMachineToPA;
-import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderAlgaeFarm;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderMolecularTransformer;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
@@ -85,7 +84,6 @@ public class HandlerGT {
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
         CokeAndPyrolyseOven.onLoadComplete();
         MetaGTProxy.fixIC2FluidNames();
-        RecipeLoaderAlgaeFarm.generateRecipes();
         RecipeLoaderTreeFarm.generateRecipes();
         RecipeLoaderMolecularTransformer.run();
     }
