@@ -200,7 +200,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final String TOOLTIP_BAR = EnumChatFormatting.AQUA
         + "--------------------------------------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
-        : GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
+        : GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 1);
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         // 1000 blocks max per placement.
@@ -451,14 +451,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (upgrades[29]) {
                     maxModuleCount += 4;
                 }
+
+                boolean isFinalUpgradeUnlocked = upgrades[30];
+
                 if (!mInputBusses.isEmpty()) {
-                    if (internalBattery == 0) {
+                    if (internalBattery == 0 || isFinalUpgradeUnlocked) {
                         MTEHatchInputBus inputBus = mInputBusses.get(0);
                         ItemStack[] inputBusInventory = inputBus.getRealInventory();
+                        ItemStack itemToAbsorb = STELLAR_FUEL;
+                        if (isFinalUpgradeUnlocked && internalBattery != 0) {
+                            itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1);
+                        }
                         if (inputBusInventory != null) {
                             for (int i = 0; i < inputBusInventory.length; i++) {
                                 ItemStack itemStack = inputBusInventory[i];
-                                if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
+                                if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
                                     int stacksize = itemStack.stackSize;
                                     if (inputBus instanceof MTEHatchInputBusME meBus) {
                                         ItemStack realItem = meBus.getRealInventory()[i + 16];
@@ -468,20 +475,28 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                                         stacksize = realItem.stackSize;
                                     }
                                     inputBus.decrStackSize(i, stacksize);
-                                    stellarFuelAmount += stacksize;
+                                    if (internalBattery == 0) {
+                                        stellarFuelAmount += stacksize;
+                                    } else {
+                                        gravitonShardsAvailable += stacksize;
+                                    }
                                     inputBus.updateSlots();
                                 }
                             }
                         }
-                        neededStartupFuel = calculateStartupFuelConsumption(this);
-                        if (stellarFuelAmount >= neededStartupFuel) {
-                            stellarFuelAmount -= neededStartupFuel;
-                            increaseBattery(neededStartupFuel);
-                            createRenderer();
+                        if (internalBattery == 0) {
+                            neededStartupFuel = calculateStartupFuelConsumption(this);
+                            if (stellarFuelAmount >= neededStartupFuel) {
+                                stellarFuelAmount -= neededStartupFuel;
+                                increaseBattery(neededStartupFuel);
+                                createRenderer();
+                            }
                         }
-                    } else {
-                        drainFuel();
                     }
+                }
+
+                if (internalBattery != 0) {
+                    drainFuel();
                 }
 
                 determineCompositionMilestoneLevel();
@@ -1398,7 +1413,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(5, 30)
                     .setSize(140, 30))
             .widget(
-                TextWidget.dynamicText(() -> currentMilestone(currentMilestoneID))
+                TextWidget.dynamicText(() -> currentMilestoneLevel(currentMilestoneID))
                     .setScale(0.7f)
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setTextAlignment(Alignment.Center)
@@ -3538,11 +3553,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 + suffix);
     }
 
-    private Text currentMilestone(int milestoneID) {
+    private Text currentMilestoneLevel(int milestoneID) {
+        int milestoneLevel = inversion ? milestoneProgress[milestoneID] : Math.min(milestoneProgress[milestoneID], 7);
         return new Text(
             translateToLocal("gt.blockmachines.multimachine.FOG.milestoneprogress") + ": "
                 + EnumChatFormatting.GRAY
-                + milestoneProgress[milestoneID]);
+                + milestoneLevel);
     }
 
     private Text milestoneProgressText(int milestoneID) {
