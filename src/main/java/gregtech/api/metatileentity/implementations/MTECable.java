@@ -12,9 +12,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.*;
+import gregtech.api.util.*;
+import gregtech.common.blocks.BlockMachines;
+import gregtech.common.blocks.ItemMachines;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -27,10 +34,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
@@ -49,12 +52,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GTCoverNone;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.CoverBehavior;
-import gregtech.api.util.CoverBehaviorBase;
-import gregtech.api.util.GTGCCompat;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverSolarPanel;
@@ -66,6 +63,7 @@ import ic2.api.energy.tile.IEnergyTile;
 import ic2.api.reactor.IReactorChamber;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import org.lwjgl.input.Keyboard;
 
 public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
@@ -262,6 +260,78 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             && (!GTMod.gregtechproxy.gt6Cable || mCheckConnections)) {
             checkConnections();
         }
+//        System.out.printf("Still kicking! %f %d %d`\n", this.mThickNess, this.mAmperage, this.mVoltage);
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) throws NullPointerException{
+        if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+            final ItemStack handItem = aPlayer.inventory.getCurrentItem();
+            IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+
+            //     public MTECable(String aName, float aThickNess, Materials aMaterial, long aCableLossPerMeter, long aAmperage,
+            //        long aVoltage, boolean aInsulated, boolean aCanShock)
+
+            World world = aBaseMetaTileEntity.getWorld();
+            world.setBlock(
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord(),
+                Blocks.air
+            );
+
+            MTECable b;
+            byte temp;
+//            MTECable a = (MTECable) this.newMetaEntity(ItemMachines.getMetaTileEntity(handItem).getBaseMetaTileEntity());
+            if (meta instanceof MTECable a) {
+                temp = ((BaseMetaPipeEntity) aBaseMetaTileEntity).mConnections;
+                aBaseMetaTileEntity.setMetaTileEntity(
+                    b = new MTECable(
+                        a.mName,
+                        a.mThickNess,
+                        a.mMaterial,
+                        a.mCableLossPerMeter,
+                        a.mAmperage,
+                        a.mVoltage,
+                        a.mInsulated,
+                        a.mCanShock
+                    )
+                );
+                b.mCheckConnections = true;
+                b.checkConnections();
+            }
+
+            //.get(1L).tryPlaceItemIntoWorld()
+//            System.out.println(this.getThickNess() + ": success 1");
+//
+//            IGregTechTileEntity gtte = this.getBaseMetaTileEntity();
+//            IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+//            Block block = BlockMachines.getBlockFromItem(handItem.getItem());
+//
+//            byte temp = this.mConnections;
+//
+//            if (meta instanceof MTECable a) {
+//                World world = gtte.getWorld();
+//                // world.getBlock((int) aX, (int) aY, (int) aZ)
+//                this.markDirty();
+//
+//                world.setBlock(
+//                    gtte.getXCoord(),
+//                    gtte.getYCoord(),
+//                    gtte.getZCoord(),
+//                    block,
+//                    handItem.getItemDamage(),
+//                    0b11);
+//
+//                a.mConnections = temp;
+//                a.mCheckConnections = false;
+//                gtte.setMetaTileEntity(meta);
+//
+//                System.out.print("Success 2 !");
+//            }
+
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     @Override
