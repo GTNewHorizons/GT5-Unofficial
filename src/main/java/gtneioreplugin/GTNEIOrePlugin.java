@@ -2,8 +2,6 @@ package gtneioreplugin;
 
 import java.io.File;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +15,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.GT_Version;
 import gtneioreplugin.plugin.NEIPluginConfig;
@@ -47,14 +44,6 @@ public class GTNEIOrePlugin {
     public static final String VERSION = GT_Version.VERSION;
     public static final Logger LOG = LogManager.getLogger(NAME);
     public static File instanceDir;
-    public static final CreativeTabs creativeTab = new CreativeTabs(MODID) {
-
-        @Override
-        public Item getTabIconItem() {
-            return GameRegistry.makeItemStack("gregtech:gt.blockores", 386, 1, null)
-                .getItem();
-        }
-    };
 
     @Mod.Instance(MODID)
     public static GTNEIOrePlugin instance;
