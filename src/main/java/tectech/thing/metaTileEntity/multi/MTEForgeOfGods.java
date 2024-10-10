@@ -451,14 +451,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (upgrades[29]) {
                     maxModuleCount += 4;
                 }
+
+                boolean isFinalUpgradeUnlocked = upgrades[30];
+
                 if (!mInputBusses.isEmpty()) {
-                    if (internalBattery == 0) {
+                    if (internalBattery == 0 || isFinalUpgradeUnlocked) {
                         MTEHatchInputBus inputBus = mInputBusses.get(0);
                         ItemStack[] inputBusInventory = inputBus.getRealInventory();
+                        ItemStack itemToAbsorb = STELLAR_FUEL;
+                        if (isFinalUpgradeUnlocked && internalBattery != 0) {
+                            itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1);
+                        }
                         if (inputBusInventory != null) {
                             for (int i = 0; i < inputBusInventory.length; i++) {
                                 ItemStack itemStack = inputBusInventory[i];
-                                if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
+                                if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
                                     int stacksize = itemStack.stackSize;
                                     if (inputBus instanceof MTEHatchInputBusME meBus) {
                                         ItemStack realItem = meBus.getRealInventory()[i + 16];
@@ -468,20 +475,28 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                                         stacksize = realItem.stackSize;
                                     }
                                     inputBus.decrStackSize(i, stacksize);
-                                    stellarFuelAmount += stacksize;
+                                    if (internalBattery == 0) {
+                                        stellarFuelAmount += stacksize;
+                                    } else {
+                                        gravitonShardsAvailable += stacksize;
+                                    }
                                     inputBus.updateSlots();
                                 }
                             }
                         }
-                        neededStartupFuel = calculateStartupFuelConsumption(this);
-                        if (stellarFuelAmount >= neededStartupFuel) {
-                            stellarFuelAmount -= neededStartupFuel;
-                            increaseBattery(neededStartupFuel);
-                            createRenderer();
+                        if (internalBattery == 0) {
+                            neededStartupFuel = calculateStartupFuelConsumption(this);
+                            if (stellarFuelAmount >= neededStartupFuel) {
+                                stellarFuelAmount -= neededStartupFuel;
+                                increaseBattery(neededStartupFuel);
+                                createRenderer();
+                            }
                         }
-                    } else {
-                        drainFuel();
                     }
+                }
+
+                if (internalBattery != 0) {
+                    drainFuel();
                 }
 
                 determineCompositionMilestoneLevel();
