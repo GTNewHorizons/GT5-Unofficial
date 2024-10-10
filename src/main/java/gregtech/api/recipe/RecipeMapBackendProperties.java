@@ -30,6 +30,11 @@ public final class RecipeMapBackendProperties {
      * Minimum amount of fluid inputs required for the recipes.
      */
     public final int minFluidInputs;
+    /**
+     * Whether to allow recipes which only use a programmed circuit, and no item/fluid inputs. If this is false, such
+     * recipes are optimized away.
+     */
+    public boolean allowCircuitOnly;
 
     /**
      * Whether this backend should check for equality of special slot when searching recipe.
@@ -52,8 +57,8 @@ public final class RecipeMapBackendProperties {
     @Nullable
     public final Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer;
 
-    RecipeMapBackendProperties(int minItemInputs, int minFluidInputs, boolean specialSlotSensitive,
-        boolean disableOptimize,
+    RecipeMapBackendProperties(int minItemInputs, int minFluidInputs, boolean allowCircuitOnly,
+        boolean specialSlotSensitive, boolean disableOptimize,
         Function<? super GTRecipeBuilder, ? extends Iterable<? extends GTRecipe>> recipeEmitter,
         @Nullable Function<? super GTRecipe, ? extends GTRecipe> recipeTransformer) {
         if (minItemInputs < 0 || minFluidInputs < 0) {
@@ -61,6 +66,7 @@ public final class RecipeMapBackendProperties {
         }
         this.minItemInputs = minItemInputs;
         this.minFluidInputs = minFluidInputs;
+        this.allowCircuitOnly = allowCircuitOnly;
         this.specialSlotSensitive = specialSlotSensitive;
         this.disableOptimize = disableOptimize;
         this.recipeEmitter = recipeEmitter;
