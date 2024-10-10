@@ -100,7 +100,6 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addMachineType(String machine) {
         iLines.add(TT_machineType + COLON + EnumChatFormatting.YELLOW + machine + EnumChatFormatting.RESET);
-        this.addSeparator();
         return this;
     }
 
