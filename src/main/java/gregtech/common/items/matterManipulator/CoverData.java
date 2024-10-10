@@ -24,7 +24,7 @@ public class CoverData {
 
     public CoverData(PortableItemStack cover, NBTBase coverData, int tickRateAddition) {
         this.cover = cover;
-        this.coverData = NBTState.toJsonObject(coverData);
+        this.coverData = MMUtils.toJsonObject(coverData);
         this.tickRateAddition = tickRateAddition == 0 ? null : tickRateAddition;
     }
 
@@ -53,7 +53,7 @@ public class CoverData {
 
     public ISerializableObject getCoverData() {
         if (coverDataObject == null) {
-            coverDataObject = getCoverBehaviour().createDataObject(NBTState.toNbt(coverData));
+            coverDataObject = getCoverBehaviour().createDataObject(MMUtils.toNbt(coverData));
         }
 
         return coverDataObject;

@@ -1777,23 +1777,6 @@ public class GTUtility {
             aIgnoreNBT);
     }
 
-    public static ItemStackMap<Long> getItemStackHistogram(ItemStack[] stacks) {
-        return getItemStackHistogram(stacks, true);
-    }
-
-    public static ItemStackMap<Long> getItemStackHistogram(ItemStack[] stacks, boolean NBTSensitive) {
-        ItemStackMap<Long> histogram = new ItemStackMap<>(NBTSensitive);
-
-        if (stacks == null) return histogram;
-
-        for (ItemStack stack : stacks) {
-            if (stack == null) continue;
-            histogram.merge(stack, (long) stack.stackSize, (Long a, Long b) -> a + b);
-        }
-
-        return histogram;
-    }
-
     public static ItemStackMap<Long> getItemStackHistogram(Iterable<ItemStack> stacks) {
         return getItemStackHistogram(stacks, true);
     }
@@ -1804,14 +1787,14 @@ public class GTUtility {
         if (stacks == null) return histogram;
 
         for (ItemStack stack : stacks) {
-            if (stack == null) continue;
+            if (stack == null || stack.getItem() == null) continue;
             histogram.merge(stack, (long) stack.stackSize, (Long a, Long b) -> a + b);
         }
 
         return histogram;
     }
 
-    public static ArrayList<ItemStack> getStacksOfSize(ItemStackMap<Long> map, int maxStackSize) {
+    public static List<ItemStack> getStacksOfSize(ItemStackMap<Long> map, int maxStackSize) {
         ArrayList<ItemStack> list = new ArrayList<>();
 
         map.forEach((item, amount) -> {
@@ -1828,6 +1811,52 @@ public class GTUtility {
         });
 
         return list;
+    }
+
+    public static List<ItemStack> getStacksOfSize(List<ItemStack> map, int maxStackSize) {
+        ArrayList<ItemStack> list = new ArrayList<>();
+
+        map.forEach(stack -> {
+            while (stack.stackSize > 0) {
+                int toRemove = Math.min(stack.stackSize, maxStackSize);
+
+                ItemStack copy = stack.copy();
+                copy.stackSize = toRemove;
+                list.add(copy);
+
+                stack.stackSize -= toRemove;
+            }
+        });
+
+        return list;
+    }
+
+    public static List<ItemStack> mergeStacks(List<ItemStack> stacks) {
+        return mergeStacks(stacks, false, false);
+    }
+
+    public static List<ItemStack> mergeStacks(List<ItemStack> stacks, boolean keepNBT, boolean NBTSensitive) {
+        ArrayList<ItemStack> out = new ArrayList<>();
+        HashMap<ItemId, ItemStack> map = new HashMap<>();
+
+        for (ItemStack stack : stacks) {
+            if (stack == null || stack.getItem() == null) continue;
+
+            ItemId id = NBTSensitive ? ItemId.create(stack) : ItemId.createWithoutNBT(stack);
+
+            ItemStack match = map.get(id);
+
+            if (match == null) {
+                match = stack.copy();
+                if (!keepNBT) match.setTagCompound(null);
+                map.put(id, match);
+                out.add(match);
+            } else {
+                match.stackSize += stack.stackSize;
+            }
+        }
+
+        return out;
     }
 
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
@@ -4692,6 +4721,20 @@ public class GTUtility {
     public static Stream<ItemStack> streamInventory(IInventory inv) {
         return IntStream.range(0, inv.getSizeInventory())
             .mapToObj(inv::getStackInSlot);
+    }
+
+    public static ItemStack[] inventoryToArray(IInventory inv) {
+        return inventoryToArray(inv, true);
+    }
+
+    public static ItemStack[] inventoryToArray(IInventory inv, boolean copyStacks) {
+        ItemStack[] array = new ItemStack[inv.getSizeInventory()];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = copyStacks ? ItemStack.copyItemStack(inv.getStackInSlot(i)) : inv.getStackInSlot(i);
+        }
+
+        return array;
     }
 
     public static boolean equals(ItemStack[] a, ItemStack[] b) {

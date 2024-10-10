@@ -48,6 +48,8 @@ public class BoxRenderer {
     private CapturingTessellator tes;
 
     public void start(double partialTickTime) {
+        check();
+
         TessellatorManager.startCapturing();
 
         tes = (CapturingTessellator) TessellatorManager.get();
@@ -88,15 +90,15 @@ public class BoxRenderer {
         tes.addVertexWithUV(dX, 0, 0, dX, 0);
 
         // top face
-        tes.addVertexWithUV(0, dY, 0, 0, 0);
-        tes.addVertexWithUV(0, dY, dZ, 0, dZ);
-        tes.addVertexWithUV(dX, dY, dZ, dX, dZ);
-        tes.addVertexWithUV(dX, dY, 0, dX, 0);
+        tes.addVertexWithUV(0, dY, 0, dY + 0, 0);
+        tes.addVertexWithUV(0, dY, dZ, dY + 0, dZ);
+        tes.addVertexWithUV(dX, dY, dZ, dY + dX, dZ);
+        tes.addVertexWithUV(dX, dY, 0, dY + dX, 0);
 
-        tes.addVertexWithUV(0, dY, 0, 0, 0);
-        tes.addVertexWithUV(dX, dY, 0, dX, 0);
-        tes.addVertexWithUV(dX, dY, dZ, dX, dZ);
-        tes.addVertexWithUV(0, dY, dZ, 0, dZ);
+        tes.addVertexWithUV(0, dY, 0, dY + 0, 0);
+        tes.addVertexWithUV(dX, dY, 0, dY + dX, 0);
+        tes.addVertexWithUV(dX, dY, dZ, dY + dX, dZ);
+        tes.addVertexWithUV(0, dY, dZ, dY + 0, dZ);
 
         // west face
         tes.addVertexWithUV(0, 0, 0, 0, 0);
@@ -161,6 +163,7 @@ public class BoxRenderer {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
         program.use();
+        check();
 
         // this should only be done once a frame, but there aren't any side effects from calling it more
         GL20.glUniform1f(time_location, (((float) (System.currentTimeMillis() % 2500)) / 1000f));

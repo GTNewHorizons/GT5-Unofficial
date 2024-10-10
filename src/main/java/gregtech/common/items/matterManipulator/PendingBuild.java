@@ -4,6 +4,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -61,7 +62,7 @@ import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import ic2.api.item.ElectricItem;
 
-public class PendingBuild {
+public class PendingBuild implements IPseudoInventory {
 
     public LinkedList<PendingBlock> pendingBlocks;
     public EntityPlayer placingPlayer;
@@ -306,7 +307,7 @@ public class PendingBuild {
         if (placingPlayer.capabilities.isCreativeMode) {
             return true;
         } else {
-            ItemStackMap<Long> itemMap = GTUtility.getItemStackHistogram(items);
+            ItemStackMap<Long> itemMap = GTUtility.getItemStackHistogram(Arrays.asList(items));
 
             consumeItemsFromPending(itemMap, true);
             consumeItemsFromPlayer(itemMap, true);
@@ -316,7 +317,7 @@ public class PendingBuild {
                 .stream()
                 .anyMatch(a -> a > 0)) return false;
 
-            itemMap = GTUtility.getItemStackHistogram(items);
+            itemMap = GTUtility.getItemStackHistogram(Arrays.asList(items));
 
             consumeItemsFromPending(itemMap, false);
             consumeItemsFromPlayer(itemMap, false);
@@ -653,24 +654,8 @@ public class PendingBuild {
 
     private void emptyTileInventory(TileEntity te) {
         if (te instanceof IInventory inv) {
-            emptyInventory(inv);
+            MMUtils.emptyInventory(this, inv);
         }
-    }
-
-    private void emptyInventory(IInventory inv) {
-        int size = inv.getSizeInventory();
-
-        for (int i = 0; i < size; i++) {
-            ItemStack stack = inv.getStackInSlot(i);
-
-            if (stack != null && stack.getItem() != null) {
-                inv.setInventorySlotContents(i, null);
-
-                givePlayerItems(stack);
-            }
-        }
-
-        inv.markDirty();
     }
 
     private void emptyTank(TileEntity te) {
@@ -703,13 +688,13 @@ public class PendingBuild {
             IInventory upgrades = segmentedInventory.getInventoryByName("upgrades");
 
             if (upgrades != null) {
-                emptyInventory(upgrades);
+                MMUtils.emptyInventory(this, upgrades);
             }
 
             IInventory cells = segmentedInventory.getInventoryByName("cells");
 
             if (cells != null) {
-                emptyInventory(cells);
+                MMUtils.emptyInventory(this, cells);
             }
         }
 
@@ -828,6 +813,30 @@ public class PendingBuild {
         @Override
         public void givePlayerFluids(FluidStack... fluids) {
             PendingBuild.this.givePlayerFluids(fluids);
+        }
+
+        @Override
+        public void warn(String message) {
+            GTUtility.sendChatToPlayer(
+                placingPlayer,
+                String.format(
+                    "§cWarning at block %d, %d, %d: %s§r",
+                    pendingBlock.x,
+                    pendingBlock.y,
+                    pendingBlock.z,
+                    message));
+        }
+
+        @Override
+        public void error(String message) {
+            GTUtility.sendChatToPlayer(
+                placingPlayer,
+                String.format(
+                    "§cError at block %d, %d, %d: %s§r",
+                    pendingBlock.x,
+                    pendingBlock.y,
+                    pendingBlock.z,
+                    message));
         }
     }
 }

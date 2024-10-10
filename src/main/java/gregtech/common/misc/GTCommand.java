@@ -13,18 +13,25 @@ import java.util.stream.Stream;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.google.gson.GsonBuilder;
 import com.gtnewhorizon.structurelib.StructureLib;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.matterManipulator.MMUtils;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.pollution.Pollution;
 
@@ -43,7 +50,7 @@ public final class GTCommand extends CommandBase {
     private void printHelp(ICommandSender sender) {
         sender.addChatMessage(
             new ChatComponentText(
-                "Usage: gt <toggle|chunks|pollution|global_energy_add|global_energy_set|global_energy_join|dump_music_durations>"));
+                "Usage: gt <toggle|chunks|pollution|global_energy_add|global_energy_set|global_energy_join|dump_music_durations|hand>"));
         sender.addChatMessage(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
         sender.addChatMessage(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugCleanroom\" - toggles cleanroom debug log"));
@@ -101,6 +108,7 @@ public final class GTCommand extends CommandBase {
         sender.addChatMessage(
             new ChatComponentText(
                 "\"dump_music_durations\" - dumps soundmeta/durations.json for all registered records in the game to the log. Client-only"));
+        sender.addChatMessage(new ChatComponentText("\"hand\" - prints information about the held item."));
     }
 
     @Override
@@ -116,7 +124,8 @@ public final class GTCommand extends CommandBase {
                 "global_energy_set",
                 "global_energy_join",
                 "global_energy_display",
-                "dump_music_durations")
+                "dump_music_durations",
+                "hand")
             .anyMatch(s -> s.startsWith(test)))) {
             Stream
                 .of(
@@ -127,7 +136,8 @@ public final class GTCommand extends CommandBase {
                     "global_energy_set",
                     "global_energy_join",
                     "global_energy_display",
-                    "dump_music_durations")
+                    "dump_music_durations",
+                    "hand")
                 .filter(s -> test.isEmpty() || s.startsWith(test))
                 .forEach(l::add);
         } else if (test.equals("toggle")) {
@@ -343,6 +353,37 @@ public final class GTCommand extends CommandBase {
                         .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This command is client-only."));
                 }
                 GTMusicSystem.ClientSystem.dumpAllRecordDurations();
+            }
+            case "hand" -> {
+                if (!(sender instanceof EntityPlayer player)) {
+                    sender.addChatMessage(
+                        new ChatComponentText(EnumChatFormatting.RED + "This command must be ran by a player."));
+                    return;
+                }
+
+                ItemStack held = player.inventory.getCurrentItem();
+
+                if (held == null) {
+                    GTUtility.sendChatToPlayer(player, "No item in hand.");
+                    return;
+                }
+
+                UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(held.getItem());
+                GTUtility.sendChatToPlayer(
+                    player,
+                    String.format("%s:%s meta=%d", id.modId, id.name, Items.feather.getDamage(held)));
+
+                if (held.getTagCompound() != null) {
+                    GTUtility.sendChatToPlayer(player, "NBT:");
+                    String json = new GsonBuilder().setPrettyPrinting()
+                        .create()
+                        .toJson(MMUtils.toJsonObject(held.getTagCompound()));
+                    for (String line : json.split("\n")) {
+                        GTUtility.sendChatToPlayer(player, line);
+                    }
+                } else {
+                    GTUtility.sendChatToPlayer(player, "No NBT.");
+                }
             }
             default -> {
                 sender

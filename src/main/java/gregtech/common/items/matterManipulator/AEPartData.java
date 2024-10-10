@@ -1,8 +1,8 @@
 package gregtech.common.items.matterManipulator;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,6 @@ import com.google.gson.JsonElement;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
 import appeng.api.AEApi;
-import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.implementations.tiles.ISegmentedInventory;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
@@ -62,7 +61,7 @@ public class AEPartData {
             NBTTagCompound settings = new NBTTagCompound();
             configurable.getConfigManager()
                 .writeToNBT(settings);
-            mSettings = settings.hasNoTags() ? null : NBTState.toJsonObject(settings);
+            mSettings = settings.hasNoTags() ? null : MMUtils.toJsonObject(settings);
         }
 
         if (part instanceof PartP2PTunnel tunnel) {
@@ -150,7 +149,7 @@ public class AEPartData {
 
         if (part instanceof IConfigurableObject configurable && configurable.getConfigManager() != null) {
             NBTTagCompound settings = mSettings == null ? new NBTTagCompound()
-                : (NBTTagCompound) NBTState.toNbt(mSettings);
+                : (NBTTagCompound) MMUtils.toNbt(mSettings);
             configurable.getConfigManager()
                 .readFromNBT(settings);
         }
@@ -160,35 +159,13 @@ public class AEPartData {
                 ItemStackMap<Long> targetMap = GTUtility.getItemStackHistogram(
                     Arrays.stream(mAEUpgrades)
                         .map(PortableItemStack::toStack)
-                        .toArray(ItemStack[]::new));
-                ItemStackMap<Long> actualMap = GTUtility.getItemStackHistogram(
-                    GTUtility.streamInventory(upgradeInv)
-                        .filter(x -> x != null)
-                        .toArray(ItemStack[]::new));
+                        .collect(Collectors.toList()));
+                ItemStackMap<Long> actualMap = GTUtility
+                    .getItemStackHistogram(Arrays.asList(GTUtility.inventoryToArray(upgradeInv)));
 
                 if (!targetMap.equals(actualMap)) {
-                    emptyInventory(context, upgradeInv);
-
-                    targetMap.replaceAll((item, amount) -> {
-                        if (item.getItem() instanceof IUpgradeModule upgrade) {
-                            int max = upgradeInv.getMaxInstalled(upgrade.getType(item));
-
-                            return Math.min(max, amount);
-                        } else {
-                            return 0l;
-                        }
-                    });
-
-                    List<ItemStack> upgradeList = GTUtility.getStacksOfSize(targetMap, 1);
-
-                    ItemStack[] upgrades = upgradeList
-                        .subList(0, Math.min(upgradeList.size(), upgradeInv.getSizeInventory()))
-                        .toArray(new ItemStack[0]);
-
-                    if (context.tryConsumeItems(upgrades)) {
-                        for (int i = 0; i < upgrades.length; i++) {
-                            upgradeInv.setInventorySlotContents(i, upgrades[i]);
-                        }
+                    if (!MMUtils.installUpgrades(context, upgradeInv, mAEUpgrades, true)) {
+                        return false;
                     }
                 }
             }
@@ -196,9 +173,7 @@ public class AEPartData {
             IInventory config = segmentedInventory.getInventoryByName("config");
 
             if (config != null) {
-                for (int i = 0; i < config.getSizeInventory(); i++) {
-                    config.setInventorySlotContents(i, null);
-                }
+                MMUtils.clearInventory(config);
 
                 if (mConfig != null) {
                     int n = Math.min(config.getSizeInventory(), mConfig.length);
@@ -269,21 +244,5 @@ public class AEPartData {
             if (other.mCustomName != null) return false;
         } else if (!mCustomName.equals(other.mCustomName)) return false;
         return true;
-    }
-
-    static void emptyInventory(IBlockApplyContext context, IInventory inv) {
-        int size = inv.getSizeInventory();
-
-        for (int i = 0; i < size; i++) {
-            ItemStack stack = inv.getStackInSlot(i);
-
-            if (stack != null && stack.getItem() != null) {
-                inv.setInventorySlotContents(i, null);
-
-                context.givePlayerItems(stack);
-            }
-        }
-
-        inv.markDirty();
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.init.Items;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -16,17 +17,18 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
+import appeng.api.implementations.tiles.ISegmentedInventory;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
 import appeng.api.parts.PartItemStack;
 import appeng.api.util.AEColor;
 import appeng.helpers.ICustomNameObject;
+import appeng.parts.automation.UpgradeInventory;
 import appeng.parts.p2p.PartP2PTunnelNormal;
 import appeng.tile.AEBaseTile;
 import appeng.tile.networking.TileCableBus;
 import appeng.util.Platform;
 import appeng.util.SettingsFrom;
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.VoidingMode;
@@ -66,9 +68,12 @@ public class TileAnalysisResult {
     public AEColor mAEColour = null;
     public ForgeDirection mAEUp = null, mAEForward = null;
     public JsonElement mAEConfig = null;
-    public UniqueIdentifier[] mAEUpgrades = null;
+    public PortableItemStack[] mAEUpgrades = null;
     public String mAECustomName = null;
     public AEPartData[] mAEParts = null;
+    public InventoryAnalysis mAECells = null;
+
+    public InventoryAnalysis mInventory = null;
 
     private static int counter = 0;
     private static final short GT_BASIC_IO_PUSH_ITEMS = (short) (0b1 << counter++);
@@ -205,7 +210,7 @@ public class TileAnalysisResult {
                     NBTTagCompound data = copyable.getCopiedData(null);
 
                     if (data != null && !data.hasNoTags()) {
-                        mGTData = NBTState.toJsonObject(data);
+                        mGTData = MMUtils.toJsonObject(data);
                     }
                 } catch (Throwable t) {
                     // Probably an NPE, but we're catching Throwable just to be safe
@@ -217,18 +222,33 @@ public class TileAnalysisResult {
         if (te instanceof AEBaseTile ae) {
             mAEUp = nullIfUnknown(ae.getUp());
             mAEForward = nullIfUnknown(ae.getForward());
-            mAEConfig = NBTState.toJsonObject(ae.downloadSettings(SettingsFrom.MEMORY_CARD));
+            mAEConfig = MMUtils.toJsonObject(ae.downloadSettings(SettingsFrom.MEMORY_CARD));
             mAECustomName = !(ae instanceof TileCableBus) && ae.hasCustomName() ? ae.getCustomName() : null;
+        }
 
-            if (ae instanceof IPartHost partHost) {
-                mAEParts = new AEPartData[ALL_DIRECTIONS.length];
-
-                for (ForgeDirection dir : ALL_DIRECTIONS) {
-                    IPart part = partHost.getPart(dir);
-
-                    if (part != null) mAEParts[dir.ordinal()] = new AEPartData(part);
-                }
+        if (te instanceof ISegmentedInventory segmentedInventory) {
+            if (segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgrades) {
+                mAEUpgrades = MMUtils.fromInventory(upgrades);
             }
+
+            IInventory cells = segmentedInventory.getInventoryByName("cells");
+            if (cells != null) {
+                mAECells = InventoryAnalysis.fromInventory(cells);
+            }
+        }
+
+        if (te instanceof IPartHost partHost) {
+            mAEParts = new AEPartData[ALL_DIRECTIONS.length];
+
+            for (ForgeDirection dir : ALL_DIRECTIONS) {
+                IPart part = partHost.getPart(dir);
+
+                if (part != null) mAEParts[dir.ordinal()] = new AEPartData(part);
+            }
+        }
+
+        if (te instanceof IInventory inventory) {
+            mInventory = InventoryAnalysis.fromInventory(inventory);
         }
     }
 
@@ -378,11 +398,22 @@ public class TileAnalysisResult {
             }
 
             if (mte instanceof IDataCopyable copyable) {
-                NBTTagCompound data = mGTData == null ? new NBTTagCompound() : (NBTTagCompound) NBTState.toNbt(mGTData);
+                NBTTagCompound data = mGTData == null ? new NBTTagCompound() : (NBTTagCompound) MMUtils.toNbt(mGTData);
 
                 if (!copyable.pasteCopiedData(ctx.getRealPlayer(), data)) {
                     return false;
                 }
+            }
+        }
+
+        if (te instanceof ISegmentedInventory segmentedInventory) {
+            if (segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgrades) {
+                MMUtils.installUpgrades(ctx, upgrades, mAEUpgrades, true);
+            }
+
+            IInventory cells = segmentedInventory.getInventoryByName("cells");
+            if (mAECells != null && cells != null) {
+                mAECells.apply(ctx, cells);
             }
         }
 
@@ -392,48 +423,51 @@ public class TileAnalysisResult {
             }
 
             if (mAEConfig != null) {
-                ae.uploadSettings(SettingsFrom.MEMORY_CARD, (NBTTagCompound) NBTState.toNbt(mAEConfig));
+                ae.uploadSettings(SettingsFrom.MEMORY_CARD, (NBTTagCompound) MMUtils.toNbt(mAEConfig));
             }
+        }
 
-            if (mAECustomName != null && !(ae instanceof TileCableBus)) {
-                ae.setCustomName(mAECustomName);
-            }
+        if (mAECustomName != null && te instanceof ICustomNameObject customName && !(te instanceof TileCableBus)) {
+            customName.setCustomName(mAECustomName);
+        }
 
-            if (ae instanceof IPartHost partHost && mAEParts != null) {
-                for (ForgeDirection dir : ALL_DIRECTIONS) {
-                    IPart part = partHost.getPart(dir);
-                    AEPartData expected = mAEParts[dir.ordinal()];
+        if (te instanceof IPartHost partHost && mAEParts != null) {
+            for (ForgeDirection dir : ALL_DIRECTIONS) {
+                IPart part = partHost.getPart(dir);
+                AEPartData expected = mAEParts[dir.ordinal()];
 
-                    ItemId actualItem = part == null ? null
-                        : ItemId.createWithoutNBT(part.getItemStack(PartItemStack.Break));
-                    ItemId expectedItem = expected == null ? null
-                        : ItemId.createWithoutNBT(expected.getEffectivePartStack());
+                ItemId actualItem = part == null ? null
+                    : ItemId.createWithoutNBT(part.getItemStack(PartItemStack.Break));
+                ItemId expectedItem = expected == null ? null
+                    : ItemId.createWithoutNBT(expected.getEffectivePartStack());
 
-                    boolean isAttunable = part instanceof PartP2PTunnelNormal && expected != null
-                        && expected.isAttunable();
+                boolean isAttunable = part instanceof PartP2PTunnelNormal && expected != null && expected.isAttunable();
 
-                    if (!isAttunable) {
-                        if ((expectedItem == null || !Objects.equals(actualItem, expectedItem)) && actualItem != null) {
-                            removePart(ctx, partHost, dir);
-                            actualItem = null;
-                        }
-
-                        if (actualItem == null && expectedItem != null) {
-                            if (!installPart(ctx, partHost, dir, expected)) {
-                                return false;
-                            }
-                        }
+                if (!isAttunable) {
+                    if ((expectedItem == null || !Objects.equals(actualItem, expectedItem)) && actualItem != null) {
+                        removePart(ctx, partHost, dir);
+                        actualItem = null;
                     }
 
-                    if (expected != null) {
-                        if (!expected.updatePart(ctx, partHost, dir)) {
+                    if (actualItem == null && expectedItem != null) {
+                        if (!installPart(ctx, partHost, dir, expected)) {
                             return false;
                         }
                     }
-
-                    Platform.notifyBlocksOfNeighbors(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
                 }
+
+                if (expected != null) {
+                    if (!expected.updatePart(ctx, partHost, dir)) {
+                        return false;
+                    }
+                }
+
+                Platform.notifyBlocksOfNeighbors(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
             }
+        }
+
+        if (te instanceof IInventory inventory && mInventory != null) {
+            mInventory.apply(ctx, inventory);
         }
 
         return true;
@@ -528,6 +562,11 @@ public class TileAnalysisResult {
         result = prime * result + Arrays.hashCode(mCovers);
         result = prime * result + mStrongRedstone;
         result = prime * result + ((mGTCustomName == null) ? 0 : mGTCustomName.hashCode());
+        result = prime * result + mGTGhostCircuit;
+        result = prime * result + ((mGTItemLock == null) ? 0 : mGTItemLock.hashCode());
+        result = prime * result + ((mGTFluidLock == null) ? 0 : mGTFluidLock.hashCode());
+        result = prime * result + mGTMode;
+        result = prime * result + ((mGTData == null) ? 0 : mGTData.hashCode());
         result = prime * result + ((mAEColour == null) ? 0 : mAEColour.hashCode());
         result = prime * result + ((mAEUp == null) ? 0 : mAEUp.hashCode());
         result = prime * result + ((mAEForward == null) ? 0 : mAEForward.hashCode());
@@ -535,6 +574,8 @@ public class TileAnalysisResult {
         result = prime * result + Arrays.hashCode(mAEUpgrades);
         result = prime * result + ((mAECustomName == null) ? 0 : mAECustomName.hashCode());
         result = prime * result + Arrays.hashCode(mAEParts);
+        result = prime * result + ((mAECells == null) ? 0 : mAECells.hashCode());
+        result = prime * result + ((mInventory == null) ? 0 : mInventory.hashCode());
         return result;
     }
 
@@ -555,6 +596,17 @@ public class TileAnalysisResult {
         if (mGTCustomName == null) {
             if (other.mGTCustomName != null) return false;
         } else if (!mGTCustomName.equals(other.mGTCustomName)) return false;
+        if (mGTGhostCircuit != other.mGTGhostCircuit) return false;
+        if (mGTItemLock == null) {
+            if (other.mGTItemLock != null) return false;
+        } else if (!mGTItemLock.equals(other.mGTItemLock)) return false;
+        if (mGTFluidLock == null) {
+            if (other.mGTFluidLock != null) return false;
+        } else if (!mGTFluidLock.equals(other.mGTFluidLock)) return false;
+        if (mGTMode != other.mGTMode) return false;
+        if (mGTData == null) {
+            if (other.mGTData != null) return false;
+        } else if (!mGTData.equals(other.mGTData)) return false;
         if (mAEColour != other.mAEColour) return false;
         if (mAEUp != other.mAEUp) return false;
         if (mAEForward != other.mAEForward) return false;
@@ -566,7 +618,12 @@ public class TileAnalysisResult {
             if (other.mAECustomName != null) return false;
         } else if (!mAECustomName.equals(other.mAECustomName)) return false;
         if (!Arrays.equals(mAEParts, other.mAEParts)) return false;
+        if (mAECells == null) {
+            if (other.mAECells != null) return false;
+        } else if (!mAECells.equals(other.mAECells)) return false;
+        if (mInventory == null) {
+            if (other.mInventory != null) return false;
+        } else if (!mInventory.equals(other.mInventory)) return false;
         return true;
     }
-
 }

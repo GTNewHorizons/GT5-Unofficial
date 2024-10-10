@@ -2569,7 +2569,10 @@ public enum ItemList implements IItemContainer {
     ResearchCompleter, // Populated in EMT
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,
-    MatterManipulator,
+    MatterManipulator0,
+    MatterManipulator1,
+    MatterManipulator2,
+    MatterManipulator3,
     // semicolon after the comment to reduce merge conflicts
     ;
 
