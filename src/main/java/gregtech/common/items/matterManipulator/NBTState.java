@@ -1,9 +1,7 @@
 package gregtech.common.items.matterManipulator;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -13,30 +11,13 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagFloat;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagIntArray;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagLong;
-import net.minecraft.nbt.NBTTagShort;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,10 +26,7 @@ import org.joml.Vector3i;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import appeng.api.AEApi;
 import appeng.api.config.SecurityPermissions;
@@ -66,7 +44,6 @@ import appeng.tile.misc.TileSecurity;
 import appeng.tile.networking.TileWireless;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.RegionAnalysis;
 
 class NBTState {
@@ -75,7 +52,7 @@ class NBTState {
 
     public NBTState.Config config = new NBTState.Config();
 
-    public String encKey;
+    public Long encKey;
     public double charge;
 
     public transient TileSecurity securityTerminal;
@@ -85,7 +62,7 @@ class NBTState {
     public transient IMEMonitor<IAEItemStack> itemStorage;
 
     public static NBTState load(NBTTagCompound tag) {
-        NBTState state = GSON.fromJson(toJsonObject(tag), NBTState.class);
+        NBTState state = GSON.fromJson(MMUtils.toJsonObject(tag), NBTState.class);
 
         if (state == null) state = new NBTState();
         if (state.config == null) state.config = new NBTState.Config();
@@ -94,7 +71,7 @@ class NBTState {
     }
 
     public NBTTagCompound save() {
-        return (NBTTagCompound) toNbt(GSON.toJsonTree(this));
+        return (NBTTagCompound) MMUtils.toNbt(GSON.toJsonTree(this));
     }
 
     public boolean hasMEConnection() {
@@ -112,18 +89,10 @@ class NBTState {
 
         if (encKey == null) return false;
 
-        long addr = 0;
-
-        try {
-            addr = Long.parseLong(encKey, 16);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
         ILocatable grid = AEApi.instance()
             .registries()
             .locatable()
-            .getLocatableBy(addr);
+            .getLocatableBy(encKey);
 
         if (grid instanceof TileSecurity security) {
             this.securityTerminal = security;
@@ -212,9 +181,6 @@ class NBTState {
                 }
 
                 return analysis.blocks;
-            }
-            case DEBUGGING: {
-                throw new IllegalStateException();
             }
             case GEOMETRY: {
                 return getGeomPendingBlocks();
@@ -454,7 +420,6 @@ class NBTState {
     static class Config {
 
         public PendingAction action;
-        public CoordMode coordMode = CoordMode.SET_INTERLEAVED;
         public BlockSelectMode blockSelectMode = BlockSelectMode.ALL;
         public BlockRemoveMode removeMode = BlockRemoveMode.NONE;
         public PlaceMode placeMode = PlaceMode.GEOMETRY;
@@ -470,11 +435,11 @@ class NBTState {
                 stack = null;
             }
 
-            return stack == null ? null : toJsonObject(stack.writeToNBT(new NBTTagCompound()));
+            return stack == null ? null : MMUtils.toJsonObject(stack.writeToNBT(new NBTTagCompound()));
         }
 
         private static ItemStack loadStack(JsonElement stack) {
-            return stack == null ? null : ItemStack.loadItemStackFromNBT((NBTTagCompound) toNbt(stack));
+            return stack == null ? null : ItemStack.loadItemStackFromNBT((NBTTagCompound) MMUtils.toNbt(stack));
         }
 
         public void setCorners(ItemStack corners) {
@@ -509,124 +474,11 @@ class NBTState {
             return loadStack(volumes);
         }
 
-        public static MovingObjectPosition getHitResult(EntityPlayer player) {
-            double reachDistance = player instanceof EntityPlayerMP mp
-                ? mp.theItemInWorldManager.getBlockReachDistance()
-                : GTUtility.getClientReachDistance();
-
-            Vec3 posVec = player.getPosition(0)
-                .addVector(0, player.getEyeHeight(), 0);
-
-            Vec3 lookVec = player.getLook(0);
-
-            Vec3 modifiedPosVec = posVec.addVector(
-                lookVec.xCoord * reachDistance,
-                lookVec.yCoord * reachDistance,
-                lookVec.zCoord * reachDistance);
-
-            return player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
-        }
-
-        public static Vector3i getLookingAtLocation(EntityPlayer player) {
-            double reachDistance = player instanceof EntityPlayerMP mp
-                ? mp.theItemInWorldManager.getBlockReachDistance()
-                : GTUtility.getClientReachDistance();
-
-            Vec3 posVec = player.getPosition(0);
-
-            Vec3 lookVec = player.getLook(0);
-
-            Vec3 modifiedPosVec = posVec.addVector(
-                lookVec.xCoord * reachDistance,
-                lookVec.yCoord * reachDistance,
-                lookVec.zCoord * reachDistance);
-
-            MovingObjectPosition hit = player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
-
-            Vector3i target;
-
-            if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
-                target = new Vector3i(hit.blockX, hit.blockY, hit.blockZ);
-
-                if (!player.isSneaking()) {
-                    ForgeDirection dir = ForgeDirection.getOrientation(hit.sideHit);
-                    target.add(dir.offsetX, dir.offsetY, dir.offsetZ);
-                }
-            } else {
-                target = new Vector3i(
-                    MathHelper.floor_double(modifiedPosVec.xCoord),
-                    MathHelper.floor_double(modifiedPosVec.yCoord),
-                    MathHelper.floor_double(modifiedPosVec.zCoord));
-            }
-
-            return target;
-        }
-
-        public static Vector3i getRegionDeltas(Location a, Location b) {
-            if (a == null || b == null || a.worldId != b.worldId) return null;
-
-            int x1 = a.x;
-            int y1 = a.y;
-            int z1 = a.z;
-            int x2 = b.x;
-            int y2 = b.y;
-            int z2 = b.z;
-
-            int minX = Math.min(x1, x2);
-            int minY = Math.min(y1, y2);
-            int minZ = Math.min(z1, z2);
-            int maxX = Math.max(x1, x2);
-            int maxY = Math.max(y1, y2);
-            int maxZ = Math.max(z1, z2);
-
-            int dX = (maxX - minX) * (minX < x1 ? -1 : 1);
-            int dY = (maxY - minY) * (minY < y1 ? -1 : 1);
-            int dZ = (maxZ - minZ) * (minZ < z1 ? -1 : 1);
-
-            return new Vector3i(dX, dY, dZ);
-        }
-
-        public static AxisAlignedBB getBoundingBox(Location l, Vector3i deltas) {
-            int minX = Math.min(l.x, l.x + deltas.x);
-            int minY = Math.min(l.y, l.y + deltas.y);
-            int minZ = Math.min(l.z, l.z + deltas.z);
-            int maxX = Math.max(l.x, l.x + deltas.x) + 1;
-            int maxY = Math.max(l.y, l.y + deltas.y) + 1;
-            int maxZ = Math.max(l.z, l.z + deltas.z) + 1;
-
-            return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
-        }
-
-        public static List<Vector3i> getBlocksInBB(Location l, Vector3i deltas) {
-            int minX = Math.min(l.x, l.x + deltas.x);
-            int minY = Math.min(l.y, l.y + deltas.y);
-            int minZ = Math.min(l.z, l.z + deltas.z);
-            int maxX = Math.max(l.x, l.x + deltas.x) + 1;
-            int maxY = Math.max(l.y, l.y + deltas.y) + 1;
-            int maxZ = Math.max(l.z, l.z + deltas.z) + 1;
-
-            int dX = maxX - minX;
-            int dY = maxY - minY;
-            int dZ = maxZ - minZ;
-
-            List<Vector3i> blocks = new ArrayList<>();
-
-            for (int y = 0; y < dY; y++) {
-                for (int z = 0; z < dZ; z++) {
-                    for (int x = 0; x < dX; x++) {
-                        blocks.add(new Vector3i(minX + x, minY + y, minZ + z));
-                    }
-                }
-            }
-
-            return blocks;
-        }
-
         public Location getCoordA(EntityPlayer player) {
             if (coordAOffset == null) {
                 return coordA;
             } else {
-                Vector3i lookingAt = getLookingAtLocation(player);
+                Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
                 lookingAt.add(coordAOffset);
 
                 return new Location(player.worldObj, lookingAt);
@@ -637,7 +489,7 @@ class NBTState {
             if (coordBOffset == null) {
                 return coordB;
             } else {
-                Vector3i lookingAt = getLookingAtLocation(player);
+                Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
                 lookingAt.add(coordBOffset);
 
                 return new Location(player.worldObj, lookingAt);
@@ -649,7 +501,6 @@ class NBTState {
             final int prime = 31;
             int result = 1;
             result = prime * result + ((action == null) ? 0 : action.hashCode());
-            result = prime * result + ((coordMode == null) ? 0 : coordMode.hashCode());
             result = prime * result + ((blockSelectMode == null) ? 0 : blockSelectMode.hashCode());
             result = prime * result + ((removeMode == null) ? 0 : removeMode.hashCode());
             result = prime * result + ((placeMode == null) ? 0 : placeMode.hashCode());
@@ -674,7 +525,6 @@ class NBTState {
             if (getClass() != obj.getClass()) return false;
             Config other = (Config) obj;
             if (action != other.action) return false;
-            if (coordMode != other.coordMode) return false;
             if (blockSelectMode != other.blockSelectMode) return false;
             if (removeMode != other.removeMode) return false;
             if (placeMode != other.placeMode) return false;
@@ -730,13 +580,6 @@ class NBTState {
         MARK_PASTE,
     }
 
-    static enum CoordMode {
-        SET_INTERLEAVED,
-        SET_A,
-        SET_B,
-        SET_PASTE,
-    }
-
     static enum BlockSelectMode {
         CORNERS,
         EDGES,
@@ -754,8 +597,7 @@ class NBTState {
     static enum PlaceMode {
         GEOMETRY,
         MOVING,
-        COPYING,
-        DEBUGGING
+        COPYING
     }
 
     static class PendingBlock extends Location {
@@ -918,7 +760,6 @@ class NBTState {
             } else if (!tileData.equals(other.tileData)) return false;
             return true;
         }
-
     }
 
     static class Location {
@@ -1036,178 +877,5 @@ class NBTState {
             if (z != other.z) return false;
             return true;
         }
-    }
-
-    public static class Region {
-
-        public Location a, b;
-
-        public Region() {
-
-        }
-
-        public Region(Location a, Location b) {
-            this.a = a;
-            this.b = b;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static JsonElement toJsonObject(NBTBase nbt) {
-        if (nbt == null) {
-            return null;
-        }
-
-        if (nbt instanceof NBTTagCompound) {
-            // NBTTagCompound
-            final NBTTagCompound nbtTagCompound = (NBTTagCompound) nbt;
-            final Map<String, NBTBase> tagMap = (Map<String, NBTBase>) nbtTagCompound.tagMap;
-
-            JsonObject root = new JsonObject();
-
-            for (Map.Entry<String, NBTBase> nbtEntry : tagMap.entrySet()) {
-                root.add(nbtEntry.getKey(), toJsonObject(nbtEntry.getValue()));
-            }
-
-            return root;
-        } else if (nbt instanceof NBTTagByte) {
-            // Number (byte)
-            return new JsonPrimitive(((NBTTagByte) nbt).func_150290_f());
-        } else if (nbt instanceof NBTTagShort) {
-            // Number (short)
-            return new JsonPrimitive(((NBTTagShort) nbt).func_150289_e());
-        } else if (nbt instanceof NBTTagInt) {
-            // Number (int)
-            return new JsonPrimitive(((NBTTagInt) nbt).func_150287_d());
-        } else if (nbt instanceof NBTTagLong) {
-            // Number (long)
-            return new JsonPrimitive(((NBTTagLong) nbt).func_150291_c());
-        } else if (nbt instanceof NBTTagFloat) {
-            // Number (float)
-            return new JsonPrimitive(((NBTTagFloat) nbt).func_150288_h());
-        } else if (nbt instanceof NBTTagDouble) {
-            // Number (double)
-            return new JsonPrimitive(((NBTTagDouble) nbt).func_150286_g());
-        } else if (nbt instanceof NBTBase.NBTPrimitive) {
-            // Number
-            return new JsonPrimitive(((NBTBase.NBTPrimitive) nbt).func_150286_g());
-        } else if (nbt instanceof NBTTagString) {
-            // String
-            return new JsonPrimitive(((NBTTagString) nbt).func_150285_a_());
-        } else if (nbt instanceof NBTTagList) {
-            // Tag List
-            final NBTTagList list = (NBTTagList) nbt;
-
-            JsonArray arr = new JsonArray();
-            list.tagList.forEach(c -> arr.add(toJsonObject((NBTBase) c)));
-            return arr;
-        } else if (nbt instanceof NBTTagIntArray) {
-            // Int Array
-            final NBTTagIntArray list = (NBTTagIntArray) nbt;
-
-            JsonArray arr = new JsonArray();
-
-            for (int i : list.func_150302_c()) {
-                arr.add(new JsonPrimitive(i));
-            }
-
-            return arr;
-        } else if (nbt instanceof NBTTagByteArray) {
-            // Byte Array
-            final NBTTagByteArray list = (NBTTagByteArray) nbt;
-
-            JsonArray arr = new JsonArray();
-
-            for (byte i : list.func_150292_c()) {
-                arr.add(new JsonPrimitive(i));
-            }
-
-            return arr;
-        } else {
-            throw new IllegalArgumentException("Unsupported NBT Tag: " + NBTBase.NBTTypes[nbt.getId()] + " - " + nbt);
-        }
-    }
-
-    public static NBTBase toNbt(JsonElement jsonElement) {
-        if (jsonElement == null) {
-            return null;
-        }
-
-        if (jsonElement instanceof JsonPrimitive) {
-            final JsonPrimitive jsonPrimitive = (JsonPrimitive) jsonElement;
-
-            if (jsonPrimitive.isNumber()) {
-                if (jsonPrimitive.getAsBigDecimal()
-                    .remainder(BigDecimal.ONE)
-                    .equals(BigDecimal.ZERO)) {
-                    long lval = jsonPrimitive.getAsLong();
-
-                    if (lval >= Byte.MIN_VALUE && lval <= Byte.MAX_VALUE) {
-                        return new NBTTagByte((byte) lval);
-                    }
-
-                    if (lval >= Short.MIN_VALUE && lval <= Short.MAX_VALUE) {
-                        return new NBTTagShort((short) lval);
-                    }
-
-                    if (lval >= Integer.MIN_VALUE && lval <= Integer.MAX_VALUE) {
-                        return new NBTTagInt((int) lval);
-                    }
-
-                    return new NBTTagLong(lval);
-                } else {
-                    double dval = jsonPrimitive.getAsDouble();
-                    float fval = (float) dval;
-
-                    if (Math.abs(dval - fval) < 0.0001) {
-                        return new NBTTagFloat(fval);
-                    }
-
-                    return new NBTTagDouble(dval);
-                }
-            } else {
-                return new NBTTagString(jsonPrimitive.getAsString());
-            }
-        } else if (jsonElement instanceof JsonArray) {
-            // NBTTagIntArray or NBTTagList
-            final JsonArray jsonArray = (JsonArray) jsonElement;
-            final List<NBTBase> nbtList = new ArrayList<>();
-
-            for (JsonElement element : jsonArray) {
-                nbtList.add(toNbt(element));
-            }
-
-            // spotless:off
-            if (nbtList.stream().allMatch(n -> n instanceof NBTTagInt)) {
-                return new NBTTagIntArray(nbtList.stream().mapToInt(i -> ((NBTTagInt) i).func_150287_d()).toArray());
-            } else if (nbtList.stream().allMatch(n -> n instanceof NBTTagByte)) {
-                final byte[] abyte = new byte[nbtList.size()];
-
-                for (int i = 0; i < nbtList.size(); i++) {
-                    abyte[i] = ((NBTTagByte) nbtList.get(i)).func_150290_f();
-                }
-
-                return new NBTTagByteArray(abyte);
-            } else {
-                NBTTagList nbtTagList = new NBTTagList();
-                nbtList.forEach(nbtTagList::appendTag);
-
-                return nbtTagList;
-            }
-            // spotless:on
-        } else if (jsonElement instanceof JsonObject) {
-            // NBTTagCompound
-            final JsonObject jsonObject = (JsonObject) jsonElement;
-
-            NBTTagCompound nbtTagCompound = new NBTTagCompound();
-
-            for (Map.Entry<String, JsonElement> jsonEntry : jsonObject.entrySet()) {
-                nbtTagCompound.setTag(jsonEntry.getKey(), toNbt(jsonEntry.getValue()));
-            }
-
-            return nbtTagCompound;
-        }
-
-        throw new IllegalArgumentException("Unhandled element " + jsonElement);
     }
 }

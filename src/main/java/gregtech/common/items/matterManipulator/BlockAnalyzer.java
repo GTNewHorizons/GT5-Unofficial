@@ -18,7 +18,7 @@ import org.joml.Vector3i;
 
 import com.mojang.authlib.GameProfile;
 
-import gregtech.common.items.matterManipulator.NBTState.Config;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 
@@ -43,14 +43,14 @@ public class BlockAnalyzer {
 
         RegionAnalysis analysis = new RegionAnalysis();
 
-        Vector3i deltas = Config.getRegionDeltas(a, b);
+        Vector3i deltas = MMUtils.getRegionDeltas(a, b);
         analysis.deltas = deltas;
 
         analysis.blocks = new ArrayList<>();
 
         BlockAnalysisContext context = new BlockAnalysisContext(world);
 
-        for (Vector3i voxel : Config.getBlocksInBB(a, deltas)) {
+        for (Vector3i voxel : MMUtils.getBlocksInBB(a, deltas)) {
             PendingBlock pending = PendingBlock.fromBlock(world, voxel.x, voxel.y, voxel.z);
 
             if (pending == null) {
@@ -114,17 +114,15 @@ public class BlockAnalyzer {
         }
     }
 
-    public static interface IBlockApplyContext extends IBlockAnalysisContext {
+    public static interface IBlockApplyContext extends IBlockAnalysisContext, IPseudoInventory {
 
         public EntityPlayer getRealPlayer();
 
         public boolean tryApplyAction(double complexity);
 
-        public boolean tryConsumeItems(ItemStack... items);
+        public void warn(String message);
 
-        public void givePlayerItems(ItemStack... items);
-
-        public void givePlayerFluids(FluidStack... fluids);
+        public void error(String message);
     }
 
     public static class BlockApplyContext implements IBlockApplyContext {
@@ -184,6 +182,16 @@ public class BlockAnalyzer {
         @Override
         public void givePlayerFluids(FluidStack... fluids) {
             build.givePlayerFluids(fluids);
+        }
+
+        @Override
+        public void warn(String message) {
+            GTUtility.sendChatToPlayer(player, String.format("§cWarning at block %d, %d, %d: %s§r", x, y, z, message));
+        }
+
+        @Override
+        public void error(String message) {
+            GTUtility.sendChatToPlayer(player, String.format("§cError at block %d, %d, %d: %s§r", x, y, z, message));
         }
     }
 }

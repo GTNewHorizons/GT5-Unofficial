@@ -1,7 +1,11 @@
 package gregtech.common.items.matterManipulator;
 
+import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,15 +15,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +35,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
@@ -42,21 +45,19 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.libraries.com.google.common.collect.MapMaker;
-import org.spongepowered.libraries.com.google.gson.Gson;
 
 import com.gtnewhorizon.gtnhlib.util.AboveHotbarHUD;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import appeng.api.features.INetworkEncodable;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -64,19 +65,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
-import gregtech.api.enums.GTValues;
-import gregtech.api.interfaces.INetworkUpdatableItem;
-import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtility;
-import gregtech.common.items.matterManipulator.BlockAnalyzer.BlockApplyContext;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
-import gregtech.common.items.matterManipulator.NBTState.Config;
-import gregtech.common.items.matterManipulator.NBTState.CoordMode;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
@@ -85,20 +79,61 @@ import gregtech.common.items.matterManipulator.NBTState.Shape;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
-public class ItemMatterManipulator extends Item implements IElectricItem, INetworkUpdatableItem, INetworkEncodable {
+public class ItemMatterManipulator extends Item implements IElectricItem, INetworkEncodable {
 
-    public ItemMatterManipulator() {
+    public final ManipulatorTier tier;
+
+    public ItemMatterManipulator(ManipulatorTier tier) {
+        String name = "itemMatterManipulator" + tier.mTier;
+
         this.setCreativeTab(CreativeTabs.tabTools);
-        this.setUnlocalizedName("itemMatterManipulator");
+        this.setUnlocalizedName(name);
         this.setMaxStackSize(1);
-        this.setTextureName(GregTech.ID + ":" + "itemMatterManipulator");
-        GTLanguageManager.addStringLocalization("item.itemMatterManipulator.name", "Matter Manipulator");
+        this.setTextureName(GregTech.resourceDomain + ":" + name);
 
-        GameRegistry.registerItem(this, "itemMatterManipulator");
+        this.tier = tier;
+
+        String defaultLocalName = switch (tier) {
+            case Tier0 -> "Prototype Matter Manipulator";
+            case Tier1 -> "Matter Manipulator MKI";
+            case Tier2 -> "Matter Manipulator MKII";
+            case Tier3 -> "Matter Manipulator MKIII";
+        };
+
+        GTLanguageManager.addStringLocalization("item." + name + ".name", defaultLocalName);
+        GameRegistry.registerItem(this, name);
         MinecraftForge.EVENT_BUS.register(this);
         FMLCommonHandler.instance()
             .bus()
             .register(this);
+    }
+
+    public static enum ManipulatorTier {
+
+        Tier0(false, 32, false, false, false, 4, 1_000_000),
+        Tier1(true, 64, true, false, false, 5, 10_000_000),
+        Tier2(true, 128, true, false, true, 6, 100_000_000),
+        Tier3(true, Integer.MAX_VALUE, true, true, true, 7, 1_000_000_000);
+
+        public final int mTier = ordinal();
+        public final boolean mConnectsToAE;
+        public final int mMaxRange;
+        public final boolean mAllowRemoving;
+        public final boolean mAllowConfiguring;
+        public final int mVoltageTier;
+        public final double mMaxCharge;
+        public final boolean mAllowCopying;
+
+        private ManipulatorTier(boolean ae, int maxRange, boolean removing, boolean configuring, boolean copying,
+            int voltageTier, double maxCharge) {
+            mConnectsToAE = ae;
+            mMaxRange = maxRange;
+            mAllowRemoving = removing;
+            mAllowConfiguring = configuring;
+            mAllowCopying = copying;
+            mVoltageTier = voltageTier;
+            mMaxCharge = maxCharge;
+        }
     }
 
     // #region Energy
@@ -115,17 +150,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     @Override
     public double getMaxCharge(ItemStack itemStack) {
-        return 1_000_000_000;
+        return tier.mMaxCharge;
     }
 
     @Override
     public int getTier(ItemStack itemStack) {
-        return 7; // ZPM
+        return tier.mVoltageTier;
     }
 
     @Override
     public double getTransferLimit(ItemStack itemStack) {
-        return 131_072;
+        return V[tier.mVoltageTier];
     }
 
     @Override
@@ -140,45 +175,26 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         final ItemStack stack = new ItemStack(this, 1);
         stack.setTagCompound(new NBTState().save());
         subItems.add(stack.copy());
-        ElectricItem.manager.charge(stack, getMaxCharge(null), Integer.MAX_VALUE, true, false);
+        ElectricItem.manager.charge(stack, getMaxCharge(stack), Integer.MAX_VALUE, true, false);
         subItems.add(stack);
     }
 
     @Override
     public EnumRarity getRarity(ItemStack p_77613_1_) {
-        return EnumRarity.rare;
+        return switch (tier) {
+            case Tier0 -> EnumRarity.common;
+            case Tier1 -> EnumRarity.uncommon;
+            case Tier2 -> EnumRarity.rare;
+            case Tier3 -> EnumRarity.epic;
+        };
     }
 
-    private static NBTState getState(ItemStack itemStack) {
+    public static NBTState getState(ItemStack itemStack) {
         return NBTState.load(getOrCreateNbtData(itemStack));
     }
 
-    private static void setState(ItemStack itemStack, NBTState state) {
-        NBTTagCompound newState = state.save();
-
-        if (!Objects.equals(newState, itemStack.getTagCompound())) {
-            boolean configChanged = itemStack.getTagCompound() == null || !Objects.equals(
-                newState.getTag("config"),
-                itemStack.getTagCompound()
-                    .getTag("config"));
-            boolean needsSyncToServer = NetworkUtils.isClient() && configChanged;
-
-            itemStack.setTagCompound(newState);
-
-            if (needsSyncToServer) {
-                GTValues.NW.sendToServer(new GTPacketUpdateItem(newState.getCompoundTag("config")));
-            }
-        }
-    }
-
-    /**
-     * Only called on the server when the player changes some config (via the radial menu).
-     */
-    @Override
-    public boolean receive(ItemStack stack, EntityPlayerMP player, NBTTagCompound tag) {
-        getOrCreateNbtData(stack).setTag("config", tag);
-
-        return true;
+    public static void setState(ItemStack itemStack, NBTState state) {
+        itemStack.setTagCompound(state.save());
     }
 
     @SubscribeEvent
@@ -186,7 +202,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         // spotless:off
         boolean isHandValid = event.player.getItemInUse() != null && event.player.getItemInUse().getItem() == this;
         boolean isCurrentItemValid = event.player.inventory.getCurrentItem() != null && event.player.inventory.getCurrentItem().getItem() == this;
-        boolean isClient = FMLCommonHandler.instance().getSide() == Side.CLIENT;
+        boolean isClient = FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
         // spotless:on
 
         if (isHandValid && isCurrentItemValid && isClient) {
@@ -223,10 +239,12 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         if (!GuiScreen.isShiftKeyDown()) {
             desc.add("Hold shift for more information.");
         } else {
-            if (state.connectToMESystem()) {
-                desc.add("Has an ME connection. (" + (state.canInteractWithAE(player) ? "Can interact currently" : "Cannot interact currently") + ")");
-            } else {
-                desc.add("Does not have an ME connection.");
+            if (tier.mConnectsToAE) {
+                if (state.connectToMESystem()) {
+                    desc.add("Has an ME connection. (" + (state.canInteractWithAE(player) ? "Can interact currently" : "Cannot interact currently") + ")");
+                } else {
+                    desc.add("Does not have an ME connection.");
+                }
             }
 
             if (state.config.action != null) {
@@ -241,18 +259,21 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 });
             }
 
-            addInfoLine(desc, "Mode: %s", switch (state.config.placeMode) {
-                case GEOMETRY -> "Geometry";
-                case MOVING -> "Moving";
-                case COPYING -> "Copying";
-                case DEBUGGING -> "Debugging";
-            });
+            if (tier.mAllowConfiguring || tier.mAllowCopying) {
+                addInfoLine(desc, "Mode: %s", switch (state.config.placeMode) {
+                    case GEOMETRY -> "Geometry";
+                    case MOVING -> "Moving";
+                    case COPYING -> "Copying";
+                });
+            }
 
-            addInfoLine(desc, "Removing: %s", switch (state.config.removeMode) {
-                case ALL -> "All blocks";
-                case REPLACEABLE -> "Replaceable blocks";
-                case NONE -> "No blocks";
-            });
+            if (tier.mAllowRemoving) {
+                addInfoLine(desc, "Removing: %s", switch (state.config.removeMode) {
+                    case ALL -> "All blocks";
+                    case REPLACEABLE -> "Replaceable blocks";
+                    case NONE -> "No blocks";
+                });
+            }
             
             if (state.config.placeMode == PlaceMode.GEOMETRY) {
                 addInfoLine(desc, "Shape: %s", switch (state.config.shape) {
@@ -290,30 +311,19 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         }
     }
 
-    private TileAnalysisResult result;
-
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-        if (player.getItemInUse() != null && player.getItemInUse()
-            .getItem() == this) {
-            return itemStack;
-        }
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        NBTState state = getState(stack);
 
-        MovingObjectPosition hit = Config.getHitResult(player);
+        MovingObjectPosition hit = MMUtils.getHitResult(player);
 
-        if (hit != null && hit.typeOfHit != MovingObjectType.BLOCK) {
-            hit = null;
-        }
-
-        NBTState state = getState(itemStack);
+        if (hit != null && hit.typeOfHit != MovingObjectType.BLOCK) hit = null;
 
         if (state.config.action != null) {
-            if (handleAction(itemStack, world, player, hit, state)) {
-                if (world.isRemote) {
-                    setState(itemStack, state);
-                }
+            if (handleAction(stack, world, player, state, hit)) {
+                setState(stack, state);
 
-                return itemStack;
+                return stack;
             }
         }
 
@@ -324,96 +334,28 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 location.offset(ForgeDirection.getOrientation(hit.sideHit));
             }
 
-            if (state.config.placeMode == PlaceMode.DEBUGGING) {
-                if (!world.isRemote) {
-                    BlockApplyContext bac = new BlockApplyContext();
-                    bac.world = world;
-                    bac.x = location.x;
-                    bac.y = location.y;
-                    bac.z = location.z;
-                    bac.player = player;
-                    bac.build = null;
-                    bac.manipulator = itemStack;
-
-                    if (result == null) {
-                        try {
-                            result = BlockAnalyzer.analyze(bac);
-
-                            GTUtility.sendChatToPlayer(player, "analysis: " + new Gson().toJson(result));
-                        } catch (Throwable t) {
-                            GTMod.GT_FML_LOGGER.error("analysis error", t);
-
-                            GTUtility.sendChatToPlayer(player, "analysis error: " + t.getMessage());
-                        }
-                    } else {
-                        try {
-                            GTUtility.sendChatToPlayer(player, "apply: " + result.apply(bac));
-
-                            result = null;
-                        } catch (Throwable t) {
-                            GTMod.GT_FML_LOGGER.error("apply error", t);
-
-                            GTUtility.sendChatToPlayer(player, "apply error: " + t.getMessage());
-                        }
-                    }
-                }
-
-                return itemStack;
-            }
-
             if (state.config.placeMode == PlaceMode.GEOMETRY) {
-                switch (state.config.coordMode) {
-                    case SET_A: {
-                        state.config.coordA = location;
-                        break;
-                    }
-                    case SET_B: {
-                        state.config.coordB = location;
-                        break;
-                    }
-                    case SET_INTERLEAVED: {
-                        if (state.config.coordA == null) {
-                            state.config.coordA = location;
-                        } else {
-                            if (state.config.coordB == null) {
-                                state.config.coordB = location;
-                            } else {
-                                state.config.coordA = location;
-                                state.config.coordB = null;
-                            }
-                        }
-
-                        break;
-                    }
-                    case SET_PASTE: {
-
-                        break;
-                    }
-                }
+                state.config.coordA = location;
+                state.config.coordB = null;
+                state.config.coordBOffset = new Vector3i();
+                state.config.action = PendingAction.GEOM_MOVING_COORDS;
             }
 
-            setState(itemStack, state);
-            return itemStack;
+            setState(stack, state);
+            return stack;
         }
 
         if (player.isSneaking()) {
-            if (state.config.coordA != null && state.config.coordB != null) {
-                player.setItemInUse(itemStack, Integer.MAX_VALUE);
-            } else {
-                player.addChatMessage(
-                    new ChatComponentText(String.format("Both coords must be set to use the geometry mode.")));
-            }
-        } else {
-            if (world.isRemote) {
-                UIInfos.openClientUI(player, this::createWindow);
-            }
+            player.setItemInUse(stack, Integer.MAX_VALUE);
+        } else if (world.isRemote) {
+            UIInfos.openClientUI(player, this::createWindow);
         }
 
-        return itemStack;
+        return stack;
     }
 
-    private boolean handleAction(ItemStack itemStack, World world, EntityPlayer player,
-        @Nullable MovingObjectPosition hit, NBTState state) {
+    public boolean handleAction(ItemStack itemStack, World world, EntityPlayer player, NBTState state,
+        MovingObjectPosition hit) {
         switch (state.config.action) {
             case GEOM_MOVING_COORDS: {
                 state.config.coordA = state.config.getCoordA(player);
@@ -427,78 +369,30 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             case GEOM_SELECTING_BLOCK: {
                 state.config.action = null;
 
-                ItemStack selected = null;
-
-                if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
-                    Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-
-                    selected = block.getPickBlock(hit, world, hit.blockX, hit.blockY, hit.blockZ, player);
-
-                    if (selected != null && !(selected.getItem() instanceof ItemBlock)) {
-                        selected = null;
-                    }
-                }
-
-                String what = null;
-
-                switch (state.config.blockSelectMode) {
-                    case CORNERS: {
-                        state.config.setCorners(selected);
-                        what = "corners";
-                        break;
-                    }
-                    case EDGES: {
-                        state.config.setEdges(selected);
-                        what = "edges";
-                        break;
-                    }
-                    case FACES: {
-                        state.config.setFaces(selected);
-                        what = "faces";
-                        break;
-                    }
-                    case VOLUMES: {
-                        state.config.setVolumes(selected);
-                        what = "volumes";
-                        break;
-                    }
-                    case ALL: {
-                        state.config.setCorners(selected);
-                        state.config.setEdges(selected);
-                        state.config.setFaces(selected);
-                        state.config.setVolumes(selected);
-                        what = "all blocks";
-                        break;
-                    }
-                }
-
-                if (world.isRemote) {
-                    player.addChatMessage(
-                        new ChatComponentText(
-                            String.format(
-                                "%s%sSet %s to: %s",
-                                EnumChatFormatting.ITALIC,
-                                EnumChatFormatting.GRAY,
-                                what,
-                                selected == null ? "nothing" : selected.getDisplayName())));
-                }
+                onPickBlock(world, player, itemStack, state, hit);
 
                 return true;
             }
             case MARK_COPY_A: {
-                state.config.coordA = new Location(world, Config.getLookingAtLocation(player));
+                state.config.coordA = new Location(world, MMUtils.getLookingAtLocation(player));
                 state.config.action = PendingAction.MARK_COPY_B;
                 return true;
             }
             case MARK_COPY_B: {
-                state.config.coordB = new Location(world, Config.getLookingAtLocation(player));
+                state.config.coordB = new Location(world, MMUtils.getLookingAtLocation(player));
                 state.config.action = null;
                 return true;
             }
             case MARK_PASTE: {
-                state.config.coordC = new Location(world, Config.getLookingAtLocation(player));
+                state.config.coordC = new Location(world, MMUtils.getLookingAtLocation(player));
                 state.config.action = null;
                 return true;
+            }
+            case MARK_CUT_A: {
+                throw new IllegalStateException();
+            }
+            case MARK_CUT_B: {
+                throw new IllegalStateException();
             }
         }
 
@@ -521,23 +415,82 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         if (event.button == 2 /* MMB */ && event.buttonstate && heldItem.getItem() == this) {
             event.setCanceled(true);
 
-            NBTState state = getState(heldItem);
-
-            MovingObjectPosition hit = Config.getHitResult(player);
-
-            if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
-                state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
-
-                if (handleAction(heldItem, player.worldObj, player, hit, state)) {
-                    setState(heldItem, state);
-                }
-            }
+            Messages.MMBPressed.sendToServer();
         }
     }
 
-    @Override
-    public EnumAction getItemUseAction(ItemStack stack) {
-        return EnumAction.bow;
+    public void onMMBPressed(EntityPlayerMP player) {
+        final ItemStack heldItem = player.getHeldItem();
+        if (heldItem == null) {
+            return;
+        }
+
+        NBTState state = getState(heldItem);
+
+        if (state.config.placeMode == PlaceMode.GEOMETRY) {
+            onPickBlock(player.getEntityWorld(), player, heldItem, state, MMUtils.getHitResult(player));
+
+            setState(heldItem, state);
+        }
+    }
+
+    private void onPickBlock(World world, EntityPlayer player, ItemStack stack, NBTState state,
+        MovingObjectPosition hit) {
+        ItemStack selected = null;
+
+        if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
+            Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
+
+            selected = block.getPickBlock(hit, world, hit.blockX, hit.blockY, hit.blockZ, player);
+
+            if (selected != null && !(selected.getItem() instanceof ItemBlock)) {
+                selected = null;
+            }
+        } else if (hit == null || hit.typeOfHit != MovingObjectType.BLOCK) {
+            selected = null;
+        }
+
+        String what = null;
+
+        switch (state.config.blockSelectMode) {
+            case CORNERS: {
+                state.config.setCorners(selected);
+                what = "corners";
+                break;
+            }
+            case EDGES: {
+                state.config.setEdges(selected);
+                what = "edges";
+                break;
+            }
+            case FACES: {
+                state.config.setFaces(selected);
+                what = "faces";
+                break;
+            }
+            case VOLUMES: {
+                state.config.setVolumes(selected);
+                what = "volumes";
+                break;
+            }
+            case ALL: {
+                state.config.setCorners(selected);
+                state.config.setEdges(selected);
+                state.config.setFaces(selected);
+                state.config.setVolumes(selected);
+                what = "all blocks";
+                break;
+            }
+        }
+
+        player.addChatMessage(
+            new ChatComponentText(
+                String.format(
+                    "%s%sSet %s to: %s",
+                    EnumChatFormatting.ITALIC,
+                    EnumChatFormatting.GRAY,
+                    what,
+                    selected == null ? "nothing" : selected.getDisplayName())));
     }
 
     static final Map<EntityPlayer, PendingBuild> PENDING_BUILDS = new MapMaker().weakKeys()
@@ -549,6 +502,16 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         10L,
         TimeUnit.SECONDS,
         new SynchronousQueue<Runnable>());
+
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack) {
+        return EnumAction.bow;
+    }
+
+    @Override
+    public int getMaxItemUseDuration(ItemStack p_77626_1_) {
+        return Integer.MAX_VALUE;
+    }
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int itemUseCount) {
@@ -601,16 +564,25 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     @Override
     public String getEncryptionKey(ItemStack item) {
-        return getState(item).encKey;
+        if (tier.mConnectsToAE) {
+            Long key = getState(item).encKey;
+            return key != null ? Long.toHexString(key) : null;
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void setEncryptionKey(ItemStack item, String encKey, String name) {
         NBTState state = getState(item);
 
-        try {
-            state.encKey = Long.toHexString(Long.parseLong(encKey));
-        } catch (NumberFormatException e) {
+        if (tier.mConnectsToAE) {
+            try {
+                state.encKey = Long.parseLong(encKey);
+            } catch (NumberFormatException e) {
+                state.encKey = null;
+            }
+        } else {
             state.encKey = null;
         }
 
@@ -629,14 +601,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         return builder.build();
     }
 
-    private static void withState(UIBuildContext buildContext, Consumer<NBTState> fn) {
-        ItemStack heldStack = buildContext.getPlayer()
-            .getHeldItem();
-        NBTState state = getState(heldStack);
-        fn.accept(state);
-        setState(heldStack, state);
-    }
-
     // spotless:off
     private RadialMenuBuilder getMenuOptions(UIBuildContext buildContext) {
         ItemStack heldStack = buildContext.getPlayer().getHeldItem();
@@ -652,7 +616,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     case GEOMETRY -> addGeometryOptions(builder, buildContext, heldStack);
                     case COPYING -> addCopyingOptions(builder, buildContext, heldStack);
                     case MOVING -> addMovingOptions(builder, buildContext, heldStack);
-                    case DEBUGGING -> addDebuggingOptions(builder, buildContext, heldStack);
                 }
             });
     }
@@ -662,61 +625,44 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .label("Set Mode")
                 .branch()
                     .label("Set Remove Mode")
+                    .hidden(!tier.mAllowRemoving)
                     .option()
                         .label("Remove None")
                         .onClicked(() -> {
-                            withState(buildContext, state -> {
-                                state.config.removeMode = BlockRemoveMode.NONE;
-                            });
+                            Messages.SetRemoveMode.sendToServer(BlockRemoveMode.NONE);
                         })
                     .done()
                     .option()
                         .label("Remove Replaceable")
                         .onClicked(() -> {
-                            withState(buildContext, state -> {
-                                state.config.removeMode = BlockRemoveMode.REPLACEABLE;
-                            });
+                            Messages.SetRemoveMode.sendToServer(BlockRemoveMode.REPLACEABLE);
                         })
                     .done()
                     .option()
                         .label("Remove All")
                         .onClicked(() -> {
-                            withState(buildContext, state -> {
-                                state.config.removeMode = BlockRemoveMode.ALL;
-                            });
+                            Messages.SetRemoveMode.sendToServer(BlockRemoveMode.ALL);
                         })
                     .done()
                 .done()
                 .option()
                     .label("Geometry")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.placeMode = PlaceMode.GEOMETRY;
-                        });
+                        Messages.SetPlaceMode.sendToServer(PlaceMode.GEOMETRY);
                     })
                 .done()
                 .option()
                     .label("Moving")
+                    .hidden(!tier.mAllowCopying)
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.placeMode = PlaceMode.MOVING;
-                        });
+                        Messages.SetPlaceMode.sendToServer(PlaceMode.MOVING);
                     })
                 .done()
                 .option()
                     .label("Copying")
+                    .hidden(!tier.mAllowCopying)
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.placeMode = PlaceMode.COPYING;
-                        });
-                    })
-                .done()
-                .option()
-                    .label("Debugging")
-                    .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.placeMode = PlaceMode.DEBUGGING;
-                        });
+                        Messages.SetPlaceMode.sendToServer(PlaceMode.COPYING);
                     })
                 .done()
             .done();
@@ -729,58 +675,42 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .option()
                     .label("Set Corners")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.blockSelectMode = BlockSelectMode.CORNERS;
-                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
-                        });
+                        Messages.SetBlockSelectMode.sendToServer(BlockSelectMode.CORNERS);
+                        Messages.SetPendingAction.sendToServer(PendingAction.GEOM_SELECTING_BLOCK);
                     })
                 .done()
                 .option()
                     .label("Set Edges")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.blockSelectMode = BlockSelectMode.EDGES;
-                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
-                        });
+                        Messages.SetBlockSelectMode.sendToServer(BlockSelectMode.EDGES);
+                        Messages.SetPendingAction.sendToServer(PendingAction.GEOM_SELECTING_BLOCK);
                     })
                 .done()
                 .option()
                     .label("Set Faces")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.blockSelectMode = BlockSelectMode.FACES;
-                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
-                        });
+                        Messages.SetBlockSelectMode.sendToServer(BlockSelectMode.FACES);
+                        Messages.SetPendingAction.sendToServer(PendingAction.GEOM_SELECTING_BLOCK);
                     })
                 .done()
                 .option()
                     .label("Set Volumes")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.blockSelectMode = BlockSelectMode.VOLUMES;
-                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
-                        });
+                        Messages.SetBlockSelectMode.sendToServer(BlockSelectMode.VOLUMES);
+                        Messages.SetPendingAction.sendToServer(PendingAction.GEOM_SELECTING_BLOCK);
                     })
                 .done()
                 .option()
                     .label("Set All")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.blockSelectMode = BlockSelectMode.ALL;
-                            state.config.action = PendingAction.GEOM_SELECTING_BLOCK;
-                        });
+                        Messages.SetBlockSelectMode.sendToServer(BlockSelectMode.ALL);
+                        Messages.SetPendingAction.sendToServer(PendingAction.GEOM_SELECTING_BLOCK);
                     })
                 .done()
                 .option()
                     .label("Clear All")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.setCorners(null);
-                            state.config.setEdges(null);
-                            state.config.setFaces(null);
-                            state.config.setVolumes(null);
-                            state.config.action = null;
-                        });
+                        Messages.ClearBlocks.sendToServer();
                     })
                 .done()
             .done()
@@ -789,97 +719,46 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .option()
                     .label("Line")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.shape = Shape.LINE;
-                        });
+                        Messages.SetShape.sendToServer(Shape.LINE);
                     })
                 .done()
                 .option()
                     .label("Cube")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.shape = Shape.CUBE;
-                        });
+                        Messages.SetShape.sendToServer(Shape.CUBE);
                     })
                 .done()
                 .option()
                     .label("Sphere")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.shape = Shape.SPHERE;
-                        });
+                        Messages.SetShape.sendToServer(Shape.SPHERE);
                     })
                 .done()
             .done()
             .branch()
-                .label("Change Coords")
-                .option()
-                    .label("Set Coord A")
-                    .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.coordMode = CoordMode.SET_A;
-                            state.config.action = null;
-                        });
-                    })
-                .done()
-                .option()
-                    .label("Set Coord B")
-                    .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.coordMode = CoordMode.SET_B;
-                            state.config.action = null;
-                        });
-                    })
-                .done()
-                .option()
-                    .label("Set Both")
-                    .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.coordMode = CoordMode.SET_INTERLEAVED;
-                            state.config.action = null;
-                        });
-                    })
-                .done()
+                .label("Move Coords")
                 .option()
                     .label("Move Coord A")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.action = PendingAction.GEOM_MOVING_COORDS;
-                            state.config.coordAOffset = new Vector3i();
-                            state.config.coordBOffset = null;
-                        });
-                    })
-                .done()
-                .option()
-                    .label("Move Coord B")
-                    .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.action = PendingAction.GEOM_MOVING_COORDS;
-                            state.config.coordAOffset = null;
-                            state.config.coordBOffset = new Vector3i();
-                        });
+                        Messages.MoveA.sendToServer();
                     })
                 .done()
                 .option()
                     .label("Move Both")
                     .onClicked(() -> {
-                        withState(buildContext, state -> {
-                            state.config.action = PendingAction.GEOM_MOVING_COORDS;
-
-                            Vector3i lookingAt = Config.getLookingAtLocation(buildContext.getPlayer());
-
-                            if (state.config.coordA == null) {
-                                state.config.coordAOffset = null;
-                            } else {
-                                state.config.coordAOffset = state.config.coordA.toVec().sub(lookingAt);
-                            }
-
-                            if (state.config.coordB == null) {
-                                state.config.coordBOffset = null;
-                            } else {
-                                state.config.coordBOffset = state.config.coordB.toVec().sub(lookingAt);
-                            }
-                        });
+                        Messages.MoveBoth.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Move Coord B")
+                    .onClicked(() -> {
+                        Messages.MoveB.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Move Here")
+                    .onClicked(() -> {
+                        Messages.MoveHere.sendToServer();
                     })
                 .done()
             .done();
@@ -890,20 +769,19 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             .option()
                 .label("Mark Copy")
                 .onClicked(() -> {
-                    withState(buildContext, state -> {
-                        state.config.action = PendingAction.MARK_COPY_A;
-                        state.config.coordA = null;
-                        state.config.coordB = null;
-                    });
+                    Messages.MarkCopy.sendToServer();
+                })
+            .done()
+            .option()
+                .label("Planning")
+                .onClicked(() -> {
+                    Messages.MarkPaste.sendToServer();
                 })
             .done()
             .option()
                 .label("Mark Paste")
                 .onClicked(() -> {
-                    withState(buildContext, state -> {
-                        state.config.action = PendingAction.MARK_PASTE;
-                        state.config.coordC = null;
-                    });
+                    Messages.MarkPaste.sendToServer();
                 })
             .done();
     }
@@ -911,15 +789,24 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     private void addMovingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
 
     }
-
-    private void addDebuggingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
-
-    }
     // spotless:on
 
     // #endregion
 
     // #region Rendering
+
+    private static final MethodHandle GET_FXLAYERS;
+
+    static {
+        try {
+            Field field = ReflectionHelper.findField(EffectRenderer.class, "fxLayers");
+            field.setAccessible(true);
+            GET_FXLAYERS = MethodHandles.lookup()
+                .unreflectGetter(field);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Could not get field EffectRenderer.fxLayers", e);
+        }
+    }
 
     @SideOnly(Side.CLIENT)
     private static long LAST_SPAWN_MS_EPOCH = 0;
@@ -939,8 +826,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             NBTState state = getState(held);
 
             switch (state.config.placeMode) {
-                case GEOMETRY:
-                case DEBUGGING: {
+                case GEOMETRY: {
                     renderGeom(event, state, player);
                     break;
                 }
@@ -949,6 +835,15 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     renderRegions(event, state, player);
                     break;
                 }
+            }
+
+            try {
+                List<EntityFX>[] fxLayers = (List<EntityFX>[]) GET_FXLAYERS
+                    .invokeExact(Minecraft.getMinecraft().effectRenderer);
+
+                fxLayers[0].removeIf(particle -> particle instanceof WeightlessParticleFX);
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
         } else {
             LAST_SPAWN_MS_EPOCH = 0;
@@ -964,29 +859,25 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
         boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
 
-        if (isAValid) {
-            Objects.requireNonNull(coordA);
-            drawBox(player, coordA, event.partialTicks);
-
-            if (state.config.coordAOffset != null) {
-                GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
-                drawRulers(player, coordA, true, event.partialTicks);
-            }
+        if (isAValid && state.config.coordAOffset != null) {
+            GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+            drawRulers(player, coordA, false, event.partialTicks);
         }
 
-        if (isBValid) {
-            Objects.requireNonNull(coordB);
-            drawBox(player, coordB, event.partialTicks);
-
-            if (state.config.coordBOffset != null) {
-                GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
-                drawRulers(player, coordB, true, event.partialTicks);
-            }
+        if (isBValid && state.config.coordBOffset != null) {
+            GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+            drawRulers(player, coordB, false, event.partialTicks);
         }
 
         if (isAValid && isBValid) {
             Objects.requireNonNull(coordA);
             Objects.requireNonNull(coordB);
+
+            BoxRenderer.INSTANCE.start(event.partialTicks);
+            BoxRenderer.INSTANCE.drawAround(
+                MMUtils.getBoundingBox(coordA, MMUtils.getRegionDeltas(coordA, coordB)),
+                new Vector3f(0.15f, 0.6f, 0.75f));
+            BoxRenderer.INSTANCE.finish();
 
             boolean spawn = (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS
                 || !Objects.equals(DRAWN_CONFIG, state.config);
@@ -1045,20 +936,20 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             switch (state.config.action) {
                 case MARK_COPY_A:
                 case MARK_CUT_A: {
-                    sourceA = new Location(player.worldObj, Config.getLookingAtLocation(player));
+                    sourceA = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
                     GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
                     drawRulers(player, sourceA, false, event.partialTicks);
                     break;
                 }
                 case MARK_COPY_B:
                 case MARK_CUT_B: {
-                    sourceB = new Location(player.worldObj, Config.getLookingAtLocation(player));
+                    sourceB = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
                     GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
                     drawRulers(player, sourceB, false, event.partialTicks);
                     break;
                 }
                 case MARK_PASTE: {
-                    paste = new Location(player.worldObj, Config.getLookingAtLocation(player));
+                    paste = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
                     GL11.glColor4f(0.75f, 0.5f, 0.15f, 0.75F);
                     drawRulers(player, paste, false, event.partialTicks);
                     break;
@@ -1085,9 +976,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             Objects.requireNonNull(sourceA);
             Objects.requireNonNull(sourceB);
 
-            deltas = Config.getRegionDeltas(sourceA, sourceB);
+            deltas = MMUtils.getRegionDeltas(sourceA, sourceB);
 
-            BoxRenderer.INSTANCE.drawAround(Config.getBoundingBox(sourceA, deltas), new Vector3f(0.15f, 0.6f, 0.75f));
+            BoxRenderer.INSTANCE.drawAround(MMUtils.getBoundingBox(sourceA, deltas), new Vector3f(0.15f, 0.6f, 0.75f));
 
             AboveHotbarHUD.renderTextAboveHotbar(
                 String.format(
@@ -1105,7 +996,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
             Vector3i deltas2 = deltas == null ? new Vector3i() : deltas;
 
-            BoxRenderer.INSTANCE.drawAround(Config.getBoundingBox(paste, deltas2), new Vector3f(0.75f, 0.5f, 0.15f));
+            BoxRenderer.INSTANCE.drawAround(MMUtils.getBoundingBox(paste, deltas2), new Vector3f(0.75f, 0.5f, 0.15f));
 
             boolean spawn = (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS
                 || !Objects.equals(DRAWN_CONFIG, state.config);
@@ -1135,34 +1026,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         }
 
         BoxRenderer.INSTANCE.finish();
-    }
-
-    private void drawBox(EntityPlayer player, Location l, float partialTickTime) {
-        Block block = player.worldObj.getBlock(l.x, l.y, l.z);
-        block.setBlockBoundsBasedOnState(player.worldObj, l.x, l.y, l.z);
-        AxisAlignedBB aabb = block.getSelectedBoundingBoxFromPool(player.worldObj, l.x, l.y, l.z);
-
-        GL11.glColor4f(1.0F, 0.0F, 0.0F, 0.75F);
-        drawAABB(player, aabb, partialTickTime);
-    }
-
-    private void drawAABB(EntityPlayer player, AxisAlignedBB aabb, float partialTickTime) {
-        GL11.glEnable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glLineWidth(2.0F);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        float f1 = 0.002F;
-
-        double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) partialTickTime;
-        double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) partialTickTime;
-        double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) partialTickTime;
-        RenderGlobal.drawOutlinedBoundingBox(
-            aabb.expand((double) f1, (double) f1, (double) f1)
-                .getOffsetBoundingBox(-d0, -d1, -d2),
-            -1);
-
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
     }
 
     private static Vector3d getVecForDir(ForgeDirection dir) {

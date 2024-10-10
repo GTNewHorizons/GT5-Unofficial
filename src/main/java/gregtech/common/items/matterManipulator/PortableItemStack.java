@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 
-public class PortableItemStack {
+public class PortableItemStack implements IItemProvider {
 
     public UniqueIdentifier item;
     public Integer metadata, amount;
@@ -44,6 +44,22 @@ public class PortableItemStack {
         }
 
         return itemStack.copy();
+    }
+
+    @Override
+    public ItemStack getStack(IPseudoInventory inv) {
+        ItemStack stack = toStack();
+
+        if (!inv.tryConsumeItems(stack)) {
+            return null;
+        } else {
+            return stack;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return toStack().getDisplayName() + (amount == null || amount == 1 ? "" : " x " + amount);
     }
 
     @Override
