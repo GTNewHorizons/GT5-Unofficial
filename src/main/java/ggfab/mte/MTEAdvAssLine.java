@@ -153,10 +153,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
         .addElement(
             'e',
-            ofChain(
-                Energy.or(ExoticEnergy)
-                    .newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
-                ofBlock(GregTechAPI.sBlockCasings2, 0)))
+            buildHatchAdder(MTEAdvAssLine.class).anyOf(Energy, ExoticEnergy)
+                .dot(1)
+                .casingIndex(16)
+                .allowOnly(ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH)
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',
             buildHatchAdder(MTEAdvAssLine.class).atLeast(DataHatchElement.DataAccess)
