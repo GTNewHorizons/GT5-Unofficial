@@ -712,28 +712,29 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
-                Materials.AnnealedCopper.getDust(6),
-                Materials.Ardite.getDust(2),
-                Materials.Redstone.getDust(10))
-            .fluidOutputs(GGMaterial.signalium.getMolten(1 * 144))
+                Materials.AnnealedCopper.getDust(30),
+                Materials.Ardite.getDust(10),
+                Materials.Redstone.getDust(50))
+            .fluidOutputs(GGMaterial.signalium.getMolten(5 * 144))
             .eut(TierEU.RECIPE_LuV)
             .noOptimize()
-            .duration(1 * MINUTES)
+            .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
         // Lumiium
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
-                Materials.Tin.getDust(5),
-                Materials.Iron.getDust(5),
-                Materials.Copper.getDust(1),
-                Materials.Silver.getDust(4),
-                GGMaterial.lumiinessence.get(OrePrefixes.dust, 5),
-                Materials.Glowstone.getDust(5))
-            .fluidOutputs(GGMaterial.lumiium.getMolten(5 * 72))
+                Materials.Tin.getDust(10),
+                Materials.Iron.getDust(10),
+                Materials.Copper.getDust(2),
+                Materials.Silver.getDust(8),
+                GGMaterial.lumiinessence.get(OrePrefixes.dust, 10),
+                Materials.Glowstone.getDust(10))
+            .fluidOutputs(GGMaterial.lumiium.getMolten(5 * 144))
             .eut(TierEU.RECIPE_LuV)
-            .duration(2 * MINUTES)
+            .noOptimize()
+            .duration(4 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
         // Eglin Steel
