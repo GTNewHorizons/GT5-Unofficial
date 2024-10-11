@@ -2473,9 +2473,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             if (i < uniqueItems) {
                 ItemStack stack = inputs[i];
                 if (stack != null) {
-                    stack = stack.copy();
-                    stack.stackSize = 1;
-                    upgradeMatsHandler.setStackInSlot(i, stack);
+                    upgradeMatsHandler.setStackInSlot(i, stack.copy());
                 }
                 builder.widget(
                     new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
@@ -2484,6 +2482,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 columnList.get(cleanDiv4)
                     .addChild(
                         new SlotWidget(upgradeMatsHandler, i).setAccess(false, false)
+                            .setRenderStackSize(false)
                             .disableInteraction());
                 columnList.get(cleanDiv4 + 3)
                     .addChild(
