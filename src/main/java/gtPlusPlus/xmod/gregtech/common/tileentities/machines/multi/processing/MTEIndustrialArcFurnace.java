@@ -90,7 +90,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         tt.addMachineType(getMachineType())
             .addInfo("Controller Block for Industrial Arc Furnace")
             .addInfo("250% faster than using single block machines of the same voltage")
-            .addInfo("Processes 8 * voltage tier * W items")
+            .addInfo("Processes voltage tier * W items in Electric mode or 8 * voltage tier * W items in Plasma mode")
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))
