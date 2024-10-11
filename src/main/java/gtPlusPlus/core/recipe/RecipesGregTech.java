@@ -574,7 +574,7 @@ public class RecipesGregTech {
             GregtechItemList.TransmissionComponent_EV, GregtechItemList.TransmissionComponent_IV,
             GregtechItemList.TransmissionComponent_LuV, GregtechItemList.TransmissionComponent_ZPM,
             GregtechItemList.TransmissionComponent_UV, GregtechItemList.TransmissionComponent_UHV, };
-        for (int i = 1; i < aTransParts.length; i++) {
+        for (int i = 1; i <= aTransParts.length; i++) {
             RA.stdBuilder()
                 .itemInputs(CI.getEmitter(i, 2), CI.getSensor(i, 2))
                 .itemOutputs(aTransParts[i - 1].get(1))
