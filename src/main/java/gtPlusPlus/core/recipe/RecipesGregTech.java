@@ -71,11 +71,7 @@ import gtPlusPlus.core.item.chemistry.GenericChem;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.MaterialsOres;
-import gtPlusPlus.core.material.Particle;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -697,6 +693,50 @@ public class RecipesGregTech {
     }
 
     private static void blastSmelterRecipes() {
+
+        // Enderium
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(2),
+                Materials.Tin.getDust(2),
+                Materials.Platinum.getDust(1),
+                Materials.Silver.getDust(1),
+                Materials.Thaumium.getDust(2),
+                Materials.EnderPearl.getDust(2))
+            .fluidOutputs(Materials.Enderium.getMolten(8 * 144))
+            .eut(TierEU.RECIPE_EV)
+            .duration(20 * SECONDS + 1 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
+
+        // Signalium
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(2),
+                Materials.AnnealedCopper.getDust(6),
+                Materials.Ardite.getDust(2),
+                Materials.Redstone.getDust(10))
+            .fluidOutputs(GGMaterial.signalium.getMolten(1 * 144))
+            .eut(TierEU.RECIPE_LuV)
+            .noOptimize()
+            .duration(1 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
+
+        // Lumiium
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(2),
+                Materials.Tin.getDust(10),
+                Materials.Iron.getDust(10),
+                Materials.Copper.getDust(2),
+                Materials.Silver.getDust(8),
+                Materials.Redstone.getDust(10),
+                Materials.Aluminium.getDust(5),
+                Materials.Glowstone.getDust(30))
+            .fluidInputs(Materials.PhosphoricAcid.getFluid(40000))
+            .fluidOutputs(GGMaterial.lumiium.getMolten(5 * 144))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(4 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
 
         // Eglin Steel
         GTValues.RA.stdBuilder()
