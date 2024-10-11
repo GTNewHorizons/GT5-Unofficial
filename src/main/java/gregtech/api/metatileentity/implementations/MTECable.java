@@ -31,7 +31,10 @@ import org.lwjgl.input.Keyboard;
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
@@ -50,7 +53,12 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GTCoverNone;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.CoverBehavior;
+import gregtech.api.util.CoverBehaviorBase;
+import gregtech.api.util.GTGCCompat;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.CoverInfo;
@@ -268,26 +276,19 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             final ItemStack handItem = aPlayer.inventory.getCurrentItem();
             IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
 
-            if (!(meta instanceof MTECable handCable)) {
-                return false;
-            }
+            if (!(meta instanceof MTECable handCable)) return false;
+
+            // Coordinates of block being replaced
+            int x = aBaseMetaTileEntity.getXCoord();
+            int y = aBaseMetaTileEntity.getYCoord();
+            int z = aBaseMetaTileEntity.getZCoord();
 
             MTECable newCable;
             World world = aBaseMetaTileEntity.getWorld();
-            Block block = world.getBlock(
-                aBaseMetaTileEntity.getXCoord(),
-                aBaseMetaTileEntity.getYCoord(),
-                aBaseMetaTileEntity.getZCoord());
+            Block block = world.getBlock(x, y, z);
 
             aPlayer.inventory.addItemStackToInventory(
-                new ItemStack(
-                    ItemMachines.getItemFromBlock(block),
-                    1,
-                    block.getDamageValue(
-                        world,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord())));
+                new ItemStack(ItemMachines.getItemFromBlock(block), 1, block.getDamageValue(world, x, y, z)));
 
             getBaseMetaTileEntity().setMetaTileEntity(
                 newCable = new MTECable(
@@ -300,22 +301,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                     handCable.mInsulated,
                     handCable.mCanShock));
 
-            world.setBlock(
-                aBaseMetaTileEntity.getXCoord(),
-                aBaseMetaTileEntity.getYCoord(),
-                aBaseMetaTileEntity.getZCoord(),
-                Blocks.air);
+            world.setBlock(x, y, z, Blocks.air);
 
-            handItem.tryPlaceItemIntoWorld(
-                aPlayer,
-                world,
-                aBaseMetaTileEntity.getXCoord(),
-                aBaseMetaTileEntity.getYCoord(),
-                aBaseMetaTileEntity.getZCoord(),
-                ForgeDirection.UNKNOWN.ordinal(),
-                aX,
-                aY,
-                aZ);
+            handItem.tryPlaceItemIntoWorld(aPlayer, world, x, y, z, ForgeDirection.UNKNOWN.ordinal(), aX, aY, aZ);
 
             newCable.mCheckConnections = true;
             newCable.onPostTick(aBaseMetaTileEntity, 20);
