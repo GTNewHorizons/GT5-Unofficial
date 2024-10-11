@@ -331,7 +331,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                             }
                         }
                     }
-                    if (tBlock == Blocks.water) {
+                    if (tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
                         ++tAmount;
                     } else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
                         ++tAmount;
