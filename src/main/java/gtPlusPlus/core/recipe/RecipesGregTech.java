@@ -725,17 +725,15 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
-                Materials.Tin.getDust(10),
-                Materials.Iron.getDust(10),
-                Materials.Copper.getDust(2),
-                Materials.Silver.getDust(8),
-                Materials.Redstone.getDust(10),
-                Materials.Aluminium.getDust(5),
-                Materials.Glowstone.getDust(30))
-            .fluidInputs(Materials.PhosphoricAcid.getFluid(40000))
-            .fluidOutputs(GGMaterial.lumiium.getMolten(5 * 144))
+                Materials.Tin.getDust(5),
+                Materials.Iron.getDust(5),
+                Materials.Copper.getDust(1),
+                Materials.Silver.getDust(4),
+                GGMaterial.lumiinessence.get(OrePrefixes.dust, 5),
+                Materials.Glowstone.getDust(5))
+            .fluidOutputs(GGMaterial.lumiium.getMolten(5 * 72))
             .eut(TierEU.RECIPE_LuV)
-            .duration(4 * MINUTES)
+            .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
         // Eglin Steel
