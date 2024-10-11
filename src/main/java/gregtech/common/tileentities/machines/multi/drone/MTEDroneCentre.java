@@ -177,7 +177,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Drone Centre")
-            .addInfo("Drone Center Controller")
             .addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
             .addInfo("Monitors multiblock machines in range.")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
@@ -188,7 +187,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("There is a chance per second that the drone will crash.")
             .addInfo("Chance is determined by drone tier: T1-1/28800, T2-1/172800, T3-0")
             .addInfo("If machine is too far, remote control would not available")
-            .addSeparator()
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center")
             .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
