@@ -2235,6 +2235,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             gravitonShardsAvailable += gravitonShardCost;
             gravitonShardsSpent -= gravitonShardCost;
             upgrades[currentUpgradeID] = false;
+
+            if (currentUpgradeID == 30) {
+                gravitonShardEjection = false;
+            }
         }
     }
 
