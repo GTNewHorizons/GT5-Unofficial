@@ -1792,6 +1792,23 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                Materials.AnnealedCopper.getDust(64),
+                Materials.AnnealedCopper.getDust(64),
+                Materials.AnnealedCopper.getDust(64),
+                Materials.Ardite.getDust(64),
+                Materials.Ardite.getDust(32),
+                Materials.RedAlloy.getDust(64),
+                Materials.RedAlloy.getDust(32),
+                GTUtility.getIntegratedCircuit(12))
+            .fluidInputs(Materials.Redstone.getMolten(13896))
+            .itemOutputs(GGMaterial.signalium.get(OrePrefixes.dust, 48))
+            .duration(36 * SECONDS + 9 * MINUTES)
+            .eut(TierEU.RECIPE_HV)
+            .noOptimize()
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 Materials.TinAlloy.getDust(4),
                 Materials.SterlingSilver.getDust(2),
                 GGMaterial.lumiinessence.get(OrePrefixes.dust, 2),
@@ -1800,6 +1817,23 @@ public class RecipeLoader2 {
             .itemOutputs(GGMaterial.lumiium.get(OrePrefixes.dust, 1))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_MV)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.TinAlloy.getDust(64),
+                Materials.TinAlloy.getDust(64),
+                Materials.TinAlloy.getDust(64),
+                Materials.SterlingSilver.getDust(64),
+                Materials.SterlingSilver.getDust(32),
+                GGMaterial.lumiinessence.get(OrePrefixes.dust, 64),
+                GGMaterial.lumiinessence.get(OrePrefixes.dust, 32),
+                GTUtility.getIntegratedCircuit(12))
+            .fluidInputs(Materials.Glowstone.getMolten(13896))
+            .itemOutputs(GGMaterial.lumiium.get(OrePrefixes.dust, 48))
+            .duration(36 * SECONDS + 9 * MINUTES)
+            .eut(TierEU.RECIPE_HV)
+            .noOptimize()
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()

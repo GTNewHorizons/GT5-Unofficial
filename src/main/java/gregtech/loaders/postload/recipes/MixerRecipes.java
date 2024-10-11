@@ -396,6 +396,24 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 60),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 60),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 24),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Molybdenum, 48),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 24),
+                GTUtility.getIntegratedCircuit(12))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.HSSG, 64L * OrePrefixes.dust.mMaterialAmount),
+                GTOreDictUnificator.getDust(Materials.HSSG, 64L * OrePrefixes.dust.mMaterialAmount),
+                GTOreDictUnificator.getDust(Materials.HSSG, 64L * OrePrefixes.dust.mMaterialAmount),
+                GTOreDictUnificator.getDust(Materials.HSSG, 24L * OrePrefixes.dust.mMaterialAmount))
+            .duration(12 * MINUTES)
+            .eut(TierEU.RECIPE_IV)
+            .noOptimize()
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.HSSG, 6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 1),
@@ -408,6 +426,26 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 45),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 45),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 18),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Molybdenum, 36),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 18),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 18),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Manganese, 18),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 18),
+                GTUtility.getIntegratedCircuit(12))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.HSSE, 64L * OrePrefixes.dust.mMaterialAmount),
+                GTOreDictUnificator.getDust(Materials.HSSE, 64L * OrePrefixes.dust.mMaterialAmount),
+                GTOreDictUnificator.getDust(Materials.HSSE, 64L * OrePrefixes.dust.mMaterialAmount),
+                GTOreDictUnificator.getDust(Materials.HSSE, 24L * OrePrefixes.dust.mMaterialAmount))
+            .duration(11 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.HSSG, 6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1),
@@ -415,6 +453,25 @@ public class MixerRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.getDust(Materials.HSSS, 9L * OrePrefixes.dust.mMaterialAmount))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
+            .addTo(mixerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 45),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 45),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 18),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Molybdenum, 36),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 18),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 36),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 18),
+                GTUtility.getIntegratedCircuit(12))
+            .itemOutputs(
+                GTOreDictUnificator.getDust(Materials.HSSS, 64L * OrePrefixes.dust.mMaterialAmount),
+                GTOreDictUnificator.getDust(Materials.HSSS, 64L * OrePrefixes.dust.mMaterialAmount),
+                GTOreDictUnificator.getDust(Materials.HSSS, 64L * OrePrefixes.dust.mMaterialAmount),
+                GTOreDictUnificator.getDust(Materials.HSSS, 24L * OrePrefixes.dust.mMaterialAmount))
+            .duration(10 * MINUTES)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
