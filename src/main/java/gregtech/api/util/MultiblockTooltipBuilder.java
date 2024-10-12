@@ -1,5 +1,8 @@
 package gregtech.api.util;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Stream.generate;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,8 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Stream.generate;
 
 import javax.annotation.Nullable;
 
@@ -144,7 +145,8 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
-        String line = generate(() -> "-").limit(length).collect(joining());
+        String line = generate(() -> "-").limit(length)
+            .collect(joining());
         switch (GTMod.gregtechproxy.separatorStyle) {
             case 0 -> iLines.add(" ");
             case 1 -> iLines.add(color + line);
@@ -678,7 +680,8 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length) {
-        String line = generate(() -> "-").limit(length).collect(joining());
+        String line = generate(() -> "-").limit(length)
+            .collect(joining());
         switch (GTMod.gregtechproxy.separatorStyle) {
             case 0 -> sLines.add(" ");
             case 1 -> sLines.add(TAB + color + line);
