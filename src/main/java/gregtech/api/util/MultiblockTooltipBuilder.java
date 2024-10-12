@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Stream.generate;
 
 import javax.annotation.Nullable;
 
@@ -16,6 +18,8 @@ import net.minecraft.util.StatCollector;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+
+import gregtech.GTMod;
 
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
@@ -99,8 +103,22 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMachineType(String machine) {
+        return addMachineType(machine, EnumChatFormatting.GRAY, 41);
+    }
+
+    /**
+     * Add a line telling you what the machine type is. Usually, this will be the name of a SB version.<br>
+     * Machine Type: machine
+     *
+     * @param machine    Name of the machine type
+     * @param lineColor  Color of the separator line
+     * @param lineLength Length of the separator line
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addMachineType(String machine, EnumChatFormatting lineColor, int lineLength) {
         iLines.add(TT_machineType + COLON + EnumChatFormatting.YELLOW + machine + EnumChatFormatting.RESET);
-        this.addSeparator();
+        this.addSeparator(lineColor, lineLength);
         return this;
     }
 
@@ -127,12 +145,26 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add an empty line
+     * Add a separator line
      *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator() {
-        iLines.add(" ");
+        return addSeparator(EnumChatFormatting.GRAY, 41);
+    }
+
+    /**
+     * Add a colored separator line with specified length
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
+        String line = generate(() -> "-").limit(length).collect(joining());
+        switch (GTMod.gregtechproxy.separatorStyle) {
+            case 0 -> iLines.add(" ");
+            case 1 -> iLines.add(color + line);
+            default -> iLines.add("" + color + EnumChatFormatting.STRIKETHROUGH + line);
+        }
         return this;
     }
 
@@ -656,6 +688,30 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Add a colored separator line with specified length to structure info.<br>
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length) {
+        String line = generate(() -> "-").limit(length).collect(joining());
+        switch (GTMod.gregtechproxy.separatorStyle) {
+            case 0 -> sLines.add(" ");
+            case 1 -> sLines.add(TAB + color + line);
+            default -> sLines.add(TAB + color + EnumChatFormatting.STRIKETHROUGH + line);
+        }
+        return this;
+    }
+
+    /**
+     * Add a separator line to structure info.<br>
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStructureInfoSeparator() {
+        return addStructureInfoSeparator(EnumChatFormatting.GRAY, 30);
+    }
+
+    /**
      * Use this method to add non-standard structural info.<br>
      * (indent)info
      *
@@ -703,7 +759,22 @@ public class MultiblockTooltipBuilder {
      * @param authors Formatted names of the creators of this multiblock machine - if any
      */
     public MultiblockTooltipBuilder toolTipFinisher(@Nullable String... authors) {
-        this.addSeparator();
+        return toolTipFinisher(EnumChatFormatting.GRAY, 41, authors);
+    }
+
+    /**
+     * Call at the very end.<br>
+     * Adds a line jump with configurable color and length.<br>
+     * Adds information on how to display the structure guidelines.<br>
+     * Adds credit for creators of this multi, if any.<br>
+     * <p>
+     * Ends the building process.
+     *
+     * @param authors Formatted names of the creators of this multiblock machine - if any
+     */
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
+        @Nullable String... authors) {
+        this.addSeparator(separatorColor, separatorLength);
         iLines.add(
             TT_hold + " "
                 + EnumChatFormatting.BOLD
@@ -736,7 +807,7 @@ public class MultiblockTooltipBuilder {
             iLines.add(sb.toString());
         }
         hLines.add(TT_structurehint);
-        sLines.add(" ");
+        this.addStructureInfoSeparator();
         sLines.add(EnumChatFormatting.WHITE + TT_StructureComplex);
         sLines.add(
             EnumChatFormatting.WHITE + TT_SeeStructure1
