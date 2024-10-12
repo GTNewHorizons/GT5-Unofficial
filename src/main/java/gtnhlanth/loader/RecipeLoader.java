@@ -146,6 +146,7 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
+import gtPlusPlus.core.item.ModItems;
 import gtnhlanth.Tags;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -671,6 +672,19 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_ZPM)
             .specialValue(3600)
             .addTo(blastFurnaceRecipes);
+        
+        GTValues.RA.stdBuilder()
+        	.itemInputs(
+        		new ItemStack(LanthItemList.ETCHED_MASK_1, 4),
+        		Materials.Glass.getPlates(2),
+        		new ItemStack(ModItems.dustLithiumHydroxide, 2),
+        		Materials.Epoxid.getDust(4))
+        	.fluidInputs(Materials.Hydrogen.getGas(2000))
+        	.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.CBLANK)))
+        	.duration(4 * GTRecipeBuilder.MINUTES)
+        	.eut(TierEU.RECIPE_ZPM)
+        	.specialValue(4200)
+        	.addTo(blastFurnaceRecipes);
 
         for (MaskList mask : MaskList.values()) {
 

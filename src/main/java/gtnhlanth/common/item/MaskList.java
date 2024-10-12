@@ -19,7 +19,7 @@ public enum MaskList {
     BLANK2("blank2", "T2 Blank", 0, "UV", null, null, 0, 0, 0, 0, 0, null, null),
     BLANK3("blank3", "T3 Blank", 0, "X-RAY", null, null, 0, 0, 0, 0, 0, null, null),
     
-    CBLANK("cblank", "Crystal", 0, "UV", null, null, 0, 0, 0, 0, 0, null, null), // Better at resolving smaller features, in theory
+    CBLANK("cblank", "Crystal", 0, "X-RAY", null, null, 0, 0, 0, 0, 0, null, null), // Better at resolving smaller features, in theory
     
     ILC("ilc", "Integrated Logic Circuit", 100, "", BLANK1, Dyes.dyeRed, TierEU.RECIPE_MV, 0.5e-3f, 4e-3f, 35, 1,
         ItemList.Circuit_Wafer_ILC.get(1), null),
@@ -63,7 +63,7 @@ public enum MaskList {
     
     QBIT("qbit", "QBit", 50, "", PrNCPU, Dyes.dyeWhite, TierEU.RECIPE_EV, 3e-3f, 10e-3f, 50, 4,
         ItemList.Circuit_Wafer_QuantumCPU.get(1), null, ItemList.Circuit_Silicon_Wafer), // ^
-    UHPIC("uhpic", "Ultra High Power IC", 60, "", PrHPIC, Dyes.dyeBlue, TierEU.RECIPE_LuV, 200e-3f, 400e-3f, 50, 8,
+    UHPIC("uhpic", "Ultra High Power IC", 60, "", PrHPIC, Dyes.dyeBlue, TierEU.RECIPE_LuV, 190e-3f, 400e-3f, 50, 8,
         ItemList.Circuit_Wafer_UHPIC.get(1), null, ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2),                                                                                                           
     SSOC("ssoc", "Simple SoC", 150, "", BLANK1, Dyes.dyeOrange, TierEU.RECIPE_MV, 2e-3f, 4e-3f, 25, 1,
         ItemList.Circuit_Wafer_Simple_SoC.get(1), null),
