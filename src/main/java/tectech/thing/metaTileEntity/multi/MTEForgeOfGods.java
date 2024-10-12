@@ -787,17 +787,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (doesBindPlayerInventory()) {
-            builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-                    .setPos(4, 4)
-                    .setSize(190, 85));
-        } else {
-            builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_NO_INVENTORY)
-                    .setPos(4, 4)
-                    .setSize(190, 171));
-        }
         buildContext.addSyncedWindow(UPGRADE_TREE_WINDOW_ID, this::createUpgradeTreeWindow);
         buildContext.addSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID, this::createIndividualUpgradeWindow);
         buildContext.addSyncedWindow(FUEL_CONFIG_WINDOW_ID, this::createFuelConfigWindow);
@@ -808,26 +797,31 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         buildContext.addSyncedWindow(GENERAL_INFO_WINDOW_ID, this::createGeneralInfoWindow);
         buildContext.addSyncedWindow(SPECIAL_THANKS_WINDOW_ID, this::createSpecialThanksWindow);
         buildContext.addSyncedWindow(STAR_COLOR_CONFIG_WINDOW_ID, this::createStarColorConfigWindow);
+
         builder.widget(
-            new ButtonWidget().setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
-                })
-                .setSize(16, 16)
-                .setBackground(() -> {
-                    List<UITexture> button = new ArrayList<>();
-                    button.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
-                    button.add(TecTechUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP);
-                    return button.toArray(new IDrawable[0]);
-                })
-                .addTooltip("Path of Celestial Transcendence")
-                .setPos(174, 167)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                .setPos(4, 4)
+                .setSize(190, 85))
             .widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_SMALL)
+                new ButtonWidget().setOnClick(
+                    (clickData, widget) -> {
+                        if (!widget.isClient()) widget.getContext()
+                            .openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
+                    })
+                    .setSize(16, 16)
+                    .setBackground(() -> {
+                        List<UITexture> button = new ArrayList<>();
+                        button.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
+                        button.add(TecTechUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP);
+                        return button.toArray(new IDrawable[0]);
+                    })
+                    .addTooltip("Path of Celestial Transcendence")
+                    .setPos(174, 167)
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            .widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_16x8)
                     .setPos(174, 183)
-                    .setSize(16, 6))
+                    .setSize(16, 8))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (!widget.isClient()) {
                     widget.getContext()

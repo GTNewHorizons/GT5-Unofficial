@@ -145,6 +145,7 @@ public class TecTechUITextures {
         .collect(Collectors.toList())
         .toArray(new UITexture[0]);
     public static final UITexture PICTURE_HEAT_SINK_SMALL = UITexture.fullImage(MODID, "gui/picture/heat_sink_small");
+    public static final UITexture PICTURE_HEAT_SINK_16x8 = UITexture.fullImage(MODID, "gui/picture/heat_sink_16x8");
     public static final UITexture PICTURE_PARAMETER_BLANK = UITexture.fullImage(MODID, "gui/picture/parameter_blank");
     public static final UITexture[] PICTURE_PARAMETER_BLUE = IntStream.range(0, 20)
         .mapToObj(i -> UITexture.partly(MODID, "gui/picture/parameter_blue", 158, 4, i * 8, 0, i * 8 + 6, 4))
