@@ -32,7 +32,6 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -43,6 +42,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import tectech.TecTech;
+import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
 
 public class MTESmeltingModule extends MTEBaseModule {
@@ -150,22 +151,22 @@ public class MTESmeltingModule extends MTEBaseModule {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        builder.widget(furnaceSwitch(builder));
-
+        builder.widget(createFurnaceModeButton(builder));
     }
 
-    protected ButtonWidget furnaceSwitch(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> furnaceMode = !furnaceMode)
-            .setPlayClickSound(true)
+    protected ButtonWidget createFurnaceModeButton(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            furnaceMode = !furnaceMode;
+        })
+            .setPlayClickSound(false)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
                 if (isFurnaceModeOn()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE);
                 } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_CROSS);
-
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE_OFF);
                 }
                 return ret.toArray(new IDrawable[0]);
             })

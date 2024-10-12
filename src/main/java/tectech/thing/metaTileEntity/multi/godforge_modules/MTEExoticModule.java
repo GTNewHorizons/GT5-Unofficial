@@ -39,8 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.fluids.FluidTanksHandler;
 import com.gtnewhorizons.modularui.api.fluids.IFluidTanksHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -54,9 +53,11 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -68,9 +69,11 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import tectech.TecTech;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
@@ -470,7 +473,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
         super.addUIWidgets(builder, buildContext);
         buildContext.addSyncedWindow(INPUT_LIST_WINDOW_ID, this::createInputListWindow);
-        builder.widget(magmatterSwitch(builder));
+        builder.widget(createMagmatterSwitch(builder));
         builder.widget(createExpectedInputsButton());
         builder.widget(
             new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
@@ -572,39 +575,23 @@ public class MTEExoticModule extends MTEBaseModule {
             .setPos(8, 69);
     }
 
-    protected ButtonWidget magmatterSwitch(IWidgetBuilder<?> builder) {
+    protected Widget createMagmatterSwitch(IWidgetBuilder<?> builder) {
+        MultiChildWidget group = new MultiChildWidget();
+        group.setSize(16, 16);
+        group.setPos(174, 91);
+
+        // Create actual button
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (isMagmatterCapable) {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
                 magmatterMode = !magmatterMode;
             }
         })
-            .setPlayClickSound(isMagmatterCapable)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (isMagmatterModeOn()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                    if (isMagmatterCapable) {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
-                    } else {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_DISABLE);
-                    }
-                } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    if (isMagmatterCapable) {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_CROSS);
-                    } else {
-                        ret.add(GTUITextures.OVERLAY_BUTTON_DISABLE);
-                    }
-                }
-                if (!isMagmatterCapable) {
-                    ret.add(GTUITextures.OVERLAY_BUTTON_DISABLE);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
+            .setPlayClickSound(false)
+            .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32, TecTechUITextures.OVERLAY_BUTTON_MAGMATTER_MODE)
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMagmatterModeOn, this::setMagmatterMode), builder)
             .addTooltip(translateToLocal("fog.button.magmattermode.tooltip.01"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 91)
             .setSize(16, 16)
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(() -> isMagmatterCapable, this::setMagmatterCapable),
@@ -612,7 +599,16 @@ public class MTEExoticModule extends MTEBaseModule {
         if (!isMagmatterCapable) {
             button.addTooltip(EnumChatFormatting.GRAY + translateToLocal("fog.button.magmattermode.tooltip.02"));
         }
-        return (ButtonWidget) button;
+        group.addChild(button);
+
+        // Create an overlay widget when enabled for fancy item rendering
+        Widget drawable = new ItemDrawable(
+            () -> GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.MagMatter, 1)).asWidget()
+                .setSize(16, 16)
+                .setEnabled($ -> isMagmatterCapable && isMagmatterModeOn());
+        group.addChild(drawable);
+
+        return group;
     }
 
     private List<String> refreshTooltip() {

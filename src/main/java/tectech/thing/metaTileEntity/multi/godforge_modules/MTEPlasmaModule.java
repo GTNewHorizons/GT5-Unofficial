@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,9 +24,9 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -45,6 +46,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
+import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
 
 public class MTEPlasmaModule extends MTEBaseModule {
@@ -52,6 +54,8 @@ public class MTEPlasmaModule extends MTEBaseModule {
     private long EUt = 0;
     private int currentParallel = 0;
     private int inputMaxParallel = 0;
+
+    private static final int DEBUG_WINDOW_ID = 11;
 
     public MTEPlasmaModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -125,64 +129,95 @@ public class MTEPlasmaModule extends MTEBaseModule {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
+        buildContext.addSyncedWindow(DEBUG_WINDOW_ID, this::createDebugWindow);
         if (ConfigHandler.debug.DEBUG_MODE) {
-            builder.widget(createTestButton(builder))
-                .widget(createTestButton2())
-                .widget(createTestButton3());
+            builder.widget(createDebugWindowButton());
         }
     }
 
-    protected Widget createTestButton(IWidgetBuilder<?> builder) {
-        return new ButtonWidget()
-            .setOnClick((clickData, widget) -> isMultiStepPlasmaCapable = !isMultiStepPlasmaCapable)
-            .setPlayClickSoundResource(
-                () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
-                    : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
-            .setBackground(() -> {
-                if (isMultiStepPlasmaCapable) {
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
-                } else {
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                        GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
-                }
+    protected ButtonWidget createDebugWindowButton() {
+        Widget button = new ButtonWidget().setOnClick(
+            (data, widget) -> {
+                if (!widget.isClient()) widget.getContext()
+                    .openSyncedWindow(DEBUG_WINDOW_ID);
             })
-            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
-                if (val) enableWorking();
-                else disableWorking();
-            }), builder)
-            .addTooltip("multi-step")
+            .setPlayClickSound(false)
+            .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32, TecTechUITextures.OVERLAY_BUTTON_LOAF_MODE)
+            .addTooltip("Debug Window")
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 100)
+            .setPos(174, 91)
             .setSize(16, 16);
+        return (ButtonWidget) button;
     }
 
-    protected Widget createTestButton2() {
-        return new TextFieldWidget().setSetterInt(this::setPlasmaTier)
-            .setGetterInt(this::getPlasmaTier)
-            .setNumbers(0, 2)
-            .setTextAlignment(Alignment.Center)
-            .setTextColor(Color.WHITE.normal)
-            .setPos(3, 18)
-            .addTooltip("fusion tier")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(16, 16)
-            .setPos(174, 80)
-            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
-    }
+    protected ModularWindow createDebugWindow(final EntityPlayer player) {
+        final int WIDTH = 78;
+        final int HEIGHT = 60;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)));
 
-    protected Widget createTestButton3() {
-        return new TextFieldWidget().setSetterInt(val -> inputMaxParallel = val)
-            .setGetterInt(() -> inputMaxParallel)
-            .setNumbers(0, Integer.MAX_VALUE)
-            .setTextAlignment(Alignment.Center)
-            .setTextColor(Color.WHITE.normal)
-            .setPos(3, 18)
-            .addTooltip("parallel")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(70, 16)
-            .setPos(174, 60)
-            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+        // Debug enable/disable multi-step
+        builder.widget(
+            new ButtonWidget().setOnClick((clickData, widget) -> isMultiStepPlasmaCapable = !isMultiStepPlasmaCapable)
+                .setPlayClickSoundResource(
+                    () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
+                        : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
+                .setBackground(() -> {
+                    if (isMultiStepPlasmaCapable) {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                    } else {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
+                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                    }
+                })
+                .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
+                    if (val) enableWorking();
+                    else disableWorking();
+                }), builder)
+                .addTooltip("multi-step")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(4, 40)
+                .setSize(16, 16));
+
+        // Debug set plasma tier
+        builder.widget(
+            new TextFieldWidget().setSetterInt(this::setPlasmaTier)
+                .setGetterInt(this::getPlasmaTier)
+                .setNumbers(0, 2)
+                .setTextAlignment(Alignment.Center)
+                .setTextColor(Color.WHITE.normal)
+                .setPos(3, 18)
+                .addTooltip("fusion tier")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setSize(16, 16)
+                .setPos(4, 20)
+                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+
+        // Debug set max parallel
+        builder.widget(
+            new TextFieldWidget().setSetterInt(val -> inputMaxParallel = val)
+                .setGetterInt(() -> inputMaxParallel)
+                .setNumbers(0, Integer.MAX_VALUE)
+                .setTextAlignment(Alignment.Center)
+                .setTextColor(Color.WHITE.normal)
+                .setPos(3, 18)
+                .addTooltip("parallel")
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setSize(70, 16)
+                .setPos(4, 4)
+                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+
+        return builder.build();
     }
 
     @Override
