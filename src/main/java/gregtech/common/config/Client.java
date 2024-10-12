@@ -103,6 +103,10 @@ public class Client {
         @Config.Comment("Which style to use for title tab on machine GUI? 0: text tab split-dark, 1: text tab unified, 2: item icon tab.")
         @Config.DefaultInt(0)
         public int titleTabStyle;
+
+        @Config.Comment("Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line.")
+        @Config.DefaultInt(2)
+        public int separatorStyle;
     }
 
     @Config.LangKey("GT5U.gui.config.client.preference")
