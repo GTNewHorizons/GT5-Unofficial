@@ -279,7 +279,6 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Thermal Boiler Controller")
             .addInfo("Converts Water & Heat into Steam")
             .addInfo("Filters raw materials from lava")
             .addInfo("Explodes if water is not supplied")

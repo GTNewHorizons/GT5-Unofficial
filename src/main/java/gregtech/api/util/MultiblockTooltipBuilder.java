@@ -103,22 +103,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMachineType(String machine) {
-        return addMachineType(machine, EnumChatFormatting.GRAY, 41);
-    }
-
-    /**
-     * Add a line telling you what the machine type is. Usually, this will be the name of a SB version.<br>
-     * Machine Type: machine
-     *
-     * @param machine    Name of the machine type
-     * @param lineColor  Color of the separator line
-     * @param lineLength Length of the separator line
-     *
-     * @return Instance this method was called on.
-     */
-    public MultiblockTooltipBuilder addMachineType(String machine, EnumChatFormatting lineColor, int lineLength) {
         iLines.add(TT_machineType + COLON + EnumChatFormatting.YELLOW + machine + EnumChatFormatting.RESET);
-        this.addSeparator(lineColor, lineLength);
         return this;
     }
 
