@@ -882,7 +882,7 @@ public class RecipesGregTech {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(5),
+                GTUtility.getIntegratedCircuit(6),
                 Materials.Iron.getDust(12),
                 Materials.Nickel.getDust(10),
                 Materials.Cobalt.getDust(8),
