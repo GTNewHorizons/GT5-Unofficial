@@ -1,6 +1,5 @@
 package bartworks.common.loaders.recipes;
 
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;

@@ -26,7 +26,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import bartworks.common.configs.Configuration;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -104,11 +103,9 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 "Direct Steam Mode: Consumes Distilled Water to produce " + (long) (this.mTier * 25600 * 20)
                     + "L/s of Superheated Steam")
             .addInfo(
-                "Coolant Heating Mode: Converts " + (long) (this.mTier * 96 * 2 * 20)
-                    + "L/s Coolant to Hot Coolant")
+                "Coolant Heating Mode: Converts " + (long) (this.mTier * 96 * 2 * 20) + "L/s Coolant to Hot Coolant")
             .addInfo("Each maintenance issue lowers output efficiency by 10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant");
-
 
         tt.addSeparator()
             .beginStructureBlock(3, 7, 3, false)

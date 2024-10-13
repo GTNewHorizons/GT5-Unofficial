@@ -5,13 +5,12 @@ import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import goodgenerator.items.GGMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -20,7 +19,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import net.minecraftforge.fluids.FluidStack;
 
 public class Assembler implements Runnable {
 
@@ -101,7 +99,7 @@ public class Assembler implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
-        GTValues.RA.stdBuilder() //DEHP
+        GTValues.RA.stdBuilder() // DEHP
             .itemInputs(
                 ItemList.OilDrill4.get(1),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 8),
@@ -109,7 +107,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Polytetrafluoroethylene, 16),
                 ItemList.Field_Generator_IV.get(1))
             .itemOutputs(ItemRegistry.dehp)
-            .fluidInputs(Materials.HSSE.getMolten(32*144))
+            .fluidInputs(Materials.HSSE.getMolten(32 * 144))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
