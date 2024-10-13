@@ -879,6 +879,20 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(6),
+                Materials.Iron.getDust(12),
+                Materials.Nickel.getDust(10),
+                Materials.Cobalt.getDust(8),
+                Materials.Titanium.getDust(4),
+                Materials.Molybdenum.getDust(2),
+                Materials.Aluminium.getDust(1))
+            .fluidOutputs(GGMaterial.incoloy903.getMolten(144 * 37))
+            .eut(TierEU.RECIPE_IV)
+            .duration(1 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
     }
 
     private static void dehydratorRecipes() {
