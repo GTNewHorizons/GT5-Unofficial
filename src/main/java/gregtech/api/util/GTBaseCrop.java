@@ -99,6 +99,7 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
         int aStatColor, int aStatWeed, String[] aAttributes, Materials aBlock, ItemStack aDrop,
         ItemStack[] aSpecialDrops) {
         mName = aCropName;
+        GTLanguageManager.addStringLocalization("gt.crop." + mName + ".name", mName);
         aID = GTConfig.addIDConfig(ConfigCategories.IDs.crops, mName.replaceAll(" ", "_"), aID);
         if (aDiscoveredBy != null && !aDiscoveredBy.equals(E)) mDiscoveredBy = aDiscoveredBy;
         if (aDrop != null && aID > 0 && aID < 256) {
@@ -189,6 +190,11 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
     @Override
     public String name() {
         return mName;
+    }
+
+    @Override
+    public String displayName() {
+        return GTLanguageManager.getTranslation("gt.crop." + mName + ".name");
     }
 
     @Override
