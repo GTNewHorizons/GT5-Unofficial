@@ -976,7 +976,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
             .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
             .addInfo("your wireless EU network.")
-            .addSeparator()
+            .addLineSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("This multiblock will constantly consume hydrogen and helium when it is not running a")
             .addInfo("recipe once per second. It will store this internally, you can see the totals by")
             .addInfo("using a scanner. This multi also has three tiered blocks with " + RED + 9 + GRAY + " tiers")
@@ -1030,24 +1030,24 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + "%"
                     + GRAY
                     + " per tier (additive).")
-            .addSeparator()
+            .addLineSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("Going over a recipe requirement on hydrogen or helium has a penalty on yield and recipe chance.")
             .addInfo("All stored hydrogen and helium is consumed during a craft. The associated formulas are:")
             .addInfo(GREEN + "Overflow ratio = (Stored fluid / Recipe requirement) - 1")
             .addInfo(GREEN + "Adjustment value = 1 - exp(-(30 * Overflow ratio)^2)")
             .addInfo("The Adjustment value is then subtracted from the total yield and recipe chance.")
-            .addSeparator()
+            .addLineSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
             .addInfo("at 1 and subtracts depending on penalties. All fluid/item outputs are multiplied by the")
             .addInfo("yield. Failure fluid is exempt.")
-            .addSeparator()
+            .addLineSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("This multiblock can only output to ME output buses/hatches.")
-            .addSeparator()
+            .addLineSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("This multiblock can be overclocked by placing a programmed circuit into the input bus.")
             .addInfo(
                 "E.g. A circuit of 2 will provide 2 OCs, 16x EU input and 0.25x the time. EU output is unaffected.")
             .addInfo("All outputs are equal. All item and fluid output chances & amounts per recipe are unaffected.")
-            .addSeparator()
+            .addLineSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo(
                 "If a recipe fails the EOH will output " + GREEN
                     + "Success chance * "
@@ -1060,7 +1060,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addInfo(
                 MaterialsUEVplus.SpaceTime.getLocalizedNameForItem("%material")
                     + " instead of fluid/item outputs and output as much EU as a successful recipe.")
-            .addSeparator()
+            .addLineSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo(
                 "This multiblock can perform parallel processing by placing Astral Array Fabricators into the input bus.")
             .addInfo(
@@ -1095,7 +1095,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + GRAY
                     + ".")
             .addInfo("The success or failure of each parallel is determined independently.")
-            .addSeparator()
+            .addLineSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
             .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block.")
             .beginStructureBlock(33, 33, 33, false)
@@ -1118,7 +1118,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output hatch.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
-            .toolTipFinisher(GTValues.AuthorColen);
+            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTValues.AuthorColen);
         return tt;
     }
 

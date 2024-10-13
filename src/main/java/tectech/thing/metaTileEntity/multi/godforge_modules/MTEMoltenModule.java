@@ -153,7 +153,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for high temperature material liquefaction.")
-            .addSeparator()
+            .addLineSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The second module of the Godforge, this module melts materials directly into")
             .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
             .addInfo("as a regular solid instead.")
@@ -172,7 +172,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher();
+            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
         return tt;
     }
 
