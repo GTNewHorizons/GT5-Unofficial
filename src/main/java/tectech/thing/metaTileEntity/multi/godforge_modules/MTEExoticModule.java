@@ -120,7 +120,7 @@ public class MTEExoticModule extends MTEBaseModule {
                         plasmaRecipe = generateQuarkGluonRecipe();
                     }
                 }
-                return Stream.of(plasmaRecipe);
+                return Stream.ofNullable(plasmaRecipe);
             }
 
             @NotNull
