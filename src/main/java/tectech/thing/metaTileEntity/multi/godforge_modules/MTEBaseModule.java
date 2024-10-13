@@ -306,6 +306,12 @@ public class MTEBaseModule extends TTMultiblockBase {
         buildContext.addSyncedWindow(GENERAL_INFO_WINDOW_ID, this::createGeneralInfoWindow);
 
         builder.widget(
+            new DrawableWidget().setSize(18, 18)
+                .setPos(172, 67)
+                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.clickhere"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        builder.widget(
             new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
                 .setPos(4, 4)
                 .setSize(190, 85))
@@ -333,7 +339,6 @@ public class MTEBaseModule extends TTMultiblockBase {
                             .openSyncedWindow(GENERAL_INFO_WINDOW_ID);
                     })
                     .setSize(18, 18)
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.clickhere"))
                     .setPos(172, 67)
                     .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(createPowerSwitchButton(builder))
