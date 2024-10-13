@@ -1,8 +1,5 @@
 package gregtech.api.util;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Stream.generate;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -136,7 +133,14 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator() {
-        return addSeparator(EnumChatFormatting.GRAY, 41);
+        switch (GTMod.gregtechproxy.separatorStyle) {
+            case 0 -> iLines.add(" ");
+            case 1 -> iLines.add(EnumChatFormatting.GRAY + StringUtils.getRepetitionOf('-', 41));
+            default -> iLines.add(
+                EnumChatFormatting.GRAY.toString() + EnumChatFormatting.STRIKETHROUGH
+                    + StringUtils.getRepetitionOf('-', 41));
+        }
+        return this;
     }
 
     /**
@@ -144,13 +148,11 @@ public class MultiblockTooltipBuilder {
      *
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
-        String line = generate(() -> "-").limit(length)
-            .collect(joining());
-        switch (GTMod.gregtechproxy.separatorStyle) {
-            case 0 -> iLines.add(" ");
-            case 1 -> iLines.add(color + line);
-            default -> iLines.add("" + color + EnumChatFormatting.STRIKETHROUGH + line);
+    public MultiblockTooltipBuilder addLineSeparator(EnumChatFormatting color, int length) {
+        if (GTMod.gregtechproxy.separatorStyle == 1) {
+            iLines.add(color + StringUtils.getRepetitionOf('-', length));
+        } else {
+            iLines.add(color.toString() + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
         }
         return this;
     }
@@ -679,13 +681,11 @@ public class MultiblockTooltipBuilder {
      *
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length) {
-        String line = generate(() -> "-").limit(length)
-            .collect(joining());
-        switch (GTMod.gregtechproxy.separatorStyle) {
-            case 0 -> sLines.add(" ");
-            case 1 -> sLines.add(TAB + color + line);
-            default -> sLines.add(TAB + color + EnumChatFormatting.STRIKETHROUGH + line);
+    public MultiblockTooltipBuilder addStructureInfoLineSeparator(EnumChatFormatting color, int length) {
+        if (GTMod.gregtechproxy.separatorStyle == 1) {
+            sLines.add(color + StringUtils.getRepetitionOf('-', length));
+        } else {
+            sLines.add(color.toString() + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
         }
         return this;
     }
@@ -696,7 +696,14 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStructureInfoSeparator() {
-        return addStructureInfoSeparator(EnumChatFormatting.GRAY, 30);
+        switch (GTMod.gregtechproxy.separatorStyle) {
+            case 0 -> sLines.add(" ");
+            case 1 -> sLines.add(EnumChatFormatting.GRAY + StringUtils.getRepetitionOf('-', 30));
+            default -> sLines.add(
+                EnumChatFormatting.GRAY.toString() + EnumChatFormatting.STRIKETHROUGH
+                    + StringUtils.getRepetitionOf('-', 30));
+        }
+        return this;
     }
 
     /**
@@ -747,7 +754,8 @@ public class MultiblockTooltipBuilder {
      * @param authors Formatted names of the creators of this multiblock machine - if any
      */
     public MultiblockTooltipBuilder toolTipFinisher(@Nullable String... authors) {
-        return toolTipFinisher(EnumChatFormatting.GRAY, 41, authors);
+        iLines.add(" ");
+        return toolTipFinisher0(authors);
     }
 
     /**
@@ -762,7 +770,11 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
         @Nullable String... authors) {
-        this.addSeparator(separatorColor, separatorLength);
+        this.addLineSeparator(separatorColor, separatorLength);
+        return toolTipFinisher0(authors);
+    }
+
+    private MultiblockTooltipBuilder toolTipFinisher0(@Nullable String... authors) {
         iLines.add(
             TT_hold + " "
                 + EnumChatFormatting.BOLD
@@ -795,7 +807,7 @@ public class MultiblockTooltipBuilder {
             iLines.add(sb.toString());
         }
         hLines.add(TT_structurehint);
-        this.addStructureInfoSeparator();
+        sLines.add(" ");
         sLines.add(EnumChatFormatting.WHITE + TT_StructureComplex);
         sLines.add(
             EnumChatFormatting.WHITE + TT_SeeStructure1
