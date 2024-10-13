@@ -99,13 +99,13 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInfo("Consumes " + GTValues.V[this.mTier + 2] + "EU/t")
             .addInfo("Has 3 Modes, use the Screwdriver to change them:");
 
-        tt.addInfo("Steam, Coolant, Retract")
+        tt.addInfo("Direct Steam, Coolant Heating, Retract")
             .addInfo(
-                "Steam Mode: Converts " + (long) (this.mTier * 25600 * 20)
-                    + "L/s Distilled Water to Superheated Steam")
+                "Direct Steam Mode: Consumes Distilled Water to produce " + (long) (this.mTier * 25600 * 20)
+                    + "L/s of Superheated Steam")
             .addInfo(
-                "Coolant Mode: Converts " + (long) (this.mTier * 600 * 20)
-                    + "L/s Distilled Water(minus 10% per Maintenance Problem) to SuperheatedSteam")
+                "Coolant Heating Mode: Converts " + (long) (this.mTier * 96 * 2 * 20)
+                    + "L/s Coolant to Hot Coolant")
             .addInfo("Each maintenance issue lowers output efficiency by 10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant");
 
@@ -198,9 +198,9 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         ++this.mMode;
         if (this.mMode >= 3) this.mMode = 0;
         if (this.mMode == 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "Mode: Steam");
+            GTUtility.sendChatToPlayer(aPlayer, "Mode: Direct Steam");
         } else if (this.mMode == 1) {
-            GTUtility.sendChatToPlayer(aPlayer, "Mode: Coolant");
+            GTUtility.sendChatToPlayer(aPlayer, "Mode: Coolant Heating");
         } else if (this.mMode == 2) {
             GTUtility.sendChatToPlayer(aPlayer, "Mode: Retract");
         }
