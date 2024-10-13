@@ -68,6 +68,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.TecTech;
@@ -120,7 +121,7 @@ public class MTEExoticModule extends MTEBaseModule {
                         plasmaRecipe = generateQuarkGluonRecipe();
                     }
                 }
-                return Stream.ofNullable(plasmaRecipe);
+                return GTStreamUtil.ofNullable(plasmaRecipe);
             }
 
             @NotNull
