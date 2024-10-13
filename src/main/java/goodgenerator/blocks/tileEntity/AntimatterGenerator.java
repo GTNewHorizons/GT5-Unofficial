@@ -179,7 +179,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             createEU(containedAntimatter, catalystFluid);
         }
         // Set stats if one fluid supplied.
-        if ((containedAntimatter == 0 & catalystFluid != null) | (containedAntimatter > 0 & catalystFluid == null)) {
+        if ((containedAntimatter == 0 && catalystFluid != null) || (containedAntimatter > 0 && catalystFluid == null)) {
             this.annihilationEfficiency = 0;
             this.euLastCycle = 0;
             setAvgEff(0f);
