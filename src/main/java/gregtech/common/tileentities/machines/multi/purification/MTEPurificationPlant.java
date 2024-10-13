@@ -495,7 +495,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     public void registerLinkedUnit(MTEPurificationUnitBase<?> unit) {
-        this.mLinkedUnits.add(new LinkedPurificationUnit(unit));
+        LinkedPurificationUnit link = new LinkedPurificationUnit(unit);
+        // Make sure to mark it as active if it is running a recipe. This happens on server restart and fixes
+        // waterline multiblocks not resuming their progress until the next cycle.
+        link.setActive(unit.mMaxProgresstime > 0);
+        this.mLinkedUnits.add(link);
     }
 
     public void unregisterLinkedUnit(MTEPurificationUnitBase<?> unit) {
