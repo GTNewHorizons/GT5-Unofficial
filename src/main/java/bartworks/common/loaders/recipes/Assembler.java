@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import goodgenerator.items.GGMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -37,8 +38,6 @@ public class Assembler implements Runnable {
             Materials.NaquadahAlloy, // UV
             Materials.SuperconductorUV // UHV
         };
-
-        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140");
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -104,13 +103,13 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder() //DEHP
             .itemInputs(
-                ItemList.Pump_EV.get(8),
+                ItemList.OilDrill4.get(1),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 8),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16),
+                GGMaterial.incoloy903.get(OrePrefixes.gearGt, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Polytetrafluoroethylene, 16),
-                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.ZPM),2))
+                ItemList.Field_Generator_IV.get(1))
             .itemOutputs(ItemRegistry.dehp)
-            .fluidInputs(new FluidStack(solderIndalloy, 32 * 144))
+            .fluidInputs(Materials.HSSE.getMolten(32*144))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
