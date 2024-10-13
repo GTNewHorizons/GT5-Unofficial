@@ -93,7 +93,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         .addElement('F', ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel))
         .addElement(
             'G',
-            buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus)
+            buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
                 .dot(2)
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 5))))
@@ -273,6 +273,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 20, false)
             .addCasingInfoExactly("Coil", 30, true)
             .addInputBus("Pipe Casings on Side", 2)
+            .addInputHatch("Pipe Casings on Side", 2)
             .addOutputBus("Pipe Casings on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
