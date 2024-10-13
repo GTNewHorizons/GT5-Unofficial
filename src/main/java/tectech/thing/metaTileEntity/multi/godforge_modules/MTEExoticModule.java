@@ -416,7 +416,7 @@ public class MTEExoticModule extends MTEBaseModule {
         long numberOfPlasmas = tempFluidTag.getLong("numberOfPlasmas");
         if (numberOfPlasmas > 0) {
 
-            FluidStack[] stacks = new FluidStack[numberOfFluids];
+            FluidStack[] stacks = new FluidStack[(int) numberOfPlasmas];
             for (int i = 0; i < numberOfPlasmas; i++) {
                 // Load fluid amount from NBT
                 int amount = tempFluidTag.getInteger(i + "fluidAmount");
