@@ -27,22 +27,6 @@ public class AssemblyLine implements Runnable {
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
             ? FluidRegistry.getFluid("molten.indalloy140")
             : FluidRegistry.getFluid("molten.solderingalloy");
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Pump_IV.get(1L))
-            .metadata(RESEARCH_TIME, 1 * HOURS)
-            .itemInputs(
-                ItemList.Pump_IV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 32L),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
-                ItemList.Field_Generator_LuV.get(8))
-            .fluidInputs(
-                new FluidStack(solderIndalloy, 32 * 144),
-                Materials.Polytetrafluoroethylene.getMolten(32 * 144))
-            .itemOutputs(ItemRegistry.dehp)
-            .eut(TierEU.RECIPE_LuV)
-            .duration(4 * MINUTES + 10 * SECONDS)
-            .addTo(AssemblyLine);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.OreDrill4.get(1L))

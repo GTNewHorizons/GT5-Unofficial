@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import bartworks.common.loaders.ItemRegistry;
@@ -18,6 +19,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Assembler implements Runnable {
 
@@ -35,6 +37,8 @@ public class Assembler implements Runnable {
             Materials.NaquadahAlloy, // UV
             Materials.SuperconductorUV // UHV
         };
+
+        Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140");
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -96,6 +100,19 @@ public class Assembler implements Runnable {
             .fluidInputs(Materials.SolderingAlloy.getMolten(9216))
             .duration(1 * HOURS)
             .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder() //DEHP
+            .itemInputs(
+                ItemList.Pump_EV.get(8),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 8),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Polytetrafluoroethylene, 16),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.ZPM),2))
+            .itemOutputs(ItemRegistry.dehp)
+            .fluidInputs(new FluidStack(solderIndalloy, 32 * 144))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
