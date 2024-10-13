@@ -526,10 +526,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 searchAndDecrementCatalysts();
 
-                RecipeMap<?> realMap = (getModeFromCircuit(inputItems) == MACHINEMODE_COMPRESSOR)
-                    ? RecipeMaps.compressorRecipes
-                    : RecipeMaps.neutroniumCompressorRecipes;
-                return super.findRecipeMatches(realMap);
+                switch (getModeFromCircuit(inputItems)) {
+                    case MACHINEMODE_COMPRESSOR -> { return super.findRecipeMatches(RecipeMaps.compressorRecipes); }
+                    case MACHINEMODE_BLACKHOLE -> { return super.findRecipeMatches(RecipeMaps.neutroniumCompressorRecipes); }
+                    default -> { return super.findRecipeMatches(null); }
+                }
             }
 
             @NotNull
