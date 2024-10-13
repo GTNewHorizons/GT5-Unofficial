@@ -58,12 +58,10 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import kekztech.client.gui.KTUITextures;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
@@ -79,6 +77,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     private long euLastCycle = 0;
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
+    private final List<Float> avgEff = new ArrayList<>(10);
 
     private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
@@ -179,12 +178,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         if (i == 2 && containedAntimatter > 0 && catalystFluid != null) {
             createEU(containedAntimatter, catalystFluid);
         }
-        // Crash if only one fluid supplied.
+        // Set stats if one fluid supplied.
         if ((containedAntimatter == 0 & catalystFluid != null) | (containedAntimatter > 0 & catalystFluid == null)) {
             this.annihilationEfficiency = 0;
             this.euLastCycle = 0;
-            this.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
-            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("matter_imbalance");
+            setAvgEff(0f);
         }
 
         endRecipeProcessing();
@@ -211,7 +209,13 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             float efficiency = Math
                 .min(((float) antimatter / (float) catalystCount), ((float) catalystCount / (float) antimatter));
             this.annihilationEfficiency = efficiency;
+            setAvgEff(efficiency);
             generatedEU = (long) ((Math.pow(antimatter, modifier) * ANTIMATTER_FUEL_VALUE) * efficiency);
+        } else { // Set stats and return if supplied antimatter with incorrect fluid.
+            this.annihilationEfficiency = 0;
+            this.euLastCycle = 0;
+            setAvgEff(0f);
+            return;
         }
 
         if (wirelessEnabled && modifier >= 1.03F) {
@@ -439,7 +443,12 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(Math.ceil(this.annihilationEfficiency * 100))
                 + EnumChatFormatting.RESET
-                + " %" };
+                + " %",
+            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+                + EnumChatFormatting.AQUA
+                + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
+                + EnumChatFormatting.RESET
+                + " % ⟩₁₀" };
     }
 
     private long getEnergyProduced() {
@@ -450,8 +459,31 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         return this.annihilationEfficiency;
     }
 
+    private int n = 0;
+
+    private void setAvgEff(float a) {
+        if (n == 10) n = 0;
+        if (this.avgEff.size() < 10) {
+            this.avgEff.add(a);
+        } else {
+            this.avgEff.set(n, a);
+            n++;
+        }
+
+        float b = 0;
+        for (float c : this.avgEff) {
+            b += c;
+        }
+        this.avgEffCache = b == 0 ? 0 : b / this.avgEff.size();
+    }
+
+    private float getAvgEfficiency() {
+        return this.avgEffCache;
+    }
+
     protected long energyProducedCache;
     protected float efficiencyCache;
+    protected float avgEffCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     protected static DecimalFormat standardFormat;
@@ -486,7 +518,17 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                             + EnumChatFormatting.WHITE
                             + " %")
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.FloatSyncer(this::getEfficiency, val -> efficiencyCache = val));
+            .widget(new FakeSyncWidget.FloatSyncer(this::getEfficiency, val -> efficiencyCache = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+                            + EnumChatFormatting.RED
+                            + numberFormat.format(Math.ceil(avgEffCache * 100))
+                            + EnumChatFormatting.WHITE
+                            + " % ⟩₁₀")
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
+            .widget(new FakeSyncWidget.FloatSyncer(this::getAvgEfficiency, val -> avgEffCache = val));
     }
 
     @Override
