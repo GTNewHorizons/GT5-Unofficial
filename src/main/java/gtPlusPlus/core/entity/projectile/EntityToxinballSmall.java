@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 
 public class EntityToxinballSmall extends EntityToxinball {
 
+    // required for any entity from vanilla code. please don't just randomly delete because intellij says no usages
     public EntityToxinballSmall(World p_i1770_1_) {
         super(p_i1770_1_);
         this.setSize(0.3125F, 0.3125F);
