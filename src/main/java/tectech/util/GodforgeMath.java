@@ -21,12 +21,11 @@ public class GodforgeMath {
             upgradeFactor = 0.8;
         }
         if (godforge.getFuelType() == 0) {
-            return Math
-                .max(godforge.getFuelFactor() * 300 * Math.pow(1.15, godforge.getFuelFactor()) * upgradeFactor, 1);
+            return godforge.getFuelFactor() * 300 * Math.pow(1.15, godforge.getFuelFactor()) * upgradeFactor;
         }
         if (godforge.getFuelType() == 1) {
-            return Math.max(godforge.getFuelFactor() * 2 * Math.pow(1.08, godforge.getFuelFactor()) * upgradeFactor, 1);
-        } else return Math.max(godforge.getFuelFactor() / 25 * upgradeFactor, 1);
+            return godforge.getFuelFactor() * 2 * Math.pow(1.08, godforge.getFuelFactor()) * upgradeFactor;
+        } else return godforge.getFuelFactor() / 25f * upgradeFactor;
     }
 
     public static int calculateStartupFuelConsumption(MTEForgeOfGods godforge) {
@@ -293,6 +292,6 @@ public class GodforgeMath {
         module.setPowerTally(BigInteger.ZERO);
         godforge.addTotalRecipesProcessed(module.getRecipeTally());
         module.setRecipeTally(0);
-
+        module.setInversionConfig(godforge.isInversionAvailable());
     }
 }

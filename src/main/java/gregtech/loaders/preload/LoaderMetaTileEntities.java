@@ -644,13 +644,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.PRECISION_LASER_ENGRAVER_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.PROCESSING_ARRAY_CONTROLLER;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.PUMP_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.PUMP_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_PLANT_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_CLARIFIER;
 import static gregtech.api.enums.MetaTileEntityIDs.PURIFICATION_UNIT_DEGASIFIER;
@@ -2656,17 +2652,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerPump() {
         ItemList.Pump_LV.set(new MTEPump(PUMP_LV.ID, "basicmachine.pump.tier.01", "Basic Pump", 1).getStackForm(1L));
-        ItemList.Pump_MV.set(new MTEPump(PUMP_MV.ID, "basicmachine.pump.tier.02", "Advanced Pump", 2).getStackForm(1L));
-        ItemList.Pump_HV
-            .set(new MTEPump(PUMP_HV.ID, "basicmachine.pump.tier.03", "Advanced Pump II", 3).getStackForm(1L));
-        ItemList.Pump_EV
-            .set(new MTEPump(PUMP_EV.ID, "basicmachine.pump.tier.04", "Advanced Pump III", 4).getStackForm(1L));
-        ItemList.Pump_IV
-            .set(new MTEPump(PUMP_IV.ID, "basicmachine.pump.tier.05", "Advanced Pump IV", 5).getStackForm(1L));
-        ItemList.PumpLuV
-            .set(new MTEPump(PUMP_LuV.ID, "basicmachine.pump.tier.06", "Lake Dislocator", 6).getStackForm(1L));
-        ItemList.PumpZPM
-            .set(new MTEPump(PUMP_ZPM.ID, "basicmachine.pump.tier.07", "Ocean Transposer", 7).getStackForm(1L));
+        ItemList.Pump_MV.set(new MTEPump(PUMP_MV.ID, "basicmachine.pump.tier.02", "Good Pump", 2).getStackForm(1L));
+        ItemList.Pump_HV.set(new MTEPump(PUMP_HV.ID, "basicmachine.pump.tier.03", "Advanced Pump", 3).getStackForm(1L));
     }
 
     private static void registerTeleporter() {
@@ -12392,7 +12379,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         makeWires(Materials.Nickel, 1320, 3L, 6L, 3L, GTValues.V[2], true, false);
         makeWires(Materials.Cupronickel, 1340, 3L, 6L, 2L, GTValues.V[2], true, false);
         makeWires(Materials.Copper, 1360, 2L, 4L, 1L, GTValues.V[2], true, false);
-        makeWires(Materials.AnnealedCopper, 1380, 2L, 4L, 1L, GTValues.V[2], true, false);
+        makeWires(Materials.AnnealedCopper, 1380, 1L, 2L, 1L, GTValues.V[2], true, false);
 
         makeWires(Materials.Kanthal, 1400, 3L, 6L, 4L, GTValues.V[3], true, false);
         makeWires(Materials.Gold, 1420, 2L, 4L, 3L, GTValues.V[3], true, false);

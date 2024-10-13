@@ -22,7 +22,7 @@ public class RadioHatchMaterialLoader {
 
         for (Werkstoff material : Werkstoff.werkstoffHashSet) {
             if (material == null || !material.getStats()
-                .isRadioactive()) {
+                .isRadioactive() || material == WerkstoffLoader.Tiberium) {
                 continue;
             }
 
