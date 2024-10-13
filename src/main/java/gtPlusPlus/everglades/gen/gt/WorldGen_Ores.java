@@ -235,6 +235,17 @@ public class WorldGen_Ores {
         MaterialsOres.AGARDITE_LA,
         MaterialsOres.AGARDITE_CD);
 
+    public static WorldGen_GT_Ore_Layer Vein19 = new WorldGen_GT_Ore_Layer(
+        "vein19",
+        0,
+        20,
+        4,
+        1,
+        16,
+        MaterialsElements.STANDALONE.RUNITE,
+        MaterialsElements.STANDALONE.RUNITE,
+        MaterialsElements.STANDALONE.RUNITE,
+        MaterialsElements.STANDALONE.RUNITE);
     public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
 
     static long ID = 0;
@@ -259,5 +270,6 @@ public class WorldGen_Ores {
         validOreveins.put(ID++, Vein16);
         validOreveins.put(ID++, Vein17);
         validOreveins.put(ID++, Vein18);
+        validOreveins.put(ID++, Vein19);
     }
 }
