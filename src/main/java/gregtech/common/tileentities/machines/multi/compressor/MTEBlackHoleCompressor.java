@@ -69,7 +69,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -337,7 +336,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + EnumChatFormatting.GRAY
                     + " until it reaches 0")
             .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
-            .addInfo("Once the black hole becomes unstable, it will void all inputs for recipes which require it")
+            .addInfo("Once the black hole becomes unstable, it will void all inputs instantly!")
             .addSeparator()
             .addInfo("Running recipes in the machine will slow the decay rate by " + EnumChatFormatting.RED + "25%")
             .addInfo(
@@ -362,11 +361,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " to close the black hole")
             .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one")
             .addSeparator()
-            .addInfo(
-                "Recipes not utilizing the black hole have their lengths " + EnumChatFormatting.RED
-                    + "doubled"
-                    + EnumChatFormatting.GRAY
-                    + " if it becomes unstable")
             .addInfo("400% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 70% of the EU/t normally required")
             .addInfo("Gains 8 parallels per voltage tier")
@@ -380,7 +374,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo(
                 EnumChatFormatting.RED
                     + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier.")
-            .addInfo("Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade")
             .beginStructureBlock(35, 33, 35, false)
             .addCasingInfoMin("Background Radiation Absorbent Casing", 950, false)
             .addCasingInfoExactly("Extreme Density Space-Bending Casing", 3667, false)
@@ -391,7 +384,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addOutputBus("Any Radiation Absorbent Casing", 1)
             .addInputHatch("Any Radiation Absorbent Casing", 1)
             .addEnergyHatch("Any Radiation Absorbent Casing", 1)
-            .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
+            .toolTipFinisher(AuthorFourIsTheNumber, Ollie, "BucketBrigade");
         return tt;
     }
 
@@ -523,10 +516,17 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
                 searchAndDecrementCatalysts();
 
-                RecipeMap<?> realMap = (getModeFromCircuit(inputItems) == MACHINEMODE_COMPRESSOR)
-                    ? RecipeMaps.compressorRecipes
-                    : RecipeMaps.neutroniumCompressorRecipes;
-                return super.findRecipeMatches(realMap);
+                switch (getModeFromCircuit(inputItems)) {
+                    case MACHINEMODE_COMPRESSOR -> {
+                        return super.findRecipeMatches(RecipeMaps.compressorRecipes);
+                    }
+                    case MACHINEMODE_BLACKHOLE -> {
+                        return super.findRecipeMatches(RecipeMaps.neutroniumCompressorRecipes);
+                    }
+                    default -> {
+                        return super.findRecipeMatches(null);
+                    }
+                }
             }
 
             @NotNull
@@ -551,15 +551,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-
-                // Default speed bonus
-                setSpeedBonus(0.2F);
                 if (blackHoleStatus == 1) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
-
-                // If the recipe doesn't require black hole, but it is unstable, incur a 0.5x speed penalty
-                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) == 0 && (blackHoleStatus == 3)) {
-                    setSpeedBonus(5F);
-                }
 
                 // Cap recipes to energy hatch + 1
                 if (GTUtility.getTier(getAverageInputVoltage()) < GTUtility.getTier(recipe.mEUt) - 1)
@@ -570,13 +562,14 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @Nonnull
             protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
                 // If recipe needs a black hole and one is active but unstable, continuously void items
-                if ((blackHoleStatus == 3) && recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0) {
+                if (blackHoleStatus == 3) {
                     return CheckRecipeResultRegistry.UNSTABLE_BLACK_HOLE;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes)
-            .setEuModifier(0.7F);
+            .setEuModifier(0.7F)
+            .setSpeedBonus(0.2F);
     }
 
     @Override

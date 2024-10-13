@@ -120,7 +120,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.casingTexturePages[8][66], TextureFactory.builder()
+            if (active) return new ITexture[] { BlockIcons.casingTexturePages[0][0], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
                 .extFacing()
                 .build(),
@@ -129,7 +129,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { BlockIcons.casingTexturePages[8][66], TextureFactory.builder()
+            return new ITexture[] { BlockIcons.casingTexturePages[0][0], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN)
                 .extFacing()
                 .build(),
@@ -139,7 +139,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[8][66] };
+        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][0] };
     }
 
     @Override
