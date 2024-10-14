@@ -44,7 +44,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
-import tectech.util.CommonValues;
 
 public class MTESmeltingModule extends MTEBaseModule {
 

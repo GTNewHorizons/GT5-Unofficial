@@ -47,7 +47,6 @@ import gregtech.api.util.OverclockCalculator;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.gui.TecTechUITextures;
-import tectech.util.CommonValues;
 
 public class MTEPlasmaModule extends MTEBaseModule {
 

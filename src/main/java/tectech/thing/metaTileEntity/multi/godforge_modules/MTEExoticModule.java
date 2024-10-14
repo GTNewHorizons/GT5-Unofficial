@@ -76,7 +76,6 @@ import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.ForgeOfGodsUI;
-import tectech.util.CommonValues;
 import tectech.util.GodforgeMath;
 
 public class MTEExoticModule extends MTEBaseModule {
