@@ -607,7 +607,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                         catalyzingCounter += 1;
                         stabilityDecrease = 0;
                         if (catalyzingCounter >= 30) {
-                            //Hidden cap at 1B per tick so we don't integer overflow
+                            // Hidden cap at 1B per tick so we don't integer overflow
                             if (catalyzingCostModifier <= 1000000000) catalyzingCostModifier *= 2;
                             catalyzingCounter = 0;
                         }
