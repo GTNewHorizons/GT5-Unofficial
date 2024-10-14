@@ -579,61 +579,62 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!aBaseMetaTileEntity.isServerSide()) {
             playBlackHoleSounds();
-        } else {
-            // Run stability checks once per second if a black hole is open
-            if (blackHoleStatus == 1 || aTick % 20 != 0) return;
-
-            // Base 1 loss
-            float stabilityDecrease = 1F;
-
-            boolean didDrain = false;
-
-            // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
-            if (blackHoleStability >= 0) {
-
-                // If the machine is running, reduce stability loss by 25%
-                if (this.maxProgresstime() != 0) {
-                    stabilityDecrease = 0.75F;
-                }
-
-                // Search all hatches for catalyst fluid
-                // If found enough, drain it and reduce stability loss to 0
-                // Every 30 drains, double the cost
-                FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
-
-                for (MTEHatchInput hatch : spacetimeHatches) {
-                    if (drain(hatch, totalCost, false)) {
-                        drain(hatch, totalCost, true);
-                        catalyzingCounter += 1;
-                        stabilityDecrease = 0;
-                        if (catalyzingCounter >= 30) {
-                            // Hidden cap at 1B per tick so we don't integer overflow
-                            if (catalyzingCostModifier <= 1000000000) catalyzingCostModifier *= 2;
-                            catalyzingCounter = 0;
-                        }
-                        didDrain = true;
-                        break;
-                    }
-                }
-            } else blackHoleStatus = 3;
-
-            if (shouldRender) {
-                if (rendererTileEntity == null) createRenderBlock();
-                rendererTileEntity.toggleLaser(didDrain);
-                rendererTileEntity.setStability(blackHoleStability / 100F);
-            }
-
-            blackHoleStability -= stabilityDecrease;
-
-            // Close black hole and reset if it has been unstable for 15 minutes or more
-            if (blackHoleStability <= -900) {
-                blackHoleStatus = 1;
-                blackHoleStability = 100;
-                catalyzingCostModifier = 1;
-                rendererTileEntity = null;
-                destroyRenderBlock();
-            }
         }
+
+        // Run stability checks once per second if a black hole is open
+        if (blackHoleStatus == 1 || aTick % 20 != 0) return;
+
+        // Base 1 loss
+        float stabilityDecrease = 1F;
+
+        boolean didDrain = false;
+
+        // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
+        if (blackHoleStability >= 0) {
+
+            // If the machine is running, reduce stability loss by 25%
+            if (this.maxProgresstime() != 0) {
+                stabilityDecrease = 0.75F;
+            }
+
+            // Search all hatches for catalyst fluid
+            // If found enough, drain it and reduce stability loss to 0
+            // Every 30 drains, double the cost
+            FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+
+            for (MTEHatchInput hatch : spacetimeHatches) {
+                if (drain(hatch, totalCost, false)) {
+                    drain(hatch, totalCost, true);
+                    catalyzingCounter += 1;
+                    stabilityDecrease = 0;
+                    if (catalyzingCounter >= 30) {
+                        // Hidden cap at 1B per tick so we don't integer overflow
+                        if (catalyzingCostModifier <= 1000000000) catalyzingCostModifier *= 2;
+                        catalyzingCounter = 0;
+                    }
+                    didDrain = true;
+                    break;
+                }
+            }
+        } else blackHoleStatus = 3;
+
+        if (shouldRender) {
+            if (rendererTileEntity == null) createRenderBlock();
+            rendererTileEntity.toggleLaser(didDrain);
+            rendererTileEntity.setStability(blackHoleStability / 100F);
+        }
+
+        blackHoleStability -= stabilityDecrease;
+
+        // Close black hole and reset if it has been unstable for 15 minutes or more
+        if (blackHoleStability <= -900) {
+            blackHoleStatus = 1;
+            blackHoleStability = 100;
+            catalyzingCostModifier = 1;
+            rendererTileEntity = null;
+            destroyRenderBlock();
+        }
+
     }
 
     public int getMaxParallelRecipes() {
