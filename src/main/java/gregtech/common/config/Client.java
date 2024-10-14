@@ -100,6 +100,10 @@ public class Client {
         @Config.DefaultInt(3)
         public int tooltipShiftVerbosity;
 
+        @Config.Comment("Remove additional information from multiblock tooltips (flavor text, separators, author information)")
+        @Config.DefaultBoolean(false)
+        public boolean simplifyMultiblockTooltips;
+
         @Config.Comment("Which style to use for title tab on machine GUI? 0: text tab split-dark, 1: text tab unified, 2: item icon tab.")
         @Config.DefaultInt(0)
         public int titleTabStyle;

@@ -682,6 +682,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int mTooltipShiftVerbosity = 3;
 
     /**
+     * Remove superfluous information from multiblock tooltips if true
+     */
+    public boolean simplifyMultiblockTooltips = false;
+
+    /**
      * Which style to use for title tab on machine GUI? 0: text tab split-dark, 1: text tab unified, 2: item icon tab
      */
     public int mTitleTabStyle = 0;

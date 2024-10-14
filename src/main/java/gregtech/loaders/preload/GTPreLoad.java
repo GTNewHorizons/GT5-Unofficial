@@ -586,6 +586,7 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mCoverTabsFlipped = Client.iface.coverTabsFlipped;
         GTMod.gregtechproxy.mTooltipVerbosity = Client.iface.tooltipVerbosity;
         GTMod.gregtechproxy.mTooltipShiftVerbosity = Client.iface.tooltipShiftVerbosity;
+        GTMod.gregtechproxy.simplifyMultiblockTooltips = Client.iface.simplifyMultiblockTooltips;
         GTMod.gregtechproxy.mTitleTabStyle = Client.iface.titleTabStyle;
 
         GTMod.gregtechproxy.mNEIRecipeSecondMode = Client.nei.NEIRecipeSecondMode;
