@@ -1,37 +1,17 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import java.util.ArrayList;
 
-import net.minecraft.entity.item.EntityItem;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.IAnimals;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import net.minecraft.item.ItemStack;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 
     public TileEntityPooCollector() {
-        super(9, 8000);
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return false;
-    }
-
-    @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return true;
+        super(9, 64000);
     }
 
     @Override
@@ -39,91 +19,36 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
 
     @Override
     public <V> boolean addDrop(V aPooMaker) {
-        int aChance = MathUtils.randInt(0, 50000);
+        int aChance = MathUtils.randInt(0, 1000);
+        ItemStack aPoop = null;
         if (aChance > 0) {
-            ItemStack aPoop;
-            if (aChance <= 100) {
-                aPoop = ItemUtils.getItemStackOfAmountFromOreDict("dustManureByproducts", 1);
-            } else if (aChance <= 500) {
-                aPoop = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1);
-            } else if (aChance <= 1250) {
-                aPoop = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyManureByproducts", 1);
-            } else {
-                return false;
+            if (aChance <= 2) {
+                aPoop = GTOreDictUnificator.get(OrePrefixes.dust, "dustManureByproducts", 1);
+            } else if (aChance <= 10) {
+                aPoop = GTOreDictUnificator.get(OrePrefixes.dustSmall, "dustSmallManureByproducts", 1);
+            } else if (aChance <= 25) {
+                aPoop = GTOreDictUnificator.get(OrePrefixes.dustTiny, "dustTinyManureByproducts", 1);
             }
-            if (!ItemUtils.checkForInvalidItems(aPoop)) {
-                return false;
-            }
-
-            // Add poop to world
-            // Logger.INFO("Adding animal waste for "+aPooMaker.getCommandSenderName());
-
-            // Add to inventory if not full, else espawn in world
-            if (!this.mInventory.addItemStack(aPoop)) {
-                EntityItem entity = new EntityItem(worldObj, xCoord, yCoord + 1.5, zCoord, aPoop);
-                worldObj.spawnEntityInWorld(entity);
-            }
+            // Add to inventory if not full
+            if (!this.mInventory.isFull())
+                this.mInventory.addItemStack(aPoop);
         }
-
         return false;
-    }
-
-    private static final ArrayList<Class> aEntityToDrain = new ArrayList<>();
-
-    @Override
-    public ArrayList<Class> aThingsToLookFor() {
-        if (aEntityToDrain.isEmpty()) {
-            aEntityToDrain.add(EntityAnimal.class);
-            aEntityToDrain.add(IAnimals.class);
-        }
-        return aEntityToDrain;
     }
 
     @Override
     public <V> int onPostTick(V aPooMaker) {
         if (this.tank.getFluidAmount() < this.tank.getCapacity()) {
             int aPooAmount = 0;
-            // Vanilla Animals
-            if (aPooMaker instanceof EntityChicken) {
-                aPooAmount = MathUtils.randInt(1, 40);
-            } else if (aPooMaker instanceof EntityHorse) {
-                aPooAmount = MathUtils.randInt(20, 40);
-            } else if (aPooMaker instanceof EntityCow) {
-                aPooAmount = MathUtils.randInt(18, 45);
-            } else if (aPooMaker instanceof EntityMooshroom) {
-                aPooAmount = 17;
-            } else if (aPooMaker instanceof EntitySheep) {
-                aPooAmount = MathUtils.randInt(8, 30);
-            } else {
-                if (aPooMaker instanceof IAnimals) {
-                    aPooAmount = MathUtils.randInt(5, 35);
-                } else {
-                    aPooAmount = MathUtils.randInt(1, 10);
-                }
+            // EntityAnimal includes chicken, cow, horse, mooshroom?, ocelot, pig, sheep and wolf
+            if (aPooMaker instanceof EntityAnimal) {
+                aPooAmount = 10;
             }
-            aPooAmount = Math.max((Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aPooAmount) / 10), 1);
-            return aPooAmount;
+            aPooAmount = Math.max((Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aPooAmount)), 1);
+            // if tank isnt full return a value between 10 and 40L
+            return aPooAmount * MathUtils.randInt(1,4);
         } else {
             return 0;
         }
-    }
-
-    @Override
-    public Fluid fluidToProvide() {
-        return AgriculturalChem.PoopJuice;
-    }
-
-    @Override
-    public ItemStack itemToSpawnInWorldIfTankIsFull() {
-        int a = MathUtils.randInt(0, 100);
-        ItemStack aItem = null;
-        if (a <= 30) {
-            aItem = ItemUtils.getSimpleStack(AgriculturalChem.dustDirt);
-        } else if (a <= 40) {
-            aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustSmallManureByproducts", 1);
-        } else if (a <= 55) {
-            aItem = ItemUtils.getItemStackOfAmountFromOreDict("dustTinyManureByproducts", 1);
-        }
-        return aItem;
     }
 }

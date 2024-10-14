@@ -1,10 +1,10 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -23,9 +23,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public abstract class TileEntityBaseFluidCollector extends TileEntityBase implements IFluidHandler {
 
@@ -144,12 +142,6 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
         readFromNBT(tag);
     }
 
-    public int getBaseTickRate() {
-        return MathUtils.randInt(200, 300);
-    }
-
-    public abstract ArrayList<Class> aThingsToLookFor();
-
     public abstract void onPreLogicTick();
 
     public final void logicTick() {
@@ -157,35 +149,28 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
         if (this.worldObj == null || this.worldObj.isRemote) {
             return;
         }
-        if (internalTickCounter % getBaseTickRate() == 0) {
+        // Linear tick rate for all collectors
+        if (internalTickCounter % 20 == 0) {
             if (internalBlockLocation == null) {
                 internalBlockLocation = new BlockPos(this);
             }
             BlockPos p = internalBlockLocation;
-            if (p != null) {
-                if (p.world != null) {
-                    World w = this.worldObj;
-                    if (w == null) {
-                        return;
-                    }
-                    Chunk c = w.getChunkFromBlockCoords(p.xPos, p.zPos);
-                    if (c != null) {
-                        if (c.isChunkLoaded) {
-                            int startX = p.xPos - 2;
-                            int startY = p.yPos;
-                            int startZ = p.zPos - 2;
-                            int endX = p.xPos + 3;
-                            int endY = p.yPos + 5;
-                            int endZ = p.zPos + 3;
-                            AxisAlignedBB box = AxisAlignedBB.getBoundingBox(startX, startY, startZ, endX, endY, endZ);
-                            if (box != null) {
-                                for (Class c2 : aThingsToLookFor()) {
-                                    tickEntityType(w, box, c2);
-                                }
-                            } else {
-                                return;
-                            }
-                        }
+            if (p.world != null) {
+                World w = this.worldObj;
+                if (w == null) {
+                    return;
+                }
+                Chunk c = w.getChunkFromBlockCoords(p.xPos, p.zPos);
+                if (c != null) {
+                    if (c.isChunkLoaded) {
+                        int startX = p.xPos - 2;
+                        int startY = p.yPos;
+                        int startZ = p.zPos - 2;
+                        int endX = p.xPos + 3;
+                        int endY = p.yPos + 5;
+                        int endZ = p.zPos + 3;
+                        AxisAlignedBB box = AxisAlignedBB.getBoundingBox(startX, startY, startZ, endX, endY, endZ);
+                        tickEntityType(w, box, EntityAnimal.class);
                     }
                 }
             }
@@ -209,16 +194,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
                 int aFluidAmount = onPostTick(aEntity);
                 aFluidAmount = Math
                     .max(Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aFluidAmount), 1);
-                this.tank.fill(FluidUtils.getFluidStack(fluidToProvide(), aFluidAmount), true);
-            } else {
-                ItemStack aDirtStack = ItemUtils.getSimpleStack(itemToSpawnInWorldIfTankIsFull(), 1);
-                if (!ItemUtils.checkForInvalidItems(aDirtStack)) {
-                    return;
-                }
-                if (!this.mInventory.addItemStack(aDirtStack)) {
-                    EntityItem entity = new EntityItem(worldObj, xCoord, yCoord + 1.5, zCoord, aDirtStack);
-                    worldObj.spawnEntityInWorld(entity);
-                }
+                this.tank.fill(FluidUtils.getFluidStack(AgriculturalChem.PoopJuice, aFluidAmount), true);
             }
         }
     }
@@ -226,14 +202,10 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
     /**
      * Return the amount of fluid for this entity type
      *
-     * @param aEntity
-     * @return
+     * @param aEntity takes the entity inside the bounding box
+     * @return aPooAmount
      */
     public abstract <V> int onPostTick(V aEntity);
 
     public abstract <V> boolean addDrop(V aPooMaker);
-
-    public abstract Fluid fluidToProvide();
-
-    public abstract ItemStack itemToSpawnInWorldIfTankIsFull();
 }
