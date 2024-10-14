@@ -313,30 +313,35 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Compressor/Advanced Neutronium Compressor")
-            .addInfo("Controller Block for the Pseudostable Black Hole Containment Field")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things",
+                "")
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE
-                    + "No longer requires heat management to perform superdense compression")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
+                    + "No longer requires heat management to perform superdense compression",
+                "")
+            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!", "")
             .addInfo(EnumChatFormatting.BLUE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
             .addSeparator()
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
                     + "Black Hole Seed"
                     + EnumChatFormatting.GRAY
-                    + " to open a black hole")
+                    + " to open a black hole",
+                "Insert Black Hole Seed/Collapser to open/close the black hole")
             .addInfo(
                 "The black hole will begin its life at " + EnumChatFormatting.RED
                     + "100"
                     + EnumChatFormatting.GRAY
-                    + " stability and slowly decay")
+                    + " stability and slowly decay",
+                "Black hole decays from 100 stability to 0 by 1/s")
             .addInfo(
                 "Stability decays by " + EnumChatFormatting.RED
                     + "1/s"
                     + EnumChatFormatting.GRAY
-                    + " until it reaches 0")
-            .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
+                    + " until it reaches 0",
+                "")
+            .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE", "")
             .addInfo("Once the black hole becomes unstable, it will void all inputs instantly!")
             .addSeparator()
             .addInfo("Running recipes in the machine will slow the decay rate by " + EnumChatFormatting.RED + "25%")
@@ -359,8 +364,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 "Insert a " + EnumChatFormatting.WHITE
                     + "Black Hole Collapser"
                     + EnumChatFormatting.GRAY
-                    + " to close the black hole")
-            .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one")
+                    + " to close the black hole",
+                "")
+            .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one", "")
             .addSeparator()
             .addInfo("400% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 70% of the EU/t normally required")
@@ -381,7 +387,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + Ollie
                     + " & "
                     + EnumChatFormatting.WHITE
-                    + "BucketBrigade")
+                    + "BucketBrigade",
+                "")
             .addSeparator()
             .beginStructureBlock(35, 33, 35, false)
             .addCasingInfoMin("Background Radiation Absorbent Casing", 950, false)

@@ -199,33 +199,32 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Compressor")
-            .addInfo("Controller Block for the Hot Isostatic Pressurization Unit")
-            .addInfo("HIP Unit heats up while running")
+            .addInfo("HIP Unit heats up while running", "HIP Unit overheats while running - this can slow down or void recipes")
             .addInfo(
                 "When it reaches maximum heat, it becomes " + EnumChatFormatting.DARK_RED
                     + EnumChatFormatting.BOLD
-                    + "overheated!")
+                    + "overheated!", "")
             .addInfo("This is only resolved by letting the machine fully cool down")
             .addInfo(
                 "When " + EnumChatFormatting.DARK_RED
                     + "overheated"
                     + EnumChatFormatting.GRAY
-                    + ", recipes are slowed down drastically")
+                    + ", recipes are slowed down drastically", "")
             .addSeparator()
             .addInfo(
                 "Some recipes " + EnumChatFormatting.BOLD
                     + "require"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + " HIP")
+                    + " HIP", "")
             .addInfo(
                 "If the machine " + EnumChatFormatting.DARK_RED
                     + "overheats"
                     + EnumChatFormatting.GRAY
-                    + " during these recipes, recipe will be voided!")
+                    + " during these recipes, recipe will be voided!", "")
             .addInfo("Read the current heat using Heat Sensor Hatches")
             .addSeparator()
-            .addInfo("More advanced coils allow better heat control - the unit will take longer to overheat")
+            .addInfo("More advanced coils allow better heat control - the unit will take longer to overheat", "")
             .addInfo(
                 "Unit heats by " + EnumChatFormatting.GREEN
                     + "(5% x 0.90 ^ (Coil Tier - 1))"
@@ -264,7 +263,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
-            .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
+            .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie, "")
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
