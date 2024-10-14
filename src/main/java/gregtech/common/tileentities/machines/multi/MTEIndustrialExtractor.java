@@ -171,7 +171,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addSeparator()
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front Center")
-            .addCasingInfoMin("Stainless Steel Machine Casing", 24, false)
+            .addCasingInfoMin("Stainless Steel Machine Casing", 22, false)
             .addCasingInfoExactly("Item Pipe Casing", 19, true)
             .addInputBus("Any Stainless Steel Casing", 1)
             .addOutputBus("Any Stainless Steel Casing", 1)
@@ -204,7 +204,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
         itemPipeTier = -2;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0)) return false;
-        return mCasingAmount >= 24;
+        return mCasingAmount >= 22;
     }
 
     @Override
