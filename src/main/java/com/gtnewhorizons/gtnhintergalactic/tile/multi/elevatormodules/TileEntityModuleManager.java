@@ -1,7 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.modularui.api.drawable.FluidDrawable;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -128,14 +126,14 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                         EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
                                 + GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.manager.desc1"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1")).addSeparator()
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                 .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                .toolTipFinisher();
         return tt;
     }
 

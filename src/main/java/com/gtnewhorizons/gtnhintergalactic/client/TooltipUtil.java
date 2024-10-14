@@ -30,7 +30,7 @@ public class TooltipUtil {
 
         Supplier<String> AUTHOR_GLOWREDMAN = chain(
                 translatedText("ig.structure.author"),
-                text(" "),
+                text(": "),
                 animatedText(
                         "glowredman",
                         1,

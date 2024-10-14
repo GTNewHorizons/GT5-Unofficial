@@ -1,7 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
 import static gregtech.api.enums.GTValues.V;
-import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.EnumChatFormatting;
@@ -9,7 +8,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
 import com.gtnewhorizons.gtnhintergalactic.recipe.ResultNoSpaceProject;
@@ -270,14 +268,14 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                                     + GCCoreUtil
                                             .translate("gt.blockmachines.multimachine.project.ig.assembler.t1.desc1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.assembler.t1.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1")).addSeparator()
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
                     .beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoMin(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, false)
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .toolTipFinisher();
             return tt;
         }
     }
@@ -349,14 +347,14 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                                     + GCCoreUtil
                                             .translate("gt.blockmachines.multimachine.project.ig.assembler.t2.desc1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.assembler.t2.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3")).addSeparator()
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
                     .beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .toolTipFinisher();
             return tt;
         }
     }
@@ -428,14 +426,14 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
                                     + GCCoreUtil
                                             .translate("gt.blockmachines.multimachine.project.ig.assembler.t3.desc1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.assembler.t3.desc2"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT5")).addSeparator()
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT5"))
                     .beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoMin(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, false)
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .toolTipFinisher();
             return tt;
         }
     }

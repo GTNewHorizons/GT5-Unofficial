@@ -1,7 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi;
 
 import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
 import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
@@ -34,7 +33,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
 import com.gtnewhorizons.gtnhintergalactic.client.lore.LoreHolder;
 import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
@@ -179,13 +177,13 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.type"))
-                .addInfo(loreTooltip != null ? ITALIC + loreTooltip : "")
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
+        tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.type"));
+        if (loreTooltip != null) tt.addInfo(ITALIC + loreTooltip);
+        tt.addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc5")).addSeparator()
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc5"))
                 .beginStructureBlock(3, 7, 3, false)
                 .addController(GCCoreUtil.translate("ig.siphon.structure.ControllerPos"))
                 .addOtherStructurePart(
@@ -200,8 +198,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
                 .addEnergyHatch(GCCoreUtil.translate("ig.siphon.structure.AnyAdvMachineFrame"), 1)
                 .addMaintenanceHatch(GCCoreUtil.translate("ig.siphon.structure.AnyAdvMachineFrame"), 1)
                 .addInputBus(GCCoreUtil.translate("ig.siphon.structure.AnyAdvMachineFrame"), 1)
-                .addOutputHatch(GCCoreUtil.translate("ig.siphon.structure.AnyAdvMachineFrame"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                .addOutputHatch(GCCoreUtil.translate("ig.siphon.structure.AnyAdvMachineFrame"), 1).toolTipFinisher();
         return tt;
     }
 

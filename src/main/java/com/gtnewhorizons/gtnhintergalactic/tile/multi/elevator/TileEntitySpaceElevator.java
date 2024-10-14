@@ -1,7 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
 import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
@@ -31,7 +30,6 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.gtnewhorizons.gtnhintergalactic.client.lore.LoreHolder;
 import com.gtnewhorizons.gtnhintergalactic.config.Config;
@@ -54,6 +52,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import galaxyspace.core.register.GSBlocks;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -679,18 +678,14 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc0"))
-                .addInfo(loreTooltip != null ? ITALIC + loreTooltip : "")
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
+        tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.name"));
+        if (loreTooltip != null) tt.addInfo(ITALIC + loreTooltip);
+        tt.addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc3"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc5"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc6"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc7"))
-                .addInfo(GCCoreUtil.translate("ig.elevator.structure.TooComplex"))
-                .addInfo(buildAddedBy(LIGHT_PURPLE + "minecraft7771"))
-                .addInfo(GCCoreUtil.translate("ig.structure.moreContributors")).addSeparator()
                 .beginStructureBlock(35, 43, 35, false)
                 .addOtherStructurePart(
                         GCCoreUtil.translate("ig.elevator.structure.ProjectModule"),
@@ -704,7 +699,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                 .addCasingInfoExactly(GCCoreUtil.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
                 .addCasingInfoExactly(GCCoreUtil.translate("ig.elevator.structure.Motor"), 88, true)
                 .addEnergyHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                .toolTipFinisher(GTValues.Authorminecraft7771);
         return tt;
     }
 

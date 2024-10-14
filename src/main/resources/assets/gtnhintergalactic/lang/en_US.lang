@@ -156,7 +156,6 @@ gt.blockmachines.multimachine.ig.siphon.lore3=The name is wrong by definition...
 
 # Space Elevator
 gt.blockmachines.multimachine.ig.elevator.name=Space Elevator
-gt.blockmachines.multimachine.ig.elevator.desc0=Controller block for the Space Elevator
 gt.blockmachines.multimachine.ig.elevator.desc2=Can be equipped with up to 12 Space Elevator Modules
 gt.blockmachines.multimachine.ig.elevator.desc3=Motor tier limits module tier and amount of possible modules
 gt.blockmachines.multimachine.ig.elevator.desc4=Each module has their own space for IO, except energy
@@ -291,13 +290,11 @@ ig.elevator.structure.OpticalConnector=Optical Connector
 ig.elevator.structure.AnyBaseCasingWith1Dot=Any Space Elevator Base Casing with 1 dot
 ig.elevator.structure.AnyBaseCasingWith2Dot=Any Space Elevator Base Casing with 2 dots
 ig.elevator.structure.AnyBaseCasingWith3Dot=Any Space Elevator Base Casing with 3 dots
-ig.elevator.structure.TooComplex=The structure is too complex!
 ig.structure.contributors=Contributors
 ig.structure.programming=Programming
 ig.structure.design=Design
 ig.structure.specialThanks=Special Thanks to
-ig.structure.author=Author:
-ig.structure.moreContributors=Check controller GUI for all Contributors
+ig.structure.author=Added by
 ig.structure.and= and
 
 # Space Projects
