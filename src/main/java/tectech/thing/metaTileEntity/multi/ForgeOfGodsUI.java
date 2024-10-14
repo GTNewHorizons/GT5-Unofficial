@@ -17,6 +17,7 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
@@ -390,5 +391,15 @@ public class ForgeOfGodsUI {
     private static Text inversionInfoText(boolean inversion) {
         return inversion ? new Text(translateToLocal("gt.blockmachines.multimachine.FOG.inversioninfotext"))
             : new Text("");
+    }
+
+    public static void reopenWindow(Widget widget, int windowId) {
+        if (!widget.isClient()) {
+            ModularUIContext ctx = widget.getContext();
+            if (ctx.isWindowOpen(windowId)) {
+                ctx.closeWindow(windowId);
+            }
+            ctx.openSyncedWindow(windowId);
+        }
     }
 }

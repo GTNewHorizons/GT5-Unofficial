@@ -73,7 +73,9 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.TecTech;
 import tectech.recipe.TecTechRecipeMaps;
+import tectech.thing.CustomItemList;
 import tectech.thing.gui.TecTechUITextures;
+import tectech.thing.metaTileEntity.multi.ForgeOfGodsUI;
 import tectech.util.CommonValues;
 import tectech.util.GodforgeMath;
 
@@ -534,10 +536,7 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
                 }
                 ticker = 0;
-                widget.getContext()
-                    .closeWindow(INPUT_LIST_WINDOW_ID);
-                widget.getContext()
-                    .openSyncedWindow(INPUT_LIST_WINDOW_ID);
+                ForgeOfGodsUI.reopenWindow(widget, INPUT_LIST_WINDOW_ID);
             }
         })
             .setPlayClickSound(true)
@@ -576,27 +575,41 @@ public class MTEExoticModule extends MTEBaseModule {
             if (isMagmatterCapable) {
                 TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
                 magmatterMode = !magmatterMode;
+                widget.notifyTooltipChange();
             }
         })
             .setPlayClickSound(false)
-            .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32, TecTechUITextures.OVERLAY_BUTTON_MAGMATTER_MODE)
+            .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32)
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMagmatterModeOn, this::setMagmatterMode), builder)
-            .addTooltip(translateToLocal("fog.button.magmattermode.tooltip.01"))
+            .dynamicTooltip(() -> {
+                List<String> ret = new ArrayList<>();
+                if (!isMagmatterModeOn()) {
+                    ret.add(translateToLocal("fog.button.magmattermode.tooltip.01"));
+                }
+                if (isMagmatterCapable && isMagmatterModeOn()) {
+                    ret.add(translateToLocal("fog.button.magmattermode.tooltip.02"));
+                }
+                if (!isMagmatterCapable) {
+                    ret.add(EnumChatFormatting.GRAY + translateToLocal("fog.button.magmattermode.tooltip.03"));
+                }
+                return ret;
+            })
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(16, 16)
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(() -> isMagmatterCapable, this::setMagmatterCapable),
                 builder);
-        if (!isMagmatterCapable) {
-            button.addTooltip(EnumChatFormatting.GRAY + translateToLocal("fog.button.magmattermode.tooltip.02"));
-        }
         group.addChild(button);
 
         // Create an overlay widget when enabled for fancy item rendering
-        Widget drawable = new ItemDrawable(
-            () -> GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.MagMatter, 1)).asWidget()
-                .setSize(16, 16)
-                .setEnabled($ -> isMagmatterCapable && isMagmatterModeOn());
+        Widget drawable = new ItemDrawable(() -> {
+            if (isMagmatterCapable && isMagmatterModeOn()) {
+                return GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.MagMatter, 1);
+            } else {
+                return CustomItemList.Godforge_FakeItemQGP.get(1);
+            }
+        }).asWidget()
+            .setSize(16, 16);
         group.addChild(drawable);
 
         return group;
@@ -620,6 +633,14 @@ public class MTEExoticModule extends MTEBaseModule {
 
     private void setMagmatterMode(boolean enabled) {
         magmatterMode = enabled;
+    }
+
+    @Override
+    public void setMagmatterCapable(boolean isCapable) {
+        super.setMagmatterCapable(isCapable);
+        if (!isCapable) {
+            setMagmatterMode(false);
+        }
     }
 
     @Override

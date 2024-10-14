@@ -1426,7 +1426,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private Widget createMilestoneButton(int milestoneID, int width, int height, Pos2d pos) {
         return new ButtonWidget().setOnClick((clickData, widget) -> {
             currentMilestoneID = milestoneID;
-            reopenWindow(widget, INDIVIDUAL_MILESTONE_WINDOW_ID);
+            ForgeOfGodsUI.reopenWindow(widget, INDIVIDUAL_MILESTONE_WINDOW_ID);
         })
             .setSize(width, height)
             .setBackground(() -> switch (milestoneID) {
@@ -2287,7 +2287,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         ctx.closeWindow(UPGRADE_TREE_WINDOW_ID);
                     }
                 } else {
-                    reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
+                    ForgeOfGodsUI.reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
                 }
             } else if (clickData.mouseButton == 1) {
                 respecUpgrade();
@@ -2823,7 +2823,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (!widget.isClient()) {
                     UpdateRenderer();
-                    reopenWindow(widget, STAR_COLOR_CONFIG_WINDOW_ID);
+                    ForgeOfGodsUI.reopenWindow(widget, STAR_COLOR_CONFIG_WINDOW_ID);
                 }
             })
                 .setSize(35, 15)
@@ -2863,16 +2863,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .setSize(35, 15)
                 .setPos(120, 177));
         return builder.build();
-    }
-
-    private void reopenWindow(Widget widget, int windowId) {
-        if (!widget.isClient()) {
-            ModularUIContext ctx = widget.getContext();
-            if (ctx.isWindowOpen(windowId)) {
-                ctx.closeWindow(windowId);
-            }
-            ctx.openSyncedWindow(windowId);
-        }
     }
 
     private DynamicPositionedRow delenoName() {

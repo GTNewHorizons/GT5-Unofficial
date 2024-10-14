@@ -117,8 +117,6 @@ public class TecTechUITextures {
         .fullImage(MODID, "gui/overlay_button/structure_check_on");
     public static final UITexture OVERLAY_BUTTON_STRUCTURE_CHECK_OFF = UITexture
         .fullImage(MODID, "gui/overlay_button/structure_check_off");
-    public static final UITexture OVERLAY_BUTTON_MAGMATTER_MODE = UITexture
-        .fullImage(MODID, "gui/overlay_button/magmatter_mode");
     public static final UITexture OVERLAY_BUTTON_FURNACE_MODE = UITexture
         .fullImage(MODID, "gui/overlay_button/furnace_mode_on");
     public static final UITexture OVERLAY_BUTTON_FURNACE_MODE_OFF = UITexture
