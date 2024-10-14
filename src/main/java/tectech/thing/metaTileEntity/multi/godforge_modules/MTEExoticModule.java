@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.fluids.FluidTanksHandler;
 import com.gtnewhorizons.modularui.api.fluids.IFluidTanksHandler;
@@ -52,7 +53,6 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.MaterialsUEVplus;
@@ -565,12 +565,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .setPos(8, 69);
     }
 
-    protected Widget createMagmatterSwitch(IWidgetBuilder<?> builder) {
-        MultiChildWidget group = new MultiChildWidget();
-        group.setSize(16, 16);
-        group.setPos(174, 91);
-
-        // Create actual button
+    protected ButtonWidget createMagmatterSwitch(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (isMagmatterCapable) {
                 TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
@@ -579,7 +574,14 @@ public class MTEExoticModule extends MTEBaseModule {
             }
         })
             .setPlayClickSound(false)
-            .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32)
+            .setBackground(
+                () -> new IDrawable[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
+                    new ItemDrawable(
+                        isMagmatterCapable && isMagmatterModeOn()
+                            ? GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.MagMatter, 1)
+                            : CustomItemList.Godforge_FakeItemQGP.get(1))
+
+                })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMagmatterModeOn, this::setMagmatterMode), builder)
             .dynamicTooltip(() -> {
                 List<String> ret = new ArrayList<>();
@@ -596,23 +598,11 @@ public class MTEExoticModule extends MTEBaseModule {
             })
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(16, 16)
+            .setPos(174, 91)
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(() -> isMagmatterCapable, this::setMagmatterCapable),
                 builder);
-        group.addChild(button);
-
-        // Create an overlay widget when enabled for fancy item rendering
-        Widget drawable = new ItemDrawable(() -> {
-            if (isMagmatterCapable && isMagmatterModeOn()) {
-                return GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.MagMatter, 1);
-            } else {
-                return CustomItemList.Godforge_FakeItemQGP.get(1);
-            }
-        }).asWidget()
-            .setSize(16, 16);
-        group.addChild(drawable);
-
-        return group;
+        return (ButtonWidget) button;
     }
 
     private List<String> refreshTooltip() {
@@ -637,10 +627,11 @@ public class MTEExoticModule extends MTEBaseModule {
 
     @Override
     public void setMagmatterCapable(boolean isCapable) {
-        super.setMagmatterCapable(isCapable);
-        if (!isCapable) {
+        if (!isCapable && isMagmatterCapable) {
+            // only set when it previously was capable
             setMagmatterMode(false);
         }
+        super.setMagmatterCapable(isCapable);
     }
 
     @Override

@@ -1028,7 +1028,7 @@ fog.debug.gravitonshardsetter.tooltip=Set the amount of availabe graviton shards
 
 fog.button.fuelconfig.tooltip=Fuel Configuration Menu
 fog.button.furnacemode.tooltip=Toggle Furnace Mode
-fog.button.magmattermode.tooltip.01=Quark Gluon Plasma Mode
+fog.button.magmattermode.tooltip.01=Quark-Gluon Plasma Mode
 fog.button.magmattermode.tooltip.02=Magmatter Mode
 fog.button.magmattermode.tooltip.03=Magmatter Mode locked, missing upgrade
 fog.button.battery.tooltip.01=Toggle Battery Charging
