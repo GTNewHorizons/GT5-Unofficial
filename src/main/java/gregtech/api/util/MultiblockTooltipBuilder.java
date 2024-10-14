@@ -15,6 +15,8 @@ import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
+import gregtech.GTMod;
+
 /**
  * This makes it easier to build multi tooltips, with a standardized format. <br>
  * Info section order should be:<br>
@@ -101,13 +103,24 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Add a basic line of information about this structure
+     * Wrapper for addInfo that assumes line is important and will show it even when tooltips are simplified
      *
      * @param info The line to be added.
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addInfo(String info) {
-        iLines.add(info);
+        return addInfo(info, true);
+    }
+
+    /**
+     * Add a basic line of information about this structure
+     *
+     * @param info    The line to be added.
+     * @param isVital Whether to show the line when tooltips are simplified in config
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addInfo(String info, Boolean isVital) {
+        if (!GTMod.gregtechproxy.simplifyMultiblockTooltips || isVital) iLines.add(info);
         return this;
     }
 
@@ -130,7 +143,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator() {
-        iLines.add("-----------------------------------------");
+        if (!GTMod.gregtechproxy.simplifyMultiblockTooltips) iLines.add("-----------------------------------------");
         return this;
     }
 
