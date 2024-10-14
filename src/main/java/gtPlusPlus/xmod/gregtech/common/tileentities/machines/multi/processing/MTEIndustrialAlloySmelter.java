@@ -35,7 +35,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialAlloySmelter>
@@ -116,13 +115,11 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Industrial Alloy Smelter")
             .addInfo("Gains one parallel per voltage tier")
             .addInfo("Gains one multiplier per coil tier")
             .addInfo("Parallel = Tier * Coil Tier")
             .addInfo("Gains 5% speed bonus per coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 5, 3, true)
             .addController("Bottom center")
             .addCasingInfoMin("Inconel Reinforced Casings", 8, false)
@@ -133,7 +130,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addEnergyHatch("Any Inconel Reinforced Casing", 1)
             .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
             .addMufflerHatch("Any Inconel Reinforced Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

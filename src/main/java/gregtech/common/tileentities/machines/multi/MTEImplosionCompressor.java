@@ -47,9 +47,7 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor")
             .addInfo("Explosions are fun")
-            .addInfo("Controller block for the Implosion Compressor")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoRange("Solid Steel Machine Casing", 16, 24, false)
@@ -59,7 +57,7 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
             .addMufflerHatch("Any casing", 1)
             .addInputBus("Any casing", 1)
             .addOutputBus("Any casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
