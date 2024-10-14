@@ -232,17 +232,15 @@ public class MTESmeltingModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace, Furnace")
-            .addInfo("Controller block for the Helioflare Power Forge, a module of the Godforge.")
+            .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for basic smelting operations at various temperatures.")
-            .addInfo(TOOLTIP_BAR)
+            .addLineSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("As the first of the Godforge modules, this module performs the most basic")
             .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
             .addInfo("The desired method of processing can be selected in the gui.")
             .addInfo("This module is specialized towards speed and high heat levels.")
-            .addInfo(TOOLTIP_BAR)
             .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY
@@ -255,7 +253,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(CommonValues.GODFORGE_MARK);
+            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
         return tt;
     }
 

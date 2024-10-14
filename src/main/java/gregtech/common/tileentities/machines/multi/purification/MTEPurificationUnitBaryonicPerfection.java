@@ -260,7 +260,6 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Absolute Baryonic Perfection Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
@@ -333,7 +332,6 @@ public class MTEPurificationUnitBaryonicPerfection
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 17, 17, false)
             .addCasingInfoMinColored(
                 "Quark Exclusion Casing",
@@ -370,7 +368,7 @@ public class MTEPurificationUnitBaryonicPerfection
             .addInputHatch("Any Quark Exclusion Casing", 1)
             .addOutputBus("Any Quark Exclusion Casing", 1)
             .addOutputHatch("Any Quark Exclusion Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
