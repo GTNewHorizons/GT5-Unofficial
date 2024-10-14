@@ -351,7 +351,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Enable wireless EU mode with screwdriver")
             .addInfo("Wireless mode requires SC UMV Base or better")
             .addInfo("Wireless mode uses hatch capacity limit")
-            .addSeparator()
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
@@ -361,7 +360,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addCasingInfoMin("Advanced Filter Casing", 209, false)
             .addInputHatch("2, Hint block with dot 1", 1)
             .addOtherStructurePart("Laser Source Hatch", "1-64, Hint Block with dot 2", 2)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

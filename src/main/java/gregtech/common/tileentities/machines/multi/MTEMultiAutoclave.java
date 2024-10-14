@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -194,22 +193,14 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return STRUCTURE_DEFINITION;
     }
 
-    private static final String TOOLTIP_BAR = GOLD
-        + "---------------------------------------------------------------------------------------";
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Autoclave")
-            .addInfo(TOOLTIP_BAR)
-            .addInfo("Controller Block for the Industrial Autoclave.")
-            .addInfo(TOOLTIP_BAR)
             .addInfo("Processes 12 items per Item Pipe Casing Tier.")
             .addInfo("Energy consumption is reduced with higher fluid pipe tiers.")
             .addInfo(BLUE + "Energy consumption = Recipe Consumption * (12 - Pipe Casing Tier) / 12.")
             .addInfo("Each coil level makes the machine 25% faster than singleblock machines of the same voltage.")
-            .addInfo(AuthorVolence)
-            .addSeparator()
             .beginStructureBlock(7, 7, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Pressure Containment Casings", 128, false)
@@ -222,7 +213,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addEnergyHatch("Any of the Pressure Containment Casings", 1)
             .addMaintenanceHatch("Any of the Pressure Containment Casings", 1)
             .addMufflerHatch("Any of the Pressure Containment Casings", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorVolence);
         return tt;
     }
 

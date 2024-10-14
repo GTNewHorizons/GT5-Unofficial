@@ -55,7 +55,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
     protected final int mCosts;
 
-    static final String CHAT_MSG_SEPARATOR = "--------------------";
+    static final String CHAT_MSG_SEPARATOR = EnumChatFormatting.STRIKETHROUGH + "--------------------";
 
     public BehaviourDetravToolProspector(int aCosts) {
         mCosts = aCosts;

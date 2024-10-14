@@ -73,7 +73,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.gui.TecTechUITextures;
-import tectech.util.CommonValues;
 import tectech.util.GodforgeMath;
 
 public class MTEExoticModule extends MTEBaseModule {
@@ -644,18 +643,16 @@ public class MTEExoticModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Exotic Matter Producer")
-            .addInfo("Controller block for the Heliofusion Exoticizer, a module of the Godforge.")
+            .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for ultra high temperature matter degeneration.")
-            .addInfo(TOOLTIP_BAR)
+            .addLineSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The fourth and final module of the Godforge, this module breaks apart the very")
             .addInfo("building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma")
             .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
             .addInfo("requires a fully upgraded Godforge.")
             .addInfo("This module is specialized towards acquisition of unique materials.")
-            .addInfo(TOOLTIP_BAR)
             .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY
@@ -671,7 +668,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Hatch")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
-            .toolTipFinisher(CommonValues.GODFORGE_MARK);
+            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
         return tt;
     }
 

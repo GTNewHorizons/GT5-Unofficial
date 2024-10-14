@@ -163,12 +163,9 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Extractor")
-            .addInfo("Controller Block for the Dissection Apparatus")
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Only uses 85% of the EU/t normally required")
             .addInfo("Gains 8 parallels per tier of Item Pipe Casing")
-            .addInfo(AuthorFourIsTheNumber)
-            .addSeparator()
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Stainless Steel Machine Casing", 22, false)
@@ -177,7 +174,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addOutputBus("Any Stainless Steel Casing", 1)
             .addEnergyHatch("Any Stainless Steel Casing", 1)
             .addMaintenanceHatch("Any Stainless Steel Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
 
