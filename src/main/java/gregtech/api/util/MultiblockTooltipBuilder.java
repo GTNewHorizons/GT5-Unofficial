@@ -103,24 +103,26 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * Wrapper for addInfo that assumes line is important and will show it even when tooltips are simplified
+     * Wrapper for addInfo that includes alternate text for simplified tooltip config
+     * Empty string will hide the line
      *
-     * @param info The line to be added.
+     * @param info    Default line
+     * @param compact Override line
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addInfo(String info) {
-        return addInfo(info, true);
+    public MultiblockTooltipBuilder addInfo(String info, String compact) {
+        if (GTMod.gregtechproxy.simplifyMultiblockTooltips) return addInfo(compact);
+        else return addInfo(info);
     }
 
     /**
      * Add a basic line of information about this structure
      *
-     * @param info    The line to be added.
-     * @param isVital Whether to show the line when tooltips are simplified in config
+     * @param info The line to be added.
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addInfo(String info, Boolean isVital) {
-        if (!GTMod.gregtechproxy.simplifyMultiblockTooltips || isVital) iLines.add(info);
+    public MultiblockTooltipBuilder addInfo(String info) {
+        iLines.add(info);
         return this;
     }
 
