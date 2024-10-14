@@ -836,6 +836,11 @@ public final class RecipeMaps {
         .minInputs(1, 0)
         .disableOptimize()
         .build();
+    public static final RecipeMap<RecipeMapBackend> solarFactoryRecipes = RecipeMapBuilder.of("gt.recipe.solarfactory")
+        .maxIO(9, 1, 1, 0)
+        .minInputs(1, 0)
+        .disableOptimize()
+        .build();
     public static final RecipeMap<RecipeMapBackend> wiremillRecipes = RecipeMapBuilder.of("gt.recipe.wiremill")
         .maxIO(2, 1, 0, 0)
         .minInputs(1, 0)
