@@ -244,13 +244,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
                     BigDecimal bigDecimalValue = BigDecimal.valueOf(invHatchCount);
                     BigDecimal result = new BigDecimal(generatedEU).multiply(bigDecimalValue);
+                    // prevent negative generation when over long.
                     tLaserSource
-                        .setEUVar(tLaserSource.getEUVar() + ((result.longValue() > 0) ? result.longValue() : 0)); // prevent
-                                                                                                                  // negative
-                                                                                                                  // generation
-                                                                                                                  // when
-                                                                                                                  // over
-                                                                                                                  // long.
+                        .setEUVar(tLaserSource.getEUVar() + ((result.longValue() > 0) ? result.longValue() : 0));
                 }
             }
         }
@@ -367,7 +363,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Enable wireless EU mode with screwdriver")
             .addInfo("Wireless mode requires SC UMV Base or better")
             .addInfo("Wireless mode uses hatch capacity limit")
-            .addSeparator()
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
