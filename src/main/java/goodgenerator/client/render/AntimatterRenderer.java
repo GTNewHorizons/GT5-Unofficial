@@ -115,8 +115,8 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
 
         loadModels();
 
-        int uCubeCount = 0;
-        int uProtomatterVertices = 0;
+        int uCubeCount = -1;
+        int uProtomatterVertices = -1;
 
         try {
             protomatterProgram = new ShaderProgram(
