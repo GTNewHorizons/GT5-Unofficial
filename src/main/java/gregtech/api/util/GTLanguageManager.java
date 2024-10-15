@@ -550,6 +550,13 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_507", "Safe Mode");
         addStringLocalization("Interaction_DESCRIPTION_Index_508", "Requires Stabilized Black Hole");
         addStringLocalization("Interaction_DESCRIPTION_Index_509", "Requires HIP Unit");
+        addStringLocalization("Interaction_DESCRIPTION_Index_510", "Minimum wafer: T1");
+        addStringLocalization("Interaction_DESCRIPTION_Index_511", "Minimum wafer: T2");
+        addStringLocalization("Interaction_DESCRIPTION_Index_512", "Minimum wafer: T3");
+        addStringLocalization("Interaction_DESCRIPTION_Index_513", "Minimum wafer: T4");
+        addStringLocalization("Interaction_DESCRIPTION_Index_514", "Minimum wafer: T5");
+        addStringLocalization("Interaction_DESCRIPTION_Index_515", "Minimum wafer: T6");
+        addStringLocalization("Interaction_DESCRIPTION_Index_516", "Minimum wafer: T7");
         addStringLocalization("Interaction_DESCRIPTION_Index_602", "Use Private Frequency");
         addStringLocalization("Interaction_DESCRIPTION_Index_756", "Connectable: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_ALL", "All");

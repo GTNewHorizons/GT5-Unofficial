@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE;
@@ -9,9 +10,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.copyAmount;
-import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
+import static gregtech.api.util.GTUtility.copyAmountUnsafe;
+import static net.minecraft.util.EnumChatFormatting.*;
 
 import javax.annotation.Nonnull;
 
@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
@@ -40,7 +41,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -52,20 +53,24 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 
-public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
+// TODO:
+// fix bugs if i find them
+// get staffix to make sf recipes cuz she asked if she could :3
+
+public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTESolarFactory> multiDefinition = null;
     protected int casingAmount;
     protected int casingTier;
     ItemStack waferStack;
-    int outputMultiplier;
+    int foundWaferTier;
     boolean didFindStack;
-    private static final int PRECISE_CASING_INDEX = 1541;
+    int minimumWaferTierForRecipe = -1;
     private static final int CASING_INDEX = 16;
 
-    // Left side of the pair is a valid wafer for input, right side is lowered by the recipe's special value and then
-    // the recipe output (after parallels) is multiplied by it
+    // Left side of the pair is a valid wafer for input, right side is compared to the specialvalue to validate recipe
+    // and then used in the output multiplier formula
     public static final ImmutableList<Pair<ItemStack, Integer>> validWafers = ImmutableList.of(
         Pair.of(ItemList.Circuit_Silicon_Wafer.get(1), 1),
         Pair.of(ItemList.Circuit_Silicon_Wafer2.get(1), 2),
@@ -109,26 +114,21 @@ public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
             'F',
             withChannel(
                 "unit casing",
-                buildHatchAdder(MTESolarFactory.class).atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy)
-                    .casingIndex(PRECISE_CASING_INDEX)
-                    .dot(1)
-                    .buildAndChain(
-                        onElementPass(
-                            MTESolarFactory::onCasingAdded,
-                            ofBlocksTiered(
-                                (block, meta) -> block == Loaders.preciseUnitCasing ? meta : -2,
-                                // ^ if preciseUnitCasing return meta, otherwise return -2 & fail checkMachine :3
-                                ImmutableList.of(
-                                    Pair.of(Loaders.preciseUnitCasing, 0),
-                                    Pair.of(Loaders.preciseUnitCasing, 1),
-                                    Pair.of(Loaders.preciseUnitCasing, 2),
-                                    Pair.of(Loaders.preciseUnitCasing, 3)),
-                                -3,
-                                MTESolarFactory::setCasingTier,
-                                MTESolarFactory::getCasingTier)))))
+                StructureUtility.ofBlocksTiered(
+                    (block, meta) -> block == Loaders.preciseUnitCasing ? meta : -2,
+                    // ^ if block is preciseUnitCasing return meta, otherwise return -2 & fail checkMachine
+                    ImmutableList.of(
+                        Pair.of(Loaders.preciseUnitCasing, 0),
+                        Pair.of(Loaders.preciseUnitCasing, 1),
+                        Pair.of(Loaders.preciseUnitCasing, 2),
+                        Pair.of(Loaders.preciseUnitCasing, 3)),
+                    -3,
+                    MTESolarFactory::setCasingTier,
+                    MTESolarFactory::getCasingTier)))
         .addElement(
             'C',
-            buildHatchAdder(MTESolarFactory.class).atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy)
+            buildHatchAdder(MTESolarFactory.class)
+                .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(CASING_INDEX)
                 .dot(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
@@ -155,6 +155,17 @@ public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
     }
 
     @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        this.casingAmount = 0;
+        this.casingTier = -3;
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 4, 8, 0)) {
+            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+            return casingAmount >= 8 && casingTier >= -1 && mMaintenanceHatches.size() == 1;
+        }
+        return false;
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         casingTier = aNBT.getInteger("casingTier");
         super.loadNBTData(aNBT);
@@ -164,17 +175,6 @@ public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("casingTier", casingTier);
         super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.casingAmount = 0;
-        this.casingTier = -3;
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 4, 8, 0)) {
-            getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-            return casingAmount >= 8 && casingTier >= -1 && mMaintenanceHatches.size() == 1;
-        }
-        return false;
     }
 
     @Override
@@ -193,16 +193,15 @@ public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 8, 0, elementBudget, env, false, true);
     }
 
-    // TODO:
-    // calculate outputs Properly
-    // make tooltip :3
-    // get staffix to make sf recipes cuz she asked if she could :3
+    protected int getMaxParallel() {
+        return (int) Math.pow(2, 1 + (casingTier + 2));
+    }
 
     protected ItemStack[] calculateOutput(ItemStack currentOutput, int seed) {
         double calculatedMultiplier = ((0.25 * seed) + 1);
         if (calculatedMultiplier > 2) calculatedMultiplier = 2;
         int outputSize = (int) Math.floor(currentOutput.stackSize * calculatedMultiplier);
-        return new ItemStack[] { copyAmount(outputSize, currentOutput) };
+        return new ItemStack[] { copyAmountUnsafe(outputSize, currentOutput) };
     }
 
     @NotNull
@@ -221,11 +220,14 @@ public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
         mMaxProgresstime = processingLogic.getDuration();
         setEnergyUsage(processingLogic);
 
-        mOutputItems = calculateOutput(processingLogic.getOutputItems()[0], outputMultiplier);
+        mOutputItems = calculateOutput(
+            processingLogic.getOutputItems()[0],
+            (foundWaferTier - minimumWaferTierForRecipe));
         mOutputFluids = processingLogic.getOutputFluids();
 
         waferStack = null;
-        outputMultiplier = 0;
+        foundWaferTier = 0;
+        minimumWaferTierForRecipe = -1;
         didFindStack = false;
 
         return result;
@@ -245,7 +247,8 @@ public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
                     for (Pair<ItemStack, Integer> p : validWafers) {
                         if (items.isItemEqual(p.getLeft())) {
                             waferStack = p.getLeft();
-                            outputMultiplier = (p.getRight() - recipe.mSpecialValue);
+                            foundWaferTier = p.getRight();
+                            minimumWaferTierForRecipe = recipe.mSpecialValue;
                             didFindStack = true;
                             // items will never equal another entry in validWafers so break out of the loop
                             break;
@@ -255,7 +258,7 @@ public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
                 if (!didFindStack) {
                     return SimpleCheckRecipeResult.ofFailure("no_wafer");
                 }
-                if (recipe.mSpecialValue > outputMultiplier) {
+                if (minimumWaferTierForRecipe > foundWaferTier) {
                     return SimpleCheckRecipeResult.ofFailure("low_wafer_tier");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -273,7 +276,7 @@ public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
             protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 return super.createParallelHelper(recipeAfterAdjustments(recipe));
             }
-        }.setMaxParallel((int) Math.pow(2, 4 + (casingTier + 1)));
+        }.setMaxParallelSupplier(this::getMaxParallel);
     }
 
     @Override
@@ -285,16 +288,25 @@ public class MTESolarFactory extends MTEEnhancedMultiBlockBase<MTESolarFactory>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Solar Factory")
-            .addInfo("Freaky Factory")
+            .addInfo("Controller block for the Solar Factory")
+            .addInfo("Produces solar panels in bulk")
+            .addInfo("Receives a 25% bonus to output for each Wafer tier above the minimum required")
+            .addInfo("The bonus to output occurs after parallels, and cannot be greater than 100%")
+            .addInfo("The recipes shown in NEI display the minimum wafer tier required")
+            .addInfo("Parallels are based on Precise Casing Tier")
+            .addInfo("MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
+            .addInfo("Supports " + TT + " energy hatches")
             .beginStructureBlock(7, 10, 9, true)
-            .addStructureInfo(BLUE + "8+ " + DARK_AQUA + "Solid Steel Machine Casings")
+            .addStructureInfo(BLUE + "Imprecise Unit Casings cannot be used")
+            .addStructureInfo(BLUE + "26 " + DARK_AQUA + "Precise Electronic Unit Casing")
+            .addStructureInfo(BLUE + "120+ " + DARK_AQUA + "Solid Steel Machine Casings")
             .addStructureInfo(BLUE + "24 " + DARK_AQUA + "Niobium-Titanium Frame Boxes")
-            .addStructureInfo(BLUE + "67 " + DARK_AQUA + "EV+ Glass")
+            .addStructureInfo(BLUE + "67 " + DARK_AQUA + "HV+ Glass")
             .addStructureInfo(BLUE + "4 " + DARK_AQUA + "Assembling Line Casing")
             .addStructureInfo(BLUE + "1+ " + DARK_AQUA + "Input Hatch")
-            .addStructureInfo(BLUE + "1+ " + DARK_AQUA + "Output Bus")
             .addStructureInfo(BLUE + "1+ " + DARK_AQUA + "Input Bus")
-            .addStructureInfo(BLUE + "1 " + DARK_AQUA + "Energy Hatch+")
+            .addStructureInfo(BLUE + "1+ " + DARK_AQUA + "Output Bus")
+            .addStructureInfo(BLUE + "1+ " + DARK_AQUA + "Energy Hatch")
             .addStructureInfo(BLUE + "1 " + DARK_AQUA + "Maintenance Hatch")
             .toolTipFinisher(GTValues.AuthorPureBluez);
         return tt;
