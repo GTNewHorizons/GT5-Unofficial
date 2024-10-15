@@ -9,6 +9,8 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -74,7 +76,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     private UUID owner_uuid;
     private boolean wirelessEnabled = false;
     private boolean canUseWireless = true;
-    private long euLastCycle = 0;
+    private BigInteger euLastCycle = BigInteger.ZERO;
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
     private final List<Float> avgEff = new ArrayList<>(10);
@@ -181,7 +183,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         // Set stats if one fluid supplied.
         if ((containedAntimatter == 0 && catalystFluid != null) || (containedAntimatter > 0 && catalystFluid == null)) {
             this.annihilationEfficiency = 0;
-            this.euLastCycle = 0;
+            this.euLastCycle = BigInteger.ZERO;
             setAvgEff(0f);
         }
 
@@ -203,30 +205,36 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             modifier = 1.04F;
         }
         long catalystCount = catalyst.amount;
-        long generatedEU = 0;
+        BigInteger generatedEU;
 
         if (modifier != null) {
             float efficiency = Math
                 .min(((float) antimatter / (float) catalystCount), ((float) catalystCount / (float) antimatter));
             this.annihilationEfficiency = efficiency;
             setAvgEff(efficiency);
-            generatedEU = (long) ((Math.pow(antimatter, modifier) * ANTIMATTER_FUEL_VALUE) * efficiency);
+
+            // Calculate generated EU using BigDecimal
+            BigDecimal powValue = BigDecimal.valueOf(Math.pow(antimatter, modifier));
+            generatedEU = powValue.multiply(BigDecimal.valueOf(ANTIMATTER_FUEL_VALUE))
+                .multiply(BigDecimal.valueOf(efficiency))
+                .toBigInteger();
+
         } else { // Set stats and return if supplied antimatter with incorrect fluid.
             this.annihilationEfficiency = 0;
-            this.euLastCycle = 0;
+            this.euLastCycle = BigInteger.ZERO;
             setAvgEff(0f);
             return;
         }
 
         if (wirelessEnabled && modifier >= 1.03F) {
             // Clamp the EU to the maximum of the hatches so wireless cannot bypass the limitations
-            long euCapacity = 0;
+            BigInteger euCapacity = BigInteger.ZERO;
             for (MTEHatch tHatch : getExoticEnergyHatches()) {
                 if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
-                    euCapacity += tLaserSource.maxEUStore();
+                    euCapacity = euCapacity.add(BigInteger.valueOf(tLaserSource.maxEUStore()));
                 }
             }
-            generatedEU = Math.min(generatedEU, euCapacity);
+            generatedEU = generatedEU.min(euCapacity);
             this.euLastCycle = generatedEU;
             addEUToGlobalEnergyMap(owner_uuid, generatedEU);
         } else {
@@ -234,7 +242,15 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             float invHatchCount = 1.0F / (float) mExoticEnergyHatches.size();
             for (MTEHatch tHatch : getExoticEnergyHatches()) {
                 if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
-                    tLaserSource.setEUVar(tLaserSource.getEUVar() + (long) (generatedEU * invHatchCount));
+                    BigDecimal bigDecimalValue = BigDecimal.valueOf(invHatchCount);
+                    BigDecimal result = new BigDecimal(generatedEU).multiply(bigDecimalValue);
+                    tLaserSource
+                        .setEUVar(tLaserSource.getEUVar() + ((result.longValue() > 0) ? result.longValue() : 0)); // prevent
+                                                                                                                  // negative
+                                                                                                                  // generation
+                                                                                                                  // when
+                                                                                                                  // over
+                                                                                                                  // long.
                 }
             }
         }
@@ -351,6 +367,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Enable wireless EU mode with screwdriver")
             .addInfo("Wireless mode requires SC UMV Base or better")
             .addInfo("Wireless mode uses hatch capacity limit")
+            .addSeparator()
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
@@ -360,7 +377,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addCasingInfoMin("Advanced Filter Casing", 209, false)
             .addInputHatch("2, Hint block with dot 1", 1)
             .addOtherStructurePart("Laser Source Hatch", "1-64, Hint Block with dot 2", 2)
-            .toolTipFinisher();
+            .toolTipFinisher("Good Generator");
         return tt;
     }
 
@@ -404,14 +421,18 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
+        BigInteger storedEnergy = BigInteger.ZERO;
+        BigInteger maxEnergy = BigInteger.ZERO;
 
         for (MTEHatch tHatch : mExoticEnergyHatches) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
+            storedEnergy = storedEnergy.add(
+                BigInteger.valueOf(
+                    tHatch.getBaseMetaTileEntity()
+                        .getStoredEU()));
+            maxEnergy = maxEnergy.add(
+                BigInteger.valueOf(
+                    tHatch.getBaseMetaTileEntity()
+                        .getEUCapacity()));
         }
 
         return new String[] { EnumChatFormatting.BLUE + "Antimatter Forge " + EnumChatFormatting.GRAY,
@@ -450,7 +471,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 + " % ⟩₁₀" };
     }
 
-    private long getEnergyProduced() {
+    private BigInteger getEnergyProduced() {
         return this.euLastCycle;
     }
 
@@ -480,7 +501,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         return this.avgEffCache;
     }
 
-    protected long energyProducedCache;
+    protected BigInteger energyProducedCache = BigInteger.ZERO; // because widget get null
     protected float efficiencyCache;
     protected float avgEffCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -507,7 +528,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                             + EnumChatFormatting.WHITE
                             + " EU")
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getEnergyProduced, val -> energyProducedCache = val))
+            .widget(new FakeSyncWidget.BigIntegerSyncer(this::getEnergyProduced, val -> energyProducedCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
