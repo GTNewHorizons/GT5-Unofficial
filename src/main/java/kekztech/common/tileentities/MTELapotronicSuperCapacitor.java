@@ -453,7 +453,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + EnumChatFormatting.GRAY
                     + "-fold"
                     + " for every capacitor tier above.")
-            .addSeparator()
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addStructureInfo("Modular height of 4-50 blocks.")
             .addController("Front center bottom")
@@ -492,7 +491,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addSubChannelUsage("capacitor", "Maximum Capacitor Tier")
             .addSubChannelUsage("height", "Height of structure")
             .addMaintenanceHatch("Any casing")
-            .toolTipFinisher("KekzTech");
+            .toolTipFinisher();
         return tt;
     }
 

@@ -16,7 +16,7 @@ GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s�
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 
 # Multiblock Tooltip Builder Keywords
-# Context can be found in the class gregtech.api.util.GT_Multiblock_Tooltip_Builder
+# Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
 GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)
@@ -39,6 +39,9 @@ GT5U.MBTT.Display=to display structure guidelines
 GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
 GT5U.MBTT.Mod=Added by
 GT5U.MBTT.Air=Mandatory Air
+GT5U.MBTT.Structure.Complex=Structure is too complex!
+GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
+GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
@@ -532,7 +535,6 @@ GT5U.gui.text.drill_generic_finished=§7Mining pipes have been retracted
 GT5U.gui.text.drill_retract_pipes_finished=§7Operation aborted
 GT5U.gui.text.backfiller_no_concrete=§7No liquid concrete
 GT5U.gui.text.no_black_hole=§7Requires an active black hole
-GT5U.gui.text.unstable_black_hole=§7Black hole is unstable
 GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.backfiller_working=§aPouring concrete
 GT5U.gui.text.backfiller_current_area=§7Filling at y-level: §a%s
