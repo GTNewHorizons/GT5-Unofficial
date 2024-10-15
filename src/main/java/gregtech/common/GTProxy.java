@@ -687,6 +687,11 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int mTitleTabStyle = 0;
 
     /**
+     * Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line
+     */
+    public int separatorStyle = 2;
+
+    /**
      * Whether to show seconds or ticks on NEI
      */
     public boolean mNEIRecipeSecondMode = true;

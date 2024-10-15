@@ -583,6 +583,7 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mTooltipVerbosity = Client.iface.tooltipVerbosity;
         GTMod.gregtechproxy.mTooltipShiftVerbosity = Client.iface.tooltipShiftVerbosity;
         GTMod.gregtechproxy.mTitleTabStyle = Client.iface.titleTabStyle;
+        GTMod.gregtechproxy.separatorStyle = Client.iface.separatorStyle;
 
         GTMod.gregtechproxy.mNEIRecipeSecondMode = Client.nei.NEIRecipeSecondMode;
         GTMod.gregtechproxy.mNEIRecipeOwner = Client.nei.NEIRecipeOwner;

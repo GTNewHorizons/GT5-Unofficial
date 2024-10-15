@@ -33,7 +33,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclearSaltProcessingPlant>
@@ -75,7 +74,6 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Nuclear Salt Processing Plant")
             .addInfo("Processes depleted nuclear salts that come from the LFTR")
             .addInfo("Handles the recipes of the Reactor Processor Unit and Cold Trap")
             .addInfo("Only Thermally Insulated Casings can be replaced with hatches")
@@ -85,7 +83,6 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addInfo("150% faster than using single block machines of the same voltage")
             .addInfo("Processes two items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("IV Machine Casing", 58, false)
@@ -97,7 +94,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addMufflerHatch("Top Side, 2 Required", 4)
             .addEnergyHatch("Bottom Side, 2 Required", 5)
             .addMaintenanceHatch("Back Side, Opposite of Controller", 6)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
