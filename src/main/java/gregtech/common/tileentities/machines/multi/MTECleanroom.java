@@ -118,7 +118,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cleanroom")
-            .addInfo("Controller block for the Cleanroom")
             .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency.")
             .addInfo("Can accept 2A from an LV energy hatch.")
             .addInfo("Will overclock and gain efficiency faster starting from HV.")
@@ -127,7 +126,6 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
             .addInfo("Each maintenance issue reduces maximum efficiency by 10%.")
             .addInfo("Generating any pollution inside causes the cleanroom to shut down.")
-            .addSeparator()
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("Top center.")
             .addStructureInfo("  If width or length is even, it can be in either of the two middle positions.")
@@ -140,7 +138,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                     + ".")
             .addEnergyHatch("Any Plascrete Block. Exactly one.")
             .addMaintenanceHatch("Any Plascrete Block. Exactly one.")
-            .addStructureSeparator()
+            .addStructureInfo("")
             .addStructureInfo(
                 "Up to " + EnumChatFormatting.GOLD
                     + MachineStats.cleanroom.maxReplacementPercentage
@@ -176,7 +174,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addStructureInfo(
                 EnumChatFormatting.YELLOW
                     + "All non-plascrete blocks now share the same limit. Feel free to mix and match!")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
