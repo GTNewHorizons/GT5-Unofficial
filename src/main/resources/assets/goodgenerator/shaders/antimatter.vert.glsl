@@ -17,8 +17,8 @@ float wave ( vec3 input){
 const float PI = 3.14159265358979323846;
 
 
-float lazyHash(vec3 input){
-    vec3 v = fract(input*1.23456 + 3.1456);
+float lazyHash(vec3 toHash){
+    vec3 v = fract(toHash*1.23456 + 3.1456);
     v*=7;
     return fract(v.y + v.x*(v.z+1));
 }
