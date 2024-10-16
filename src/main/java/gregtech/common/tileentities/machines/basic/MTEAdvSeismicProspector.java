@@ -79,18 +79,6 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
                 TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
@@ -100,6 +88,18 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
                 TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW)
                     .glow()
                     .build()),
             TextureFactory.of(
