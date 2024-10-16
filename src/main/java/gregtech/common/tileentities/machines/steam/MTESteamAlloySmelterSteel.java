@@ -1,23 +1,7 @@
 package gregtech.common.tileentities.machines.steam;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_ALLOY_SMELTER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_ALLOY_SMELTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_ALLOY_SMELTER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_ALLOY_SMELTER_GLOW;
-
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -68,8 +52,9 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     @Override
     public ITexture[] getSideFacingActive(byte aColor) {
         return new ITexture[] { super.getSideFacingActive(aColor)[0],
-            TextureFactory.of(OVERLAY_SIDE_STEAM_ALLOY_SMELTER_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_SIDE_STEAM_ALLOY_SMELTER_ACTIVE_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_SIDE_ACTIVE")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_SIDE_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -77,8 +62,9 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     @Override
     public ITexture[] getSideFacingInactive(byte aColor) {
         return new ITexture[] { super.getSideFacingInactive(aColor)[0],
-            TextureFactory.of(OVERLAY_SIDE_STEAM_ALLOY_SMELTER), TextureFactory.builder()
-                .addIcon(OVERLAY_SIDE_STEAM_ALLOY_SMELTER_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_SIDE")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_SIDE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -86,8 +72,9 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     @Override
     public ITexture[] getFrontFacingActive(byte aColor) {
         return new ITexture[] { super.getFrontFacingActive(aColor)[0],
-            TextureFactory.of(OVERLAY_FRONT_STEAM_ALLOY_SMELTER_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_STEAM_ALLOY_SMELTER_ACTIVE_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_FRONT_ACTIVE")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_FRONT_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -95,8 +82,9 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     @Override
     public ITexture[] getFrontFacingInactive(byte aColor) {
         return new ITexture[] { super.getFrontFacingInactive(aColor)[0],
-            TextureFactory.of(OVERLAY_FRONT_STEAM_ALLOY_SMELTER), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_STEAM_ALLOY_SMELTER_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_FRONT")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_FRONT_GLOW"))
                 .glow()
                 .build() };
     }
@@ -104,8 +92,9 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     @Override
     public ITexture[] getTopFacingActive(byte aColor) {
         return new ITexture[] { super.getTopFacingActive(aColor)[0],
-            TextureFactory.of(OVERLAY_TOP_STEAM_ALLOY_SMELTER_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_TOP_STEAM_ALLOY_SMELTER_ACTIVE_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_TOP_ACTIVE")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_TOP_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -113,8 +102,9 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     @Override
     public ITexture[] getTopFacingInactive(byte aColor) {
         return new ITexture[] { super.getTopFacingInactive(aColor)[0],
-            TextureFactory.of(OVERLAY_TOP_STEAM_ALLOY_SMELTER), TextureFactory.builder()
-                .addIcon(OVERLAY_TOP_STEAM_ALLOY_SMELTER_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_TOP")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_TOP_GLOW"))
                 .glow()
                 .build() };
     }
@@ -122,8 +112,9 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     @Override
     public ITexture[] getBottomFacingActive(byte aColor) {
         return new ITexture[] { super.getBottomFacingActive(aColor)[0],
-            TextureFactory.of(OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_ACTIVE_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_BOTTOM_ACTIVE")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -131,8 +122,9 @@ public class MTESteamAlloySmelterSteel extends MTEBasicMachineSteel {
     @Override
     public ITexture[] getBottomFacingInactive(byte aColor) {
         return new ITexture[] { super.getBottomFacingInactive(aColor)[0],
-            TextureFactory.of(OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER), TextureFactory.builder()
-                .addIcon(OVERLAY_BOTTOM_STEAM_ALLOY_SMELTER_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_BOTTOM")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/alloy_smelter/OVERLAY_BOTTOM_GLOW"))
                 .glow()
                 .build() };
     }
