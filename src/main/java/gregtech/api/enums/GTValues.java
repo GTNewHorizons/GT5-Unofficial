@@ -650,7 +650,7 @@ public class GTValues {
         + EnumChatFormatting.WHITE
         + EnumChatFormatting.ITALIC
         + "Number";
-    public static final String Ollie = "" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "Ollie";
+    public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
     public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
         + "Ba"
         + EnumChatFormatting.LIGHT_PURPLE

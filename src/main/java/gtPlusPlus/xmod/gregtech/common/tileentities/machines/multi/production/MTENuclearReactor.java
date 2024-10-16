@@ -49,7 +49,6 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -89,7 +88,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor.")
+            .addInfo("Controller Block for the Liquid Fluoride Thorium Reactor")
             .addInfo("Produces energy and new elements from Radioactive Beta Decay!")
             .addInfo("Input LFTB and a molten salt as fuel, and match the 4 Buffered Dynamo Hatches:")
             .addInfo("LFTR Fuel 1 (4 EV Hatches), LFTR Fuel 2 (4 IV Hatches), LFTR Fuel 3 (4 LuV Hatches)")
@@ -97,7 +96,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addInfo("Outputs U233 every 10 seconds, on average, while the reactor is running")
             .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(7, 4, 7, true)
             .addController("Bottom Center")
             .addCasingInfoMin("Hastelloy-N Reactor Casing", 27, false)
@@ -110,7 +108,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addStructureInfo("All other hatches must be IV+ tier.")
             .addStructureInfo("4x Output Hatches or 1x Output Hatch (ME), 1+ Input Hatches")
             .addStructureInfo("4x Dynamo Hatches, 4x Mufflers")
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

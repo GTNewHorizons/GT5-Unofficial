@@ -3306,7 +3306,10 @@ public class GTUtility {
     private static void addBaseInfo(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, ArrayList<String> tList,
         TileEntity tTileEntity, Block tBlock) {
         tList.add(
-            "----- X: " + EnumChatFormatting.AQUA
+            EnumChatFormatting.STRIKETHROUGH + "-----"
+                + EnumChatFormatting.RESET
+                + " X: "
+                + EnumChatFormatting.AQUA
                 + formatNumbers(aX)
                 + EnumChatFormatting.RESET
                 + " Y: "
@@ -3321,7 +3324,9 @@ public class GTUtility {
                 + EnumChatFormatting.AQUA
                 + aWorld.provider.dimensionId
                 + EnumChatFormatting.RESET
-                + " -----");
+                + " "
+                + EnumChatFormatting.STRIKETHROUGH
+                + "-----");
         try {
             tList.add(
                 GTUtility.trans("162", "Name: ") + EnumChatFormatting.BLUE
