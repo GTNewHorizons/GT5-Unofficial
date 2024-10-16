@@ -692,6 +692,12 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int separatorStyle = 2;
 
     /**
+     * Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+:
+     * continuous line
+     */
+    public int tooltipFinisherStyle = 1;
+
+    /**
      * Whether to show seconds or ticks on NEI
      */
     public boolean mNEIRecipeSecondMode = true;
