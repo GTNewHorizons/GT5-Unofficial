@@ -115,8 +115,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
-        tt.addMachineType("Boiler")
-            .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler");
+        tt.addMachineType("Boiler");
         // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones
         // that do not (Bronze and Steel)
         if (isSuperheated()) {
@@ -142,7 +141,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
                 formatNumbers(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 5, 3, false)
             .addController("Front bottom")
             .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
@@ -155,7 +153,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             .addStructureInfo("You can use either, or both")
             .addInputHatch("Water, Any firebox", 1)
             .addOutputHatch("Steam, any casing", 2)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
 
         return tt;
     }

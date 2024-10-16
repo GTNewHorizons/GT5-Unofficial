@@ -27,7 +27,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -62,7 +61,6 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
             .addInfo("Speed: +100% | EU Usage: 100% | Parallel: ((Tier/2)+1)")
             .addInfo("Constructed exactly the same as a normal Implosion Compressor")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoMin("Robust TungstenSteel Casing", 10, false)
@@ -71,7 +69,7 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
             .addMufflerHatch("Any casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

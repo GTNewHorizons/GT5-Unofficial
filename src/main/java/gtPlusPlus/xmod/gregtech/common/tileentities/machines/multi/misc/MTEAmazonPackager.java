@@ -99,7 +99,6 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Amazon Warehouse")
             .addInfo("This Multiblock is used for EXTREME packaging requirements")
             .addInfo("Can be configured with a screwdriver to work as an Unpackager")
             .addInfo("Dust Schematics are inserted into the input busses")
@@ -109,7 +108,6 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
             .addInfo("Only uses 75% of the EU/t normally required")
             .addInfo("Processes 16 items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoMin("Supply Depot Casings", 10, false)
@@ -118,7 +116,7 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
             .addMufflerHatch("Any casing", 1)
-            .toolTipFinisher("GT++");
+            .toolTipFinisher();
         return tt;
     }
 
