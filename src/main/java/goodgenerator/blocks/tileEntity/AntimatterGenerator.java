@@ -226,6 +226,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     euCapacity += tLaserSource.maxEUStore();
                 }
             }
+
+            // Prevent -Generation when long overflow
+            if (generatedEU < 0) generatedEU = Long.MAX_VALUE;
+            if (euCapacity < 0) euCapacity = Long.MAX_VALUE;
+
             generatedEU = Math.min(generatedEU, euCapacity);
             this.euLastCycle = generatedEU;
             addEUToGlobalEnergyMap(owner_uuid, generatedEU);
@@ -413,6 +418,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
+        // Prevent -Value when long overflow
+        if (storedEnergy < 0) storedEnergy = Long.MAX_VALUE;
+        if (maxEnergy < 0) maxEnergy = Long.MAX_VALUE;
 
         return new String[] { EnumChatFormatting.BLUE + "Antimatter Forge " + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
