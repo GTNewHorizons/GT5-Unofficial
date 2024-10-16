@@ -35,7 +35,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.circuit.GTPPIntegratedCircuitItem;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -610,7 +609,7 @@ public class AgriculturalChem extends ItemPackage {
 
         // Red Slurry / Tailings Processing
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedBioCircuit(10))
+            .itemInputs(GTUtility.getIntegratedCircuit(10))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Copper, 1L),

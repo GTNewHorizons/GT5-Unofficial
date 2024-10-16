@@ -111,10 +111,6 @@ public class BioRecipes {
         return GTUtility.getIntegratedCircuit(16);
     }
 
-    private static ItemStack getBioChip(int aID) {
-        return ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, aID, 0);
-    }
-
     public static void init() {
         Logger.INFO("[Bio] Setting Variables");
         initRecipeVars();
@@ -483,7 +479,7 @@ public class BioRecipes {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getBioChip(20),
+                GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 8L),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 4L),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Tin, 6L))

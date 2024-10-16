@@ -291,7 +291,7 @@ public class RecipeLoaderNuclear {
         // Sodium Fluoride
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(15),
+                GTUtility.getIntegratedCircuit(15),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid", 500))
@@ -302,7 +302,7 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(15),
+                GTUtility.getIntegratedCircuit(15),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustSodiumHydroxide", 3))
             .itemOutputs(MaterialsFluorides.SODIUM_FLUORIDE.getDust(2))
             .fluidInputs(FluidUtils.getFluidStack("hydrofluoricacid_gt5u", 1000))
@@ -347,7 +347,9 @@ public class RecipeLoaderNuclear {
         if (ItemUtils.checkForInvalidItems(ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1))) {
             // CaO + H2O = Ca(OH)2
             GTValues.RA.stdBuilder()
-                .itemInputs(CI.getNumberedBioCircuit(20), ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
+                .itemInputs(
+                    GTUtility.getIntegratedCircuit(20),
+                    ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 2))
                 .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5))
                 .fluidInputs(FluidUtils.getFluidStack("water", 1000))
                 .eut(TierEU.RECIPE_MV)

@@ -784,7 +784,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(19),
+                GTUtility.getIntegratedCircuit(19),
                 CI.getTieredGTPPMachineCasing(2, 4),
                 CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.gearGt, 4),
                 CI.getTieredComponentOfMaterial(Materials.AnnealedCopper, OrePrefixes.plate, 16),
@@ -797,7 +797,7 @@ public class RecipesMachines {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(15),
+                GTUtility.getIntegratedCircuit(15),
                 CI.getTieredGTPPMachineCasing(1, 2),
                 ItemList.Hatch_Input_Bus_MV.get(1),
                 CI.getTieredComponentOfMaterial(Materials.Bronze, OrePrefixes.gearGt, 8),
@@ -823,7 +823,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(21),
+                GTUtility.getIntegratedCircuit(21),
                 CI.getTieredGTPPMachineCasing(0, 4),
                 CI.getTieredComponentOfMaterial(Materials.Aluminium, OrePrefixes.rod, 12),
                 CI.getTieredComponentOfMaterial(Materials.Wood, OrePrefixes.plate, 32),
@@ -866,7 +866,7 @@ public class RecipesMachines {
         for (int tier = 1; tier < aOutputs.length + 1; tier++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    CI.getNumberedBioCircuit(19),
+                    GTUtility.getIntegratedCircuit(19),
                     CI.getElectricPump(tier, 2),
                     CI.getElectricMotor(tier, 2),
                     CI.getPlate(tier, 4))
@@ -891,7 +891,7 @@ public class RecipesMachines {
         for (int i = 0; i < 10; i++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    CI.getNumberedBioCircuit(20),
+                    GTUtility.getIntegratedCircuit(20),
                     CI.getTieredMachineCasing(i),
                     CI.getPlate(i, 8),
                     CI.getGear(i, 2),
@@ -1562,7 +1562,7 @@ public class RecipesMachines {
         // Semi-Fluid Generators
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(14),
+                GTUtility.getIntegratedCircuit(14),
                 CI.getTieredMachineHull(1, 1),
                 CI.getElectricMotor(1, 2),
                 CI.getElectricPiston(1, 2),
@@ -1577,7 +1577,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(14),
+                GTUtility.getIntegratedCircuit(14),
                 CI.getTieredMachineHull(2, 1),
                 CI.getElectricMotor(2, 2),
                 CI.getElectricPiston(2, 2),
@@ -1592,7 +1592,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(14),
+                GTUtility.getIntegratedCircuit(14),
                 CI.getTieredMachineHull(3, 1),
                 CI.getElectricMotor(3, 2),
                 CI.getElectricPiston(3, 2),
@@ -1607,7 +1607,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(14),
+                GTUtility.getIntegratedCircuit(14),
                 CI.getTieredMachineHull(4, 1),
                 CI.getElectricMotor(4, 2),
                 CI.getElectricPiston(4, 2),
@@ -1622,7 +1622,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(14),
+                GTUtility.getIntegratedCircuit(14),
                 CI.getTieredMachineHull(5, 1),
                 CI.getElectricMotor(5, 2),
                 CI.getElectricPiston(5, 2),
@@ -3236,7 +3236,7 @@ public class RecipesMachines {
         for (int i = 1; i < 4; i++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    CI.getNumberedBioCircuit(10 + i),
+                    GTUtility.getIntegratedCircuit(10 + i),
                     CI.getTieredMachineCasing(i),
                     CI.getPlate(i, 4),
                     CI.getElectricMotor(i, 2),
@@ -3252,7 +3252,7 @@ public class RecipesMachines {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(14),
+                GTUtility.getIntegratedCircuit(14),
                 aChisels[2],
                 CI.getPlate(4, 8),
                 CI.getElectricMotor(4, 8),
@@ -3265,7 +3265,7 @@ public class RecipesMachines {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedBioCircuit(14),
+                GTUtility.getIntegratedCircuit(14),
                 ItemList.Casing_SolidSteel.get(2),
                 CI.getPlate(4, 2),
                 CI.getTieredComponent(OrePrefixes.plate, 3, 4),

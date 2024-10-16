@@ -226,7 +226,7 @@ public class RecipesGregTech {
 
         // Modify Sapling into Pine Sapling
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedBioCircuit(6), ItemUtils.getSimpleStack(Blocks.sapling, 32))
+            .itemInputs(GTUtility.getIntegratedCircuit(6), ItemUtils.getSimpleStack(Blocks.sapling, 32))
             .itemOutputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Pine, 16))
             .fluidInputs(FluidUtils.getFluidStack("fluid.geneticmutagen", 2000), FluidUtils.getDistilledWater(8000))
             .duration(120 * SECONDS)
@@ -628,7 +628,7 @@ public class RecipesGregTech {
         RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Laser_Lens_WoodsGlass.get(0),
-                ItemUtils.simpleMetaStack(AgriculturalChem.mBioCircuit, 20, 1))
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 1L))
             .itemOutputs(GregtechItemList.Distillus_Upgrade_Chip.get(1))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_IV)
@@ -889,7 +889,7 @@ public class RecipesGregTech {
 
         if (cropGrape != null && foodRaisins != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(CI.getNumberedBioCircuit(20), cropGrape)
+                .itemInputs(GTUtility.getIntegratedCircuit(20), cropGrape)
                 .itemOutputs(foodRaisins)
                 .eut(2)
                 .duration(10 * TICKS)
@@ -898,7 +898,7 @@ public class RecipesGregTech {
 
         // Process Waste Water
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedBioCircuit(21))
+            .itemInputs(GTUtility.getIntegratedCircuit(21))
             .itemOutputs(
                 ItemUtils.getSimpleStack(Blocks.dirt),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1),
