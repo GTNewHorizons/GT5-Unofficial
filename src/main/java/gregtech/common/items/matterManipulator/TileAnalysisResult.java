@@ -233,7 +233,7 @@ public class TileAnalysisResult {
 
             IInventory cells = segmentedInventory.getInventoryByName("cells");
             if (cells != null) {
-                mAECells = InventoryAnalysis.fromInventory(cells);
+                mAECells = InventoryAnalysis.fromInventory(cells, false);
             }
         }
 
@@ -248,7 +248,7 @@ public class TileAnalysisResult {
         }
 
         if (te instanceof IInventory inventory) {
-            mInventory = InventoryAnalysis.fromInventory(inventory);
+            mInventory = InventoryAnalysis.fromInventory(inventory, false);
         }
     }
 
@@ -295,9 +295,14 @@ public class TileAnalysisResult {
             if (mte instanceof IAlignmentProvider provider) {
                 IAlignment alignment = provider.getAlignment();
 
-                if (mGTFacing != null && alignment != null) alignment.setExtendedFacing(mGTFacing);
+                if (mGTFacing != null && alignment != null) {
+                    alignment.setExtendedFacing(mGTFacing);
+                    gte.setFrontFacing(mGTFacing.getDirection());
+                }
             } else {
-                if (mGTFront != null) gte.setFrontFacing(mGTFront);
+                if (mGTFront != null) {
+                    gte.setFrontFacing(mGTFront);
+                }
             }
 
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -366,7 +371,7 @@ public class TileAnalysisResult {
             }
 
             if (mte instanceof MTEMultiBlockBase multi) {
-                mGTMode = multi.machineMode;
+                multi.machineMode = mGTMode;
 
                 if (multi.supportsVoidProtection()) {
                     boolean protectFluids = (mGTFlags & GT_MULTI_PROTECT_FLUIDS) != 0;
@@ -408,12 +413,12 @@ public class TileAnalysisResult {
 
         if (te instanceof ISegmentedInventory segmentedInventory) {
             if (segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgrades) {
-                MMUtils.installUpgrades(ctx, upgrades, mAEUpgrades, true);
+                MMUtils.installUpgrades(ctx, upgrades, mAEUpgrades, true, false);
             }
 
             IInventory cells = segmentedInventory.getInventoryByName("cells");
             if (mAECells != null && cells != null) {
-                mAECells.apply(ctx, cells);
+                mAECells.apply(ctx, cells, true, false);
             }
         }
 
@@ -444,13 +449,13 @@ public class TileAnalysisResult {
                 boolean isAttunable = part instanceof PartP2PTunnelNormal && expected != null && expected.isAttunable();
 
                 if (!isAttunable) {
-                    if ((expectedItem == null || !Objects.equals(actualItem, expectedItem)) && actualItem != null) {
-                        removePart(ctx, partHost, dir);
+                    if (actualItem != null && (expectedItem == null || !Objects.equals(actualItem, expectedItem))) {
+                        removePart(ctx, partHost, dir, false);
                         actualItem = null;
                     }
 
                     if (actualItem == null && expectedItem != null) {
-                        if (!installPart(ctx, partHost, dir, expected)) {
+                        if (!installPart(ctx, partHost, dir, expected, false)) {
                             return false;
                         }
                     }
@@ -467,7 +472,7 @@ public class TileAnalysisResult {
         }
 
         if (te instanceof IInventory inventory && mInventory != null) {
-            mInventory.apply(ctx, inventory);
+            mInventory.apply(ctx, inventory, true, false);
         }
 
         return true;
@@ -479,27 +484,22 @@ public class TileAnalysisResult {
         }
     }
 
-    private void installCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side,
-        CoverData cover) {
-        if (gte.getCoverIDAtSide(side) == 0 && gte.canPlaceCoverItemAtSide(side, cover.getCover())
-            && context.tryConsumeItems(cover.getCover())) {
+    private void installCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side, CoverData cover) {
+        if (gte.canPlaceCoverItemAtSide(side, cover.getCover()) && context.tryConsumeItems(cover.getCover())) {
             gte.setCoverIdAndDataAtSide(
                 side,
                 cover.getCoverID(),
-                cover.getCoverBehaviour()
-                    .allowsCopyPasteTool() ? cover.getCoverData() : null);
+                cover.getCoverBehaviour().allowsCopyPasteTool() ? cover.getCoverData() : null);
         }
     }
 
-    private void updateCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side,
-        CoverData target) {
-        if (gte.getCoverIDAtSide(side) == target.getCoverID() && gte.getCoverBehaviorAtSideNew(side)
-            .allowsCopyPasteTool()) {
+    private void updateCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side, CoverData target) {
+        if (gte.getCoverIDAtSide(side) == target.getCoverID() && gte.getCoverBehaviorAtSideNew(side).allowsCopyPasteTool()) {
             gte.setCoverDataAtSide(side, target.getCoverData());
         }
     }
 
-    private void removePart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side) {
+    private void removePart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side, boolean simulate) {
         IPart part = partHost.getPart(side);
 
         if (part == null) return;
@@ -508,9 +508,9 @@ public class TileAnalysisResult {
 
         part.getDrops(drops, false);
 
-        context.givePlayerItems(drops.toArray(new ItemStack[drops.size()]));
+        context.givePlayerItems(drops.stream().map(ItemStack::copy).toArray(ItemStack[]::new));
 
-        ItemStack partStack = part.getItemStack(PartItemStack.Break);
+        ItemStack partStack = part.getItemStack(PartItemStack.Break).copy();
 
         NBTTagCompound tag = partStack.getTagCompound();
 
@@ -524,11 +524,11 @@ public class TileAnalysisResult {
 
         context.givePlayerItems(partStack);
 
-        partHost.removePart(side, false);
+        if (!simulate) partHost.removePart(side, false);
     }
 
     private boolean installPart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side,
-        AEPartData partData) {
+        AEPartData partData, boolean simulate) {
         ItemStack partStack = partData.getEffectivePartStack();
 
         if (!partHost.canAddPart(partStack, side)) {
@@ -537,9 +537,137 @@ public class TileAnalysisResult {
 
         context.tryConsumeItems(partStack);
 
-        if (partHost.addPart(partStack, side, context.getRealPlayer()) == null) {
-            context.givePlayerItems(partStack);
-            return false;
+        if (!simulate) {
+            if (partHost.addPart(partStack, side, context.getRealPlayer()) == null) {
+                context.givePlayerItems(partStack);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean getRequiredItemsForExistingBlock(IBlockApplyContext context) {
+        TileEntity te = context.getTileEntity();
+
+        if (te instanceof IGregTechTileEntity gte) {
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                CoverData target = mCovers == null ? null : mCovers[side.ordinal()];
+                CoverInfo actual = new CoverInfo(
+                    side,
+                    gte.getCoverIDAtSide(side),
+                    gte,
+                    gte.getComplexCoverDataAtSide(side));
+
+                if (actual != null && (target == null || actual.getCoverID() != target.getCoverID())) {
+                    context.givePlayerItems(gte.getCoverItemAtSide(side).copy());
+                    actual = null;
+                }
+
+                if (actual == null && target != null) {
+                    if (gte.canPlaceCoverItemAtSide(side, target.getCover())) {
+                        context.tryConsumeItems(target.getCover());
+                    }
+                }
+            }
+        }
+
+        if (te instanceof ISegmentedInventory segmentedInventory) {
+            if (mAEUpgrades != null && segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgrades) {
+                MMUtils.installUpgrades(context, upgrades, mAEUpgrades, true, true);
+            }
+
+            IInventory cells = segmentedInventory.getInventoryByName("cells");
+            if (mAECells != null && cells != null) {
+                mAECells.apply(context, cells, true, true);
+            }
+        }
+
+        if (mAEParts != null && te instanceof IPartHost partHost) {
+            for (ForgeDirection dir : ALL_DIRECTIONS) {
+                IPart part = partHost.getPart(dir);
+                AEPartData expected = mAEParts[dir.ordinal()];
+
+                ItemId actualItem = part == null ? null
+                    : ItemId.createWithoutNBT(part.getItemStack(PartItemStack.Break));
+                ItemId expectedItem = expected == null ? null
+                    : ItemId.createWithoutNBT(expected.getEffectivePartStack());
+
+                boolean isAttunable = part instanceof PartP2PTunnelNormal && expected != null && expected.isAttunable();
+
+                if (!isAttunable) {
+                    if ((expectedItem == null || !Objects.equals(actualItem, expectedItem)) && actualItem != null) {
+                        removePart(context, partHost, dir, true);
+                        actualItem = null;
+                    }
+
+                    if (actualItem == null && expectedItem != null) {
+                        if (!installPart(context, partHost, dir, expected, true)) {
+                            return false;
+                        }
+                    }
+                }
+
+                if (expected != null) {
+                    if (!expected.getRequiredItemsForExistingPart(context, partHost, dir)) {
+                        return false;
+                    }
+                }
+
+                Platform.notifyBlocksOfNeighbors(te.getWorldObj(), te.xCoord, te.yCoord, te.zCoord);
+            }
+        }
+
+        if (mInventory != null && te instanceof IInventory inventory) {
+            mInventory.apply(context, inventory, true, true);
+        }
+
+        return true;
+    }
+
+    public boolean getRequiredItemsForNewBlock(IBlockApplyContext context) {
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            CoverData target = mCovers == null ? null : mCovers[side.ordinal()];
+
+            if (target != null) {
+                context.tryConsumeItems(target.getCover());
+            }
+        }
+
+        if (mAEUpgrades != null) {
+            for (PortableItemStack upgrade : mAEUpgrades) {
+                context.tryConsumeItems(upgrade.toStack());
+            }
+        }
+
+        if (mAECells != null) {
+            for (IItemProvider cell : mAECells.mItems) {
+                if (cell != null) {
+                    cell.getStack(context, true);
+                }
+            }
+        }
+
+        if (mAEParts != null) {
+            for (ForgeDirection dir : ALL_DIRECTIONS) {
+                AEPartData expected = mAEParts[dir.ordinal()];
+    
+                if (expected == null) continue;
+    
+                context.tryConsumeItems(expected.getEffectivePartStack());
+    
+                if (!expected.getRequiredItemsForNewPart(context)) {
+                    return false;
+                }
+            }
+        }
+
+        if (mInventory != null) {
+            for (IItemProvider item : mInventory.mItems) {
+                if (item != null) {
+                    item.getStack(context, true);
+                }
+            }
         }
 
         return true;

@@ -16,5 +16,5 @@ public interface IItemProvider {
         }
     }
 
-    public @Nullable ItemStack getStack(IPseudoInventory inv);
+    public @Nullable ItemStack getStack(IPseudoInventory inv, boolean consume);
 }

@@ -711,6 +711,10 @@ class NBTState {
             return new PendingBlock(world.provider.dimensionId, x, y, z, realBlock, meta);
         }
 
+        public static boolean isSameBlock(PendingBlock a, PendingBlock b) {
+            return a.getBlock() == b.getBlock() && a.metadata == b.metadata;
+        }
+
         @Override
         public String toString() {
             return "PendingBlock [blockId=" + blockId
@@ -797,6 +801,17 @@ class NBTState {
 
         public boolean isInWorld(@Nonnull World world) {
             return world.provider.dimensionId == worldId;
+        }
+
+        public int distanceTo2(Location other) {
+            int dx = x - other.x;
+            int dy = y - other.y;
+            int dz = z - other.z;
+            return dx * dx + dy * dy + dz * dz;
+        }
+
+        public double distanceTo(Location other) {
+            return Math.sqrt(distanceTo2(other));
         }
 
         public @Nullable World getWorld() {

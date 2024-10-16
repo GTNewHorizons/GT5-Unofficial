@@ -36,7 +36,8 @@ public class AEPartData {
     public JsonElement mSettings = null;
     public String mCustomName = null;
 
-    public PortableItemStack[] mAEUpgrades = null, mConfig = null;
+    public PortableItemStack[] mAEUpgrades = null;
+    public InventoryAnalysis mConfig = null;
     public String mOreDict = null;
 
     public Boolean mP2POutput = null;
@@ -82,11 +83,7 @@ public class AEPartData {
             IInventory config = segmentedInventory.getInventoryByName("config");
 
             if (config != null) {
-                mConfig = GTUtility.streamInventory(config)
-                    .filter(x -> x != null)
-                    .map(PortableItemStack::withoutStackSize)
-                    .distinct()
-                    .toArray(PortableItemStack[]::new);
+                mConfig = InventoryAnalysis.fromInventory(config, false);
             }
         }
     }
@@ -164,7 +161,7 @@ public class AEPartData {
                     .getItemStackHistogram(Arrays.asList(GTUtility.inventoryToArray(upgradeInv)));
 
                 if (!targetMap.equals(actualMap)) {
-                    if (!MMUtils.installUpgrades(context, upgradeInv, mAEUpgrades, true)) {
+                    if (!MMUtils.installUpgrades(context, upgradeInv, mAEUpgrades, true, false)) {
                         return false;
                     }
                 }
@@ -173,21 +170,45 @@ public class AEPartData {
             IInventory config = segmentedInventory.getInventoryByName("config");
 
             if (config != null) {
-                MMUtils.clearInventory(config);
-
-                if (mConfig != null) {
-                    int n = Math.min(config.getSizeInventory(), mConfig.length);
-                    for (int i = 0; i < n; i++) {
-                        config.setInventorySlotContents(i, mConfig[i] == null ? null : mConfig[i].toStack());
-                    }
-                }
-
-                config.markDirty();
+                mConfig.apply(context, config, false, false);
             }
         }
 
         if (part instanceof IOreFilterable filterable) {
             filterable.setFilter(mOreDict == null ? "" : mOreDict);
+        }
+
+        return true;
+    }
+
+    public boolean getRequiredItemsForExistingPart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side) {
+        IPart part = partHost.getPart(side);
+
+        if (part instanceof ISegmentedInventory segmentedInventory) {
+            if (segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgradeInv) {
+                ItemStackMap<Long> targetMap = GTUtility.getItemStackHistogram(
+                    Arrays.stream(mAEUpgrades)
+                        .map(PortableItemStack::toStack)
+                        .collect(Collectors.toList()));
+                ItemStackMap<Long> actualMap = GTUtility
+                    .getItemStackHistogram(Arrays.asList(GTUtility.inventoryToArray(upgradeInv)));
+
+                if (!targetMap.equals(actualMap)) {
+                    if (!MMUtils.installUpgrades(context, upgradeInv, mAEUpgrades, true, true)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public boolean getRequiredItemsForNewPart(IBlockApplyContext context) {
+        if (mAEUpgrades != null) {
+            for (PortableItemStack upgrade : mAEUpgrades) {
+                context.tryConsumeItems(upgrade.toStack());
+            }
         }
 
         return true;
@@ -213,18 +234,24 @@ public class AEPartData {
         result = prime * result + ((mPart == null) ? 0 : mPart.hashCode());
         result = prime * result + ((mSettingsName == null) ? 0 : mSettingsName.hashCode());
         result = prime * result + ((mSettings == null) ? 0 : mSettings.hashCode());
-        result = prime * result + Arrays.hashCode(mAEUpgrades);
-        result = prime * result + Arrays.hashCode(mConfig);
-        result = prime * result + ((mOreDict == null) ? 0 : mOreDict.hashCode());
         result = prime * result + ((mCustomName == null) ? 0 : mCustomName.hashCode());
+        result = prime * result + Arrays.hashCode(mAEUpgrades);
+        result = prime * result + ((mConfig == null) ? 0 : mConfig.hashCode());
+        result = prime * result + ((mOreDict == null) ? 0 : mOreDict.hashCode());
+        result = prime * result + ((mP2POutput == null) ? 0 : mP2POutput.hashCode());
+        result = prime * result + ((mP2PFreq == null) ? 0 : mP2PFreq.hashCode());
+        result = prime * result + ((mPartClass == null) ? 0 : mPartClass.hashCode());
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         AEPartData other = (AEPartData) obj;
         if (mPart == null) {
             if (other.mPart != null) return false;
@@ -235,14 +262,25 @@ public class AEPartData {
         if (mSettings == null) {
             if (other.mSettings != null) return false;
         } else if (!mSettings.equals(other.mSettings)) return false;
-        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades)) return false;
-        if (!Arrays.equals(mConfig, other.mConfig)) return false;
-        if (mOreDict == null) {
-            if (other.mOreDict != null) return false;
-        } else if (!mOreDict.equals(other.mOreDict)) return false;
         if (mCustomName == null) {
             if (other.mCustomName != null) return false;
         } else if (!mCustomName.equals(other.mCustomName)) return false;
+        if (!Arrays.equals(mAEUpgrades, other.mAEUpgrades)) return false;
+        if (mConfig == null) {
+            if (other.mConfig != null) return false;
+        } else if (!mConfig.equals(other.mConfig)) return false;
+        if (mOreDict == null) {
+            if (other.mOreDict != null) return false;
+        } else if (!mOreDict.equals(other.mOreDict)) return false;
+        if (mP2POutput == null) {
+            if (other.mP2POutput != null) return false;
+        } else if (!mP2POutput.equals(other.mP2POutput)) return false;
+        if (mP2PFreq == null) {
+            if (other.mP2PFreq != null) return false;
+        } else if (!mP2PFreq.equals(other.mP2PFreq)) return false;
+        if (mPartClass == null) {
+            if (other.mPartClass != null) return false;
+        } else if (!mPartClass.equals(other.mPartClass)) return false;
         return true;
     }
 }

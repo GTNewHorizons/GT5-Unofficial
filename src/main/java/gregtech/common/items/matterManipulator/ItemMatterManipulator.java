@@ -11,10 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import net.minecraft.block.Block;
@@ -37,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
@@ -110,24 +107,27 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     public static enum ManipulatorTier {
 
-        Tier0(false, 32, false, false, false, 4, 1_000_000),
-        Tier1(true, 64, true, false, false, 5, 10_000_000),
-        Tier2(true, 128, true, false, true, 6, 100_000_000),
-        Tier3(true, Integer.MAX_VALUE, true, true, true, 7, 1_000_000_000);
+        Tier0(false, 32, 16, 20, false, false, false, 4, 1_000_000),
+        Tier1(true, 64, 32, 10, true, false, false, 5, 10_000_000),
+        Tier2(true, 128, 64, 5, true, false, true, 6, 100_000_000),
+        Tier3(true, -1, 256, 2, true, true, true, 7, 1_000_000_000);
 
         public final int mTier = ordinal();
         public final boolean mConnectsToAE;
         public final int mMaxRange;
+        public final int mPlaceSpeed, mPlaceTicks;
         public final boolean mAllowRemoving;
         public final boolean mAllowConfiguring;
         public final int mVoltageTier;
         public final double mMaxCharge;
         public final boolean mAllowCopying;
 
-        private ManipulatorTier(boolean ae, int maxRange, boolean removing, boolean configuring, boolean copying,
+        private ManipulatorTier(boolean ae, int maxRange, int placeSpeed, int placeTicks, boolean removing, boolean configuring, boolean copying,
             int voltageTier, double maxCharge) {
             mConnectsToAE = ae;
             mMaxRange = maxRange;
+            mPlaceSpeed = placeSpeed;
+            mPlaceTicks = placeTicks;
             mAllowRemoving = removing;
             mAllowConfiguring = configuring;
             mAllowCopying = copying;
@@ -496,13 +496,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     static final Map<EntityPlayer, PendingBuild> PENDING_BUILDS = new MapMaker().weakKeys()
         .makeMap();
 
-    private static final ExecutorService BUILD_ASSEMBLING_POOL = new ThreadPoolExecutor(
-        0,
-        1,
-        10L,
-        TimeUnit.SECONDS,
-        new SynchronousQueue<Runnable>());
-
     @Override
     public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.bow;
@@ -516,11 +509,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int itemUseCount) {
         if (!world.isRemote) {
-            PendingBuild build = PENDING_BUILDS.remove(player);
-
-            if (build != null && build.assembleTask != null) {
-                build.assembleTask.cancel(true);
-            }
+            PENDING_BUILDS.remove(player);
         }
     }
 
@@ -533,30 +522,45 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 // play startup sound
             } else {
                 PendingBuild pending = new PendingBuild();
-                pending.pendingBlocks = null;
                 pending.placingPlayer = player;
-                pending.manipulator = getState(stack);
+                pending.state = getState(stack);
+                pending.tier = tier;
 
-                pending.assembleTask = BUILD_ASSEMBLING_POOL.submit(() -> {
-                    List<PendingBlock> blocks = pending.manipulator.getPendingBlocks();
+                List<PendingBlock> blocks = pending.state.getPendingBlocks();
 
-                    Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(
-                        Comparator.comparing((UniqueIdentifier id) -> id.modId)
-                            .thenComparing(id -> id.name));
-                    Comparator<PendingBlock> comparePending = Comparator.comparingInt((PendingBlock b) -> b.buildOrder)
-                        .thenComparing(Comparator.nullsFirst(Comparator.comparing(b -> b.blockId, blockId)))
-                        .thenComparingInt(b -> b.metadata);
+                if (tier.mMaxRange != -1) {
+                    int maxRange2 = tier.mMaxRange * tier.mMaxRange;
 
-                    blocks.sort(comparePending);
+                    Location playerLocation = new Location(
+                        player.getEntityWorld(),
+                        MathHelper.floor_double(player.posX),
+                        MathHelper.floor_double(player.posY),
+                        MathHelper.floor_double(player.posZ));
+        
+                    blocks.removeIf(block -> block.distanceTo2(playerLocation) > maxRange2);
+                }
 
-                    return new LinkedList<>(blocks);
-                });
+                Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(
+                    Comparator.comparing((UniqueIdentifier id) -> id.modId)
+                        .thenComparing(id -> id.name));
+                Comparator<PendingBlock> comparePending = Comparator.comparingInt((PendingBlock b) -> b.buildOrder)
+                    .thenComparing(Comparator.nullsFirst(Comparator.comparing(b -> b.blockId, blockId)))
+                    .thenComparingInt(b -> b.metadata)
+                    .thenComparingLong(b -> {
+                        int chunkX = b.x >> 4;
+                        int chunkZ = b.z >> 4;
+
+                        return chunkX | (chunkZ << 32);
+                    });
+
+                blocks.sort(comparePending);
+                pending.pendingBlocks = new LinkedList<>(blocks);
 
                 PENDING_BUILDS.put(player, pending);
             }
         }
 
-        if (ticksUsed >= 20 && (ticksUsed % 2) == 0 && !player.worldObj.isRemote) {
+        if (ticksUsed >= 20 && (ticksUsed % tier.mPlaceTicks) == 0 && !player.worldObj.isRemote) {
             PENDING_BUILDS.get(player)
                 .tryPlaceBlocks(stack, player);
         }
@@ -775,7 +779,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             .option()
                 .label("Planning")
                 .onClicked(() -> {
-                    Messages.MarkPaste.sendToServer();
+                    Messages.GetRequiredItems.sendToServer();
                 })
             .done()
             .option()
@@ -809,12 +813,20 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     }
 
     @SideOnly(Side.CLIENT)
-    private static long LAST_SPAWN_MS_EPOCH = 0;
+    private long lastSpawnMS = 0;
 
     @SideOnly(Side.CLIENT)
-    private static NBTState.Config DRAWN_CONFIG = null;
+    private NBTState.Config lastDrawnConfig = null;
+
+    @SideOnly(Side.CLIENT)
+    private Location lastPlayerPosition = null;
+
+    @SideOnly(Side.CLIENT)
+    private boolean justDrew = false;
 
     private static final long SPAWN_INTERVAL_MS = 10_000;
+
+    private static final int MAX_PREVIEW_BLOCKS = 100_000;
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -846,7 +858,15 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 e.printStackTrace();
             }
         } else {
-            LAST_SPAWN_MS_EPOCH = 0;
+            if (justDrew) {
+                lastSpawnMS = 0;
+                lastDrawnConfig = null;
+                lastPlayerPosition = null;    
+                justDrew = false;
+
+                StructureLibAPI.startHinting(player.worldObj);
+                StructureLibAPI.endHinting(player.worldObj);
+            }
         }
     }
 
@@ -873,22 +893,43 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             Objects.requireNonNull(coordA);
             Objects.requireNonNull(coordB);
 
+            Location playerLocation = new Location(
+                player.getEntityWorld(),
+                MathHelper.floor_double(player.posX),
+                MathHelper.floor_double(player.posY),
+                MathHelper.floor_double(player.posZ));
+
             BoxRenderer.INSTANCE.start(event.partialTicks);
             BoxRenderer.INSTANCE.drawAround(
                 MMUtils.getBoundingBox(coordA, MMUtils.getRegionDeltas(coordA, coordB)),
                 new Vector3f(0.15f, 0.6f, 0.75f));
             BoxRenderer.INSTANCE.finish();
 
-            boolean spawn = (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS
-                || !Objects.equals(DRAWN_CONFIG, state.config);
+            boolean spawn = (System.currentTimeMillis() - lastSpawnMS) >= SPAWN_INTERVAL_MS
+                || !Objects.equals(lastDrawnConfig, state.config)
+                || !Objects.equals(lastPlayerPosition, playerLocation);
 
             if (spawn) {
-                LAST_SPAWN_MS_EPOCH = System.currentTimeMillis();
-                DRAWN_CONFIG = state.config;
+                lastSpawnMS = System.currentTimeMillis();
+                lastDrawnConfig = state.config;
+                lastPlayerPosition = playerLocation;
+                justDrew = true;
 
                 StructureLibAPI.startHinting(player.worldObj);
 
+                int buildable = tier.mMaxRange * tier.mMaxRange;
+
+                int i = 0;
+
                 for (PendingBlock pendingBlock : state.getPendingBlocks()) {
+                    if (tier.mMaxRange != -1) {
+                        int dist2 = pendingBlock.distanceTo2(playerLocation);
+    
+                        if (dist2 > buildable) continue;
+                    }
+
+                    if (i++ > MAX_PREVIEW_BLOCKS) break;
+
                     Block block = pendingBlock.getBlock();
 
                     if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {
@@ -998,16 +1039,37 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
             BoxRenderer.INSTANCE.drawAround(MMUtils.getBoundingBox(paste, deltas2), new Vector3f(0.75f, 0.5f, 0.15f));
 
-            boolean spawn = (System.currentTimeMillis() - LAST_SPAWN_MS_EPOCH) >= SPAWN_INTERVAL_MS
-                || !Objects.equals(DRAWN_CONFIG, state.config);
+            Location playerLocation = new Location(
+                player.getEntityWorld(),
+                MathHelper.floor_double(player.posX),
+                MathHelper.floor_double(player.posY),
+                MathHelper.floor_double(player.posZ));
+
+            boolean spawn = (System.currentTimeMillis() - lastSpawnMS) >= SPAWN_INTERVAL_MS
+                || !Objects.equals(lastDrawnConfig, state.config)
+                || !Objects.equals(lastPlayerPosition, playerLocation);
 
             if (spawn) {
-                LAST_SPAWN_MS_EPOCH = System.currentTimeMillis();
-                DRAWN_CONFIG = state.config;
+                lastSpawnMS = System.currentTimeMillis();
+                lastDrawnConfig = state.config;
+                lastPlayerPosition = playerLocation;
+                justDrew = true;
 
                 StructureLibAPI.startHinting(player.worldObj);
 
+                int buildable = tier.mMaxRange * tier.mMaxRange;
+
+                int i = 0;
+
                 for (PendingBlock pendingBlock : state.getPendingBlocks()) {
+                    if (tier.mMaxRange != -1) {
+                        int dist2 = pendingBlock.distanceTo2(playerLocation);
+    
+                        if (dist2 > buildable) continue;
+                    }
+
+                    if (i++ > MAX_PREVIEW_BLOCKS) break;
+
                     Block block = pendingBlock.getBlock();
 
                     if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {

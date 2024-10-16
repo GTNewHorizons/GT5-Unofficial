@@ -1,6 +1,7 @@
 package gregtech.common.items.matterManipulator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +20,8 @@ import org.joml.Vector3i;
 import com.mojang.authlib.GameProfile;
 
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.FluidId;
+import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 
@@ -40,6 +43,8 @@ public class BlockAnalyzer {
 
     public static RegionAnalysis analyzeRegion(World world, Location a, Location b) {
         if (a == null || b == null || world.provider.dimensionId != a.worldId || a.worldId != b.worldId) return null;
+
+        long pre = System.nanoTime();
 
         RegionAnalysis analysis = new RegionAnalysis();
 
@@ -70,6 +75,10 @@ public class BlockAnalyzer {
 
             analysis.blocks.add(pending);
         }
+
+        long post = System.nanoTime();
+
+        System.out.println("Analysis took " + (post - pre) / 1e6 + " ms");
 
         return analysis;
     }
@@ -193,5 +202,140 @@ public class BlockAnalyzer {
         public void error(String message) {
             GTUtility.sendChatToPlayer(player, String.format("§cError at block %d, %d, %d: %s§r", x, y, z, message));
         }
+    }
+
+    private static class BlockItemCheckContext implements IBlockApplyContext {
+
+        public World world;
+        public int x, y, z;
+        public EntityPlayer player;
+        public FakePlayer fakePlayer;
+
+        public HashMap<ItemId, Long> requiredItems = new HashMap<>();
+
+        public HashMap<ItemId, Long> storedItems = new HashMap<>();
+        public HashMap<FluidId, Long> storedFluids = new HashMap<>();
+
+        @Override
+        public EntityPlayer getFakePlayer() {
+            if (fakePlayer == null) {
+                fakePlayer = new FakePlayer((WorldServer) player.getEntityWorld(), player.getGameProfile());
+            }
+
+            return fakePlayer;
+        }
+
+        @Override
+        public TileEntity getTileEntity() {
+            return world.getTileEntity(x, y, z);
+        }
+
+        @Override
+        public EntityPlayer getRealPlayer() {
+            return player;
+        }
+
+        @Override
+        public boolean tryApplyAction(double complexity) {
+            return true;
+        }
+
+        @Override
+        public boolean tryConsumeItems(ItemStack... items) {
+            for (ItemStack item : items) {
+                ItemId id = ItemId.create(item);
+
+                Long stored = storedItems.get(id);
+                if (stored == null) stored = 0l;
+
+                long toConsume = Math.min(stored, item.stackSize);
+
+                if (toConsume < stored) {
+                    storedItems.put(id, stored - toConsume);
+                } else {
+                    storedItems.remove(id);
+                }
+
+                requiredItems.merge(id, (long) (item.stackSize - toConsume), Long::sum);
+            }
+            return true;
+        }
+
+        @Override
+        public void givePlayerItems(ItemStack... items) {
+            for (ItemStack item : items) {
+                storedItems.merge(ItemId.createWithStackSize(item), (long) -item.stackSize, Long::sum);
+            }
+        }
+
+        @Override
+        public void givePlayerFluids(FluidStack... fluids) {
+            for (FluidStack fluid : fluids) {
+                storedFluids.merge(FluidId.createWithAmount(fluid), (long) -fluid.amount, Long::sum);
+            }
+        }
+
+        @Override
+        public void warn(String message) {
+            GTUtility.sendChatToPlayer(player, String.format("§cWarning at block %d, %d, %d: %s§r", x, y, z, message));
+        }
+
+        @Override
+        public void error(String message) {
+            GTUtility.sendChatToPlayer(player, String.format("§cError at block %d, %d, %d: %s§r", x, y, z, message));
+        }
+    }
+
+    public static class RequiredItemAnalysis {
+        public HashMap<ItemId, Long> requiredItems;
+        public HashMap<ItemId, Long> storedItems;
+        public HashMap<FluidId, Long> storedFluids;
+    }
+
+    public static RequiredItemAnalysis getRequiredItemsForBuild(EntityPlayer player, List<PendingBlock> blocks) {
+        BlockItemCheckContext context = new BlockItemCheckContext();
+        context.player = player;
+        context.world = player.getEntityWorld();
+
+        for (PendingBlock block : blocks) {
+            if (block.isInWorld(context.world)) {
+                boolean isNew = true;
+
+                if (!context.world.isAirBlock(block.x, block.y, block.z)) {
+                    PendingBlock existing = PendingBlock.fromBlock(context.world, block.x, block.y, block.z);
+
+                    if (PendingBlock.isSameBlock(existing, block)) {
+                        isNew = false;
+                    } else {
+                        if (!block.isFree()) {
+                            context.givePlayerItems(existing.toStack());
+                        }
+                    }
+                }
+
+                if (!block.isFree()) {
+                    context.tryConsumeItems(block.toStack());
+                }
+                
+                context.x = block.x;
+                context.y = block.y;
+                context.z = block.z;
+
+                if (block.tileData != null) {
+                    if (isNew) {
+                        block.tileData.getRequiredItemsForNewBlock(context);
+                    } else {
+                        block.tileData.getRequiredItemsForExistingBlock(context);
+                    }
+                }
+            }
+        }
+
+        RequiredItemAnalysis analysis = new RequiredItemAnalysis();
+        analysis.requiredItems = context.requiredItems;
+        analysis.storedItems = context.storedItems;
+        analysis.storedFluids = context.storedFluids;
+
+        return analysis;
     }
 }

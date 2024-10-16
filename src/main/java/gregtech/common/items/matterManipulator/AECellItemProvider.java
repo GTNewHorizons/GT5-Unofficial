@@ -33,8 +33,9 @@ public class AECellItemProvider implements IItemProvider {
 
         cell.mCell = new PortableItemStack(stack);
         IInventory upgrades = item.getUpgradesInventory(stack);
-        cell.mUpgrades = MMUtils.fromInventory(upgrades);
-        cell.mConfig = MMUtils.fromInventoryNoMerge(item.getConfigInventory(stack));
+        cell.mUpgrades = upgrades == null ? null : MMUtils.fromInventory(upgrades);
+        IInventory config = item.getConfigInventory(stack);
+        cell.mConfig = config == null ? null : MMUtils.fromInventoryNoMerge(config);
         cell.mFuzzyMode = switch (item.getFuzzyMode(stack)) {
             case IGNORE_ALL -> 0;
             case PERCENT_25 -> 1;
@@ -47,7 +48,7 @@ public class AECellItemProvider implements IItemProvider {
             .definitions()
             .materials()
             .cardOreFilter();
-        boolean hasOredictCard = GTUtility.streamInventory(upgrades)
+        boolean hasOredictCard = upgrades == null ? false : GTUtility.streamInventory(upgrades)
             .anyMatch(oredictCard::isSameAs);
         if (hasOredictCard) {
             cell.mOreDict = item.getOreFilter(stack);
@@ -57,7 +58,7 @@ public class AECellItemProvider implements IItemProvider {
     }
 
     @Override
-    public ItemStack getStack(IPseudoInventory inv) {
+    public ItemStack getStack(IPseudoInventory inv, boolean consume) {
         ItemStack cell = mCell.toStack();
 
         if (!(cell.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) || !cellWorkbenchItem.isEditable(cell)) {
@@ -67,29 +68,33 @@ public class AECellItemProvider implements IItemProvider {
         List<ItemStack> items = new ArrayList<>();
         items.add(cell);
         items.addAll(
-            Arrays.asList(mUpgrades)
+            Arrays.asList(mUpgrades == null ? new PortableItemStack[0] : mUpgrades)
                 .stream()
                 .map(PortableItemStack::toStack)
                 .collect(Collectors.toList()));
 
-        if (!inv.tryConsumeItems(items.toArray(new ItemStack[0]))) {
+        if (consume && !inv.tryConsumeItems(items.toArray(new ItemStack[0]))) {
             return null;
         }
 
         UpgradeInventory upgrades = (UpgradeInventory) cellWorkbenchItem.getUpgradesInventory(cell);
-        MMUtils.installUpgrades(inv, upgrades, mUpgrades, false);
+        if (upgrades != null) {
+            MMUtils.installUpgrades(inv, upgrades, mUpgrades, consume, false);
+        }
 
         IInventory config = cellWorkbenchItem.getConfigInventory(cell);
 
-        MMUtils.clearInventory(config);
-
-        for (int i = 0; i < mConfig.length; i++) {
-            if (mConfig[i] != null) {
-                config.setInventorySlotContents(i, mConfig[i].toStack());
+        if (config != null) {
+            MMUtils.clearInventory(config);
+    
+            for (int i = 0; i < mConfig.length; i++) {
+                if (mConfig[i] != null) {
+                    config.setInventorySlotContents(i, mConfig[i].toStack());
+                }
             }
+    
+            config.markDirty();
         }
-
-        config.markDirty();
 
         cellWorkbenchItem.setFuzzyMode(cell, switch (mFuzzyMode) {
             case 0 -> FuzzyMode.IGNORE_ALL;
