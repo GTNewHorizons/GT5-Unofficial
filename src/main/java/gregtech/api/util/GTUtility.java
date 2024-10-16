@@ -4516,6 +4516,22 @@ public class GTUtility {
         return MathHelper.clamp_int(val, lo, hi);
     }
 
+    public static long min(long first, long... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            long l = rest[i];
+            if (l < first) first = l;
+        }
+        return first;
+    }
+
+    public static long max(long first, long... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            long l = rest[i];
+            if (l > first) first = l;
+        }
+        return first;
+    }
+
     public static int ceilDiv(int lhs, int rhs) {
         return (lhs + rhs - 1) / rhs;
     }
