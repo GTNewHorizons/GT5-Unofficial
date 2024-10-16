@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -157,6 +158,7 @@ public class MTESmeltingModule extends MTEBaseModule {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
             furnaceMode = !furnaceMode;
+            widget.notifyTooltipChange();
         })
             .setPlayClickSound(false)
             .setBackground(() -> {
@@ -170,7 +172,10 @@ public class MTESmeltingModule extends MTEBaseModule {
                 return ret.toArray(new IDrawable[0]);
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isFurnaceModeOn, this::setFurnaceMode), builder)
-            .addTooltip(translateToLocal("fog.button.furnacemode.tooltip"))
+            .dynamicTooltip(
+                () -> Collections.singletonList(
+                    translateToLocal(
+                        furnaceMode ? "fog.button.furnacemode.tooltip.02" : "fog.button.furnacemode.tooltip.01")))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 91)
             .setSize(16, 16);

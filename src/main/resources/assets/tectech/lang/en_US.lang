@@ -1025,7 +1025,8 @@ fog.debug.unlockall.text=Unlock all upgrades
 fog.debug.gravitonshardsetter.tooltip=Set the amount of availabe graviton shards
 
 fog.button.fuelconfig.tooltip=Fuel Configuration Menu
-fog.button.furnacemode.tooltip=Toggle Furnace Mode
+fog.button.furnacemode.tooltip.01=Blast Mode
+fog.button.furnacemode.tooltip.02=Furnace Mode
 fog.button.magmattermode.tooltip.01=Quark-Gluon Plasma Mode
 fog.button.magmattermode.tooltip.02=Magmatter Mode
 fog.button.magmattermode.tooltip.03=Magmatter Mode locked, missing upgrade
