@@ -233,7 +233,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for basic smelting operations at various temperatures.")
-            .addLineSeparator(EnumChatFormatting.AQUA, 74)
+            .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("As the first of the Godforge modules, this module performs the most basic")
             .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
             .addInfo("The desired method of processing can be selected in the gui.")
