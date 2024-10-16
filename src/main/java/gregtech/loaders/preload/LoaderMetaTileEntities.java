@@ -1051,6 +1051,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasAdvanced;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -1629,6 +1630,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
+                .getStackForm(1));
+
+        ItemList.MatterManipulatorUplink.set(
+            new MTEMMUplink(MATTER_MANIPULATOR_UPLINK.ID, "multimachine.mmuplink", "Matter Manipulator ME Uplink")
                 .getStackForm(1));
     }
 
