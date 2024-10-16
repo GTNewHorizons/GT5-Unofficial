@@ -3,7 +3,7 @@ package gregtech.common.items.matterManipulator;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
+import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 
@@ -11,6 +11,7 @@ public class PortableItemStack implements IItemProvider {
 
     public UniqueIdentifier item;
     public Integer metadata, amount;
+    public NBTTagCompound nbt;
 
     public transient ItemStack itemStack;
 
@@ -20,6 +21,13 @@ public class PortableItemStack implements IItemProvider {
         this.item = GameRegistry.findUniqueIdentifierFor(item);
         this.metadata = metadata == 0 ? null : metadata;
         this.amount = null;
+    }
+
+    public PortableItemStack(Item item, int metadata, NBTTagCompound nbt) {
+        this.item = GameRegistry.findUniqueIdentifierFor(item);
+        this.metadata = metadata == 0 ? null : metadata;
+        this.amount = null;
+        this.nbt = nbt;
     }
 
     public PortableItemStack(ItemStack stack) {
@@ -35,26 +43,40 @@ public class PortableItemStack implements IItemProvider {
         return new PortableItemStack(stack);
     }
 
+    public static PortableItemStack withNBT(ItemStack stack) {
+        PortableItemStack portable = new PortableItemStack(stack);
+        portable.nbt = stack.getTagCompound() == null ? null : (NBTTagCompound) stack.getTagCompound().copy();
+        return portable;
+    }
+
     public ItemStack toStack() {
         if (itemStack == null) {
             itemStack = new ItemStack(
                 GameRegistry.findItem(item.modId, item.name),
                 amount == null ? 1 : amount,
                 metadata == null ? 0 : metadata);
+            
+            if (nbt != null) {
+                itemStack.setTagCompound((NBTTagCompound) nbt.copy());
+            }
         }
 
         return itemStack.copy();
     }
 
     @Override
-    public ItemStack getStack(IPseudoInventory inv) {
+    public ItemStack getStack(IPseudoInventory inv, boolean consume) {
         ItemStack stack = toStack();
+
+        if (!consume) {
+            return stack;
+        }
 
         if (!inv.tryConsumeItems(stack)) {
             return null;
-        } else {
-            return stack;
         }
+
+        return stack;
     }
 
     @Override
@@ -69,6 +91,7 @@ public class PortableItemStack implements IItemProvider {
         result = prime * result + ((item == null) ? 0 : item.hashCode());
         result = prime * result + ((metadata == null) ? 0 : metadata.hashCode());
         result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+        result = prime * result + ((nbt == null) ? 0 : nbt.hashCode());
         result = prime * result + ((itemStack == null) ? 0 : itemStack.hashCode());
         return result;
     }
@@ -88,6 +111,9 @@ public class PortableItemStack implements IItemProvider {
         if (amount == null) {
             if (other.amount != null) return false;
         } else if (!amount.equals(other.amount)) return false;
+        if (nbt == null) {
+            if (other.nbt != null) return false;
+        } else if (!nbt.equals(other.nbt)) return false;
         if (itemStack == null) {
             if (other.itemStack != null) return false;
         } else if (!itemStack.equals(other.itemStack)) return false;

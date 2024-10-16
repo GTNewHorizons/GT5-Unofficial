@@ -212,7 +212,7 @@ public class MMUtils {
     }
 
     public static boolean installUpgrades(IPseudoInventory src, UpgradeInventory dest, PortableItemStack[] pupgrades,
-        boolean consume) {
+        boolean consume, boolean simulate) {
         List<ItemStack> stacks = Arrays.stream(pupgrades)
             .map(PortableItemStack::toStack)
             .collect(Collectors.toList());
@@ -230,13 +230,15 @@ public class MMUtils {
             .toArray(new ItemStack[0]);
 
         if (!consume || src.tryConsumeItems(upgrades)) {
-            emptyInventory(src, dest);
-
-            for (int i = 0; i < upgrades.length; i++) {
-                dest.setInventorySlotContents(i, upgrades[i]);
+            if (!simulate) {
+                emptyInventory(src, dest);
+    
+                for (int i = 0; i < upgrades.length; i++) {
+                    dest.setInventorySlotContents(i, upgrades[i]);
+                }
+    
+                dest.markDirty();
             }
-
-            dest.markDirty();
 
             return true;
         } else {

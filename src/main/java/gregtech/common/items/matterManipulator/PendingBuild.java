@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
@@ -59,6 +57,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.FluidId;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
+import gregtech.common.items.matterManipulator.ItemMatterManipulator.ManipulatorTier;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import ic2.api.item.ElectricItem;
 
@@ -66,45 +65,18 @@ public class PendingBuild implements IPseudoInventory {
 
     public LinkedList<PendingBlock> pendingBlocks;
     public EntityPlayer placingPlayer;
-    public NBTState manipulator;
-    public Future<LinkedList<PendingBlock>> assembleTask;
+    public NBTState state;
+    public ManipulatorTier tier;
 
     public final HashMap<ItemId, Long> pendingItems = new HashMap<>();
     public final HashMap<FluidId, Long> pendingFluids = new HashMap<>();
 
     private boolean printedProtectedBlockWarning = false;
 
-    private static final int BLOCKS_PER_PLACE = 256;
-    private static final int MAX_PLACE_DISTANCE = 512 * 512;
     private static final double EU_PER_BLOCK = 128.0, TE_PENALTY = 16.0, EU_DISTANCE_EXP = 1.25;
 
     public void tryPlaceBlocks(ItemStack stack, EntityPlayer player) {
-        if (pendingBlocks == null) {
-            if (assembleTask != null && assembleTask.isDone()) {
-                try {
-                    pendingBlocks = assembleTask.get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    player.addChatMessage(
-                        new ChatComponentText(
-                            EnumChatFormatting.RED + "An error occurred while determining which blocks to place: "
-                                + e.getClass()
-                                    .getName()
-                                + ": "
-                                + e.getMessage()));
-                    player.setItemInUse(null, 0);
-                    return;
-                }
-            } else {
-                player.addChatMessage(
-                    new ChatComponentText(
-                        EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY
-                            + "Determining which blocks to place..."));
-                return;
-            }
-        }
-
-        ArrayList<PendingBlock> toPlace = new ArrayList<>(BLOCKS_PER_PLACE);
+        ArrayList<PendingBlock> toPlace = new ArrayList<>(tier.mPlaceSpeed);
 
         Integer lastChunkX = null, lastChunkZ = null;
         int shuffleCount = 0;
@@ -113,21 +85,10 @@ public class PendingBuild implements IPseudoInventory {
 
         PendingBuildApplyContext applyContext = new PendingBuildApplyContext(stack);
 
-        while (toPlace.size() < BLOCKS_PER_PLACE && pendingBlocks.size() > 0) {
+        while (toPlace.size() < tier.mPlaceSpeed && pendingBlocks.size() > 0) {
             PendingBlock next = pendingBlocks.getFirst();
 
             int x = next.x, y = next.y, z = next.z;
-
-            if (placingPlayer.getDistanceSq(x, y, z) >= MAX_PLACE_DISTANCE) {
-                pendingBlocks.addLast(pendingBlocks.removeFirst());
-                shuffleCount++;
-
-                if (shuffleCount > pendingBlocks.size()) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
 
             int chunkX = x >> 4;
             int chunkZ = z >> 4;
@@ -176,7 +137,7 @@ public class PendingBuild implements IPseudoInventory {
 
             Block existingBlock = existing == null ? Blocks.air : existing.getBlock();
 
-            boolean canPlace = switch (manipulator.config.removeMode) {
+            boolean canPlace = switch (state.config.removeMode) {
                 case NONE -> existingBlock.isAir(world, x, y, z);
                 case REPLACEABLE -> existingBlock.isReplaceable(world, x, y, z);
                 case ALL -> true;
@@ -358,11 +319,11 @@ public class PendingBuild implements IPseudoInventory {
             return;
         }
 
-        if (manipulator.encKey != null && !manipulator.hasMEConnection()) {
-            manipulator.connectToMESystem();
+        if (state.encKey != null && !state.hasMEConnection()) {
+            state.connectToMESystem();
         }
 
-        boolean hasME = manipulator.hasMEConnection() && manipulator.canInteractWithAE(placingPlayer);
+        boolean hasME = state.hasMEConnection() && state.canInteractWithAE(placingPlayer);
 
         pendingItems.forEach((item, amount) -> {
             if (hasME) {
@@ -370,11 +331,11 @@ public class PendingBuild implements IPseudoInventory {
                 Objects.requireNonNull(stack);
                 stack.setStackSize(amount);
 
-                IAEItemStack result = manipulator.storageGrid.getItemInventory()
+                IAEItemStack result = state.storageGrid.getItemInventory()
                     .injectItems(
                         stack,
                         Actionable.MODULATE,
-                        new PlayerSource(placingPlayer, manipulator.securityTerminal));
+                        new PlayerSource(placingPlayer, state.securityTerminal));
 
                 if (result != null) {
                     amount = result.getStackSize();
@@ -420,11 +381,11 @@ public class PendingBuild implements IPseudoInventory {
                 AEFluidStack stack = AEFluidStack.create(id.getFluidStack());
                 stack.setStackSize(amount);
 
-                IAEFluidStack result = manipulator.storageGrid.getFluidInventory()
+                IAEFluidStack result = state.storageGrid.getFluidInventory()
                     .injectItems(
                         stack,
                         Actionable.MODULATE,
-                        new PlayerSource(placingPlayer, manipulator.securityTerminal));
+                        new PlayerSource(placingPlayer, state.securityTerminal));
 
                 if (result != null) {
                     amount = result.getStackSize();
@@ -550,29 +511,29 @@ public class PendingBuild implements IPseudoInventory {
     }
 
     private void consumeItemsFromAE(ItemStackMap<Long> requestedItems, boolean simulate) {
-        if (manipulator.encKey == null) {
+        if (state.encKey == null) {
             return;
         }
 
-        if (!manipulator.hasMEConnection()) {
-            if (!manipulator.connectToMESystem()) {
+        if (!state.hasMEConnection()) {
+            if (!state.connectToMESystem()) {
                 return;
             }
         }
 
-        if (!manipulator.canInteractWithAE(placingPlayer)) {
+        if (!state.canInteractWithAE(placingPlayer)) {
             return;
         }
 
         requestedItems.replaceAll((item, amount) -> {
             if (amount == null || amount == 0) return 0l;
 
-            IAEItemStack result = manipulator.storageGrid.getItemInventory()
+            IAEItemStack result = state.storageGrid.getItemInventory()
                 .extractItems(
                     Objects.requireNonNull(AEItemStack.create(item))
                         .setStackSize(amount),
                     simulate ? Actionable.SIMULATE : Actionable.MODULATE,
-                    new PlayerSource(placingPlayer, manipulator.securityTerminal));
+                    new PlayerSource(placingPlayer, state.securityTerminal));
 
             return result == null ? amount : (amount - result.getStackSize());
         });

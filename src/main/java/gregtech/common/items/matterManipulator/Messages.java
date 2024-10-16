@@ -1,7 +1,9 @@
 package gregtech.common.items.matterManipulator;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -24,10 +27,12 @@ import gregtech.GTMod;
 import gregtech.api.net.GTPacket;
 import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.common.GTNetwork;
+import gregtech.common.items.matterManipulator.BlockAnalyzer.RequiredItemAnalysis;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingAction;
+import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
 import io.netty.buffer.ByteBuf;
@@ -103,6 +108,32 @@ enum Messages {
     MarkPaste(server(simple((player, stack, manipulator, state) -> {
         state.config.action = PendingAction.MARK_PASTE;
         state.config.coordC = null;
+    }))),
+    GetRequiredItems(server(simple((player, stack, manipulator, state) -> {
+        if (state.config.placeMode != PlaceMode.COPYING) {
+            return;
+        }
+
+        if (state.config.coordA == null || state.config.coordB == null || state.config.coordC == null) {
+            return;
+        }
+
+        List<PendingBlock> blocks = state.getPendingBlocks();
+        RequiredItemAnalysis itemAnalysis = BlockAnalyzer.getRequiredItemsForBuild(player, blocks);
+
+        if (!itemAnalysis.requiredItems.isEmpty()) {
+            var requiredItems = itemAnalysis.requiredItems.entrySet()
+                .stream()
+                .map(e -> String.format("%s: %d", e.getKey().getItemStack().getDisplayName(), e.getValue()))
+                .sorted()
+                .collect(Collectors.toList());
+            
+            player.addChatMessage(new ChatComponentText("Required items:"));
+            
+            for(String item : requiredItems) {
+                player.addChatMessage(new ChatComponentText(item));
+            }
+        }
     }))),
 
     ;
