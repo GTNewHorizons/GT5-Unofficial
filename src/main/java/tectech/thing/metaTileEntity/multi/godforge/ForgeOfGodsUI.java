@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;

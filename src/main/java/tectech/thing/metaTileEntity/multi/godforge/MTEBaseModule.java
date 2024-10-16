@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge_modules;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -56,7 +56,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
-import tectech.thing.metaTileEntity.multi.ForgeOfGodsUI;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class MTEBaseModule extends TTMultiblockBase {

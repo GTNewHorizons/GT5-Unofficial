@@ -1,6 +1,5 @@
-package tectech.thing.metaTileEntity.multi.godforge_modules;
+package tectech.thing.metaTileEntity.multi.godforge;
 
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
@@ -8,77 +7,43 @@ import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
-
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import tectech.TecTech;
-import tectech.thing.gui.TecTechUITextures;
+import tectech.recipe.TecTechRecipeMaps;
 
-public class MTESmeltingModule extends MTEBaseModule {
+public class MTEMoltenModule extends MTEBaseModule {
 
     private long EUt = 0;
-    private long currentParallel = 0;
-    private boolean furnaceMode = false;
+    private int currentParallel = 0;
 
-    public MTESmeltingModule(int aID, String aName, String aNameRegional) {
+    public MTEMoltenModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTESmeltingModule(String aName) {
+    public MTEMoltenModule(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESmeltingModule(mName);
-    }
-
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return furnaceMode ? RecipeMaps.furnaceRecipes : RecipeMaps.blastFurnaceRecipes;
-    }
-
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.blastFurnaceRecipes, RecipeMaps.furnaceRecipes);
-    }
-
-    @Override
-    public int getRecipeCatalystPriority() {
-        return -10;
+        return new MTEMoltenModule(mName);
     }
 
     long wirelessEUt = 0;
@@ -90,7 +55,6 @@ public class MTESmeltingModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-
                 if (recipe.mSpecialValue > getHeat()) {
                     return CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
                 }
@@ -106,24 +70,6 @@ public class MTESmeltingModule extends MTEBaseModule {
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            @NotNull
-            @Override
-            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
-                }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
-                if (!furnaceMode) {
-                    addToRecipeTally(calculatedParallels);
-                }
-                currentParallel = calculatedParallels;
-                EUt = calculatedEut;
-                setCalculatedEut(0);
-                return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
-
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
@@ -134,6 +80,23 @@ public class MTESmeltingModule extends MTEBaseModule {
                     .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
                     .setHeatDiscountMultiplier(getHeatEnergyDiscount())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
+
+            }
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
+                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
+                    return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
+                }
+                addToPowerTally(
+                    BigInteger.valueOf(calculatedEut)
+                        .multiply(BigInteger.valueOf(duration)));
+                addToRecipeTally(calculatedParallels);
+                currentParallel = calculatedParallels;
+                EUt = calculatedEut;
+                setCalculatedEut(0);
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         };
     }
@@ -149,57 +112,8 @@ public class MTESmeltingModule extends MTEBaseModule {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(createFurnaceModeButton(builder));
-    }
-
-    protected ButtonWidget createFurnaceModeButton(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            furnaceMode = !furnaceMode;
-            widget.notifyTooltipChange();
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
-                if (isFurnaceModeOn()) {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE);
-                } else {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE_OFF);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isFurnaceModeOn, this::setFurnaceMode), builder)
-            .dynamicTooltip(
-                () -> Collections.singletonList(
-                    translateToLocal(
-                        furnaceMode ? "fog.button.furnacemode.tooltip.02" : "fog.button.furnacemode.tooltip.01")))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 91)
-            .setSize(16, 16);
-        return (ButtonWidget) button;
-    }
-
-    private boolean isFurnaceModeOn() {
-        return furnaceMode;
-    }
-
-    private void setFurnaceMode(boolean enabled) {
-        furnaceMode = enabled;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound NBT) {
-        NBT.setBoolean("furnaceMode", furnaceMode);
-        super.saveNBTData(NBT);
-    }
-
-    @Override
-    public void loadNBTData(final NBTTagCompound NBT) {
-        furnaceMode = NBT.getBoolean("furnaceMode");
-        super.loadNBTData(NBT);
+    public RecipeMap<?> getRecipeMap() {
+        return TecTechRecipeMaps.godforgeMoltenRecipes;
     }
 
     @Override
@@ -235,15 +149,15 @@ public class MTESmeltingModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace, Furnace")
+        tt.addMachineType("Blast Smelter")
             .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for basic smelting operations at various temperatures.")
+            .addInfo("Used for high temperature material liquefaction.")
             .addLineSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("As the first of the Godforge modules, this module performs the most basic")
-            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
-            .addInfo("The desired method of processing can be selected in the gui.")
-            .addInfo("This module is specialized towards speed and high heat levels.")
+            .addInfo("The second module of the Godforge, this module melts materials directly into")
+            .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
+            .addInfo("as a regular solid instead.")
+            .addInfo("This module is specialized towards parallel processing.")
             .beginStructureBlock(7, 7, 13, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
@@ -253,7 +167,8 @@ public class MTESmeltingModule extends MTEBaseModule {
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY
                     + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Hypogen Coil Block")
+            .addStructureInfo(
+                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")

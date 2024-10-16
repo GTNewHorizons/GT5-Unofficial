@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Mods.Avaritia;
@@ -113,11 +113,6 @@ import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.TileEntityForgeOfGods;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEBaseModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEExoticModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEMoltenModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEPlasmaModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTESmeltingModule;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 

@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge_modules;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -75,7 +75,6 @@ import tectech.TecTech;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 import tectech.thing.gui.TecTechUITextures;
-import tectech.thing.metaTileEntity.multi.ForgeOfGodsUI;
 import tectech.util.GodforgeMath;
 
 public class MTEExoticModule extends MTEBaseModule {

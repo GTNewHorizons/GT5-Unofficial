@@ -1,8 +1,6 @@
-package tectech.thing.metaTileEntity.multi.godforge_modules;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
-import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
@@ -10,63 +8,77 @@ import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
-import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import tectech.loader.ConfigHandler;
-import tectech.recipe.TecTechRecipeMaps;
+import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 
-public class MTEPlasmaModule extends MTEBaseModule {
+public class MTESmeltingModule extends MTEBaseModule {
 
     private long EUt = 0;
-    private int currentParallel = 0;
-    private int inputMaxParallel = 0;
+    private long currentParallel = 0;
+    private boolean furnaceMode = false;
 
-    private static final int DEBUG_WINDOW_ID = 11;
-
-    public MTEPlasmaModule(int aID, String aName, String aNameRegional) {
+    public MTESmeltingModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEPlasmaModule(String aName) {
+    public MTESmeltingModule(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEPlasmaModule(mName);
+        return new MTESmeltingModule(mName);
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return furnaceMode ? RecipeMaps.furnaceRecipes : RecipeMaps.blastFurnaceRecipes;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.blastFurnaceRecipes, RecipeMaps.furnaceRecipes);
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -10;
     }
 
     long wirelessEUt = 0;
@@ -78,13 +90,18 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+
+                if (recipe.mSpecialValue > getHeat()) {
+                    return CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+                }
+
+                if (recipe.mEUt > getProcessingVoltage()) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+
                 wirelessEUt = (long) recipe.mEUt * getMaxParallel();
                 if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
-                }
-                if (recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0) > getPlasmaTier()
-                    || (recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) && !isMultiStepPlasmaCapable)) {
-                    return SimpleCheckRecipeResult.ofFailure("missing_upgrades");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -92,14 +109,15 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * maxParallel;
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                    return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
                 }
                 addToPowerTally(
                     BigInteger.valueOf(calculatedEut)
                         .multiply(BigInteger.valueOf(duration)));
-                addToRecipeTally(calculatedParallels);
+                if (!furnaceMode) {
+                    addToRecipeTally(calculatedParallels);
+                }
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
                 setCalculatedEut(0);
@@ -110,6 +128,11 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
+                    .setRecipeHeat(recipe.mSpecialValue)
+                    .setHeatOC(true)
+                    .setHeatDiscount(true)
+                    .setMachineHeat(Math.max(recipe.mSpecialValue, getHeatForOC()))
+                    .setHeatDiscountMultiplier(getHeatEnergyDiscount())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
         };
@@ -128,100 +151,55 @@ public class MTEPlasmaModule extends MTEBaseModule {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        buildContext.addSyncedWindow(DEBUG_WINDOW_ID, this::createDebugWindow);
-        if (ConfigHandler.debug.DEBUG_MODE) {
-            builder.widget(createDebugWindowButton());
-        }
+        builder.widget(createFurnaceModeButton(builder));
     }
 
-    protected ButtonWidget createDebugWindowButton() {
-        Widget button = new ButtonWidget().setOnClick(
-            (data, widget) -> {
-                if (!widget.isClient()) widget.getContext()
-                    .openSyncedWindow(DEBUG_WINDOW_ID);
-            })
+    protected ButtonWidget createFurnaceModeButton(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            furnaceMode = !furnaceMode;
+            widget.notifyTooltipChange();
+        })
             .setPlayClickSound(false)
-            .setBackground(TecTechUITextures.BUTTON_CELESTIAL_32x32, TecTechUITextures.OVERLAY_BUTTON_LOAF_MODE)
-            .addTooltip("Debug Window")
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
+                if (isFurnaceModeOn()) {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE);
+                } else {
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isFurnaceModeOn, this::setFurnaceMode), builder)
+            .dynamicTooltip(
+                () -> Collections.singletonList(
+                    translateToLocal(
+                        furnaceMode ? "fog.button.furnacemode.tooltip.02" : "fog.button.furnacemode.tooltip.01")))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 91)
             .setSize(16, 16);
         return (ButtonWidget) button;
     }
 
-    protected ModularWindow createDebugWindow(final EntityPlayer player) {
-        final int WIDTH = 78;
-        final int HEIGHT = 60;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)));
+    private boolean isFurnaceModeOn() {
+        return furnaceMode;
+    }
 
-        // Debug enable/disable multi-step
-        builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> isMultiStepPlasmaCapable = !isMultiStepPlasmaCapable)
-                .setPlayClickSoundResource(
-                    () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
-                        : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
-                .setBackground(() -> {
-                    if (isMultiStepPlasmaCapable) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
-                    } else {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
-                    }
-                })
-                .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
-                    if (val) enableWorking();
-                    else disableWorking();
-                }), builder)
-                .addTooltip("multi-step")
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(4, 40)
-                .setSize(16, 16));
-
-        // Debug set plasma tier
-        builder.widget(
-            new TextFieldWidget().setSetterInt(this::setPlasmaTier)
-                .setGetterInt(this::getPlasmaTier)
-                .setNumbers(0, 2)
-                .setTextAlignment(Alignment.Center)
-                .setTextColor(Color.WHITE.normal)
-                .setPos(3, 18)
-                .addTooltip("fusion tier")
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setSize(16, 16)
-                .setPos(4, 20)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
-
-        // Debug set max parallel
-        builder.widget(
-            new TextFieldWidget().setSetterInt(val -> inputMaxParallel = val)
-                .setGetterInt(() -> inputMaxParallel)
-                .setNumbers(0, Integer.MAX_VALUE)
-                .setTextAlignment(Alignment.Center)
-                .setTextColor(Color.WHITE.normal)
-                .setPos(3, 18)
-                .addTooltip("parallel")
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setSize(70, 16)
-                .setPos(4, 4)
-                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
-
-        return builder.build();
+    private void setFurnaceMode(boolean enabled) {
+        furnaceMode = enabled;
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        return TecTechRecipeMaps.godforgePlasmaRecipes;
+    public void saveNBTData(NBTTagCompound NBT) {
+        NBT.setBoolean("furnaceMode", furnaceMode);
+        super.saveNBTData(NBT);
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound NBT) {
+        furnaceMode = NBT.getBoolean("furnaceMode");
+        super.loadNBTData(NBT);
     }
 
     @Override
@@ -246,6 +224,8 @@ public class MTEPlasmaModule extends MTEBaseModule {
             YELLOW + "Current Parallel: "
                 + RESET
                 + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0"));
+        str.add(YELLOW + "Heat Capacity: " + RESET + formatNumbers(getHeat()));
+        str.add(YELLOW + "Effective Heat Capacity: " + RESET + formatNumbers(getHeatForOC()));
         str.add(YELLOW + "Recipe time multiplier: " + RESET + formatNumbers(getSpeedBonus()));
         str.add(YELLOW + "Energy multiplier: " + RESET + formatNumbers(getEnergyDiscount()));
         str.add(YELLOW + "Recipe time divisor per non-perfect OC: " + RESET + formatNumbers(getOverclockTimeFactor()));
@@ -255,15 +235,15 @@ public class MTEPlasmaModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Fabricator")
+        tt.addMachineType("Blast Furnace, Furnace")
             .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for extreme temperature matter ionization.")
+            .addInfo("Used for basic smelting operations at various temperatures.")
             .addLineSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
-            .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
-            .addInfo("right away, some of them require certain upgrades to be unlocked.")
-            .addInfo("This module is specialized towards energy and overclock efficiency.")
+            .addInfo("As the first of the Godforge modules, this module performs the most basic")
+            .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
+            .addInfo("The desired method of processing can be selected in the gui.")
+            .addInfo("This module is specialized towards speed and high heat levels.")
             .beginStructureBlock(7, 7, 13, false)
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
@@ -273,8 +253,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY
                     + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
+            .addStructureInfo(EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Hypogen Coil Block")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
