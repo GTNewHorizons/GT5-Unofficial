@@ -37,7 +37,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -78,7 +77,6 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addInfo("Requires circuit 1-16 in your Data Orb Repository")
             .addInfo("depending on what Data Orb you want to prioritize")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(9, 6, 9, true)
             .addController("Top Center")
             .addCasingInfoMin("Elemental Confinement Shell", 138, false)
@@ -95,7 +93,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addEnergyHatch("Any 1 dot hint", 1)
             .addMaintenanceHatch("Any 1 dot hint", 1)
             .addMufflerHatch("Any 1 dot hint", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

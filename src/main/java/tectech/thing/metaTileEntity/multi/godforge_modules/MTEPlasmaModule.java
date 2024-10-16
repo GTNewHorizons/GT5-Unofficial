@@ -45,7 +45,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.util.CommonValues;
 
 public class MTEPlasmaModule extends MTEBaseModule {
 
@@ -222,17 +221,15 @@ public class MTEPlasmaModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Fabricator")
-            .addInfo("Controller block for the Heliothermal Plasma Fabricator, a module of the Godforge.")
+            .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for extreme temperature matter ionization.")
-            .addInfo(TOOLTIP_BAR)
+            .addLineSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
             .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
             .addInfo("right away, some of them require certain upgrades to be unlocked.")
             .addInfo("This module is specialized towards energy and overclock efficiency.")
-            .addInfo(TOOLTIP_BAR)
             .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY
@@ -246,7 +243,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(CommonValues.GODFORGE_MARK);
+            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
         return tt;
     }
 

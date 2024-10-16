@@ -3524,18 +3524,6 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_HV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
                 ItemList.Electric_Pump_HV });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Pump_EV.get(1L),
-            bitsd,
-            new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_EV, 'B',
-                OrePrefixes.pipeLarge.get(Materials.Titanium), 'C', OrePrefixes.circuit.get(Materials.EV), 'P',
-                ItemList.Electric_Pump_EV });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Pump_IV.get(1L),
-            bitsd,
-            new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_IV, 'B',
-                OrePrefixes.pipeLarge.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.IV), 'P',
-                ItemList.Electric_Pump_IV });
 
         GTModHandler.addCraftingRecipe(
             ItemList.MobRep_LV.get(1L),

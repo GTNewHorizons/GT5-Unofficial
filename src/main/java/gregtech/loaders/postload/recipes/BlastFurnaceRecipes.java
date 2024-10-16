@@ -139,7 +139,8 @@ public class BlastFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.BandedIron.getDust(2), Materials.Carbon.getDust(1))
-            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDustTiny(2))
+            .itemOutputs(Materials.Iron.getIngots(outputIngotAmount), Materials.Ash.getDust(1))
+            .outputChances(10000, 2222)
             .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
