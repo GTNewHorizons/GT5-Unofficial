@@ -265,7 +265,6 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Flocculation Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
@@ -320,7 +319,6 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 4, 7, false)
             .addCasingInfoRangeColored(
                 "Slick Sterile Flocculation Casing",
@@ -367,8 +365,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addOutputHatch(
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "2",
                 1)
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

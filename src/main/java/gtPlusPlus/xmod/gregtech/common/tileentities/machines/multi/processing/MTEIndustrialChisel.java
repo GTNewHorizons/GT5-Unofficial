@@ -39,7 +39,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -84,7 +83,6 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             .addInfo("If no target is provided for common buses, the result of the first chisel is used")
             .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoMin("Sturdy Printer Casing", 6, false)
@@ -93,7 +91,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
             .addMufflerHatch("Any casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

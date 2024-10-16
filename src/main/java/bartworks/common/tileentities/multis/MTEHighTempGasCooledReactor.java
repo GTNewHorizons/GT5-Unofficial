@@ -10,7 +10,6 @@
 package bartworks.common.tileentities.multis;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.htgrFakeRecipes;
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_VIA_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -27,7 +26,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -143,8 +141,6 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Breeder Reactor")
-            .addInfo("Controller block for the High Temperature Gas-cooled Reactor (HTGR)")
-            .addInfo(AuthorKuba)
             .addInfo("You can clear internal buffer by changing the mode with a screwdriver")
             .addInfo("Needs a constant supply of coolant while running")
             .addInfo("Needs at least 72k Fuel pebbles to start operation (can hold up to 720k pebbles)")
@@ -155,7 +151,6 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
                 "Reactor will take 4 000L/s of coolant multiplied by efficiency and by fuel coolant value (check tooltips)")
             .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
             .addInfo("One Operation takes 1 hour")
-            .addSeparator()
             .beginStructureBlock(11, 12, 11, true)
             .addController("Front bottom center")
             .addCasingInfoMin("Europium Reinforced Radiation Proof Casings", 500, false)
@@ -166,7 +161,7 @@ public class MTEHighTempGasCooledReactor extends MTEEnhancedMultiBlockBase<MTEHi
             .addOutputHatch("Any bottom layer casing", 1)
             .addEnergyHatch("Any bottom layer casing", 1)
             .addMaintenanceHatch("Any bottom layer casing", 1)
-            .toolTipFinisher(MULTIBLOCK_ADDED_VIA_BARTWORKS.apply(EnumChatFormatting.GOLD + "kuba6000"));
+            .toolTipFinisher(AuthorKuba);
         return tt;
     }
 

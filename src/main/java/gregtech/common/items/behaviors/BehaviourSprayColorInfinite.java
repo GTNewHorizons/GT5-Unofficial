@@ -38,7 +38,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     private static final List<ItemStack> COLOR_SELECTIONS;
     public static final String COLOR_NBT_TAG = "current_color";
     public static final String LOCK_NBT_TAG = "is_locked";
-    public static final String SEPARATOR = "-----------------------------------------";
 
     private byte mCurrentColor;
 
@@ -109,11 +108,9 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         final ItemStack itemStack) {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
-        aList.add(SEPARATOR);
+        aList.add(" ");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.more_info"));
-        aList.add(SEPARATOR);
         aList.add(AuthorQuerns);
-
         return aList;
     }
 
@@ -122,12 +119,12 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         final ItemStack aStack) {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
-        aList.add(SEPARATOR);
+        aList.add(" ");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.switch"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.pick"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
-        aList.add(SEPARATOR);
+        aList.add(" ");
         aList.add(AuthorQuerns);
 
         return Optional.of(aList);

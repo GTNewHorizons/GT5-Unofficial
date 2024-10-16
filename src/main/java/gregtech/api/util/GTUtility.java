@@ -3306,7 +3306,10 @@ public class GTUtility {
     private static void addBaseInfo(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, ArrayList<String> tList,
         TileEntity tTileEntity, Block tBlock) {
         tList.add(
-            "----- X: " + EnumChatFormatting.AQUA
+            EnumChatFormatting.STRIKETHROUGH + "-----"
+                + EnumChatFormatting.RESET
+                + " X: "
+                + EnumChatFormatting.AQUA
                 + formatNumbers(aX)
                 + EnumChatFormatting.RESET
                 + " Y: "
@@ -3321,7 +3324,9 @@ public class GTUtility {
                 + EnumChatFormatting.AQUA
                 + aWorld.provider.dimensionId
                 + EnumChatFormatting.RESET
-                + " -----");
+                + " "
+                + EnumChatFormatting.STRIKETHROUGH
+                + "-----");
         try {
             tList.add(
                 GTUtility.trans("162", "Name: ") + EnumChatFormatting.BLUE
@@ -4509,6 +4514,22 @@ public class GTUtility {
 
     public static int clamp(int val, int lo, int hi) {
         return MathHelper.clamp_int(val, lo, hi);
+    }
+
+    public static long min(long first, long... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            long l = rest[i];
+            if (l < first) first = l;
+        }
+        return first;
+    }
+
+    public static long max(long first, long... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            long l = rest[i];
+            if (l > first) first = l;
+        }
+        return first;
     }
 
     public static int ceilDiv(int lhs, int rhs) {

@@ -281,7 +281,6 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Extreme Temperature Fluctuation Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
@@ -359,7 +358,6 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "supercritical while evaporating any remaining contaminants, ready for filtration.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(23, 15, 15, false)
             .addCasingInfoExactlyColored(
                 "Reinforced Sterile Water Plant Casing",
@@ -397,8 +395,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
             .addOtherStructurePart("Input Hatch (Coolant)", EnumChatFormatting.GOLD + "1", 2)
             .addOtherStructurePart("Input Hatch (Plasma)", EnumChatFormatting.GOLD + "1", 3)
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

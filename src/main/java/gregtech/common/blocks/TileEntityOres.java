@@ -452,6 +452,14 @@ public class TileEntityOres extends TileEntity implements IAllSidedTexturedTileE
         return rList;
     }
 
+    public ArrayList<ItemStack> getSilkTouchDrops(Block aDroppedOre) {
+        final boolean tShouldSilkTouch = TileEntityOres.shouldSilkTouch;
+        TileEntityOres.shouldSilkTouch = true;
+        final ArrayList<ItemStack> tDrops = getDrops(aDroppedOre, 0);
+        TileEntityOres.shouldSilkTouch = tShouldSilkTouch;
+        return tDrops;
+    }
+
     @Override
     public ITexture[] getTexture(Block aBlock) {
         if (mMetadataForCachedTexture == mMetaData && mCachedTexture != null) return mCachedTexture;

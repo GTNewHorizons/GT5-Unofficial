@@ -939,6 +939,13 @@ public class RecipeLoader {
             .metadata(COIL_HEAT, 3400)
             .addTo(blastFurnaceRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.Hafnium.get(OrePrefixes.ingotHot, 1))
+            .itemOutputs(WerkstoffMaterialPool.Hafnium.get(OrePrefixes.ingot, 1))
+            .duration(26 * SECONDS + 14 * TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(vacuumFreezerRecipes);
+
         // Zirconia-Hafnia
         // ??HfZr?? = HfO2 + ZrO2
         GTValues.RA.stdBuilder()
