@@ -347,6 +347,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY)
             .addSeparator()
             .addInfo("Antimatter base energy value: " + GTUtility.formatNumbers(ANTIMATTER_FUEL_VALUE) + " EU/L")
+            .addInfo("Limited by 9 223 372 036 854 775 807 per cycle")
             .addInfo("Energy production is exponentially increased depending on the matter used:")
             .addInfo("Molten Copper: 1.00")
             .addInfo("Molten SC UIV Base: 1.02")
