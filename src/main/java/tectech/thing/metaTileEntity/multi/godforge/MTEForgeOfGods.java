@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Mods.Avaritia;
@@ -32,19 +32,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -86,10 +87,12 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
+import blockrenderer6343.client.world.ClientFakePlayer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -113,11 +116,6 @@ import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.TileEntityForgeOfGods;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEBaseModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEExoticModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEMoltenModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEPlasmaModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTESmeltingModule;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
@@ -132,12 +130,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private int ringAmount = 1;
     private int stellarFuelAmount = 0;
     private int neededStartupFuel = 0;
-    private int rendererColorRed = 179;
-    private int rendererColorGreen = 204;
-    private int rendererColorBlue = 255;
     private int rotationSpeed = 5;
     private int starSize = 20;
-    private int rainbowCycleSpeed = 1;
+
+    private static final int MAX_STAR_COLORS = 7;
+    private final Map<String, ForgeOfGodsStarColor> starColors = ForgeOfGodsStarColor.getDefaultColors();
+    private String selectedStarColor = ForgeOfGodsStarColor.DEFAULT.getName();
+
+    // used only temporarily while creating a new custom star color
+    private int starColorR, starColorG, starColorB;
+    private float starGamma;
+
     private long fuelConsumption = 0;
     private long totalRecipesProcessed = 0;
     private long totalFuelConsumed = 0;
@@ -150,7 +153,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private float invertedRecipeMilestonePercentage = 0;
     private float invertedFuelMilestonePercentage = 0;
     private float invertedStructureMilestonePercentage = 0;
-    private float rendererGamma = 3f;
     private BigInteger totalPowerConsumed = BigInteger.ZERO;
     private boolean batteryCharging = false;
     private boolean inversion = false;
@@ -158,7 +160,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private FormattingMode formattingMode = FormattingMode.NONE;
     private boolean isRenderActive = false;
     private boolean secretUpgrade = false;
-    private boolean rainbowMode = false;
     private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
@@ -172,7 +173,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final int MANUAL_INSERTION_WINDOW_ID = 15;
     private static final int GENERAL_INFO_WINDOW_ID = 16;
     private static final int SPECIAL_THANKS_WINDOW_ID = 17;
-    private static final int STAR_COLOR_CONFIG_WINDOW_ID = 18;
+    private static final int STAR_COSMETICS_WINDOW_ID = 18;
+    private static final int STAR_CUSTOM_COLOR_WINDOW_ID = 19;
     private static final int TEXTURE_INDEX = 960;
     private static final int[] FIRST_SPLIT_UPGRADES = new int[] { 12, 13, 14 };
     private static final Integer[] UPGRADE_MATERIAL_ID_CONVERSION = { 0, 5, 7, 11, 26, 29, 30 };
@@ -197,15 +199,44 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final String SCANNER_INFO_BAR = EnumChatFormatting.BLUE.toString() + EnumChatFormatting.STRIKETHROUGH
         + "--------------------------------------------";
     private static final ItemStack STELLAR_FUEL = Avaritia.isModLoaded() ? getModItem(Avaritia.ID, "Resource", 1, 8)
-        : GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1);
+        : GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 1);
 
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         // 1000 blocks max per placement.
         int realBudget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
+        int built = 0;
+
+        if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
+            built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 63, 14, 1, elementBudget, env, false, true);
+            if (stackSize.stackSize > 1) {
+                built += survivialBuildPiece(
+                    STRUCTURE_PIECE_SECOND_RING,
+                    stackSize,
+                    55,
+                    11,
+                    -67,
+                    realBudget,
+                    env,
+                    false,
+                    true);
+            }
+            if (stackSize.stackSize > 2) {
+                built += survivialBuildPiece(
+                    STRUCTURE_PIECE_THIRD_RING,
+                    stackSize,
+                    47,
+                    13,
+                    -76,
+                    realBudget,
+                    env,
+                    false,
+                    true);
+            }
+            return built;
+        }
 
         survivialBuildPiece(STRUCTURE_PIECE_SHAFT, stackSize, 63, 14, 1, realBudget, env, false, true);
 
-        int built = 0;
         if (stackSize.stackSize > 0 && ringAmount < 1) {
             built += survivialBuildPiece(
                 STRUCTURE_PIECE_FIRST_RING,
@@ -393,7 +424,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67)) {
                 ringAmount = 2;
                 destroySecondRing();
-                UpdateRenderer();
+                updateRenderer();
             }
             if (isRenderActive && ringAmount >= 2 && !checkPiece(STRUCTURE_PIECE_SECOND_RING_AIR, 55, 11, -67)) {
                 destroyRenderer();
@@ -404,7 +435,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             if (ringAmount >= 2) {
                 ringAmount = 1;
-                UpdateRenderer();
+                updateRenderer();
                 buildSecondRing();
             }
         }
@@ -413,7 +444,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
                 ringAmount = 3;
                 destroyThirdRing();
-                UpdateRenderer();
+                updateRenderer();
             }
             if (isRenderActive && ringAmount == 3 && !checkPiece(STRUCTURE_PIECE_THIRD_RING_AIR, 47, 13, -76)) {
                 destroyRenderer();
@@ -421,7 +452,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         } else {
             if (ringAmount == 3) {
                 ringAmount = 2;
-                UpdateRenderer();
+                updateRenderer();
                 buildThirdRing();
             }
         }
@@ -448,14 +479,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (upgrades[29]) {
                     maxModuleCount += 4;
                 }
+
+                boolean isFinalUpgradeUnlocked = upgrades[30];
+
                 if (!mInputBusses.isEmpty()) {
-                    if (internalBattery == 0) {
+                    if (internalBattery == 0 || isFinalUpgradeUnlocked) {
                         MTEHatchInputBus inputBus = mInputBusses.get(0);
                         ItemStack[] inputBusInventory = inputBus.getRealInventory();
+                        ItemStack itemToAbsorb = STELLAR_FUEL;
+                        if (isFinalUpgradeUnlocked && internalBattery != 0) {
+                            itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1);
+                        }
                         if (inputBusInventory != null) {
                             for (int i = 0; i < inputBusInventory.length; i++) {
                                 ItemStack itemStack = inputBusInventory[i];
-                                if (itemStack != null && itemStack.isItemEqual(STELLAR_FUEL)) {
+                                if (itemStack != null && itemStack.isItemEqual(itemToAbsorb)) {
                                     int stacksize = itemStack.stackSize;
                                     if (inputBus instanceof MTEHatchInputBusME meBus) {
                                         ItemStack realItem = meBus.getRealInventory()[i + 16];
@@ -465,20 +503,28 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                                         stacksize = realItem.stackSize;
                                     }
                                     inputBus.decrStackSize(i, stacksize);
-                                    stellarFuelAmount += stacksize;
+                                    if (internalBattery == 0) {
+                                        stellarFuelAmount += stacksize;
+                                    } else {
+                                        gravitonShardsAvailable += stacksize;
+                                    }
                                     inputBus.updateSlots();
                                 }
                             }
                         }
-                        neededStartupFuel = calculateStartupFuelConsumption(this);
-                        if (stellarFuelAmount >= neededStartupFuel) {
-                            stellarFuelAmount -= neededStartupFuel;
-                            increaseBattery(neededStartupFuel);
-                            createRenderer();
+                        if (internalBattery == 0) {
+                            neededStartupFuel = calculateStartupFuelConsumption(this);
+                            if (stellarFuelAmount >= neededStartupFuel) {
+                                stellarFuelAmount -= neededStartupFuel;
+                                increaseBattery(neededStartupFuel);
+                                createRenderer();
+                            }
                         }
-                    } else {
-                        drainFuel();
                     }
+                }
+
+                if (internalBattery != 0) {
+                    drainFuel();
                 }
 
                 determineCompositionMilestoneLevel();
@@ -611,15 +657,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return null;
     }
 
-    private void UpdateRenderer() {
+    private void updateRenderer() {
         TileEntityForgeOfGods tile = getRenderer();
         if (tile == null) return;
 
         tile.setRingCount(ringAmount);
         tile.setStarRadius(starSize);
         tile.setRotationSpeed(rotationSpeed);
-        tile.setColor(rendererColorRed / 255f, rendererColorGreen / 255f, rendererColorBlue / 255f, rendererGamma);
-        tile.setRainbowMode(rainbowMode, rainbowCycleSpeed);
+        tile.setColor(starColors.get(selectedStarColor));
 
         tile.updateToClient();
     }
@@ -662,7 +707,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         rendererTileEntity.setRenderRotation(getRotation(), getDirection());
-        UpdateRenderer();
+        updateRenderer();
 
         isRenderActive = true;
     }
@@ -769,17 +814,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (doesBindPlayerInventory()) {
-            builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-                    .setPos(4, 4)
-                    .setSize(190, 85));
-        } else {
-            builder.widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_NO_INVENTORY)
-                    .setPos(4, 4)
-                    .setSize(190, 171));
-        }
         buildContext.addSyncedWindow(UPGRADE_TREE_WINDOW_ID, this::createUpgradeTreeWindow);
         buildContext.addSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID, this::createIndividualUpgradeWindow);
         buildContext.addSyncedWindow(FUEL_CONFIG_WINDOW_ID, this::createFuelConfigWindow);
@@ -789,27 +823,33 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         buildContext.addSyncedWindow(MANUAL_INSERTION_WINDOW_ID, this::createManualInsertionWindow);
         buildContext.addSyncedWindow(GENERAL_INFO_WINDOW_ID, this::createGeneralInfoWindow);
         buildContext.addSyncedWindow(SPECIAL_THANKS_WINDOW_ID, this::createSpecialThanksWindow);
-        buildContext.addSyncedWindow(STAR_COLOR_CONFIG_WINDOW_ID, this::createStarColorConfigWindow);
+        buildContext.addSyncedWindow(STAR_COSMETICS_WINDOW_ID, this::createStarCosmeticsWindow);
+        buildContext.addSyncedWindow(STAR_CUSTOM_COLOR_WINDOW_ID, this::createStarCustomColorWindow);
+
         builder.widget(
-            new ButtonWidget().setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
-                })
-                .setSize(16, 16)
-                .setBackground(() -> {
-                    List<UITexture> button = new ArrayList<>();
-                    button.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
-                    button.add(TecTechUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP);
-                    return button.toArray(new IDrawable[0]);
-                })
-                .addTooltip("Path of Celestial Transcendence")
-                .setPos(174, 167)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                .setPos(4, 4)
+                .setSize(190, 85))
             .widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_SMALL)
+                new ButtonWidget().setOnClick(
+                    (clickData, widget) -> {
+                        if (!widget.isClient()) widget.getContext()
+                            .openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
+                    })
+                    .setSize(16, 16)
+                    .setBackground(() -> {
+                        List<UITexture> button = new ArrayList<>();
+                        button.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
+                        button.add(TecTechUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP);
+                        return button.toArray(new IDrawable[0]);
+                    })
+                    .addTooltip("Path of Celestial Transcendence")
+                    .setPos(174, 167)
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            .widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_16x8)
                     .setPos(174, 183)
-                    .setSize(16, 6))
+                    .setSize(16, 8))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (!widget.isClient()) {
                     widget.getContext()
@@ -898,7 +938,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 new ButtonWidget().setOnClick(
                     (clickData, widget) -> {
                         if (!widget.isClient()) widget.getContext()
-                            .openSyncedWindow(STAR_COLOR_CONFIG_WINDOW_ID);
+                            .openSyncedWindow(STAR_COSMETICS_WINDOW_ID);
                     })
                     .setSize(16, 16)
                     .addTooltip(translateToLocal("fog.button.color.tooltip"))
@@ -922,30 +962,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     protected ButtonWidget createPowerSwitchButton() {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            if (getBaseMetaTileEntity().isAllowedToWork()) {
-                getBaseMetaTileEntity().disableWorking();
-            } else {
-                getBaseMetaTileEntity().enableWorking();
-            }
-        })
-            .setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
-                if (getBaseMetaTileEntity().isAllowedToWork()) {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
-                } else {
-                    ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(174, doesBindPlayerInventory() ? 148 : 172)
-            .setSize(16, 16);
-        button.addTooltip("Power Switch")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        return (ButtonWidget) button;
+        return ForgeOfGodsUI.createPowerSwitchButton(getBaseMetaTileEntity());
     }
 
     protected ButtonWidget createEjectionSwitch(IWidgetBuilder<?> builder) {
@@ -1395,7 +1412,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(5, 30)
                     .setSize(140, 30))
             .widget(
-                TextWidget.dynamicText(() -> currentMilestone(currentMilestoneID))
+                TextWidget.dynamicText(() -> currentMilestoneLevel(currentMilestoneID))
                     .setScale(0.7f)
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setTextAlignment(Alignment.Center)
@@ -1439,7 +1456,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private Widget createMilestoneButton(int milestoneID, int width, int height, Pos2d pos) {
         return new ButtonWidget().setOnClick((clickData, widget) -> {
             currentMilestoneID = milestoneID;
-            reopenWindow(widget, INDIVIDUAL_MILESTONE_WINDOW_ID);
+            ForgeOfGodsUI.reopenWindow(widget, INDIVIDUAL_MILESTONE_WINDOW_ID);
         })
             .setSize(width, height)
             .setBackground(() -> switch (milestoneID) {
@@ -2217,6 +2234,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             gravitonShardsAvailable += gravitonShardCost;
             gravitonShardsSpent -= gravitonShardCost;
             upgrades[currentUpgradeID] = false;
+
+            if (currentUpgradeID == 30) {
+                gravitonShardEjection = false;
+            }
         }
     }
 
@@ -2296,7 +2317,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         ctx.closeWindow(UPGRADE_TREE_WINDOW_ID);
                     }
                 } else {
-                    reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
+                    ForgeOfGodsUI.reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
                 }
             } else if (clickData.mouseButton == 1) {
                 respecUpgrade();
@@ -2455,9 +2476,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             if (i < uniqueItems) {
                 ItemStack stack = inputs[i];
                 if (stack != null) {
-                    stack = stack.copy();
-                    stack.stackSize = 1;
-                    upgradeMatsHandler.setStackInSlot(i, stack);
+                    upgradeMatsHandler.setStackInSlot(i, stack.copy());
                 }
                 builder.widget(
                     new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
@@ -2466,6 +2485,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 columnList.get(cleanDiv4)
                     .addChild(
                         new SlotWidget(upgradeMatsHandler, i).setAccess(false, false)
+                            .setRenderStackSize(false)
                             .disableInteraction());
                 columnList.get(cleanDiv4 + 3)
                     .addChild(
@@ -2506,168 +2526,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     protected ModularWindow createGeneralInfoWindow(final EntityPlayer player) {
-        return createGeneralInfoWindow(() -> inversion, val -> inversion = val);
-    }
-
-    // because modularui1 creates its synced windows following a specific interface spec, so we have to create a
-    // second method in order to pass a parameter :(
-    public static ModularWindow createGeneralInfoWindow(Supplier<Boolean> inversionGetter,
-        Consumer<Boolean> inversionSetter) {
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        final int WIDTH = 300;
-        final int HEIGHT = 300;
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-
-        builder.setDraggable(true);
-        scrollable.widget(
-            new TextWidget(EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.introduction"))
-                .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
-                .setTextAlignment(Alignment.TopCenter)
-                .setPos(7, 13)
-                .setSize(280, 15))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.introductioninfotext"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 30)
-                    .setSize(280, 50))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.tableofcontents"))
-                        .setDefaultColor(EnumChatFormatting.AQUA)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 80)
-                        .setSize(150, 15))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> scrollable.setVerticalScrollOffset(150))
-                    .setBackground(
-                        new Text(EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.fuel"))
-                            .alignment(Alignment.CenterLeft)
-                            .color(0x55ffff))
-                    .setPos(7, 95)
-                    .setSize(150, 15))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> scrollable.setVerticalScrollOffset(434))
-                    .setBackground(
-                        new Text(
-                            EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.modules"))
-                                .alignment(Alignment.CenterLeft)
-                                .color(0x55ffff))
-                    .setPos(7, 110)
-                    .setSize(150, 15))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> scrollable.setVerticalScrollOffset(1088))
-                    .setBackground(
-                        new Text(
-                            EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.upgrades"))
-                                .alignment(Alignment.CenterLeft)
-                                .color(0x55ffff))
-                    .setPos(7, 125)
-                    .setSize(150, 15))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> scrollable.setVerticalScrollOffset(1412))
-                    .setBackground(
-                        new Text(
-                            EnumChatFormatting.BOLD + translateToLocal("gt.blockmachines.multimachine.FOG.milestones"))
-                                .alignment(Alignment.CenterLeft)
-                                .color(0x55ffff))
-                    .setPos(7, 140)
-                    .setSize(150, 15))
-            .widget(
-                TextWidget.dynamicText(() -> inversionInfoText(inversionGetter.get()))
-                    .setDefaultColor(EnumChatFormatting.WHITE)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 155)
-                    .setSize(150, 15))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (inversionGetter.get()) {
-                    scrollable.setVerticalScrollOffset(1766);
-                }
-            })
-                .setPlayClickSound(inversionGetter.get())
-                .setPos(7, 155)
-                .setSize(150, 15)
-                .attachSyncer(new FakeSyncWidget.BooleanSyncer(inversionGetter, inversionSetter), scrollable))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.fuel"))
-                        .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
-                        .setTextAlignment(Alignment.TopCenter)
-                        .setPos(127, 160)
-                        .setSize(40, 15))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfotext"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 177)
-                    .setSize(280, 250))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.modules"))
-                        .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
-                        .setTextAlignment(Alignment.TopCenter)
-                        .setPos(7, 440)
-                        .setSize(280, 15))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.moduleinfotext"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 461)
-                    .setSize(280, 620))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.upgrades"))
-                        .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
-                        .setTextAlignment(Alignment.TopCenter)
-                        .setPos(7, 1098)
-                        .setSize(280, 15))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.upgradeinfotext"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 1115)
-                    .setSize(280, 290))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.BOLD + "§N" + translateToLocal("gt.blockmachines.multimachine.FOG.milestones"))
-                        .setDefaultColor(EnumChatFormatting.DARK_PURPLE)
-                        .setTextAlignment(Alignment.TopCenter)
-                        .setPos(7, 1422)
-                        .setSize(280, 15))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.milestoneinfotext"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 1439)
-                    .setSize(280, 320))
-            .widget(
-                TextWidget.dynamicText(() -> inversionHeaderText(inversionGetter.get()))
-                    .setDefaultColor(EnumChatFormatting.WHITE)
-                    .setTextAlignment(Alignment.TopCenter)
-                    .setPos(7, 1776)
-                    .setSize(280, 15))
-            .widget(
-                TextWidget.dynamicText(() -> inversionInfoText(inversionGetter.get()))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 1793)
-                    .setSize(280, 160))
-            .widget(
-                new TextWidget("").setPos(7, 1965)
-                    .setSize(10, 10));
-
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_GLOW_WHITE)
-                .setPos(0, 0)
-                .setSize(300, 300))
-            .widget(
-                scrollable.setSize(292, 292)
-                    .setPos(4, 4))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(284, 4));
-
-        return builder.build();
+        return ForgeOfGodsUI.createGeneralInfoWindow(() -> inversion, val -> inversion = val);
     }
 
     protected ModularWindow createSpecialThanksWindow(final EntityPlayer player) {
@@ -2786,12 +2645,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return builder.build();
     }
 
-    protected ModularWindow createStarColorConfigWindow(final EntityPlayer player) {
+    protected ModularWindow createStarCosmeticsWindow(final EntityPlayer player) {
         final int WIDTH = 200;
         final int HEIGHT = 200;
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
         builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE);
         builder.setDraggable(true);
+
+        // Exit button and header
         builder.widget(
             ButtonWidget.closeWindowButton(true)
                 .setPos(184, 4))
@@ -2801,161 +2662,79 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextAlignment(Alignment.Center)
                     .setScale(1f)
                     .setPos(0, 5)
-                    .setSize(200, 15))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.color"))
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(8, 25)
-                        .setSize(60, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.red"))
-                    .setDefaultColor(EnumChatFormatting.RED)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(8, 45)
-                    .setSize(60, 18))
-            .widget(
-                new NumericWidget().setSetter(val -> rendererColorRed = (int) val)
-                    .setGetter(() -> rendererColorRed)
-                    .setBounds(0, 255)
-                    .setDefaultValue(179)
+                    .setSize(200, 15));
+
+        // Color options
+        // Header
+        builder.widget(
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.color"))
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(9, 25)
+                .setSize(60, 10)
+                // attach this here since it's convenient
+                .attachSyncer(
+                    new FakeSyncWidget.StringSyncer(() -> selectedStarColor, c -> selectedStarColor = c),
+                    builder));
+
+        // Current presets
+        int totalColors = 0;
+        for (ForgeOfGodsStarColor starColor : starColors.values()) {
+            MultiChildWidget widget = createColorGroup(starColor);
+            widget.setPos(8, 45 + totalColors * 20);
+            builder.widget(widget);
+            totalColors++;
+        }
+
+        // Option to add a new preset, if there is room available
+        if (totalColors < MAX_STAR_COLORS) {
+            MultiChildWidget parent = new MultiChildWidget();
+            parent.setSize(18, 80);
+            parent.setPos(8, 45 + totalColors * 20);
+
+            // Button to open the custom star color creation window
+            parent.addChild(
+                new ButtonWidget()
+                    // .setOnClick((data, widget) -> {
+                    // if (!widget.isClient()) widget.getContext()
+                    // .openSyncedWindow(STAR_CUSTOM_COLOR_WINDOW_ID);
+                    // })
+                    .setPlayClickSound(true)
+                    .setBackground(GTUITextures.BUTTON_STANDARD)
+                    .addTooltip("WIP")
+                    .setSize(16, 16)
+                    .setPos(0, 0));
+
+            // Text overlaid on the above button
+            parent.addChild(
+                new TextWidget("+").setDefaultColor(EnumChatFormatting.DARK_GRAY)
                     .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(35, 18)
-                    .setPos(40, 45)
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> rendererColorRed, val -> rendererColorRed = val),
-                        builder))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.green"))
-                    .setDefaultColor(EnumChatFormatting.GREEN)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(8, 65)
-                    .setSize(60, 18))
-            .widget(
-                new NumericWidget().setSetter(val -> rendererColorGreen = (int) val)
-                    .setGetter(() -> rendererColorGreen)
-                    .setBounds(0, 255)
-                    .setDefaultValue(204)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(35, 18)
-                    .setPos(40, 65)
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> rendererColorGreen, val -> rendererColorGreen = val),
-                        builder))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.blue"))
-                    .setDefaultColor(EnumChatFormatting.DARK_BLUE)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(8, 85)
-                    .setSize(60, 18))
-            .widget(
-                new NumericWidget().setSetter(val -> rendererColorBlue = (int) val)
-                    .setGetter(() -> rendererColorBlue)
-                    .setBounds(0, 255)
-                    .setDefaultValue(255)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(35, 18)
-                    .setPos(40, 85)
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> rendererColorBlue, val -> rendererColorBlue = val),
-                        builder))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.gamma"))
+                    .setSize(16, 16)
+                    .setPos(0, 0));
+
+            // Text describing the new button above
+            parent.addChild(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.custom"))
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(8, 105)
-                    .setSize(60, 18))
+                    .setSize(60, 18)
+                    .setPos(20, 0));
+
+            builder.widget(parent);
+        }
+
+        // Miscellaneous options not related to color settings
+        builder.widget(
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.misc"))
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(120, 25)
+                .setSize(80, 10))
             .widget(
-                new NumericWidget().setSetter(val -> rendererGamma = (float) val)
-                    .setGetter(() -> rendererGamma)
-                    .setBounds(0, 100)
-                    .setDefaultValue(3)
-                    .setIntegerOnly(false)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(35, 18)
-                    .setPos(40, 105)
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.decimals"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.FloatSyncer(() -> rendererGamma, val -> rendererGamma = val),
-                        builder))
-            .widget(
-                new DrawableWidget().setDrawable(
-                    () -> new Rectangle().setColor(Color.rgb(rendererColorRed, rendererColorGreen, rendererColorBlue)))
-                    .setSize(80, 80)
-                    .setPos(100, 45))
-            .widget(
-                new DrawableWidget().setDrawable(() -> rainbowMode ? TecTechUITextures.PICTURE_RAINBOW_SQUARE : null)
-                    .setSize(80, 80)
-                    .setPos(100, 45))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (!widget.isClient()) {
-                    rainbowMode = !rainbowMode;
-                }
-            })
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    if (rainbowMode) {
-                        return new IDrawable[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
-                            TecTechUITextures.OVERLAY_BUTTON_RAINBOW_SPIRAL };
-                    } else {
-                        return new IDrawable[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
-                            TecTechUITextures.OVERLAY_BUTTON_RAINBOW_SPIRAL_OFF };
-                    }
-                })
-                .addTooltip(translateToLocal("fog.button.rainbowmode.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(100, 130)
-                .setSize(16, 16)
-                .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> rainbowMode, (val) -> rainbowMode = val), builder))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.speed"))
+                TextWidget.localised("gt.blockmachines.multimachine.FOG.spin")
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(120, 129)
-                    .setSize(60, 18))
-            .widget(
-                new NumericWidget().setSetter(val -> rainbowCycleSpeed = (int) val)
-                    .setGetter(() -> rainbowCycleSpeed)
-                    .setBounds(0, 100)
-                    .setDefaultValue(1)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(28, 18)
-                    .setPos(152, 129)
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> rainbowCycleSpeed, val -> rainbowCycleSpeed = val),
-                        builder))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.misc"))
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(8, 130)
-                        .setSize(80, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.spin"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(8, 150)
+                    .setPos(120, 45)
                     .setSize(60, 18))
             .widget(
                 new NumericWidget().setSetter(val -> rotationSpeed = (int) val)
@@ -2965,7 +2744,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextAlignment(Alignment.Center)
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
-                    .setPos(40, 150)
+                    .setPos(155, 45)
                     .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
@@ -2973,10 +2752,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         new FakeSyncWidget.IntegerSyncer(() -> rotationSpeed, val -> rotationSpeed = val),
                         builder))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.size"))
+                TextWidget.localised("gt.blockmachines.multimachine.FOG.size")
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(8, 170)
+                    .setPos(120, 65)
                     .setSize(60, 18))
             .widget(
                 new NumericWidget().setSetter(val -> starSize = (int) val)
@@ -2986,64 +2765,229 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextAlignment(Alignment.Center)
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
-                    .setPos(40, 170)
+                    .setPos(155, 65)
                     .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> starSize, val -> starSize = val), builder))
-            .widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (!widget.isClient()) {
-                    UpdateRenderer();
-                    reopenWindow(widget, STAR_COLOR_CONFIG_WINDOW_ID);
-                }
-            })
-                .setSize(35, 15)
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .addTooltip(translateToLocal("fog.button.updaterenderer.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(0, 0))
-                .addChild(
-                    TextWidget.localised("gt.blockmachines.multimachine.FOG.apply")
-                        .setTextAlignment(Alignment.Center)
-                        .setPos(0, 0)
-                        .setSize(35, 15))
-                .setSize(35, 15)
-                .setPos(157, 177))
-            .widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (!widget.isClient()) {
-                    rendererColorRed = 179;
-                    rendererColorGreen = 204;
-                    rendererColorBlue = 255;
-                    rendererGamma = 3f;
-                    rotationSpeed = 5;
-                    starSize = 20;
-                    rainbowMode = false;
-                    rainbowCycleSpeed = 1;
-                }
-            })
-                .setSize(35, 15)
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .addTooltip(translateToLocal("fog.button.resetcosmetics.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(0, 0))
-                .addChild(
-                    TextWidget.localised("fog.debug.resetbutton.text")
-                        .setTextAlignment(Alignment.Center)
-                        .setPos(0, 0)
-                        .setSize(35, 15))
-                .setSize(35, 15)
-                .setPos(120, 177));
+                    .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> starSize, val -> starSize = val), builder));
+
         return builder.build();
     }
 
-    private void reopenWindow(Widget widget, int windowId) {
-        if (!widget.isClient()) {
-            ModularUIContext ctx = widget.getContext();
-            if (ctx.isWindowOpen(windowId)) {
-                ctx.closeWindow(windowId);
+    private MultiChildWidget createColorGroup(final ForgeOfGodsStarColor starColorConfig) {
+        final int textWidth = 60; // for convenient changing, if we need to make this wider
+
+        MultiChildWidget parent = new MultiChildWidget();
+        parent.setSize(18, 20 + textWidth);
+
+        // Button to enable this star color
+        parent.addChild(new ButtonWidget().setOnClick((data, widget) -> {
+            if (!widget.isClient()) {
+                selectedStarColor = starColorConfig.getName();
+                updateRenderer();
             }
-            ctx.openSyncedWindow(windowId);
-        }
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                IDrawable bg = GTUITextures.BUTTON_STANDARD;
+                if (starColorConfig.getName()
+                    .equals(selectedStarColor)) {
+                    bg = GTUITextures.BUTTON_STANDARD_PRESSED;
+                }
+                return new IDrawable[] { bg };
+            })
+            .setSize(16, 16)
+            .setPos(0, 0));
+
+        // Drawable representation of this star color, overlaid on the above button
+        parent.addChild(
+            starColorConfig.getDrawable()
+                .asWidget()
+                .setPos(1, 1)
+                .setSize(14, 14));
+
+        // Name of this star color
+        parent.addChild(
+            new TextWidget(starColorConfig.getName()).setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setSize(textWidth, 18)
+                .setPos(20, 0));
+
+        return parent;
+    }
+
+    protected ModularWindow createStarCustomColorWindow(final EntityPlayer player) {
+        ModularWindow.Builder builder = ModularWindow.builder(200, 200);
+        builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE);
+        builder.setDraggable(true);
+
+        // Exit button and header
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(184, 4))
+            .widget(
+                TextWidget.localised("gt.blockmachines.multimachine.FOG.starcolor")
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.Center)
+                    .setScale(1f)
+                    .setPos(0, 5)
+                    .setSize(200, 15));
+
+        // Color header
+        builder.widget(
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.color"))
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(9, 25)
+                .setSize(60, 10));
+
+        // RGB + Gamma text fields
+        builder
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.red"))
+                    .setDefaultColor(EnumChatFormatting.RED)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(8, 45)
+                    .setSize(60, 18))
+            .widget(
+                new NumericWidget().setSetter(val -> starColorR = (int) val)
+                    .setGetter(() -> starColorR)
+                    .setBounds(0, 255)
+                    .setDefaultValue(ForgeOfGodsStarColor.DEFAULT_RED)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(35, 18)
+                    .setPos(40, 45)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> starColorR, val -> starColorR = val), builder))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.green"))
+                    .setDefaultColor(EnumChatFormatting.GREEN)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(8, 65)
+                    .setSize(60, 18))
+            .widget(
+                new NumericWidget().setSetter(val -> starColorG = (int) val)
+                    .setGetter(() -> starColorG)
+                    .setBounds(0, 255)
+                    .setDefaultValue(ForgeOfGodsStarColor.DEFAULT_GREEN)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(35, 18)
+                    .setPos(40, 65)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> starColorG, val -> starColorG = val), builder))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.blue"))
+                    .setDefaultColor(EnumChatFormatting.DARK_BLUE)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(8, 85)
+                    .setSize(60, 18))
+            .widget(
+                new NumericWidget().setSetter(val -> starColorB = (int) val)
+                    .setGetter(() -> starColorB)
+                    .setBounds(0, 255)
+                    .setDefaultValue(ForgeOfGodsStarColor.DEFAULT_BLUE)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(35, 18)
+                    .setPos(40, 85)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> starColorB, val -> starColorB = val), builder))
+            .widget(
+                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.gamma"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(8, 105)
+                    .setSize(60, 18))
+            .widget(
+                new NumericWidget().setSetter(val -> starGamma = (float) val)
+                    .setGetter(() -> starGamma)
+                    .setBounds(0, 100)
+                    .setDefaultValue(ForgeOfGodsStarColor.DEFAULT_GAMMA)
+                    .setIntegerOnly(false)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(35, 18)
+                    .setPos(40, 105)
+                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.decimals"))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(new FakeSyncWidget.FloatSyncer(() -> starGamma, val -> starGamma = val), builder));
+
+        // Color preview box
+        builder.widget(
+            new DrawableWidget()
+                .setDrawable(() -> new Rectangle().setColor(Color.rgb(starColorR, starColorG, starColorB)))
+                .setSize(80, 80)
+                .setPos(100, 45));
+
+        // todo cycle time input
+
+        // Apply button
+        MultiChildWidget applyButton = new MultiChildWidget();
+        applyButton.setSize(35, 15);
+        applyButton.setPos(157, 177);
+
+        applyButton.addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                // todo
+                updateRenderer();
+                ForgeOfGodsUI.reopenWindow(widget, STAR_COSMETICS_WINDOW_ID);
+            }
+        })
+            .setSize(35, 15)
+            .setBackground(GTUITextures.BUTTON_STANDARD)
+            .addTooltip(translateToLocal("fog.button.addstarcolor.tooltip"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(0, 0));
+
+        applyButton.addChild(
+            TextWidget.localised("gt.blockmachines.multimachine.FOG.addcolor")
+                .setTextAlignment(Alignment.Center)
+                .setPos(0, 0)
+                .setSize(35, 15));
+
+        builder.widget(applyButton);
+
+        // Reset button
+        MultiChildWidget resetButton = new MultiChildWidget();
+        resetButton.setSize(35, 15);
+        resetButton.setPos(120, 177);
+
+        resetButton.addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                starColorR = ForgeOfGodsStarColor.DEFAULT_RED;
+                starColorG = ForgeOfGodsStarColor.DEFAULT_GREEN;
+                starColorB = ForgeOfGodsStarColor.DEFAULT_BLUE;
+                starGamma = ForgeOfGodsStarColor.DEFAULT_GAMMA;
+            }
+        })
+            .setSize(35, 15)
+            .setBackground(GTUITextures.BUTTON_STANDARD)
+            .addTooltip(translateToLocal("fog.button.resetcosmetics.tooltip"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(0, 0));
+
+        resetButton.addChild(
+            TextWidget.localised("fog.debug.resetbutton.text")
+                .setTextAlignment(Alignment.Center)
+                .setPos(0, 0)
+                .setSize(35, 15));
+
+        builder.widget(resetButton);
+
+        // todo color order widgets
+
+        // todo create star color button, reset full color order button
+
+        return builder.build();
     }
 
     private DynamicPositionedRow delenoName() {
@@ -3532,11 +3476,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 + suffix);
     }
 
-    private Text currentMilestone(int milestoneID) {
+    private Text currentMilestoneLevel(int milestoneID) {
+        int milestoneLevel = inversion ? milestoneProgress[milestoneID] : Math.min(milestoneProgress[milestoneID], 7);
         return new Text(
             translateToLocal("gt.blockmachines.multimachine.FOG.milestoneprogress") + ": "
                 + EnumChatFormatting.GRAY
-                + milestoneProgress[milestoneID]);
+                + milestoneLevel);
     }
 
     private Text milestoneProgressText(int milestoneID) {
@@ -3584,24 +3529,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             default -> throw new IllegalArgumentException("Invalid Milestone ID");
         }
         return new Text(progressText + ": " + EnumChatFormatting.GRAY + formattingMode.format(max) + " " + suffix);
-    }
-
-    private static Text inversionHeaderText(boolean inversion) {
-        return inversion
-            ? new Text(
-                EnumChatFormatting.BOLD + "§k2"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.WHITE
-                    + EnumChatFormatting.BOLD
-                    + translateToLocal("gt.blockmachines.multimachine.FOG.inversion")
-                    + EnumChatFormatting.BOLD
-                    + "§k2")
-            : new Text("");
-    }
-
-    private static Text inversionInfoText(boolean inversion) {
-        return inversion ? new Text(translateToLocal("gt.blockmachines.multimachine.FOG.inversioninfotext"))
-            : new Text("");
     }
 
     private Text constructionStatusText() {
@@ -3704,6 +3631,15 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
+
+        NBTTagList starColorList = new NBTTagList();
+        for (ForgeOfGodsStarColor starColor : starColors.values()) {
+            starColorList.appendTag(starColor.serialize());
+        }
+        if (!starColorList.tagList.isEmpty()) {
+            NBT.setTag("customStarColors", starColorList);
+        }
+
         super.saveNBTData(NBT);
     }
 
@@ -3721,18 +3657,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setLong("totalFuelConsumed", totalFuelConsumed);
         NBT.setInteger("starFuelStored", stellarFuelAmount);
         NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
-        NBT.setBoolean("isRenderActive", isRenderActive);
         NBT.setInteger("ringAmount", ringAmount);
         NBT.setBoolean("secretUpgrade", secretUpgrade);
-        NBT.setInteger("rendererColorRed", rendererColorRed);
-        NBT.setInteger("rendererColorGreen", rendererColorGreen);
-        NBT.setInteger("rendererColorBlue", rendererColorBlue);
-        NBT.setFloat("rendererGamma", rendererGamma);
-        NBT.setInteger("rotationSpeed", rotationSpeed);
-        NBT.setInteger("starSize", starSize);
-        NBT.setBoolean("rainbowMode", rainbowMode);
-        NBT.setInteger("rainbowCycleSpeed", rainbowCycleSpeed);
-        NBT.setBoolean("isRenderActive", isRenderActive);
 
         // Store booleanArray of all upgrades
         NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
@@ -3768,6 +3694,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         NBT.setTag("upgradeWindowStorage", upgradeWindowStorageNBTTag);
+
+        // Renderer information
+        NBT.setInteger("rotationSpeed", rotationSpeed);
+        NBT.setInteger("starSize", starSize);
+        NBT.setString("selectedStarColor", selectedStarColor);
+        NBT.setBoolean("isRenderActive", isRenderActive);
+
+        NBTTagList starColorList = new NBTTagList();
+        for (ForgeOfGodsStarColor starColor : starColors.values()) {
+            starColorList.appendTag(starColor.serialize());
+        }
+        if (!starColorList.tagList.isEmpty()) {
+            NBT.setTag("customStarColors", starColorList);
+        }
+
         super.saveNBTData(NBT);
     }
 
@@ -3785,18 +3726,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         totalFuelConsumed = NBT.getLong("totalFuelConsumed");
         stellarFuelAmount = NBT.getInteger("starFuelStored");
         gravitonShardEjection = NBT.getBoolean("gravitonShardEjection");
-        isRenderActive = NBT.getBoolean("isRenderActive");
         ringAmount = NBT.getInteger("ringAmount");
         secretUpgrade = NBT.getBoolean("secretUpgrade");
-        rendererColorRed = NBT.getInteger("rendererColorRed");
-        rendererColorGreen = NBT.getInteger("rendererColorGreen");
-        rendererColorBlue = NBT.getInteger("rendererColorBlue");
-        rendererGamma = NBT.getFloat("rendererGamma");
-        rotationSpeed = NBT.getInteger("rotationSpeed");
-        starSize = NBT.getInteger("starSize");
-        rainbowMode = NBT.getBoolean("rainbowMode");
-        rainbowCycleSpeed = NBT.getInteger("rainbowCycleSpeed");
-        isRenderActive = NBT.getBoolean("isRenderActive");
 
         NBTTagCompound tempBooleanTag = NBT.getCompoundTag("upgrades");
 
@@ -3821,6 +3752,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
             if (itemStack != null) {
                 storedUpgradeWindowItems[index] = itemStack.splitStack(stackSize);
+            }
+        }
+
+        // Renderer information
+        rotationSpeed = NBT.getInteger("rotationSpeed");
+        starSize = NBT.getInteger("starSize");
+        selectedStarColor = NBT.getString("selectedStarColor");
+        isRenderActive = NBT.getBoolean("isRenderActive");
+
+        if (NBT.hasKey("customStarColors")) {
+            NBTTagList starColorList = NBT.getTagList("customStarColors", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < starColorList.tagCount(); i++) {
+                NBTTagCompound starColorNBT = starColorList.getCompoundTagAt(i);
+                ForgeOfGodsStarColor starColor = ForgeOfGodsStarColor.deserialize(starColorNBT);
+                starColors.put(starColor.getName(), starColor);
             }
         }
 
