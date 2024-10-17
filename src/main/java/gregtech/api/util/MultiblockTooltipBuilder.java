@@ -675,12 +675,25 @@ public class MultiblockTooltipBuilder {
      *
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length) {
-        switch (GTMod.gregtechproxy.separatorStyle) {
-            case 0 -> sLines.add(TAB + " ");
-            case 1 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
-            default -> sLines
-                .add(TAB + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
+    public MultiblockTooltipBuilder addStructureInfoSeparator(EnumChatFormatting color, int length,
+        boolean useFinisherConfig) {
+        if (useFinisherConfig) {
+            switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+                case 0 -> {}
+                case 1 -> sLines.add(TAB + " ");
+                case 2 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
+                default -> sLines.add(
+                    TAB + color.toString()
+                        + EnumChatFormatting.STRIKETHROUGH
+                        + StringUtils.getRepetitionOf('-', length));
+            }
+        } else {
+            switch (GTMod.gregtechproxy.separatorStyle) {
+                case 0 -> sLines.add(TAB + " ");
+                case 1 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
+                default -> sLines
+                    .add(TAB + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
+            }
         }
         return this;
     }
@@ -691,7 +704,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addStructureInfoSeparator() {
-        return addStructureInfoSeparator(EnumChatFormatting.GRAY, 30);
+        return addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, false);
     }
 
     /**
@@ -802,7 +815,7 @@ public class MultiblockTooltipBuilder {
             iLines.add(sb.toString());
         }
         hLines.add(TT_structurehint);
-        this.addStructureInfoSeparator();
+        this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
         sLines.add(EnumChatFormatting.WHITE + TT_StructureComplex);
         sLines.add(
             EnumChatFormatting.WHITE + TT_SeeStructure1
