@@ -66,7 +66,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -109,7 +108,6 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Industrial Wash Plant")
             .addInfo("Can be configured with a screwdriver to also do Simple Washer and process Chemical Bathing")
             .addInfo("400% faster than using single block machines of the same voltage")
             .addInfo("Processes four item per voltage tier")
@@ -117,7 +115,6 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
             .addInfo("Need to be filled with water.")
             .addInfo("Will automatically fill water from input hatch.")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(5, 3, 7, true)
             .addController("Front Center")
             .addCasingInfoMin("Wash Plant Casings", 40, false)
@@ -128,7 +125,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -298,8 +295,6 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
             mOffsetZ_Upper = 2;
         }
 
-        // if (aBaseMetaTileEntity.fac)
-
         final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * mCurrentDirectionX;
         final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * mCurrentDirectionZ;
 
@@ -314,7 +309,6 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                             for (FluidStack stored : this.getStoredFluids()) {
                                 if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))) {
                                     if (stored.amount >= 1000) {
-                                        // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
                                         stored.amount -= 1000;
                                         Block fluidUsed = null;
                                         if (tBlock == Blocks.air || tBlock == Blocks.flowing_water) {
@@ -334,12 +328,10 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
                             }
                         }
                     }
-                    if (tBlock == Blocks.water) {
+                    if (tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
                         ++tAmount;
-                        // Utils.LOG_WARNING("Found Water");
                     } else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
                         ++tAmount;
-                        // Utils.LOG_WARNING("Found Distilled Water");
                     } else if (Mods.COFHCore.isModLoaded()) {
                         if (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater) {
                             ++tAmount;
@@ -349,7 +341,7 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
             }
         }
 
-        boolean isValidWater = tAmount >= 45;
+        boolean isValidWater = tAmount >= 30;
         if (isValidWater) {
             Logger.WARNING("Filled structure.");
         } else {

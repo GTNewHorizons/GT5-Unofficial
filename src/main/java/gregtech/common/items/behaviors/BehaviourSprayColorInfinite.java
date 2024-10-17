@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.AuthorQuerns;
 import static net.minecraft.util.MovingObjectPosition.MovingObjectType.BLOCK;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +38,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     private static final List<ItemStack> COLOR_SELECTIONS;
     public static final String COLOR_NBT_TAG = "current_color";
     public static final String LOCK_NBT_TAG = "is_locked";
-    public static final String SEPARATOR = "-----------------------------------------";
 
     private byte mCurrentColor;
 
@@ -108,26 +108,26 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         final ItemStack itemStack) {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
-        aList.add(SEPARATOR);
+        aList.add(" ");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.more_info"));
-        aList.add(SEPARATOR);
         aList.add(AuthorQuerns);
-
         return aList;
     }
 
     @Override
-    public List<String> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
+    public Optional<List<String>> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
         final ItemStack aStack) {
-        aList.add(SEPARATOR);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
+        aList.add(mTooltipChain);
+        aList.add(" ");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.switch"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.pick"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
-        aList.add(SEPARATOR);
+        aList.add(" ");
         aList.add(AuthorQuerns);
 
-        return aList;
+        return Optional.of(aList);
     }
     // endregion
 

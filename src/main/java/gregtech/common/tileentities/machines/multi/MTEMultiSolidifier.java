@@ -183,34 +183,13 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
-            .addInfo("Controller Block for the Fluid Shaper")
-            .addInfo("Speeds up to a maximum of 300% faster than singleblock machines while running")
+            .addInfo("Speeds up to a maximum of 200% faster than singleblock machines while running")
             .addInfo("Decays at double the Rate that it Speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")
             .addInfo("Starts with 4 Parallels")
             .addInfo("Gain " + PARALLELS_PER_WIDTH + " Parallels per Width Expansion and Multiplied by Voltage Tier")
             .addInfo("Energy Hatch Based on Glass Tier, UMV Glass Unlocks all")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .addInfo(AuthorOmdaCZ)
-            .addInfo(
-                "With the Help Of" + " "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Four"
-                    + EnumChatFormatting.RESET
-                    + ", "
-                    + EnumChatFormatting.AQUA
-                    + "GDCloud"
-                    + EnumChatFormatting.RESET
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "Ba"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "ps"
-                    + EnumChatFormatting.RESET
-                    + " & "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "TheEpicGamer274")
-            .addSeparator()
             .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
             .addCasingInfoMin("Solidifier Casing", 146, false)
@@ -222,7 +201,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
 

@@ -11,9 +11,11 @@ import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsElements;
 
 public class ArcFurnaceRecipes implements Runnable {
 
@@ -473,5 +475,38 @@ public class ArcFurnaceRecipes implements Runnable {
             .eut((int) TierEU.RECIPE_LV)
             .addTo(arcFurnaceRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Casing_Coil_Infinity.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 9L),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.DraconiumAwakened, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 24L))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .metadata(RECYCLE, true)
+            .addTo(UniversalArcFurnace);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Casing_Coil_Hypogen.get(1))
+            .itemOutputs(
+                MaterialsElements.STANDALONE.HYPOGEN.getIngot(9),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 4L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 48L))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .metadata(RECYCLE, true)
+            .addTo(UniversalArcFurnace);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Casing_Coil_Eternal.get(1))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.SpaceTime, 9L),
+                MaterialsElements.STANDALONE.HYPOGEN.getIngot(4),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 64L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 64L))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .metadata(RECYCLE, true)
+            .addTo(UniversalArcFurnace);
     }
 }

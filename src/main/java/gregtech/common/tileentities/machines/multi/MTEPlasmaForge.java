@@ -618,10 +618,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + GTUtility.formatNumbers(efficiency_decay_rate)
                     + EnumChatFormatting.GRAY
                     + " as fast as it builds up.")
-            .addInfo(AuthorColen)
-            .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
-            .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
@@ -633,7 +630,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 EnumChatFormatting.GOLD + "2,121"
                     + EnumChatFormatting.GRAY
                     + " Dimensionally transcendent casings required.")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + "1"
@@ -683,8 +680,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + max_input_bus
                     + EnumChatFormatting.GRAY
                     + " output busses.")
-            .addStructureInfo("--------------------------------------------")
-            .toolTipFinisher("Gregtech");
+            .addStructureInfo("")
+            .toolTipFinisher(AuthorColen);
         return tt;
     }
 
@@ -918,7 +915,12 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         // Calculate discount to make sure it is shown properly even when machine is off but decaying
         recalculateDiscount();
 
-        return new String[] { "------------ Critical Information ------------",
+        return new String[] {
+            EnumChatFormatting.STRIKETHROUGH + "------------"
+                + EnumChatFormatting.RESET
+                + " Critical Information "
+                + EnumChatFormatting.STRIKETHROUGH
+                + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime)
@@ -970,7 +972,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + EnumChatFormatting.RESET
                 + "%",
             "Convergence: " + (convergence ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"),
-            "-----------------------------------------" };
+            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
     private void recalculateDiscount() {

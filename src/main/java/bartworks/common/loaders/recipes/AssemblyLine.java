@@ -28,10 +28,10 @@ public class AssemblyLine implements Runnable {
             ? FluidRegistry.getFluid("molten.indalloy140")
             : FluidRegistry.getFluid("molten.solderingalloy");
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Pump_IV.get(1L))
+            .metadata(RESEARCH_ITEM, ItemList.Pump_HV.get(1L))
             .metadata(RESEARCH_TIME, 1 * HOURS)
             .itemInputs(
-                ItemList.Pump_IV.get(16),
+                ItemList.Pump_HV.get(16),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 32L),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.HSSE, 16L),

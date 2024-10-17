@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GTValues.VN;
 
 import java.lang.reflect.Field;
@@ -115,8 +114,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     "Heats up " + (long) (this.mTier * 24 * (double) MTEDeepEarthHeatingPump.nulearHeatMod) * 20
                         + "L/s Coolant(minus 10% per Maintenance Problem)");
         }
-        tt.addSeparator()
-            .beginStructureBlock(3, 7, 3, false)
+        tt.beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
@@ -128,7 +126,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInputBus("Mining Pipes, optional, any base casing")
             .addInputHatch("Any base casing")
             .addOutputHatch("Any base casing")
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 
