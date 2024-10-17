@@ -742,7 +742,7 @@ public class MultiblockTooltipBuilder {
      * @param authors Formatted names of the creators of this multiblock machine - if any
      */
     public MultiblockTooltipBuilder toolTipFinisher(@Nullable String... authors) {
-        return toolTipFinisher(EnumChatFormatting.GRAY, 41, false, authors);
+        return toolTipFinisher(EnumChatFormatting.GRAY, 41, authors);
     }
 
     /**
@@ -755,24 +755,21 @@ public class MultiblockTooltipBuilder {
      *
      * @param separatorColor  Color of the separator line
      * @param separatorLength Length of the separator line
-     * @param isPrioritized   Whether the separator line config should take priority over finisher line config
      * @param authors         Formatted names of the creators of this multiblock machine - if any
      */
 
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
-        boolean isPrioritized, @Nullable String... authors) {
-        if (isPrioritized) {
-            this.addSeparator(separatorColor, separatorLength);
-        } else {
-            switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
-                case 0 -> {}
-                case 1 -> iLines.add(" ");
-                case 2 -> iLines.add(separatorColor + StringUtils.getRepetitionOf('-', separatorLength));
-                default -> iLines.add(
-                    separatorColor.toString() + EnumChatFormatting.STRIKETHROUGH
-                        + StringUtils.getRepetitionOf('-', separatorLength));
-            }
+        @Nullable String... authors) {
+
+        switch (GTMod.gregtechproxy.tooltipFinisherStyle) {
+            case 0 -> {}
+            case 1 -> iLines.add(" ");
+            case 2 -> iLines.add(separatorColor + StringUtils.getRepetitionOf('-', separatorLength));
+            default -> iLines.add(
+                separatorColor.toString() + EnumChatFormatting.STRIKETHROUGH
+                    + StringUtils.getRepetitionOf('-', separatorLength));
         }
+
         iLines.add(
             TT_hold + " "
                 + EnumChatFormatting.BOLD
