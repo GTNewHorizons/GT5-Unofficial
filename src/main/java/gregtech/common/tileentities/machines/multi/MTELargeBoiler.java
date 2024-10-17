@@ -276,9 +276,9 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 if (tFluid != null && tRecipe.mSpecialValue > 1) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
+                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
                         this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
                         this.mEUt = adjustEUtForConfig(getEUt());
-                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -288,10 +288,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 if (tFluid != null) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
+                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                         this.mMaxProgresstime = adjustBurnTimeForConfig(
                             Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
                         this.mEUt = adjustEUtForConfig(getEUt());
-                        this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -308,9 +308,9 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             this.excessFuel += GTModHandler.getFuelValue(tInput) % 80;
                             this.mMaxProgresstime += this.excessFuel / 80;
                             this.excessFuel %= 80;
+                            this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                             this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
                             this.mEUt = adjustEUtForConfig(getEUt());
-                            this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
@@ -482,7 +482,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         // Checks if the fuel is eligible for a super efficiency increase and if so, we want to immediately apply the
         // adjustment!
         // We also want to check that the fuel
-        if (rawBurnTime * getEfficiencyIncrease() <= 5000 && mEfficiency < getCorrectedMaxEfficiency(mInventory[1])) {
+        if (mEfficiencyIncrease <= 5000 && mEfficiency < getCorrectedMaxEfficiency(mInventory[1])) {
             return rawBurnTime;
         }
         int adjustedEUt = Math.max(25, getEUt() - (isSuperheated() ? 75 : 25) * integratedCircuitConfig);
