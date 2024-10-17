@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.AuthorQuerns;
 import static net.minecraft.util.MovingObjectPosition.MovingObjectType.BLOCK;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -114,8 +115,10 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
 
     @Override
-    public List<String> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
+    public Optional<List<String>> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
         final ItemStack aStack) {
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
+        aList.add(mTooltipChain);
         aList.add(" ");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.switch"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));
@@ -123,7 +126,8 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.lock"));
         aList.add(" ");
         aList.add(AuthorQuerns);
-        return aList;
+
+        return Optional.of(aList);
     }
     // endregion
 
