@@ -268,8 +268,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             }
         }
 
-        return casingAmount >= (91 + width * 20)
-            && mMaintenanceHatches.size() == 1;
+        return casingAmount >= (91 + width * 20) && mMaintenanceHatches.size() == 1;
     }
 
     @Override
