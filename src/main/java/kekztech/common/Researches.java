@@ -38,7 +38,7 @@ public class Researches {
             new ItemStack(Blocks.jarThaumiumReinforced, 1))
                 .setPages(
                     new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.0"),
-                    new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDJAR")),
+                    new ResearchPage(Recipes.shapedArcaneRecipes.get("THAUMIUMREINFORCEDJAR")),
                     new ResearchPage(Recipes.infusionRecipes.get("THAUMIUMREINFORCEDVOIDJAR")),
                     new ResearchPage("kekztech.research_page.THAUMIUMREINFORCEDJAR.1"))
                 .setConcealed()
