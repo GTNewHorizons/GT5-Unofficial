@@ -192,10 +192,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
-            .addCasingInfoMin("Solidifier Casing", 146, false)
-            .addCasingInfoMin("Radiator Casing", 18, false)
-            .addCasingInfoMin("Heat Proof Casing", 4, false)
-            .addCasingInfoMin("Solid Steel Casing", 4, false)
+            .addCasingInfoRange("Solidifier Casing", 91, 211, false)
+            .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
+            .addCasingInfoRange("Heat Proof Machine Casing", 4, 16, false)
+            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 4, 16, false)
+            .addCasingInfoRange("Glass", 21, 117, true)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -260,14 +261,15 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         if (!checkPiece(MS_END, -4 - 2 * width, 4, 0) || !checkPiece(MS_END, 4 + 2 * width, 4, 0)) {
             return false;
         }
-        if (glassTier >= VoltageIndex.UMV) return true;
+
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (mEnergyHatch.mTier > glassTier) {
+            if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
                 return false;
             }
         }
 
-        return casingAmount >= (100 + width * 23);
+        return casingAmount >= (91 + width * 20)
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
