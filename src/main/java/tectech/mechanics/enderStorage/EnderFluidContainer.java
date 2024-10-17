@@ -131,4 +131,26 @@ public class EnderFluidContainer implements IFluidHandler, Serializable {
         }
         if (fluidStack != null) fluidStack.tag = tag;
     }
+
+    public NBTTagCompound save() {
+        NBTTagCompound data = new NBTTagCompound();
+
+        if (fluidStack != null) {
+            fluidStack.writeToNBT(data);
+        }
+
+        return data;
+    }
+
+    public static EnderFluidContainer load(NBTTagCompound data) {
+        EnderFluidContainer container = new EnderFluidContainer();
+
+        if (!"".equals(data.getString("FluidName"))) {
+            container.fluidStack = FluidStack.loadFluidStackFromNBT(data);
+        } else {
+            container.fluidStack = null;
+        }
+
+        return container;
+    }
 }
