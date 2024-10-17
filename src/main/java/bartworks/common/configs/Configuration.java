@@ -72,10 +72,6 @@ public class Configuration {
         @Config.DefaultInt(20_000_000)
         public int energyPerCell;
 
-        @Config.Comment("This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant")
-        @Config.DefaultBoolean(false)
-        public boolean DEHPDirectSteam;
-
         @Config.Ignore()
         public static int megaMachinesMax = 256;
 
