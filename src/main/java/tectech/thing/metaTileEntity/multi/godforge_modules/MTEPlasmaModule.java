@@ -243,7 +243,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74, true);
+            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
         return tt;
     }
 

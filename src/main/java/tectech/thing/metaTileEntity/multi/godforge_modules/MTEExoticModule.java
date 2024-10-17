@@ -668,7 +668,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Hatch")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 75, true);
+            .toolTipFinisher(EnumChatFormatting.AQUA, 75);
         return tt;
     }
 

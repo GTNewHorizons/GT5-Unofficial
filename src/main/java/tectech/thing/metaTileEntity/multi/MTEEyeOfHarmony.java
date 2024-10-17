@@ -1118,7 +1118,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output hatch.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
-            .toolTipFinisher(EnumChatFormatting.GOLD, 87, true, GTValues.AuthorColen);
+            .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTValues.AuthorColen);
         return tt;
     }
 
