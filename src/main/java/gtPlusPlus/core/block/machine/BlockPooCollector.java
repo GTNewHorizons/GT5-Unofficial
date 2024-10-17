@@ -75,7 +75,7 @@ public class BlockPooCollector extends BlockContainer {
     }
 
     /**
-     * Called upon block activation (right click on the block.)
+     * Called upon block activation (right-click on the block.)
      */
     @Override
     public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
