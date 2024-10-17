@@ -1049,6 +1049,7 @@ fog.button.thanks.tooltip=List of Contributors
 fog.button.color.tooltip=Cosmetics Menu
 fog.button.updaterenderer.tooltip=Apply Changes
 fog.button.resetcosmetics.tooltip=Reset Values
+fog.button.addstarcolor.tooltip=Add to Star Colors
 fog.button.rainbowmode.tooltip=Toggle Rainbow Mode
 
 
@@ -1131,6 +1132,8 @@ gt.blockmachines.multimachine.FOG.playtesting=Playtesting
 gt.blockmachines.multimachine.FOG.misi=Misi
 gt.blockmachines.multimachine.FOG.thanks=A huge thank you to these incredible people for helping to make this a reality! -Cloud
 gt.blockmachines.multimachine.FOG.cosmetics=Star Cosmetics
+gt.blockmachines.multimachine.FOG.custom=Custom...
+gt.blockmachines.multimachine.FOG.starcolor=Custom Star Color
 gt.blockmachines.multimachine.FOG.color=Color
 gt.blockmachines.multimachine.FOG.misc=Miscellaneous
 gt.blockmachines.multimachine.FOG.red=Red
@@ -1140,6 +1143,7 @@ gt.blockmachines.multimachine.FOG.gamma=Gamma
 gt.blockmachines.multimachine.FOG.speed=Speed
 gt.blockmachines.multimachine.FOG.spin=Spin
 gt.blockmachines.multimachine.FOG.size=Size
+gt.blockmachines.multimachine.FOG.addcolor=Add to Colors
 gt.blockmachines.multimachine.FOG.apply=Apply
 gt.blockmachines.multimachine.FOG.decimals=Accepts Decimals
 gt.blockmachines.multimachine.FOG.integers=Accepts Integers

@@ -429,9 +429,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         long millis = System.currentTimeMillis() % (1000 * 36000);
         float timer = millis / (50f); // to ticks
 
-        if (forgeTile.getRainbowMode()) {
-            forgeTile.incrementRainbowColors();
-        }
+        forgeTile.incrementColors();
 
         RenderEntireStar(forgeTile, x, y, z, timer);
         RenderRings(forgeTile, x, y, z, timer);
