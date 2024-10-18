@@ -83,6 +83,7 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
@@ -499,6 +500,30 @@ public class GTUtility {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
             aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
         }
+    }
+
+    public static void sendErrorToPlayer(EntityPlayer aPlayer, String aChatMessage) {
+        if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
+            aPlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + aChatMessage));
+        }
+    }
+
+    public static void sendChatToPlayer(UUID playerId, String chatMessage) {
+        EntityPlayer player = getPlayerById(playerId);
+
+        if (player != null) {
+            sendChatToPlayer(player, chatMessage);
+        }
+    }
+
+    public static EntityPlayer getPlayerById(UUID playerId) {
+        for (EntityPlayer player : MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
+            if (player.getGameProfile().getId().equals(playerId)) {
+                return player;
+            }
+        }
+
+        return null;
     }
 
     public static void checkAvailabilities() {

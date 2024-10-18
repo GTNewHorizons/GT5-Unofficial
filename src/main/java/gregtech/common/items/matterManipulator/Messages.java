@@ -4,19 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import org.joml.Vector3i;
 
@@ -40,7 +35,7 @@ import io.netty.buffer.ByteBuf;
 enum Messages {
 
     MMBPressed(
-        server(simple((player, stack, manipulator, state) -> { manipulator.onMMBPressed((EntityPlayerMP) player); }))),
+        server(simple((player, stack, manipulator, state) -> { manipulator.onMMBPressed(player, stack, state); }))),
     SetRemoveMode(server(enumPacket(BlockRemoveMode.values(), (state, value) -> state.config.removeMode = value))),
     SetPlaceMode(server(enumPacket(PlaceMode.values(), (player, stack, manipulator, state, value) -> {
         state.config.placeMode = value;
@@ -109,31 +104,89 @@ enum Messages {
         state.config.action = PendingAction.MARK_PASTE;
         state.config.coordC = null;
     }))),
-    GetRequiredItems(server(simple((player, stack, manipulator, state) -> {
-        if (state.config.placeMode != PlaceMode.COPYING) {
-            return;
-        }
+    GetRequiredItems(server(new ISimplePacketHandler<IntPacket>() {
 
-        if (state.config.coordA == null || state.config.coordB == null || state.config.coordC == null) {
-            return;
-        }
+        @Override
+        public void handle(EntityPlayer player, IntPacket packet) {
+            ItemStack held = player.inventory.getCurrentItem();
 
-        List<PendingBlock> blocks = state.getPendingBlocks();
-        RequiredItemAnalysis itemAnalysis = BlockAnalyzer.getRequiredItemsForBuild(player, blocks);
+            if (held != null && held.getItem() instanceof ItemMatterManipulator) {
+                NBTState state = ItemMatterManipulator.getState(held);
 
-        if (!itemAnalysis.requiredItems.isEmpty()) {
-            var requiredItems = itemAnalysis.requiredItems.entrySet()
-                .stream()
-                .map(e -> String.format("%s: %d", e.getKey().getItemStack().getDisplayName(), e.getValue()))
-                .sorted()
-                .collect(Collectors.toList());
-            
-            player.addChatMessage(new ChatComponentText("Required items:"));
-            
-            for(String item : requiredItems) {
-                player.addChatMessage(new ChatComponentText(item));
+                if (state.config.placeMode != PlaceMode.COPYING) {
+                    return;
+                }
+        
+                if (state.config.coordA == null || state.config.coordB == null || state.config.coordC == null) {
+                    return;
+                }
+        
+                List<PendingBlock> blocks = state.getPendingBlocks();
+                RequiredItemAnalysis itemAnalysis = BlockAnalyzer.getRequiredItemsForBuild(player, blocks);
+        
+                if (state.connectToUplink()) {
+                    List<ItemStack> requiredItems = itemAnalysis.requiredItems.entrySet()
+                        .stream()
+                        .flatMap(e -> {
+                            List<ItemStack> items = new ArrayList<>();
+        
+                            long amount = e.getValue() == null ? 0 : e.getValue().longValue();
+        
+                            while (amount > 0) {
+                                int toRemove = amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int)amount;
+                
+                                items.add(e.getKey().getItemStack(toRemove));
+                
+                                amount -= toRemove;
+                            }
+                        
+                            return items.stream();
+                        })
+                        .collect(Collectors.toList());
+                        
+                    state.uplink.submitPlan(player, state.config.coordA.toString(), requiredItems, (packet.value & PLAN_AUTO_SUBMIT) != 0);
+                } else {
+                    player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Manipulator not connected to an uplink: cannot create a fake pattern."));
+                    
+                    if (!itemAnalysis.requiredItems.isEmpty()) {
+                        var requiredItems = itemAnalysis.requiredItems.entrySet()
+                            .stream()
+                            .map(e -> String.format("%s: %d", e.getKey().getItemStack().getDisplayName(), e.getValue()))
+                            .sorted()
+                            .collect(Collectors.toList());
+                        
+                        player.addChatMessage(new ChatComponentText("Required items:"));
+                        
+                        for(String item : requiredItems) {
+                            player.addChatMessage(new ChatComponentText(item));
+                        }
+                    }
+                }
+
+                ItemMatterManipulator.setState(held, state);
             }
         }
+
+        @Override
+        public IntPacket getNewPacket(Messages message, Object value) {
+            IntPacket packet = new IntPacket(message);
+            packet.value = value == null ? 0 : (int)(Integer)value;
+            return packet;
+        }
+    })),
+    ClearManualPlans(server(simple((player, stack, manipulator, state) -> {
+        if (state.connectToUplink()) {
+            state.uplink.clearManualPlans(player);
+        }
+    }))),
+    ClearWhitelist(server(simple((player, stack, manipulator, state) -> {
+
+    }))),
+    AddToWhitelist(server(simple((player, stack, manipulator, state) -> {
+
+    }))),
+    SetNewBlock(server(simple((player, stack, manipulator, state) -> {
+
     }))),
 
     ;
@@ -275,28 +328,6 @@ enum Messages {
         };
     }
 
-    private static <T extends SimplePacket> ISimplePacketHandler<T> client(ISimplePacketHandler<T> next) {
-        return new ISimplePacketHandler<T>() {
-
-            @Override
-            public void handle(EntityPlayer player, T packet) {
-                if (player != null) {
-                    GTMod.GT_FML_LOGGER.error(
-                        "Player wasn't null when trying to process " + packet.message.name()
-                            + " packet: it will be ignored");
-                    return;
-                }
-
-                next.handle(Minecraft.getMinecraft().thePlayer, packet);
-            }
-
-            @Override
-            public T getNewPacket(Messages message, Object data) {
-                return next.getNewPacket(message, data);
-            }
-        };
-    }
-
     private static interface ISimpleHandler {
 
         public void handle(EntityPlayer player, ItemStack stack, ItemMatterManipulator manipulator, NBTState state);
@@ -388,59 +419,5 @@ enum Messages {
         };
     }
 
-    private static class InteractPacket extends SimplePacket {
-
-        public PlayerInteractEvent.Action action;
-        public int x;
-        public int y;
-        public int z;
-        public int face;
-        public World world;
-
-        public InteractPacket(Messages message) {
-            super(message);
-        }
-
-        public InteractPacket(Messages message, PlayerInteractEvent event) {
-            super(message);
-            this.action = event.action;
-            this.x = event.x;
-            this.y = event.y;
-            this.z = event.z;
-            this.face = event.face;
-            this.world = event.world;
-        }
-
-        @Override
-        public void encode(ByteBuf buffer) {
-            buffer.writeByte(action.ordinal());
-            buffer.writeInt(x);
-            buffer.writeInt(y);
-            buffer.writeInt(z);
-            buffer.writeByte(face);
-            buffer.writeInt(world.provider.dimensionId);
-        }
-
-        @Override
-        public GTPacket decode(ByteArrayDataInput buffer) {
-            InteractPacket packet = new InteractPacket(message);
-
-            action = PlayerInteractEvent.Action.values()[buffer.readByte()];
-            x = buffer.readInt();
-            y = buffer.readInt();
-            z = buffer.readInt();
-            face = buffer.readByte();
-
-            int worldId = buffer.readInt();
-
-            for (WorldServer world : MinecraftServer.getServer().worldServers) {
-                if (world.provider.dimensionId == worldId) {
-                    packet.world = world;
-                    break;
-                }
-            }
-
-            return packet;
-        }
-    }
+    public static final int PLAN_AUTO_SUBMIT = 0b1;
 }

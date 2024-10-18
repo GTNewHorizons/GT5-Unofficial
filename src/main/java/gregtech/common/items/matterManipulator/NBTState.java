@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.joml.Vector3i;
@@ -45,6 +45,7 @@ import appeng.tile.networking.TileWireless;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.RegionAnalysis;
+import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 
 class NBTState {
 
@@ -52,7 +53,7 @@ class NBTState {
 
     public NBTState.Config config = new NBTState.Config();
 
-    public Long encKey;
+    public Long encKey, uplinkAddress;
     public double charge;
 
     public transient TileSecurity securityTerminal;
@@ -159,11 +160,34 @@ class NBTState {
         }
     }
 
+    public transient MTEMMUplink uplink;
+
+    public boolean connectToUplink() {
+        uplink = null;
+
+        if (uplinkAddress != null && uplinkAddress != 0) {
+            uplink = MTEMMUplink.getUplink(uplinkAddress);
+
+            if (uplink != null) {
+                if (!uplink.getBaseMetaTileEntity().isActive()) {
+                    uplink = null;
+                }
+            }
+        }
+
+        return hasUplinkConnection();
+    }
+
+    public boolean hasUplinkConnection() {
+        return uplink != null;
+    }
+
     // #region Pending blocks
 
     public List<PendingBlock> getPendingBlocks() {
         switch (config.placeMode) {
-            case COPYING: {
+            case COPYING: 
+            case MOVING: {
                 Location coordA = config.coordA;
                 Location coordB = config.coordB;
                 Location coordC = config.coordC;
@@ -172,7 +196,7 @@ class NBTState {
                     return new ArrayList<>();
                 }
 
-                RegionAnalysis analysis = BlockAnalyzer.analyzeRegion(coordA.getWorld(), coordA, coordB);
+                RegionAnalysis analysis = BlockAnalyzer.analyzeRegion(coordA.getWorld(), coordA, coordB, config.placeMode == PlaceMode.COPYING ? true : false);
 
                 for (PendingBlock block : analysis.blocks) {
                     block.x += coordC.x;
@@ -184,9 +208,6 @@ class NBTState {
             }
             case GEOMETRY: {
                 return getGeomPendingBlocks();
-            }
-            case MOVING: {
-                throw new IllegalStateException();
             }
             default: {
                 throw new AssertionError();
@@ -597,7 +618,8 @@ class NBTState {
     static enum PlaceMode {
         GEOMETRY,
         MOVING,
-        COPYING
+        COPYING,
+        EXCHANGING,
     }
 
     static class PendingBlock extends Location {
@@ -814,13 +836,9 @@ class NBTState {
             return Math.sqrt(distanceTo2(other));
         }
 
-        public @Nullable World getWorld() {
+        public World getWorld() {
             if (MinecraftServer.getServer() != null) {
-                for (WorldServer world : MinecraftServer.getServer().worldServers) {
-                    if (world.provider.dimensionId == worldId) {
-                        return world;
-                    }
-                }
+                return DimensionManager.getWorld(worldId);
             }
 
             if (Minecraft.getMinecraft() != null) {

@@ -41,7 +41,7 @@ public class BlockAnalyzer {
         return result.doesAnything() ? result : null;
     }
 
-    public static RegionAnalysis analyzeRegion(World world, Location a, Location b) {
+    public static RegionAnalysis analyzeRegion(World world, Location a, Location b, boolean checkTiles) {
         if (a == null || b == null || world.provider.dimensionId != a.worldId || a.worldId != b.worldId) return null;
 
         long pre = System.nanoTime();
@@ -62,11 +62,13 @@ public class BlockAnalyzer {
                 continue;
             }
 
-            context.voxel = voxel;
-            TileAnalysisResult tile = analyze(context);
-
-            if (tile != null && tile.doesAnything()) {
-                pending.tileData = tile;
+            if (checkTiles) {
+                context.voxel = voxel;
+                TileAnalysisResult tile = analyze(context);
+    
+                if (tile != null && tile.doesAnything()) {
+                    pending.tileData = tile;
+                }
             }
 
             pending.x -= a.x;
