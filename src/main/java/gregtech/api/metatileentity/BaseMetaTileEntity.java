@@ -1179,6 +1179,10 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         }
     }
 
+    public void setCableUpdateDelay(int delay) {
+        cableUpdateDelay = delay;
+    }
+
     @Override
     public long getOutputAmperage() {
         if (canAccessData() && mMetaTileEntity.isElectric()) return mMetaTileEntity.maxAmperesOut();

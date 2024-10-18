@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -2115,6 +2116,13 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.TierdDrone2
             .set(new ItemTierDrone("tierdDrone2", "Drone (Level 3)", "Single Engine Anti-Gravity Large Aircraft", 3));
 
+        Item manipulatorHologram = new Item()
+            .setUnlocalizedName("matterManipulatorHologram")
+            .setTextureName(Mods.GregTech.resourceDomain + ":itemMatterManipulatorHologram");
+        API.hideItem(new ItemStack(manipulatorHologram));
+        GameRegistry.registerItem(manipulatorHologram, "matterManipulatorHologram");
+        ItemList.MatterManipulatorHologram.set(manipulatorHologram);
+        
         ItemList.MatterManipulator0.set(new ItemMatterManipulator(ManipulatorTier.Tier0));
         ItemList.MatterManipulator1.set(new ItemMatterManipulator(ManipulatorTier.Tier1));
         ItemList.MatterManipulator2.set(new ItemMatterManipulator(ManipulatorTier.Tier2));

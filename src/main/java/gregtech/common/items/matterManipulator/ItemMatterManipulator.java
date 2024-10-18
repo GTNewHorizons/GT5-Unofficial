@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
@@ -246,6 +245,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     desc.add("Does not have an ME connection.");
                 }
             }
+            
+            if (state.uplinkAddress != null) {
+                if (state.connectToUplink()) {
+                    desc.add("Has an Uplink connection. (Can interact currently)");
+                } else {
+                    desc.add("Has an Uplink connection. (Cannot interact currently)");
+                }
+                addInfoLine(desc, "Uplink address: %s", Long.toHexString(state.uplinkAddress));
+            } else {
+                desc.add("Does not have an Uplink connection.");
+            }
 
             if (state.config.action != null) {
                 addInfoLine(desc, "Pending Action: %s", switch (state.config.action) {
@@ -264,6 +274,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     case GEOMETRY -> "Geometry";
                     case MOVING -> "Moving";
                     case COPYING -> "Copying";
+                    case EXCHANGING -> "Exchanging";
                 });
             }
 
@@ -419,18 +430,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         }
     }
 
-    public void onMMBPressed(EntityPlayerMP player) {
-        final ItemStack heldItem = player.getHeldItem();
-        if (heldItem == null) {
-            return;
-        }
-
-        NBTState state = getState(heldItem);
-
+    public void onMMBPressed(EntityPlayer player, ItemStack stack, NBTState state) {
         if (state.config.placeMode == PlaceMode.GEOMETRY) {
-            onPickBlock(player.getEntityWorld(), player, heldItem, state, MMUtils.getHitResult(player));
-
-            setState(heldItem, state);
+            onPickBlock(player.getEntityWorld(), player, stack, state, MMUtils.getHitResult(player));
         }
     }
 
@@ -483,17 +485,19 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             }
         }
 
-        player.addChatMessage(
-            new ChatComponentText(
-                String.format(
-                    "%s%sSet %s to: %s",
-                    EnumChatFormatting.ITALIC,
-                    EnumChatFormatting.GRAY,
-                    what,
-                    selected == null ? "nothing" : selected.getDisplayName())));
+        if (!world.isRemote) {
+            player.addChatMessage(
+                new ChatComponentText(
+                    String.format(
+                        "%s%sSet %s to: %s",
+                        EnumChatFormatting.ITALIC,
+                        EnumChatFormatting.GRAY,
+                        what,
+                        selected == null ? "nothing" : selected.getDisplayName())));
+        }
     }
 
-    static final Map<EntityPlayer, PendingBuild> PENDING_BUILDS = new MapMaker().weakKeys()
+    static final Map<EntityPlayer, IBuildable> PENDING_BUILDS = new MapMaker().weakKeys()
         .makeMap();
 
     @Override
@@ -521,42 +525,22 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             if (player.worldObj.isRemote) {
                 // play startup sound
             } else {
-                PendingBuild pending = new PendingBuild();
-                pending.placingPlayer = player;
-                pending.state = getState(stack);
-                pending.tier = tier;
+                NBTState state = getState(stack);
 
-                List<PendingBlock> blocks = pending.state.getPendingBlocks();
-
-                if (tier.mMaxRange != -1) {
-                    int maxRange2 = tier.mMaxRange * tier.mMaxRange;
-
-                    Location playerLocation = new Location(
-                        player.getEntityWorld(),
-                        MathHelper.floor_double(player.posX),
-                        MathHelper.floor_double(player.posY),
-                        MathHelper.floor_double(player.posZ));
-        
-                    blocks.removeIf(block -> block.distanceTo2(playerLocation) > maxRange2);
+                switch (state.config.placeMode) {
+                    case GEOMETRY:
+                    case COPYING: {
+                        PENDING_BUILDS.put(player, getGeomOrCopy(player, stack, state));
+                        break;
+                    }
+                    case MOVING: {
+                        PENDING_BUILDS.put(player, getMove(player, stack, state));
+                        break;
+                    }
+                    case EXCHANGING: {
+                        break;
+                    }
                 }
-
-                Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(
-                    Comparator.comparing((UniqueIdentifier id) -> id.modId)
-                        .thenComparing(id -> id.name));
-                Comparator<PendingBlock> comparePending = Comparator.comparingInt((PendingBlock b) -> b.buildOrder)
-                    .thenComparing(Comparator.nullsFirst(Comparator.comparing(b -> b.blockId, blockId)))
-                    .thenComparingInt(b -> b.metadata)
-                    .thenComparingLong(b -> {
-                        int chunkX = b.x >> 4;
-                        int chunkZ = b.z >> 4;
-
-                        return chunkX | (chunkZ << 32);
-                    });
-
-                blocks.sort(comparePending);
-                pending.pendingBlocks = new LinkedList<>(blocks);
-
-                PENDING_BUILDS.put(player, pending);
             }
         }
 
@@ -564,6 +548,55 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             PENDING_BUILDS.get(player)
                 .tryPlaceBlocks(stack, player);
         }
+    }
+
+    private IBuildable getGeomOrCopy(EntityPlayer player, ItemStack stack, NBTState state) {
+        PendingBuild pending = new PendingBuild();
+        pending.placingPlayer = player;
+        pending.tier = tier;
+        pending.state = state;
+
+        List<PendingBlock> blocks = pending.state.getPendingBlocks();
+
+        if (tier.mMaxRange != -1) {
+            int maxRange2 = tier.mMaxRange * tier.mMaxRange;
+
+            Location playerLocation = new Location(
+                player.getEntityWorld(),
+                MathHelper.floor_double(player.posX),
+                MathHelper.floor_double(player.posY),
+                MathHelper.floor_double(player.posZ));
+
+            blocks.removeIf(block -> block.distanceTo2(playerLocation) > maxRange2);
+        }
+
+        Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(
+            Comparator.comparing((UniqueIdentifier id) -> id.modId)
+                .thenComparing(id -> id.name));
+        Comparator<PendingBlock> comparePending = Comparator.comparingInt((PendingBlock b) -> b.buildOrder)
+            .thenComparing(Comparator.nullsFirst(Comparator.comparing(b -> b.blockId, blockId)))
+            .thenComparingInt(b -> b.metadata)
+            .thenComparingLong(b -> {
+                int chunkX = b.x >> 4;
+                int chunkZ = b.z >> 4;
+
+                return chunkX | (chunkZ << 32);
+            });
+
+        blocks.sort(comparePending);
+        pending.pendingBlocks = new LinkedList<>(blocks);
+
+        return pending;
+    }
+
+    private IBuildable getMove(EntityPlayer player, ItemStack stack, NBTState state) {
+        PendingMove move = new PendingMove();
+
+        move.placingPlayer = player;
+        move.tier = tier;
+        move.state = state;
+
+        return move;
     }
 
     @Override
@@ -593,6 +626,14 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         setState(item, state);
     }
 
+    public void setUplinkAddress(ItemStack stack, Long address) {
+        NBTState state = getState(stack);
+
+        state.uplinkAddress = address;
+
+        setState(stack, state);
+    }
+
     // #region UI
 
     public ModularWindow createWindow(UIBuildContext buildContext) {
@@ -620,6 +661,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     case GEOMETRY -> addGeometryOptions(builder, buildContext, heldStack);
                     case COPYING -> addCopyingOptions(builder, buildContext, heldStack);
                     case MOVING -> addMovingOptions(builder, buildContext, heldStack);
+                    case EXCHANGING -> addExchangingOptions(builder, buildContext, heldStack);
                 }
             });
     }
@@ -776,11 +818,26 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     Messages.MarkCopy.sendToServer();
                 })
             .done()
-            .option()
+            .branch()
                 .label("Planning")
-                .onClicked(() -> {
-                    Messages.GetRequiredItems.sendToServer();
-                })
+                .option()
+                    .label("Clear Manual Plans")
+                    .onClicked(() -> {
+                        Messages.ClearManualPlans.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Plan (Manual)")
+                    .onClicked(() -> {
+                        Messages.GetRequiredItems.sendToServer(0);
+                    })
+                .done()
+                .option()
+                    .label("Plan (Auto)")
+                    .onClicked(() -> {
+                        Messages.GetRequiredItems.sendToServer(Messages.PLAN_AUTO_SUBMIT);
+                    })
+                .done()
             .done()
             .option()
                 .label("Mark Paste")
@@ -791,8 +848,46 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     }
 
     private void addMovingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
-
+        builder
+            .option()
+                .label("Mark Cut")
+                .onClicked(() -> {
+                    Messages.MarkCopy.sendToServer();
+                })
+            .done()
+            .option()
+                .label("Mark Paste")
+                .onClicked(() -> {
+                    Messages.MarkPaste.sendToServer();
+                })
+            .done();
     }
+
+    private void addExchangingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
+        builder
+            .branch()
+                .label("Replace Whitelist")
+                .option()
+                    .label("Clear")
+                    .onClicked(() -> {
+                        Messages.MarkCopy.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Add block")
+                    .onClicked(() -> {
+                        Messages.MarkCopy.sendToServer();
+                    })
+                .done()
+            .done()
+            .option()
+                .label("Set new block")
+                .onClicked(() -> {
+                    Messages.MarkCopy.sendToServer();
+                })
+            .done();
+    }
+
     // spotless:on
 
     // #endregion
@@ -813,18 +908,21 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     }
 
     @SideOnly(Side.CLIENT)
-    private long lastSpawnMS = 0;
+    private long lastAnalysisMS = 0;
 
     @SideOnly(Side.CLIENT)
-    private NBTState.Config lastDrawnConfig = null;
+    private NBTState.Config lastAnalyzedConfig = null;
 
     @SideOnly(Side.CLIENT)
     private Location lastPlayerPosition = null;
 
     @SideOnly(Side.CLIENT)
-    private boolean justDrew = false;
+    private List<PendingBlock> analysisCache = null;
 
-    private static final long SPAWN_INTERVAL_MS = 10_000;
+    @SideOnly(Side.CLIENT)
+    private ItemMatterManipulator lastDrawer = null;
+
+    private static final long ANALYSIS_INTERVAL_MS = 10_000;
 
     private static final int MAX_PREVIEW_BLOCKS = 100_000;
 
@@ -838,7 +936,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             NBTState state = getState(held);
 
             switch (state.config.placeMode) {
-                case GEOMETRY: {
+                case GEOMETRY:
+                case EXCHANGING: {
                     renderGeom(event, state, player);
                     break;
                 }
@@ -858,11 +957,12 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 e.printStackTrace();
             }
         } else {
-            if (justDrew) {
-                lastSpawnMS = 0;
-                lastDrawnConfig = null;
-                lastPlayerPosition = null;    
-                justDrew = false;
+            if (lastDrawer == this) {
+                lastAnalysisMS = 0;
+                lastAnalyzedConfig = null;
+                lastPlayerPosition = null;
+                analysisCache = null;
+                lastDrawer = null;
 
                 StructureLibAPI.startHinting(player.worldObj);
                 StructureLibAPI.endHinting(player.worldObj);
@@ -905,45 +1005,16 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 new Vector3f(0.15f, 0.6f, 0.75f));
             BoxRenderer.INSTANCE.finish();
 
-            boolean spawn = (System.currentTimeMillis() - lastSpawnMS) >= SPAWN_INTERVAL_MS
-                || !Objects.equals(lastDrawnConfig, state.config)
-                || !Objects.equals(lastPlayerPosition, playerLocation);
 
-            if (spawn) {
-                lastSpawnMS = System.currentTimeMillis();
-                lastDrawnConfig = state.config;
-                lastPlayerPosition = playerLocation;
-                justDrew = true;
+            boolean needsAnalysis = (System.currentTimeMillis() - lastAnalysisMS) >= ANALYSIS_INTERVAL_MS
+                || !Objects.equals(lastAnalyzedConfig, state.config);
 
-                StructureLibAPI.startHinting(player.worldObj);
+            boolean needsHintDraw = needsAnalysis || !Objects.equals(lastPlayerPosition, playerLocation);
 
-                int buildable = tier.mMaxRange * tier.mMaxRange;
-
-                int i = 0;
-
-                for (PendingBlock pendingBlock : state.getPendingBlocks()) {
-                    if (tier.mMaxRange != -1) {
-                        int dist2 = pendingBlock.distanceTo2(playerLocation);
-    
-                        if (dist2 > buildable) continue;
-                    }
-
-                    if (i++ > MAX_PREVIEW_BLOCKS) break;
-
-                    Block block = pendingBlock.getBlock();
-
-                    if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {
-                        StructureLibAPI.hintParticle(
-                            player.worldObj,
-                            pendingBlock.x,
-                            pendingBlock.y,
-                            pendingBlock.z,
-                            block,
-                            pendingBlock.metadata);
-                    }
-                }
-
-                StructureLibAPI.endHinting(player.worldObj);
+            if (needsAnalysis) {
+                lastAnalysisMS = System.currentTimeMillis();
+                lastAnalyzedConfig = state.config;
+                analysisCache = state.getPendingBlocks();
 
                 int x1 = coordA.x;
                 int y1 = coordA.y;
@@ -961,9 +1032,15 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
                 AboveHotbarHUD.renderTextAboveHotbar(
                     String.format("dX=%d dY=%d dZ=%d", maxX - minX + 1, maxY - minY + 1, maxZ - minZ + 1),
-                    (int) (SPAWN_INTERVAL_MS * 20 / 1000),
+                    (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
                     false,
                     false);
+            }
+
+            if (needsHintDraw) {
+                lastPlayerPosition = playerLocation;
+                lastDrawer = this;
+                drawHints(event, state, player, playerLocation);
             }
         }
     }
@@ -1020,16 +1097,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             deltas = MMUtils.getRegionDeltas(sourceA, sourceB);
 
             BoxRenderer.INSTANCE.drawAround(MMUtils.getBoundingBox(sourceA, deltas), new Vector3f(0.15f, 0.6f, 0.75f));
-
-            AboveHotbarHUD.renderTextAboveHotbar(
-                String.format(
-                    "dX=%d dY=%d dZ=%d",
-                    Math.abs(deltas.x) + 1,
-                    Math.abs(deltas.y) + 1,
-                    Math.abs(deltas.z) + 1),
-                (int) (SPAWN_INTERVAL_MS * 20 / 1000),
-                false,
-                false);
         }
 
         if (isPasteValid) {
@@ -1045,49 +1112,67 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 MathHelper.floor_double(player.posY),
                 MathHelper.floor_double(player.posZ));
 
-            boolean spawn = (System.currentTimeMillis() - lastSpawnMS) >= SPAWN_INTERVAL_MS
-                || !Objects.equals(lastDrawnConfig, state.config)
-                || !Objects.equals(lastPlayerPosition, playerLocation);
+            boolean needsAnalysis = (System.currentTimeMillis() - lastAnalysisMS) >= ANALYSIS_INTERVAL_MS
+                || !Objects.equals(lastAnalyzedConfig, state.config);
 
-            if (spawn) {
-                lastSpawnMS = System.currentTimeMillis();
-                lastDrawnConfig = state.config;
+            boolean needsHintDraw = needsAnalysis || !Objects.equals(lastPlayerPosition, playerLocation);
+
+            if (needsAnalysis) {
+                lastAnalysisMS = System.currentTimeMillis();
+                lastAnalyzedConfig = state.config;
+                analysisCache = state.getPendingBlocks();
+
+                AboveHotbarHUD.renderTextAboveHotbar(
+                    String.format(
+                        "dX=%d dY=%d dZ=%d",
+                        Math.abs(deltas2.x) + 1,
+                        Math.abs(deltas2.y) + 1,
+                        Math.abs(deltas2.z) + 1),
+                    (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
+                    false,
+                    false);
+            }
+
+            if (needsHintDraw) {
                 lastPlayerPosition = playerLocation;
-                justDrew = true;
-
-                StructureLibAPI.startHinting(player.worldObj);
-
-                int buildable = tier.mMaxRange * tier.mMaxRange;
-
-                int i = 0;
-
-                for (PendingBlock pendingBlock : state.getPendingBlocks()) {
-                    if (tier.mMaxRange != -1) {
-                        int dist2 = pendingBlock.distanceTo2(playerLocation);
-    
-                        if (dist2 > buildable) continue;
-                    }
-
-                    if (i++ > MAX_PREVIEW_BLOCKS) break;
-
-                    Block block = pendingBlock.getBlock();
-
-                    if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {
-                        StructureLibAPI.hintParticle(
-                            player.worldObj,
-                            pendingBlock.x,
-                            pendingBlock.y,
-                            pendingBlock.z,
-                            block,
-                            pendingBlock.metadata);
-                    }
-                }
-
-                StructureLibAPI.endHinting(player.worldObj);
+                lastDrawer = this;
+                drawHints(event, state, player, playerLocation);
             }
         }
 
         BoxRenderer.INSTANCE.finish();
+    }
+
+    private void drawHints(RenderWorldLastEvent event, NBTState state, EntityPlayer player, Location playerLocation) {
+        StructureLibAPI.startHinting(player.worldObj);
+
+        int buildable = tier.mMaxRange * tier.mMaxRange;
+
+        int i = 0;
+
+        for (PendingBlock pendingBlock : analysisCache) {
+            if (tier.mMaxRange != -1) {
+                int dist2 = pendingBlock.distanceTo2(playerLocation);
+
+                if (dist2 > buildable) continue;
+            }
+
+            if (i++ > MAX_PREVIEW_BLOCKS) break;
+
+            Block block = pendingBlock.getBlock();
+
+            if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {
+                StructureLibAPI.hintParticle(
+                    player.worldObj,
+                    pendingBlock.x,
+                    pendingBlock.y,
+                    pendingBlock.z,
+                    block,
+                    pendingBlock.metadata);
+            }
+        }
+
+        StructureLibAPI.endHinting(player.worldObj);
     }
 
     private static Vector3d getVecForDir(ForgeDirection dir) {
