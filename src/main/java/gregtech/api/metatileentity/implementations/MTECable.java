@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +25,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.input.Keyboard;
 
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GTMod;
@@ -56,6 +60,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.GTClient;
+import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.covers.CoverSolarPanel;
 import ic2.api.energy.EnergyNet;
@@ -262,6 +267,50 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
             && (!GTMod.gregtechproxy.gt6Cable || mCheckConnections)) {
             checkConnections();
         }
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
+        float aX, float aY, float aZ) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+            final ItemStack handItem = aPlayer.inventory.getCurrentItem();
+            IMetaTileEntity meta = ItemMachines.getMetaTileEntity(handItem);
+
+            if (!(meta instanceof MTECable handCable)) return false;
+
+            // Coordinates of block being replaced
+            int x = aBaseMetaTileEntity.getXCoord();
+            int y = aBaseMetaTileEntity.getYCoord();
+            int z = aBaseMetaTileEntity.getZCoord();
+
+            MTECable newCable;
+            World world = aBaseMetaTileEntity.getWorld();
+            Block block = world.getBlock(x, y, z);
+
+            aPlayer.inventory.addItemStackToInventory(
+                new ItemStack(ItemMachines.getItemFromBlock(block), 1, block.getDamageValue(world, x, y, z)));
+
+            getBaseMetaTileEntity().setMetaTileEntity(
+                newCable = new MTECable(
+                    handCable.mName,
+                    handCable.mThickNess,
+                    handCable.mMaterial,
+                    handCable.mCableLossPerMeter,
+                    handCable.mAmperage,
+                    handCable.mVoltage,
+                    handCable.mInsulated,
+                    handCable.mCanShock));
+
+            world.setBlock(x, y, z, Blocks.air);
+
+            handItem.tryPlaceItemIntoWorld(aPlayer, world, x, y, z, ForgeDirection.UNKNOWN.ordinal(), aX, aY, aZ);
+
+            newCable.mCheckConnections = true;
+            newCable.onPostTick(aBaseMetaTileEntity, 20);
+
+            return true;
+        }
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     @Override
