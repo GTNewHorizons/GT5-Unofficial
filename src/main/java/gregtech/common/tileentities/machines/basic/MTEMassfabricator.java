@@ -1,22 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASSFAB;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_MASSFAB;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_MASSFAB;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_MASSFAB_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_MASSFAB_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_MASSFAB_GLOW;
 
 import java.util.Arrays;
 
@@ -29,6 +13,7 @@ import com.google.common.primitives.Ints;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -65,51 +50,51 @@ public class MTEMassfabricator extends MTEBasicMachine {
             1,
             1,
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_SIDE_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_MASSFAB),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_SIDE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_MASSFAB_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_SIDE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_MASSFAB_ACTIVE),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_MASSFAB),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MASSFAB_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_FRONT_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_MASSFAB_ACTIVE),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_MASSFAB_ACTIVE_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_TOP_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_MASSFAB),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_TOP")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_MASSFAB_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_TOP_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_MASSFAB),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/massfab/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
     }
