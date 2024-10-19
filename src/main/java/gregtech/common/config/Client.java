@@ -107,6 +107,10 @@ public class Client {
         @Config.Comment("Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line.")
         @Config.DefaultInt(2)
         public int separatorStyle;
+
+        @Config.Comment("Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+: continuous line.")
+        @Config.DefaultInt(1)
+        public int tooltipFinisherStyle;
     }
 
     @Config.LangKey("GT5U.gui.config.client.preference")

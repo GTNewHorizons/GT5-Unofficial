@@ -46,7 +46,6 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Worldgen;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineBase;
-import gregtech.common.tileentities.machines.multi.MTECleanroom;
 
 public class GTPreLoad {
 
@@ -487,9 +486,6 @@ public class GTPreLoad {
             GT_FML_LOGGER.error("The Length of the Gas Turbine Pollution Array Config must be the same as the Default");
         }
 
-        // cleanroom file
-        if (GTMod.gregtechproxy.mEnableCleanroom) MTECleanroom.loadConfig(GTConfig.cleanroomFile);
-
         // underground fluids file
         GTMod.gregtechproxy.mUndergroundOil.getConfig(GTConfig.undergroundFluidsFile, "undergroundfluid");
 
@@ -588,6 +584,7 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mTooltipShiftVerbosity = Client.iface.tooltipShiftVerbosity;
         GTMod.gregtechproxy.mTitleTabStyle = Client.iface.titleTabStyle;
         GTMod.gregtechproxy.separatorStyle = Client.iface.separatorStyle;
+        GTMod.gregtechproxy.tooltipFinisherStyle = Client.iface.tooltipFinisherStyle;
 
         GTMod.gregtechproxy.mNEIRecipeSecondMode = Client.nei.NEIRecipeSecondMode;
         GTMod.gregtechproxy.mNEIRecipeOwner = Client.nei.NEIRecipeOwner;
