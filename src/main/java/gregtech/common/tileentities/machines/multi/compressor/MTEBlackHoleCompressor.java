@@ -629,8 +629,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
 
             for (MTEHatchInput hatch : spacetimeHatches) {
-                if (drain(hatch, totalCost, false)) {
-                    drain(hatch, totalCost, true);
+                if (drain(hatch, totalCost, true)) {
                     catalyzingCounter += 1;
                     stabilityDecrease = 0;
                     if (catalyzingCounter >= 30) {
