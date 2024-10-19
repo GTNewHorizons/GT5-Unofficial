@@ -64,7 +64,11 @@ public enum Mixin {
         .addTargetedMod(TargetedMod.IC2)
         .setApplyIf(() -> true)
         .setPhase(Phase.LATE)
-        .setSide(Side.BOTH));
+        .setSide(Side.BOTH)),
+    IC2_HAZMAT(new Builder("Hazmat")
+        .setPhase(Phase.LATE).setSide(Side.BOTH).addMixinClasses("ic2.MixinIc2Hazmat")
+        .setApplyIf(() -> true).addTargetedMod(TargetedMod.IC2)
+        .addExcludedMod(TargetedMod.GT6));
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");
 
