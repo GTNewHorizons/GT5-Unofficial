@@ -670,6 +670,7 @@ public class GTClient extends GTProxy implements Runnable {
                         .forEach(CoverBehaviorBase::reloadColorOverride);
                 }
             });
+        Pollution.onPostInitClient();
     }
 
     @Override

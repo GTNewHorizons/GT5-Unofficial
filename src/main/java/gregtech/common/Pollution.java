@@ -45,6 +45,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacketPollution;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTUtility;
+import gregtech.common.pollution.BlockMatcher;
+import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.render.PollutionRenderer;
 
 public class Pollution {
@@ -99,6 +101,32 @@ public class Pollution {
         final Pollution pollutionInstance = dimensionWisePollution.get(aEvent.world.provider.dimensionId);
         if (pollutionInstance == null) return;
         pollutionInstance.tickPollutionInWorld((int) (aEvent.world.getTotalWorldTime() % cycleLen));
+    }
+
+    public static BlockMatcher standardBlocks;
+    public static BlockMatcher liquidBlocks;
+    public static BlockMatcher doublePlants;
+    public static BlockMatcher crossedSquares;
+    public static BlockMatcher blockVine;
+
+    public static void onPostInitClient() {
+        if (PollutionConfig.pollution) {
+            standardBlocks = new BlockMatcher();
+            liquidBlocks = new BlockMatcher();
+            doublePlants = new BlockMatcher();
+            crossedSquares = new BlockMatcher();
+            blockVine = new BlockMatcher();
+            standardBlocks.updateClassList(PollutionConfig.renderStandardBlock);
+            liquidBlocks.updateClassList(PollutionConfig.renderBlockLiquid);
+            doublePlants.updateClassList(PollutionConfig.renderBlockDoublePlant);
+            crossedSquares.updateClassList(PollutionConfig.renderCrossedSquares);
+            blockVine.updateClassList(PollutionConfig.renderblockVine);
+            MinecraftForge.EVENT_BUS.register(standardBlocks);
+            MinecraftForge.EVENT_BUS.register(liquidBlocks);
+            MinecraftForge.EVENT_BUS.register(doublePlants);
+            MinecraftForge.EVENT_BUS.register(crossedSquares);
+            MinecraftForge.EVENT_BUS.register(blockVine);
+        }
     }
 
     private void tickPollutionInWorld(int aTickID) { // called from method above
