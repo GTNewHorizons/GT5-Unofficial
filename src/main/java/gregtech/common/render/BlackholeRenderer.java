@@ -122,6 +122,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         blackholeProgram.use();
         bindTexture(blackholeTexture);
         GL20.glUniform1f(u_Stability, tile.getStability());
+        GL20.glUniform1f(u_Scale, tile.getScale());
         modelMatrixStack.clear();
 
         float xLocal = ((float) x + .5f);

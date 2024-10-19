@@ -496,8 +496,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                                 blackHoleStatus = 1;
                                 blackHoleStability = 100;
                                 catalyzingCostModifier = 1;
-                                rendererTileEntity = null;
-                                destroyRenderBlock();
+                                collapsing = true;
+                                scaleTimer = 20;
                                 return;
                             }
                         }
@@ -574,12 +574,38 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         return super.onRunningTick(aStack);
     }
 
+    private long scaleTimer = 0;
+
+    private void doFormation() {
+        if (shouldRender && rendererTileEntity != null) {
+            scaleTimer += 1;
+            rendererTileEntity.setScale(scaleTimer / 40F);
+            if (scaleTimer >= 20) {
+                forming = false;
+            }
+        }
+    }
+
+    private void doCollapse() {
+        if (shouldRender && rendererTileEntity != null) {
+            scaleTimer -= 1;
+            rendererTileEntity.setScale(scaleTimer / 40F);
+            if (scaleTimer <= 0) {
+                collapsing = false;
+                destroyRenderBlock();
+            }
+        }
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!aBaseMetaTileEntity.isServerSide()) {
             playBlackHoleSounds();
         }
+
+        if (forming) doFormation();
+        if (collapsing) doCollapse();
 
         // Run stability checks once per second if a black hole is open
         if (blackHoleStatus == 1 || aTick % 20 != 0) return;
@@ -704,6 +730,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private boolean shouldRender = true;
     private TileEntityBlackhole rendererTileEntity = null;
 
+    private boolean forming = false;
+    private boolean collapsing = false;
+
     private void createRenderBlock() {
         if (!shouldRender) return;
         IGregTechTileEntity base = this.getBaseMetaTileEntity();
@@ -719,6 +748,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         rendererTileEntity = (TileEntityBlackhole) base.getWorld()
             .getTileEntity(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z);
 
+        forming = true;
+        scaleTimer = 0;
+
+        rendererTileEntity.setScale(0);
         rendererTileEntity.setStability(blackHoleStability / 100F);
     }
 
