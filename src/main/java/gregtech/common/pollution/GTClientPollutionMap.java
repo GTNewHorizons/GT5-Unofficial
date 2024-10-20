@@ -1,4 +1,4 @@
-package gregtech.common.misc;
+package gregtech.common.pollution;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
