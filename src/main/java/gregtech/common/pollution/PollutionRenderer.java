@@ -1,4 +1,4 @@
-package gregtech.common.render;
+package gregtech.common.pollution;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

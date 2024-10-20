@@ -1,7 +1,5 @@
 package gregtech.common.pollution;
 
-import gregtech.common.render.PollutionRenderer;
-
 public enum ColorOverrideType {
 
     FLOWER,
