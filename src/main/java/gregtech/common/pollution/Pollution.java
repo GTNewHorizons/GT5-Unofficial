@@ -123,6 +123,7 @@ public class Pollution {
             MinecraftForge.EVENT_BUS.register(doublePlants);
             MinecraftForge.EVENT_BUS.register(crossedSquares);
             MinecraftForge.EVENT_BUS.register(blockVine);
+            MinecraftForge.EVENT_BUS.register(new PollutionTooltip());
         }
     }
 
