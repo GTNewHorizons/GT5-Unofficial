@@ -102,6 +102,7 @@ public class TileEntityForgeOfGods extends TileEntity {
         gamma = colorSetting.getGamma();
 
         if (starColor.numColors() > 1) {
+            cycleStep = 0;
             interpA = currentColor;
             interpGammaA = gamma;
             colorSetting = starColor.getColor(1);
