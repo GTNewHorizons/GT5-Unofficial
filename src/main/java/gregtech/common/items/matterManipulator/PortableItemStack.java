@@ -4,6 +4,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 
@@ -45,7 +46,9 @@ public class PortableItemStack implements IItemProvider {
 
     public static PortableItemStack withNBT(ItemStack stack) {
         PortableItemStack portable = new PortableItemStack(stack);
-        portable.nbt = stack.getTagCompound() == null ? null : (NBTTagCompound) stack.getTagCompound().copy();
+        portable.nbt = stack.getTagCompound() == null ? null
+            : (NBTTagCompound) stack.getTagCompound()
+                .copy();
         return portable;
     }
 
@@ -55,7 +58,7 @@ public class PortableItemStack implements IItemProvider {
                 GameRegistry.findItem(item.modId, item.name),
                 amount == null ? 1 : amount,
                 metadata == null ? 0 : metadata);
-            
+
             if (nbt != null) {
                 itemStack.setTagCompound((NBTTagCompound) nbt.copy());
             }

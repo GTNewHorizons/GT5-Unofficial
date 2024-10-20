@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.gson.Gson;
@@ -176,7 +175,8 @@ class NBTState {
             uplink = MTEMMUplink.getUplink(uplinkAddress);
 
             if (uplink != null) {
-                if (!uplink.getBaseMetaTileEntity().isActive()) {
+                if (!uplink.getBaseMetaTileEntity()
+                    .isActive()) {
                     uplink = null;
                 }
             }
@@ -209,7 +209,8 @@ class NBTState {
         }
 
         // Moving's result is only used visually since it has a special build algorithm
-        RegionAnalysis analysis = BlockAnalyzer.analyzeRegion(coordA.getWorld(), coordA, coordB, config.placeMode == PlaceMode.COPYING ? true : false);
+        RegionAnalysis analysis = BlockAnalyzer
+            .analyzeRegion(coordA.getWorld(), coordA, coordB, config.placeMode == PlaceMode.COPYING ? true : false);
 
         for (PendingBlock block : analysis.blocks) {
             block.x += coordC.x;
@@ -246,7 +247,8 @@ class NBTState {
         for (Vector3i voxel : MMUtils.getBlocksInBB(coordA, deltas)) {
             PendingBlock existing = PendingBlock.fromBlock(world, voxel.x, voxel.y, voxel.z);
 
-            if (existing != null && existing.toStack() != null && whitelist.contains(ItemId.create(existing.toStack()))) {
+            if (existing != null && existing.toStack() != null
+                && whitelist.contains(ItemId.create(existing.toStack()))) {
                 pending.add(new PendingBlock(world.provider.dimensionId, voxel.x, voxel.y, voxel.z, replacement));
             }
         }
@@ -516,7 +518,7 @@ class NBTState {
 
         int dA = 0, dB = 0, dH = 0;
         Vector3i vecA, vecB, vecH;
-        
+
         switch (delta.minComponent()) {
             case 0: {
                 dA = delta.y;
@@ -565,15 +567,8 @@ class NBTState {
 
                 if (distance <= 1) {
                     for (int h = 0; h < absH; h++) {
-                        PendingBlock block = new PendingBlock(
-                            config.coordA.worldId,
-                            a,
-                            h,
-                            b,
-                            volumes,
-                            2,
-                            0);
-    
+                        PendingBlock block = new PendingBlock(config.coordA.worldId, a, h, b, volumes, 2, 0);
+
                         present[a + 1][h + 1][b + 1] = true;
                         pending.add(block);
                     }
@@ -775,7 +770,6 @@ class NBTState {
             return true;
         }
 
-        
     }
 
     public static Vector3i pinToPlanes(Vector3i origin, Vector3i point) {
@@ -795,7 +789,8 @@ class NBTState {
     }
 
     public static Vector3i pinToLine(Vector3i origin, Vector3i b, Vector3i point) {
-        return switch (new Vector3i(b).sub(origin).minComponent()) {
+        return switch (new Vector3i(b).sub(origin)
+            .minComponent()) {
             case 0 -> new Vector3i(point.x, origin.y, origin.z);
             case 1 -> new Vector3i(origin.x, point.y, origin.z);
             case 2 -> new Vector3i(origin.x, origin.y, point.z);
@@ -804,13 +799,14 @@ class NBTState {
     }
 
     static enum Shape {
+
         LINE,
         CUBE,
         SPHERE,
         CYLINDER;
 
         public boolean requiresC() {
-            return switch(this) {
+            return switch (this) {
                 case LINE, CUBE, SPHERE -> false;
                 case CYLINDER -> true;
             };

@@ -65,7 +65,7 @@ public class BlockAnalyzer {
             if (checkTiles) {
                 context.voxel = voxel;
                 TileAnalysisResult tile = analyze(context);
-    
+
                 if (tile != null && tile.doesAnything()) {
                     pending.tileData = tile;
                 }
@@ -289,6 +289,7 @@ public class BlockAnalyzer {
     }
 
     public static class RequiredItemAnalysis {
+
         public HashMap<ItemId, Long> requiredItems;
         public HashMap<ItemId, Long> storedItems;
         public HashMap<FluidId, Long> storedFluids;
@@ -318,7 +319,7 @@ public class BlockAnalyzer {
                 if (!block.isFree()) {
                     context.tryConsumeItems(block.toStack());
                 }
-                
+
                 context.x = block.x;
                 context.y = block.y;
                 context.z = block.z;

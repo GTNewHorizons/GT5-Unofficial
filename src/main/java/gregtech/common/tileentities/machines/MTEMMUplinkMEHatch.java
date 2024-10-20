@@ -13,6 +13,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.google.common.collect.ImmutableSet;
 
 import appeng.api.config.Actionable;
@@ -46,15 +54,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPowerChannelState, ICraftingProvider, ICraftingRequester {
+public class MTEMMUplinkMEHatch extends MTEHatch
+    implements IGridProxyable, IPowerChannelState, ICraftingProvider, ICraftingRequester {
 
     public static final long REQUEST_TIMEOUT = 20 * 60;
 
@@ -65,13 +67,7 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
     private final List<ManipulatorRequest> autoRequests = new ArrayList<>();
 
     public MTEMMUplinkMEHatch(int aID, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            8,
-            0,
-            new String[] { "Matter Manipulator Uplink ME connector hatch." });
+        super(aID, aName, aNameRegional, 8, 0, new String[] { "Matter Manipulator Uplink ME connector hatch." });
     }
 
     public MTEMMUplinkMEHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -172,15 +168,13 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
-                gridProxy = new AENetworkProxy(
-                    this,
-                    "proxy",
-                    ItemList.Hatch_MatterManipulatorUplink_ME.get(1),
-                    true);
+                gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_MatterManipulatorUplink_ME.get(1), true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) {
-                    gridProxy.setOwner(getBaseMetaTileEntity().getWorld().getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                    gridProxy.setOwner(
+                        getBaseMetaTileEntity().getWorld()
+                            .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
                 }
             }
         }
@@ -227,7 +221,7 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
 
     @Override
     public void jobStateChange(ICraftingLink link) {
-        
+
     }
 
     public IGrid getGrid() {
@@ -279,7 +273,7 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        
+
         getProxy().readFromNBT(aNBT);
     }
 
@@ -301,7 +295,8 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
         while (iter.hasNext()) {
             ItemStack current = iter.next();
 
-            IAEItemStack result = itemInventory.injectItems(AEItemStack.create(current), Actionable.MODULATE, getRequestSource());
+            IAEItemStack result = itemInventory
+                .injectItems(AEItemStack.create(current), Actionable.MODULATE, getRequestSource());
 
             if (result != null) {
                 current.stackSize = (int) result.getStackSize();
@@ -318,7 +313,7 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
     @Override
     public boolean pushPattern(ICraftingPatternDetails patternDetails, InventoryCrafting table) {
         pushPendingCraft();
-        
+
         if (isBusy()) {
             return false;
         }
@@ -341,7 +336,7 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
         onRequestsChanged();
 
         pushPendingCraft();
-        
+
         return true;
     }
 
@@ -360,8 +355,13 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
         }
     }
 
-    public void addRequest(EntityPlayer requester, String requestName, List<ItemStack> requiredItems, boolean autocraft) {
-        ManipulatorRequest request = new ManipulatorRequest(requester.getGameProfile().getId(), requestName, requiredItems);
+    public void addRequest(EntityPlayer requester, String requestName, List<ItemStack> requiredItems,
+        boolean autocraft) {
+        ManipulatorRequest request = new ManipulatorRequest(
+            requester.getGameProfile()
+                .getId(),
+            requestName,
+            requiredItems);
 
         if (autocraft) {
             autoRequests.add(request);
@@ -373,14 +373,18 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
     }
 
     public void clearManualPlans(EntityPlayer player) {
-        manualRequests.removeIf(request -> request.requester.equals(player.getGameProfile().getId()));
+        manualRequests.removeIf(
+            request -> request.requester.equals(
+                player.getGameProfile()
+                    .getId()));
 
         onRequestsChanged();
     }
 
     private void onRequestsChanged() {
         try {
-            getProxy().getGrid().postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
+            getProxy().getGrid()
+                .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
         } catch (final GridAccessException e) {
             // :P
         }
@@ -430,7 +434,12 @@ public class MTEMMUplinkMEHatch extends MTEHatch implements IGridProxyable, IPow
             }
 
             if (job == null) {
-                job = cg.beginCraftingJob(getBaseMetaTileEntity().getWorld(), getGrid(), getRequestSource(), AEItemStack.create(hologram), null);
+                job = cg.beginCraftingJob(
+                    getBaseMetaTileEntity().getWorld(),
+                    getGrid(),
+                    getRequestSource(),
+                    AEItemStack.create(hologram),
+                    null);
             }
 
             if (job == null) {

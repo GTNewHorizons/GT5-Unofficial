@@ -12,6 +12,25 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
 import appeng.api.config.Actionable;
@@ -40,27 +59,9 @@ import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink.UplinkStatus;
 import ic2.api.item.ElectricItem;
 import it.unimi.dsi.fastutil.Pair;
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public abstract class AbstractBuildable implements IPseudoInventory, IBuildable {
-    
+
     public EntityPlayer placingPlayer;
     public NBTState state;
     public ManipulatorTier tier;
@@ -180,10 +181,7 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
                 stack.setStackSize(amount);
 
                 IAEItemStack result = state.storageGrid.getItemInventory()
-                    .injectItems(
-                        stack,
-                        Actionable.MODULATE,
-                        new PlayerSource(placingPlayer, state.securityTerminal));
+                    .injectItems(stack, Actionable.MODULATE, new PlayerSource(placingPlayer, state.securityTerminal));
 
                 if (result != null) {
                     amount = result.getStackSize();
@@ -196,12 +194,12 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
                 IAEItemStack stack = AEItemStack.create(item.getItemStack());
                 Objects.requireNonNull(stack);
                 stack.setStackSize(amount);
-                
+
                 UplinkStatus status = uplink.tryGivePlayerItems(Arrays.asList(stack));
 
                 if (status != UplinkStatus.OK && !printedUplinkWarning) {
                     printedUplinkWarning = true;
-                    GTUtility.sendChatToPlayer(placingPlayer, EnumChatFormatting.RED + "Could not push items to uplink: " + status.toString());
+                    GTUtility.sendErrorToPlayer(placingPlayer, "Could not push items to uplink: " + status.toString());
                 }
 
                 amount = stack.getStackSize();
@@ -246,10 +244,7 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
                 stack.setStackSize(amount);
 
                 IAEFluidStack result = state.storageGrid.getFluidInventory()
-                    .injectItems(
-                        stack,
-                        Actionable.MODULATE,
-                        new PlayerSource(placingPlayer, state.securityTerminal));
+                    .injectItems(stack, Actionable.MODULATE, new PlayerSource(placingPlayer, state.securityTerminal));
 
                 if (result != null) {
                     amount = result.getStackSize();
@@ -261,12 +256,12 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
             if (uplink != null) {
                 AEFluidStack stack = AEFluidStack.create(id.getFluidStack());
                 stack.setStackSize(amount);
-                
+
                 UplinkStatus status = uplink.tryGivePlayerFluids(Arrays.asList(stack));
 
                 if (status != UplinkStatus.OK && !printedUplinkWarning) {
                     printedUplinkWarning = true;
-                    GTUtility.sendChatToPlayer(placingPlayer, EnumChatFormatting.RED + "Could not push fluids to uplink: " + status.toString());
+                    GTUtility.sendErrorToPlayer(placingPlayer, "Could not push fluids to uplink: " + status.toString());
                 }
 
                 amount += stack.getStackSize();
@@ -430,7 +425,7 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
 
         if (status != UplinkStatus.OK && !printedUplinkWarning) {
             printedUplinkWarning = true;
-            GTUtility.sendChatToPlayer(placingPlayer, EnumChatFormatting.RED + "Could not request items from uplink: " + status.toString());
+            GTUtility.sendErrorToPlayer(placingPlayer, "Could not request items from uplink: " + status.toString());
         }
     }
 
@@ -462,11 +457,8 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
     }
 
     public boolean tryConsumePower(ItemStack stack, PendingBlock pendingBlock) {
-        double euUsage = EU_PER_BLOCK * pendingBlock.getBlock().getBlockHardness(
-            pendingBlock.getWorld(),
-            pendingBlock.x,
-            pendingBlock.y,
-            pendingBlock.z);
+        double euUsage = EU_PER_BLOCK * pendingBlock.getBlock()
+            .getBlockHardness(pendingBlock.getWorld(), pendingBlock.x, pendingBlock.y, pendingBlock.z);
 
         try {
             ItemBlock block = pendingBlock.getItem();
@@ -613,6 +605,7 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
     }
 
     private static class SoundInfo {
+
         private int eventCount;
         private double sumX, sumY, sumZ;
     }

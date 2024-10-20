@@ -510,7 +510,9 @@ public class GTUtility {
 
     public static void sendInfoToPlayer(EntityPlayer aPlayer, String aChatMessage) {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
-            aPlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY.toString() + aChatMessage));
+            aPlayer.addChatComponentMessage(
+                new ChatComponentText(
+                    EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY.toString() + aChatMessage));
         }
     }
 
@@ -523,8 +525,11 @@ public class GTUtility {
     }
 
     public static EntityPlayer getPlayerById(UUID playerId) {
-        for (EntityPlayer player : MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
-            if (player.getGameProfile().getId().equals(playerId)) {
+        for (EntityPlayer player : MinecraftServer.getServer()
+            .getConfigurationManager().playerEntityList) {
+            if (player.getGameProfile()
+                .getId()
+                .equals(playerId)) {
                 return player;
             }
         }

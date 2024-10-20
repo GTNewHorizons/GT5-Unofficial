@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.IBlockAccess;
 
 import org.joml.Vector3i;
@@ -21,6 +20,7 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import gregtech.GTMod;
 import gregtech.api.net.GTPacket;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.common.GTNetwork;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.RequiredItemAnalysis;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
@@ -39,7 +39,7 @@ enum Messages {
     SetRemoveMode(server(enumPacket(BlockRemoveMode.values(), (state, value) -> state.config.removeMode = value))),
     SetPlaceMode(server(enumPacket(PlaceMode.values(), (player, stack, manipulator, state, value) -> {
 
-        int requiredBit = switch(value) {
+        int requiredBit = switch (value) {
             case COPYING -> ItemMatterManipulator.ALLOW_COPYING;
             case EXCHANGING -> ItemMatterManipulator.ALLOW_EXCHANGING;
             case GEOMETRY -> 0;
@@ -109,24 +109,27 @@ enum Messages {
     MoveHere(server(simple((player, stack, manipulator, state) -> {
         if (state.config.shape.requiresC()) {
             if (Location.areCompatible(state.config.coordA, state.config.coordB, state.config.coordC)) {
-                Vector3i offsetB = state.config.coordB.toVec().sub(state.config.coordA.toVec());
-                Vector3i offsetC = state.config.coordC.toVec().sub(state.config.coordA.toVec());
+                Vector3i offsetB = state.config.coordB.toVec()
+                    .sub(state.config.coordA.toVec());
+                Vector3i offsetC = state.config.coordC.toVec()
+                    .sub(state.config.coordA.toVec());
 
                 Vector3i newA = MMUtils.getLookingAtLocation(player);
                 Vector3i newB = new Vector3i(newA).add(offsetB);
                 Vector3i newC = new Vector3i(newA).add(offsetC);
-    
+
                 state.config.coordA = new Location(player.getEntityWorld(), newA);
                 state.config.coordB = new Location(player.getEntityWorld(), newB);
                 state.config.coordC = new Location(player.getEntityWorld(), newC);
             }
         } else {
             if (Location.areCompatible(state.config.coordA, state.config.coordB)) {
-                Vector3i offsetB = state.config.coordB.toVec().sub(state.config.coordA.toVec());
+                Vector3i offsetB = state.config.coordB.toVec()
+                    .sub(state.config.coordA.toVec());
 
                 Vector3i newA = MMUtils.getLookingAtLocation(player);
                 Vector3i newB = new Vector3i(newA).add(offsetB);
-    
+
                 state.config.coordA = new Location(player.getEntityWorld(), newA);
                 state.config.coordB = new Location(player.getEntityWorld(), newB);
             }
@@ -158,49 +161,65 @@ enum Messages {
                 if (state.config.placeMode != PlaceMode.COPYING) {
                     return;
                 }
-        
+
                 if (state.config.coordA == null || state.config.coordB == null || state.config.coordC == null) {
                     return;
                 }
-        
+
                 List<PendingBlock> blocks = state.getPendingBlocks(player.getEntityWorld());
                 RequiredItemAnalysis itemAnalysis = BlockAnalyzer.getRequiredItemsForBuild(player, blocks);
-        
+
                 if (state.connectToUplink()) {
                     List<ItemStack> requiredItems = itemAnalysis.requiredItems.entrySet()
                         .stream()
                         .flatMap(e -> {
                             List<ItemStack> items = new ArrayList<>();
-        
-                            long amount = e.getValue() == null ? 0 : e.getValue().longValue();
-        
+
+                            long amount = e.getValue() == null ? 0
+                                : e.getValue()
+                                    .longValue();
+
                             while (amount > 0) {
-                                int toRemove = amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int)amount;
-                
-                                items.add(e.getKey().getItemStack(toRemove));
-                
+                                int toRemove = amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) amount;
+
+                                items.add(
+                                    e.getKey()
+                                        .getItemStack(toRemove));
+
                                 amount -= toRemove;
                             }
-                        
+
                             return items.stream();
                         })
                         .collect(Collectors.toList());
-                        
-                    state.uplink.submitPlan(player, state.config.coordA.toString(), requiredItems, (packet.value & PLAN_AUTO_SUBMIT) != 0);
+
+                    state.uplink.submitPlan(
+                        player,
+                        state.config.coordA.toString(),
+                        requiredItems,
+                        (packet.value & PLAN_AUTO_SUBMIT) != 0);
                 } else {
-                    player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Manipulator not connected to an uplink: cannot create a fake pattern."));
-                    
+                    GTUtility.sendErrorToPlayer(
+                        player,
+                        "Manipulator not connected to an uplink: cannot create a fake pattern.");
+
                     if (!itemAnalysis.requiredItems.isEmpty()) {
                         var requiredItems = itemAnalysis.requiredItems.entrySet()
                             .stream()
-                            .map(e -> String.format("%s: %d", e.getKey().getItemStack().getDisplayName(), e.getValue()))
+                            .map(
+                                e -> String.format(
+                                    "%s: %d",
+                                    e.getKey()
+                                        .getItemStack()
+                                        .getDisplayName(),
+                                    e.getValue()))
                             .sorted()
                             .collect(Collectors.toList());
-                        
-                        player.addChatMessage(new ChatComponentText("Required items:"));
-                        
-                        for(String item : requiredItems) {
-                            player.addChatMessage(new ChatComponentText(item));
+
+                        GTUtility.sendInfoToPlayer(player, "Required items:");
+
+                        for (String item : requiredItems) {
+                            GTUtility.sendInfoToPlayer(player, item);
                         }
                     }
                 }
@@ -212,7 +231,7 @@ enum Messages {
         @Override
         public IntPacket getNewPacket(Messages message, Object value) {
             IntPacket packet = new IntPacket(message);
-            packet.value = value == null ? 0 : (int)(Integer)value;
+            packet.value = value == null ? 0 : (int) (Integer) value;
             return packet;
         }
     })),
@@ -221,9 +240,7 @@ enum Messages {
             state.uplink.clearManualPlans(player);
         }
     }))),
-    ClearWhitelist(server(simple((player, stack, manipulator, state) -> {
-        state.config.replaceWhitelist = null;
-    }))),
+    ClearWhitelist(server(simple((player, stack, manipulator, state) -> { state.config.replaceWhitelist = null; }))),
 
     ;
 
