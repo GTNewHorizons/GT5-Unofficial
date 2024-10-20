@@ -22,7 +22,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.common.entities.EntityFXPollution;
 
 @SideOnly(Side.CLIENT)
 public class PollutionRenderer {

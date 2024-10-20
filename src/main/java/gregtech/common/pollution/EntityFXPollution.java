@@ -1,4 +1,4 @@
-package gregtech.common.entities;
+package gregtech.common.pollution;
 
 import java.util.Random;
 
