@@ -58,12 +58,12 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -222,13 +222,13 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     public int getPollutionPerSecond(final ItemStack aStack) {
         switch (machineMode) {
             case MACHINEMODE_METAL -> {
-                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
+                return PollutionConfig.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
             }
             case MACHINEMODE_FLUID -> {
-                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
+                return PollutionConfig.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
             }
             default -> {
-                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
+                return PollutionConfig.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
             }
         }
     }

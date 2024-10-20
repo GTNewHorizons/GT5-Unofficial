@@ -25,8 +25,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTUtility;
-import gregtech.common.pollution.Pollution;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.pollution.Pollution;
 
 public final class GTCommand extends CommandBase {
 

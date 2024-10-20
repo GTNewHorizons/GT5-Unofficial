@@ -17,9 +17,9 @@ import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 
 public class MTESemiFluidGenerator extends MTEBasicGenerator {
@@ -38,8 +38,8 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
 
     @Override
     public int getPollution() {
-        return (int) (Configuration.pollution.basePollutionPerSecondSemiFluidGenerator
-            * Configuration.pollution.pollutionReleasedByTierSemiFluidGenerator[this.mTier]);
+        return (int) (PollutionConfig.basePollutionPerSecondSemiFluidGenerator
+            * PollutionConfig.pollutionReleasedByTierSemiFluidGenerator[this.mTier]);
     }
 
     @Override

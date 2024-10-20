@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 
-import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.ColorOverrideType;
+import gregtech.common.pollution.Pollution;
 
 @Mixin(RenderBlocks.class)
 public class MixinRenderBlocks_PollutionWithoutOptifine {
