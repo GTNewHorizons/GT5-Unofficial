@@ -11,10 +11,13 @@ import com.cleanroommc.modularui.utils.Color;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
 
+import org.jetbrains.annotations.Nullable;
 import tectech.thing.gui.TecTechUITextures;
 
 @SuppressWarnings("unused") // for the preset color fields
 public class ForgeOfGodsStarColor {
+
+    private static final int LATEST_VERSION = 1;
 
     // Preset colors
     private static final Map<String, ForgeOfGodsStarColor> PRESETS = new LinkedHashMap<>(4);
@@ -54,6 +57,9 @@ public class ForgeOfGodsStarColor {
 
     // "Metadata" about this star color, not related to star rendering
     private final String name;
+    // version currently unused, but can be used to retain compatibility with old serialized star colors
+    // if the structure of the data changes significantly.
+    private final int version;
     private boolean isPreset;
     private IDrawable drawable;
 
@@ -62,7 +68,12 @@ public class ForgeOfGodsStarColor {
     private int cycleSpeed = 1;
 
     public ForgeOfGodsStarColor(String name) {
+        this(name, LATEST_VERSION);
+    }
+
+    private ForgeOfGodsStarColor(String name, int version) {
         this.name = name;
+        this.version = version;
     }
 
     private ForgeOfGodsStarColor registerPreset() {
@@ -94,6 +105,11 @@ public class ForgeOfGodsStarColor {
         return this;
     }
 
+    private ForgeOfGodsStarColor addColors(List<StarColorSetting> colors) {
+        settings.addAll(colors);
+        return this;
+    }
+
     public int numColors() {
         return settings.size();
     }
@@ -116,7 +132,30 @@ public class ForgeOfGodsStarColor {
         return drawable;
     }
 
-    public NBTTagCompound serialize() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ForgeOfGodsStarColor that = (ForgeOfGodsStarColor) o;
+
+        if (cycleSpeed != that.cycleSpeed) return false;
+        if (!name.equals(that.name)) return false;
+        if (settings.size() != that.settings.size()) return false;
+        for (int i = 0; i < settings.size(); i++) {
+            StarColorSetting thisSetting = settings.get(i);
+            StarColorSetting thatSetting = that.settings.get(i);
+            if (!thisSetting.equals(thatSetting)) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return serializeToString();
+    }
+
+    public NBTTagCompound serializeToNBT() {
         NBTTagCompound NBT = new NBTTagCompound();
 
         if (isPresetColor()) {
@@ -127,6 +166,7 @@ public class ForgeOfGodsStarColor {
 
         NBT.setString("Name", getName());
         NBT.setInteger("CycleSpeed", cycleSpeed);
+        NBT.setInteger("Version", version);
 
         if (!settings.isEmpty()) {
             NBTTagCompound settingsNBT = new NBTTagCompound();
@@ -162,6 +202,85 @@ public class ForgeOfGodsStarColor {
         }
 
         return color;
+    }
+
+    public String serializeToString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("StarColorV1:{");
+        sb.append("Name:");
+        sb.append(getName());
+        sb.append(",Cycle:");
+        sb.append(getCycleSpeed());
+
+        for (StarColorSetting setting : settings) {
+            sb.append("|");
+            sb.append("r:");
+            sb.append(setting.getColorR());
+            sb.append(",g:");
+            sb.append(setting.getColorG());
+            sb.append(",b:");
+            sb.append(setting.getColorB());
+            sb.append(",m:");
+            sb.append(setting.getGamma());
+        }
+
+        sb.append("}");
+        return sb.toString();
+    }
+
+    @Nullable
+    public static ForgeOfGodsStarColor deserialize(String raw) {
+        if (raw == null) return null;
+        if (!raw.startsWith("StarColorV1:{") || !raw.endsWith("}")) return null;
+
+        // Wrap in try-catch for easy format "checking"
+        try {
+            String[] data = raw.substring(13, raw.length() - 1).split("\\|");
+
+            // Parse the header (name and cycle rate)
+            String header = data[0];
+            String[] headerData = header.split(",");
+
+            // Name
+            String name = null;
+            if (headerData[0].startsWith("Name:")) {
+                name = headerData[0].substring(5);
+            }
+
+            // Cycle Rate
+            Integer cycleRate = null;
+            if (headerData[1].startsWith("Cycle:")) {
+                cycleRate = Integer.valueOf(headerData[1].substring(6));
+            }
+
+            List<StarColorSetting> colorSettings = new ArrayList<>();
+            for (int i = 1; i < data.length; i++) {
+                String[] colorData = data[i].split(",");
+                int r = -1, g = -1, b = -1;
+                float m = -1;
+                for (String color : colorData) {
+                    String[] singleData = color.split(":");
+                    switch (singleData[0]) {
+                        case "r" -> r = Integer.parseInt(singleData[1]);
+                        case "g" -> g = Integer.parseInt(singleData[1]);
+                        case "b" -> b = Integer.parseInt(singleData[1]);
+                        case "m" -> m = Float.parseFloat(singleData[1]);
+                    }
+                }
+                if (r != -1 && g != -1 && b != -1 && m != -1) {
+                    colorSettings.add(new StarColorSetting(r, g, b, m));
+                }
+            }
+
+            if (name != null && cycleRate != null && !colorSettings.isEmpty()) {
+                return new ForgeOfGodsStarColor(name)
+                    .setCycleSpeed(cycleRate)
+                    .addColors(colorSettings);
+            }
+            return null;
+        } catch (Throwable ignored) {
+            return null;
+        }
     }
 
     public static class StarColorSetting {
@@ -207,6 +326,19 @@ public class ForgeOfGodsStarColor {
             int b = NBT.getInteger("B");
             float gamma = NBT.getFloat("Gamma");
             return new StarColorSetting(r, g, b, gamma);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            StarColorSetting that = (StarColorSetting) o;
+
+            if (r != that.r) return false;
+            if (g != that.g) return false;
+            if (b != that.b) return false;
+            return gamma == that.gamma;
         }
     }
 }
