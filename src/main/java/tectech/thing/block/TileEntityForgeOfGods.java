@@ -37,6 +37,8 @@ public class TileEntityForgeOfGods extends TileEntity {
     private int interpIndex;
     private int interpA;
     private int interpB;
+    private float interpGammaA;
+    private float interpGammaB;
 
     private static final String NBT_TAG = "FOG:";
     private static final String ROTATION_SPEED_NBT_TAG = NBT_TAG + "ROTATION";
@@ -101,8 +103,10 @@ public class TileEntityForgeOfGods extends TileEntity {
 
         if (starColor.numColors() > 1) {
             interpA = currentColor;
+            interpGammaA = gamma;
             colorSetting = starColor.getColor(1);
             interpB = Color.rgb(colorSetting.getColorR(), colorSetting.getColorG(), colorSetting.getColorB());
+            interpGammaB = colorSetting.getGamma();
         }
     }
 
@@ -188,6 +192,7 @@ public class TileEntityForgeOfGods extends TileEntity {
                 // interpolate like normal, but then update interp values to the next set and reset cycleStep
                 cycleStarColors();
                 currentColor = interpA;
+                gamma = interpGammaA;
                 cycleStep = 0;
             } else {
                 // update interp values to the next set, reset cycleStep then interpolate
@@ -199,11 +204,14 @@ public class TileEntityForgeOfGods extends TileEntity {
     }
 
     private void interpolateColors() {
-        currentColor = Color.interpolate(interpA, interpB, cycleStep / 255.0f);
+        float position = cycleStep / 255.0f;
+        currentColor = Color.interpolate(interpA, interpB, position);
+        gamma = interpGammaA + (interpGammaB - interpGammaA) * position;
     }
 
     private void cycleStarColors() {
         interpA = interpB;
+        interpGammaA = interpGammaB;
 
         interpIndex++;
         if (interpIndex >= starColor.numColors()) {
@@ -212,6 +220,7 @@ public class TileEntityForgeOfGods extends TileEntity {
         StarColorSetting nextColor = starColor.getColor(interpIndex);
 
         interpB = Color.rgb(nextColor.getColorR(), nextColor.getColorG(), nextColor.getColorB());
+        interpGammaB = nextColor.getGamma();
     }
 
     @Override
