@@ -125,10 +125,13 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         float startTime = tile.getStartTime();
         float scaleF = timer - startTime;
+        // If this is false we're shrinking, so subtract from 40 to translate to reversed scaling
         if (!tile.getScaling()) {
             scaleF = 40 - scaleF;
         }
-        scaleF = MathHelper.clamp_float(scaleF / 40, 0, 0.5F);
+        scaleF = MathHelper.clamp_float(scaleF / 40, 0, 1) * modelScale;
+        // Smootherstep function to make it scale nicer
+        scaleF = scaleF * scaleF * scaleF * (scaleF * (6.0f * scaleF - 15.0f) + 10.0f);
         GL20.glUniform1f(u_Scale, scaleF);
 
         modelMatrixStack.clear();
