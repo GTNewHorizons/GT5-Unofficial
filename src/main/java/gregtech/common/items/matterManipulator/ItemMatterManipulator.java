@@ -6,7 +6,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -27,14 +27,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -47,6 +45,7 @@ import org.joml.Vector3i;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.libraries.com.google.common.collect.MapMaker;
 
+import com.google.gson.JsonElement;
 import com.gtnewhorizon.gtnhlib.util.AboveHotbarHUD;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
@@ -60,13 +59,14 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
+import gregtech.common.items.matterManipulator.NBTState.Config;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
@@ -80,7 +80,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     public final ManipulatorTier tier;
 
     public ItemMatterManipulator(ManipulatorTier tier) {
-        String name = "itemMatterManipulator" + tier.mTier;
+        String name = "itemMatterManipulator" + tier.tier;
 
         this.setCreativeTab(CreativeTabs.tabTools);
         this.setUnlocalizedName(name);
@@ -104,34 +104,43 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             .register(this);
     }
 
+    private static int counter = 0;
+    public static final int CONNECTS_TO_AE = 0b1 << counter++;
+    public static final int CONNECTS_TO_UPLINK = 0b1 << counter++;
+    public static final int ALLOW_REMOVING = 0b1 << counter++;
+    public static final int ALLOW_GEOMETRY = 0b1 << counter++;
+    public static final int ALLOW_CONFIGURING = 0b1 << counter++;
+    public static final int ALLOW_COPYING = 0b1 << counter++;
+    public static final int ALLOW_EXCHANGING = 0b1 << counter++;
+    public static final int ALLOW_MOVING = 0b1 << counter++;
+
+    public static final int ALL_MODES = ALLOW_GEOMETRY | ALLOW_COPYING | ALLOW_EXCHANGING | ALLOW_MOVING;
+
     public static enum ManipulatorTier {
 
-        Tier0(false, 32, 16, 20, false, false, false, 4, 1_000_000),
-        Tier1(true, 64, 32, 10, true, false, false, 5, 10_000_000),
-        Tier2(true, 128, 64, 5, true, false, true, 6, 100_000_000),
-        Tier3(true, -1, 256, 2, true, true, true, 7, 1_000_000_000);
+        Tier0(32, 16, 20, 4,     1_000_000, ALLOW_GEOMETRY),
+        Tier1(64, 32, 10, 5,    10_000_000, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING),
+        Tier2(128, 64, 5, 6,   100_000_000, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING),
+        Tier3(-1, 256, 2, 7, 1_000_000_000, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING | CONNECTS_TO_UPLINK);
 
-        public final int mTier = ordinal();
-        public final boolean mConnectsToAE;
-        public final int mMaxRange;
-        public final int mPlaceSpeed, mPlaceTicks;
-        public final boolean mAllowRemoving;
-        public final boolean mAllowConfiguring;
-        public final int mVoltageTier;
-        public final double mMaxCharge;
-        public final boolean mAllowCopying;
+        public final int tier = ordinal();
+        public final int maxRange;
+        public final int placeSpeed, placeTicks;
+        public final int voltageTier;
+        public final double maxCharge;
+        public final int capabilities;
 
-        private ManipulatorTier(boolean ae, int maxRange, int placeSpeed, int placeTicks, boolean removing, boolean configuring, boolean copying,
-            int voltageTier, double maxCharge) {
-            mConnectsToAE = ae;
-            mMaxRange = maxRange;
-            mPlaceSpeed = placeSpeed;
-            mPlaceTicks = placeTicks;
-            mAllowRemoving = removing;
-            mAllowConfiguring = configuring;
-            mAllowCopying = copying;
-            mVoltageTier = voltageTier;
-            mMaxCharge = maxCharge;
+        private ManipulatorTier(int maxRange, int placeSpeed, int placeTicks, int voltageTier, double maxCharge, int capabilities) {
+            this.maxRange = maxRange;
+            this.placeSpeed = placeSpeed;
+            this.placeTicks = placeTicks;
+            this.voltageTier = voltageTier;
+            this.maxCharge = maxCharge;
+            this.capabilities = capabilities;
+        }
+
+        public boolean hasCap(int cap) {
+            return (capabilities & cap) == cap;
         }
     }
 
@@ -149,17 +158,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     @Override
     public double getMaxCharge(ItemStack itemStack) {
-        return tier.mMaxCharge;
+        return tier.maxCharge;
     }
 
     @Override
     public int getTier(ItemStack itemStack) {
-        return tier.mVoltageTier;
+        return tier.voltageTier;
     }
 
     @Override
     public double getTransferLimit(ItemStack itemStack) {
-        return V[tier.mVoltageTier];
+        return V[tier.voltageTier];
     }
 
     @Override
@@ -238,7 +247,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         if (!GuiScreen.isShiftKeyDown()) {
             desc.add("Hold shift for more information.");
         } else {
-            if (tier.mConnectsToAE) {
+            if (tier.hasCap(CONNECTS_TO_AE)) {
                 if (state.connectToMESystem()) {
                     desc.add("Has an ME connection. (" + (state.canInteractWithAE(player) ? "Can interact currently" : "Cannot interact currently") + ")");
                 } else {
@@ -246,15 +255,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 }
             }
             
-            if (state.uplinkAddress != null) {
-                if (state.connectToUplink()) {
-                    desc.add("Has an Uplink connection. (Can interact currently)");
+            if (tier.hasCap(CONNECTS_TO_UPLINK)) {
+                if (state.uplinkAddress != null) {
+                    if (state.connectToUplink()) {
+                        desc.add("Has an Uplink connection. (Can interact currently)");
+                    } else {
+                        desc.add("Has an Uplink connection. (Cannot interact currently)");
+                    }
+                    addInfoLine(desc, "Uplink address: %s", state.uplinkAddress, Long::toHexString);
                 } else {
-                    desc.add("Has an Uplink connection. (Cannot interact currently)");
+                    desc.add("Does not have an Uplink connection.");
                 }
-                addInfoLine(desc, "Uplink address: %s", Long.toHexString(state.uplinkAddress));
-            } else {
-                desc.add("Does not have an Uplink connection.");
             }
 
             if (state.config.action != null) {
@@ -266,10 +277,14 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     case MARK_CUT_A -> "Marking first cut corner";
                     case MARK_CUT_B -> "Marking second cut corner";
                     case MARK_PASTE -> "Marking paste location";
+                    case EXCH_MOVING_COORDS -> "Moving coordinates";
+                    case EXCH_ADD_REPLACE -> "Adding block to replace whitelist";
+                    case EXCH_SET_REPLACE -> "Setting block in replace whitelist";
+                    case EXCH_SET_TARGET -> "Setting block to replace with";
                 });
             }
 
-            if (tier.mAllowConfiguring || tier.mAllowCopying) {
+            if (Integer.bitCount(tier.capabilities & ALL_MODES) > 1) {
                 addInfoLine(desc, "Mode: %s", switch (state.config.placeMode) {
                     case GEOMETRY -> "Geometry";
                     case MOVING -> "Moving";
@@ -278,7 +293,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 });
             }
 
-            if (tier.mAllowRemoving) {
+            if (tier.hasCap(ALLOW_REMOVING)) {
                 addInfoLine(desc, "Removing: %s", switch (state.config.removeMode) {
                     case ALL -> "All blocks";
                     case REPLACEABLE -> "Replaceable blocks";
@@ -291,6 +306,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     case LINE -> "Line";
                     case CUBE -> "Cube";
                     case SPHERE -> "Sphere";
+                    case CYLINDER -> "Cylinder";
                 });
             
                 addInfoLine(desc, "Coordinate A: %s", state.config.coordA);
@@ -300,6 +316,21 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 addInfoLine(desc, "Edge block: %s", state.config.getEdges(), ItemStack::getDisplayName);
                 addInfoLine(desc, "Face block: %s", state.config.getFaces(), ItemStack::getDisplayName);
                 addInfoLine(desc, "Volume block: %s", state.config.getVolumes(), ItemStack::getDisplayName);
+            }
+
+            if (state.config.placeMode == PlaceMode.EXCHANGING) {
+                var whitelist = state.config.replaceWhitelist;
+
+                if (whitelist != null && whitelist.isEmpty()) whitelist = null;
+
+                addInfoLine(desc, "Removable blocks: %s", whitelist, (List<JsonElement> blocks) -> {
+                    return blocks.stream()
+                        .map(NBTState.Config::loadStack)
+                        .map(stack -> stack.getDisplayName())
+                        .reduce((a, b) -> a + b)
+                        .get();
+                });
+                addInfoLine(desc, "Replacing blocks with: %s", state.config.replaceWith, with -> Config.loadStack(with).getDisplayName());
             }
         }
         // spotless:on
@@ -328,8 +359,6 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
         MovingObjectPosition hit = MMUtils.getHitResult(player);
 
-        if (hit != null && hit.typeOfHit != MovingObjectType.BLOCK) hit = null;
-
         if (state.config.action != null) {
             if (handleAction(stack, world, player, state, hit)) {
                 setState(stack, state);
@@ -348,8 +377,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             if (state.config.placeMode == PlaceMode.GEOMETRY) {
                 state.config.coordA = location;
                 state.config.coordB = null;
+                state.config.coordC = null;
                 state.config.coordBOffset = new Vector3i();
                 state.config.action = PendingAction.GEOM_MOVING_COORDS;
+            }
+            
+            if (state.config.placeMode == PlaceMode.EXCHANGING) {
+                state.config.coordA = location;
+                state.config.coordB = null;
+                state.config.coordC = null;
+                state.config.coordBOffset = new Vector3i();
+                state.config.action = PendingAction.EXCH_MOVING_COORDS;
             }
 
             setState(stack, state);
@@ -369,11 +407,24 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         MovingObjectPosition hit) {
         switch (state.config.action) {
             case GEOM_MOVING_COORDS: {
-                state.config.coordA = state.config.getCoordA(player);
-                state.config.coordB = state.config.getCoordB(player);
-                state.config.action = null;
-                state.config.coordAOffset = null;
-                state.config.coordBOffset = null;
+                Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
+        
+                if (state.config.coordAOffset == null && state.config.coordBOffset != null && state.config.coordCOffset == null && state.config.shape.requiresC()) {
+                    state.config.coordA = state.config.getCoordA(world, lookingAt);
+                    state.config.coordB = state.config.getCoordB(world, lookingAt);
+                    state.config.coordC = null;
+                    state.config.coordAOffset = null;
+                    state.config.coordBOffset = null;
+                    state.config.coordCOffset = new Vector3i();
+                } else {
+                    state.config.coordA = state.config.getCoordA(world, lookingAt);
+                    state.config.coordB = state.config.getCoordB(world, lookingAt);
+                    state.config.coordC = state.config.getCoordC(world, lookingAt);
+                    state.config.coordAOffset = null;
+                    state.config.coordBOffset = null;
+                    state.config.coordCOffset = null;
+                    state.config.action = null;
+                }
 
                 return true;
             }
@@ -394,16 +445,89 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 state.config.action = null;
                 return true;
             }
+            case MARK_CUT_A: {
+                state.config.coordA = new Location(world, MMUtils.getLookingAtLocation(player));
+                state.config.action = PendingAction.MARK_CUT_B;
+                return true;
+            }
+            case MARK_CUT_B: {
+                state.config.coordB = new Location(world, MMUtils.getLookingAtLocation(player));
+                state.config.action = null;
+                return true;
+            }
             case MARK_PASTE: {
                 state.config.coordC = new Location(world, MMUtils.getLookingAtLocation(player));
                 state.config.action = null;
                 return true;
             }
-            case MARK_CUT_A: {
-                throw new IllegalStateException();
+            case EXCH_MOVING_COORDS: {
+                Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
+        
+                state.config.coordA = state.config.getCoordA(world, lookingAt);
+                state.config.coordB = state.config.getCoordB(world, lookingAt);
+                state.config.coordAOffset = null;
+                state.config.coordBOffset = null;
+                state.config.action = null;
+
+                return true;
             }
-            case MARK_CUT_B: {
-                throw new IllegalStateException();
+            case EXCH_SET_TARGET: {
+                PendingBlock block = PendingBlock.fromPickBlock(player.worldObj, player, hit);
+                ItemStack selected = block == null ? null : block.toStack();
+
+                state.config.replaceWith = Config.saveStack(selected);
+                state.config.action = null;
+                
+                if (selected == null) {
+                    GTUtility.sendInfoToPlayer(player, "Cleared exchange whitelist");
+                } else {
+                    GTUtility.sendInfoToPlayer(player, String.format(
+                        "Set block to replace with to: %s",
+                        selected == null ? "nothing" : selected.getDisplayName()));
+                }
+
+                return true;
+            }
+            case EXCH_ADD_REPLACE: {
+                PendingBlock block = PendingBlock.fromPickBlock(player.worldObj, player, hit);
+                ItemStack selected = block == null ? null : block.toStack();
+
+                if (selected != null) {
+                    if (state.config.replaceWhitelist == null) {
+                        state.config.replaceWhitelist = new ArrayList<>();
+                    }
+            
+                    state.config.replaceWhitelist.add(Config.saveStack(selected));
+                }
+
+                state.config.action = null;
+                
+                if (selected != null) {
+                    GTUtility.sendInfoToPlayer(player, String.format(
+                        "Added block to exchange whitelist: %s",
+                        selected == null ? "nothing" : selected.getDisplayName()));
+                }
+
+                return true;
+            }
+            case EXCH_SET_REPLACE: {
+                PendingBlock block = PendingBlock.fromPickBlock(player.worldObj, player, hit);
+                ItemStack selected = block == null ? null : block.toStack();
+
+                if (selected != null) {
+                    state.config.replaceWhitelist = new ArrayList<>();
+                    state.config.replaceWhitelist.add(Config.saveStack(selected));
+                } else {
+                    state.config.replaceWhitelist = null;
+                }
+
+                state.config.action = null;
+                
+                GTUtility.sendInfoToPlayer(player, String.format(
+                    "Set exchange whitelist to only contain: %s",
+                    selected == null ? "nothing" : selected.getDisplayName()));
+
+                return true;
             }
         }
 
@@ -426,6 +550,10 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         if (event.button == 2 /* MMB */ && event.buttonstate && heldItem.getItem() == this) {
             event.setCanceled(true);
 
+            NBTState state = getState(heldItem);
+            onMMBPressed(player, heldItem, state);
+            setState(heldItem, state);
+
             Messages.MMBPressed.sendToServer();
         }
     }
@@ -434,23 +562,17 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         if (state.config.placeMode == PlaceMode.GEOMETRY) {
             onPickBlock(player.getEntityWorld(), player, stack, state, MMUtils.getHitResult(player));
         }
+        if (state.config.placeMode == PlaceMode.EXCHANGING) {
+            state.config.action = player.isSneaking() ? PendingAction.EXCH_SET_REPLACE : PendingAction.EXCH_SET_TARGET;
+            handleAction(stack, player.worldObj, player, state, MMUtils.getHitResult(player));
+        }
     }
 
     private void onPickBlock(World world, EntityPlayer player, ItemStack stack, NBTState state,
         MovingObjectPosition hit) {
-        ItemStack selected = null;
 
-        if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
-            Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-
-            selected = block.getPickBlock(hit, world, hit.blockX, hit.blockY, hit.blockZ, player);
-
-            if (selected != null && !(selected.getItem() instanceof ItemBlock)) {
-                selected = null;
-            }
-        } else if (hit == null || hit.typeOfHit != MovingObjectType.BLOCK) {
-            selected = null;
-        }
+        PendingBlock block = PendingBlock.fromPickBlock(world, player, hit);
+        ItemStack selected = block == null ? null : block.toStack();
 
         String what = null;
 
@@ -485,16 +607,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             }
         }
 
-        if (!world.isRemote) {
-            player.addChatMessage(
-                new ChatComponentText(
-                    String.format(
-                        "%s%sSet %s to: %s",
-                        EnumChatFormatting.ITALIC,
-                        EnumChatFormatting.GRAY,
-                        what,
-                        selected == null ? "nothing" : selected.getDisplayName())));
-        }
+        GTUtility.sendInfoToPlayer(player, String.format("Set %s to: %s", what, selected == null ? "nothing" : selected.getDisplayName()));
     }
 
     static final Map<EntityPlayer, IBuildable> PENDING_BUILDS = new MapMaker().weakKeys()
@@ -529,37 +642,35 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
                 switch (state.config.placeMode) {
                     case GEOMETRY:
-                    case COPYING: {
-                        PENDING_BUILDS.put(player, getGeomOrCopy(player, stack, state));
+                    case COPYING:
+                    case EXCHANGING: {
+                        PENDING_BUILDS.put(player, getPendingBuild(player, stack, state));
                         break;
                     }
                     case MOVING: {
-                        PENDING_BUILDS.put(player, getMove(player, stack, state));
-                        break;
-                    }
-                    case EXCHANGING: {
+                        PENDING_BUILDS.put(player, getPendingMove(player, stack, state));
                         break;
                     }
                 }
             }
         }
 
-        if (ticksUsed >= 20 && (ticksUsed % tier.mPlaceTicks) == 0 && !player.worldObj.isRemote) {
+        if (ticksUsed >= 20 && (ticksUsed % tier.placeTicks) == 0 && !player.worldObj.isRemote) {
             PENDING_BUILDS.get(player)
                 .tryPlaceBlocks(stack, player);
         }
     }
 
-    private IBuildable getGeomOrCopy(EntityPlayer player, ItemStack stack, NBTState state) {
+    private IBuildable getPendingBuild(EntityPlayer player, ItemStack stack, NBTState state) {
         PendingBuild pending = new PendingBuild();
         pending.placingPlayer = player;
         pending.tier = tier;
         pending.state = state;
 
-        List<PendingBlock> blocks = pending.state.getPendingBlocks();
+        List<PendingBlock> blocks = pending.state.getPendingBlocks(player.getEntityWorld());
 
-        if (tier.mMaxRange != -1) {
-            int maxRange2 = tier.mMaxRange * tier.mMaxRange;
+        if (tier.maxRange != -1) {
+            int maxRange2 = tier.maxRange * tier.maxRange;
 
             Location playerLocation = new Location(
                 player.getEntityWorld(),
@@ -570,26 +681,13 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             blocks.removeIf(block -> block.distanceTo2(playerLocation) > maxRange2);
         }
 
-        Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(
-            Comparator.comparing((UniqueIdentifier id) -> id.modId)
-                .thenComparing(id -> id.name));
-        Comparator<PendingBlock> comparePending = Comparator.comparingInt((PendingBlock b) -> b.buildOrder)
-            .thenComparing(Comparator.nullsFirst(Comparator.comparing(b -> b.blockId, blockId)))
-            .thenComparingInt(b -> b.metadata)
-            .thenComparingLong(b -> {
-                int chunkX = b.x >> 4;
-                int chunkZ = b.z >> 4;
-
-                return chunkX | (chunkZ << 32);
-            });
-
-        blocks.sort(comparePending);
+        blocks.sort(PendingBlock.getComparator());
         pending.pendingBlocks = new LinkedList<>(blocks);
 
         return pending;
     }
 
-    private IBuildable getMove(EntityPlayer player, ItemStack stack, NBTState state) {
+    private IBuildable getPendingMove(EntityPlayer player, ItemStack stack, NBTState state) {
         PendingMove move = new PendingMove();
 
         move.placingPlayer = player;
@@ -601,7 +699,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     @Override
     public String getEncryptionKey(ItemStack item) {
-        if (tier.mConnectsToAE) {
+        if (tier.hasCap(CONNECTS_TO_AE)) {
             Long key = getState(item).encKey;
             return key != null ? Long.toHexString(key) : null;
         } else {
@@ -613,7 +711,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     public void setEncryptionKey(ItemStack item, String encKey, String name) {
         NBTState state = getState(item);
 
-        if (tier.mConnectsToAE) {
+        if (tier.hasCap(CONNECTS_TO_AE)) {
             try {
                 state.encKey = Long.parseLong(encKey);
             } catch (NumberFormatException e) {
@@ -627,11 +725,13 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     }
 
     public void setUplinkAddress(ItemStack stack, Long address) {
-        NBTState state = getState(stack);
-
-        state.uplinkAddress = address;
-
-        setState(stack, state);
+        if (tier.hasCap(CONNECTS_TO_UPLINK)) {
+            NBTState state = getState(stack);
+    
+            state.uplinkAddress = address;
+    
+            setState(stack, state);
+        }
     }
 
     // #region UI
@@ -658,7 +758,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             })
             .pipe(builder -> {
                 switch (initialState.config.placeMode) {
-                    case GEOMETRY -> addGeometryOptions(builder, buildContext, heldStack);
+                    case GEOMETRY -> addGeometryOptions(builder, buildContext, heldStack, initialState);
                     case COPYING -> addCopyingOptions(builder, buildContext, heldStack);
                     case MOVING -> addMovingOptions(builder, buildContext, heldStack);
                     case EXCHANGING -> addExchangingOptions(builder, buildContext, heldStack);
@@ -671,7 +771,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .label("Set Mode")
                 .branch()
                     .label("Set Remove Mode")
-                    .hidden(!tier.mAllowRemoving)
+                    .hidden(!tier.hasCap(ALLOW_REMOVING))
                     .option()
                         .label("Remove None")
                         .onClicked(() -> {
@@ -699,22 +799,29 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 .done()
                 .option()
                     .label("Moving")
-                    .hidden(!tier.mAllowCopying)
+                    .hidden(!tier.hasCap(ALLOW_MOVING))
                     .onClicked(() -> {
                         Messages.SetPlaceMode.sendToServer(PlaceMode.MOVING);
                     })
                 .done()
                 .option()
                     .label("Copying")
-                    .hidden(!tier.mAllowCopying)
+                    .hidden(!tier.hasCap(ALLOW_COPYING))
                     .onClicked(() -> {
                         Messages.SetPlaceMode.sendToServer(PlaceMode.COPYING);
+                    })
+                .done()
+                .option()
+                    .label("Exchanging")
+                    .hidden(!tier.hasCap(ALLOW_EXCHANGING))
+                    .onClicked(() -> {
+                        Messages.SetPlaceMode.sendToServer(PlaceMode.EXCHANGING);
                     })
                 .done()
             .done();
     }
 
-    private void addGeometryOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
+    private void addGeometryOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack, NBTState state) {
         builder
             .branch()
                 .label("Select Blocks")
@@ -780,6 +887,12 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                         Messages.SetShape.sendToServer(Shape.SPHERE);
                     })
                 .done()
+                .option()
+                    .label("Cylinder")
+                    .onClicked(() -> {
+                        Messages.SetShape.sendToServer(Shape.CYLINDER);
+                    })
+                .done()
             .done()
             .branch()
                 .label("Move Coords")
@@ -790,9 +903,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     })
                 .done()
                 .option()
-                    .label("Move Both")
+                    .label("Move All")
                     .onClicked(() -> {
-                        Messages.MoveBoth.sendToServer();
+                        Messages.MoveAll.sendToServer();
                     })
                 .done()
                 .option()
@@ -852,7 +965,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             .option()
                 .label("Mark Cut")
                 .onClicked(() -> {
-                    Messages.MarkCopy.sendToServer();
+                    Messages.MarkCut.sendToServer();
                 })
             .done()
             .option()
@@ -866,24 +979,30 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     private void addExchangingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
         builder
             .branch()
-                .label("Replace Whitelist")
+                .label("Edit Replace Whitelist")
                 .option()
                     .label("Clear")
                     .onClicked(() -> {
-                        Messages.MarkCopy.sendToServer();
+                        Messages.ClearWhitelist.sendToServer();
                     })
                 .done()
                 .option()
-                    .label("Add block")
+                    .label("Add Block")
                     .onClicked(() -> {
-                        Messages.MarkCopy.sendToServer();
+                        Messages.SetPendingAction.sendToServer(PendingAction.EXCH_ADD_REPLACE);
+                    })
+                .done()
+                .option()
+                    .label("Set Block")
+                    .onClicked(() -> {
+                        Messages.SetPendingAction.sendToServer(PendingAction.EXCH_SET_REPLACE);
                     })
                 .done()
             .done()
             .option()
-                .label("Set new block")
+                .label("Set Block To Replace With")
                 .onClicked(() -> {
-                    Messages.MarkCopy.sendToServer();
+                    Messages.SetPendingAction.sendToServer(PendingAction.EXCH_SET_TARGET);
                 })
             .done();
     }
@@ -971,13 +1090,18 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     }
 
     private void renderGeom(RenderWorldLastEvent event, NBTState state, EntityPlayer player) {
-        Location coordA = state.config.getCoordA(player);
-        Location coordB = state.config.getCoordB(player);
+        Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
+
+        Location coordA = state.config.getCoordA(player.worldObj, lookingAt);
+        Location coordB = state.config.getCoordB(player.worldObj, lookingAt);
+        Location coordC = state.config.getCoordC(player.worldObj, lookingAt);
         state.config.coordA = coordA;
         state.config.coordB = coordB;
+        state.config.coordC = coordC;
 
         boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
         boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
+        boolean isCValid = coordC != null && coordC.isInWorld(player.worldObj);
 
         if (isAValid && state.config.coordAOffset != null) {
             GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
@@ -987,6 +1111,33 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         if (isBValid && state.config.coordBOffset != null) {
             GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
             drawRulers(player, coordB, false, event.partialTicks);
+        }
+
+        if (isCValid && state.config.coordCOffset != null) {
+            GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+            drawRulers(player, coordC, false, event.partialTicks);
+        }
+
+        if (state.config.placeMode == PlaceMode.GEOMETRY && state.config.shape == Shape.CYLINDER) {
+            if (isAValid && isBValid) {
+                Objects.requireNonNull(coordA);
+                Objects.requireNonNull(coordB);
+
+                Vector3i b2 = NBTState.pinToPlanes(coordA.toVec(), coordB.toVec());
+
+                coordB.x = b2.x;
+                coordB.y = b2.y;
+                coordB.z = b2.z;
+
+                if (isCValid) {
+                    Objects.requireNonNull(coordC);
+                    Vector3i height = NBTState.pinToLine(coordA.toVec(), b2, coordC.toVec());
+
+                    coordC.x = height.x;
+                    coordC.y = height.y;
+                    coordC.z = height.z;
+                }
+            }
         }
 
         if (isAValid && isBValid) {
@@ -999,12 +1150,30 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 MathHelper.floor_double(player.posY),
                 MathHelper.floor_double(player.posZ));
 
-            BoxRenderer.INSTANCE.start(event.partialTicks);
-            BoxRenderer.INSTANCE.drawAround(
-                MMUtils.getBoundingBox(coordA, MMUtils.getRegionDeltas(coordA, coordB)),
-                new Vector3f(0.15f, 0.6f, 0.75f));
-            BoxRenderer.INSTANCE.finish();
+            Vector3i vA = coordA.toVec();
+            Vector3i vB = coordB.toVec();
+            Vector3i vC = null;
 
+            Vector3i max = new Vector3i(vA).max(vB);
+            Vector3i min = new Vector3i(vA).min(vB);
+
+            if ((state.config.placeMode != PlaceMode.GEOMETRY || state.config.shape.requiresC()) && isCValid) {
+                Objects.requireNonNull(coordC);
+                vC = coordC.toVec();
+
+                max.max(vC);
+                min.min(vC);
+            }
+
+            max.add(1, 1, 1);
+
+            BoxRenderer.INSTANCE.start(event.partialTicks);
+
+            BoxRenderer.INSTANCE.drawAround(
+                AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z),
+                new Vector3f(0.15f, 0.6f, 0.75f));
+
+            BoxRenderer.INSTANCE.finish();    
 
             boolean needsAnalysis = (System.currentTimeMillis() - lastAnalysisMS) >= ANALYSIS_INTERVAL_MS
                 || !Objects.equals(lastAnalyzedConfig, state.config);
@@ -1014,24 +1183,10 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             if (needsAnalysis) {
                 lastAnalysisMS = System.currentTimeMillis();
                 lastAnalyzedConfig = state.config;
-                analysisCache = state.getPendingBlocks();
-
-                int x1 = coordA.x;
-                int y1 = coordA.y;
-                int z1 = coordA.z;
-                int x2 = coordB.x;
-                int y2 = coordB.y;
-                int z2 = coordB.z;
-
-                int minX = Math.min(x1, x2);
-                int minY = Math.min(y1, y2);
-                int minZ = Math.min(z1, z2);
-                int maxX = Math.max(x1, x2);
-                int maxY = Math.max(y1, y2);
-                int maxZ = Math.max(z1, z2);
+                analysisCache = state.getPendingBlocks(player.getEntityWorld());
 
                 AboveHotbarHUD.renderTextAboveHotbar(
-                    String.format("dX=%d dY=%d dZ=%d", maxX - minX + 1, maxY - minY + 1, maxZ - minZ + 1),
+                    String.format("dX=%d dY=%d dZ=%d", max.x - min.x, max.y - min.y, max.z - min.z),
                     (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
                     false,
                     false);
@@ -1120,7 +1275,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             if (needsAnalysis) {
                 lastAnalysisMS = System.currentTimeMillis();
                 lastAnalyzedConfig = state.config;
-                analysisCache = state.getPendingBlocks();
+                analysisCache = state.getPendingBlocks(player.getEntityWorld());
 
                 AboveHotbarHUD.renderTextAboveHotbar(
                     String.format(
@@ -1146,12 +1301,12 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     private void drawHints(RenderWorldLastEvent event, NBTState state, EntityPlayer player, Location playerLocation) {
         StructureLibAPI.startHinting(player.worldObj);
 
-        int buildable = tier.mMaxRange * tier.mMaxRange;
+        int buildable = tier.maxRange * tier.maxRange;
 
         int i = 0;
 
         for (PendingBlock pendingBlock : analysisCache) {
-            if (tier.mMaxRange != -1) {
+            if (tier.maxRange != -1) {
                 int dist2 = pendingBlock.distanceTo2(playerLocation);
 
                 if (dist2 > buildable) continue;
@@ -1169,6 +1324,11 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     pendingBlock.z,
                     block,
                     pendingBlock.metadata);
+
+                if (state.config.placeMode == PlaceMode.EXCHANGING) {
+                    StructureLibAPI.markHintParticleError(player, player.worldObj, pendingBlock.x, pendingBlock.y, pendingBlock.z);
+                    StructureLibAPI.updateHintParticleTint(player, player.worldObj, pendingBlock.x, pendingBlock.y, pendingBlock.z, new short[] { 255, 255, 255, 255 });
+                }
             }
         }
 

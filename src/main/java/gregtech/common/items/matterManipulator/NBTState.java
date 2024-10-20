@@ -1,11 +1,13 @@
 package gregtech.common.items.matterManipulator;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -18,10 +20,13 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.gson.Gson;
@@ -44,6 +49,8 @@ import appeng.tile.misc.TileSecurity;
 import appeng.tile.networking.TileWireless;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.RegionAnalysis;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 
@@ -51,7 +58,7 @@ class NBTState {
 
     static final Gson GSON = new GsonBuilder().create();
 
-    public NBTState.Config config = new NBTState.Config();
+    public Config config = new Config();
 
     public Long encKey, uplinkAddress;
     public double charge;
@@ -184,42 +191,82 @@ class NBTState {
 
     // #region Pending blocks
 
-    public List<PendingBlock> getPendingBlocks() {
-        switch (config.placeMode) {
-            case COPYING: 
-            case MOVING: {
-                Location coordA = config.coordA;
-                Location coordB = config.coordB;
-                Location coordC = config.coordC;
-
-                if (!Location.areCompatible(coordA, coordB, coordC)) {
-                    return new ArrayList<>();
-                }
-
-                RegionAnalysis analysis = BlockAnalyzer.analyzeRegion(coordA.getWorld(), coordA, coordB, config.placeMode == PlaceMode.COPYING ? true : false);
-
-                for (PendingBlock block : analysis.blocks) {
-                    block.x += coordC.x;
-                    block.y += coordC.y;
-                    block.z += coordC.z;
-                }
-
-                return analysis.blocks;
-            }
-            case GEOMETRY: {
-                return getGeomPendingBlocks();
-            }
-            default: {
-                throw new AssertionError();
-            }
-        }
+    public List<PendingBlock> getPendingBlocks(World world) {
+        return switch (config.placeMode) {
+            case COPYING, MOVING -> getAnalysis(world);
+            case GEOMETRY -> getGeomPendingBlocks(world);
+            case EXCHANGING -> getExchangeBlocks(world);
+        };
     }
 
-    private List<PendingBlock> getGeomPendingBlocks() {
+    private List<PendingBlock> getAnalysis(World world) {
+        Location coordA = config.coordA;
+        Location coordB = config.coordB;
+        Location coordC = config.coordC;
+
+        if (!Location.areCompatible(coordA, coordB, coordC) || !coordA.isInWorld(world)) {
+            return new ArrayList<>();
+        }
+
+        // Moving's result is only used visually since it has a special build algorithm
+        RegionAnalysis analysis = BlockAnalyzer.analyzeRegion(coordA.getWorld(), coordA, coordB, config.placeMode == PlaceMode.COPYING ? true : false);
+
+        for (PendingBlock block : analysis.blocks) {
+            block.x += coordC.x;
+            block.y += coordC.y;
+            block.z += coordC.z;
+        }
+
+        return analysis.blocks;
+    }
+
+    private List<PendingBlock> getExchangeBlocks(World world) {
+        Location coordA = config.coordA;
+        Location coordB = config.coordB;
+
+        if (!Location.areCompatible(coordA, coordB) || !coordA.isInWorld(world)) {
+            return new ArrayList<>();
+        }
+
+        if (config.replaceWhitelist == null || config.replaceWhitelist.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Vector3i deltas = MMUtils.getRegionDeltas(coordA, coordB);
+
         ArrayList<PendingBlock> pending = new ArrayList<>();
 
-        if (config.coordA == null || config.coordB == null) {
-            return pending;
+        Set<ItemId> whitelist = config.replaceWhitelist.stream()
+            .map(Config::loadStack)
+            .map(stack -> ItemId.create(stack))
+            .collect(Collectors.toSet());
+
+        ItemStack replacement = Config.loadStack(config.replaceWith);
+
+        for (Vector3i voxel : MMUtils.getBlocksInBB(coordA, deltas)) {
+            PendingBlock existing = PendingBlock.fromBlock(world, voxel.x, voxel.y, voxel.z);
+
+            if (existing != null && existing.toStack() != null && whitelist.contains(ItemId.create(existing.toStack()))) {
+                pending.add(new PendingBlock(world.provider.dimensionId, voxel.x, voxel.y, voxel.z, replacement));
+            }
+        }
+
+        return pending;
+    }
+
+    private List<PendingBlock> getGeomPendingBlocks(World world) {
+        Location coordA = config.coordA;
+        Location coordB = config.coordB;
+        Location coordC = config.coordC;
+
+        if (!Location.areCompatible(coordA, coordB) || !coordA.isInWorld(world)) {
+            return new ArrayList<>();
+        }
+
+        if (config.shape.requiresC()) {
+            if (!Location.areCompatible(coordA, coordC) || !coordA.isInWorld(world)) {
+                return new ArrayList<>();
+            }
         }
 
         int x1 = config.coordA.x;
@@ -236,6 +283,8 @@ class NBTState {
         int maxY = Math.max(y1, y2);
         int maxZ = Math.max(z1, z2);
 
+        ArrayList<PendingBlock> pending = new ArrayList<>();
+
         switch (config.shape) {
             case LINE: {
                 iterateLine(pending, x1, y1, z1, x2, y2, z2);
@@ -249,7 +298,8 @@ class NBTState {
                 iterateSphere(pending, minX, minY, minZ, maxX, maxY, maxZ);
                 break;
             }
-            default: {
+            case CYLINDER: {
+                iterateCylinder(pending, coordA.toVec(), coordB.toVec(), coordC.toVec());
                 break;
             }
         }
@@ -257,13 +307,13 @@ class NBTState {
         return pending;
     }
 
-    private void iterateLine(ArrayList<PendingBlock> pending, int x1, int y1, int z1, int x2, int y2, int z2) {
-        ItemStack edges = config.getEdges();
+    private static List<Vector3i> getLineVoxels(int x1, int y1, int z1, int x2, int y2, int z2) {
+        List<Vector3i> voxels = new ArrayList<>();
 
         int dx = Math.abs(x1 - x2), dy = Math.abs(y1 - y2), dz = Math.abs(z1 - z2);
         int sx = x1 < x2 ? 1 : -1, sy = y1 < y2 ? 1 : -1, sz = z1 < z2 ? 1 : -1;
 
-        pending.add(new PendingBlock(config.coordA.worldId, x1, y1, z1, edges));
+        voxels.add(new Vector3i(x1, y1, z1));
 
         if (dx >= dy && dx >= dz) {
             int p1 = 2 * dy - dx;
@@ -284,7 +334,7 @@ class NBTState {
                 p1 += 2 * dy;
                 p2 += 2 * dz;
 
-                pending.add(new PendingBlock(config.coordA.worldId, x1, y1, z1, edges));
+                voxels.add(new Vector3i(x1, y1, z1));
             }
         } else if (dy >= dx && dy >= dz) {
             int p1 = 2 * dx - dy;
@@ -305,7 +355,7 @@ class NBTState {
                 p1 += 2 * dx;
                 p2 += 2 * dz;
 
-                pending.add(new PendingBlock(config.coordA.worldId, x1, y1, z1, edges));
+                voxels.add(new Vector3i(x1, y1, z1));
             }
         } else {
             int p1 = 2 * dy - dz;
@@ -326,8 +376,18 @@ class NBTState {
                 p1 += 2 * dy;
                 p2 += 2 * dx;
 
-                pending.add(new PendingBlock(config.coordA.worldId, x1, y1, z1, edges));
+                voxels.add(new Vector3i(x1, y1, z1));
             }
+        }
+
+        return voxels;
+    }
+
+    private void iterateLine(ArrayList<PendingBlock> pending, int x1, int y1, int z1, int x2, int y2, int z2) {
+        ItemStack edges = config.getEdges();
+
+        for (Vector3i voxel : getLineVoxels(x1, y1, z1, x2, y2, z2)) {
+            pending.add(new PendingBlock(config.coordA.worldId, voxel.x, voxel.y, voxel.z, edges));
         }
     }
 
@@ -436,6 +496,123 @@ class NBTState {
         }
     }
 
+    private static int signum(int x) {
+        return x > 0 ? 1 : x < 0 ? -1 : 0;
+    }
+
+    private void iterateCylinder(ArrayList<PendingBlock> pending, Vector3i coordA, Vector3i coordB, Vector3i coordC) {
+        ItemStack faces = config.getFaces();
+        ItemStack volumes = config.getVolumes();
+        ItemStack edges = config.getEdges();
+
+        Vector3i b2 = pinToPlanes(coordA, coordB);
+        Vector3i height = pinToLine(coordA, b2, coordC).sub(coordA);
+
+        Vector3i delta = new Vector3i(b2).sub(coordA);
+
+        delta.x += signum(delta.x);
+        delta.y += signum(delta.y);
+        delta.z += signum(delta.z);
+
+        int dA = 0, dB = 0, dH = 0;
+        Vector3i vecA, vecB, vecH;
+        
+        switch (delta.minComponent()) {
+            case 0: {
+                dA = delta.y;
+                dB = delta.z;
+                dH = height.x;
+                vecA = new Vector3i(0, signum(delta.y), 0);
+                vecB = new Vector3i(0, 0, signum(delta.z));
+                vecH = new Vector3i(signum(height.x), 0, 0);
+                break;
+            }
+            case 1: {
+                dA = delta.x;
+                dB = delta.z;
+                dH = height.y;
+                vecA = new Vector3i(signum(delta.x), 0, 0);
+                vecB = new Vector3i(0, 0, signum(delta.z));
+                vecH = new Vector3i(0, signum(height.y), 0);
+                break;
+            }
+            case 2: {
+                dA = delta.x;
+                dB = delta.y;
+                dH = height.z;
+                vecA = new Vector3i(signum(delta.x), 0, 0);
+                vecB = new Vector3i(0, signum(delta.y), 0);
+                vecH = new Vector3i(0, 0, signum(height.z));
+                break;
+            }
+            default: {
+                throw new AssertionError();
+            }
+        }
+
+        int absA = Math.abs(dA);
+        int absB = Math.abs(dB);
+        int absH = Math.abs(dH) + 1;
+
+        float rA = absA / 2f;
+        float rB = absB / 2f;
+
+        boolean[][][] present = new boolean[absA + 2][absH + 2][absB + 2];
+
+        for (int a = 0; a < absA; a++) {
+            for (int b = 0; b < absB; b++) {
+                double distance = Math.pow((a - rA + 0.5) / rA, 2.0) + Math.pow((b - rB + 0.5) / rB, 2.0);
+
+                if (distance <= 1) {
+                    for (int h = 0; h < absH; h++) {
+                        PendingBlock block = new PendingBlock(
+                            config.coordA.worldId,
+                            a,
+                            h,
+                            b,
+                            volumes,
+                            2,
+                            0);
+    
+                        present[a + 1][h + 1][b + 1] = true;
+                        pending.add(block);
+                    }
+                }
+            }
+        }
+
+        for (PendingBlock block : pending) {
+            byte adj = 0;
+
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                if (present[block.x + 1 + dir.offsetX][block.y + 1 + dir.offsetY][block.z + 1 + dir.offsetZ]) {
+                    adj |= dir.flag;
+                }
+            }
+
+            if (adj != 0b111111) {
+                if ((adj & 0b111100) == 0b111100) {
+                    block.setBlock(edges);
+                    block.buildOrder = 1;
+                    block.renderOrder = 1;
+                } else {
+                    block.setBlock(faces);
+                    block.buildOrder = 2;
+                    block.renderOrder = 0;
+                }
+            }
+        }
+
+        for (PendingBlock block : pending) {
+            int a = block.x, b = block.z, h = block.y;
+
+            // why, yes, that is an integer matrix
+            block.x = a * vecA.x + b * vecB.x + h * vecH.x + coordA.x;
+            block.y = a * vecA.y + b * vecB.y + h * vecH.y + coordA.y;
+            block.z = a * vecA.z + b * vecB.z + h * vecH.z + coordA.z;
+        }
+    }
+
     // #endregion
 
     static class Config {
@@ -451,16 +628,21 @@ class NBTState {
 
         public JsonElement corners, edges, faces, volumes;
 
-        private static JsonElement saveStack(ItemStack stack) {
+        public List<JsonElement> replaceWhitelist;
+        public JsonElement replaceWith;
+
+        public static JsonElement saveStack(ItemStack stack) {
             if (stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemBlock)) {
-                stack = null;
+                return null;
             }
 
-            return stack == null ? null : MMUtils.toJsonObject(stack.writeToNBT(new NBTTagCompound()));
+            return MMUtils.toJsonObject(stack.writeToNBT(new NBTTagCompound()));
         }
 
-        private static ItemStack loadStack(JsonElement stack) {
-            return stack == null ? null : ItemStack.loadItemStackFromNBT((NBTTagCompound) MMUtils.toNbt(stack));
+        public static ItemStack loadStack(JsonElement stack) {
+            if (stack == null) return null;
+
+            return ItemStack.loadItemStackFromNBT((NBTTagCompound) MMUtils.toNbt(stack));
         }
 
         public void setCorners(ItemStack corners) {
@@ -495,25 +677,27 @@ class NBTState {
             return loadStack(volumes);
         }
 
-        public Location getCoordA(EntityPlayer player) {
+        public Location getCoordA(World world, Vector3i lookingAt) {
             if (coordAOffset == null) {
                 return coordA;
             } else {
-                Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
-                lookingAt.add(coordAOffset);
-
-                return new Location(player.worldObj, lookingAt);
+                return new Location(world, new Vector3i(lookingAt).add(coordAOffset));
             }
         }
 
-        public Location getCoordB(EntityPlayer player) {
+        public Location getCoordB(World world, Vector3i lookingAt) {
             if (coordBOffset == null) {
                 return coordB;
             } else {
-                Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
-                lookingAt.add(coordBOffset);
+                return new Location(world, new Vector3i(lookingAt).add(coordBOffset));
+            }
+        }
 
-                return new Location(player.worldObj, lookingAt);
+        public Location getCoordC(World world, Vector3i lookingAt) {
+            if (coordCOffset == null) {
+                return coordC;
+            } else {
+                return new Location(world, new Vector3i(lookingAt).add(coordCOffset));
             }
         }
 
@@ -536,6 +720,8 @@ class NBTState {
             result = prime * result + ((edges == null) ? 0 : edges.hashCode());
             result = prime * result + ((faces == null) ? 0 : faces.hashCode());
             result = prime * result + ((volumes == null) ? 0 : volumes.hashCode());
+            result = prime * result + ((replaceWhitelist == null) ? 0 : replaceWhitelist.hashCode());
+            result = prime * result + ((replaceWith == null) ? 0 : replaceWith.hashCode());
             return result;
         }
 
@@ -580,15 +766,55 @@ class NBTState {
             if (volumes == null) {
                 if (other.volumes != null) return false;
             } else if (!volumes.equals(other.volumes)) return false;
+            if (replaceWhitelist == null) {
+                if (other.replaceWhitelist != null) return false;
+            } else if (!replaceWhitelist.equals(other.replaceWhitelist)) return false;
+            if (replaceWith == null) {
+                if (other.replaceWith != null) return false;
+            } else if (!replaceWith.equals(other.replaceWith)) return false;
             return true;
         }
 
+        
+    }
+
+    public static Vector3i pinToPlanes(Vector3i origin, Vector3i point) {
+        int dX = Math.abs(point.x - origin.x);
+        int dY = Math.abs(point.y - origin.y);
+        int dZ = Math.abs(point.z - origin.z);
+
+        int shortest = GTUtility.min(dX, dY, dZ);
+
+        if (shortest == dX) {
+            return new Vector3i(origin.x, point.y, point.z);
+        } else if (shortest == dY) {
+            return new Vector3i(point.x, origin.y, point.z);
+        } else {
+            return new Vector3i(point.x, point.y, origin.z);
+        }
+    }
+
+    public static Vector3i pinToLine(Vector3i origin, Vector3i b, Vector3i point) {
+        return switch (new Vector3i(b).sub(origin).minComponent()) {
+            case 0 -> new Vector3i(point.x, origin.y, origin.z);
+            case 1 -> new Vector3i(origin.x, point.y, origin.z);
+            case 2 -> new Vector3i(origin.x, origin.y, point.z);
+            default -> throw new AssertionError();
+        };
     }
 
     static enum Shape {
         LINE,
         CUBE,
-        SPHERE
+        SPHERE,
+        CYLINDER;
+
+        public boolean requiresC() {
+            return switch(this) {
+                case LINE, CUBE, SPHERE -> false;
+                case CYLINDER -> true;
+            };
+        }
     }
 
     static enum PendingAction {
@@ -599,6 +825,10 @@ class NBTState {
         MARK_CUT_A,
         MARK_CUT_B,
         MARK_PASTE,
+        EXCH_MOVING_COORDS,
+        EXCH_SET_TARGET,
+        EXCH_ADD_REPLACE,
+        EXCH_SET_REPLACE,
     }
 
     static enum BlockSelectMode {
@@ -733,6 +963,22 @@ class NBTState {
             return new PendingBlock(world.provider.dimensionId, x, y, z, realBlock, meta);
         }
 
+        public static PendingBlock fromPickBlock(World world, EntityPlayer player, MovingObjectPosition hit) {
+            if (hit == null || hit.typeOfHit != MovingObjectType.BLOCK) return null;
+
+            Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
+
+            ItemStack stack = block.getPickBlock(hit, world, hit.blockX, hit.blockY, hit.blockZ, player);
+
+            if (stack == null || !(stack.getItem() instanceof ItemBlock itemBlock)) return null;
+
+            block = Block.getBlockFromItem(itemBlock);
+
+            int meta = block.getDamageValue(world, hit.blockX, hit.blockY, hit.blockZ);
+
+            return new PendingBlock(world.provider.dimensionId, hit.blockX, hit.blockY, hit.blockZ, block, meta);
+        }
+
         public static boolean isSameBlock(PendingBlock a, PendingBlock b) {
             return a.getBlock() == b.getBlock() && a.metadata == b.metadata;
         }
@@ -785,6 +1031,22 @@ class NBTState {
                 if (other.tileData != null) return false;
             } else if (!tileData.equals(other.tileData)) return false;
             return true;
+        }
+
+        public static Comparator<PendingBlock> getComparator() {
+            Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(
+                Comparator.comparing((UniqueIdentifier id) -> id.modId)
+                    .thenComparing(id -> id.name));
+
+            return Comparator.comparingInt((PendingBlock b) -> b.buildOrder)
+                .thenComparing(Comparator.nullsFirst(Comparator.comparing(b -> b.blockId, blockId)))
+                .thenComparingInt(b -> b.metadata)
+                .thenComparingLong(b -> {
+                    int chunkX = b.x >> 4;
+                    int chunkZ = b.z >> 4;
+
+                    return chunkX | (chunkZ << 32);
+                });
         }
     }
 

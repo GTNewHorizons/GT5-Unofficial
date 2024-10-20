@@ -68,7 +68,7 @@ public class BoxRenderer {
         aabb = aabb.copy()
             .expand(0.01, 0.01, 0.01);
 
-        tes.setColorRGBA_F(colour.x, colour.y, colour.z, 0.5f);
+        tes.setColorRGBA_F(colour.x, colour.y, colour.z, 0.25f);
 
         tes.storeTranslation();
         tes.addTranslation((float) aabb.minX, (float) aabb.minY, (float) aabb.minZ);
