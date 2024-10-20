@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -17,21 +20,28 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SliderWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
+import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 
 /**
  * Holds UI element builders and other conveniences shared between the primary Forge of the Gods and its modules.
@@ -401,5 +411,133 @@ public class ForgeOfGodsUI {
             }
             ctx.openSyncedWindow(windowId);
         }
+    }
+
+    public enum StarColorRGBM {
+
+        RED(EnumChatFormatting.RED, 0xFFFF5555, 0, 255, ForgeOfGodsStarColor.DEFAULT_RED),
+        GREEN(EnumChatFormatting.GREEN, 0xFF55FF55, 0, 255, ForgeOfGodsStarColor.DEFAULT_GREEN),
+        BLUE(EnumChatFormatting.DARK_BLUE, 0xFF0000AA, 0, 255, ForgeOfGodsStarColor.DEFAULT_BLUE),
+        GAMMA(EnumChatFormatting.GOLD, 0xFFFFAA00, 0, 100, ForgeOfGodsStarColor.DEFAULT_GAMMA);
+
+        private final String title;
+        private final EnumChatFormatting mcColor;
+        private final int muiColor;
+        private final float lowerBound, upperBound;
+        private final float defaultValue;
+
+        StarColorRGBM(EnumChatFormatting mcColor, int muiColor, float lower, float upper, float defaultVal) {
+            this.title = "gt.blockmachines.multimachine.FOG." + name().toLowerCase();
+            this.mcColor = mcColor;
+            this.muiColor = muiColor;
+            this.lowerBound = lower;
+            this.upperBound = upper;
+            this.defaultValue = defaultVal;
+        }
+
+        public String tooltip(float value) {
+            if (this == GAMMA) {
+                return String.format("%s%s: %.1f", mcColor, translateToLocal(title), value);
+            }
+            return String.format("%s%s: %d", mcColor, translateToLocal(title), (int) value);
+        }
+    }
+
+    public static Widget createStarColorRGBMGroup(StarColorRGBM color, DoubleConsumer setter, DoubleSupplier getter) {
+        MultiChildWidget widget = new MultiChildWidget();
+        widget.setSize(184, 18);
+
+        // Title
+        widget.addChild(
+            new TextWidget(translateToLocal(color.title)).setDefaultColor(color.mcColor)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(0, 0)
+                .setSize(32, 18));
+
+        // Color slider
+        widget.addChild(new SliderWidget().setSetter(val -> {
+            int aux = (int) (val * 10);
+            setter.accept(aux / 10d);
+        })
+            .setGetter(() -> (float) getter.getAsDouble())
+            .setBounds(color.lowerBound, color.upperBound)
+            .setHandleSize(new Size(4, 0))
+            .dynamicTooltip(() -> {
+                List<String> ret = new ArrayList<>();
+                ret.add(color.tooltip((float) getter.getAsDouble()));
+                return ret;
+            })
+            .setUpdateTooltipEveryTick(true)
+            .setSize(118, 8)
+            .setPos(32, 5));
+
+        // Color manual text box
+        Widget numberEntry = new NumericWidget().setSetter(setter)
+            .setGetter(getter)
+            .setBounds(color.lowerBound, color.upperBound)
+            .setDefaultValue(color.defaultValue)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(color.muiColor)
+            .setSize(32, 18)
+            .setPos(152, 0)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+
+        if (color == StarColorRGBM.GAMMA) {
+            numberEntry.addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.decimals"));
+            ((NumericWidget) numberEntry).setIntegerOnly(false);
+        } else {
+            numberEntry.addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"));
+        }
+
+        return widget.addChild(numberEntry);
+    }
+
+    public static Widget createStarColorButton(String text, String tooltip,
+        BiConsumer<Widget.ClickData, Widget> onClick) {
+        MultiChildWidget widget = new MultiChildWidget();
+        widget.setSize(35, 15);
+
+        widget.addChild(
+            new ButtonWidget().setOnClick(onClick)
+                .setSize(35, 15)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
+                .addTooltip(translateToLocal(tooltip))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(0, 0));
+
+        widget.addChild(
+            TextWidget.localised(text)
+                .setTextAlignment(Alignment.Center)
+                .setPos(0, 0)
+                .setSize(35, 15));
+
+        return widget;
+    }
+
+    public static Widget createStarColorButton(Supplier<String> text, Supplier<String> tooltip,
+        BiConsumer<Widget.ClickData, Widget> onClick) {
+        MultiChildWidget widget = new MultiChildWidget();
+        widget.setSize(35, 15);
+
+        widget.addChild(
+            new ButtonWidget().setOnClick(onClick)
+                .setSize(35, 15)
+                .setBackground(GTUITextures.BUTTON_STANDARD)
+                .dynamicTooltip(() -> {
+                    List<String> ret = new ArrayList<>();
+                    ret.add(translateToLocal(tooltip.get()));
+                    return ret;
+                })
+                .setUpdateTooltipEveryTick(true)
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setPos(0, 0));
+
+        widget.addChild(
+            new DynamicTextWidget(() -> new Text(translateToLocal(text.get()))).setTextAlignment(Alignment.Center)
+                .setPos(0, 0)
+                .setSize(35, 15));
+
+        return widget;
     }
 }

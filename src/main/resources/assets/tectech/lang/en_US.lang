@@ -1048,9 +1048,14 @@ fog.button.seconds=Seconds
 fog.button.thanks.tooltip=List of Contributors
 fog.button.color.tooltip=Cosmetics Menu
 fog.button.updaterenderer.tooltip=Apply Changes
-fog.button.resetcosmetics.tooltip=Reset Values
-fog.button.addstarcolor.tooltip=Add to Star Colors
+fog.button.resetcolors.tooltip=Reset Current Color
+fog.button.applystarcolor.tooltip=Apply color to selected Star Color
+fog.button.addstarcolor.tooltip=Add to Star Color List
 fog.button.rainbowmode.tooltip=Toggle Rainbow Mode
+fog.button.export.tooltip=Save exported Star Color to clipboard
+fog.button.import.tooltip=Import a Star Color from text
+fog.button.colorlist.tooltip.1=Left click to select for editing
+fog.button.colorlist.tooltip.2=Right click to clear the color
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1140,13 +1145,15 @@ gt.blockmachines.multimachine.FOG.red=Red
 gt.blockmachines.multimachine.FOG.green=Green
 gt.blockmachines.multimachine.FOG.blue=Blue
 gt.blockmachines.multimachine.FOG.gamma=Gamma
-gt.blockmachines.multimachine.FOG.speed=Speed
+gt.blockmachines.multimachine.FOG.speed=Cycle speed between colors
 gt.blockmachines.multimachine.FOG.spin=Spin
 gt.blockmachines.multimachine.FOG.size=Size
-gt.blockmachines.multimachine.FOG.addcolor=Add to Colors
+gt.blockmachines.multimachine.FOG.addcolor=Add
 gt.blockmachines.multimachine.FOG.apply=Apply
 gt.blockmachines.multimachine.FOG.decimals=Accepts Decimals
 gt.blockmachines.multimachine.FOG.integers=Accepts Integers
+gt.blockmachines.multimachine.FOG.import=Import...
+gt.blockmachines.multimachine.FOG.export=Export...
 
 gt.blockmachines.multimachine.FOG.hint.0=1 - Classic Hatches or Transcendentally Amplified Magnetic Confinement Casing
 gt.blockmachines.multimachine.FOG.hint.1=2 - Module Controllers or Singularity Reinforced Stellar Shielding Casing

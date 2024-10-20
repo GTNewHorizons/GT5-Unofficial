@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge;
+package tectech.thing.metaTileEntity.multi.godforge.color;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

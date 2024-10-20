@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge;
+package tectech.thing.metaTileEntity.multi.godforge.color;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -57,7 +57,7 @@ public class ForgeOfGodsStarColor {
     }
 
     // "Metadata" about this star color, not related to star rendering
-    private final String name;
+    private String name;
     // version currently unused, but can be used to retain compatibility with old serialized star colors
     // if the structure of the data changes significantly.
     private final int version;
@@ -87,9 +87,12 @@ public class ForgeOfGodsStarColor {
         return isPreset;
     }
 
-    /** @return a well-formatted name for display. */
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ForgeOfGodsStarColor setCycleSpeed(int speed) {
@@ -128,7 +131,8 @@ public class ForgeOfGodsStarColor {
     public IDrawable getDrawable() {
         if (drawable == null) {
             StarColorSetting setting = settings.get(0);
-            drawable = new Rectangle().setColor(Color.rgb(setting.r, setting.g, setting.b));
+            drawable = new Rectangle()
+                .setColor(Color.rgb(setting.getColorR(), setting.getColorG(), setting.getColorB()));
         }
         return drawable;
     }
@@ -281,65 +285,6 @@ public class ForgeOfGodsStarColor {
             return null;
         } catch (Throwable ignored) {
             return null;
-        }
-    }
-
-    public static class StarColorSetting {
-
-        private final int r, g, b;
-        private final float gamma;
-
-        private StarColorSetting(int r, int g, int b, float gamma) {
-            this.r = r;
-            this.g = g;
-            this.b = b;
-            this.gamma = gamma;
-        }
-
-        public int getColorR() {
-            return r;
-        }
-
-        public int getColorG() {
-            return g;
-        }
-
-        public int getColorB() {
-            return b;
-        }
-
-        public float getGamma() {
-            return gamma;
-        }
-
-        private NBTTagCompound serialize() {
-            NBTTagCompound NBT = new NBTTagCompound();
-            NBT.setInteger("R", r);
-            NBT.setInteger("G", g);
-            NBT.setInteger("B", b);
-            NBT.setFloat("Gamma", gamma);
-            return NBT;
-        }
-
-        private static StarColorSetting deserialize(NBTTagCompound NBT) {
-            int r = NBT.getInteger("R");
-            int g = NBT.getInteger("G");
-            int b = NBT.getInteger("B");
-            float gamma = NBT.getFloat("Gamma");
-            return new StarColorSetting(r, g, b, gamma);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            StarColorSetting that = (StarColorSetting) o;
-
-            if (r != that.r) return false;
-            if (g != that.g) return false;
-            if (b != that.b) return false;
-            return gamma == that.gamma;
         }
     }
 }

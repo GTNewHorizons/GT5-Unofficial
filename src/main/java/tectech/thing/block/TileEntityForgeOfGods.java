@@ -1,9 +1,9 @@
 package tectech.thing.block;
 
-import static tectech.thing.metaTileEntity.multi.godforge.ForgeOfGodsStarColor.DEFAULT_BLUE;
-import static tectech.thing.metaTileEntity.multi.godforge.ForgeOfGodsStarColor.DEFAULT_GAMMA;
-import static tectech.thing.metaTileEntity.multi.godforge.ForgeOfGodsStarColor.DEFAULT_GREEN;
-import static tectech.thing.metaTileEntity.multi.godforge.ForgeOfGodsStarColor.DEFAULT_RED;
+import static tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor.DEFAULT_BLUE;
+import static tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor.DEFAULT_GAMMA;
+import static tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor.DEFAULT_GREEN;
+import static tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor.DEFAULT_RED;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -13,11 +13,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.cleanroommc.modularui.utils.Color;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import com.gtnewhorizons.modularui.api.math.Color;
 
-import tectech.thing.metaTileEntity.multi.godforge.ForgeOfGodsStarColor;
-import tectech.thing.metaTileEntity.multi.godforge.ForgeOfGodsStarColor.StarColorSetting;
+import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
+import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
 
 public class TileEntityForgeOfGods extends TileEntity {
 
