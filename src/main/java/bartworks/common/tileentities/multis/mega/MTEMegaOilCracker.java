@@ -100,12 +100,18 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'l',
-            InputHatch.withAdder(MTEMegaOilCracker::addLeftHatchToMachineList)
-                .newAny(CASING_INDEX, 2))
+            buildHatchAdder(MTEMegaOilCracker.class)
+                .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addLeftHatchToMachineList))
+                .dot(2)
+                .casingIndex(CASING_INDEX)
+                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'r',
-            OutputHatch.withAdder(MTEMegaOilCracker::addRightHatchToMachineList)
-                .newAny(CASING_INDEX, 3))
+            buildHatchAdder(MTEMegaOilCracker.class)
+                .atLeast(OutputHatch.withAdder(MTEMegaOilCracker::addRightHatchToMachineList))
+                .dot(3)
+                .casingIndex(CASING_INDEX)
+                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'm',
             buildHatchAdder(MTEMegaOilCracker.class).atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus)
@@ -114,8 +120,11 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'M',
-            InputHatch.withAdder(MTEMegaOilCracker::addMiddleInputToMachineList)
-                .newAny(CASING_INDEX, 4))
+            buildHatchAdder(MTEMegaOilCracker.class)
+                .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addMiddleInputToMachineList))
+                .dot(4)
+                .casingIndex(CASING_INDEX)
+                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'g',
             withChannel(
@@ -279,24 +288,22 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
+        if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
             if (this.mInputOnSide == 1) {
                 return false;
             }
             this.mInputOnSide = 0;
             this.mOutputOnSide = 1;
-            MTEHatchInput tHatch = (MTEHatchInput) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = this.getRecipeMap();
             return this.mInputHatches.add(tHatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
+        if (aMetaTileEntity instanceof MTEHatchOutput tHatch) {
             if (this.mOutputOnSide == 1) {
                 return false;
             }
             this.mInputOnSide = 1;
             this.mOutputOnSide = 0;
-            MTEHatchOutput tHatch = (MTEHatchOutput) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             return this.mOutputHatches.add(tHatch);
         }
@@ -311,24 +318,22 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
+        if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
             if (this.mInputOnSide == 0) {
                 return false;
             }
             this.mInputOnSide = 1;
             this.mOutputOnSide = 0;
-            MTEHatchInput tHatch = (MTEHatchInput) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = this.getRecipeMap();
             return this.mInputHatches.add(tHatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
+        if (aMetaTileEntity instanceof MTEHatchOutput tHatch) {
             if (this.mOutputOnSide == 0) {
                 return false;
             }
             this.mInputOnSide = 0;
             this.mOutputOnSide = 1;
-            MTEHatchOutput tHatch = (MTEHatchOutput) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             return this.mOutputHatches.add(tHatch);
         }
