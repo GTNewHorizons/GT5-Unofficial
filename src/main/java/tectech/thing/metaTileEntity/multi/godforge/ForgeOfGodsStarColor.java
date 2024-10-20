@@ -7,11 +7,12 @@ import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.utils.Color;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
 
-import org.jetbrains.annotations.Nullable;
 import tectech.thing.gui.TecTechUITextures;
 
 @SuppressWarnings("unused") // for the preset color fields
@@ -235,7 +236,8 @@ public class ForgeOfGodsStarColor {
 
         // Wrap in try-catch for easy format "checking"
         try {
-            String[] data = raw.substring(13, raw.length() - 1).split("\\|");
+            String[] data = raw.substring(13, raw.length() - 1)
+                .split("\\|");
 
             // Parse the header (name and cycle rate)
             String header = data[0];
@@ -273,8 +275,7 @@ public class ForgeOfGodsStarColor {
             }
 
             if (name != null && cycleRate != null && !colorSettings.isEmpty()) {
-                return new ForgeOfGodsStarColor(name)
-                    .setCycleSpeed(cycleRate)
+                return new ForgeOfGodsStarColor(name).setCycleSpeed(cycleRate)
                     .addColors(colorSettings);
             }
             return null;

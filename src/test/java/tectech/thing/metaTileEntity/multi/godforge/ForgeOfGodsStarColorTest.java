@@ -1,15 +1,14 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class ForgeOfGodsStarColorTest {
 
     @Test
     public void testSerializeToString() {
-        ForgeOfGodsStarColor starColor = new ForgeOfGodsStarColor("Test Color")
-            .setCycleSpeed(10)
+        ForgeOfGodsStarColor starColor = new ForgeOfGodsStarColor("Test Color").setCycleSpeed(10)
             .addColor(1, 2, 3, 4)
             .addColor(71, 82, 155, 9)
             .addColor(3, 8, 94, 20);
