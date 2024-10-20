@@ -21,10 +21,10 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 
 public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements RecipeMapWorkable {
 
@@ -233,7 +233,7 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
                         && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)) {
                         int aSafeFloor = (int) Math.max(((tFluidAmountToUse * tConsumed) / 3), 1);
                         this.mFluid.amount -= aSafeFloor;
-                        PollutionUtils.addPollution(getBaseMetaTileEntity(), 10 * getPollution());
+                        Pollution.addPollution(getBaseMetaTileEntity(), 10 * getPollution());
                     }
                 }
             }
@@ -247,7 +247,7 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
                     if (aBaseMetaTileEntity.addStackToSlot(this.getOutputSlot(), tEmptyContainer)) {
                         aBaseMetaTileEntity.increaseStoredEnergyUnits(tFuelValue, true);
                         aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
-                        PollutionUtils.addPollution(getBaseMetaTileEntity(), getPollution() / 2);
+                        Pollution.addPollution(getBaseMetaTileEntity(), getPollution() / 2);
                     }
                 }
             }

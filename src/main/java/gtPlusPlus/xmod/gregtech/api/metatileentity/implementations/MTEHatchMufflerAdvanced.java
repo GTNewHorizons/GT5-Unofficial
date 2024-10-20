@@ -23,7 +23,6 @@ import gregtech.api.objects.GTRenderedTexture;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -271,7 +270,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         boolean chk1 = ran1 * 100.0F < (float) this.calculatePollutionReduction(100);
         boolean chk2;
         boolean chk3;
-        int aPollutionAmount = PollutionUtils.getPollution(getBaseMetaTileEntity());
+        int aPollutionAmount = Pollution.getPollution(getBaseMetaTileEntity());
         if (aPollutionAmount >= mPollutionSmogLimit) {
             ran2 = GTPPCore.RANDOM.nextFloat();
             ran3 = GTPPCore.RANDOM.nextFloat();
