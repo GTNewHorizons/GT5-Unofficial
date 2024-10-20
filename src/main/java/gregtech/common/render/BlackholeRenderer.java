@@ -7,6 +7,7 @@ import java.nio.FloatBuffer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 
@@ -23,7 +24,6 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
-import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 
@@ -128,7 +128,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         if (!tile.getScaling()) {
             scaleF = 40 - scaleF;
         }
-        scaleF = MathHelper.clamp(scaleF / 40, 0, 0.5F);
+        scaleF = MathHelper.clamp_float(scaleF / 40, 0, 0.5F);
         GL20.glUniform1f(u_Scale, scaleF);
 
         modelMatrixStack.clear();
