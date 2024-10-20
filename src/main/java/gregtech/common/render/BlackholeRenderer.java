@@ -23,6 +23,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 
@@ -118,11 +119,18 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
     }
 
     private void renderBlackHole(TileEntityBlackhole tile, double x, double y, double z, float timer) {
-
         blackholeProgram.use();
         bindTexture(blackholeTexture);
         GL20.glUniform1f(u_Stability, tile.getStability());
-        GL20.glUniform1f(u_Scale, tile.getScale());
+
+        float startTime = tile.getStartTime();
+        float scaleF = timer - startTime;
+        if (!tile.getScaling()) {
+            scaleF = 40 - scaleF;
+        }
+        scaleF = MathHelper.clamp(scaleF / 40, 0, 0.5F);
+        GL20.glUniform1f(u_Scale, scaleF);
+
         modelMatrixStack.clear();
 
         float xLocal = ((float) x + .5f);
@@ -207,7 +215,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
                 y,
                 z,
                 tile.getWorldObj()
-                    .getWorldTime() + timeSinceLastTick);
+                    .getTotalWorldTime() + timeSinceLastTick);
         }
 
         renderBlackHole(
@@ -216,7 +224,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
             y,
             z,
             tile.getWorldObj()
-                .getWorldTime() + timeSinceLastTick);
+                .getTotalWorldTime() + timeSinceLastTick);
 
     }
 
