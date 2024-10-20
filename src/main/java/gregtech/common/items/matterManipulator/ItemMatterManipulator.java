@@ -2,6 +2,7 @@ package gregtech.common.items.matterManipulator;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -22,8 +23,10 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -63,6 +66,7 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
@@ -74,8 +78,11 @@ import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import ic2.api.item.IElectricItemManager;
+import ic2.api.item.ISpecialElectricItem;
 
-public class ItemMatterManipulator extends Item implements IElectricItem, INetworkEncodable {
+public class ItemMatterManipulator extends Item
+    implements ISpecialElectricItem, IElectricItemManager, INetworkEncodable {
 
     public final ManipulatorTier tier;
 
@@ -177,6 +184,116 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     @Override
     public Item getChargedItem(ItemStack itemStack) {
         return this;
+    }
+
+    @Override
+    public IElectricItemManager getManager(ItemStack arg0) {
+        return this;
+    }
+
+    @Override
+    public final double charge(ItemStack stack, double toCharge, int voltageTier, boolean ignoreTransferLimit,
+        boolean simulate) {
+        if (voltageTier > tier.voltageTier) {
+            return toCharge;
+        }
+
+        NBTTagCompound tag = getOrCreateNbtData(stack);
+
+        double maxTransfer = ignoreTransferLimit ? toCharge : Math.min(toCharge, V[tier.voltageTier]);
+        double currentCharge = tag.getDouble("charge");
+        double remainingSpace = tier.maxCharge - currentCharge;
+
+        double toConsume = Math.min(maxTransfer, remainingSpace);
+
+        if (!simulate) tag.setDouble("charge", currentCharge + toConsume);
+
+        return toCharge - toConsume;
+    }
+
+    @Override
+    public final double discharge(ItemStack stack, double toDischarge, int voltageTier, boolean ignoreTransferLimit,
+        boolean batteryLike, boolean simulate) {
+        if (voltageTier != Integer.MAX_VALUE && voltageTier > tier.voltageTier) {
+            return 0;
+        }
+
+        NBTTagCompound tag = getOrCreateNbtData(stack);
+
+        double maxTransfer = ignoreTransferLimit ? toDischarge : Math.min(toDischarge, V[tier.voltageTier]);
+        double currentCharge = tag.getDouble("charge");
+
+        double toConsume = Math.min(maxTransfer, currentCharge);
+
+        if (!simulate) tag.setDouble("charge", currentCharge - toConsume);
+
+        return toConsume;
+    }
+
+    @Override
+    public final double getCharge(ItemStack stack) {
+        NBTTagCompound tag = getOrCreateNbtData(stack);
+
+        return tag.getDouble("charge");
+    }
+
+    @Override
+    public final boolean canUse(ItemStack stack, double amount) {
+        return getCharge(stack) >= amount;
+    }
+
+    @Override
+    public final boolean use(ItemStack stack, double toDischarge, EntityLivingBase holder) {
+        chargeFromArmor(stack, holder);
+        if (holder instanceof EntityPlayer player && player.capabilities.isCreativeMode) return true;
+        double toTransfer = discharge(stack, toDischarge, Integer.MAX_VALUE, true, false, true);
+        if (Math.abs(toTransfer - toDischarge) < .0000001) {
+            discharge(stack, toDischarge, Integer.MAX_VALUE, true, false, false);
+            chargeFromArmor(stack, holder);
+            return true;
+        }
+        discharge(stack, toDischarge, Integer.MAX_VALUE, true, false, false);
+        chargeFromArmor(stack, holder);
+        return false;
+    }
+
+    @Override
+    public final void chargeFromArmor(ItemStack heldStack, EntityLivingBase holder) {
+        if (holder == null || holder.worldObj.isRemote) return;
+
+        for (int i = 1; i < 5; i++) {
+            ItemStack armourStack = holder.getEquipmentInSlot(i);
+
+            if (GTModHandler.isElectricItem(armourStack) && armourStack.getItem() instanceof IElectricItem armourItem) {
+
+                // don't suck small armours dry when they won't help meaningfully
+                if (armourItem.getMaxCharge(heldStack) < this.getMaxCharge(heldStack)) {
+                    continue;
+                }
+
+                if (armourItem.canProvideEnergy(armourStack) && armourItem.getTier(armourStack) >= getTier(heldStack)) {
+                    double discharged = ElectricItem.manager.discharge(
+                        armourStack,
+                        charge(heldStack, Integer.MAX_VALUE - 1, Integer.MAX_VALUE, true, true),
+                        Integer.MAX_VALUE,
+                        true,
+                        true,
+                        false);
+                    if (discharged > 0) {
+                        charge(heldStack, discharged, Integer.MAX_VALUE, true, false);
+                        if (holder instanceof EntityPlayer) {
+                            Container container = ((EntityPlayer) holder).openContainer;
+                            if (container != null) container.detectAndSendChanges();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public final String getToolTip(ItemStack aStack) {
+        return null;
     }
 
     // #endregion
@@ -336,6 +453,16 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 addInfoLine(desc, "Replacing blocks with: %s", state.config.replaceWith, with -> Config.loadStack(with).getDisplayName());
             }
         }
+
+        desc.add(
+            EnumChatFormatting.AQUA
+                + String.format(
+                    GTLanguageManager.addStringLocalization("Item_DESCRIPTION_Index_11", "%s / %s EU - Voltage: %s"),
+                    formatNumbers(state.charge),
+                    formatNumbers(tier.maxCharge),
+                    formatNumbers(V[tier.voltageTier]))
+                + EnumChatFormatting.GRAY);
+
         // spotless:on
     }
 
@@ -782,6 +909,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     private void addCommonOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
         builder.branch()
                 .label("Set Mode")
+                .hidden(tier == ManipulatorTier.Tier0)
                 .branch()
                     .label("Set Remove Mode")
                     .hidden(!tier.hasCap(ALLOW_REMOVING))
