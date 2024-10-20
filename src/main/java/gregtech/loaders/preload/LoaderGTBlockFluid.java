@@ -92,6 +92,7 @@ import gregtech.common.items.ItemWirelessHeadphones;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.items.MetaGeneratedItem04;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -163,6 +164,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedItem01();
         new MetaGeneratedItem02();
         new MetaGeneratedItem03();
+        new MetaGeneratedItem04();
         // GT_MetaGenerated_Item_98 is initialized in GTProxy.onPostLoad() because we need to wait for fluids to be
         // registered.
         // Pre-initialization needs to happen before then, though, because the cell icons get deleted at some point
@@ -2116,13 +2118,6 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.TierdDrone2
             .set(new ItemTierDrone("tierdDrone2", "Drone (Level 3)", "Single Engine Anti-Gravity Large Aircraft", 3));
 
-        Item manipulatorHologram = new Item()
-            .setUnlocalizedName("matterManipulatorHologram")
-            .setTextureName(Mods.GregTech.resourceDomain + ":itemMatterManipulatorHologram");
-        API.hideItem(new ItemStack(manipulatorHologram));
-        GameRegistry.registerItem(manipulatorHologram, "matterManipulatorHologram");
-        ItemList.MatterManipulatorHologram.set(manipulatorHologram);
-        
         ItemList.MatterManipulator0.set(new ItemMatterManipulator(ManipulatorTier.Tier0));
         ItemList.MatterManipulator1.set(new ItemMatterManipulator(ManipulatorTier.Tier1));
         ItemList.MatterManipulator2.set(new ItemMatterManipulator(ManipulatorTier.Tier2));
