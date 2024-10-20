@@ -3116,7 +3116,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Stellar Forge")
             .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short.")
-            .addLineSeparator(EnumChatFormatting.AQUA, 74)
+            .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo("A massive structure harnessing the thermal, gravitational and")
             .addInfo("kinetic energy of a stabilised neutron star for material processing.")
             .addInfo(
@@ -3126,7 +3126,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + "which utilize the star to energize materials")
             .addInfo("to varying degrees, ranging from regular smelting to matter degeneration.")
             .addInfo("EU requirements for all modules are handled via wireless energy directly.")
-            .addLineSeparator(EnumChatFormatting.AQUA, 74)
+            .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo(
                 "This multiblock has an " + EnumChatFormatting.GOLD
                     + "extensive upgrade tree "
@@ -3144,7 +3144,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + EnumChatFormatting.GRAY
                     + "These upgrades can be unlocked by reaching")
             .addInfo("certain milestones and/or spending materials.")
-            .addLineSeparator(EnumChatFormatting.AQUA, 74)
+            .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo(
                 EnumChatFormatting.GREEN
                     + "Clicking on the logo in the controller gui opens an extensive information window,")
@@ -3247,11 +3247,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + " Graviton Flow Modulator")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "36" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .addStructureInfo("")
+            .addStructureInfoSeparator()
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Hatch")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus (ME)")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+            .toolTipFinisher(EnumChatFormatting.AQUA, 73);
         return tt;
     }
 

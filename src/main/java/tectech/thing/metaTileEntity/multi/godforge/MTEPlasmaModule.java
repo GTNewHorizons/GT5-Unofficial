@@ -259,7 +259,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for extreme temperature matter ionization.")
-            .addLineSeparator(EnumChatFormatting.AQUA, 74)
+            .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
             .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
             .addInfo("right away, some of them require certain upgrades to be unlocked.")
