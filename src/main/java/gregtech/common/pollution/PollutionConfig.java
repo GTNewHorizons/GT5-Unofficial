@@ -9,6 +9,8 @@ import gregtech.api.enums.Mods;
 @Config(modid = Mods.Names.GREG_TECH, configSubDirectory = "GregTech", filename = "Pollution")
 public class PollutionConfig {
 
+    // override name to be at the top of the cfg file
+    @Config.Name("Activate Pollution")
     @Config.Comment("if true, enables pollution in the game.")
     @Config.DefaultBoolean(true)
     @Config.RequiresMcRestart
