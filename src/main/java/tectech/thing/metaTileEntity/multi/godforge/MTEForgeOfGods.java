@@ -27,13 +27,20 @@ import static tectech.util.GodforgeMath.queryMilestoneStats;
 import static tectech.util.GodforgeMath.setMiscModuleParameters;
 import static tectech.util.TTUtility.toExponentForm;
 
+import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -77,6 +84,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
+import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidNameHolderWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
@@ -137,15 +145,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private int starSize = 20;
 
     private static final int MAX_STAR_COLORS = 7;
-    private final Map<String, ForgeOfGodsStarColor> starColors = ForgeOfGodsStarColor.getDefaultColors();
+    private List<ForgeOfGodsStarColor> starColors = ForgeOfGodsStarColor.getDefaultColors();
     private String selectedStarColor = ForgeOfGodsStarColor.DEFAULT.getName();
 
     // used only temporarily while creating a new custom star color
-    private String starColorName;
-    private int starColorCycleRate;
+    private ForgeOfGodsStarColor newStarColor = new ForgeOfGodsStarColor("New Star Color");
     private int starColorR, starColorG, starColorB;
     private float starGamma;
-    private List<StarColorSetting> starColorValues = new ArrayList<>();
     private int starColorEditingPos;
     private boolean editingStarColor;
 
@@ -673,7 +679,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         tile.setRingCount(ringAmount);
         tile.setStarRadius(starSize);
         tile.setRotationSpeed(rotationSpeed);
-        tile.setColor(starColors.get(selectedStarColor));
+
+        boolean setColor = false;
+        for (ForgeOfGodsStarColor color : starColors) {
+            if (color.getName()
+                .equals(selectedStarColor)) {
+                tile.setColor(color);
+                setColor = true;
+                break;
+            }
+        }
+        if (!setColor) tile.setColor(ForgeOfGodsStarColor.DEFAULT);
 
         tile.updateToClient();
     }
@@ -2662,6 +2678,19 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE);
         builder.setDraggable(true);
 
+        // Syncers
+        builder.widget(new FakeSyncWidget.StringSyncer(() -> selectedStarColor, c -> selectedStarColor = c));
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> rotationSpeed, val -> rotationSpeed = val));
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starSize, val -> starSize = val));
+
+        // todo this could maybe be synced better
+        builder.widget(
+            new FakeSyncWidget.ListSyncer<>(
+                () -> starColors,
+                val -> starColors = val,
+                ForgeOfGodsStarColor::writeToBuffer,
+                ForgeOfGodsStarColor::readFromBuffer));
+
         // Exit button and header
         builder.widget(
             ButtonWidget.closeWindowButton(true)
@@ -2681,57 +2710,53 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .setDefaultColor(EnumChatFormatting.GOLD)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setPos(9, 25)
-                .setSize(60, 10)
-                // attach this here since it's convenient
-                .attachSyncer(
-                    new FakeSyncWidget.StringSyncer(() -> selectedStarColor, c -> selectedStarColor = c),
-                    builder));
+                .setSize(60, 10));
 
         // Current presets
-        int totalColors = 0;
-        for (ForgeOfGodsStarColor starColor : starColors.values()) {
-            MultiChildWidget widget = createColorGroup(starColor);
-            widget.setPos(8, 45 + totalColors * 20);
+        for (int i = 0; i < 7; i++) {
+            MultiChildWidget widget = createColorGroup(i);
+            widget.setPos(8, 45 + i * 20);
             builder.widget(widget);
-            totalColors++;
         }
 
-        // Option to add a new preset, if there is room available
-        if (totalColors < MAX_STAR_COLORS) {
-            MultiChildWidget parent = new MultiChildWidget();
-            parent.setSize(18, 80);
-            parent.setPos(8, 45 + totalColors * 20);
+        // Option to add a new preset, only shown if there is room available
+        MultiChildWidget newPreset = new MultiChildWidget();
+        Function<Widget, Boolean> newPresetEnabled = $ -> starColors.size() < MAX_STAR_COLORS;
+        newPreset.setSize(18, 80);
+        newPreset.setPosProvider(($, $$, $$$) -> new Pos2d(8, 45 + starColors.size() * 20));
+        newPreset.setEnabled(newPresetEnabled);
 
-            // Button to open the custom star color creation window todo icon?
-            parent.addChild(new ButtonWidget().setOnClick((data, widget) -> {
-                if (!widget.isClient()) {
-                    widget.getContext()
-                        .openSyncedWindow(STAR_CUSTOM_COLOR_WINDOW_ID);
-                }
-            })
-                .setPlayClickSound(true)
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.starcolor"))
+        // New preset button
+        newPreset.addChild(new ButtonWidget().setOnClick((data, widget) -> {
+            if (!widget.isClient()) {
+                openCustomStarColorWindowFresh(widget, null);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(GTUITextures.BUTTON_STANDARD)
+            .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.starcolor"))
+            .setSize(16, 16)
+            .setPos(0, 0)
+            .setEnabled(newPresetEnabled));
+
+        // Text overlaid on the above button
+        newPreset.addChild(
+            new TextWidget("+").setDefaultColor(EnumChatFormatting.DARK_GRAY)
+                .setTextAlignment(Alignment.Center)
                 .setSize(16, 16)
-                .setPos(0, 0));
+                .setPos(0, 0)
+                .setEnabled(newPresetEnabled));
 
-            // Text overlaid on the above button
-            parent.addChild(
-                new TextWidget("+").setDefaultColor(EnumChatFormatting.DARK_GRAY)
-                    .setTextAlignment(Alignment.Center)
-                    .setSize(16, 16)
-                    .setPos(0, 0));
+        // Text for what this button does
+        newPreset.addChild(
+            new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.custom"))
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setSize(60, 18)
+                .setPos(20, 0)
+                .setEnabled(newPresetEnabled));
 
-            // Text describing the new button above
-            parent.addChild(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.custom"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setSize(60, 18)
-                    .setPos(20, 0));
-
-            builder.widget(parent);
-        }
+        builder.widget(newPreset);
 
         // Miscellaneous options not related to color settings
         builder.widget(
@@ -2757,10 +2782,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(155, 45)
                     .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> rotationSpeed, val -> rotationSpeed = val),
-                        builder))
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD))
             .widget(
                 TextWidget.localised("gt.blockmachines.multimachine.FOG.size")
                     .setDefaultColor(EnumChatFormatting.GOLD)
@@ -2778,59 +2800,78 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(155, 65)
                     .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> starSize, val -> starSize = val), builder));
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
 
         return builder.build();
     }
 
-    private MultiChildWidget createColorGroup(final ForgeOfGodsStarColor starColorConfig) {
+    private MultiChildWidget createColorGroup(final int index) {
         final int textWidth = 60; // for convenient changing, if we need to make this wider
 
         MultiChildWidget parent = new MultiChildWidget();
         parent.setSize(18, 20 + textWidth);
+        Function<Widget, Boolean> enabledCheck = $ -> index < starColors.size();
 
         // Button to enable this star color
         parent.addChild(new ButtonWidget().setOnClick((data, widget) -> {
             if (!widget.isClient()) {
-                if (data.shift && !starColorConfig.isPresetColor()) {
-                    // if shift is held, open color editor for this preset, if not a default preset
-                    // todo add this ability to the button tooltip
-                    widget.getContext()
-                        .openSyncedWindow(STAR_CUSTOM_COLOR_WINDOW_ID);
-                    // todo populate data for creating a custom color from this preset
-                } else {
-                    // otherwise select this color
-                    selectedStarColor = starColorConfig.getName();
-                    updateRenderer();
+                if (index < starColors.size()) {
+                    ForgeOfGodsStarColor color = starColors.get(index);
+                    if (data.shift && !color.isPresetColor()) {
+                        // if shift is held, open color editor for this preset, if not a default preset
+                        openCustomStarColorWindowFresh(widget, color);
+                    } else {
+                        // otherwise select this color
+                        selectedStarColor = color.getName();
+                        updateRenderer();
+                    }
                 }
             }
         })
             .setPlayClickSound(true)
             .setBackground(() -> {
                 IDrawable bg = GTUITextures.BUTTON_STANDARD;
-                if (starColorConfig.getName()
-                    .equals(selectedStarColor)) {
-                    bg = GTUITextures.BUTTON_STANDARD_PRESSED;
+                if (index < starColors.size()) {
+                    ForgeOfGodsStarColor color = starColors.get(index);
+                    if (color.getName()
+                        .equals(selectedStarColor)) {
+                        bg = GTUITextures.BUTTON_STANDARD_PRESSED;
+                    }
                 }
                 return new IDrawable[] { bg };
             })
+            .addTooltips(
+                ImmutableList.of(
+                    translateToLocal("fog.button.selectcolor.tooltip.1"),
+                    translateToLocal("fog.button.selectcolor.tooltip.2")))
             .setSize(16, 16)
-            .setPos(0, 0));
+            .setPos(0, 0)
+            .setEnabled(enabledCheck));
 
         // Drawable representation of this star color, overlaid on the above button
-        parent.addChild(
-            starColorConfig.getDrawable()
-                .asWidget()
-                .setPos(1, 1)
-                .setSize(14, 14));
+        parent.addChild(new DrawableWidget().setDrawable(() -> {
+            if (index < starColors.size()) {
+                return starColors.get(index)
+                    .getDrawable();
+            }
+            return new Rectangle().setColor(0, 0, 0, 0);
+        })
+            .setPos(1, 1)
+            .setSize(14, 14)
+            .setEnabled(enabledCheck));
 
         // Name of this star color
-        parent.addChild(
-            new TextWidget(starColorConfig.getName()).setDefaultColor(EnumChatFormatting.GOLD)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setSize(textWidth, 18)
-                .setPos(20, 0));
+        parent.addChild(new DynamicTextWidget(() -> {
+            if (index < starColors.size()) {
+                ForgeOfGodsStarColor color = starColors.get(index);
+                return new Text(color.getName());
+            }
+            return Text.EMPTY;
+        }).setDefaultColor(EnumChatFormatting.GOLD)
+            .setTextAlignment(Alignment.CenterLeft)
+            .setSize(textWidth, 18)
+            .setPos(20, 0)
+            .setEnabled(enabledCheck));
 
         return parent;
     }
@@ -2846,17 +2887,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starColorG, val -> starColorG = val));
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starColorB, val -> starColorB = val));
         builder.widget(new FakeSyncWidget.FloatSyncer(() -> starGamma, val -> starGamma = val));
-        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starColorCycleRate, val -> starColorCycleRate = val));
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starColorEditingPos, val -> starColorEditingPos = val));
         // todo collapse this into the above? -1 value?
         builder.widget(new FakeSyncWidget.BooleanSyncer(() -> editingStarColor, val -> editingStarColor = val));
 
         builder.widget(
-            new FakeSyncWidget.ListSyncer<>(
-                () -> starColorValues,
-                val -> starColorValues = val,
-                StarColorSetting::writeToBuffer,
-                StarColorSetting::readFromBuffer));
+            new FakeSyncWidget<>(
+                () -> newStarColor,
+                val -> newStarColor = val,
+                ForgeOfGodsStarColor::writeToBuffer,
+                ForgeOfGodsStarColor::readFromBuffer));
 
         // Exit button and header
         builder.widget(
@@ -2912,12 +2952,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }, (clickData, widget) -> {
             if (!widget.isClient()) {
                 StarColorSetting color = new StarColorSetting(starColorR, starColorG, starColorB, starGamma);
-                if (editingStarColor && starColorEditingPos < starColorValues.size()) {
+                if (editingStarColor && starColorEditingPos < newStarColor.numColors()) {
                     // insert into the list, as we are editing an existing color
-                    starColorValues.set(starColorEditingPos, color);
+                    newStarColor.setColor(starColorEditingPos, color);
                 } else {
                     // add a new color at the end of the list
-                    starColorValues.add(color);
+                    newStarColor.addColor(color);
                 }
                 ForgeOfGodsUI.reopenWindow(widget, STAR_CUSTOM_COLOR_WINDOW_ID);
             }
@@ -2962,10 +3002,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     }
 
                     // otherwise select this if it's valid to select
-                    if (ii < starColorValues.size()) {
+                    if (ii < newStarColor.numColors()) {
                         editingStarColor = true;
                         starColorEditingPos = ii;
-                        StarColorSetting color = starColorValues.get(ii);
+                        StarColorSetting color = newStarColor.getColor(ii);
                         starColorR = color.getColorR();
                         starColorG = color.getColorG();
                         starColorB = color.getColorB();
@@ -2973,8 +3013,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     }
                 } else if (clickData.mouseButton == 1) { // right click
                     // if this is valid, remove it and shift other values down
-                    if (ii < starColorValues.size()) {
-                        starColorValues.remove(ii);
+                    if (ii < newStarColor.numColors()) {
+                        newStarColor.removeColor(ii);
 
                         if (editingStarColor && starColorEditingPos == ii) {
                             // deselect if this index was selected
@@ -3000,9 +3040,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     ret.add(translateToLocal("fog.button.colorlist.tooltip.1"));
                     ret.add(translateToLocal("fog.button.colorlist.tooltip.2"));
 
-                    if (ii < starColorValues.size()) {
+                    if (ii < newStarColor.numColors()) {
                         ret.add("");
-                        StarColorSetting color = starColorValues.get(ii);
+                        StarColorSetting color = newStarColor.getColor(ii);
                         ret.add(StarColorRGBM.RED.tooltip(color.getColorR()));
                         ret.add(StarColorRGBM.GREEN.tooltip(color.getColorG()));
                         ret.add(StarColorRGBM.BLUE.tooltip(color.getColorB()));
@@ -3017,8 +3057,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
             // List entry color
             colorListEntry.addChild(new DrawableWidget().setDrawable(() -> {
-                if (ii < starColorValues.size()) {
-                    StarColorSetting color = starColorValues.get(ii);
+                if (ii < newStarColor.numColors()) {
+                    StarColorSetting color = newStarColor.getColor(ii);
                     return new Rectangle().setColor(Color.rgb(color.getColorR(), color.getColorG(), color.getColorB()));
                 }
                 return new Rectangle().setColor(Color.rgba(0, 0, 0, 0));
@@ -3030,8 +3070,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         // Cycle rate text field
-        Widget cycleRateField = new NumericWidget().setSetter(val -> starColorCycleRate = (int) val)
-            .setGetter(() -> starColorCycleRate)
+        Widget cycleRateField = new NumericWidget().setSetter(val -> newStarColor.setCycleSpeed((int) val))
+            .setGetter(() -> newStarColor.getCycleSpeed())
             .setBounds(0, 100)
             .setDefaultValue(1)
             .setTextAlignment(Alignment.Center)
@@ -3043,51 +3083,92 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setPos(171, 145);
         builder.widget(cycleRateField);
 
+        // todo star color name, validate that it is unique for this forge
+        // todo for import, attach a "1" or something if the name is not unique
+
         // **************
-        // Preset Buttons todo this full section
+        // Preset Buttons todo position this full section
         // **************
 
-        // Apply to list button
-        Widget applyToListButton = ForgeOfGodsUI
-            .createStarColorButton("Finish", "fog.button.addstarcolor.tooltip", (clickData, widget) -> {
+        // Save preset button
+        Widget savePresetButton = ForgeOfGodsUI.createStarColorButton(
+            "gt.blockmachines.multimachine.FOG.save",
+            "fog.button.savecolor.tooltip",
+            (clickData, widget) -> {
                 if (!widget.isClient()) {
-                    // todo
-                    updateRenderer();
+                    boolean edited = false;
+                    for (int i = 0; i < starColors.size(); i++) {
+                        ForgeOfGodsStarColor color = starColors.get(i);
+                        if (color.getName()
+                            .equals(newStarColor.getName())) {
+                            starColors.set(i, newStarColor);
+                            edited = true;
+                            break;
+                        }
+                    }
+                    if (!edited) starColors.add(newStarColor);
+                    if (selectedStarColor.equals(newStarColor.getName())) {
+                        updateRenderer();
+                    }
+                    widget.getWindow()
+                        .closeWindow();
                     ForgeOfGodsUI.reopenWindow(widget, STAR_COSMETICS_WINDOW_ID);
                 }
             });
-        builder.widget(applyToListButton.setPos(157, 177));
+        builder.widget(savePresetButton.setPos(157, 177));
 
-        // Reset full list button
-        Widget resetListButton = ForgeOfGodsUI
-            .createStarColorButton("Reset", "fog.button.resetcosmetics.tooltip", (clickData, widget) -> {
+        // Delete preset button
+        Widget deletePresetButton = ForgeOfGodsUI.createStarColorButton(
+            "gt.blockmachines.multimachine.FOG.delete",
+            "fog.button.deletecolor.tooltip",
+            (clickData, widget) -> {
                 if (!widget.isClient()) {
-                    starColorR = ForgeOfGodsStarColor.DEFAULT_RED;
-                    starColorG = ForgeOfGodsStarColor.DEFAULT_GREEN;
-                    starColorB = ForgeOfGodsStarColor.DEFAULT_BLUE;
-                    starGamma = ForgeOfGodsStarColor.DEFAULT_GAMMA;
+                    Iterator<ForgeOfGodsStarColor> itr = starColors.iterator();
+                    while (itr.hasNext()) {
+                        ForgeOfGodsStarColor color = itr.next();
+                        if (!color.isPresetColor() && color.getName()
+                            .equals(newStarColor.getName())) {
+                            itr.remove();
+                            break;
+                        }
+                    }
+                    if (selectedStarColor.equals(newStarColor.getName())) {
+                        // set to default if the deleted color was selected
+                        selectedStarColor = ForgeOfGodsStarColor.DEFAULT.getName();
+                        updateRenderer();
+                    }
+                    widget.getWindow()
+                        .closeWindow();
+                    ForgeOfGodsUI.reopenWindow(widget, STAR_COSMETICS_WINDOW_ID);
                 }
             });
-        builder.widget(resetListButton.setPos(120, 177));
+        builder.widget(deletePresetButton.setPos(120, 177));
 
         // Import preset button
-        Widget importButton = ForgeOfGodsUI.createStarColorButton(
+        Widget importPresetButton = ForgeOfGodsUI.createStarColorButton(
             "gt.blockmachines.multimachine.FOG.import",
             "fog.button.import.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) widget.getContext()
                     .openSyncedWindow(STAR_CUSTOM_COLOR_IMPORT_WINDOW_ID);
             });
-        builder.widget(importButton.setPos(83, 177));
+        builder.widget(importPresetButton.setPos(83, 177));
 
         // Export preset button
-        Widget exportButton = ForgeOfGodsUI.createStarColorButton(
+        Widget exportPresetButton = ForgeOfGodsUI.createStarColorButton(
             "gt.blockmachines.multimachine.FOG.export",
             "fog.button.export.tooltip",
             (clickData, widget) -> {
-                // todo
+                if (widget.isClient()) {
+                    if (Desktop.isDesktopSupported()) {
+                        String output = newStarColor.serializeToString();
+                        Clipboard clipboard = Toolkit.getDefaultToolkit()
+                            .getSystemClipboard();
+                        clipboard.setContents(new StringSelection(output), null);
+                    }
+                }
             });
-        builder.widget(exportButton.setPos(46, 177));
+        builder.widget(exportPresetButton.setPos(46, 177));
 
         return builder.build();
     }
@@ -3095,6 +3176,25 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     protected ModularWindow createStarColorImportWindow(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(0, 0);
         return builder.build();
+    }
+
+    // Opens the custom color window while also resetting the editing values.
+    // Can optionally pass a star color to set as the editing color
+    private void openCustomStarColorWindowFresh(Widget widget, @Nullable ForgeOfGodsStarColor importedColor) {
+        if (!widget.isClient()) {
+            // Reset star color state
+            if (importedColor == null) {
+                importedColor = new ForgeOfGodsStarColor("New Star Color");
+            }
+            newStarColor = importedColor;
+            editingStarColor = false;
+
+            ModularUIContext ctx = widget.getContext();
+            if (ctx.isWindowOpen(STAR_CUSTOM_COLOR_WINDOW_ID)) {
+                ctx.closeWindow(STAR_CUSTOM_COLOR_WINDOW_ID);
+            }
+            ctx.openSyncedWindow(STAR_CUSTOM_COLOR_WINDOW_ID);
+        }
     }
 
     private DynamicPositionedRow delenoName() {
@@ -3740,7 +3840,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
 
         NBTTagList starColorList = new NBTTagList();
-        for (ForgeOfGodsStarColor starColor : starColors.values()) {
+        for (ForgeOfGodsStarColor starColor : starColors) {
+            if (starColor.isPresetColor()) continue;
             starColorList.appendTag(starColor.serializeToNBT());
         }
         if (!starColorList.tagList.isEmpty()) {
@@ -3809,7 +3910,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setBoolean("isRenderActive", isRenderActive);
 
         NBTTagList starColorList = new NBTTagList();
-        for (ForgeOfGodsStarColor starColor : starColors.values()) {
+        for (ForgeOfGodsStarColor starColor : starColors) {
+            if (starColor.isPresetColor()) continue;
             starColorList.appendTag(starColor.serializeToNBT());
         }
         if (!starColorList.tagList.isEmpty()) {
@@ -3873,7 +3975,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             for (int i = 0; i < starColorList.tagCount(); i++) {
                 NBTTagCompound starColorNBT = starColorList.getCompoundTagAt(i);
                 ForgeOfGodsStarColor starColor = ForgeOfGodsStarColor.deserialize(starColorNBT);
-                starColors.put(starColor.getName(), starColor);
+                if (!starColor.isPresetColor()) {
+                    starColors.add(starColor);
+                }
             }
         }
 

@@ -1,11 +1,13 @@
 package tectech.thing.metaTileEntity.multi.godforge.color;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -52,8 +54,8 @@ public class ForgeOfGodsStarColor {
         .setCycleSpeed(1)
         .registerPreset();
 
-    public static Map<String, ForgeOfGodsStarColor> getDefaultColors() {
-        return new LinkedHashMap<>(PRESETS);
+    public static List<ForgeOfGodsStarColor> getDefaultColors() {
+        return new ArrayList<>(PRESETS.values());
     }
 
     // "Metadata" about this star color, not related to star rendering
@@ -109,6 +111,11 @@ public class ForgeOfGodsStarColor {
         return this;
     }
 
+    public ForgeOfGodsStarColor addColor(StarColorSetting color) {
+        settings.add(color);
+        return this;
+    }
+
     private ForgeOfGodsStarColor addColors(List<StarColorSetting> colors) {
         settings.addAll(colors);
         return this;
@@ -120,6 +127,14 @@ public class ForgeOfGodsStarColor {
 
     public StarColorSetting getColor(int index) {
         return settings.get(index);
+    }
+
+    public void setColor(int index, StarColorSetting color) {
+        settings.set(index, color);
+    }
+
+    public void removeColor(int index) {
+        settings.remove(index);
     }
 
     public ForgeOfGodsStarColor setCustomDrawable(IDrawable drawable) {
@@ -286,5 +301,42 @@ public class ForgeOfGodsStarColor {
         } catch (Throwable ignored) {
             return null;
         }
+    }
+
+    public static void writeToBuffer(PacketBuffer buf, ForgeOfGodsStarColor color) {
+        buf.writeBoolean(color.isPresetColor());
+        try {
+            buf.writeStringToBuffer(color.name);
+        } catch (IOException ignored) {}
+
+        if (!color.isPresetColor()) {
+            buf.writeInt(color.cycleSpeed);
+            buf.writeInt(color.settings.size());
+            for (StarColorSetting setting : color.settings) {
+                StarColorSetting.writeToBuffer(buf, setting);
+            }
+        }
+    }
+
+    public static ForgeOfGodsStarColor readFromBuffer(PacketBuffer buf) {
+        boolean isPresetColor = buf.readBoolean();
+        String name;
+        try {
+            name = buf.readStringFromBuffer(32767);
+        } catch (IOException ignored) {
+            return null;
+        }
+
+        if (isPresetColor) {
+            return PRESETS.get(name);
+        }
+
+        ForgeOfGodsStarColor color = new ForgeOfGodsStarColor(name);
+        color.setCycleSpeed(buf.readInt());
+        int size = buf.readInt();
+        for (int i = 0; i < size; i++) {
+            color.addColor(StarColorSetting.readFromBuffer(buf));
+        }
+        return color;
     }
 }
