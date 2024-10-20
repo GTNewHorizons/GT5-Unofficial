@@ -81,8 +81,12 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
 
             consumeItemsFromPending(itemMap, true);
             consumeItemsFromPlayer(itemMap, true);
-            consumeItemsFromAE(itemMap, true);
-            consumeItemsFromUplink(itemMap, true);
+            if (tier.hasCap(ItemMatterManipulator.CONNECTS_TO_AE)) {
+                consumeItemsFromAE(itemMap, true);
+            }
+            if (tier.hasCap(ItemMatterManipulator.CONNECTS_TO_UPLINK)) {
+                consumeItemsFromUplink(itemMap, true);
+            }
 
             if (itemMap.values()
                 .stream()
@@ -92,8 +96,12 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
 
             consumeItemsFromPending(itemMap, false);
             consumeItemsFromPlayer(itemMap, false);
-            consumeItemsFromAE(itemMap, false);
-            consumeItemsFromUplink(itemMap, false);
+            if (tier.hasCap(ItemMatterManipulator.CONNECTS_TO_AE)) {
+                consumeItemsFromAE(itemMap, false);
+            }
+            if (tier.hasCap(ItemMatterManipulator.CONNECTS_TO_UPLINK)) {
+                consumeItemsFromUplink(itemMap, false);
+            }
 
             return true;
         }
@@ -107,8 +115,12 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
 
             consumeItemsFromPending(itemMap, false);
             consumeItemsFromPlayer(itemMap, false);
-            consumeItemsFromAE(itemMap, false);
-            consumeItemsFromUplink(itemMap, false);
+            if (tier.hasCap(ItemMatterManipulator.CONNECTS_TO_AE)) {
+                consumeItemsFromAE(itemMap, false);
+            }
+            if (tier.hasCap(ItemMatterManipulator.CONNECTS_TO_UPLINK)) {
+                consumeItemsFromUplink(itemMap, false);
+            }
 
             return GTUtility.getStacksOfSize(itemMap, Integer.MAX_VALUE);
         }
@@ -145,14 +157,18 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
             return;
         }
 
-        if (state.encKey != null && !state.hasMEConnection()) {
-            state.connectToMESystem();
+        if (tier.hasCap(ItemMatterManipulator.CONNECTS_TO_AE)) {
+            if (state.encKey != null && !state.hasMEConnection()) {
+                state.connectToMESystem();
+            }
         }
 
         boolean hasME = state.hasMEConnection() && state.canInteractWithAE(placingPlayer);
 
-        if (state.uplinkAddress != null && !state.hasUplinkConnection()) {
-            state.connectToUplink();
+        if (tier.hasCap(ItemMatterManipulator.CONNECTS_TO_UPLINK)) {
+            if (state.uplinkAddress != null && !state.hasUplinkConnection()) {
+                state.connectToUplink();
+            }
         }
 
         MTEMMUplink uplink = state.uplink;

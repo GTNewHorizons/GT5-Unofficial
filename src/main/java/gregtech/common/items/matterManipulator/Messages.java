@@ -38,10 +38,16 @@ enum Messages {
         server(simple((player, stack, manipulator, state) -> { manipulator.onMMBPressed(player, stack, state); }))),
     SetRemoveMode(server(enumPacket(BlockRemoveMode.values(), (state, value) -> state.config.removeMode = value))),
     SetPlaceMode(server(enumPacket(PlaceMode.values(), (player, stack, manipulator, state, value) -> {
-        state.config.placeMode = value;
-        if (!manipulator.tier.mAllowCopying
-            && (state.config.placeMode == PlaceMode.COPYING || state.config.placeMode == PlaceMode.MOVING)) {
-            state.config.placeMode = PlaceMode.GEOMETRY;
+
+        int requiredBit = switch(value) {
+            case COPYING -> ItemMatterManipulator.ALLOW_COPYING;
+            case EXCHANGING -> ItemMatterManipulator.ALLOW_EXCHANGING;
+            case GEOMETRY -> 0;
+            case MOVING -> ItemMatterManipulator.ALLOW_MOVING;
+        };
+
+        if (manipulator.tier.hasCap(requiredBit)) {
+            state.config.placeMode = value;
         }
     }))),
     SetBlockSelectMode(
@@ -59,13 +65,21 @@ enum Messages {
         state.config.action = PendingAction.GEOM_MOVING_COORDS;
         state.config.coordAOffset = new Vector3i();
         state.config.coordBOffset = null;
+        state.config.coordBOffset = null;
     }))),
     MoveB(server(simple((player, stack, manipulator, state) -> {
         state.config.action = PendingAction.GEOM_MOVING_COORDS;
         state.config.coordAOffset = null;
         state.config.coordBOffset = new Vector3i();
+        state.config.coordBOffset = null;
     }))),
-    MoveBoth(server(simple((player, stack, manipulator, state) -> {
+    MoveC(server(simple((player, stack, manipulator, state) -> {
+        state.config.action = PendingAction.GEOM_MOVING_COORDS;
+        state.config.coordAOffset = null;
+        state.config.coordBOffset = null;
+        state.config.coordBOffset = new Vector3i();
+    }))),
+    MoveAll(server(simple((player, stack, manipulator, state) -> {
         state.config.action = PendingAction.GEOM_MOVING_COORDS;
 
         Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
@@ -83,20 +97,48 @@ enum Messages {
             state.config.coordBOffset = state.config.coordB.toVec()
                 .sub(lookingAt);
         }
+
+        if (state.config.coordC == null) {
+            state.config.coordCOffset = null;
+        } else {
+            state.config.coordCOffset = state.config.coordC.toVec()
+                .sub(lookingAt);
+        }
+
     }))),
     MoveHere(server(simple((player, stack, manipulator, state) -> {
-        if (Location.areCompatible(state.config.coordA, state.config.coordB)) {
-            Vector3i deltas = MMUtils.getRegionDeltas(state.config.coordA, state.config.coordB);
+        if (state.config.shape.requiresC()) {
+            if (Location.areCompatible(state.config.coordA, state.config.coordB, state.config.coordC)) {
+                Vector3i offsetB = state.config.coordB.toVec().sub(state.config.coordA.toVec());
+                Vector3i offsetC = state.config.coordC.toVec().sub(state.config.coordA.toVec());
 
-            Vector3i newA = MMUtils.getLookingAtLocation(player);
-            Vector3i newB = new Vector3i(newA).add(deltas);
+                Vector3i newA = MMUtils.getLookingAtLocation(player);
+                Vector3i newB = new Vector3i(newA).add(offsetB);
+                Vector3i newC = new Vector3i(newA).add(offsetC);
+    
+                state.config.coordA = new Location(player.getEntityWorld(), newA);
+                state.config.coordB = new Location(player.getEntityWorld(), newB);
+                state.config.coordC = new Location(player.getEntityWorld(), newC);
+            }
+        } else {
+            if (Location.areCompatible(state.config.coordA, state.config.coordB)) {
+                Vector3i offsetB = state.config.coordB.toVec().sub(state.config.coordA.toVec());
 
-            state.config.coordA = new Location(player.getEntityWorld(), newA);
-            state.config.coordB = new Location(player.getEntityWorld(), newB);
+                Vector3i newA = MMUtils.getLookingAtLocation(player);
+                Vector3i newB = new Vector3i(newA).add(offsetB);
+    
+                state.config.coordA = new Location(player.getEntityWorld(), newA);
+                state.config.coordB = new Location(player.getEntityWorld(), newB);
+            }
         }
     }))),
     MarkCopy(server(simple((player, stack, manipulator, state) -> {
         state.config.action = PendingAction.MARK_COPY_A;
+        state.config.coordA = null;
+        state.config.coordB = null;
+    }))),
+    MarkCut(server(simple((player, stack, manipulator, state) -> {
+        state.config.action = PendingAction.MARK_CUT_A;
         state.config.coordA = null;
         state.config.coordB = null;
     }))),
@@ -121,7 +163,7 @@ enum Messages {
                     return;
                 }
         
-                List<PendingBlock> blocks = state.getPendingBlocks();
+                List<PendingBlock> blocks = state.getPendingBlocks(player.getEntityWorld());
                 RequiredItemAnalysis itemAnalysis = BlockAnalyzer.getRequiredItemsForBuild(player, blocks);
         
                 if (state.connectToUplink()) {
@@ -180,13 +222,7 @@ enum Messages {
         }
     }))),
     ClearWhitelist(server(simple((player, stack, manipulator, state) -> {
-
-    }))),
-    AddToWhitelist(server(simple((player, stack, manipulator, state) -> {
-
-    }))),
-    SetNewBlock(server(simple((player, stack, manipulator, state) -> {
-
+        state.config.replaceWhitelist = null;
     }))),
 
     ;

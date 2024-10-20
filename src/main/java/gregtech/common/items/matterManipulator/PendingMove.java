@@ -40,7 +40,7 @@ public class PendingMove extends AbstractBuildable {
 
         World world = placingPlayer.worldObj;
 
-        for (int i = 0; i < tier.mPlaceSpeed; i++) {
+        for (int i = 0; i < tier.placeSpeed; i++) {
             Pair<Location, Location> move = moves.get(cursor);
             int curr = cursor;
             cursor = (cursor + 1) % moves.size();

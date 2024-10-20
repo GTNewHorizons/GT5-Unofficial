@@ -59,7 +59,9 @@ public class MMUtils {
         Vec3 modifiedPosVec = posVec
             .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
 
-        return player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
+        MovingObjectPosition hit = player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
+        
+        return hit != null && hit.typeOfHit != MovingObjectType.BLOCK ? null : hit;
     }
 
     public static Vector3i getLookingAtLocation(EntityPlayer player) {
@@ -114,6 +116,23 @@ public class MMUtils {
         int dX = (maxX - minX) * (minX < x1 ? -1 : 1);
         int dY = (maxY - minY) * (minY < y1 ? -1 : 1);
         int dZ = (maxZ - minZ) * (minZ < z1 ? -1 : 1);
+
+        return new Vector3i(dX, dY, dZ);
+    }
+
+    public static Vector3i getRegionDeltas(Location a, Location b, Location c) {
+        if (a == null || b == null || c == null || a.worldId != b.worldId || a.worldId != c.worldId) return null;
+
+        Vector3i vA = a.toVec();
+        Vector3i vB = b.toVec();
+        Vector3i vC = c.toVec();
+
+        Vector3i max = new Vector3i(vA).max(vB).max(vC);
+        Vector3i min = new Vector3i(vA).min(vB).min(vC);
+
+        int dX = (max.x - min.x) * (min.x < a.x ? -1 : 1);
+        int dY = (max.y - min.y) * (min.y < a.y ? -1 : 1);
+        int dZ = (max.z - min.z) * (min.z < a.z ? -1 : 1);
 
         return new Vector3i(dX, dY, dZ);
     }

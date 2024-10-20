@@ -17,7 +17,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -32,7 +31,7 @@ public class PendingBuild extends AbstractBuildable {
 
     @Override
     public void tryPlaceBlocks(ItemStack stack, EntityPlayer player) {
-        List<PendingBlock> toPlace = new ArrayList<>(tier.mPlaceSpeed);
+        List<PendingBlock> toPlace = new ArrayList<>(tier.placeSpeed);
 
         Integer lastChunkX = null, lastChunkZ = null;
         int shuffleCount = 0;
@@ -41,7 +40,7 @@ public class PendingBuild extends AbstractBuildable {
 
         PendingBuildApplyContext applyContext = new PendingBuildApplyContext(stack);
 
-        while (toPlace.size() < tier.mPlaceSpeed && pendingBlocks.size() > 0) {
+        while (toPlace.size() < tier.placeSpeed && pendingBlocks.size() > 0) {
             PendingBlock next = pendingBlocks.getFirst();
 
             int x = next.x, y = next.y, z = next.z;
@@ -64,9 +63,7 @@ public class PendingBuild extends AbstractBuildable {
             if (!world.canMineBlock(player, x, y, z) || MinecraftServer.getServer().isBlockProtected(world, x, y, z, player)) {
                 // spotless:on
                 if (!printedProtectedBlockWarning) {
-                    player.addChatMessage(
-                        new ChatComponentText(
-                            EnumChatFormatting.GOLD + "Tried to break/place a block in a protected area!"));
+                    GTUtility.sendChatToPlayer(player, EnumChatFormatting.GOLD + "Tried to break/place a block in a protected area!");
                     printedProtectedBlockWarning = true;
                 }
 
@@ -116,9 +113,13 @@ public class PendingBuild extends AbstractBuildable {
             }
 
             if (!existingBlock.isAir(world, x, y, z)) {
+                if (!tier.hasCap(ItemMatterManipulator.ALLOW_REMOVING)) {
+                    pendingBlocks.removeFirst();
+                    continue;
+                }
+
                 if (!tryConsumePower(stack, existing)) {
-                    player.addChatMessage(
-                        new ChatComponentText(EnumChatFormatting.RED + "Matter Manipulator ran out of EU."));
+                    GTUtility.sendErrorToPlayer(player, "Matter Manipulator ran out of EU.");
                     break;
                 }
 
@@ -138,8 +139,7 @@ public class PendingBuild extends AbstractBuildable {
             }
 
             if (!tryConsumePower(stack, next)) {
-                player.addChatMessage(
-                    new ChatComponentText(EnumChatFormatting.RED + "Matter Manipulator ran out of EU."));
+                GTUtility.sendErrorToPlayer(player, "Matter Manipulator ran out of EU.");
                 break;
             }
 
@@ -171,12 +171,10 @@ public class PendingBuild extends AbstractBuildable {
 
                     toPlace = toPlace.subList(0, toPlace.size() - rejectedStack.stackSize);
 
-                    player.addChatMessage(
-                        new ChatComponentText(
-                            EnumChatFormatting.RED + "Could not find item, the corresponding blocks will be skipped: "
-                                + rejectedStack.getDisplayName()
-                                + " x "
-                                + rejectedStack.stackSize));
+                    GTUtility.sendErrorToPlayer(player, "Could not find item, the corresponding blocks will be skipped: "
+                        + rejectedStack.getDisplayName()
+                        + " x "
+                        + rejectedStack.stackSize);
                 }
             }
         }

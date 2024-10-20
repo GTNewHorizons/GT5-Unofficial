@@ -150,7 +150,7 @@ public class RadialMenu extends Widget implements Interactable {
             radialText(
                 (innerRadius + outerRadius) / 2,
                 (option.startTheta + option.endTheta) / 2,
-                50,
+                60,
                 0xFFCCCCCC,
                 option.label.get());
         }

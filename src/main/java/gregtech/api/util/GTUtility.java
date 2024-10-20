@@ -508,6 +508,12 @@ public class GTUtility {
         }
     }
 
+    public static void sendInfoToPlayer(EntityPlayer aPlayer, String aChatMessage) {
+        if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
+            aPlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY.toString() + aChatMessage));
+        }
+    }
+
     public static void sendChatToPlayer(UUID playerId, String chatMessage) {
         EntityPlayer player = getPlayerById(playerId);
 
@@ -4624,10 +4630,26 @@ public class GTUtility {
         return MathHelper.clamp_int(val, lo, hi);
     }
 
+    public static int min(int first, int... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            int l = rest[i];
+            if (l < first) first = l;
+        }
+        return first;
+    }
+
     public static long min(long first, long... rest) {
         for (int i = 0; i < rest.length; i++) {
             long l = rest[i];
             if (l < first) first = l;
+        }
+        return first;
+    }
+
+    public static int max(int first, int... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            int l = rest[i];
+            if (l > first) first = l;
         }
         return first;
     }
