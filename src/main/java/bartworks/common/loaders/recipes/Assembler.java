@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -96,6 +97,19 @@ public class Assembler implements Runnable {
             .fluidInputs(Materials.SolderingAlloy.getMolten(9216))
             .duration(1 * HOURS)
             .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder() // DEHP
+            .itemInputs(
+                ItemList.OilDrill4.get(1),
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Ultimate, 8),
+                GGMaterial.incoloy903.get(OrePrefixes.gearGt, 32),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Polytetrafluoroethylene, 16),
+                ItemList.Field_Generator_IV.get(1))
+            .itemOutputs(ItemRegistry.dehp)
+            .fluidInputs(Materials.HSSE.getMolten(32 * 144))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
