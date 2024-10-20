@@ -12,7 +12,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.MaterialGenerator;

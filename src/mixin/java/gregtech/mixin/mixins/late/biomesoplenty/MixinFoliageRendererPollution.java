@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 
 import biomesoplenty.client.render.blocks.FoliageRenderer;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.ColorOverrideType;
 
 @Mixin(FoliageRenderer.class)

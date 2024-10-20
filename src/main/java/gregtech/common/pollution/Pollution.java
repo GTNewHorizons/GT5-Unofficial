@@ -1,4 +1,4 @@
-package gregtech.common;
+package gregtech.common.pollution;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.common.GTProxy.dimensionWisePollution;
@@ -45,8 +45,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacketPollution;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTUtility;
-import gregtech.common.pollution.BlockMatcher;
-import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.render.PollutionRenderer;
 
 public class Pollution {
@@ -434,7 +432,7 @@ public class Pollution {
         addPollution(aWorld.getChunkFromBlockCoords(aPos.chunkPosX, aPos.chunkPosZ), aPollution);
     }
 
-    static void migrate(ChunkDataEvent.Load e) {
+    public static void migrate(ChunkDataEvent.Load e) {
         addPollution(
             e.getChunk(),
             e.getData()

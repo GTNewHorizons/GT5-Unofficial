@@ -20,7 +20,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.objects.GTRenderedTexture;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;

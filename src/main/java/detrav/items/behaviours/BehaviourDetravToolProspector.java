@@ -36,7 +36,7 @@ import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.UndergroundOil;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.blocks.TileEntityOres;

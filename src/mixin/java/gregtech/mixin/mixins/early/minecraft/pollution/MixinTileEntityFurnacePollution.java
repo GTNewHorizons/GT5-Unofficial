@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionConfig;
 
 // Merged from ModMixins under the MIT License Copyright bartimaeusnek & GTNewHorizons

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import gregtech.common.pollution.Pollution;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;

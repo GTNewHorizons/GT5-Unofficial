@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionConfig;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;

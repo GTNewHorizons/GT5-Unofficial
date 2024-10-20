@@ -167,7 +167,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.blocks.BlockOresAbstract;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;

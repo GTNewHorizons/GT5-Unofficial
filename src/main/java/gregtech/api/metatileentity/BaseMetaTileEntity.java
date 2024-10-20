@@ -83,7 +83,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.covers.CoverInfo;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
