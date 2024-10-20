@@ -1838,12 +1838,6 @@ public class CraftingRecipeLoader implements Runnable {
                 OrePrefixes.dust.get(Materials.Graphite), 'S', OrePrefixes.plate.get(Materials.Beryllium) });
 
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("crophavester", 1L));
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("crophavester", 1L),
-            bits_no_remove_buffered,
-            new Object[] { "ACA", "PMS", "WOW", 'M', ItemList.Hull_MV, 'C', OrePrefixes.circuit.get(Materials.MV), 'A',
-                ItemList.Robot_Arm_LV, 'P', ItemList.Electric_Piston_LV, 'S', ItemList.Sensor_LV, 'W',
-                OrePrefixes.toolHeadSense.get(Materials.Aluminium), 'O', ItemList.Conveyor_Module_LV });
 
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("RTGenerator", 1L));
         GTModHandler.addCraftingRecipe(
