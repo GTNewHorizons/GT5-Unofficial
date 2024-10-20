@@ -181,7 +181,8 @@ public class AEPartData {
         return true;
     }
 
-    public boolean getRequiredItemsForExistingPart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side) {
+    public boolean getRequiredItemsForExistingPart(IBlockApplyContext context, IPartHost partHost,
+        ForgeDirection side) {
         IPart part = partHost.getPart(side);
 
         if (part instanceof ISegmentedInventory segmentedInventory) {
@@ -246,12 +247,9 @@ public class AEPartData {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         AEPartData other = (AEPartData) obj;
         if (mPart == null) {
             if (other.mPart != null) return false;

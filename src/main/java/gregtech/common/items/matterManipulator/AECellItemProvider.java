@@ -48,8 +48,9 @@ public class AECellItemProvider implements IItemProvider {
             .definitions()
             .materials()
             .cardOreFilter();
-        boolean hasOredictCard = upgrades == null ? false : GTUtility.streamInventory(upgrades)
-            .anyMatch(oredictCard::isSameAs);
+        boolean hasOredictCard = upgrades == null ? false
+            : GTUtility.streamInventory(upgrades)
+                .anyMatch(oredictCard::isSameAs);
         if (hasOredictCard) {
             cell.mOreDict = item.getOreFilter(stack);
         }
@@ -86,13 +87,13 @@ public class AECellItemProvider implements IItemProvider {
 
         if (config != null) {
             MMUtils.clearInventory(config);
-    
+
             for (int i = 0; i < mConfig.length; i++) {
                 if (mConfig[i] != null) {
                     config.setInventorySlotContents(i, mConfig[i].toStack());
                 }
             }
-    
+
             config.markDirty();
         }
 

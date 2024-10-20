@@ -60,7 +60,7 @@ public class MMUtils {
             .addVector(lookVec.xCoord * reachDistance, lookVec.yCoord * reachDistance, lookVec.zCoord * reachDistance);
 
         MovingObjectPosition hit = player.worldObj.rayTraceBlocks(posVec, modifiedPosVec);
-        
+
         return hit != null && hit.typeOfHit != MovingObjectType.BLOCK ? null : hit;
     }
 
@@ -127,8 +127,10 @@ public class MMUtils {
         Vector3i vB = b.toVec();
         Vector3i vC = c.toVec();
 
-        Vector3i max = new Vector3i(vA).max(vB).max(vC);
-        Vector3i min = new Vector3i(vA).min(vB).min(vC);
+        Vector3i max = new Vector3i(vA).max(vB)
+            .max(vC);
+        Vector3i min = new Vector3i(vA).min(vB)
+            .min(vC);
 
         int dX = (max.x - min.x) * (min.x < a.x ? -1 : 1);
         int dY = (max.y - min.y) * (min.y < a.y ? -1 : 1);
@@ -251,11 +253,11 @@ public class MMUtils {
         if (!consume || src.tryConsumeItems(upgrades)) {
             if (!simulate) {
                 emptyInventory(src, dest);
-    
+
                 for (int i = 0; i < upgrades.length; i++) {
                     dest.setInventorySlotContents(i, upgrades[i]);
                 }
-    
+
                 dest.markDirty();
             }
 

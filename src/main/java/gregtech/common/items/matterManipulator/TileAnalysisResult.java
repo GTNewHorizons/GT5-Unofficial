@@ -484,17 +484,21 @@ public class TileAnalysisResult {
         }
     }
 
-    private void installCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side, CoverData cover) {
+    private void installCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side,
+        CoverData cover) {
         if (gte.canPlaceCoverItemAtSide(side, cover.getCover()) && context.tryConsumeItems(cover.getCover())) {
             gte.setCoverIdAndDataAtSide(
                 side,
                 cover.getCoverID(),
-                cover.getCoverBehaviour().allowsCopyPasteTool() ? cover.getCoverData() : null);
+                cover.getCoverBehaviour()
+                    .allowsCopyPasteTool() ? cover.getCoverData() : null);
         }
     }
 
-    private void updateCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side, CoverData target) {
-        if (gte.getCoverIDAtSide(side) == target.getCoverID() && gte.getCoverBehaviorAtSideNew(side).allowsCopyPasteTool()) {
+    private void updateCover(IBlockApplyContext context, IGregTechTileEntity gte, ForgeDirection side,
+        CoverData target) {
+        if (gte.getCoverIDAtSide(side) == target.getCoverID() && gte.getCoverBehaviorAtSideNew(side)
+            .allowsCopyPasteTool()) {
             gte.setCoverDataAtSide(side, target.getCoverData());
         }
     }
@@ -508,9 +512,13 @@ public class TileAnalysisResult {
 
         part.getDrops(drops, false);
 
-        context.givePlayerItems(drops.stream().map(ItemStack::copy).toArray(ItemStack[]::new));
+        context.givePlayerItems(
+            drops.stream()
+                .map(ItemStack::copy)
+                .toArray(ItemStack[]::new));
 
-        ItemStack partStack = part.getItemStack(PartItemStack.Break).copy();
+        ItemStack partStack = part.getItemStack(PartItemStack.Break)
+            .copy();
 
         NBTTagCompound tag = partStack.getTagCompound();
 
@@ -560,7 +568,9 @@ public class TileAnalysisResult {
                     gte.getComplexCoverDataAtSide(side));
 
                 if (actual != null && (target == null || actual.getCoverID() != target.getCoverID())) {
-                    context.givePlayerItems(gte.getCoverItemAtSide(side).copy());
+                    context.givePlayerItems(
+                        gte.getCoverItemAtSide(side)
+                            .copy());
                     actual = null;
                 }
 
@@ -573,7 +583,8 @@ public class TileAnalysisResult {
         }
 
         if (te instanceof ISegmentedInventory segmentedInventory) {
-            if (mAEUpgrades != null && segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgrades) {
+            if (mAEUpgrades != null
+                && segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgrades) {
                 MMUtils.installUpgrades(context, upgrades, mAEUpgrades, true, true);
             }
 
@@ -651,11 +662,11 @@ public class TileAnalysisResult {
         if (mAEParts != null) {
             for (ForgeDirection dir : ALL_DIRECTIONS) {
                 AEPartData expected = mAEParts[dir.ordinal()];
-    
+
                 if (expected == null) continue;
-    
+
                 context.tryConsumeItems(expected.getEffectivePartStack());
-    
+
                 if (!expected.getRequiredItemsForNewPart(context)) {
                     return false;
                 }

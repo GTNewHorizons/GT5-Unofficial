@@ -18,6 +18,17 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import org.joml.Vector3i;
 import org.spongepowered.libraries.com.google.common.collect.MapMaker;
 
@@ -60,26 +71,15 @@ import gtPlusPlus.core.block.ModBlocks;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implements ISurvivalConstructable {
-    
+
     public static final long BASE_PLASMA_EU_COST = 16_384;
 
     private long pendingPlasmaEU = 0;
     private long address = 0;
 
     private ArrayList<MTEMMUplinkMEHatch> uplinkHatches = new ArrayList<>();
-
 
     public MTEMMUplink(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -94,7 +94,8 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         return new MTEMMUplink(mName);
     }
 
-    //#region Structure
+    // #region Structure
+    // spotless:off
     private static String[][] getStructure() {
         return new String[][]{{
             "         ",
@@ -188,9 +189,10 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
             "         "
         }};
     }
-    
+    // spotless:on
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    
+
     private BasicStructureWrapper structure = new BasicStructureWrapper();
 
     @Override
@@ -199,6 +201,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
     }
 
     private static class UplinkHatchAdder implements IHatchElement<MTEMMUplink> {
+
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return Arrays.asList(MTEMMUplinkMEHatch.class);
@@ -218,7 +221,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
                 uplink.uplinkHatches.add(uplinkHatch);
                 uplinkHatch.updateTexture(aBaseCasingIndex);
                 uplinkHatch.updateCraftingIcon(uplink.getMachineCraftingIcon());
-                
+
                 return true;
             };
         }
@@ -235,8 +238,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
     }
 
     public class BasicStructureWrapper {
+
         public String[][] defText;
-    
+
         public int casingCount;
         public boolean badCasingCount;
         public IStructureDefinition<MTEMMUplink> structureDefinition;
@@ -249,7 +253,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
         public IStructureDefinition<MTEMMUplink> getStructureDefinition() {
             String[][] structure = getStructure();
-    
+
             if (!Objects.equals(structure, defText)) {
                 defText = structure;
                 defCasingCounts = new Char2IntArrayMap();
@@ -271,23 +275,22 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
                     z++;
                 }
 
-                structureDefinition = StructureDefinition
-                    .<MTEMMUplink>builder()
-                    .addShape(
-                        STRUCTURE_PIECE_MAIN,
-                        defText)
-                    .addElement('A', buildHatchAdder(MTEMMUplink.class)
-                        .atLeast(InputHatch, Energy, Maintenance, new UplinkHatchAdder())
-                        .casingIndex(getCasingIndex())
-                        .dot(1)
-                        .buildAndChain(onElementPass(this::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
+                structureDefinition = StructureDefinition.<MTEMMUplink>builder()
+                    .addShape(STRUCTURE_PIECE_MAIN, defText)
+                    .addElement(
+                        'A',
+                        buildHatchAdder(MTEMMUplink.class)
+                            .atLeast(InputHatch, Energy, Maintenance, new UplinkHatchAdder())
+                            .casingIndex(getCasingIndex())
+                            .dot(1)
+                            .buildAndChain(onElementPass(this::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
                     .addElement('B', ofFrame(Materials.NaquadahAlloy))
                     .addElement('C', ofFrame(Materials.Trinium))
                     .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 8))
                     .addElement('E', ofBlock(GregTechAPI.sBlockCasings8, 10))
                     .build();
             }
-    
+
             return structureDefinition;
         }
 
@@ -297,7 +300,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
         public boolean checkStructure() {
             getStructureDefinition();
-            
+
             casingCount = 0;
             badCasingCount = false;
             uplinkHatches.clear();
@@ -305,26 +308,35 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
             if (!checkPiece(STRUCTURE_PIECE_MAIN, offset.x, offset.y, offset.z)) {
                 return false;
             }
-    
+
             if (casingCount < (defCasingCounts.get('A') - maxHatches)) {
                 badCasingCount = true;
                 return false;
             }
-    
+
             return true;
         }
 
         public void construct(ItemStack stackSize, boolean hintsOnly) {
             getStructureDefinition();
-            
+
             buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, offset.x, offset.y, offset.z);
         }
 
         public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
             getStructureDefinition();
-            
+
             if (mMachine) return -1;
-            return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, offset.x, offset.y, offset.z, elementBudget, env, false, true);
+            return survivialBuildPiece(
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                offset.x,
+                offset.y,
+                offset.z,
+                elementBudget,
+                env,
+                false,
+                true);
         }
     }
 
@@ -343,60 +355,59 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         return structure.checkStructure();
     }
 
-    //#endregion
+    // #endregion
 
-    //#region Misc boilerplate
+    // #region Misc boilerplate
 
     private int getCasingIndex() {
-        return ((BlockCasingsAbstract) GregTechAPI.sBlockCasings8).getTextureIndex(7); // Advanced Iridium Plated Machine Casing
+        return ((BlockCasingsAbstract) GregTechAPI.sBlockCasings8).getTextureIndex(7); // Advanced Iridium Plated
+                                                                                       // Machine Casing
     }
 
-    private static final Textures.BlockIcons.CustomIcon ACTIVE = new Textures.BlockIcons.CustomIcon("multitileentity/mmuplink/OVERLAY_FRONT_ACTIVE");
-    private static final Textures.BlockIcons.CustomIcon ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon("multitileentity/mmuplink/OVERLAY_FRONT_ACTIVE_GLOW");
-    private static final Textures.BlockIcons.CustomIcon IDLE = new Textures.BlockIcons.CustomIcon("multitileentity/mmuplink/OVERLAY_FRONT_IDLE");
-    private static final Textures.BlockIcons.CustomIcon IDLE_GLOW = new Textures.BlockIcons.CustomIcon("multitileentity/mmuplink/OVERLAY_FRONT_IDLE_GLOW");
-    private static final Textures.BlockIcons.CustomIcon OFF = new Textures.BlockIcons.CustomIcon("multitileentity/mmuplink/OVERLAY_FRONT_OFF");
-    
+    private static final Textures.BlockIcons.CustomIcon ACTIVE = new Textures.BlockIcons.CustomIcon(
+        "multitileentity/mmuplink/OVERLAY_FRONT_ACTIVE");
+    private static final Textures.BlockIcons.CustomIcon ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
+        "multitileentity/mmuplink/OVERLAY_FRONT_ACTIVE_GLOW");
+    private static final Textures.BlockIcons.CustomIcon IDLE = new Textures.BlockIcons.CustomIcon(
+        "multitileentity/mmuplink/OVERLAY_FRONT_IDLE");
+    private static final Textures.BlockIcons.CustomIcon IDLE_GLOW = new Textures.BlockIcons.CustomIcon(
+        "multitileentity/mmuplink/OVERLAY_FRONT_IDLE_GLOW");
+    private static final Textures.BlockIcons.CustomIcon OFF = new Textures.BlockIcons.CustomIcon(
+        "multitileentity/mmuplink/OVERLAY_FRONT_OFF");
+
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int colorIndex, boolean active, boolean redstoneLevel) {
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
         int casing = getCasingIndex();
         if (side == facing) {
             if (active) {
-                if (uplinkHatches.stream().anyMatch(hatch -> hatch.hasAnyRequests())) {
-                    return new ITexture[] {
-                        getCasingTextureForId(casing),
-                        TextureFactory.builder()
-                            .addIcon(ACTIVE)
-                            .extFacing()
-                            .build(),
+                if (uplinkHatches.stream()
+                    .anyMatch(hatch -> hatch.hasAnyRequests())) {
+                    return new ITexture[] { getCasingTextureForId(casing), TextureFactory.builder()
+                        .addIcon(ACTIVE)
+                        .extFacing()
+                        .build(),
                         TextureFactory.builder()
                             .addIcon(ACTIVE_GLOW)
                             .extFacing()
                             .glow()
-                            .build()
-                    };
+                            .build() };
                 } else {
-                    return new ITexture[] {
-                        getCasingTextureForId(casing),
-                        TextureFactory.builder()
-                            .addIcon(IDLE)
-                            .extFacing()
-                            .build(),
+                    return new ITexture[] { getCasingTextureForId(casing), TextureFactory.builder()
+                        .addIcon(IDLE)
+                        .extFacing()
+                        .build(),
                         TextureFactory.builder()
                             .addIcon(IDLE_GLOW)
                             .extFacing()
                             .glow()
-                            .build()
-                    };
+                            .build() };
                 }
             } else {
-                return new ITexture[] {
-                    getCasingTextureForId(casing),
-                    TextureFactory.builder()
-                        .addIcon(OFF)
-                        .extFacing()
-                        .build()
-                };
+                return new ITexture[] { getCasingTextureForId(casing), TextureFactory.builder()
+                    .addIcon(OFF)
+                    .extFacing()
+                    .build() };
             }
         }
         return new ITexture[] { getCasingTextureForId(casing) };
@@ -442,7 +453,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         return false;
     }
 
-    //#endregion
+    // #endregion
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
@@ -455,13 +466,19 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
-        currentTip.add(String.format("Address: %x", accessor.getNBTData().getLong("address")));
+        currentTip.add(
+            String.format(
+                "Address: %x",
+                accessor.getNBTData()
+                    .getLong("address")));
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y, int z) {
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("address", address);
     }
@@ -471,7 +488,11 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         super.addAdditionalTooltipInformation(stack, tooltip);
 
         if (stack.getTagCompound() != null) {
-            tooltip.add(String.format("Address: %x", stack.getTagCompound().getLong("address")));
+            tooltip.add(
+                String.format(
+                    "Address: %x",
+                    stack.getTagCompound()
+                        .getLong("address")));
         }
     }
 
@@ -479,7 +500,12 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        info.add(String.format("Stored Plasma: %s%,d%s EU", EnumChatFormatting.YELLOW, pendingPlasmaEU, EnumChatFormatting.WHITE));
+        info.add(
+            String.format(
+                "Stored Plasma: %s%,d%s EU",
+                EnumChatFormatting.YELLOW,
+                pendingPlasmaEU,
+                EnumChatFormatting.WHITE));
 
         return info.toArray(new String[0]);
     }
@@ -517,6 +543,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
     }
 
     public static enum UplinkStatus {
+
         OK,
         NO_PLASMA,
         AE_OFFLINE,
@@ -524,7 +551,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
         @Override
         public String toString() {
-            return switch(this) {
+            return switch (this) {
                 case OK -> "ok";
                 case NO_PLASMA -> "insufficient plasma";
                 case AE_OFFLINE -> "could not connect to the ME system";
@@ -546,12 +573,14 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
         if (itemInventory == null) return UplinkStatus.AE_OFFLINE;
 
-        var iter = requestedItems.entrySet().iterator();
+        var iter = requestedItems.entrySet()
+            .iterator();
 
         while (iter.hasNext()) {
             var e = iter.next();
 
-            if (e.getKey() == null || e.getKey().getItem() == null || e.getValue() == null || e.getValue() == 0) {
+            if (e.getKey() == null || e.getKey()
+                .getItem() == null || e.getValue() == null || e.getValue() == 0) {
                 iter.remove();
                 continue;
             }
@@ -655,7 +684,8 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
                 if (fuel != null) {
                     long euPerLitre = fuel.mSpecialValue;
 
-                    int litresToConsume = (int) Math.min(Integer.MAX_VALUE, GTUtility.ceilDiv(euToGenerate, euPerLitre));
+                    int litresToConsume = (int) Math
+                        .min(Integer.MAX_VALUE, GTUtility.ceilDiv(euToGenerate, euPerLitre));
 
                     FluidStack toConsume = tank.fluid.copy();
                     toConsume.amount = litresToConsume;
@@ -678,7 +708,10 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         MTEMMUplinkMEHatch hatch = getMEHatch();
 
         if (hatch != null) {
-            String patternName = String.format("%s's Manipulator Plan", submitter.getGameProfile().getName());
+            String patternName = String.format(
+                "%s's Manipulator Plan",
+                submitter.getGameProfile()
+                    .getName());
 
             if (details != null && !details.isEmpty()) {
                 patternName += " (" + details + ")";
@@ -686,7 +719,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
             hatch.addRequest(submitter, patternName, requiredItems, autocraft);
 
-            GTUtility.sendChatToPlayer(submitter, "Pushed a new virtual ME pattern to the uplink called '" + patternName + "'.");
+            GTUtility.sendChatToPlayer(
+                submitter,
+                "Pushed a new virtual ME pattern to the uplink called '" + patternName + "'.");
         }
     }
 
@@ -699,7 +734,8 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
-    private static final Map<Long, MTEMMUplink> UPLINKS = new MapMaker().weakValues().makeMap();
+    private static final Map<Long, MTEMMUplink> UPLINKS = new MapMaker().weakValues()
+        .makeMap();
 
     public static MTEMMUplink getUplink(long address) {
         return UPLINKS.get(address);

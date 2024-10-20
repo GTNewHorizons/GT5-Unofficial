@@ -32,7 +32,7 @@ public class InventoryAnalysis {
 
         if (!fuzzy) {
             AECellItemProvider cell = AECellItemProvider.fromWorkbenchItem(stack);
-    
+
             if (cell != null) return cell;
         }
 

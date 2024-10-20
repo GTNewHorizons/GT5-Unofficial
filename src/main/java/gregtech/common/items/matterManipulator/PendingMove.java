@@ -4,6 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+
 import WayofTime.alchemicalWizardry.api.event.TeleposeEvent;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Mods.Names;
@@ -15,18 +25,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import it.unimi.dsi.fastutil.Pair;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
 public class PendingMove extends AbstractBuildable {
-    
+
     private List<Pair<Location, Location>> moves = null;
     private boolean[] remaining = null;
 
@@ -79,7 +80,8 @@ public class PendingMove extends AbstractBuildable {
                 removeBlock(world, d.x, d.y, d.z, existingBlock, target == null ? 0 : target.metadata);
             }
 
-            if (!source.getBlock().canPlaceBlockAt(world, d.x, d.y, d.z)) {
+            if (!source.getBlock()
+                .canPlaceBlockAt(world, d.x, d.y, d.z)) {
                 continue;
             }
 
@@ -89,7 +91,15 @@ public class PendingMove extends AbstractBuildable {
             }
 
             if (!swapBlocks(source, target)) {
-                GTUtility.sendErrorToPlayer(player, "Could not swap block: " + source + " (" + source.getBlock().getLocalizedName() + "@" + source.metadata + ")");
+                GTUtility.sendErrorToPlayer(
+                    player,
+                    "Could not swap block: " + source
+                        + " ("
+                        + source.getBlock()
+                            .getLocalizedName()
+                        + "@"
+                        + source.metadata
+                        + ")");
             }
 
             playSound(world, s.x, s.y, s.z, SoundResource.MOB_ENDERMEN_PORTAL);
@@ -114,7 +124,9 @@ public class PendingMove extends AbstractBuildable {
             }
         }
 
-        GTUtility.sendChatToPlayer(player, EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Finished placing blocks.");
+        GTUtility.sendChatToPlayer(
+            player,
+            EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Finished placing blocks.");
     }
 
     private void initMoves() {
@@ -147,7 +159,10 @@ public class PendingMove extends AbstractBuildable {
                     int dY = y - y1;
                     int dZ = z - z1;
 
-                    moves.add(Pair.of(new Location(worldId, x, y, z), new Location(worldId, dest.x + dX, dest.y + dY, dest.z + dZ)));
+                    moves.add(
+                        Pair.of(
+                            new Location(worldId, x, y, z),
+                            new Location(worldId, dest.x + dX, dest.y + dY, dest.z + dZ)));
                 }
             }
         }
@@ -156,7 +171,8 @@ public class PendingMove extends AbstractBuildable {
         Arrays.fill(remaining, true);
     }
 
-    // 'borrowed' from https://github.com/GTNewHorizons/BloodMagic/blob/master/src/main/java/WayofTime/alchemicalWizardry/common/block/BlockTeleposer.java#L158
+    // 'borrowed' from
+    // https://github.com/GTNewHorizons/BloodMagic/blob/master/src/main/java/WayofTime/alchemicalWizardry/common/block/BlockTeleposer.java#L158
     public static boolean swapBlocks(PendingBlock s, PendingBlock d) {
 
         World worldI = s.getWorld();
@@ -237,7 +253,8 @@ public class PendingMove extends AbstractBuildable {
             newTileEntityF.yCoord = yi;
             newTileEntityF.zCoord = zi;
 
-            if (newTileEntityF instanceof IGregTechTileEntity igte && igte.getMetaTileEntity() instanceof BaseMetaTileEntity bmte) {
+            if (newTileEntityF instanceof IGregTechTileEntity igte
+                && igte.getMetaTileEntity() instanceof BaseMetaTileEntity bmte) {
                 bmte.setCableUpdateDelay(100);
             }
 
@@ -251,7 +268,19 @@ public class PendingMove extends AbstractBuildable {
 
     @cpw.mods.fml.common.Optional.Method(modid = Names.BLOOD_MAGIC)
     private static boolean allowTelepose(World worldI, World worldF, PendingBlock s, PendingBlock d) {
-        TeleposeEvent evt = new TeleposeEvent(worldI, s.x, s.y, s.z, s.getBlock(), s.metadata, worldF, d.x, d.y, d.z, d.getBlock(), d.metadata);
+        TeleposeEvent evt = new TeleposeEvent(
+            worldI,
+            s.x,
+            s.y,
+            s.z,
+            s.getBlock(),
+            s.metadata,
+            worldF,
+            d.x,
+            d.y,
+            d.z,
+            d.getBlock(),
+            d.metadata);
         if (MinecraftForge.EVENT_BUS.post(evt)) return false;
         return true;
     }

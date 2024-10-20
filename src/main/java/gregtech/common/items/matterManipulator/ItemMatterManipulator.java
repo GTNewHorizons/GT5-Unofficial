@@ -118,10 +118,12 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
     public static enum ManipulatorTier {
 
+        // spotless:off
         Tier0(32, 16, 20, 4,     1_000_000, ALLOW_GEOMETRY),
         Tier1(64, 32, 10, 5,    10_000_000, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING),
         Tier2(128, 64, 5, 6,   100_000_000, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING),
         Tier3(-1, 256, 2, 7, 1_000_000_000, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING | CONNECTS_TO_UPLINK);
+        // spotless:on
 
         public final int tier = ordinal();
         public final int maxRange;
@@ -130,7 +132,8 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         public final double maxCharge;
         public final int capabilities;
 
-        private ManipulatorTier(int maxRange, int placeSpeed, int placeTicks, int voltageTier, double maxCharge, int capabilities) {
+        private ManipulatorTier(int maxRange, int placeSpeed, int placeTicks, int voltageTier, double maxCharge,
+            int capabilities) {
             this.maxRange = maxRange;
             this.placeSpeed = placeSpeed;
             this.placeTicks = placeTicks;
@@ -381,7 +384,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 state.config.coordBOffset = new Vector3i();
                 state.config.action = PendingAction.GEOM_MOVING_COORDS;
             }
-            
+
             if (state.config.placeMode == PlaceMode.EXCHANGING) {
                 state.config.coordA = location;
                 state.config.coordB = null;
@@ -408,8 +411,10 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
         switch (state.config.action) {
             case GEOM_MOVING_COORDS: {
                 Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
-        
-                if (state.config.coordAOffset == null && state.config.coordBOffset != null && state.config.coordCOffset == null && state.config.shape.requiresC()) {
+
+                if (state.config.coordAOffset == null && state.config.coordBOffset != null
+                    && state.config.coordCOffset == null
+                    && state.config.shape.requiresC()) {
                     state.config.coordA = state.config.getCoordA(world, lookingAt);
                     state.config.coordB = state.config.getCoordB(world, lookingAt);
                     state.config.coordC = null;
@@ -462,7 +467,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             }
             case EXCH_MOVING_COORDS: {
                 Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
-        
+
                 state.config.coordA = state.config.getCoordA(world, lookingAt);
                 state.config.coordB = state.config.getCoordB(world, lookingAt);
                 state.config.coordAOffset = null;
@@ -477,13 +482,15 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
 
                 state.config.replaceWith = Config.saveStack(selected);
                 state.config.action = null;
-                
+
                 if (selected == null) {
                     GTUtility.sendInfoToPlayer(player, "Cleared exchange whitelist");
                 } else {
-                    GTUtility.sendInfoToPlayer(player, String.format(
-                        "Set block to replace with to: %s",
-                        selected == null ? "nothing" : selected.getDisplayName()));
+                    GTUtility.sendInfoToPlayer(
+                        player,
+                        String.format(
+                            "Set block to replace with to: %s",
+                            selected == null ? "nothing" : selected.getDisplayName()));
                 }
 
                 return true;
@@ -496,16 +503,18 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     if (state.config.replaceWhitelist == null) {
                         state.config.replaceWhitelist = new ArrayList<>();
                     }
-            
+
                     state.config.replaceWhitelist.add(Config.saveStack(selected));
                 }
 
                 state.config.action = null;
-                
+
                 if (selected != null) {
-                    GTUtility.sendInfoToPlayer(player, String.format(
-                        "Added block to exchange whitelist: %s",
-                        selected == null ? "nothing" : selected.getDisplayName()));
+                    GTUtility.sendInfoToPlayer(
+                        player,
+                        String.format(
+                            "Added block to exchange whitelist: %s",
+                            selected == null ? "nothing" : selected.getDisplayName()));
                 }
 
                 return true;
@@ -522,10 +531,12 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 }
 
                 state.config.action = null;
-                
-                GTUtility.sendInfoToPlayer(player, String.format(
-                    "Set exchange whitelist to only contain: %s",
-                    selected == null ? "nothing" : selected.getDisplayName()));
+
+                GTUtility.sendInfoToPlayer(
+                    player,
+                    String.format(
+                        "Set exchange whitelist to only contain: %s",
+                        selected == null ? "nothing" : selected.getDisplayName()));
 
                 return true;
             }
@@ -607,7 +618,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
             }
         }
 
-        GTUtility.sendInfoToPlayer(player, String.format("Set %s to: %s", what, selected == null ? "nothing" : selected.getDisplayName()));
+        GTUtility.sendInfoToPlayer(
+            player,
+            String.format("Set %s to: %s", what, selected == null ? "nothing" : selected.getDisplayName()));
     }
 
     static final Map<EntityPlayer, IBuildable> PENDING_BUILDS = new MapMaker().weakKeys()
@@ -727,9 +740,9 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
     public void setUplinkAddress(ItemStack stack, Long address) {
         if (tier.hasCap(CONNECTS_TO_UPLINK)) {
             NBTState state = getState(stack);
-    
+
             state.uplinkAddress = address;
-    
+
             setState(stack, state);
         }
     }
@@ -1173,7 +1186,7 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                 AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z),
                 new Vector3f(0.15f, 0.6f, 0.75f));
 
-            BoxRenderer.INSTANCE.finish();    
+            BoxRenderer.INSTANCE.finish();
 
             boolean needsAnalysis = (System.currentTimeMillis() - lastAnalysisMS) >= ANALYSIS_INTERVAL_MS
                 || !Objects.equals(lastAnalyzedConfig, state.config);
@@ -1326,8 +1339,15 @@ public class ItemMatterManipulator extends Item implements IElectricItem, INetwo
                     pendingBlock.metadata);
 
                 if (state.config.placeMode == PlaceMode.EXCHANGING) {
-                    StructureLibAPI.markHintParticleError(player, player.worldObj, pendingBlock.x, pendingBlock.y, pendingBlock.z);
-                    StructureLibAPI.updateHintParticleTint(player, player.worldObj, pendingBlock.x, pendingBlock.y, pendingBlock.z, new short[] { 255, 255, 255, 255 });
+                    StructureLibAPI
+                        .markHintParticleError(player, player.worldObj, pendingBlock.x, pendingBlock.y, pendingBlock.z);
+                    StructureLibAPI.updateHintParticleTint(
+                        player,
+                        player.worldObj,
+                        pendingBlock.x,
+                        pendingBlock.y,
+                        pendingBlock.z,
+                        new short[] { 255, 255, 255, 255 });
                 }
             }
         }

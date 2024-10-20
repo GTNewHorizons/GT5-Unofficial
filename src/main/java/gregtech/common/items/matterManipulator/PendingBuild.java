@@ -6,10 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import gregtech.api.enums.SoundResource;
-import gregtech.api.util.GTUtility;
-import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
-import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -23,10 +19,15 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.SoundResource;
+import gregtech.api.util.GTUtility;
+import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
+import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
+
 public class PendingBuild extends AbstractBuildable {
 
     public LinkedList<PendingBlock> pendingBlocks;
-    
+
     private boolean printedProtectedBlockWarning = false;
 
     @Override
@@ -63,7 +64,9 @@ public class PendingBuild extends AbstractBuildable {
             if (!world.canMineBlock(player, x, y, z) || MinecraftServer.getServer().isBlockProtected(world, x, y, z, player)) {
                 // spotless:on
                 if (!printedProtectedBlockWarning) {
-                    GTUtility.sendChatToPlayer(player, EnumChatFormatting.GOLD + "Tried to break/place a block in a protected area!");
+                    GTUtility.sendChatToPlayer(
+                        player,
+                        EnumChatFormatting.GOLD + "Tried to break/place a block in a protected area!");
                     printedProtectedBlockWarning = true;
                 }
 
@@ -152,15 +155,17 @@ public class PendingBuild extends AbstractBuildable {
             if (!pendingBlocks.isEmpty()) {
                 GTUtility.sendErrorToPlayer(player, "Could not place " + pendingBlocks.size() + " remaining blocks.");
             } else {
-                GTUtility.sendChatToPlayer(player, EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY + "Finished placing blocks.");
+                GTUtility.sendInfoToPlayer(player, "Finished placing blocks.");
             }
 
             player.setItemInUse(null, 0);
             return;
         }
 
-        if (!toPlace.get(0).isFree()) {
-            ItemStack item = toPlace.get(0).toStack();
+        if (!toPlace.get(0)
+            .isFree()) {
+            ItemStack item = toPlace.get(0)
+                .toStack();
             if (item != null) {
                 item.stackSize = toPlace.size();
 
@@ -171,10 +176,12 @@ public class PendingBuild extends AbstractBuildable {
 
                     toPlace = toPlace.subList(0, toPlace.size() - rejectedStack.stackSize);
 
-                    GTUtility.sendErrorToPlayer(player, "Could not find item, the corresponding blocks will be skipped: "
-                        + rejectedStack.getDisplayName()
-                        + " x "
-                        + rejectedStack.stackSize);
+                    GTUtility.sendErrorToPlayer(
+                        player,
+                        "Could not find item, the corresponding blocks will be skipped: "
+                            + rejectedStack.getDisplayName()
+                            + " x "
+                            + rejectedStack.stackSize);
                 }
             }
         }
