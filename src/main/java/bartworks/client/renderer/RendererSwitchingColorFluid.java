@@ -31,6 +31,7 @@ import bartworks.common.loaders.FluidLoader;
 import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.util.Coords;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -49,6 +50,7 @@ public class RendererSwitchingColorFluid implements ISimpleBlockRenderingHandler
 
     public static void register() {
         instance = new RendererSwitchingColorFluid();
+        RenderingRegistry.registerBlockHandler(instance);
     }
 
     private float getFluidHeightAverage(float[] flow) {

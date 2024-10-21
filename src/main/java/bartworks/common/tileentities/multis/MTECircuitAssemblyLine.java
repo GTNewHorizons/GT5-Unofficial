@@ -263,8 +263,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         if (isImprinted()) aNBT.setTag(IMPRINT_KEY, this.type);
-        aNBT.setInteger(RUNNING_MODE_KEY, mode);
-        super.saveNBTData(aNBT);
+        super.setItemNBT(aNBT);
     }
 
     @Override

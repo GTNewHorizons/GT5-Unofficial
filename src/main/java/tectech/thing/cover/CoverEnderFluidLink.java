@@ -1,5 +1,6 @@
 package tectech.thing.cover;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,28 +46,47 @@ public class CoverEnderFluidLink extends CoverBehavior {
         }
     }
 
-    private boolean testBit(int aCoverVariable, int bitMask) {
+    private static boolean testBit(int aCoverVariable, int bitMask) {
         return (aCoverVariable & bitMask) != 0;
     }
 
-    private int toggleBit(int aCoverVariable, int bitMask) {
+    private static int toggleBit(int aCoverVariable, int bitMask) {
         return (aCoverVariable ^ bitMask);
     }
 
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
-        if ((aTileEntity instanceof IFluidHandler fluidHandlerSelf)) {
-            IFluidHandler fluidHandlerEnder = EnderWorldSavedData
-                .getEnderFluidContainer(EnderWorldSavedData.getEnderLinkTag((IFluidHandler) aTileEntity));
+        if ((aTileEntity instanceof IFluidHandler teTank)) {
+            EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag((IFluidHandler) aTileEntity);
 
-            if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
-                transferFluid(fluidHandlerEnder, ForgeDirection.UNKNOWN, fluidHandlerSelf, side, L_PER_TICK);
-            } else {
-                transferFluid(fluidHandlerSelf, side, fluidHandlerEnder, ForgeDirection.UNKNOWN, L_PER_TICK);
+            if (tag != null) {
+                IFluidHandler enderTank = EnderWorldSavedData.getEnderFluidContainer(tag);
+
+                if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
+                    transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, side, L_PER_TICK);
+                } else {
+                    transferFluid(teTank, side, enderTank, ForgeDirection.UNKNOWN, L_PER_TICK);
+                }
             }
         }
         return aCoverVariable;
+    }
+
+    @Override
+    public void onBaseTEDestroyed(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        if (aTileEntity instanceof IFluidHandler fluidHandlerSelf) {
+            EnderWorldSavedData.unbindTank(fluidHandlerSelf);
+        }
+    }
+
+    @Override
+    public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+        boolean aForced) {
+        if (aTileEntity instanceof IFluidHandler fluidHandlerSelf) {
+            EnderWorldSavedData.unbindTank(fluidHandlerSelf);
+        }
+        return true;
     }
 
     @Override
@@ -143,23 +163,23 @@ public class CoverEnderFluidLink extends CoverBehavior {
             builder.widget(frequencyField.setGetter(() -> {
                 ICoverable te = getUIBuildContext().getTile();
                 if (!frequencyField.isClient() && te instanceof IFluidHandler) {
-                    return EnderWorldSavedData.getEnderLinkTag((IFluidHandler) te)
-                        .getFrequency();
+                    EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag((IFluidHandler) te);
+
+                    return tag == null ? "" : tag.getFrequency();
                 }
                 return "";
             })
                 .setSetter(val -> {
-                    ICoverable te = getUIBuildContext().getTile();
-                    if (!frequencyField.isClient() && te instanceof IFluidHandler) {
-                        UUID uuid;
+                    if (!frequencyField.isClient() && getUIBuildContext().getTile() instanceof IFluidHandler tank) {
+                        UUID uuid = null;
+
                         if (testBit(convert(getCoverData()), PUBLIC_PRIVATE_MASK)) {
                             uuid = getUUID();
-                            if (!(te instanceof IGregTechTileEntity)) return;
-                            if (!uuid.equals(((IGregTechTileEntity) te).getOwnerUuid())) return;
-                        } else {
-                            uuid = null;
+                            if (!(tank instanceof IGregTechTileEntity gte)) return;
+                            if (!uuid.equals(gte.getOwnerUuid())) return;
                         }
-                        EnderWorldSavedData.bindEnderLinkTag((IFluidHandler) te, new EnderLinkTag(val, uuid));
+
+                        EnderWorldSavedData.bindEnderLinkTag(tank, new EnderLinkTag(val, uuid));
                     }
                 })
                 .setTextColor(Color.WHITE.dark(1))
@@ -213,9 +233,30 @@ public class CoverEnderFluidLink extends CoverBehavior {
 
         private int getNewCoverVariable(int id, int coverVariable) {
             switch (id) {
-                case PUBLIC_BUTTON_ID:
-                case PRIVATE_BUTTON_ID:
+                case PUBLIC_BUTTON_ID: {
+                    if (getUIBuildContext().getTile() instanceof IGregTechTileEntity gte) {
+                        EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(gte);
+
+                        if (tag != null) {
+                            EnderWorldSavedData.bindEnderLinkTag(gte, new EnderLinkTag(tag.getFrequency(), null));
+                        }
+                    }
+
                     return toggleBit(coverVariable, PUBLIC_PRIVATE_MASK);
+                }
+                case PRIVATE_BUTTON_ID: {
+                    if (getUIBuildContext().getTile() instanceof IGregTechTileEntity gte) {
+                        EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(gte);
+
+                        UUID player = getUUID();
+
+                        if ((gte.getOwnerUuid() == null || Objects.equals(player, gte.getOwnerUuid())) && tag != null) {
+                            EnderWorldSavedData.bindEnderLinkTag(gte, new EnderLinkTag(tag.getFrequency(), player));
+                        }
+                    }
+
+                    return toggleBit(coverVariable, PUBLIC_PRIVATE_MASK);
+                }
                 case IMPORT_BUTTON_ID:
                 case EXPORT_BUTTON_ID:
                     return toggleBit(coverVariable, IMPORT_EXPORT_MASK);
