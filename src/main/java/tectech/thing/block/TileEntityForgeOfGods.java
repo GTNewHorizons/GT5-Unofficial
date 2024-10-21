@@ -237,10 +237,7 @@ public class TileEntityForgeOfGods extends TileEntity {
         compound.setFloat(ROT_AXIS_X_NBT_TAG, rotAxisX);
         compound.setFloat(ROT_AXIS_Y_NBT_TAG, rotAxisY);
         compound.setFloat(ROT_AXIS_Z_NBT_TAG, rotAxisZ);
-
-        if (starColor != ForgeOfGodsStarColor.DEFAULT) {
-            compound.setTag(STAR_COLOR_TAG, starColor.serializeToNBT());
-        }
+        compound.setTag(STAR_COLOR_TAG, starColor.serializeToNBT());
     }
 
     @Override
