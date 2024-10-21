@@ -173,8 +173,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private ForgeOfGodsStarColor newStarColor = ForgeOfGodsStarColor.newTemplateColor();
     private int starColorR, starColorG, starColorB;
     private float starGamma;
-    private int starColorEditingPos;
-    private boolean editingStarColor;
+    private int editingColorIndex;
     private ForgeOfGodsStarColor importedStarColor;
 
     private static final int FUEL_CONFIG_WINDOW_ID = 9;
@@ -2867,9 +2866,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starColorG, val -> starColorG = val));
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starColorB, val -> starColorB = val));
         builder.widget(new FakeSyncWidget.FloatSyncer(() -> starGamma, val -> starGamma = val));
-        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starColorEditingPos, val -> starColorEditingPos = val));
-        // todo collapse this into the above? -1 value?
-        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> editingStarColor, val -> editingStarColor = val));
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> editingColorIndex, val -> editingColorIndex = val));
 
         builder.widget(
             new FakeSyncWidget<>(
@@ -2920,21 +2917,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Apply color button
         Widget colorApplyButton = ForgeOfGodsUI.createStarColorButton(() -> {
-            if (editingStarColor) {
+            if (editingColorIndex >= 0) {
                 return "fog.cosmetics.applycolor";
             }
             return "fog.cosmetics.addcolor";
         }, () -> {
-            if (editingStarColor) {
+            if (editingColorIndex >= 0) {
                 return "fog.cosmetics.applycolor.tooltip";
             }
             return "fog.cosmetics.addcolor.tooltip";
         }, (clickData, widget) -> {
             if (!widget.isClient()) {
                 StarColorSetting color = new StarColorSetting(starColorR, starColorG, starColorB, starGamma);
-                if (editingStarColor && starColorEditingPos < newStarColor.numColors()) {
+                if (editingColorIndex >= 0 && editingColorIndex < newStarColor.numColors()) {
                     // insert into the list, as we are editing an existing color
-                    newStarColor.setColor(starColorEditingPos, color);
+                    newStarColor.setColor(editingColorIndex, color);
                 } else {
                     // add a new color at the end of the list
                     newStarColor.addColor(color);
@@ -2976,15 +2973,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
                 if (clickData.mouseButton == 0) { // left click
                     // deselect this if its already selected
-                    if (editingStarColor && starColorEditingPos == ii) {
-                        editingStarColor = false;
+                    if (editingColorIndex == ii) {
+                        editingColorIndex = -1;
                         return;
                     }
 
                     // otherwise select this if it's valid to select
                     if (ii < newStarColor.numColors()) {
-                        editingStarColor = true;
-                        starColorEditingPos = ii;
+                        editingColorIndex = ii;
                         StarColorSetting color = newStarColor.getColor(ii);
                         starColorR = color.getColorR();
                         starColorG = color.getColorG();
@@ -2996,12 +2992,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     if (ii < newStarColor.numColors()) {
                         newStarColor.removeColor(ii);
 
-                        if (editingStarColor && starColorEditingPos == ii) {
+                        if (editingColorIndex == ii) {
                             // deselect if this index was selected
-                            editingStarColor = false;
-                        } else if (editingStarColor && starColorEditingPos > ii) {
+                            editingColorIndex = -1;
+                        } else if (editingColorIndex > ii) {
                             // shift down the editing index if it was after this entry
-                            starColorEditingPos -= 1;
+                            editingColorIndex -= 1;
                         }
                         ForgeOfGodsUI.reopenWindow(widget, STAR_CUSTOM_COLOR_WINDOW_ID);
                     }
@@ -3009,7 +3005,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             })
                 .setPlayClickSound(false)
                 .setBackground(() -> {
-                    if (editingStarColor && starColorEditingPos == ii) {
+                    if (editingColorIndex == ii) {
                         return new IDrawable[] { TecTechUITextures.UNSELECTED_OPTION,
                             TecTechUITextures.SLOT_OUTLINE_GREEN };
                     }
@@ -3101,6 +3097,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             "fog.cosmetics.savecolors.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
+                    if (newStarColor.numColors() == 0) return;
                     starColors.store(newStarColor);
                     if (selectedStarColor.equals(newStarColor.getName())) {
                         updateRenderer();
@@ -3151,6 +3148,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             "fog.cosmetics.exportcolors.tooltip",
             (clickData, widget) -> {
                 if (widget.isClient()) {
+                    if (newStarColor.numColors() == 0) return;
                     if (Desktop.isDesktopSupported()) {
                         String output = newStarColor.serializeToString();
                         Clipboard clipboard = Toolkit.getDefaultToolkit()
@@ -3301,7 +3299,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 importedColor = ForgeOfGodsStarColor.newTemplateColor();
             }
             newStarColor = importedColor;
-            editingStarColor = false;
+            editingColorIndex = -1;
             starColorR = ForgeOfGodsStarColor.DEFAULT_RED;
             starColorG = ForgeOfGodsStarColor.DEFAULT_GREEN;
             starColorB = ForgeOfGodsStarColor.DEFAULT_BLUE;
