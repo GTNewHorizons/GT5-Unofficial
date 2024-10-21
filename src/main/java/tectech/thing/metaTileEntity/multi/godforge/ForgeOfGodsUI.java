@@ -427,7 +427,7 @@ public class ForgeOfGodsUI {
         private final float defaultValue;
 
         StarColorRGBM(EnumChatFormatting mcColor, int muiColor, float lower, float upper, float defaultVal) {
-            this.title = "gt.blockmachines.multimachine.FOG." + name().toLowerCase();
+            this.title = "fog.cosmetics.color." + name().toLowerCase();
             this.mcColor = mcColor;
             this.muiColor = muiColor;
             this.lowerBound = lower;
@@ -484,10 +484,10 @@ public class ForgeOfGodsUI {
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
 
         if (color == StarColorRGBM.GAMMA) {
-            numberEntry.addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.decimals"));
+            numberEntry.addTooltip(translateToLocal("fog.cosmetics.onlydecimals"));
             ((NumericWidget) numberEntry).setIntegerOnly(false);
         } else {
-            numberEntry.addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"));
+            numberEntry.addTooltip(translateToLocal("fog.cosmetics.onlyintegers"));
         }
 
         return widget.addChild(numberEntry);

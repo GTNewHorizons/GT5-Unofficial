@@ -2701,7 +2701,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             ButtonWidget.closeWindowButton(true)
                 .setPos(184, 4))
             .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.cosmetics"))
+                new TextWidget(translateToLocal("fog.cosmetics.header"))
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.Center)
                     .setScale(1f)
@@ -2711,7 +2711,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         // Color options
         // Header
         builder.widget(
-            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.color"))
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.color"))
                 .setDefaultColor(EnumChatFormatting.GOLD)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setPos(9, 25)
@@ -2739,7 +2739,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         })
             .setPlayClickSound(true)
             .setBackground(GTUITextures.BUTTON_STANDARD)
-            .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.starcolor"))
+            .addTooltip(translateToLocal("fog.cosmetics.starcolor"))
             .setSize(16, 16)
             .setPos(0, 0)
             .setEnabled(newPresetEnabled));
@@ -2754,7 +2754,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Text for what this button does
         newPreset.addChild(
-            new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.custom"))
+            new TextWidget(translateToLocal("fog.cosmetics.customstarcolor"))
                 .setDefaultColor(EnumChatFormatting.GOLD)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setSize(60, 18)
@@ -2765,13 +2765,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Miscellaneous options not related to color settings
         builder.widget(
-            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.misc"))
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.misc"))
                 .setDefaultColor(EnumChatFormatting.GOLD)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setPos(120, 25)
                 .setSize(80, 10))
             .widget(
-                TextWidget.localised("gt.blockmachines.multimachine.FOG.spin")
+                TextWidget.localised("fog.cosmetics.spin")
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(120, 45)
@@ -2785,11 +2785,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
                     .setPos(155, 45)
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .addTooltip(translateToLocal("fog.cosmetics.onlyintegers"))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD))
             .widget(
-                TextWidget.localised("gt.blockmachines.multimachine.FOG.size")
+                TextWidget.localised("fog.cosmetics.size")
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(120, 65)
@@ -2803,7 +2803,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setTextColor(Color.WHITE.normal)
                     .setSize(35, 18)
                     .setPos(155, 65)
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.integers"))
+                    .addTooltip(translateToLocal("fog.cosmetics.onlyintegers"))
                     .setTooltipShowUpDelay(TOOLTIP_DELAY)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
 
@@ -2847,8 +2847,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             })
             .addTooltips(
                 ImmutableList.of(
-                    translateToLocal("fog.button.selectcolor.tooltip.1"),
-                    translateToLocal("fog.button.selectcolor.tooltip.2")))
+                    translateToLocal("fog.cosmetics.selectcolor.tooltip.1"),
+                    translateToLocal("fog.cosmetics.selectcolor.tooltip.2")))
             .setSize(16, 16)
             .setPos(0, 0)
             .setEnabled(enabledCheck));
@@ -2881,7 +2881,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return parent;
     }
 
-    // todo clean up translation keys
     protected ModularWindow createStarCustomColorWindow(final EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(200, 200);
         builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE);
@@ -2908,7 +2907,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             ButtonWidget.closeWindowButton(true)
                 .setPos(184, 4))
             .widget(
-                TextWidget.localised("gt.blockmachines.multimachine.FOG.starcolor")
+                TextWidget.localised("fog.cosmetics.starcolor")
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.Center)
                     .setScale(1f)
@@ -2946,14 +2945,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         // Apply color button
         Widget colorApplyButton = ForgeOfGodsUI.createStarColorButton(() -> {
             if (editingStarColor) {
-                return "gt.blockmachines.multimachine.FOG.apply";
+                return "fog.cosmetics.applycolor";
             }
-            return "gt.blockmachines.multimachine.FOG.addcolor";
+            return "fog.cosmetics.addcolor";
         }, () -> {
             if (editingStarColor) {
-                return "fog.button.applystarcolor.tooltip";
+                return "fog.cosmetics.applycolor.tooltip";
             }
-            return "fog.button.addstarcolor.tooltip";
+            return "fog.cosmetics.addcolor.tooltip";
         }, (clickData, widget) -> {
             if (!widget.isClient()) {
                 StarColorSetting color = new StarColorSetting(starColorR, starColorG, starColorB, starGamma);
@@ -2971,8 +2970,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Reset color button
         Widget colorResetButton = ForgeOfGodsUI.createStarColorButton(
-            "fog.debug.resetbutton.text",
-            "fog.button.resetcolors.tooltip",
+            "fog.cosmetics.resetcolor",
+            "fog.cosmetics.resetcolor.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
                     starColorR = ForgeOfGodsStarColor.DEFAULT_RED;
@@ -3042,8 +3041,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 })
                 .dynamicTooltip(() -> {
                     List<String> ret = new ArrayList<>();
-                    ret.add(translateToLocal("fog.button.colorlist.tooltip.1"));
-                    ret.add(translateToLocal("fog.button.colorlist.tooltip.2"));
+                    ret.add(translateToLocal("fog.cosmetics.colorlist.tooltip.1"));
+                    ret.add(translateToLocal("fog.cosmetics.colorlist.tooltip.2"));
 
                     if (ii < newStarColor.numColors()) {
                         ret.add("");
@@ -3081,7 +3080,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setDefaultValue(1)
             .setTextAlignment(Alignment.Center)
             .setTextColor(Color.WHITE.normal)
-            .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.speed"))
+            .addTooltip(translateToLocal("fog.cosmetics.cyclespeed"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
             .setSize(21, 16)
@@ -3105,7 +3104,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.widget(nameEntryField);
 
         // Name label
-        Widget nameLabel = TextWidget.localised("fog.cosmetics.starcolorname.text")
+        Widget nameLabel = TextWidget.localised("fog.cosmetics.starcolorname")
             .setTextAlignment(Alignment.CenterLeft)
             .setDefaultColor(EnumChatFormatting.GOLD)
             .setPos(8, 158)
@@ -3122,8 +3121,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Save preset button
         Widget savePresetButton = ForgeOfGodsUI.createStarColorButton(
-            "gt.blockmachines.multimachine.FOG.save",
-            "fog.button.savecolor.tooltip",
+            "fog.cosmetics.savecolors",
+            "fog.cosmetics.savecolors.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
                     boolean edited = false;
@@ -3149,8 +3148,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Delete preset button
         Widget deletePresetButton = ForgeOfGodsUI.createStarColorButton(
-            "gt.blockmachines.multimachine.FOG.delete",
-            "fog.button.deletecolor.tooltip",
+            "fog.cosmetics.deletecolors",
+            "fog.cosmetics.deletecolors.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
                     Iterator<ForgeOfGodsStarColor> itr = starColors.iterator();
@@ -3176,8 +3175,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Import preset button
         Widget importPresetButton = ForgeOfGodsUI.createStarColorButton(
-            "gt.blockmachines.multimachine.FOG.import",
-            "fog.button.import.tooltip",
+            "fog.cosmetics.importcolors",
+            "fog.cosmetics.importcolors.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
                     // reset state from before if it exists
@@ -3192,8 +3191,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Export preset button
         Widget exportPresetButton = ForgeOfGodsUI.createStarColorButton(
-            "gt.blockmachines.multimachine.FOG.export",
-            "fog.button.export.tooltip",
+            "fog.cosmetics.exportcolors",
+            "fog.cosmetics.exportcolors.tooltip",
             (clickData, widget) -> {
                 if (widget.isClient()) {
                     if (Desktop.isDesktopSupported()) {
@@ -3229,7 +3228,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             ButtonWidget.closeWindowButton(true)
                 .setPos(184, 4))
             .widget(
-                TextWidget.localised("gt.blockmachines.multimachine.FOG.importstarcolor")
+                TextWidget.localised("fog.cosmetics.importer.import")
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.Center)
                     .setScale(1f)
@@ -3249,11 +3248,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     if (color != null) {
                         // no error
                         importedError = EnumChatFormatting.GREEN
-                            + translateToLocal("gt.blockmachines.multimachine.FOG.importstarcolor.valid");
+                            + translateToLocal("fog.cosmetics.importer.valid");
                         importedStarColor = color;
                     } else {
                         importedError = EnumChatFormatting.RED
-                            + translateToLocal("gt.blockmachines.multimachine.FOG.importstarcolor.error");
+                            + translateToLocal("fog.cosmetics.importer.error");
                         importedStarColor = null;
                     }
                 }
@@ -3303,7 +3302,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             return Text.EMPTY;
         }).setTextAlignment(Alignment.Center)
             .setDefaultColor(Color.WHITE.normal)
-            .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.speed"))
+            .addTooltip(translateToLocal("fog.cosmetics.cyclespeed"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
             .setSize(21, 16)
@@ -3323,8 +3322,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Confirm button
         Widget confirmImportButton = ForgeOfGodsUI.createStarColorButton(
-            "gt.blockmachines.multimachine.FOG.apply",
-            "fog.button.applyimportcolor.tooltip",
+            "fog.cosmetics.importer.apply",
+            "fog.cosmetics.importer.apply.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
                     // no action if a valid star color isn't provided
@@ -3339,8 +3338,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Reset button
         Widget resetImportButton = ForgeOfGodsUI.createStarColorButton(
-            "fog.debug.resetbutton.text",
-            "fog.button.resetimportcolor.tooltip",
+            "fog.cosmetics.importer.reset",
+            "fog.cosmetics.importer.reset.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
                     importedStarColorStr = "";
