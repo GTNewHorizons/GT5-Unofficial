@@ -3927,13 +3927,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public void setItemNBT(NBTTagCompound NBT) {
-        saveGeneralNBT(NBT, false);
+        saveGeneralNBT(NBT);
         super.saveNBTData(NBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound NBT) {
-        saveGeneralNBT(NBT, true);
+        saveGeneralNBT(NBT);
 
         // Upgrade window stored items
         NBTTagCompound upgradeWindowStorageNBTTag = new NBTTagCompound();
@@ -3960,25 +3960,25 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         super.saveNBTData(NBT);
     }
 
-    private void saveGeneralNBT(NBTTagCompound NBT, boolean force) {
-        if (force || selectedFuelType != 0) NBT.setInteger("selectedFuelType", selectedFuelType);
-        if (force || internalBattery != 0) NBT.setInteger("internalBattery", internalBattery);
-        if (force || batteryCharging) NBT.setBoolean("batteryCharging", true);
-        if (force || gravitonShardsAvailable != 0) NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
-        if (force || gravitonShardsSpent != 0) NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
-        if (force || !BigInteger.ZERO.equals(totalPowerConsumed))
+    private void saveGeneralNBT(NBTTagCompound NBT) {
+        if (selectedFuelType != 0) NBT.setInteger("selectedFuelType", selectedFuelType);
+        if (internalBattery != 0) NBT.setInteger("internalBattery", internalBattery);
+        if (batteryCharging) NBT.setBoolean("batteryCharging", true);
+        if (gravitonShardsAvailable != 0) NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
+        if (gravitonShardsSpent != 0) NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
+        if (!BigInteger.ZERO.equals(totalPowerConsumed))
             NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
-        if (force || totalRecipesProcessed != 0) NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
-        if (force || totalFuelConsumed != 0) NBT.setLong("totalFuelConsumed", totalFuelConsumed);
-        if (force || stellarFuelAmount != 0) NBT.setInteger("starFuelStored", stellarFuelAmount);
-        if (force || gravitonShardEjection) NBT.setBoolean("gravitonShardEjection", true);
-        if (force || secretUpgrade) NBT.setBoolean("secretUpgrade", true);
+        if (totalRecipesProcessed != 0) NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
+        if (totalFuelConsumed != 0) NBT.setLong("totalFuelConsumed", totalFuelConsumed);
+        if (stellarFuelAmount != 0) NBT.setInteger("starFuelStored", stellarFuelAmount);
+        if (gravitonShardEjection) NBT.setBoolean("gravitonShardEjection", true);
+        if (secretUpgrade) NBT.setBoolean("secretUpgrade", true);
 
         // Fields with non-zero defaults
-        if (force || fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
+        if (fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
             NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
         }
-        if (force || maxBatteryCharge != DEFAULT_MAX_BATTERY_CHARGE) {
+        if (maxBatteryCharge != DEFAULT_MAX_BATTERY_CHARGE) {
             NBT.setInteger("batterySize", maxBatteryCharge);
         }
 
@@ -3990,7 +3990,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             upgradeBooleanArrayNBTTag.setBoolean("upgrade" + i, value);
             if (value) hasSomeUpgrade = true;
         }
-        if (force || hasSomeUpgrade) NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
+        if (hasSomeUpgrade) NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
 
         // Upgrade material costs paid
         NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
@@ -4000,7 +4000,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             upgradeMaterialBooleanArrayNBTTag.setBoolean("upgradeMaterial" + i, value);
             if (value) someCostPaid = true;
         }
-        if (force || someCostPaid) NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
+        if (someCostPaid) NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
 
         // Custom star colors
         starColors.serializeToNBT(NBT);
