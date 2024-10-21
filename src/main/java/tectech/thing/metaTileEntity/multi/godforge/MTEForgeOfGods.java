@@ -2851,7 +2851,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 return new Text(color.getName());
             }
             return Text.EMPTY;
-        }).setDefaultColor(EnumChatFormatting.GOLD)
+        }).setDefaultColor(ForgeOfGodsUI.GOLD_ARGB)
             .setTextAlignment(Alignment.CenterLeft)
             .setSize(textWidth, 18)
             .setPos(20, 0)
@@ -3068,7 +3068,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setGetter(() -> newStarColor.getName())
             .setMaxLength(15)
             .setTextAlignment(Alignment.CenterLeft)
-            .setTextColor(0xFFFFAA00)
+            .setTextColor(ForgeOfGodsUI.GOLD_ARGB)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
             .addTooltips(
                 ImmutableList.of(
@@ -3170,6 +3170,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE_HALF);
         builder.setDraggable(true);
 
+        // Syncers
         builder.widget(
             new FakeSyncWidget<>(
                 () -> importedStarColor,
@@ -3189,6 +3190,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(0, 5)
                     .setSize(200, 15));
 
+        // Serialized star color input
         TextFieldWidget textField = new TextFieldWidget();
         textField.setSynced(false, true)
             .setSetter(val -> {
@@ -3209,6 +3211,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setPos(8, 20);
         builder.widget(textField);
 
+        // Color preview for a valid star color string
         for (int i = 0; i < 9; i++) {
             int ii = i;
             Widget colorEntry = new DrawableWidget().setDrawable(() -> {

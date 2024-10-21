@@ -48,6 +48,12 @@ import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
  */
 public class ForgeOfGodsUI {
 
+    // ARGB representations of the 4 colors used in the color selector (red, green, blue, gold)
+    public static final int RED_ARGB = 0xFFFF5555;
+    public static final int GREEN_ARGB = 0xFF55FF55;
+    public static final int BLUE_ARGB = 0xFF0000AA;
+    public static final int GOLD_ARGB = 0xFFFFAA00;
+
     public static ButtonWidget createPowerSwitchButton(final IGregTechTileEntity tileEntity) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(tileEntity, "fx_click");
@@ -415,10 +421,10 @@ public class ForgeOfGodsUI {
 
     public enum StarColorRGBM {
 
-        RED(EnumChatFormatting.RED, 0xFFFF5555, 0, 255, ForgeOfGodsStarColor.DEFAULT_RED),
-        GREEN(EnumChatFormatting.GREEN, 0xFF55FF55, 0, 255, ForgeOfGodsStarColor.DEFAULT_GREEN),
-        BLUE(EnumChatFormatting.DARK_BLUE, 0xFF0000AA, 0, 255, ForgeOfGodsStarColor.DEFAULT_BLUE),
-        GAMMA(EnumChatFormatting.GOLD, 0xFFFFAA00, 0, 100, ForgeOfGodsStarColor.DEFAULT_GAMMA);
+        RED(EnumChatFormatting.RED, RED_ARGB, 0, 255, ForgeOfGodsStarColor.DEFAULT_RED),
+        GREEN(EnumChatFormatting.GREEN, GREEN_ARGB, 0, 255, ForgeOfGodsStarColor.DEFAULT_GREEN),
+        BLUE(EnumChatFormatting.DARK_BLUE, BLUE_ARGB, 0, 255, ForgeOfGodsStarColor.DEFAULT_BLUE),
+        GAMMA(EnumChatFormatting.GOLD, GOLD_ARGB, 0, 100, ForgeOfGodsStarColor.DEFAULT_GAMMA);
 
         private final String title;
         private final EnumChatFormatting mcColor;
