@@ -31,7 +31,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.objects.GTRenderedTexture;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import tectech.TecTech;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;

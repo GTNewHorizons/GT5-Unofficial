@@ -1,4 +1,4 @@
-package gregtech.common.render;
+package gregtech.common.pollution;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -22,8 +22,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
-import gregtech.common.entities.EntityFXPollution;
-import gregtech.common.misc.GTClientPollutionMap;
 
 @SideOnly(Side.CLIENT)
 public class PollutionRenderer {
