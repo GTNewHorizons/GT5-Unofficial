@@ -343,7 +343,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
-        aNBT.setInteger("radiusConfig", radiusConfig);
+        if (radiusConfig != RADIUS[mTier]) aNBT.setInteger("radiusConfig", radiusConfig);
     }
 
     @Override

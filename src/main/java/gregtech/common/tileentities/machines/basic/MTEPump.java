@@ -253,8 +253,8 @@ public class MTEPump extends MTEBasicMachine {
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
-        aNBT.setInteger("radiusConfig", radiusConfig);
-        aNBT.setBoolean("mDisallowRetract", mDisallowRetract);
+        if (radiusConfig != getMaxDistanceForTier(mTier)) aNBT.setInteger("radiusConfig", radiusConfig);
+        if (!mDisallowRetract) aNBT.setBoolean("mDisallowRetract", false);
     }
 
     @Override
