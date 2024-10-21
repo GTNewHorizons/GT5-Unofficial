@@ -218,68 +218,56 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public ITexture[] getFront(byte aColor) {
-        return new ITexture[] { super.getFront(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB) };
+        return new ITexture[] { super.getFront(aColor)[0], new GTRenderedTexture(Textures.BlockIcons.RTG_FINS) };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
-        return new ITexture[] { super.getBack(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
+        return new ITexture[] { super.getBack(aColor)[0], new GTRenderedTexture(Textures.BlockIcons.RTG_FINS) };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
-        return new ITexture[] { super.getBottom(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
+        return new ITexture[] { super.getBottom(aColor)[0], new GTRenderedTexture(Textures.BlockIcons.RTG_LID) };
     }
 
     @Override
     public ITexture[] getTop(byte aColor) {
-        return new ITexture[] { super.getTop(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
+        return new ITexture[] { super.getTop(aColor)[0], new GTRenderedTexture(Textures.BlockIcons.RTG_LID) };
     }
 
     @Override
     public ITexture[] getSides(byte aColor) {
-        return new ITexture[] { gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(0)],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-            gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+        return new ITexture[] { new GTRenderedTexture(Textures.BlockIcons.RTG_FINS) };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-            new GTRenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_ACTIVE) };
+            new GTRenderedTexture(Textures.BlockIcons.RTG_FINS_ACTIVE) };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
+            new GTRenderedTexture(Textures.BlockIcons.RTG_FINS_ACTIVE) };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
+            new GTRenderedTexture(Textures.BlockIcons.RTG_LID_ACTIVE) };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
+            new GTRenderedTexture(Textures.BlockIcons.RTG_LID_ACTIVE) };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
-        return new ITexture[] { gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(0)],
-            new GTRenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-            gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+        return new ITexture[] { new GTRenderedTexture(Textures.BlockIcons.RTG_FINS_ACTIVE) };
     }
 
     @Override
