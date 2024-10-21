@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge_modules;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -54,8 +54,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
+import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
-import tectech.thing.metaTileEntity.multi.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class MTEBaseModule extends TTMultiblockBase {
@@ -295,66 +295,73 @@ public class MTEBaseModule extends TTMultiblockBase {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(4, 4)
-                .setSize(190, 85));
-        final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
-        builder.widget(
-            inventorySlot.setPos(173, 167)
-                .setBackground(GTUITextures.SLOT_DARK_GRAY));
-
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
         drawTexts(screenElements, inventorySlot);
-        builder.widget(
-            new Scrollable().setVerticalScroll()
-                .widget(screenElements.setPos(10, 0))
-                .setPos(0, 7)
-                .setSize(190, 79));
 
         buildContext.addSyncedWindow(VOLTAGE_WINDOW_ID, this::createVoltageWindow);
-
-        builder.widget(
-            TextWidget.dynamicText(this::connectionStatus)
-                .setDefaultColor(EnumChatFormatting.BLACK)
-                .setPos(75, 94)
-                .setSize(100, 10));
-
-        builder.widget(
-            new ButtonWidget().setOnClick(
-                (data, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(GENERAL_INFO_WINDOW_ID);
-                })
-                .setSize(18, 18)
-                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.clickhere"))
-                .setPos(172, 67)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY));
-
         buildContext.addSyncedWindow(GENERAL_INFO_WINDOW_ID, this::createGeneralInfoWindow);
 
-        builder.widget(createPowerSwitchButton(builder))
-            .widget(createVoidExcessButton(builder))
-            .widget(createInputSeparationButton(builder))
-            .widget(createBatchModeButton(builder))
-            .widget(createLockToSingleRecipeButton(builder))
+        builder.widget(
+            new DrawableWidget().setSize(18, 18)
+                .setPos(172, 67)
+                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.clickhere"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY));
+
+        builder.widget(
+            new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                .setPos(4, 4)
+                .setSize(190, 85))
+            .widget(
+                inventorySlot.setPos(173, 167)
+                    .setBackground(getGUITextureSet().getItemSlot(), TecTechUITextures.OVERLAY_SLOT_MESH))
+            .widget(
+                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK_SMALL)
+                    .setPos(173, 185)
+                    .setSize(18, 6))
+            .widget(
+                new Scrollable().setVerticalScroll()
+                    .widget(screenElements.setPos(10, 0))
+                    .setPos(0, 7)
+                    .setSize(190, 79))
+            .widget(
+                TextWidget.dynamicText(this::connectionStatus)
+                    .setDefaultColor(EnumChatFormatting.BLACK)
+                    .setPos(75, 94)
+                    .setSize(100, 10))
+            .widget(
+                new ButtonWidget().setOnClick(
+                    (data, widget) -> {
+                        if (!widget.isClient()) widget.getContext()
+                            .openSyncedWindow(GENERAL_INFO_WINDOW_ID);
+                    })
+                    .setSize(18, 18)
+                    .setPos(172, 67)
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+            .widget(createPowerSwitchButton(builder))
             .widget(createVoltageButton(builder))
             .widget(createStructureUpdateButton(builder));
+
+        if (supportsVoidProtection()) builder.widget(createVoidExcessButton(builder));
+        if (supportsInputSeparation()) builder.widget(createInputSeparationButton(builder));
+        if (supportsBatchMode()) builder.widget(createBatchModeButton(builder));
+        if (supportsSingleRecipeLocking()) builder.widget(createLockToSingleRecipeButton(builder));
     }
 
     protected Widget createVoltageButton(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (isVoltageConfigUnlocked) {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
                 if (!widget.isClient()) {
                     widget.getContext()
                         .openSyncedWindow(VOLTAGE_WINDOW_ID);
                 }
             }
         })
-            .setPlayClickSound(isVoltageConfigUnlocked)
+            .setPlayClickSound(false)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
+                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
                 if (isVoltageConfigUnlocked) {
                     ret.add(TecTechUITextures.OVERLAY_BUTTON_POWER_PASS_ON);
                 } else {
@@ -412,7 +419,37 @@ public class MTEBaseModule extends TTMultiblockBase {
     }
 
     protected ModularWindow createGeneralInfoWindow(final EntityPlayer player) {
-        return MTEForgeOfGods.createGeneralInfoWindow(() -> isInversionUnlocked, val -> isInversionUnlocked = val);
+        return ForgeOfGodsUI.createGeneralInfoWindow(() -> isInversionUnlocked, val -> isInversionUnlocked = val);
+    }
+
+    @Override
+    public ButtonWidget createPowerSwitchButton(IWidgetBuilder<?> builder) {
+        return ForgeOfGodsUI.createPowerSwitchButton(getBaseMetaTileEntity());
+    }
+
+    @Override
+    public ButtonWidget createInputSeparationButton(IWidgetBuilder<?> builder) {
+        return ForgeOfGodsUI.createInputSeparationButton(getBaseMetaTileEntity(), this, builder);
+    }
+
+    @Override
+    public ButtonWidget createBatchModeButton(IWidgetBuilder<?> builder) {
+        return ForgeOfGodsUI.createBatchModeButton(getBaseMetaTileEntity(), this, builder);
+    }
+
+    @Override
+    public ButtonWidget createLockToSingleRecipeButton(IWidgetBuilder<?> builder) {
+        return ForgeOfGodsUI.createLockToSingleRecipeButton(getBaseMetaTileEntity(), this, builder);
+    }
+
+    @Override
+    public ButtonWidget createStructureUpdateButton(IWidgetBuilder<?> builder) {
+        return ForgeOfGodsUI.createStructureUpdateButton(getBaseMetaTileEntity(), this, builder);
+    }
+
+    @Override
+    public ButtonWidget createVoidExcessButton(IWidgetBuilder<?> builder) {
+        return ForgeOfGodsUI.createVoidExcessButton(getBaseMetaTileEntity(), this, builder);
     }
 
     @Override

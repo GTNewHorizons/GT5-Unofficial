@@ -62,10 +62,10 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -246,8 +246,8 @@ public class MTEIndustrialWashPlant extends GTPPMultiBlockBase<MTEIndustrialWash
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         if (machineMode == MACHINEMODE_CHEMBATH)
-            return Configuration.pollution.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
+            return PollutionConfig.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 
     @Override

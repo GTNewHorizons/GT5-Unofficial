@@ -21,7 +21,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -37,12 +36,12 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -54,7 +53,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     protected boolean mHasPollution = false;
     protected int SLOT_ROTOR = 5;
     protected int SLOT_FILTER = 6;
-    protected static boolean mPollutionEnabled = true;
 
     protected boolean mSaveRotor = false;
 
@@ -81,7 +79,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     public MTEAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 2, aDescription, aTextures, 2, 0);
-        mPollutionEnabled = GTMod.gregtechproxy.mPollution;
     }
 
     @Override
@@ -105,13 +102,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             "High Efficiency: Removes full pollution, Turbine takes 100% dmg",
             "Turbine Rotor will not break in LE mode",
             "Insert an equal tier Conveyor Module to enable automation");
-        if (!mPollutionEnabled) {
-            String[] B = new String[] { "===============================================",
-                "Pollution is disabled, scrubbers will now have a bonus use",
-                "They are now able to remove ALL lingering pollution as GT ignores it", "and it will linger forever!",
-                "===============================================", };
-            A = ArrayUtils.addAll(A, B);
-        }
         return A;
     }
 
@@ -239,15 +229,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                             Logger
                                 .INFO("Has Pollution? " + mHasPollution + ", Current Pollution: " + mCurrentPollution);
 
-                            // Only check every 30s.
-                            if (!isIdle && aTick % (20L * 30) == 0L) {
-                                mPollutionEnabled = GTMod.gregtechproxy.mPollution;
-                                // Clear out pollution if it's disabled, because I am a nice gal.
-                                if (!GTMod.gregtechproxy.mPollution) {
-                                    PollutionUtils.nullifyPollution(this.getBaseMetaTileEntity());
-                                }
-                            }
-
                             // Use a Turbine
                             if (hasRotor(stackRotor) && hasAirFilter(stackFilter)) {
                                 Logger.INFO("Found Turbine.");
@@ -352,7 +333,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     public int getCurrentChunkPollution() {
         int mCurrentChunkPollution = 0;
         if (this.mTier < 7) {
-            mCurrentChunkPollution = PollutionUtils.getPollution(getBaseMetaTileEntity());
+            mCurrentChunkPollution = Pollution.getPollution(getBaseMetaTileEntity());
         } else {
             ArrayList<Chunk> aSurrounding = new ArrayList<>();
             World aWorld = this.getBaseMetaTileEntity()
@@ -388,7 +369,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     public int getPollutionInChunk(Chunk aChunk) {
-        int mCurrentChunkPollution = PollutionUtils.getPollution(aChunk);
+        int mCurrentChunkPollution = Pollution.getPollution(aChunk);
         mHasPollution = mCurrentChunkPollution > 0;
         return mCurrentChunkPollution;
     }
@@ -565,7 +546,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         if (this.mTier < 7) {
             int startPollution = getCurrentChunkPollution();
             Logger.INFO("Current Chunk Pollution: " + startPollution);
-            PollutionUtils.removePollution(this.getBaseMetaTileEntity(), toRemove);
+            Pollution.addPollution(this.getBaseMetaTileEntity(), -toRemove);
             int after = getCurrentChunkPollution();
             Logger.INFO("Current Chunk Pollution: " + after);
             return (after < startPollution);
@@ -654,7 +635,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     public boolean removePollution(Chunk aChunk, int toRemove) {
         int before = getCurrentChunkPollution();
-        PollutionUtils.removePollution(aChunk, toRemove);
+        Pollution.addPollution(aChunk, -toRemove);
         int after = getCurrentChunkPollution();
         return (after < before);
     }
@@ -793,8 +774,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        aNBT.setInteger("mOptimalAirFlow", this.mOptimalAirFlow);
-        aNBT.setBoolean("mSaveRotor", mSaveRotor);
+        if (mOptimalAirFlow > 0) aNBT.setInteger("mOptimalAirFlow", this.mOptimalAirFlow);
+        if (mSaveRotor) aNBT.setBoolean("mSaveRotor", true);
         super.setItemNBT(aNBT);
     }
 

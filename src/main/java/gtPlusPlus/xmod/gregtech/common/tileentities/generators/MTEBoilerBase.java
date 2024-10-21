@@ -23,6 +23,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -232,8 +233,8 @@ public class MTEBoilerBase extends MTEBoiler {
 
     @Override
     protected int getPollution() {
-        return (int) (Configuration.pollution.basePollutionPerSecondBoiler
-            * Configuration.pollution.pollutionReleasedByTierBoiler[this.tier]);
+        return (int) (PollutionConfig.basePollutionPerSecondBoiler
+            * PollutionConfig.pollutionReleasedByTierBoiler[this.tier]);
     }
 
     @Override
