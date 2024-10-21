@@ -180,8 +180,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private boolean editingStarColor;
     // importing star color
     private ForgeOfGodsStarColor importedStarColor;
-    private String importedStarColorStr = "";
-    private String importedError = "";
 
     private static final int FUEL_CONFIG_WINDOW_ID = 9;
     private static final int UPGRADE_TREE_WINDOW_ID = 10;
@@ -2701,8 +2699,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             ButtonWidget.closeWindowButton(true)
                 .setPos(184, 4))
             .widget(
-                new TextWidget(translateToLocal("fog.cosmetics.header"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
+                new TextWidget(translateToLocal("fog.cosmetics.header")).setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.Center)
                     .setScale(1f)
                     .setPos(0, 5)
@@ -2754,8 +2751,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Text for what this button does
         newPreset.addChild(
-            new TextWidget(translateToLocal("fog.cosmetics.customstarcolor"))
-                .setDefaultColor(EnumChatFormatting.GOLD)
+            new TextWidget(translateToLocal("fog.cosmetics.customstarcolor")).setDefaultColor(EnumChatFormatting.GOLD)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setSize(60, 18)
                 .setPos(20, 0)
@@ -2764,12 +2760,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.widget(newPreset);
 
         // Miscellaneous options not related to color settings
-        builder.widget(
-            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.misc"))
-                .setDefaultColor(EnumChatFormatting.GOLD)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setPos(120, 25)
-                .setSize(80, 10))
+        builder
+            .widget(
+                new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.misc"))
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(120, 25)
+                    .setSize(80, 10))
             .widget(
                 TextWidget.localised("fog.cosmetics.spin")
                     .setDefaultColor(EnumChatFormatting.GOLD)
@@ -3181,8 +3178,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (!widget.isClient()) {
                     // reset state from before if it exists
                     importedStarColor = null;
-                    importedStarColorStr = "";
-                    importedError = "";
                     widget.getContext()
                         .openSyncedWindow(STAR_CUSTOM_COLOR_IMPORT_WINDOW_ID);
                 }
@@ -3213,9 +3208,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE_HALF);
         builder.setDraggable(true);
 
-        // Syncers
-        builder.widget(new FakeSyncWidget.StringSyncer(() -> importedError, val -> importedError = val));
-
         builder.widget(
             new FakeSyncWidget<>(
                 () -> importedStarColor,
@@ -3236,25 +3228,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setSize(200, 15));
 
         TextFieldWidget textField = new TextFieldWidget();
-        textField.setGetter(() -> importedStarColorStr)
+        textField.setSynced(false, true)
             .setSetter(val -> {
-                importedStarColorStr = val;
                 if (!textField.isClient()) {
                     if (val == null || val.isEmpty()) {
-                        importedError = "";
                         importedStarColor = null;
+                        return;
                     }
-                    ForgeOfGodsStarColor color = ForgeOfGodsStarColor.deserialize(val);
-                    if (color != null) {
-                        // no error
-                        importedError = EnumChatFormatting.GREEN
-                            + translateToLocal("fog.cosmetics.importer.valid");
-                        importedStarColor = color;
-                    } else {
-                        importedError = EnumChatFormatting.RED
-                            + translateToLocal("fog.cosmetics.importer.error");
-                        importedStarColor = null;
-                    }
+                    importedStarColor = ForgeOfGodsStarColor.deserialize(val);
                 }
             })
             .setMaxLength(32767)
@@ -3311,10 +3292,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Validator string
         Widget validatorText = new DynamicTextWidget(() -> {
-            if (importedError == null || importedError.isEmpty()) {
-                return Text.EMPTY;
+            if (importedStarColor == null) {
+                return new Text(EnumChatFormatting.RED + translateToLocal("fog.cosmetics.importer.error"));
             }
-            return new Text(importedError);
+            return new Text(EnumChatFormatting.GREEN + translateToLocal("fog.cosmetics.importer.valid"));
         }).setTextAlignment(Alignment.Center)
             .setPos(0, 62)
             .setSize(200, 16);
@@ -3342,9 +3323,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             "fog.cosmetics.importer.reset.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
-                    importedStarColorStr = "";
                     importedStarColor = null;
-                    importedError = "";
                 }
             });
         builder.widget(resetImportButton.setPos(64, 77));
