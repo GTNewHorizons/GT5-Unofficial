@@ -129,36 +129,41 @@ import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
+    // Field default values for non-zero value defaults for item NBT checks
+    private static final int DEFAULT_FUEL_CONSUMPTION_FACTOR = 1;
+    private static final int DEFAULT_MAX_BATTERY_CHARGE = 100;
+    private static final int DEFAULT_RING_AMOUNT = 1;
+
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    private int fuelConsumptionFactor = 1;
-    private int selectedFuelType = 0;
-    private int internalBattery = 0;
-    private int maxBatteryCharge = 100;
-    private int gravitonShardsAvailable = 0;
-    private int gravitonShardsSpent = 0;
-    private int ringAmount = 1;
-    private int stellarFuelAmount = 0;
-    private int neededStartupFuel = 0;
-    private long fuelConsumption = 0;
-    private long totalRecipesProcessed = 0;
-    private long totalFuelConsumed = 0;
-    private float totalExtensionsBuilt = 0;
-    private float powerMilestonePercentage = 0;
-    private float recipeMilestonePercentage = 0;
-    private float fuelMilestonePercentage = 0;
-    private float structureMilestonePercentage = 0;
-    private float invertedPowerMilestonePercentage = 0;
-    private float invertedRecipeMilestonePercentage = 0;
-    private float invertedFuelMilestonePercentage = 0;
-    private float invertedStructureMilestonePercentage = 0;
+    private int fuelConsumptionFactor = DEFAULT_FUEL_CONSUMPTION_FACTOR;
+    private int selectedFuelType;
+    private int internalBattery;
+    private int maxBatteryCharge = DEFAULT_MAX_BATTERY_CHARGE;
+    private int gravitonShardsAvailable;
+    private int gravitonShardsSpent;
+    private int ringAmount = DEFAULT_RING_AMOUNT;
+    private int stellarFuelAmount;
+    private int neededStartupFuel;
+    private long fuelConsumption;
+    private long totalRecipesProcessed;
+    private long totalFuelConsumed;
+    private float totalExtensionsBuilt;
+    private float powerMilestonePercentage;
+    private float recipeMilestonePercentage;
+    private float fuelMilestonePercentage;
+    private float structureMilestonePercentage;
+    private float invertedPowerMilestonePercentage;
+    private float invertedRecipeMilestonePercentage;
+    private float invertedFuelMilestonePercentage;
+    private float invertedStructureMilestonePercentage;
     private BigInteger totalPowerConsumed = BigInteger.ZERO;
-    private boolean batteryCharging = false;
-    private boolean inversion = false;
-    private boolean gravitonShardEjection = false;
+    private boolean batteryCharging;
+    private boolean inversion;
+    private boolean gravitonShardEjection;
     private FormattingMode formattingMode = FormattingMode.NONE;
-    private boolean isRenderActive = false;
-    private boolean secretUpgrade = false;
+    private boolean isRenderActive;
+    private boolean secretUpgrade;
     private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
@@ -3922,86 +3927,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public void setItemNBT(NBTTagCompound NBT) {
-        NBT.setInteger("selectedFuelType", selectedFuelType);
-        NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
-        NBT.setInteger("internalBattery", internalBattery);
-        NBT.setBoolean("batteryCharging", batteryCharging);
-        NBT.setInteger("batterySize", maxBatteryCharge);
-        NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
-        NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
-        NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
-        NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
-        NBT.setLong("totalFuelConsumed", totalFuelConsumed);
-        NBT.setInteger("starFuelStored", stellarFuelAmount);
-        NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
-        NBT.setBoolean("secretUpgrde", secretUpgrade);
-
-        // Store booleanArrays of all upgrades
-        NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
-
-        int upgradeIndex = 0;
-        for (Boolean upgrade : upgrades) {
-            upgradeBooleanArrayNBTTag.setBoolean("upgrade" + upgradeIndex, upgrade);
-            upgradeIndex++;
-        }
-
-        NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
-
-        NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
-
-        int upgradeMaterialIndex = 0;
-        for (Boolean upgrade : materialPaidUpgrades) {
-            upgradeBooleanArrayNBTTag.setBoolean("upgradeMaterial" + upgradeMaterialIndex, upgrade);
-            upgradeMaterialIndex++;
-        }
-
-        NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
-
-        starColors.serializeToNBT(NBT);
-
+        saveGeneralNBT(NBT);
         super.saveNBTData(NBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound NBT) {
-        NBT.setInteger("selectedFuelType", selectedFuelType);
-        NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
-        NBT.setInteger("internalBattery", internalBattery);
-        NBT.setBoolean("batteryCharging", batteryCharging);
-        NBT.setInteger("batterySize", maxBatteryCharge);
-        NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
-        NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
-        NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
-        NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
-        NBT.setLong("totalFuelConsumed", totalFuelConsumed);
-        NBT.setInteger("starFuelStored", stellarFuelAmount);
-        NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
-        NBT.setInteger("ringAmount", ringAmount);
-        NBT.setBoolean("secretUpgrade", secretUpgrade);
+        saveGeneralNBT(NBT);
 
-        // Store booleanArray of all upgrades
-        NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
-
-        int upgradeIndex = 0;
-        for (boolean upgrade : upgrades) {
-            upgradeBooleanArrayNBTTag.setBoolean("upgrade" + upgradeIndex, upgrade);
-            upgradeIndex++;
-        }
-
-        NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
-
-        NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
-
-        int upgradeMaterialIndex = 0;
-        for (boolean upgrade : materialPaidUpgrades) {
-            upgradeMaterialBooleanArrayNBTTag.setBoolean("upgradeMaterial" + upgradeMaterialIndex, upgrade);
-            upgradeMaterialIndex++;
-        }
-
-        NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
-
+        // Upgrade window stored items
         NBTTagCompound upgradeWindowStorageNBTTag = new NBTTagCompound();
-
         int storageIndex = 0;
         for (ItemStack itemStack : inputSlotHandler.getStacks()) {
             if (itemStack != null) {
@@ -4011,7 +3946,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             storageIndex++;
         }
-
         NBT.setTag("upgradeWindowStorage", upgradeWindowStorageNBTTag);
 
         // Renderer information
@@ -4019,19 +3953,64 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setInteger("starSize", starSize);
         NBT.setString("selectedStarColor", selectedStarColor);
         NBT.setBoolean("isRenderActive", isRenderActive);
-
-        starColors.serializeToNBT(NBT);
+        if (ringAmount != DEFAULT_RING_AMOUNT) {
+            NBT.setInteger("ringAmount", ringAmount);
+        }
 
         super.saveNBTData(NBT);
+    }
+
+    private void saveGeneralNBT(NBTTagCompound NBT) {
+        if (selectedFuelType != 0) NBT.setInteger("selectedFuelType", selectedFuelType);
+        if (internalBattery != 0) NBT.setInteger("internalBattery", internalBattery);
+        if (batteryCharging) NBT.setBoolean("batteryCharging", true);
+        if (gravitonShardsAvailable != 0) NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
+        if (gravitonShardsSpent != 0) NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
+        if (!BigInteger.ZERO.equals(totalPowerConsumed))
+            NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
+        if (totalRecipesProcessed != 0) NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
+        if (totalFuelConsumed != 0) NBT.setLong("totalFuelConsumed", totalFuelConsumed);
+        if (stellarFuelAmount != 0) NBT.setInteger("starFuelStored", stellarFuelAmount);
+        if (gravitonShardEjection) NBT.setBoolean("gravitonShardEjection", true);
+        if (secretUpgrade) NBT.setBoolean("secretUpgrade", true);
+
+        // Fields with non-zero defaults
+        if (fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
+            NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
+        }
+        if (maxBatteryCharge != DEFAULT_MAX_BATTERY_CHARGE) {
+            NBT.setInteger("batterySize", maxBatteryCharge);
+        }
+
+        // Upgrades
+        NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
+        boolean hasSomeUpgrade = false;
+        for (int i = 0; i < upgrades.length; i++) {
+            boolean value = upgrades[i];
+            upgradeBooleanArrayNBTTag.setBoolean("upgrade" + i, value);
+            if (value) hasSomeUpgrade = true;
+        }
+        if (hasSomeUpgrade) NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
+
+        // Upgrade material costs paid
+        NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
+        boolean someCostPaid = false;
+        for (int i = 0; i < materialPaidUpgrades.length; i++) {
+            boolean value = materialPaidUpgrades[i];
+            upgradeMaterialBooleanArrayNBTTag.setBoolean("upgradeMaterial" + i, value);
+            if (value) someCostPaid = true;
+        }
+        if (someCostPaid) NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
+
+        // Custom star colors
+        starColors.serializeToNBT(NBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound NBT) {
         selectedFuelType = NBT.getInteger("selectedFuelType");
-        fuelConsumptionFactor = NBT.getInteger("fuelConsumptionFactor");
         internalBattery = NBT.getInteger("internalBattery");
         batteryCharging = NBT.getBoolean("batteryCharging");
-        maxBatteryCharge = NBT.getInteger("batterySize");
         gravitonShardsAvailable = NBT.getInteger("gravitonShardsAvailable");
         gravitonShardsSpent = NBT.getInteger("gravitonShardsSpent");
         totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));
@@ -4039,21 +4018,30 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         totalFuelConsumed = NBT.getLong("totalFuelConsumed");
         stellarFuelAmount = NBT.getInteger("starFuelStored");
         gravitonShardEjection = NBT.getBoolean("gravitonShardEjection");
-        ringAmount = NBT.getInteger("ringAmount");
         secretUpgrade = NBT.getBoolean("secretUpgrade");
 
-        NBTTagCompound tempBooleanTag = NBT.getCompoundTag("upgrades");
-
-        for (int upgradeIndex = 0; upgradeIndex < 31; upgradeIndex++) {
-            boolean upgrade = tempBooleanTag.getBoolean("upgrade" + upgradeIndex);
-            upgrades[upgradeIndex] = upgrade;
+        // Fields with non-zero defaults
+        if (NBT.hasKey("fuelConsumptionFactor")) {
+            fuelConsumptionFactor = NBT.getInteger("fuelConsumptionFactor");
+        }
+        if (NBT.hasKey("batterySize")) {
+            maxBatteryCharge = NBT.getInteger("batterySize");
         }
 
-        tempBooleanTag = NBT.getCompoundTag("upgradeMaterials");
+        if (NBT.hasKey("upgrades")) {
+            NBTTagCompound upgradesTag = NBT.getCompoundTag("upgrades");
+            for (int i = 0; i < upgrades.length; i++) {
+                boolean upgrade = upgradesTag.getBoolean("upgrade" + i);
+                upgrades[i] = upgrade;
+            }
+        }
 
-        for (int upgradeIndex = 0; upgradeIndex < 7; upgradeIndex++) {
-            boolean upgrade = tempBooleanTag.getBoolean("upgradeMaterial" + upgradeIndex);
-            materialPaidUpgrades[upgradeIndex] = upgrade;
+        if (NBT.hasKey("upgradeMaterials")) {
+            NBTTagCompound materialsTag = NBT.getCompoundTag("upgradeMaterials");
+            for (int i = 0; i < materialPaidUpgrades.length; i++) {
+                boolean upgrade = materialsTag.getBoolean("upgradeMaterial" + i);
+                materialPaidUpgrades[i] = upgrade;
+            }
         }
 
         NBTTagCompound tempItemTag = NBT.getCompoundTag("upgradeWindowStorage");
@@ -4073,6 +4061,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         starSize = NBT.getInteger("starSize");
         selectedStarColor = NBT.getString("selectedStarColor");
         isRenderActive = NBT.getBoolean("isRenderActive");
+        if (NBT.hasKey("ringAmount")) ringAmount = NBT.getInteger("ringAmount");
 
         starColors.rebuildFromNBT(NBT);
 
