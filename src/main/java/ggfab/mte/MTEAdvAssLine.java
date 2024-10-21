@@ -200,9 +200,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     private int currentInputLength;
     private String lastStopReason = "";
     private int currentRecipeParallel = 1;
-    // Batch mode will increase parallel per slice to try to get as close as possible to this amount of ticks
-    // per slice, but will never go over this amount.
-    private static final int BATCH_MODE_DESIRED_TICKS_PER_SLICE = 128;
 
     public MTEAdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -583,6 +580,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             }
         }
 
+        endRecipeProcessing();
+
         boolean foundWorking = false;
         int working = 0;
         for (Slice slice : slices) {
@@ -606,10 +605,9 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 }
             }
         } else {
-            if (!super.onRunningTick(aStack)) return false;
+            return super.onRunningTick(aStack);
         }
 
-        endRecipeProcessing();
         return true;
     }
 
@@ -770,7 +768,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setEUt(inputVoltage);
 
             if (!mExoticEnergyHatches.isEmpty()) {
-                normalOCCalculator.setCurrentParallel((int) (1 / normalOCCalculator.calculateDurationUnderOneTick()))
+                normalOCCalculator
+                    .setCurrentParallel((int) Math.max(1 / normalOCCalculator.calculateDurationUnderOneTick(), 1))
                     .calculate();
                 int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
 

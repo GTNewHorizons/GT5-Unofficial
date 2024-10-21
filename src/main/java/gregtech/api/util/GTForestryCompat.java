@@ -19,6 +19,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.common.items.CombType;
+import gregtech.loaders.misc.GTBees;
 
 public class GTForestryCompat {
 
@@ -134,7 +136,9 @@ public class GTForestryCompat {
     }
 
     public static void transferCentrifugeRecipes() {
+        // Dumb exceptions
         ItemStack irradiatedComb = GTModHandler.getModItem(Mods.Forestry.ID, "beeCombs", 1, 9);
+        ItemStack DOBComb = GTBees.combs.getStackForType(CombType.DOB);
 
         try {
             for (ICentrifugeRecipe tRecipe : RecipeManagers.centrifugeManager.recipes()) {
@@ -142,7 +146,7 @@ public class GTForestryCompat {
 
                 // Don't transfer GT recipes to centrifuge, those recipes are made already by ItemComb
                 if (input.getUnlocalizedName()
-                    .contains("gt.comb")) continue;
+                    .contains("gt.comb") && !input.isItemEqual(DOBComb)) continue;
                 if (irradiatedComb != null && input.isItemEqual(irradiatedComb)) continue;
                 Map<ItemStack, Float> outputs = tRecipe.getAllProducts();
                 ItemStack[] tOutputs = new ItemStack[outputs.size()];
