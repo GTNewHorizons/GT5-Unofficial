@@ -74,7 +74,7 @@ public enum MaskList {
         ItemList.Circuit_Wafer_LPIC.get(1), null), // Same as above, except for yellow
     
     
-    NPIC("npic", "Nano Power IC", 70, "", BLANK2, Dyes.dyeRed, TierEU.RECIPE_LuV, 1, 3000, 50, 4,
+    NPIC("npic", "Nano Power IC", 70, "", BLANK2, Dyes.dyeRed, TierEU.RECIPE_LuV, 1, 4, 50, 4,
         ItemList.Circuit_Wafer_NPIC.get(1), null, ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
         ItemList.Circuit_Silicon_Wafer3), // Same
     PrNPIC("prnpic", "Prepared Nano Power IC", 0, "", NPIC, null, TierEU.RECIPE_ZPM, 0, 0, 0, 0, null, null), // Made in CR from NPIC
