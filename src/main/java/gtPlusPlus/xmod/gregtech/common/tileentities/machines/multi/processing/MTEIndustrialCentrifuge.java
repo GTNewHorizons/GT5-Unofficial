@@ -31,10 +31,10 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
@@ -184,7 +184,7 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialCentrifuge;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialCentrifuge;
     }
 
     @Override

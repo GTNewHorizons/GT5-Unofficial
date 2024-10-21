@@ -48,9 +48,9 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -186,7 +186,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialDehydrator;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialDehydrator;
     }
 
     @Override

@@ -44,8 +44,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -340,7 +340,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialRockBreaker;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialRockBreaker;
     }
 
     @Override
