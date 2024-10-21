@@ -2866,7 +2866,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                                 getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3),
 
                                 plateList[absoluteTier],
-                                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 2 * (absoluteTier + 1) },
+                                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2 * (absoluteTier + 1) },
                                 GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, absoluteTier + 1),
                                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.SpaceTime, absoluteTier + 1)
 
