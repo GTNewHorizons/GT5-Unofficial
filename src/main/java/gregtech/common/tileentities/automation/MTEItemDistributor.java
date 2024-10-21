@@ -187,7 +187,14 @@ public class MTEItemDistributor extends MTEBuffer {
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
-        aNBT.setByteArray("mItemsPerSide", itemsPerSide);
+        boolean hasSettings = false;
+        for (byte i : itemsPerSide) {
+            if (i != 0) {
+                hasSettings = true;
+                break;
+            }
+        }
+        if (hasSettings) aNBT.setByteArray("mItemsPerSide", itemsPerSide);
     }
 
     @Override

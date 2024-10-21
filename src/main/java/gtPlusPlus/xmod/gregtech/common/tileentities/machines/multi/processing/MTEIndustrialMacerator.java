@@ -334,7 +334,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
-        aNBT.setByte("mTier", (byte) controllerTier);
+        if (controllerTier > 1) aNBT.setByte("mTier", (byte) controllerTier);
     }
 
     @Override

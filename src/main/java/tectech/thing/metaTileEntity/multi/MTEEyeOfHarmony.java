@@ -1724,7 +1724,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
 
     @Override
     public void setItemNBT(NBTTagCompound NBT) {
-        NBT.setLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG, astralArrayAmount);
+        if (astralArrayAmount > 0) NBT.setLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG, astralArrayAmount);
     }
 
     @Override

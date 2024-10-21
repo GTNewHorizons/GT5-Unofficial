@@ -773,8 +773,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        aNBT.setInteger("mOptimalAirFlow", this.mOptimalAirFlow);
-        aNBT.setBoolean("mSaveRotor", mSaveRotor);
+        if (mOptimalAirFlow > 0) aNBT.setInteger("mOptimalAirFlow", this.mOptimalAirFlow);
+        if (mSaveRotor) aNBT.setBoolean("mSaveRotor", true);
         super.setItemNBT(aNBT);
     }
 

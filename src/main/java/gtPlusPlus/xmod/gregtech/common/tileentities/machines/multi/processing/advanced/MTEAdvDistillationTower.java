@@ -446,7 +446,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mUpgraded", mUpgraded);
+        if (mUpgraded) aNBT.setBoolean("mUpgraded", true);
         super.setItemNBT(aNBT);
     }
 
