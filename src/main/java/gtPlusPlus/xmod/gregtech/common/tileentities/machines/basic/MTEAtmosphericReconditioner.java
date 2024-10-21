@@ -74,7 +74,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
             new GTRenderedTexture(Textures.BlockIcons.VOID),
             new GTRenderedTexture(Textures.BlockIcons.VOID));
-        mPollutionEnabled = GTMod.gregtechproxy.mPollution;
     }
 
     public MTEAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
