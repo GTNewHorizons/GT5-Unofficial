@@ -863,7 +863,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         button.add(TecTechUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP);
                         return button.toArray(new IDrawable[0]);
                     })
-                    .addTooltip("Path of Celestial Transcendence")
+                    .addTooltip(translateToLocal("fog.button.upgradetree.tooltip"))
                     .setPos(174, 167)
                     .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
