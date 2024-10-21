@@ -31,12 +31,38 @@ public class StarColorStorage {
         }
     }
 
+    public ForgeOfGodsStarColor newTemplateColor() {
+        String name = "New Star Color";
+        for (int i = 0; i < MAX_STAR_COLORS; i++) {
+            if (nameMapping.containsKey(name)) {
+                name = "New Star Color " + (i + 1);
+            } else break;
+        }
+        return new ForgeOfGodsStarColor(name);
+    }
+
+    /** Store a unique star color. Will append numbers to the name to guarantee a unique name. */
     public void store(ForgeOfGodsStarColor color) {
-        ForgeOfGodsStarColor existing = nameMapping.put(color.getName(), color);
+        indexMapping.add(color);
+        if (!nameMapping.containsKey(color.getName())) {
+            nameMapping.put(color.getName(), color);
+            return;
+        }
+        for (int i = 0; i < MAX_STAR_COLORS; i++) {
+            String newName = color.getName() + " " + i;
+            if (!nameMapping.containsKey(newName)) {
+                nameMapping.put(newName, color);
+                return;
+            }
+        }
+    }
+
+    /** Insert a star color at a given position. */
+    public void insert(ForgeOfGodsStarColor color, int pos) {
+        ForgeOfGodsStarColor existing = indexMapping.set(pos, color);
         if (existing != null) {
-            indexMapping.set(indexMapping.indexOf(existing), color);
-        } else {
-            indexMapping.add(color);
+            nameMapping.remove(existing.getName());
+            nameMapping.put(color.getName(), color);
         }
     }
 

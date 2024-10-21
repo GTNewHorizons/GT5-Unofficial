@@ -58,10 +58,6 @@ public class ForgeOfGodsStarColor {
         return new ArrayList<>(PRESETS.values());
     }
 
-    public static ForgeOfGodsStarColor newTemplateColor() {
-        return new ForgeOfGodsStarColor("New Star Color");
-    }
-
     // "Metadata" about this star color, not related to star rendering
     private String name;
     // version currently unused, but can be used to retain compatibility with old serialized star colors

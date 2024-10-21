@@ -170,10 +170,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private int rotationSpeed = 5;
     private int starSize = 20;
     // editing star color
-    private ForgeOfGodsStarColor newStarColor = ForgeOfGodsStarColor.newTemplateColor();
+    private ForgeOfGodsStarColor newStarColor = starColors.newTemplateColor();
     private int starColorR, starColorG, starColorB;
     private float starGamma;
-    private int editingColorIndex;
+    private int editingStarIndex; // editing a full color preset
+    private int editingColorIndex; // editing a single color in a preset
     private ForgeOfGodsStarColor importedStarColor;
 
     private static final int FUEL_CONFIG_WINDOW_ID = 9;
@@ -2667,9 +2668,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.setDraggable(true);
 
         // Syncers
-        builder.widget(new FakeSyncWidget.StringSyncer(() -> selectedStarColor, c -> selectedStarColor = c));
+        builder.widget(new FakeSyncWidget.StringSyncer(() -> selectedStarColor, val -> selectedStarColor = val));
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> rotationSpeed, val -> rotationSpeed = val));
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starSize, val -> starSize = val));
+        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> editingStarIndex, val -> editingStarIndex = val));
         builder.widget(starColors.getSyncer());
 
         // Exit button and header
@@ -2709,6 +2711,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         // New preset button
         newPreset.addChild(new ButtonWidget().setOnClick((data, widget) -> {
             if (!widget.isClient()) {
+                editingStarIndex = -1;
                 openCustomStarColorWindowFresh(widget, null);
             }
         })
@@ -2799,6 +2802,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     ForgeOfGodsStarColor color = starColors.getByIndex(index);
                     if (data.shift && !color.isPresetColor()) {
                         // if shift is held, open color editor for this preset, if not a default preset
+                        editingStarIndex = index;
                         openCustomStarColorWindowFresh(widget, color);
                     } else {
                         // otherwise select this color
@@ -3083,10 +3087,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setSize(100, 16);
         builder.widget(nameLabel);
 
-        // todo validate that star color name is unique for this forge
-        // todo for import, attach a "1" or something if the name is not unique
-        // todo fix color becoming deselected if you change the name (then no color is set)
-
         // **************
         // Preset Buttons
         // **************
@@ -3098,9 +3098,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             (clickData, widget) -> {
                 if (!widget.isClient()) {
                     if (newStarColor.numColors() == 0) return;
-                    starColors.store(newStarColor);
-                    if (selectedStarColor.equals(newStarColor.getName())) {
+                    if (editingStarIndex >= 0) {
+                        starColors.insert(newStarColor, editingStarIndex);
+                        selectedStarColor = newStarColor.getName();
                         updateRenderer();
+                    } else {
+                        starColors.store(newStarColor);
                     }
                     widget.getWindow()
                         .closeWindow();
@@ -3296,7 +3299,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (!widget.isClient()) {
             // Reset star color state
             if (importedColor == null) {
-                importedColor = ForgeOfGodsStarColor.newTemplateColor();
+                importedColor = starColors.newTemplateColor();
             }
             newStarColor = importedColor;
             editingColorIndex = -1;
