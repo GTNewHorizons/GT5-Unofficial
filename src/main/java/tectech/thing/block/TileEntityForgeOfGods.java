@@ -96,6 +96,9 @@ public class TileEntityForgeOfGods extends TileEntity {
 
     public void setColor(ForgeOfGodsStarColor color) {
         this.starColor = color;
+        if (this.starColor == null) {
+            this.starColor = ForgeOfGodsStarColor.DEFAULT;
+        }
 
         StarColorSetting colorSetting = starColor.getColor(0);
         currentColor = Color.rgb(colorSetting.getColorR(), colorSetting.getColorG(), colorSetting.getColorB());

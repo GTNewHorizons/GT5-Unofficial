@@ -35,7 +35,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -47,12 +46,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -128,6 +125,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.godforge.ForgeOfGodsUI.StarColorRGBM;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
+import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
@@ -167,8 +165,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     // Star cosmetics fields
     // actual star cosmetics
-    private static final int MAX_STAR_COLORS = 7;
-    private List<ForgeOfGodsStarColor> starColors = ForgeOfGodsStarColor.getDefaultColors();
+    private final StarColorStorage starColors = new StarColorStorage();
     private String selectedStarColor = ForgeOfGodsStarColor.DEFAULT.getName();
     private int rotationSpeed = 5;
     private int starSize = 20;
@@ -178,7 +175,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private float starGamma;
     private int starColorEditingPos;
     private boolean editingStarColor;
-    // importing star color
     private ForgeOfGodsStarColor importedStarColor;
 
     private static final int FUEL_CONFIG_WINDOW_ID = 9;
@@ -682,17 +678,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         tile.setRingCount(ringAmount);
         tile.setStarRadius(starSize);
         tile.setRotationSpeed(rotationSpeed);
-
-        boolean setColor = false;
-        for (ForgeOfGodsStarColor color : starColors) {
-            if (color.getName()
-                .equals(selectedStarColor)) {
-                tile.setColor(color);
-                setColor = true;
-                break;
-            }
-        }
-        if (!setColor) tile.setColor(ForgeOfGodsStarColor.DEFAULT);
+        tile.setColor(starColors.getByName(selectedStarColor));
 
         tile.updateToClient();
     }
@@ -2685,14 +2671,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         builder.widget(new FakeSyncWidget.StringSyncer(() -> selectedStarColor, c -> selectedStarColor = c));
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> rotationSpeed, val -> rotationSpeed = val));
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starSize, val -> starSize = val));
-
-        // todo this could maybe be synced better
-        builder.widget(
-            new FakeSyncWidget.ListSyncer<>(
-                () -> starColors,
-                val -> starColors = val,
-                ForgeOfGodsStarColor::writeToBuffer,
-                ForgeOfGodsStarColor::readFromBuffer));
+        builder.widget(starColors.getSyncer());
 
         // Exit button and header
         builder.widget(
@@ -2723,7 +2702,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Option to add a new preset, only shown if there is room available
         MultiChildWidget newPreset = new MultiChildWidget();
-        Function<Widget, Boolean> newPresetEnabled = $ -> starColors.size() < MAX_STAR_COLORS;
+        Function<Widget, Boolean> newPresetEnabled = $ -> !starColors.isFull();
         newPreset.setSize(18, 80);
         newPreset.setPosProvider(($, $$, $$$) -> new Pos2d(8, 45 + starColors.size() * 20));
         newPreset.setEnabled(newPresetEnabled);
@@ -2818,7 +2797,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         parent.addChild(new ButtonWidget().setOnClick((data, widget) -> {
             if (!widget.isClient()) {
                 if (index < starColors.size()) {
-                    ForgeOfGodsStarColor color = starColors.get(index);
+                    ForgeOfGodsStarColor color = starColors.getByIndex(index);
                     if (data.shift && !color.isPresetColor()) {
                         // if shift is held, open color editor for this preset, if not a default preset
                         openCustomStarColorWindowFresh(widget, color);
@@ -2834,7 +2813,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setBackground(() -> {
                 IDrawable bg = GTUITextures.BUTTON_STANDARD;
                 if (index < starColors.size()) {
-                    ForgeOfGodsStarColor color = starColors.get(index);
+                    ForgeOfGodsStarColor color = starColors.getByIndex(index);
                     if (color.getName()
                         .equals(selectedStarColor)) {
                         bg = GTUITextures.BUTTON_STANDARD_PRESSED;
@@ -2853,7 +2832,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         // Drawable representation of this star color, overlaid on the above button
         parent.addChild(new DrawableWidget().setDrawable(() -> {
             if (index < starColors.size()) {
-                return starColors.get(index)
+                return starColors.getByIndex(index)
                     .getDrawable();
             }
             return IDrawable.EMPTY;
@@ -2865,7 +2844,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         // Name of this star color
         parent.addChild(new DynamicTextWidget(() -> {
             if (index < starColors.size()) {
-                ForgeOfGodsStarColor color = starColors.get(index);
+                ForgeOfGodsStarColor color = starColors.getByIndex(index);
                 return new Text(color.getName());
             }
             return Text.EMPTY;
@@ -3122,17 +3101,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             "fog.cosmetics.savecolors.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
-                    boolean edited = false;
-                    for (int i = 0; i < starColors.size(); i++) {
-                        ForgeOfGodsStarColor color = starColors.get(i);
-                        if (color.getName()
-                            .equals(newStarColor.getName())) {
-                            starColors.set(i, newStarColor);
-                            edited = true;
-                            break;
-                        }
-                    }
-                    if (!edited) starColors.add(newStarColor);
+                    starColors.store(newStarColor);
                     if (selectedStarColor.equals(newStarColor.getName())) {
                         updateRenderer();
                     }
@@ -3149,15 +3118,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             "fog.cosmetics.deletecolors.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
-                    Iterator<ForgeOfGodsStarColor> itr = starColors.iterator();
-                    while (itr.hasNext()) {
-                        ForgeOfGodsStarColor color = itr.next();
-                        if (!color.isPresetColor() && color.getName()
-                            .equals(newStarColor.getName())) {
-                            itr.remove();
-                            break;
-                        }
-                    }
+                    starColors.drop(newStarColor);
                     if (selectedStarColor.equals(newStarColor.getName())) {
                         // set to default if the deleted color was selected
                         selectedStarColor = ForgeOfGodsStarColor.DEFAULT.getName();
@@ -3992,14 +3953,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
 
-        NBTTagList starColorList = new NBTTagList();
-        for (ForgeOfGodsStarColor starColor : starColors) {
-            if (starColor.isPresetColor()) continue;
-            starColorList.appendTag(starColor.serializeToNBT());
-        }
-        if (!starColorList.tagList.isEmpty()) {
-            NBT.setTag("customStarColors", starColorList);
-        }
+        starColors.serializeToNBT(NBT);
 
         super.saveNBTData(NBT);
     }
@@ -4062,14 +4016,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setString("selectedStarColor", selectedStarColor);
         NBT.setBoolean("isRenderActive", isRenderActive);
 
-        NBTTagList starColorList = new NBTTagList();
-        for (ForgeOfGodsStarColor starColor : starColors) {
-            if (starColor.isPresetColor()) continue;
-            starColorList.appendTag(starColor.serializeToNBT());
-        }
-        if (!starColorList.tagList.isEmpty()) {
-            NBT.setTag("customStarColors", starColorList);
-        }
+        starColors.serializeToNBT(NBT);
 
         super.saveNBTData(NBT);
     }
@@ -4123,16 +4070,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         selectedStarColor = NBT.getString("selectedStarColor");
         isRenderActive = NBT.getBoolean("isRenderActive");
 
-        if (NBT.hasKey("customStarColors")) {
-            NBTTagList starColorList = NBT.getTagList("customStarColors", Constants.NBT.TAG_COMPOUND);
-            for (int i = 0; i < starColorList.tagCount(); i++) {
-                NBTTagCompound starColorNBT = starColorList.getCompoundTagAt(i);
-                ForgeOfGodsStarColor starColor = ForgeOfGodsStarColor.deserialize(starColorNBT);
-                if (!starColor.isPresetColor()) {
-                    starColors.add(starColor);
-                }
-            }
-        }
+        starColors.rebuildFromNBT(NBT);
 
         super.loadNBTData(NBT);
     }
