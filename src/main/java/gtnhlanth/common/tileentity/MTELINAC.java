@@ -310,9 +310,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         mMaxProgresstime = 1 * TickTime.SECOND;
+        
         // Consume the input tier's corresponding practical voltage instead of the maximum suggested by the logic
-        mEUt = (int) (-this.getMaxInputVoltage() / GTValues.V[(int) this.getInputVoltageTier()]
-                * GTValues.VP[(int) this.getInputVoltageTier()]);
+        // 1A if one energy hatch, 4A if two
+        mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()] : (int) (-this.getMaxInputAmps() * GTValues.VP[(int) this.getInputVoltageTier()]));
+        
+        //mEUt = (int) (-this.getMaxInputVoltage() / GTValues.V[(int) this.getInputVoltageTier()]
+          //      * GTValues.VP[(int) this.getInputVoltageTier()]);
 
         // Particle stays the same with this multiblock
         outputParticle = particleId;
@@ -340,7 +344,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             : inputFocus * (machineFocus / 100); // If input focus > machine focus, take the average of both, else
                                                  // weigh the former by the latter
 
-        long voltage = this.getMaxInputVoltage();
+        // 1A of full power if one energy hatch, 4A if two
+        long voltage = (this.mEnergyHatches.size() == 1) ? this.getMaxInputVoltage() : this.getMaxInputPower();
         // voltageFactor = calculateVoltageFactor(voltage);
 
         // machineEnergy = Math.max(-((60) / this.length) * voltageFactor + 60_000, 2000); // Minimum of 2000keV
