@@ -30,21 +30,6 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
 
     protected int SLOT_FILTER = 0;
 
-    @Override
-    public void onConfigLoad() {
-        super.onConfigLoad();
-        try {
-            int a1 = GTMod.gregtechproxy.mPollutionSmogLimit;
-            if (a1 > 0) {
-                mPollutionSmogLimit = a1;
-            }
-        } catch (Throwable t) {
-            mPollutionSmogLimit = 500000;
-        }
-    }
-
-    private int mPollutionSmogLimit = 500000;
-
     public MTEHatchMufflerAdvanced(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, new String[] { "" });
     }
@@ -271,7 +256,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         boolean chk2;
         boolean chk3;
         int aPollutionAmount = Pollution.getPollution(getBaseMetaTileEntity());
-        if (aPollutionAmount >= mPollutionSmogLimit) {
+        if (aPollutionAmount >= GTMod.gregtechproxy.mPollutionSmogLimit) {
             ran2 = GTPPCore.RANDOM.nextFloat();
             ran3 = GTPPCore.RANDOM.nextFloat();
             chk2 = ran2 * 100.0F < (float) this.calculatePollutionReduction(100);
