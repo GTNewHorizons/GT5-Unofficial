@@ -87,13 +87,13 @@ public enum MaskList {
         ItemList.Circuit_Wafer_QPIC.get(1), null, ItemList.Circuit_Silicon_Wafer, ItemList.Circuit_Silicon_Wafer2,
         ItemList.Circuit_Silicon_Wafer3, ItemList.Circuit_Silicon_Wafer4), // Different base mask to PIC
 	
-    CCPU("ccpu", "Crystal Central Processing Unit", 100, "", CBLANK, Dyes.dyeGreen, 10_000, 1, 3, 70, 6, 
+    CCPU("ccpu", "Crystal Central Processing Unit", 100, "", CBLANK, Dyes.dyeGreen, 10_000, 1, 3, 50, 6, 
     		ItemList.Circuit_Chip_CrystalCPU.get(1), ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1)), // For producing Crystal CPUs from Engraved CCs
-    CSOC("csoc", "Crystal SoC", 100, "", CBLANK, Dyes.dyeBlue, 40_000, 2, 7, 70, 8, 
+    CSOC("csoc", "Crystal SoC", 100, "", CBLANK, Dyes.dyeBlue, 40_000, 2, 7, 50, 8, 
     		ItemList.Circuit_Chip_CrystalSoC.get(1), ItemList.Circuit_Chip_CrystalCPU.get(1)),
-    ACC("acc", "Advanced Crystal Chip", 100, "", CBLANK, Dyes.dyeLime, 80_000, 3, 9, 70, 12, 
+    ACC("acc", "Advanced Crystal Chip", 100, "", CBLANK, Dyes.dyeLime, 80_000, 3, 9, 55, 12, 
     		ItemList.Circuit_Chip_CrystalSoC2.get(1), ItemList.Circuit_Chip_CrystalSoC.get(1)),
-    LCC("lcc", "Living Crystal Chip", 75, "", CBLANK, Dyes.dyeWhite, 160_000, 5, 12, 70, 16,
+    LCC("lcc", "Living Crystal Chip", 75, "", CBLANK, Dyes.dyeWhite, 160_000, 5, 12, 60, 16,
     		ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(1), ItemList.Circuit_Chip_CrystalSoC2.get(1))
     
     

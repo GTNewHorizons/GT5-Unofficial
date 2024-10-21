@@ -185,6 +185,23 @@ public class BeamlineRecipeLoader {
          * BeamlineRecipeAdder2.instance.addTargetChamberRecipe( new ItemStack(Items.coal, 1), new
          * ItemStack(Items.cooked_chicken, 1), null, 1, 20, 1, 10, 60, 1, 1920);
          */
+        
+        /* LuAG */
+        
+        // Raw Advanced Crystal Chip
+        
+        BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
+                WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1),
+                GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC.get(1)),
+                new ItemStack(LanthItemList.maskMap.get(MaskList.CSOC), 0),
+                1,
+                24,                                                              
+                5,
+                12,
+                60,
+                1,
+                (int) TierEU.RECIPE_LuV);
+        
 
         BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
             new ItemStack(Items.chicken, 1),
