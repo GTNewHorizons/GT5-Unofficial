@@ -202,7 +202,20 @@ public class BeamlineRecipeLoader {
                 1,
                 (int) TierEU.RECIPE_LuV);
         
-
+        /*
+        BeamlineRecipeAdder2.instance.addTargetChamberRecipe( // TODO Test recipe for subticking
+                new ItemStack(Items.coal, 1),
+                new ItemStack(Items.diamond),
+                new ItemStack(LanthItemList.maskMap.get(MaskList.RAM), 0),
+                Particle.PHOTON.ordinal(),
+                1,
+                0.5f,
+                200,
+                20,
+                1,
+                (int) TierEU.RECIPE_LuV);*/
+        
+        
         BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
             new ItemStack(Items.chicken, 1),
             new ItemStack(Items.cooked_chicken),
