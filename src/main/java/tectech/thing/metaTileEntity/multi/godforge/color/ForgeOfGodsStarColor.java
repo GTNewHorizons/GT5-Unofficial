@@ -58,6 +58,10 @@ public class ForgeOfGodsStarColor {
         return new ArrayList<>(PRESETS.values());
     }
 
+    public static ForgeOfGodsStarColor newTemplateColor() {
+        return new ForgeOfGodsStarColor("New Star Color");
+    }
+
     // "Metadata" about this star color, not related to star rendering
     private String name;
     // version currently unused, but can be used to retain compatibility with old serialized star colors
@@ -70,7 +74,7 @@ public class ForgeOfGodsStarColor {
     private final List<StarColorSetting> settings = new ArrayList<>();
     private int cycleSpeed = 1;
 
-    public ForgeOfGodsStarColor(String name) {
+    protected ForgeOfGodsStarColor(String name) {
         this(name, LATEST_VERSION);
     }
 
@@ -304,21 +308,25 @@ public class ForgeOfGodsStarColor {
     }
 
     public static void writeToBuffer(PacketBuffer buf, ForgeOfGodsStarColor color) {
-        buf.writeBoolean(color.isPresetColor());
-        try {
-            buf.writeStringToBuffer(color.name);
-        } catch (IOException ignored) {}
+        buf.writeBoolean(color == null);
+        if (color != null) {
+            buf.writeBoolean(color.isPresetColor());
+            try {
+                buf.writeStringToBuffer(color.name);
+            } catch (IOException ignored) {}
 
-        if (!color.isPresetColor()) {
-            buf.writeInt(color.cycleSpeed);
-            buf.writeInt(color.settings.size());
-            for (StarColorSetting setting : color.settings) {
-                StarColorSetting.writeToBuffer(buf, setting);
+            if (!color.isPresetColor()) {
+                buf.writeInt(color.cycleSpeed);
+                buf.writeInt(color.settings.size());
+                for (StarColorSetting setting : color.settings) {
+                    StarColorSetting.writeToBuffer(buf, setting);
+                }
             }
         }
     }
 
     public static ForgeOfGodsStarColor readFromBuffer(PacketBuffer buf) {
+        if (buf.readBoolean()) return null;
         boolean isPresetColor = buf.readBoolean();
         String name;
         try {

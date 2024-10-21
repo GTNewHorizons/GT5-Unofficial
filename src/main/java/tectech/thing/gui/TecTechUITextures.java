@@ -24,6 +24,8 @@ public class TecTechUITextures {
     public static final UITexture BACKGROUND_GLOW_GREEN = UITexture.fullImage(MODID, "gui/background/green_glow");
     public static final UITexture BACKGROUND_GLOW_RED = UITexture.fullImage(MODID, "gui/background/red_glow");
     public static final UITexture BACKGROUND_GLOW_WHITE = UITexture.fullImage(MODID, "gui/background/white_glow");
+    public static final UITexture BACKGROUND_GLOW_WHITE_HALF = UITexture
+        .fullImage(MODID, "gui/background/white_glow_half");
     public static final UITexture BACKGROUND_GLOW_RAINBOW = UITexture.fullImage(MODID, "gui/background/rainbow_glow");
     public static final UITexture BACKGROUND_SPACE = UITexture.fullImage(MODID, "gui/background/space");
 

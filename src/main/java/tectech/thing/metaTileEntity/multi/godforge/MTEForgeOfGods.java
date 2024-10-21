@@ -94,6 +94,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import blockrenderer6343.client.world.ClientFakePlayer;
 import cpw.mods.fml.relauncher.Side;
@@ -141,20 +142,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private int ringAmount = 1;
     private int stellarFuelAmount = 0;
     private int neededStartupFuel = 0;
-    private int rotationSpeed = 5;
-    private int starSize = 20;
-
-    private static final int MAX_STAR_COLORS = 7;
-    private List<ForgeOfGodsStarColor> starColors = ForgeOfGodsStarColor.getDefaultColors();
-    private String selectedStarColor = ForgeOfGodsStarColor.DEFAULT.getName();
-
-    // used only temporarily while creating a new custom star color
-    private ForgeOfGodsStarColor newStarColor = new ForgeOfGodsStarColor("New Star Color");
-    private int starColorR, starColorG, starColorB;
-    private float starGamma;
-    private int starColorEditingPos;
-    private boolean editingStarColor;
-
     private long fuelConsumption = 0;
     private long totalRecipesProcessed = 0;
     private long totalFuelConsumed = 0;
@@ -177,6 +164,24 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
+
+    // Star cosmetics fields
+    // actual star cosmetics
+    private static final int MAX_STAR_COLORS = 7;
+    private List<ForgeOfGodsStarColor> starColors = ForgeOfGodsStarColor.getDefaultColors();
+    private String selectedStarColor = ForgeOfGodsStarColor.DEFAULT.getName();
+    private int rotationSpeed = 5;
+    private int starSize = 20;
+    // editing star color
+    private ForgeOfGodsStarColor newStarColor = ForgeOfGodsStarColor.newTemplateColor();
+    private int starColorR, starColorG, starColorB;
+    private float starGamma;
+    private int starColorEditingPos;
+    private boolean editingStarColor;
+    // importing star color
+    private ForgeOfGodsStarColor importedStarColor;
+    private String importedStarColorStr;
+    private String importedError;
 
     private static final int FUEL_CONFIG_WINDOW_ID = 9;
     private static final int UPGRADE_TREE_WINDOW_ID = 10;
@@ -2854,7 +2859,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 return starColors.get(index)
                     .getDrawable();
             }
-            return new Rectangle().setColor(0, 0, 0, 0);
+            return IDrawable.EMPTY;
         })
             .setPos(1, 1)
             .setSize(14, 14)
@@ -3061,7 +3066,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     StarColorSetting color = newStarColor.getColor(ii);
                     return new Rectangle().setColor(Color.rgb(color.getColorR(), color.getColorG(), color.getColorB()));
                 }
-                return new Rectangle().setColor(Color.rgba(0, 0, 0, 0));
+                return IDrawable.EMPTY;
             })
                 .setSize(16, 16)
                 .setPos(1, 1));
@@ -3149,8 +3154,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             "gt.blockmachines.multimachine.FOG.import",
             "fog.button.import.tooltip",
             (clickData, widget) -> {
-                if (!widget.isClient()) widget.getContext()
-                    .openSyncedWindow(STAR_CUSTOM_COLOR_IMPORT_WINDOW_ID);
+                if (!widget.isClient()) {
+                    // reset state from before if it exists
+                    importedStarColor = null;
+                    importedStarColorStr = null;
+                    importedError = null;
+                    widget.getContext()
+                        .openSyncedWindow(STAR_CUSTOM_COLOR_IMPORT_WINDOW_ID);
+                }
             });
         builder.widget(importPresetButton.setPos(83, 177));
 
@@ -3174,7 +3185,146 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     protected ModularWindow createStarColorImportWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(0, 0);
+        ModularWindow.Builder builder = ModularWindow.builder(200, 100);
+        builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE_HALF);
+        builder.setDraggable(true);
+
+        // Syncers
+        builder.widget(new FakeSyncWidget.StringSyncer(() -> importedError, val -> importedError = val));
+
+        builder.widget(
+            new FakeSyncWidget<>(
+                () -> importedStarColor,
+                val -> importedStarColor = val,
+                ForgeOfGodsStarColor::writeToBuffer,
+                ForgeOfGodsStarColor::readFromBuffer));
+
+        // Exit button and header
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(184, 4))
+            .widget(
+                TextWidget.localised("gt.blockmachines.multimachine.FOG.importstarcolor")
+                    .setDefaultColor(EnumChatFormatting.GOLD)
+                    .setTextAlignment(Alignment.Center)
+                    .setScale(1f)
+                    .setPos(0, 5)
+                    .setSize(200, 15));
+
+        TextFieldWidget textField = new TextFieldWidget();
+        textField.setGetter(() -> importedStarColorStr)
+            .setSetter(val -> {
+                importedStarColorStr = val;
+                if (!textField.isClient()) {
+                    if (val == null || val.isEmpty()) {
+                        importedError = null;
+                        importedStarColor = null;
+                    }
+                    ForgeOfGodsStarColor color = ForgeOfGodsStarColor.deserialize(val);
+                    if (color != null) {
+                        // no error
+                        importedError = EnumChatFormatting.GREEN
+                            + translateToLocal("gt.blockmachines.multimachine.FOG.importstarcolor.valid");
+                        importedStarColor = color;
+                    } else {
+                        importedError = EnumChatFormatting.RED
+                            + translateToLocal("gt.blockmachines.multimachine.FOG.importstarcolor.error");
+                        importedStarColor = null;
+                    }
+                }
+            })
+            .setMaxLength(32767)
+            .setScrollBar()
+            .setTextAlignment(Alignment.CenterLeft)
+            .setTextColor(Color.WHITE.normal)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+            .setSize(184, 18)
+            .setPos(8, 20);
+        builder.widget(textField);
+
+        for (int i = 0; i < 9; i++) {
+            int ii = i;
+            Widget colorEntry = new DrawableWidget().setDrawable(() -> {
+                if (importedStarColor != null && ii < importedStarColor.numColors()) {
+                    StarColorSetting color = importedStarColor.getColor(ii);
+                    return new Rectangle().setColor(Color.rgb(color.getColorR(), color.getColorG(), color.getColorB()))
+                        .withOffset(1, 1, -2, -2);
+                }
+                return IDrawable.EMPTY;
+            })
+                .setBackground(TecTechUITextures.UNSELECTED_OPTION)
+                .dynamicTooltip(() -> {
+                    if (importedStarColor != null && ii < importedStarColor.numColors()) {
+                        StarColorSetting color = importedStarColor.getColor(ii);
+                        List<String> ret = new ArrayList<>();
+                        ret.add(StarColorRGBM.RED.tooltip(color.getColorR()));
+                        ret.add(StarColorRGBM.GREEN.tooltip(color.getColorG()));
+                        ret.add(StarColorRGBM.BLUE.tooltip(color.getColorB()));
+                        ret.add(StarColorRGBM.GAMMA.tooltip(color.getGamma()));
+                        return ret;
+                    }
+                    return Collections.emptyList();
+                })
+                .setSize(18, 18)
+                .setPos(8 + i * 18, 42);
+            builder.widget(colorEntry);
+        }
+
+        // Cycle rate
+        Widget cycleRateText = new DynamicTextWidget(() -> {
+            if (importedStarColor != null) {
+                return new Text(Integer.toString(importedStarColor.getCycleSpeed()));
+            }
+            return Text.EMPTY;
+        }).setTextAlignment(Alignment.Center)
+            .setDefaultColor(Color.WHITE.normal)
+            .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.speed"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+            .setSize(21, 16)
+            .setPos(171, 43);
+        builder.widget(cycleRateText);
+
+        // Validator string
+        Widget validatorText = new DynamicTextWidget(() -> {
+            if (importedError == null) {
+                return Text.EMPTY;
+            }
+            return new Text(importedError);
+        }).setTextAlignment(Alignment.Center)
+            .setPos(0, 62)
+            .setSize(200, 16);
+        builder.widget(validatorText);
+
+        // Confirm button
+        Widget confirmImportButton = ForgeOfGodsUI.createStarColorButton(
+            "gt.blockmachines.multimachine.FOG.apply",
+            "fog.button.applyimportcolor.tooltip",
+            (clickData, widget) -> {
+                if (!widget.isClient()) {
+                    // no action if a valid star color isn't provided
+                    if (importedStarColor != null) {
+                        widget.getWindow()
+                            .closeWindow();
+                        openCustomStarColorWindowFresh(widget, importedStarColor);
+                    }
+                }
+            });
+        builder.widget(confirmImportButton.setPos(101, 77));
+
+        // Reset button
+        Widget resetImportButton = ForgeOfGodsUI.createStarColorButton(
+            "fog.debug.resetbutton.text",
+            "fog.button.resetimportcolor.tooltip",
+            (clickData, widget) -> {
+                if (!widget.isClient()) {
+                    importedStarColorStr = null;
+                    importedStarColor = null;
+                    importedError = null;
+                }
+            });
+        builder.widget(resetImportButton.setPos(64, 77));
+
         return builder.build();
     }
 
@@ -3184,16 +3334,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (!widget.isClient()) {
             // Reset star color state
             if (importedColor == null) {
-                importedColor = new ForgeOfGodsStarColor("New Star Color");
+                importedColor = ForgeOfGodsStarColor.newTemplateColor();
             }
             newStarColor = importedColor;
             editingStarColor = false;
+            starColorR = ForgeOfGodsStarColor.DEFAULT_RED;
+            starColorG = ForgeOfGodsStarColor.DEFAULT_GREEN;
+            starColorB = ForgeOfGodsStarColor.DEFAULT_BLUE;
+            starGamma = ForgeOfGodsStarColor.DEFAULT_GAMMA;
 
-            ModularUIContext ctx = widget.getContext();
-            if (ctx.isWindowOpen(STAR_CUSTOM_COLOR_WINDOW_ID)) {
-                ctx.closeWindow(STAR_CUSTOM_COLOR_WINDOW_ID);
-            }
-            ctx.openSyncedWindow(STAR_CUSTOM_COLOR_WINDOW_ID);
+            ForgeOfGodsUI.reopenWindow(widget, STAR_CUSTOM_COLOR_WINDOW_ID);
         }
     }
 

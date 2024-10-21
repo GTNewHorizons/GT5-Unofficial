@@ -1060,6 +1060,8 @@ fog.button.savecolor.tooltip=Save this Star Color
 fog.button.deletecolor.tooltip=Delete this Star Color
 fog.button.selectcolor.tooltip.1=Left click to select this Star Color
 fog.button.selectcolor.tooltip.2=Shift-Left click to edit this Star Color (must be a custom color)
+fog.button.applyimportcolor.tooltip=Apply imported Star Color to color editor
+fog.button.resetimportcolor.tooltip=Reset imported Star Color
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1143,6 +1145,9 @@ gt.blockmachines.multimachine.FOG.thanks=A huge thank you to these incredible pe
 gt.blockmachines.multimachine.FOG.cosmetics=Star Cosmetics
 gt.blockmachines.multimachine.FOG.custom=Custom...
 gt.blockmachines.multimachine.FOG.starcolor=Custom Star Color
+gt.blockmachines.multimachine.FOG.importstarcolor=Import Star Color
+gt.blockmachines.multimachine.FOG.importstarcolor.error=Invalid Star Color
+gt.blockmachines.multimachine.FOG.importstarcolor.valid=Valid Star Color
 gt.blockmachines.multimachine.FOG.color=Color
 gt.blockmachines.multimachine.FOG.misc=Miscellaneous
 gt.blockmachines.multimachine.FOG.red=Red
