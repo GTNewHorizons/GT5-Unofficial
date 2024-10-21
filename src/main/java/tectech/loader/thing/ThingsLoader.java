@@ -17,6 +17,7 @@ import tectech.thing.casing.SpacetimeCompressionFieldCasing;
 import tectech.thing.casing.StabilisationFieldCasing;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.casing.TimeAccelerationFieldCasing;
+import tectech.thing.item.FakeItemQGP;
 import tectech.thing.item.ItemAstralArrayFabricator;
 import tectech.thing.item.ItemEnderFluidLinkCover;
 import tectech.thing.item.ItemEuMeterGT;
@@ -84,6 +85,7 @@ public class ThingsLoader implements Runnable {
 
         ItemTeslaCoilComponent.run();
         ItemAstralArrayFabricator.run();
+        FakeItemQGP.run();
         TecTech.LOGGER.info("Crafting Components registered");
 
         TecTech.LOGGER.info("Debug Items registered");
