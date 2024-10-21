@@ -8,7 +8,7 @@ import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.task.TaskHost;
 import gregtech.api.task.TickableTask;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 
 public class PollutionTask<T extends TaskHost & IMachineProgress> extends TickableTask<T> {
 

@@ -58,10 +58,10 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.54:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta8:api') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta9:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.3:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.18:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.19:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.9.16:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.10.5-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.15.14:dev") { transitive = false }
@@ -121,7 +121,7 @@ dependencies {
     functionalTestImplementation('org.junit.platform:junit-platform-reporting')
 
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.3.4:dev")
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.8.18:dev')
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.8.19:dev')
 
     // For testing
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.4.1:dev')
