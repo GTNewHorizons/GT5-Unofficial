@@ -49,9 +49,10 @@ public class StarColorStorage {
             return;
         }
         for (int i = 0; i < MAX_STAR_COLORS; i++) {
-            String newName = color.getName() + " " + i;
+            String newName = color.getName() + " " + (i + 1);
             if (!nameMapping.containsKey(newName)) {
                 nameMapping.put(newName, color);
+                color.setName(newName);
                 return;
             }
         }
