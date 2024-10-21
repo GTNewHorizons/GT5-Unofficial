@@ -3953,9 +3953,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setInteger("starSize", starSize);
         NBT.setString("selectedStarColor", selectedStarColor);
         NBT.setBoolean("isRenderActive", isRenderActive);
-        if (ringAmount != DEFAULT_RING_AMOUNT) {
-            NBT.setInteger("ringAmount", ringAmount);
-        }
+        NBT.setInteger("ringAmount", ringAmount);
 
         super.saveNBTData(NBT);
     }
