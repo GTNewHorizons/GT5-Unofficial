@@ -445,14 +445,14 @@ public class ForgeOfGodsUI {
 
     public static Widget createStarColorRGBMGroup(StarColorRGBM color, DoubleConsumer setter, DoubleSupplier getter) {
         MultiChildWidget widget = new MultiChildWidget();
-        widget.setSize(184, 18);
+        widget.setSize(184, 16);
 
         // Title
         widget.addChild(
             new TextWidget(translateToLocal(color.title)).setDefaultColor(color.mcColor)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setPos(0, 0)
-                .setSize(32, 18));
+                .setSize(32, 16));
 
         // Color slider
         widget.addChild(new SliderWidget().setSetter(val -> {
@@ -469,7 +469,7 @@ public class ForgeOfGodsUI {
             })
             .setUpdateTooltipEveryTick(true)
             .setSize(118, 8)
-            .setPos(32, 5));
+            .setPos(32, 4));
 
         // Color manual text box
         Widget numberEntry = new NumericWidget().setSetter(setter)
@@ -478,7 +478,7 @@ public class ForgeOfGodsUI {
             .setDefaultValue(color.defaultValue)
             .setTextAlignment(Alignment.Center)
             .setTextColor(color.muiColor)
-            .setSize(32, 18)
+            .setSize(32, 16)
             .setPos(152, 0)
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);

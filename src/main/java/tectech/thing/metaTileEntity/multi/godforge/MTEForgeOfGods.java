@@ -180,8 +180,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private boolean editingStarColor;
     // importing star color
     private ForgeOfGodsStarColor importedStarColor;
-    private String importedStarColorStr;
-    private String importedError;
+    private String importedStarColorStr = "";
+    private String importedError = "";
 
     private static final int FUEL_CONFIG_WINDOW_ID = 9;
     private static final int UPGRADE_TREE_WINDOW_ID = 10;
@@ -2922,25 +2922,25 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         // RGB + Gamma text fields
         Widget redField = ForgeOfGodsUI
             .createStarColorRGBMGroup(StarColorRGBM.RED, val -> starColorR = (int) val, () -> starColorR);
-        builder.widget(redField.setPos(8, 24));
+        builder.widget(redField.setPos(8, 21));
 
         Widget greenField = ForgeOfGodsUI
             .createStarColorRGBMGroup(StarColorRGBM.GREEN, val -> starColorG = (int) val, () -> starColorG);
-        builder.widget(greenField.setPos(8, 44));
+        builder.widget(greenField.setPos(8, 40));
 
         Widget blueField = ForgeOfGodsUI
             .createStarColorRGBMGroup(StarColorRGBM.BLUE, val -> starColorB = (int) val, () -> starColorB);
-        builder.widget(blueField.setPos(8, 64));
+        builder.widget(blueField.setPos(8, 59));
 
         Widget gammaField = ForgeOfGodsUI
             .createStarColorRGBMGroup(StarColorRGBM.GAMMA, val -> starGamma = (float) val, () -> starGamma);
-        builder.widget(gammaField.setPos(8, 84));
+        builder.widget(gammaField.setPos(8, 78));
 
         // Color preview box
         Widget colorPreviewBox = new DrawableWidget()
             .setDrawable(() -> new Rectangle().setColor(Color.rgb(starColorR, starColorG, starColorB)))
             .setSize(168, 15)
-            .setPos(16, 106);
+            .setPos(16, 99);
         builder.widget(colorPreviewBox);
 
         // Apply color button
@@ -2967,7 +2967,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 ForgeOfGodsUI.reopenWindow(widget, STAR_CUSTOM_COLOR_WINDOW_ID);
             }
         });
-        builder.widget(colorApplyButton.setPos(63, 125));
+        builder.widget(colorApplyButton.setPos(63, 118));
 
         // Reset color button
         Widget colorResetButton = ForgeOfGodsUI.createStarColorButton(
@@ -2981,7 +2981,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     starGamma = ForgeOfGodsStarColor.DEFAULT_GAMMA;
                 }
             });
-        builder.widget(colorResetButton.setPos(102, 125));
+        builder.widget(colorResetButton.setPos(102, 118));
 
         // **********
         // Color List
@@ -2993,7 +2993,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
             MultiChildWidget colorListEntry = new MultiChildWidget();
             colorListEntry.setSize(18, 18);
-            colorListEntry.setPos(8 + i * 18, 144);
+            colorListEntry.setPos(8 + i * 18, 136);
 
             // List entry button + selector outline
             colorListEntry.addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -3077,7 +3077,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         // Cycle rate text field
         Widget cycleRateField = new NumericWidget().setSetter(val -> newStarColor.setCycleSpeed((int) val))
             .setGetter(() -> newStarColor.getCycleSpeed())
-            .setBounds(0, 100)
+            .setBounds(1, 100)
             .setDefaultValue(1)
             .setTextAlignment(Alignment.Center)
             .setTextColor(Color.WHITE.normal)
@@ -3085,14 +3085,39 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
             .setSize(21, 16)
-            .setPos(171, 145);
+            .setPos(171, 137);
         builder.widget(cycleRateField);
 
-        // todo star color name, validate that it is unique for this forge
+        // Name text field
+        Widget nameEntryField = new TextFieldWidget().setSetter(val -> newStarColor.setName(val))
+            .setGetter(() -> newStarColor.getName())
+            .setMaxLength(15)
+            .setTextAlignment(Alignment.CenterLeft)
+            .setTextColor(0xFFFFAA00)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+            .addTooltips(
+                ImmutableList.of(
+                    translateToLocal("fog.cosmetics.starcolorname.tooltip.1"),
+                    translateToLocal("fog.cosmetics.starcolorname.tooltip.2")))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(101, 158)
+            .setSize(91, 16);
+        builder.widget(nameEntryField);
+
+        // Name label
+        Widget nameLabel = TextWidget.localised("fog.cosmetics.starcolorname.text")
+            .setTextAlignment(Alignment.CenterLeft)
+            .setDefaultColor(EnumChatFormatting.GOLD)
+            .setPos(8, 158)
+            .setSize(100, 16);
+        builder.widget(nameLabel);
+
+        // todo validate that star color name is unique for this forge
         // todo for import, attach a "1" or something if the name is not unique
+        // todo fix color becoming deselected if you change the name (then no color is set)
 
         // **************
-        // Preset Buttons todo position this full section
+        // Preset Buttons
         // **************
 
         // Save preset button
@@ -3120,7 +3145,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     ForgeOfGodsUI.reopenWindow(widget, STAR_COSMETICS_WINDOW_ID);
                 }
             });
-        builder.widget(savePresetButton.setPos(157, 177));
+        builder.widget(savePresetButton.setPos(138, 177));
 
         // Delete preset button
         Widget deletePresetButton = ForgeOfGodsUI.createStarColorButton(
@@ -3147,7 +3172,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     ForgeOfGodsUI.reopenWindow(widget, STAR_COSMETICS_WINDOW_ID);
                 }
             });
-        builder.widget(deletePresetButton.setPos(120, 177));
+        builder.widget(deletePresetButton.setPos(101, 177));
 
         // Import preset button
         Widget importPresetButton = ForgeOfGodsUI.createStarColorButton(
@@ -3157,13 +3182,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (!widget.isClient()) {
                     // reset state from before if it exists
                     importedStarColor = null;
-                    importedStarColorStr = null;
-                    importedError = null;
+                    importedStarColorStr = "";
+                    importedError = "";
                     widget.getContext()
                         .openSyncedWindow(STAR_CUSTOM_COLOR_IMPORT_WINDOW_ID);
                 }
             });
-        builder.widget(importPresetButton.setPos(83, 177));
+        builder.widget(importPresetButton.setPos(64, 177));
 
         // Export preset button
         Widget exportPresetButton = ForgeOfGodsUI.createStarColorButton(
@@ -3179,7 +3204,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     }
                 }
             });
-        builder.widget(exportPresetButton.setPos(46, 177));
+        builder.widget(exportPresetButton.setPos(27, 177));
 
         return builder.build();
     }
@@ -3217,7 +3242,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 importedStarColorStr = val;
                 if (!textField.isClient()) {
                     if (val == null || val.isEmpty()) {
-                        importedError = null;
+                        importedError = "";
                         importedStarColor = null;
                     }
                     ForgeOfGodsStarColor color = ForgeOfGodsStarColor.deserialize(val);
@@ -3287,7 +3312,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Validator string
         Widget validatorText = new DynamicTextWidget(() -> {
-            if (importedError == null) {
+            if (importedError == null || importedError.isEmpty()) {
                 return Text.EMPTY;
             }
             return new Text(importedError);
@@ -3318,9 +3343,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             "fog.button.resetimportcolor.tooltip",
             (clickData, widget) -> {
                 if (!widget.isClient()) {
-                    importedStarColorStr = null;
+                    importedStarColorStr = "";
                     importedStarColor = null;
-                    importedError = null;
+                    importedError = "";
                 }
             });
         builder.widget(resetImportButton.setPos(64, 77));
