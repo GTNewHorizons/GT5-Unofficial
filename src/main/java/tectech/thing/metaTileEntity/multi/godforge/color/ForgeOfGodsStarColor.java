@@ -45,7 +45,14 @@ public class ForgeOfGodsStarColor {
         .registerPreset();
 
     public static final ForgeOfGodsStarColor CLOUDS_PICK = new ForgeOfGodsStarColor("Cloud's Pick")
-        .addColor(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE, DEFAULT_GAMMA) // todo @cloud
+        .addColor(255, 255, 0, 0.8f)
+        .addColor(0, 0, 0, 0)
+        .addColor(0, 255, 255, 0.4f)
+        .addColor(0, 0, 0, 0)
+        .setCycleSpeed(1)
+        .setCustomDrawable(
+            new Rectangle()
+                .setColor(Color.rgb(255, 255, 0), Color.rgb(0, 0, 0), Color.rgb(0, 0, 0), Color.rgb(0, 255, 255)))
         .registerPreset();
 
     public static final ForgeOfGodsStarColor MAYAS_PICK = new ForgeOfGodsStarColor("Maya's Pick")
