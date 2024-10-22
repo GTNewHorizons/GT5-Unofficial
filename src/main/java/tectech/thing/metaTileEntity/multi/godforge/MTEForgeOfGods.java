@@ -3952,8 +3952,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setInteger("rotationSpeed", rotationSpeed);
         NBT.setInteger("starSize", starSize);
         NBT.setString("selectedStarColor", selectedStarColor);
-        NBT.setBoolean("isRenderActive", isRenderActive);
         NBT.setInteger("ringAmount", ringAmount);
+        NBT.setBoolean("isRenderActive", isRenderActive);
 
         super.saveNBTData(NBT);
     }
@@ -4055,11 +4055,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         // Renderer information
-        rotationSpeed = NBT.getInteger("rotationSpeed");
-        starSize = NBT.getInteger("starSize");
-        selectedStarColor = NBT.getString("selectedStarColor");
-        isRenderActive = NBT.getBoolean("isRenderActive");
+        if (NBT.hasKey("rotationSpeed")) rotationSpeed = NBT.getInteger("rotationSpeed");
+        if (NBT.hasKey("starSize")) starSize = NBT.getInteger("starSize");
+        if (NBT.hasKey("selectedStarColor")) selectedStarColor = NBT.getString("selectedStarColor");
         if (NBT.hasKey("ringAmount")) ringAmount = NBT.getInteger("ringAmount");
+        isRenderActive = NBT.getBoolean("isRenderActive");
 
         starColors.rebuildFromNBT(NBT);
 
