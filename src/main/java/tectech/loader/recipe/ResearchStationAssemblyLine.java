@@ -749,7 +749,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new Object[] { OrePrefixes.circuit.get(Materials.UIV), 20L }, ItemList.Field_Generator_UEV.get(4),
                     getModItem(EternalSingularity.ID, "eternal_singularity", 4L),
                     GregtechItemList.Laser_Lens_Special.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 64L),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Osmiridium, 4L),
                     ItemList.Electric_Pump_UEV.get(4), ItemList.ZPM3.get(1),
                     getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0) },
                 new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 128000),

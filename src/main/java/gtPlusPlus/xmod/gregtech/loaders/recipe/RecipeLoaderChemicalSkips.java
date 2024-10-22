@@ -749,7 +749,7 @@ public class RecipeLoaderChemicalSkips {
             32,
             new ItemStack[] { MaterialsAlloy.QUANTUM.getFrameBox(1),
                 GTOreDictUnificator.get("plateDensePreciousMetalsAlloy", 4),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 2),
                 ItemList.Field_Generator_UV.get(1), MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getScrew(16) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(144 * 10), },
             GregtechItemList.NeutronShieldingCore.get(1),
@@ -764,7 +764,7 @@ public class RecipeLoaderChemicalSkips {
             32,
             new ItemStack[] { MaterialsAlloy.QUANTUM.getFrameBox(2),
                 GTOreDictUnificator.get("plateDenseEnrichedNaquadahAlloy", 4),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 2),
                 ItemList.Field_Generator_UEV.get(1),
                 // Radox polymer screw.
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.get("RadoxPoly"), 16),
