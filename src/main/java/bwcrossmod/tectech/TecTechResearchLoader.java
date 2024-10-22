@@ -79,8 +79,7 @@ public class TecTechResearchLoader {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Osmium, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
                 ItemList.Electric_Piston_UV.get(64),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64)
-            },
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64) },
             new FluidStack[] { new FluidStack(solderIndalloy, 1440), Materials.Osmium.getMolten(1440),
                 Materials.Neutronium.getMolten(1440) },
             ItemRegistry.eic.copy(),

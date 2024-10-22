@@ -3178,7 +3178,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             256,
             new Object[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
                 ItemRefer.Field_Restriction_Coil_T4.get(4),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.Creon, 64),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.Creon, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.Mellion, 64),
                 GregtechItemList.SpaceTimeContinuumRipper.get(8), GregtechItemList.Battery_Gem_4.get(8),
                 GregtechItemList.Laser_Lens_Special.get(8), ItemList.Emitter_UXV.get(4),

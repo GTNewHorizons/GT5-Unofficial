@@ -797,7 +797,7 @@ public class RecipeLoaderChemicalSkips {
             (int) TierEU.RECIPE_UEV,
             32,
             new ItemStack[] { MaterialsAlloy.QUANTUM.getFrameBox(8), GTOreDictUnificator.get("plateDenseShirabon", 4),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, MaterialsUEVplus.SpaceTime, 2),
                 ItemList.Field_Generator_UMV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Dilithium, 16),
                 ItemList.NaquadriaSupersolid.get(4) },
