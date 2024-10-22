@@ -758,13 +758,13 @@ public class Godforge implements Runnable {
 
     public static void runDevEnvironmentRecipes() {
         // put something in here to not crash the game in dev environment when opening the manual insertion window
-        godforgeUpgradeMats.put(0, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
-        godforgeUpgradeMats.put(5, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
-        godforgeUpgradeMats.put(7, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
-        godforgeUpgradeMats.put(11, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
-        godforgeUpgradeMats.put(26, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
-        godforgeUpgradeMats.put(29, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
-        godforgeUpgradeMats.put(30, new ItemStack[] { new ItemStack(Blocks.cobblestone) });
+        godforgeUpgradeMats.put(0, new ItemStack[] { new ItemStack(Blocks.cobblestone, 4) });
+        godforgeUpgradeMats.put(5, new ItemStack[] { new ItemStack(Blocks.cobblestone, 8) });
+        godforgeUpgradeMats.put(7, new ItemStack[] { new ItemStack(Blocks.cobblestone, 12) });
+        godforgeUpgradeMats.put(11, new ItemStack[] { new ItemStack(Blocks.cobblestone, 16) });
+        godforgeUpgradeMats.put(26, new ItemStack[] { new ItemStack(Blocks.cobblestone, 32) });
+        godforgeUpgradeMats.put(29, new ItemStack[] { new ItemStack(Blocks.cobblestone, 48) });
+        godforgeUpgradeMats.put(30, new ItemStack[] { new ItemStack(Blocks.cobblestone, 64) });
     }
 
     public static void initMoltenModuleRecipes() {

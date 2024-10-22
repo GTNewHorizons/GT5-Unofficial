@@ -79,22 +79,21 @@ public class RendererGlassBlock implements ISimpleBlockRenderingHandler {
 
     // spotless:off
     @Override
-    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-                                    RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
         boolean flag = false;
         if (block instanceof BWBlocksGlass) {
+            final short[] color = ((BWBlocksGlass) block).getColor(world.getBlockMetadata(x, y, z));
             flag |= renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses, x, y, z);
-            flag |= renderer.renderStandardBlockWithColorMultiplier(block, x, y, z,
-                ((BWBlocksGlass) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
-                ((BWBlocksGlass) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
-                ((BWBlocksGlass) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
+            flag |= renderer.renderStandardBlockWithColorMultiplier(block,
+                x, y, z,
+                color[0] / 255f, color[1] / 255f, color[2] / 255f);
         }
         if (block instanceof BWBlocksGlass2) {
+            final short[] color = ((BWBlocksGlass2) block).getColor(world.getBlockMetadata(x, y, z));
             flag |= renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses2, x, y, z);
-            flag |= renderer.renderStandardBlockWithColorMultiplier(block, x, y, z,
-                ((BWBlocksGlass2) block).getColor(world.getBlockMetadata(x, y, z))[0] / 255f,
-                ((BWBlocksGlass2) block).getColor(world.getBlockMetadata(x, y, z))[1] / 255f,
-                ((BWBlocksGlass2) block).getColor(world.getBlockMetadata(x, y, z))[2] / 255f);
+            flag |= renderer.renderStandardBlockWithColorMultiplier(block,
+                x, y, z,
+                color[0] / 255f, color[1] / 255f, color[2] / 255f);
         }
         return flag;
     }

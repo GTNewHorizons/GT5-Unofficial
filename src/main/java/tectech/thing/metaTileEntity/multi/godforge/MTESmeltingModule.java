@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge_modules;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.formatNumbers;
@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -32,7 +33,6 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -43,6 +43,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import tectech.TecTech;
+import tectech.thing.gui.TecTechUITextures;
 
 public class MTESmeltingModule extends MTEBaseModule {
 
@@ -149,27 +151,31 @@ public class MTESmeltingModule extends MTEBaseModule {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-        builder.widget(furnaceSwitch(builder));
-
+        builder.widget(createFurnaceModeButton(builder));
     }
 
-    protected ButtonWidget furnaceSwitch(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> furnaceMode = !furnaceMode)
-            .setPlayClickSound(true)
+    protected ButtonWidget createFurnaceModeButton(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            furnaceMode = !furnaceMode;
+            widget.notifyTooltipChange();
+        })
+            .setPlayClickSound(false)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
+                ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
                 if (isFurnaceModeOn()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_CHECKMARK);
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE);
                 } else {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(GTUITextures.OVERLAY_BUTTON_CROSS);
-
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_FURNACE_MODE_OFF);
                 }
                 return ret.toArray(new IDrawable[0]);
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isFurnaceModeOn, this::setFurnaceMode), builder)
-            .addTooltip(translateToLocal("fog.button.furnacemode.tooltip"))
+            .dynamicTooltip(
+                () -> Collections.singletonList(
+                    translateToLocal(
+                        furnaceMode ? "fog.button.furnacemode.tooltip.02" : "fog.button.furnacemode.tooltip.01")))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 91)
             .setSize(16, 16);
@@ -233,7 +239,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for basic smelting operations at various temperatures.")
-            .addLineSeparator(EnumChatFormatting.AQUA, 74)
+            .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("As the first of the Godforge modules, this module performs the most basic")
             .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace.")
             .addInfo("The desired method of processing can be selected in the gui.")

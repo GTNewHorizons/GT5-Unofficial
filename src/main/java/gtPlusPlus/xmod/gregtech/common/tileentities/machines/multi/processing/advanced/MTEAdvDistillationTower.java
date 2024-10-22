@@ -52,8 +52,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -302,8 +302,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         if (this.mMode == Mode.Distillery)
-            return Configuration.pollution.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
-        return Configuration.pollution.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
+            return PollutionConfig.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
+        return PollutionConfig.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
     }
 
     @Override
@@ -446,7 +446,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mUpgraded", mUpgraded);
+        if (mUpgraded) aNBT.setBoolean("mUpgraded", true);
         super.setItemNBT(aNBT);
     }
 
