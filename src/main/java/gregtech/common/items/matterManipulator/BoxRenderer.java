@@ -13,7 +13,6 @@ import net.minecraft.util.AxisAlignedBB;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.glu.GLU;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.CapturingTessellator;
 import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
@@ -38,18 +37,9 @@ public class BoxRenderer {
         time_location = program.getUniformLocation("time");
     }
 
-    private void check() {
-        int error = GL11.glGetError();
-        if (error != GL11.GL_NO_ERROR) {
-            new Exception(GLU.gluErrorString(error)).printStackTrace();
-        }
-    }
-
     private CapturingTessellator tes;
 
     public void start(double partialTickTime) {
-        check();
-
         TessellatorManager.startCapturing();
 
         tes = (CapturingTessellator) TessellatorManager.get();
@@ -163,11 +153,9 @@ public class BoxRenderer {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
         program.use();
-        check();
 
         // this should only be done once a frame, but there aren't any side effects from calling it more
         GL20.glUniform1f(time_location, (((float) (System.currentTimeMillis() % 2500)) / 1000f));
-        check();
 
         try (VertexBuffer buffer = new VertexBuffer(DefaultVertexFormat.POSITION_COLOR_TEXTURE, GL11.GL_QUADS);) {
             buffer.upload(bytes);

@@ -13,7 +13,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -49,14 +48,17 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IRedstoneEmitter;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.FluidId;
 import gregtech.api.util.GTUtility.ItemId;
+import gregtech.common.entities.EntityItemLarge;
 import gregtech.common.items.matterManipulator.ItemMatterManipulator.ManipulatorTier;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink.UplinkStatus;
+import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import ic2.api.item.ElectricItem;
 import it.unimi.dsi.fastutil.Pair;
 
@@ -226,7 +228,7 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
                     int toRemove = (int) Math.min(amount, Integer.MAX_VALUE);
                     amount -= toRemove;
                     placingPlayer.worldObj.spawnEntityInWorld(
-                        new EntityItem(
+                        new EntityItemLarge(
                             placingPlayer.worldObj,
                             placingPlayer.posX,
                             placingPlayer.posY,
@@ -485,6 +487,7 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
     protected void removeBlock(World world, int x, int y, int z, Block existing, int existingMeta) {
         TileEntity te = world.getTileEntity(x, y, z);
 
+        emptySuperchest(te);
         emptyTileInventory(te);
         emptyTank(te);
         removeCovers(te);
@@ -502,6 +505,20 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
         }
 
         world.setBlockToAir(x, y, z);
+    }
+
+    protected void emptySuperchest(TileEntity te) {
+        if (te instanceof IGregTechTileEntity igte && igte.getMetaTileEntity() instanceof MTEDigitalChestBase dchest) {
+            for (IAEItemStack stack : dchest.getStorageList()) {
+                stack = dchest.extractItems(stack, Actionable.MODULATE, null);
+
+                while (stack.getStackSize() > 0) {
+                    ItemStack is = stack.getItemStack();
+                    stack.setStackSize(stack.getStackSize() - is.stackSize);
+                    givePlayerItems(is);
+                }
+            }
+        }
     }
 
     protected void emptyTileInventory(TileEntity te) {

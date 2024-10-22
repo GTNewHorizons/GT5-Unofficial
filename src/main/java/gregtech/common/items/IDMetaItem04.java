@@ -23,7 +23,9 @@ public enum IDMetaItem04 {
     MatterManipulatorComputerCore3(17),
     MatterManipulatorTeleporterCore3(18),
     MatterManipulatorFrame3(19),
-    MatterManipulatorLens3(20);
+    MatterManipulatorLens3(20),
+    MatterManipulatorAEDownlink(21),
+    MatterManipulatorQuantumDownlink(22);
 
     public final int ID;
 

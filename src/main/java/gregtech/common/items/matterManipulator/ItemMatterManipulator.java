@@ -16,7 +16,6 @@ import java.util.function.Function;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
@@ -86,6 +85,9 @@ public class ItemMatterManipulator extends Item
 
     public final ManipulatorTier tier;
 
+    @SideOnly(Side.CLIENT)
+    private MatterManipulatorRenderer renderer;
+
     public ItemMatterManipulator(ManipulatorTier tier) {
         String name = "itemMatterManipulator" + tier.tier;
 
@@ -109,6 +111,13 @@ public class ItemMatterManipulator extends Item
         FMLCommonHandler.instance()
             .bus()
             .register(this);
+
+        if (FMLCommonHandler.instance()
+            .getSide() == Side.CLIENT) {
+            renderer = new MatterManipulatorRenderer();
+        }
+
+        Messages.init();
     }
 
     private static int counter = 0;
@@ -303,7 +312,7 @@ public class ItemMatterManipulator extends Item
         final ItemStack stack = new ItemStack(this, 1);
         stack.setTagCompound(new NBTState().save());
         subItems.add(stack.copy());
-        ElectricItem.manager.charge(stack, getMaxCharge(stack), Integer.MAX_VALUE, true, false);
+        this.charge(stack, tier.maxCharge, tier.voltageTier, true, false);
         subItems.add(stack);
     }
 
@@ -326,6 +335,7 @@ public class ItemMatterManipulator extends Item
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void stopClientClearUsing(PlayerTickEvent event) {
         // spotless:off
         boolean isHandValid = event.player.getItemInUse() != null && event.player.getItemInUse().getItem() == this;
@@ -359,6 +369,7 @@ public class ItemMatterManipulator extends Item
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc,
         boolean advancedItemTooltips) {
         NBTState state = getState(itemStack);
@@ -673,8 +684,9 @@ public class ItemMatterManipulator extends Item
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void onMouseEvent(MouseEvent event) {
-        final EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+        final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
         if (player == null || player.isDead) {
             return;
@@ -1154,381 +1166,391 @@ public class ItemMatterManipulator extends Item
 
     // #region Rendering
 
-    private static final MethodHandle GET_FXLAYERS;
-
-    static {
-        try {
-            Field field = ReflectionHelper.findField(EffectRenderer.class, "fxLayers");
-            field.setAccessible(true);
-            GET_FXLAYERS = MethodHandles.lookup()
-                .unreflectGetter(field);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Could not get field EffectRenderer.fxLayers", e);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    private long lastAnalysisMS = 0;
-
-    @SideOnly(Side.CLIENT)
-    private NBTState.Config lastAnalyzedConfig = null;
-
-    @SideOnly(Side.CLIENT)
-    private Location lastPlayerPosition = null;
-
-    @SideOnly(Side.CLIENT)
-    private List<PendingBlock> analysisCache = null;
-
-    @SideOnly(Side.CLIENT)
-    private ItemMatterManipulator lastDrawer = null;
-
-    private static final long ANALYSIS_INTERVAL_MS = 10_000;
-
-    private static final int MAX_PREVIEW_BLOCKS = 100_000;
-
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void renderSelection(RenderWorldLastEvent event) {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        ItemStack held = player.getHeldItem();
-
-        if (held != null && held.getItem() == this) {
-            NBTState state = getState(held);
-
-            switch (state.config.placeMode) {
-                case GEOMETRY:
-                case EXCHANGING: {
-                    renderGeom(event, state, player);
-                    break;
-                }
-                case COPYING:
-                case MOVING: {
-                    renderRegions(event, state, player);
-                    break;
-                }
-            }
-
-            try {
-                List<EntityFX>[] fxLayers = (List<EntityFX>[]) GET_FXLAYERS
-                    .invokeExact(Minecraft.getMinecraft().effectRenderer);
-
-                fxLayers[0].removeIf(particle -> particle instanceof WeightlessParticleFX);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        } else {
-            if (lastDrawer == this) {
-                lastAnalysisMS = 0;
-                lastAnalyzedConfig = null;
-                lastPlayerPosition = null;
-                analysisCache = null;
-                lastDrawer = null;
-
-                StructureLibAPI.startHinting(player.worldObj);
-                StructureLibAPI.endHinting(player.worldObj);
-            }
-        }
+        renderer.renderSelection(event);
     }
 
-    private void renderGeom(RenderWorldLastEvent event, NBTState state, EntityPlayer player) {
-        Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
+    @SideOnly(Side.CLIENT)
+    private class MatterManipulatorRenderer {
 
-        Location coordA = state.config.getCoordA(player.worldObj, lookingAt);
-        Location coordB = state.config.getCoordB(player.worldObj, lookingAt);
-        Location coordC = state.config.getCoordC(player.worldObj, lookingAt);
-        state.config.coordA = coordA;
-        state.config.coordB = coordB;
-        state.config.coordC = coordC;
+        private static final MethodHandle GET_FXLAYERS;
 
-        boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
-        boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
-        boolean isCValid = coordC != null && coordC.isInWorld(player.worldObj);
-
-        if (isAValid && state.config.coordAOffset != null) {
-            GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
-            drawRulers(player, coordA, false, event.partialTicks);
+        static {
+            try {
+                Field field = ReflectionHelper.findField(EffectRenderer.class, "fxLayers");
+                field.setAccessible(true);
+                GET_FXLAYERS = MethodHandles.lookup()
+                    .unreflectGetter(field);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Could not get field EffectRenderer.fxLayers", e);
+            }
         }
 
-        if (isBValid && state.config.coordBOffset != null) {
-            GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
-            drawRulers(player, coordB, false, event.partialTicks);
+        private long lastAnalysisMS = 0;
+
+        private NBTState.Config lastAnalyzedConfig = null;
+
+        private Location lastPlayerPosition = null;
+
+        private List<PendingBlock> analysisCache = null;
+
+        private MatterManipulatorRenderer lastDrawer = null;
+
+        private static final long ANALYSIS_INTERVAL_MS = 10_000;
+
+        private static final int MAX_PREVIEW_BLOCKS = 100_000;
+
+        public void renderSelection(RenderWorldLastEvent event) {
+            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            ItemStack held = player.getHeldItem();
+
+            if (held != null && held.getItem() == ItemMatterManipulator.this) {
+                NBTState state = getState(held);
+
+                switch (state.config.placeMode) {
+                    case GEOMETRY:
+                    case EXCHANGING: {
+                        renderGeom(event, state, player);
+                        break;
+                    }
+                    case COPYING:
+                    case MOVING: {
+                        renderRegions(event, state, player);
+                        break;
+                    }
+                }
+
+                try {
+                    List<EntityFX>[] fxLayers = (List<EntityFX>[]) GET_FXLAYERS
+                        .invokeExact(Minecraft.getMinecraft().effectRenderer);
+
+                    fxLayers[0].removeIf(particle -> particle instanceof WeightlessParticleFX);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            } else {
+                if (lastDrawer == this) {
+                    lastAnalysisMS = 0;
+                    lastAnalyzedConfig = null;
+                    lastPlayerPosition = null;
+                    analysisCache = null;
+                    lastDrawer = null;
+
+                    StructureLibAPI.startHinting(player.worldObj);
+                    StructureLibAPI.endHinting(player.worldObj);
+                }
+            }
         }
 
-        if (isCValid && state.config.coordCOffset != null) {
-            GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
-            drawRulers(player, coordC, false, event.partialTicks);
-        }
+        private void renderGeom(RenderWorldLastEvent event, NBTState state, EntityPlayer player) {
+            Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
 
-        if (state.config.placeMode == PlaceMode.GEOMETRY && state.config.shape == Shape.CYLINDER) {
+            Location coordA = state.config.getCoordA(player.worldObj, lookingAt);
+            Location coordB = state.config.getCoordB(player.worldObj, lookingAt);
+            Location coordC = state.config.getCoordC(player.worldObj, lookingAt);
+            state.config.coordA = coordA;
+            state.config.coordB = coordB;
+            state.config.coordC = coordC;
+
+            boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
+            boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
+            boolean isCValid = coordC != null && coordC.isInWorld(player.worldObj);
+
+            if (isAValid && state.config.coordAOffset != null) {
+                GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+                drawRulers(player, coordA, false, event.partialTicks);
+            }
+
+            if (isBValid && state.config.coordBOffset != null) {
+                GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+                drawRulers(player, coordB, false, event.partialTicks);
+            }
+
+            if (isCValid && state.config.coordCOffset != null) {
+                GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+                drawRulers(player, coordC, false, event.partialTicks);
+            }
+
+            if (state.config.placeMode == PlaceMode.GEOMETRY && state.config.shape == Shape.CYLINDER) {
+                if (isAValid && isBValid) {
+                    Objects.requireNonNull(coordA);
+                    Objects.requireNonNull(coordB);
+
+                    Vector3i b2 = NBTState.pinToPlanes(coordA.toVec(), coordB.toVec());
+
+                    coordB.x = b2.x;
+                    coordB.y = b2.y;
+                    coordB.z = b2.z;
+
+                    if (isCValid) {
+                        Objects.requireNonNull(coordC);
+                        Vector3i height = NBTState.pinToLine(coordA.toVec(), b2, coordC.toVec());
+
+                        coordC.x = height.x;
+                        coordC.y = height.y;
+                        coordC.z = height.z;
+                    }
+                }
+            }
+
             if (isAValid && isBValid) {
                 Objects.requireNonNull(coordA);
                 Objects.requireNonNull(coordB);
 
-                Vector3i b2 = NBTState.pinToPlanes(coordA.toVec(), coordB.toVec());
+                Location playerLocation = new Location(
+                    player.getEntityWorld(),
+                    MathHelper.floor_double(player.posX),
+                    MathHelper.floor_double(player.posY),
+                    MathHelper.floor_double(player.posZ));
 
-                coordB.x = b2.x;
-                coordB.y = b2.y;
-                coordB.z = b2.z;
+                Vector3i vA = coordA.toVec();
+                Vector3i vB = coordB.toVec();
+                Vector3i vC = null;
 
-                if (isCValid) {
+                Vector3i max = new Vector3i(vA).max(vB);
+                Vector3i min = new Vector3i(vA).min(vB);
+
+                if ((state.config.placeMode != PlaceMode.GEOMETRY || state.config.shape.requiresC()) && isCValid) {
                     Objects.requireNonNull(coordC);
-                    Vector3i height = NBTState.pinToLine(coordA.toVec(), b2, coordC.toVec());
+                    vC = coordC.toVec();
 
-                    coordC.x = height.x;
-                    coordC.y = height.y;
-                    coordC.z = height.z;
+                    max.max(vC);
+                    min.min(vC);
+                }
+
+                max.add(1, 1, 1);
+
+                BoxRenderer.INSTANCE.start(event.partialTicks);
+
+                BoxRenderer.INSTANCE.drawAround(
+                    AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z),
+                    new Vector3f(0.15f, 0.6f, 0.75f));
+
+                BoxRenderer.INSTANCE.finish();
+
+                boolean needsAnalysis = (System.currentTimeMillis() - lastAnalysisMS) >= ANALYSIS_INTERVAL_MS
+                    || !Objects.equals(lastAnalyzedConfig, state.config);
+
+                boolean needsHintDraw = needsAnalysis || !Objects.equals(lastPlayerPosition, playerLocation);
+
+                if (needsAnalysis) {
+                    lastAnalysisMS = System.currentTimeMillis();
+                    lastAnalyzedConfig = state.config;
+                    analysisCache = state.getPendingBlocks(player.getEntityWorld());
+
+                    AboveHotbarHUD.renderTextAboveHotbar(
+                        String.format("dX=%d dY=%d dZ=%d", max.x - min.x, max.y - min.y, max.z - min.z),
+                        (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
+                        false,
+                        false);
+                }
+
+                if (needsHintDraw) {
+                    lastPlayerPosition = playerLocation;
+                    lastDrawer = this;
+                    drawHints(event, state, player, playerLocation);
                 }
             }
         }
 
-        if (isAValid && isBValid) {
-            Objects.requireNonNull(coordA);
-            Objects.requireNonNull(coordB);
+        private void renderRegions(RenderWorldLastEvent event, NBTState state, EntityPlayer player) {
+            Location sourceA = state.config.coordA;
+            Location sourceB = state.config.coordB;
+            Location paste = state.config.coordC;
 
-            Location playerLocation = new Location(
-                player.getEntityWorld(),
-                MathHelper.floor_double(player.posX),
-                MathHelper.floor_double(player.posY),
-                MathHelper.floor_double(player.posZ));
-
-            Vector3i vA = coordA.toVec();
-            Vector3i vB = coordB.toVec();
-            Vector3i vC = null;
-
-            Vector3i max = new Vector3i(vA).max(vB);
-            Vector3i min = new Vector3i(vA).min(vB);
-
-            if ((state.config.placeMode != PlaceMode.GEOMETRY || state.config.shape.requiresC()) && isCValid) {
-                Objects.requireNonNull(coordC);
-                vC = coordC.toVec();
-
-                max.max(vC);
-                min.min(vC);
+            if (state.config.action != null) {
+                switch (state.config.action) {
+                    case MARK_COPY_A:
+                    case MARK_CUT_A: {
+                        sourceA = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
+                        GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+                        drawRulers(player, sourceA, false, event.partialTicks);
+                        break;
+                    }
+                    case MARK_COPY_B:
+                    case MARK_CUT_B: {
+                        sourceB = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
+                        GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+                        drawRulers(player, sourceB, false, event.partialTicks);
+                        break;
+                    }
+                    case MARK_PASTE: {
+                        paste = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
+                        GL11.glColor4f(0.75f, 0.5f, 0.15f, 0.75F);
+                        drawRulers(player, paste, false, event.partialTicks);
+                        break;
+                    }
+                    default: {
+                        return;
+                    }
+                }
             }
 
-            max.add(1, 1, 1);
+            state.config.coordA = sourceA;
+            state.config.coordB = sourceB;
+            state.config.coordC = paste;
+
+            boolean isSourceAValid = sourceA != null && sourceA.isInWorld(player.worldObj);
+            boolean isSourceBValid = sourceB != null && sourceB.isInWorld(player.worldObj);
+            boolean isPasteValid = paste != null && paste.isInWorld(player.worldObj);
+
+            Vector3i deltas = null;
 
             BoxRenderer.INSTANCE.start(event.partialTicks);
 
-            BoxRenderer.INSTANCE.drawAround(
-                AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z),
-                new Vector3f(0.15f, 0.6f, 0.75f));
+            if (isSourceAValid && isSourceBValid) {
+                Objects.requireNonNull(sourceA);
+                Objects.requireNonNull(sourceB);
+
+                deltas = MMUtils.getRegionDeltas(sourceA, sourceB);
+
+                BoxRenderer.INSTANCE
+                    .drawAround(MMUtils.getBoundingBox(sourceA, deltas), new Vector3f(0.15f, 0.6f, 0.75f));
+            }
+
+            if (isPasteValid) {
+                Objects.requireNonNull(paste);
+
+                Vector3i deltas2 = deltas == null ? new Vector3i() : deltas;
+
+                BoxRenderer.INSTANCE
+                    .drawAround(MMUtils.getBoundingBox(paste, deltas2), new Vector3f(0.75f, 0.5f, 0.15f));
+
+                Location playerLocation = new Location(
+                    player.getEntityWorld(),
+                    MathHelper.floor_double(player.posX),
+                    MathHelper.floor_double(player.posY),
+                    MathHelper.floor_double(player.posZ));
+
+                boolean needsAnalysis = (System.currentTimeMillis() - lastAnalysisMS) >= ANALYSIS_INTERVAL_MS
+                    || !Objects.equals(lastAnalyzedConfig, state.config);
+
+                boolean needsHintDraw = needsAnalysis || !Objects.equals(lastPlayerPosition, playerLocation);
+
+                if (needsAnalysis) {
+                    lastAnalysisMS = System.currentTimeMillis();
+                    lastAnalyzedConfig = state.config;
+                    analysisCache = state.getPendingBlocks(player.getEntityWorld());
+
+                    AboveHotbarHUD.renderTextAboveHotbar(
+                        String.format(
+                            "dX=%d dY=%d dZ=%d",
+                            Math.abs(deltas2.x) + 1,
+                            Math.abs(deltas2.y) + 1,
+                            Math.abs(deltas2.z) + 1),
+                        (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
+                        false,
+                        false);
+                }
+
+                if (needsHintDraw) {
+                    lastPlayerPosition = playerLocation;
+                    lastDrawer = this;
+                    drawHints(event, state, player, playerLocation);
+                }
+            }
 
             BoxRenderer.INSTANCE.finish();
-
-            boolean needsAnalysis = (System.currentTimeMillis() - lastAnalysisMS) >= ANALYSIS_INTERVAL_MS
-                || !Objects.equals(lastAnalyzedConfig, state.config);
-
-            boolean needsHintDraw = needsAnalysis || !Objects.equals(lastPlayerPosition, playerLocation);
-
-            if (needsAnalysis) {
-                lastAnalysisMS = System.currentTimeMillis();
-                lastAnalyzedConfig = state.config;
-                analysisCache = state.getPendingBlocks(player.getEntityWorld());
-
-                AboveHotbarHUD.renderTextAboveHotbar(
-                    String.format("dX=%d dY=%d dZ=%d", max.x - min.x, max.y - min.y, max.z - min.z),
-                    (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
-                    false,
-                    false);
-            }
-
-            if (needsHintDraw) {
-                lastPlayerPosition = playerLocation;
-                lastDrawer = this;
-                drawHints(event, state, player, playerLocation);
-            }
-        }
-    }
-
-    private void renderRegions(RenderWorldLastEvent event, NBTState state, EntityPlayer player) {
-        Location sourceA = state.config.coordA;
-        Location sourceB = state.config.coordB;
-        Location paste = state.config.coordC;
-
-        if (state.config.action != null) {
-            switch (state.config.action) {
-                case MARK_COPY_A:
-                case MARK_CUT_A: {
-                    sourceA = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
-                    GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
-                    drawRulers(player, sourceA, false, event.partialTicks);
-                    break;
-                }
-                case MARK_COPY_B:
-                case MARK_CUT_B: {
-                    sourceB = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
-                    GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
-                    drawRulers(player, sourceB, false, event.partialTicks);
-                    break;
-                }
-                case MARK_PASTE: {
-                    paste = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
-                    GL11.glColor4f(0.75f, 0.5f, 0.15f, 0.75F);
-                    drawRulers(player, paste, false, event.partialTicks);
-                    break;
-                }
-                default: {
-                    return;
-                }
-            }
         }
 
-        state.config.coordA = sourceA;
-        state.config.coordB = sourceB;
-        state.config.coordC = paste;
+        private void drawHints(RenderWorldLastEvent event, NBTState state, EntityPlayer player,
+            Location playerLocation) {
+            StructureLibAPI.startHinting(player.worldObj);
 
-        boolean isSourceAValid = sourceA != null && sourceA.isInWorld(player.worldObj);
-        boolean isSourceBValid = sourceB != null && sourceB.isInWorld(player.worldObj);
-        boolean isPasteValid = paste != null && paste.isInWorld(player.worldObj);
+            int buildable = tier.maxRange * tier.maxRange;
 
-        Vector3i deltas = null;
+            int i = 0;
 
-        BoxRenderer.INSTANCE.start(event.partialTicks);
+            for (PendingBlock pendingBlock : analysisCache) {
+                if (tier.maxRange != -1) {
+                    int dist2 = pendingBlock.distanceTo2(playerLocation);
 
-        if (isSourceAValid && isSourceBValid) {
-            Objects.requireNonNull(sourceA);
-            Objects.requireNonNull(sourceB);
+                    if (dist2 > buildable) continue;
+                }
 
-            deltas = MMUtils.getRegionDeltas(sourceA, sourceB);
+                if (i++ > MAX_PREVIEW_BLOCKS) break;
 
-            BoxRenderer.INSTANCE.drawAround(MMUtils.getBoundingBox(sourceA, deltas), new Vector3f(0.15f, 0.6f, 0.75f));
-        }
+                Block block = pendingBlock.getBlock();
 
-        if (isPasteValid) {
-            Objects.requireNonNull(paste);
-
-            Vector3i deltas2 = deltas == null ? new Vector3i() : deltas;
-
-            BoxRenderer.INSTANCE.drawAround(MMUtils.getBoundingBox(paste, deltas2), new Vector3f(0.75f, 0.5f, 0.15f));
-
-            Location playerLocation = new Location(
-                player.getEntityWorld(),
-                MathHelper.floor_double(player.posX),
-                MathHelper.floor_double(player.posY),
-                MathHelper.floor_double(player.posZ));
-
-            boolean needsAnalysis = (System.currentTimeMillis() - lastAnalysisMS) >= ANALYSIS_INTERVAL_MS
-                || !Objects.equals(lastAnalyzedConfig, state.config);
-
-            boolean needsHintDraw = needsAnalysis || !Objects.equals(lastPlayerPosition, playerLocation);
-
-            if (needsAnalysis) {
-                lastAnalysisMS = System.currentTimeMillis();
-                lastAnalyzedConfig = state.config;
-                analysisCache = state.getPendingBlocks(player.getEntityWorld());
-
-                AboveHotbarHUD.renderTextAboveHotbar(
-                    String.format(
-                        "dX=%d dY=%d dZ=%d",
-                        Math.abs(deltas2.x) + 1,
-                        Math.abs(deltas2.y) + 1,
-                        Math.abs(deltas2.z) + 1),
-                    (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
-                    false,
-                    false);
-            }
-
-            if (needsHintDraw) {
-                lastPlayerPosition = playerLocation;
-                lastDrawer = this;
-                drawHints(event, state, player, playerLocation);
-            }
-        }
-
-        BoxRenderer.INSTANCE.finish();
-    }
-
-    private void drawHints(RenderWorldLastEvent event, NBTState state, EntityPlayer player, Location playerLocation) {
-        StructureLibAPI.startHinting(player.worldObj);
-
-        int buildable = tier.maxRange * tier.maxRange;
-
-        int i = 0;
-
-        for (PendingBlock pendingBlock : analysisCache) {
-            if (tier.maxRange != -1) {
-                int dist2 = pendingBlock.distanceTo2(playerLocation);
-
-                if (dist2 > buildable) continue;
-            }
-
-            if (i++ > MAX_PREVIEW_BLOCKS) break;
-
-            Block block = pendingBlock.getBlock();
-
-            if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {
-                StructureLibAPI.hintParticle(
-                    player.worldObj,
-                    pendingBlock.x,
-                    pendingBlock.y,
-                    pendingBlock.z,
-                    block,
-                    pendingBlock.metadata);
-
-                if (state.config.placeMode == PlaceMode.EXCHANGING) {
-                    StructureLibAPI
-                        .markHintParticleError(player, player.worldObj, pendingBlock.x, pendingBlock.y, pendingBlock.z);
-                    StructureLibAPI.updateHintParticleTint(
-                        player,
+                if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {
+                    StructureLibAPI.hintParticle(
                         player.worldObj,
                         pendingBlock.x,
                         pendingBlock.y,
                         pendingBlock.z,
-                        new short[] { 255, 255, 255, 255 });
+                        block,
+                        pendingBlock.metadata);
+
+                    if (state.config.placeMode == PlaceMode.EXCHANGING) {
+                        StructureLibAPI.markHintParticleError(
+                            player,
+                            player.worldObj,
+                            pendingBlock.x,
+                            pendingBlock.y,
+                            pendingBlock.z);
+                        StructureLibAPI.updateHintParticleTint(
+                            player,
+                            player.worldObj,
+                            pendingBlock.x,
+                            pendingBlock.y,
+                            pendingBlock.z,
+                            new short[] { 255, 255, 255, 255 });
+                    }
                 }
             }
+
+            StructureLibAPI.endHinting(player.worldObj);
         }
 
-        StructureLibAPI.endHinting(player.worldObj);
-    }
+        private static Vector3d getVecForDir(ForgeDirection dir) {
+            return new Vector3d(dir.offsetX, dir.offsetY, dir.offsetZ);
+        }
 
-    private static Vector3d getVecForDir(ForgeDirection dir) {
-        return new Vector3d(dir.offsetX, dir.offsetY, dir.offsetZ);
-    }
+        private static final int RULER_LENGTH = 128;
 
-    private static final int RULER_LENGTH = 128;
+        private void drawRulers(EntityPlayer player, Location l, boolean fromSurface, float partialTickTime) {
+            GL11.glEnable(GL11.GL_BLEND);
+            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+            GL11.glLineWidth(2.0F);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glDepthMask(false);
 
-    private void drawRulers(EntityPlayer player, Location l, boolean fromSurface, float partialTickTime) {
-        GL11.glEnable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glLineWidth(2.0F);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDepthMask(false);
+            GL11.glPointSize(4);
 
-        GL11.glPointSize(4);
+            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+            GL11.glPushMatrix();
 
-        GL11.glPushMatrix();
+            double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) partialTickTime;
+            double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) partialTickTime;
+            double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) partialTickTime;
+            GL11.glTranslated(l.x - d0 + 0.5, l.y - d1 + 0.5, l.z - d2 + 0.5);
 
-        double d0 = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double) partialTickTime;
-        double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double) partialTickTime;
-        double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double) partialTickTime;
-        GL11.glTranslated(l.x - d0 + 0.5, l.y - d1 + 0.5, l.z - d2 + 0.5);
+            Tessellator tessellator = Tessellator.instance;
 
-        Tessellator tessellator = Tessellator.instance;
+            tessellator.startDrawing(GL11.GL_LINES);
 
-        tessellator.startDrawing(GL11.GL_LINES);
+            for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                Vector3d delta = getVecForDir(dir);
 
-        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            Vector3d delta = getVecForDir(dir);
-
-            if (fromSurface) {
-                tessellator.addVertex(delta.x * 0.5, delta.y * 0.5, delta.z * 0.5);
-            } else {
-                tessellator.addVertex(0, 0, 0);
+                if (fromSurface) {
+                    tessellator.addVertex(delta.x * 0.5, delta.y * 0.5, delta.z * 0.5);
+                } else {
+                    tessellator.addVertex(0, 0, 0);
+                }
+                tessellator.addVertex(delta.x * RULER_LENGTH, delta.y * RULER_LENGTH, delta.z * RULER_LENGTH);
             }
-            tessellator.addVertex(delta.x * RULER_LENGTH, delta.y * RULER_LENGTH, delta.z * RULER_LENGTH);
+
+            tessellator.draw();
+
+            GL11.glPopMatrix();
+
+            GL11.glDepthMask(true);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glDisable(GL11.GL_BLEND);
         }
-
-        tessellator.draw();
-
-        GL11.glPopMatrix();
-
-        GL11.glDepthMask(true);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
     }
 
     // #endregion

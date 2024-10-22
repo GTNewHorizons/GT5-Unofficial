@@ -17,12 +17,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableSet;
 
+import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
@@ -62,12 +65,22 @@ public class MTEMMUplinkMEHatch extends MTEHatch
 
     protected BaseActionSource requestSource = null;
     protected AENetworkProxy gridProxy = null;
+    protected boolean additionalConnection = false;
 
     private final List<ManipulatorRequest> manualRequests = new ArrayList<>();
     private final List<ManipulatorRequest> autoRequests = new ArrayList<>();
 
+    private List<ItemStack> pendingCraft;
+
     public MTEMMUplinkMEHatch(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 8, 0, new String[] { "Matter Manipulator Uplink ME connector hatch." });
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            8,
+            0,
+            new String[] { "Quantum Uplink ME connector hatch.",
+                "Change ME connection behavior by right-clicking with wire cutter." });
     }
 
     public MTEMMUplinkMEHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -118,15 +131,6 @@ public class MTEMMUplinkMEHatch extends MTEHatch
     }
 
     private void pollRequests() {
-        ICraftingGrid cg;
-
-        try {
-            cg = getProxy().getCrafting();
-        } catch (GridAccessException e) {
-            // :P
-            return;
-        }
-
         Iterator<ManipulatorRequest> iter = autoRequests.iterator();
 
         while (iter.hasNext()) {
@@ -141,7 +145,21 @@ public class MTEMMUplinkMEHatch extends MTEHatch
     }
 
     private void updateValidGridProxySides() {
-        getProxy().setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+        if (additionalConnection) {
+            getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
+        } else {
+            getProxy().setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
+        }
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        additionalConnection = !additionalConnection;
+        updateValidGridProxySides();
+        aPlayer.addChatComponentMessage(
+            new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
+        return true;
     }
 
     @Override
@@ -208,7 +226,7 @@ public class MTEMMUplinkMEHatch extends MTEHatch
         ImmutableSet.Builder<ICraftingLink> jobs = ImmutableSet.builder();
 
         for (ManipulatorRequest request : autoRequests) {
-            if (request.job != null) jobs.add(request.link);
+            if (request.link != null) jobs.add(request.link);
         }
 
         return jobs.build();
@@ -266,6 +284,23 @@ public class MTEMMUplinkMEHatch extends MTEHatch
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("additionalConnection", additionalConnection);
+
+        NBTTagList auto = new NBTTagList();
+
+        for (ManipulatorRequest request : autoRequests) {
+            auto.appendTag(request.writeToNBT(new NBTTagCompound()));
+        }
+
+        aNBT.setTag("auto", auto);
+
+        NBTTagList manual = new NBTTagList();
+
+        for (ManipulatorRequest request : manualRequests) {
+            manual.appendTag(request.writeToNBT(new NBTTagCompound()));
+        }
+
+        aNBT.setTag("manual", manual);
 
         getProxy().writeToNBT(aNBT);
     }
@@ -273,11 +308,28 @@ public class MTEMMUplinkMEHatch extends MTEHatch
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        additionalConnection = aNBT.getBoolean("additionalConnection");
+
+        autoRequests.clear();
+
+        @SuppressWarnings("unchecked")
+        List<NBTTagCompound> auto = ((NBTTagList) aNBT.getTag("auto")).tagList;
+        for (NBTTagCompound request : auto) {
+            autoRequests.add(ManipulatorRequest.readFromNBT(this, request));
+        }
+
+        manualRequests.clear();
+
+        @SuppressWarnings("unchecked")
+        List<NBTTagCompound> manual = ((NBTTagList) aNBT.getTag("manual")).tagList;
+        for (NBTTagCompound request : manual) {
+            manualRequests.add(ManipulatorRequest.readFromNBT(this, request));
+        }
 
         getProxy().readFromNBT(aNBT);
-    }
 
-    private List<ItemStack> pendingCraft;
+        onRequestsChanged();
+    }
 
     private void pushPendingCraft() {
         if (pendingCraft == null) return;
@@ -372,6 +424,32 @@ public class MTEMMUplinkMEHatch extends MTEHatch
         onRequestsChanged();
     }
 
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+
+        for (var req : autoRequests) {
+            if (req.link != null) {
+                req.link.cancel();
+            }
+
+            if (req.job != null) {
+                req.job.cancel(false);
+            }
+        }
+
+        autoRequests.clear();
+        manualRequests.clear();
+
+        onRequestsChanged();
+
+        GTUtility.sendInfoToPlayer(aPlayer, "Cleared all patterns and cancelled pending crafts.");
+    }
+
+    public long getRequestHashcode() {
+        return autoRequests.hashCode() | (manualRequests.hashCode() << 32);
+    }
+
     public void clearManualPlans(EntityPlayer player) {
         manualRequests.removeIf(
             request -> request.requester.equals(
@@ -411,6 +489,61 @@ public class MTEMMUplinkMEHatch extends MTEHatch
 
             hologram = ItemList.MatterManipulatorHologram.get(1);
             hologram.setStackDisplayName(EnumChatFormatting.RESET + requestName);
+        }
+
+        private ManipulatorRequest(UUID requester, String requestName, List<ItemStack> requiredItems,
+            ICraftingLink link) {
+            this.requester = requester;
+            this.requestName = requestName;
+            this.requiredItems = requiredItems;
+            this.link = link;
+
+            hologram = ItemList.MatterManipulatorHologram.get(1);
+            hologram.setStackDisplayName(EnumChatFormatting.RESET + requestName);
+        }
+
+        public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+            tag.setLong("r1", requester.getMostSignificantBits());
+            tag.setLong("r2", requester.getLeastSignificantBits());
+            tag.setString("rn", requestName);
+
+            if (link != null) {
+                NBTTagCompound linkTag = new NBTTagCompound();
+                link.writeToNBT(linkTag);
+                tag.setTag("link", linkTag);
+            }
+
+            NBTTagList items = new NBTTagList();
+
+            for (ItemStack item : requiredItems) {
+                items.appendTag(item.writeToNBT(new NBTTagCompound()));
+            }
+
+            tag.setTag("items", items);
+
+            return tag;
+        }
+
+        public static ManipulatorRequest readFromNBT(MTEMMUplinkMEHatch hatch, NBTTagCompound tag) {
+            UUID requester = new UUID(tag.getLong("r1"), tag.getLong("r2"));
+            String requestName = tag.getString("rn");
+            ICraftingLink link = null;
+
+            if (tag.hasKey("link")) {
+                link = AEApi.instance()
+                    .storage()
+                    .loadCraftingLink(tag.getCompoundTag("link"), hatch);
+            }
+
+            ArrayList<ItemStack> requiredItems = new ArrayList<>();
+            @SuppressWarnings("unchecked")
+            List<NBTTagCompound> items = ((NBTTagList) tag.getTag("items")).tagList;
+
+            for (NBTTagCompound item : items) {
+                requiredItems.add(ItemStack.loadItemStackFromNBT(item));
+            }
+
+            return hatch.new ManipulatorRequest(requester, requestName, requiredItems, link);
         }
 
         boolean poll() {
@@ -458,6 +591,8 @@ public class MTEMMUplinkMEHatch extends MTEHatch
                     if (link == null) {
                         return false;
                     }
+
+                    GTUtility.sendChatToPlayer(requester, "Submitted job for plan '" + requestName + "'.");
                 }
             } catch (final InterruptedException | ExecutionException e) {
                 // :P

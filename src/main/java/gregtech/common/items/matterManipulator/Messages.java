@@ -5,19 +5,27 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacket;
 import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.api.util.GTUtility;
@@ -30,6 +38,8 @@ import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
+import gregtech.common.tileentities.machines.multi.MTEMMUplink;
+import gregtech.common.tileentities.machines.multi.MTEMMUplink.UplinkState;
 import io.netty.buffer.ByteBuf;
 
 enum Messages {
@@ -169,6 +179,29 @@ enum Messages {
                 List<PendingBlock> blocks = state.getPendingBlocks(player.getEntityWorld());
                 RequiredItemAnalysis itemAnalysis = BlockAnalyzer.getRequiredItemsForBuild(player, blocks);
 
+                if (itemAnalysis.requiredItems.isEmpty()) {
+                    var requiredItems = itemAnalysis.requiredItems.entrySet()
+                        .stream()
+                        .map(
+                            e -> String.format(
+                                "%s: %d",
+                                e.getKey()
+                                    .getItemStack()
+                                    .getDisplayName(),
+                                e.getValue()))
+                        .sorted()
+                        .collect(Collectors.toList());
+
+                    GTUtility.sendInfoToPlayer(player, "Required items:");
+
+                    for (String item : requiredItems) {
+                        GTUtility.sendInfoToPlayer(player, item);
+                    }
+
+                    GTUtility.sendInfoToPlayer(player, "All required items are present.");
+                    return;
+                }
+
                 if (state.connectToUplink()) {
                     List<ItemStack> requiredItems = itemAnalysis.requiredItems.entrySet()
                         .stream()
@@ -229,7 +262,7 @@ enum Messages {
         }
 
         @Override
-        public IntPacket getNewPacket(Messages message, Object value) {
+        public IntPacket getNewPacket(Messages message, @Nullable Object value) {
             IntPacket packet = new IntPacket(message);
             packet.value = value == null ? 0 : (int) (Integer) value;
             return packet;
@@ -241,6 +274,44 @@ enum Messages {
         }
     }))),
     ClearWhitelist(server(simple((player, stack, manipulator, state) -> { state.config.replaceWhitelist = null; }))),
+    UpdateUplinkState(client(new ISimplePacketHandler<UplinkPacket>() {
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public void handle(EntityPlayer player, UplinkPacket packet) {
+            World theWorld = Minecraft.getMinecraft().theWorld;
+
+            if (theWorld.provider.dimensionId == packet.worldId) {
+                Location l = packet.getLocation();
+
+                if (theWorld.getTileEntity(l.x, l.y, l.z) instanceof IGregTechTileEntity igte
+                    && igte.getMetaTileEntity() instanceof MTEMMUplink uplink) {
+                    uplink.setState(packet.getState());
+                }
+            }
+        }
+
+        @Override
+        public UplinkPacket getNewPacket(Messages message, @Nullable Object value) {
+            UplinkPacket packet = new UplinkPacket(message);
+
+            if (value != null) {
+                MTEMMUplink uplink = (MTEMMUplink) value;
+
+                IGregTechTileEntity igte = uplink.getBaseMetaTileEntity();
+
+                NBTState.Location l = new NBTState.Location(
+                    igte.getWorld(),
+                    igte.getXCoord(),
+                    igte.getYCoord(),
+                    igte.getZCoord());
+
+                packet.setState(l, uplink.getState());
+            }
+
+            return packet;
+        }
+    })),
 
     ;
 
@@ -278,6 +349,17 @@ enum Messages {
         channel.sendToPlayer(getNewPacket(data), player);
     }
 
+    public void sendToPlayersAround(Location location) {
+        sendToPlayersAround(location, null);
+    }
+
+    public void sendToPlayersAround(Location location, Object data) {
+        GTMod.GT_FML_LOGGER.info("Sending packet to players around " + location.toString() + ": " + this + "; " + data);
+        channel.sendToAllAround(
+            getNewPacket(data),
+            new TargetPoint(location.worldId, location.x, location.y, location.z, 256d));
+    }
+
     @SuppressWarnings("unchecked")
     public void handle(EntityPlayer player, SimplePacket packet) {
         GTMod.GT_FML_LOGGER
@@ -295,11 +377,15 @@ enum Messages {
         return new GTNetwork("MatterManipulator", packets.toArray(new GTPacket[0]));
     }
 
+    public static void init() {
+        // does nothing
+    }
+
     private static interface ISimplePacketHandler<T extends SimplePacket> {
 
         public void handle(EntityPlayer player, T packet);
 
-        public T getNewPacket(Messages message, Object data);
+        public T getNewPacket(Messages message, @Nullable Object data);
     }
 
     private static class SimplePacket extends GTPacket {
@@ -359,6 +445,51 @@ enum Messages {
         }
     }
 
+    private static class UplinkPacket extends SimplePacket {
+
+        public int worldId;
+        public long location;
+        public byte state;
+
+        public UplinkPacket(Messages message) {
+            super(message);
+        }
+
+        public void setState(Location location, UplinkState state) {
+            this.worldId = location.worldId;
+            this.location = CoordinatePacker.pack(location.x, location.y, location.z);
+            this.state = (byte) state.ordinal();
+        }
+
+        public Location getLocation() {
+            return new Location(
+                worldId,
+                CoordinatePacker.unpackX(location),
+                CoordinatePacker.unpackY(location),
+                CoordinatePacker.unpackZ(location));
+        }
+
+        public UplinkState getState() {
+            return UplinkState.values()[state];
+        }
+
+        @Override
+        public void encode(ByteBuf buffer) {
+            buffer.writeInt(worldId);
+            buffer.writeLong(location);
+            buffer.writeByte(state);
+        }
+
+        @Override
+        public GTPacket decode(ByteArrayDataInput buffer) {
+            UplinkPacket message = new UplinkPacket(super.message);
+            message.worldId = buffer.readInt();
+            message.location = buffer.readLong();
+            message.state = buffer.readByte();
+            return message;
+        }
+    }
+
     private static <T extends SimplePacket> ISimplePacketHandler<T> server(ISimplePacketHandler<T> next) {
         return new ISimplePacketHandler<T>() {
 
@@ -375,7 +506,34 @@ enum Messages {
             }
 
             @Override
-            public T getNewPacket(Messages message, Object data) {
+            public T getNewPacket(Messages message, @Nullable Object data) {
+                return next.getNewPacket(message, data);
+            }
+        };
+    }
+
+    private static <T extends SimplePacket> ISimplePacketHandler<T> client(ISimplePacketHandler<T> next) {
+        return new ISimplePacketHandler<T>() {
+
+            @Override
+            public void handle(EntityPlayer player, T packet) {
+                if (player != null) {
+                    GTMod.GT_FML_LOGGER.error(
+                        "Player wasn't null when trying to process " + packet.message.name()
+                            + " packet: it will be ignored");
+                    return;
+                }
+
+                handleImpl(packet);
+            }
+
+            @SideOnly(Side.CLIENT)
+            private void handleImpl(T packet) {
+                next.handle(Minecraft.getMinecraft().thePlayer, packet);
+            }
+
+            @Override
+            public T getNewPacket(Messages message, @Nullable Object data) {
                 return next.getNewPacket(message, data);
             }
         };
@@ -403,7 +561,7 @@ enum Messages {
             }
 
             @Override
-            public SimplePacket getNewPacket(Messages message, Object unused) {
+            public SimplePacket getNewPacket(Messages message, @Nullable Object unused) {
                 return new SimplePacket(message);
             }
         };
@@ -430,7 +588,7 @@ enum Messages {
 
             @SuppressWarnings("unchecked")
             @Override
-            public IntPacket getNewPacket(Messages message, Object value) {
+            public IntPacket getNewPacket(Messages message, @Nullable Object value) {
                 IntPacket packet = new IntPacket(message);
                 packet.value = value == null ? -1 : ((E) value).ordinal();
                 return packet;
@@ -464,7 +622,7 @@ enum Messages {
 
             @SuppressWarnings("unchecked")
             @Override
-            public IntPacket getNewPacket(Messages message, Object value) {
+            public IntPacket getNewPacket(Messages message, @Nullable Object value) {
                 IntPacket packet = new IntPacket(message);
                 packet.value = value == null ? -1 : ((E) value).ordinal();
                 return packet;

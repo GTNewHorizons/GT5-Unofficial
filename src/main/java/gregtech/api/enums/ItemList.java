@@ -2592,6 +2592,8 @@ public enum ItemList implements IItemContainer {
     MatterManipulatorTeleporterCore3,
     MatterManipulatorFrame3,
     MatterManipulatorLens3,
+    MatterManipulatorAEDownlink,
+    MatterManipulatorQuantumDownlink,
     MatterManipulator0,
     MatterManipulator1,
     MatterManipulator2,

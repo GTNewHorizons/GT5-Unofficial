@@ -1634,8 +1634,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
 
         ItemList.MatterManipulatorUplink.set(
-            new MTEMMUplink(MATTER_MANIPULATOR_UPLINK.ID, "multimachine.mmuplink", "Matter Manipulator ME Uplink")
-                .getStackForm(1));
+            new MTEMMUplink(
+                MATTER_MANIPULATOR_UPLINK.ID,
+                "multimachine.mmuplink",
+                "[WIP] Matter Manipulator Quantum Uplink").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -10766,7 +10768,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEMMUplinkMEHatch(
                 HATCH_MATTER_MANIPULATOR_UPLINK_ME.ID,
                 "hatch.mmuplink.me",
-                "Matter Manipulator Uplink ME Hatch").getStackForm(1L));
+                "[WIP] Quantum Uplink ME Connector Hatch").getStackForm(1L));
     }
 
     private static void registerMagHatch() {

@@ -19,7 +19,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
@@ -46,8 +45,11 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.DimensionalCoord;
 import appeng.tile.misc.TileSecurity;
 import appeng.tile.networking.TileWireless;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.RegionAnalysis;
@@ -950,29 +952,17 @@ class NBTState {
 
         public static PendingBlock fromBlock(World world, int x, int y, int z) {
             Block block = world.getBlock(x, y, z);
+            block = Block.getBlockFromItem(Item.getItemFromBlock(block));
 
-            Item item = Item.getItemFromBlock(block);
+            int meta = block.getDamageValue(world, x, y, z);
 
-            Block realBlock = !block.isFlowerPot() ? Block.getBlockFromItem(item) : block;
-            int meta = realBlock.getDamageValue(world, x, y, z);
-
-            return new PendingBlock(world.provider.dimensionId, x, y, z, realBlock, meta);
+            return new PendingBlock(world.provider.dimensionId, x, y, z, block, meta);
         }
 
         public static PendingBlock fromPickBlock(World world, EntityPlayer player, MovingObjectPosition hit) {
             if (hit == null || hit.typeOfHit != MovingObjectType.BLOCK) return null;
 
-            Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-
-            ItemStack stack = block.getPickBlock(hit, world, hit.blockX, hit.blockY, hit.blockZ, player);
-
-            if (stack == null || !(stack.getItem() instanceof ItemBlock itemBlock)) return null;
-
-            block = Block.getBlockFromItem(itemBlock);
-
-            int meta = block.getDamageValue(world, hit.blockX, hit.blockY, hit.blockZ);
-
-            return new PendingBlock(world.provider.dimensionId, hit.blockX, hit.blockY, hit.blockZ, block, meta);
+            return fromBlock(world, hit.blockX, hit.blockY, hit.blockZ);
         }
 
         public static boolean isSameBlock(PendingBlock a, PendingBlock b) {
@@ -1095,19 +1085,24 @@ class NBTState {
         }
 
         public World getWorld() {
-            if (MinecraftServer.getServer() != null) {
-                return DimensionManager.getWorld(worldId);
+            if (FMLCommonHandler.instance()
+                .getSide() == Side.SERVER) {
+                return getServerWorld();
+            } else {
+                return getClientWorld();
             }
+        }
 
-            if (Minecraft.getMinecraft() != null) {
-                WorldClient world = Minecraft.getMinecraft().theWorld;
+        @SideOnly(Side.SERVER)
+        private World getServerWorld() {
+            return DimensionManager.getWorld(worldId);
+        }
 
-                if (world.provider.dimensionId == worldId) {
-                    return world;
-                }
-            }
+        @SideOnly(Side.CLIENT)
+        private World getClientWorld() {
+            WorldClient world = Minecraft.getMinecraft().theWorld;
 
-            return null;
+            return world.provider.dimensionId == worldId ? world : null;
         }
 
         public Location offset(ForgeDirection dir) {

@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.L;
+import static gregtech.api.enums.Mods.AE2FluidCraft;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -13,33 +14,13 @@ import static gregtech.client.GTTooltipHandler.Tier.IV;
 import static gregtech.client.GTTooltipHandler.Tier.LuV;
 import static gregtech.client.GTTooltipHandler.Tier.ZPM;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorComputerCore0;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorComputerCore1;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorComputerCore2;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorComputerCore3;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorFrame0;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorFrame1;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorFrame2;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorFrame3;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorHologram;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorLens0;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorLens1;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorLens2;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorLens3;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorPowerCore0;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorPowerCore1;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorPowerCore2;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorPowerCore3;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorTeleporterCore0;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorTeleporterCore1;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorTeleporterCore2;
-import static gregtech.common.items.IDMetaItem04.MatterManipulatorTeleporterCore3;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import appeng.api.AEApi;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
@@ -79,44 +60,55 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
     }
 
     private void addManipulatorParts() {
-        ItemList.MatterManipulatorHologram.set(addItem(MatterManipulatorHologram.ID, "Matter Manipulator Plan", ""));
+        ItemList.MatterManipulatorHologram
+            .set(addItem(IDMetaItem04.MatterManipulatorHologram.ID, "Matter Manipulator Plan", ""));
         ItemList.MatterManipulatorPowerCore0
-            .set(addItem(MatterManipulatorPowerCore0.ID, "Prototype Matter Manipulator Power Core", ""));
-        ItemList.MatterManipulatorComputerCore0
-            .set(addItem(MatterManipulatorComputerCore0.ID, "Prototype Matter Manipulator Computer Core", ""));
-        ItemList.MatterManipulatorTeleporterCore0
-            .set(addItem(MatterManipulatorTeleporterCore0.ID, "Prototype Matter Manipulator Teleporter Core", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorPowerCore0.ID, "Prototype Matter Manipulator Power Core", ""));
+        ItemList.MatterManipulatorComputerCore0.set(
+            addItem(IDMetaItem04.MatterManipulatorComputerCore0.ID, "Prototype Matter Manipulator Computer Core", ""));
+        ItemList.MatterManipulatorTeleporterCore0.set(
+            addItem(
+                IDMetaItem04.MatterManipulatorTeleporterCore0.ID,
+                "Prototype Matter Manipulator Teleporter Core",
+                ""));
         ItemList.MatterManipulatorFrame0
-            .set(addItem(MatterManipulatorFrame0.ID, "Prototype Matter Manipulator Frame", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorFrame0.ID, "Prototype Matter Manipulator Frame", ""));
         ItemList.MatterManipulatorLens0
-            .set(addItem(MatterManipulatorLens0.ID, "Prototype Matter Manipulator Lens Assembly", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorLens0.ID, "Prototype Matter Manipulator Lens Assembly", ""));
         ItemList.MatterManipulatorPowerCore1
-            .set(addItem(MatterManipulatorPowerCore1.ID, "Matter Manipulator Power Core MKI", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorPowerCore1.ID, "Matter Manipulator Power Core MKI", ""));
         ItemList.MatterManipulatorComputerCore1
-            .set(addItem(MatterManipulatorComputerCore1.ID, "Matter Manipulator Computer Core MKI", ""));
-        ItemList.MatterManipulatorTeleporterCore1
-            .set(addItem(MatterManipulatorTeleporterCore1.ID, "Matter Manipulator Teleporter Core MKI", ""));
-        ItemList.MatterManipulatorFrame1.set(addItem(MatterManipulatorFrame1.ID, "Matter Manipulator Frame MKI", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorComputerCore1.ID, "Matter Manipulator Computer Core MKI", ""));
+        ItemList.MatterManipulatorTeleporterCore1.set(
+            addItem(IDMetaItem04.MatterManipulatorTeleporterCore1.ID, "Matter Manipulator Teleporter Core MKI", ""));
+        ItemList.MatterManipulatorFrame1
+            .set(addItem(IDMetaItem04.MatterManipulatorFrame1.ID, "Matter Manipulator Frame MKI", ""));
         ItemList.MatterManipulatorLens1
-            .set(addItem(MatterManipulatorLens1.ID, "Matter Manipulator Lens Assembly MKI", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorLens1.ID, "Matter Manipulator Lens Assembly MKI", ""));
         ItemList.MatterManipulatorPowerCore2
-            .set(addItem(MatterManipulatorPowerCore2.ID, "Matter Manipulator Power Core MKII", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorPowerCore2.ID, "Matter Manipulator Power Core MKII", ""));
         ItemList.MatterManipulatorComputerCore2
-            .set(addItem(MatterManipulatorComputerCore2.ID, "Matter Manipulator Computer Core MKII", ""));
-        ItemList.MatterManipulatorTeleporterCore2
-            .set(addItem(MatterManipulatorTeleporterCore2.ID, "Matter Manipulator Teleporter Core MKII", ""));
-        ItemList.MatterManipulatorFrame2.set(addItem(MatterManipulatorFrame2.ID, "Matter Manipulator Frame MKII", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorComputerCore2.ID, "Matter Manipulator Computer Core MKII", ""));
+        ItemList.MatterManipulatorTeleporterCore2.set(
+            addItem(IDMetaItem04.MatterManipulatorTeleporterCore2.ID, "Matter Manipulator Teleporter Core MKII", ""));
+        ItemList.MatterManipulatorFrame2
+            .set(addItem(IDMetaItem04.MatterManipulatorFrame2.ID, "Matter Manipulator Frame MKII", ""));
         ItemList.MatterManipulatorLens2
-            .set(addItem(MatterManipulatorLens2.ID, "Matter Manipulator Lens Assembly MKII", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorLens2.ID, "Matter Manipulator Lens Assembly MKII", ""));
         ItemList.MatterManipulatorPowerCore3
-            .set(addItem(MatterManipulatorPowerCore3.ID, "Matter Manipulator Power Core MKIII", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorPowerCore3.ID, "Matter Manipulator Power Core MKIII", ""));
         ItemList.MatterManipulatorComputerCore3
-            .set(addItem(MatterManipulatorComputerCore3.ID, "Matter Manipulator Computer Core MKIII", ""));
-        ItemList.MatterManipulatorTeleporterCore3
-            .set(addItem(MatterManipulatorTeleporterCore3.ID, "Matter Manipulator Teleporter Core MKIII", ""));
-        ItemList.MatterManipulatorFrame3.set(addItem(MatterManipulatorFrame3.ID, "Matter Manipulator Frame MKIII", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorComputerCore3.ID, "Matter Manipulator Computer Core MKIII", ""));
+        ItemList.MatterManipulatorTeleporterCore3.set(
+            addItem(IDMetaItem04.MatterManipulatorTeleporterCore3.ID, "Matter Manipulator Teleporter Core MKIII", ""));
+        ItemList.MatterManipulatorFrame3
+            .set(addItem(IDMetaItem04.MatterManipulatorFrame3.ID, "Matter Manipulator Frame MKIII", ""));
         ItemList.MatterManipulatorLens3
-            .set(addItem(MatterManipulatorLens3.ID, "Matter Manipulator Lens Assembly MKIII", ""));
+            .set(addItem(IDMetaItem04.MatterManipulatorLens3.ID, "Matter Manipulator Lens Assembly MKIII", ""));
+        ItemList.MatterManipulatorAEDownlink
+            .set(addItem(IDMetaItem04.MatterManipulatorAEDownlink.ID, "Matter Manipulator ME Downlink", ""));
+        ItemList.MatterManipulatorQuantumDownlink
+            .set(addItem(IDMetaItem04.MatterManipulatorQuantumDownlink.ID, "Matter Manipulator Quantum Downlink", ""));
     }
 
     private void registerAllTieredTooltips() {
@@ -140,6 +132,8 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
         registerTieredTooltip(ItemList.MatterManipulatorTeleporterCore3.get(1), ZPM);
         registerTieredTooltip(ItemList.MatterManipulatorFrame3.get(1), ZPM);
         registerTieredTooltip(ItemList.MatterManipulatorLens3.get(1), ZPM);
+        registerTieredTooltip(ItemList.MatterManipulatorAEDownlink.get(1), IV);
+        registerTieredTooltip(ItemList.MatterManipulatorQuantumDownlink.get(1), ZPM);
     }
 
     private void addManipulatorRecipes() {
@@ -312,7 +306,8 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
                 ItemList.MatterManipulatorTeleporterCore1.get(1),
                 ItemList.MatterManipulatorComputerCore1.get(1),
                 ItemList.MatterManipulatorPowerCore1.get(1),
-                ItemList.MatterManipulatorFrame1.get(1))
+                ItemList.MatterManipulatorFrame1.get(1),
+                ItemList.MatterManipulatorAEDownlink.get(1))
             .fluidInputs(new FluidStack(solderIndalloy, (int) (L * 16)))
             .itemOutputs(ItemList.MatterManipulator1.get(1))
             .eut((int) TierEU.RECIPE_IV)
@@ -412,7 +407,8 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
                 ItemList.MatterManipulatorTeleporterCore2.get(1),
                 ItemList.MatterManipulatorComputerCore2.get(1),
                 ItemList.MatterManipulatorPowerCore2.get(1),
-                ItemList.MatterManipulatorFrame2.get(1))
+                ItemList.MatterManipulatorFrame2.get(1),
+                ItemList.MatterManipulatorAEDownlink.get(1))
             .fluidInputs(new FluidStack(solderIndalloy, (int) (L * 16)))
             .itemOutputs(ItemList.MatterManipulator2.get(1))
             .eut((int) TierEU.RECIPE_LuV)
@@ -501,6 +497,92 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
             .eut((int) TierEU.RECIPE_ZPM)
             .addTo(AssemblyLine);
 
+        ItemStack wirelessAccessPoint = AEApi.instance()
+            .definitions()
+            .blocks()
+            .wireless()
+            .maybeStack(1)
+            .get();
+
+        // ME Downlink
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(5),
+                wirelessAccessPoint.copy(),
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .energyCell()
+                    .maybeStack(1)
+                    .get(),
+                AEApi.instance()
+                    .definitions()
+                    .materials()
+                    .cell256kPart()
+                    .maybeStack(1)
+                    .get(),
+                getModItem(AE2FluidCraft.ID, "fluid_interface", 1),
+                ItemList.Conveyor_Module_IV.get(2),
+                ItemList.Electric_Pump_IV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1))
+            .fluidInputs(new FluidStack(solderIndalloy, (int) (L * 8)))
+            .itemOutputs(ItemList.MatterManipulatorAEDownlink.get(1))
+            .eut((int) TierEU.RECIPE_IV)
+            .duration(20 * SECONDS)
+            .addTo(RecipeMaps.assemblerRecipes);
+
+        // Quantum Downlink
+        GTValues.RA.stdBuilder()
+            .metadata(
+                RESEARCH_ITEM,
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .quantumRing()
+                    .maybeStack(1)
+                    .get())
+            .metadata(RESEARCH_TIME, 120 * MINUTES)
+            .itemInputs(
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .quantumRing()
+                    .maybeStack(8)
+                    .get(),
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .quantumLink()
+                    .maybeStack(1)
+                    .get(),
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .controller()
+                    .maybeStack(1)
+                    .get(),
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .energyCellDense()
+                    .maybeStack(1)
+                    .get(),
+                AEApi.instance()
+                    .definitions()
+                    .materials()
+                    .cell4096kPart()
+                    .maybeStack(1)
+                    .get(),
+                getModItem(AE2FluidCraft.ID, "fluid_interface", 1),
+                ItemList.Conveyor_Module_ZPM.get(2),
+                ItemList.Electric_Pump_ZPM.get(2),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4))
+            .fluidInputs(new FluidStack(solderIndalloy, (int) (L * 32)))
+            .itemOutputs(ItemList.MatterManipulatorQuantumDownlink.get(1))
+            .duration(1 * MINUTES)
+            .eut((int) TierEU.RECIPE_ZPM)
+            .addTo(AssemblyLine);
+
         // Manipulator MK3
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -509,7 +591,9 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
                 ItemList.MatterManipulatorTeleporterCore3.get(1),
                 ItemList.MatterManipulatorComputerCore3.get(1),
                 ItemList.MatterManipulatorPowerCore3.get(1),
-                ItemList.MatterManipulatorFrame3.get(1))
+                ItemList.MatterManipulatorFrame3.get(1),
+                ItemList.MatterManipulatorAEDownlink.get(1),
+                ItemList.MatterManipulatorQuantumDownlink.get(1))
             .fluidInputs(new FluidStack(solderIndalloy, (int) (L * 16)))
             .itemOutputs(ItemList.MatterManipulator3.get(1))
             .eut((int) TierEU.RECIPE_ZPM)

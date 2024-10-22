@@ -44,10 +44,13 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.util.item.AEItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -66,6 +69,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.items.matterManipulator.ItemMatterManipulator;
+import gregtech.common.items.matterManipulator.MatterManipulator;
 import gregtech.common.tileentities.machines.MTEMMUplinkMEHatch;
 import gtPlusPlus.core.block.ModBlocks;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
@@ -250,6 +254,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
         public char casingChar = 'A';
         public int maxHatches = 8;
+        public int width, height, length;
 
         public IStructureDefinition<MTEMMUplink> getStructureDefinition() {
             String[][] structure = getStructure();
@@ -258,10 +263,16 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
                 defText = structure;
                 defCasingCounts = new Char2IntArrayMap();
 
+                width = 0;
+                height = 0;
+                length = defText.length;
+
                 int z = 0;
                 for (String[] a : defText) {
                     int y = 0;
+                    height = Math.max(height, a.length);
                     for (String b : a) {
+                        width = Math.max(width, b.length());
                         for (int x = 0; x < b.length(); x++) {
                             char c = b.charAt(x);
                             defCasingCounts.put(c, defCasingCounts.getOrDefault(c, 0) + 1);
@@ -364,12 +375,8 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
                                                                                        // Machine Casing
     }
 
-    private static final Textures.BlockIcons.CustomIcon ACTIVE = new Textures.BlockIcons.CustomIcon(
-        "multitileentity/mmuplink/OVERLAY_FRONT_ACTIVE");
     private static final Textures.BlockIcons.CustomIcon ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         "multitileentity/mmuplink/OVERLAY_FRONT_ACTIVE_GLOW");
-    private static final Textures.BlockIcons.CustomIcon IDLE = new Textures.BlockIcons.CustomIcon(
-        "multitileentity/mmuplink/OVERLAY_FRONT_IDLE");
     private static final Textures.BlockIcons.CustomIcon IDLE_GLOW = new Textures.BlockIcons.CustomIcon(
         "multitileentity/mmuplink/OVERLAY_FRONT_IDLE_GLOW");
     private static final Textures.BlockIcons.CustomIcon OFF = new Textures.BlockIcons.CustomIcon(
@@ -379,38 +386,77 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
         int casing = getCasingIndex();
+
+        List<ITexture> textures = new ArrayList<>(3);
+
+        textures.add(getCasingTextureForId(casing));
+
         if (side == facing) {
-            if (active) {
-                if (uplinkHatches.stream()
-                    .anyMatch(hatch -> hatch.hasAnyRequests())) {
-                    return new ITexture[] { getCasingTextureForId(casing), TextureFactory.builder()
-                        .addIcon(ACTIVE)
-                        .extFacing()
-                        .build(),
-                        TextureFactory.builder()
-                            .addIcon(ACTIVE_GLOW)
-                            .extFacing()
-                            .glow()
-                            .build() };
-                } else {
-                    return new ITexture[] { getCasingTextureForId(casing), TextureFactory.builder()
-                        .addIcon(IDLE)
-                        .extFacing()
-                        .build(),
+            textures.add(
+                TextureFactory.builder()
+                    .addIcon(OFF)
+                    .extFacing()
+                    .build());
+
+            switch (getState()) {
+                case OFF: {
+                    break;
+                }
+                case IDLE: {
+                    textures.add(
                         TextureFactory.builder()
                             .addIcon(IDLE_GLOW)
                             .extFacing()
                             .glow()
-                            .build() };
+                            .build());
+                    break;
                 }
-            } else {
-                return new ITexture[] { getCasingTextureForId(casing), TextureFactory.builder()
-                    .addIcon(OFF)
-                    .extFacing()
-                    .build() };
+                case ACTIVE: {
+                    textures.add(
+                        TextureFactory.builder()
+                            .addIcon(ACTIVE_GLOW)
+                            .extFacing()
+                            .glow()
+                            .build());
+                    break;
+                }
             }
         }
-        return new ITexture[] { getCasingTextureForId(casing) };
+        return textures.toArray(new ITexture[textures.size()]);
+    }
+
+    public static enum UplinkState {
+        OFF,
+        IDLE,
+        ACTIVE,
+    }
+
+    @SideOnly(Side.CLIENT)
+    private UplinkState state;
+
+    public UplinkState getState() {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            if (getBaseMetaTileEntity().isActive()) {
+                if (uplinkHatches.stream()
+                    .anyMatch(hatch -> hatch.hasAnyRequests())) {
+                    return UplinkState.ACTIVE;
+                } else {
+                    return UplinkState.IDLE;
+                }
+            } else {
+                return UplinkState.OFF;
+            }
+        } else {
+            if (state == null) state = UplinkState.OFF;
+
+            return state;
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setState(UplinkState state) {
+        this.state = state;
+        getBaseMetaTileEntity().issueTextureUpdate();
     }
 
     @Override
@@ -420,13 +466,24 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         structure.getStructureDefinition();
 
         // spotless:off
-        tt.addMachineType("Matter Manipulator ME Uplink")
+        tt.addMachineType("Matter Manipulator Quantum Uplink")
             .addInfo("Interdimensional and infinite range uplink for matter manipulators.")
-            .addInfo("Connects directly to an ME system via a " + EnumChatFormatting.GOLD + ItemList.Hatch_MatterManipulatorUplink_ME.get(0).getDisplayName())
-            .addInfo("Consumes 1A ZPM constantly.")
+            .addInfo("Connects directly to an ME system via a " + EnumChatFormatting.GOLD + ItemList.Hatch_MatterManipulatorUplink_ME.get(0).getDisplayName() + EnumChatFormatting.GRAY + ".")
+            .addInfo("Consumes 1A ZPM while active.")
             .addInfo("Must be fed with plasma via an input hatch.")
             .addInfo("Transfers to/from the manipulator cost " + String.format("%,d", BASE_PLASMA_EU_COST) + " EU in plasma per item or per bucket.")
             .addInfo("Insert a compatible manipulator in the controller slot while the machine is running to bind it to the uplink.")
+            .beginStructureBlock(structure.width, structure.height, structure.length, true)
+            .addController("Front Center")
+            .addCasingInfoRange("Advanced Iridium Plated Machine Casing", structure.defCasingCounts.get('A') - structure.maxHatches, structure.defCasingCounts.get('A'), false)
+            .addCasingInfoExactly("Trinium Frame Box", structure.defCasingCounts.get('C'), false)
+            .addCasingInfoExactly("Matter Generation Coil", structure.defCasingCounts.get('D'), false)
+            .addCasingInfoExactly("Naquadah Alloy Frame Box", structure.defCasingCounts.get('B'), false)
+            .addCasingInfoExactly("Radiant Naquadah Alloy Casing", structure.defCasingCounts.get('E'), false)
+            .addInputHatch("Any Advanced Iridium Plated Machine Casing", 1)
+            .addEnergyHatch("Any Advanced Iridium Plated Machine Casing", 1)
+            .addMaintenanceHatch("Any Advanced Iridium Plated Machine Casing", 1)
+            .addOtherStructurePart(ItemList.Hatch_MatterManipulatorUplink_ME.get(1).getDisplayName(), "Any Advanced Iridium Plated Machine Casing", 1)
             .toolTipFinisher(AuthorPineapple);
         // spotless:on
 
@@ -750,14 +807,23 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         return super.onRunningTick(aStack);
     }
 
+    private UplinkState lastState;
+
     @Override
     @Nonnull
     public CheckRecipeResult checkProcessing() {
         mMaxProgresstime = 20;
-        mEUt = -131_072;
+        mEUt = (int) -TierEU.RECIPE_ZPM;
         mEfficiency = 10_000;
 
         UPLINKS.put(address, this);
+
+        UplinkState state = getState();
+
+        if (state != lastState) {
+            lastState = state;
+            MatterManipulator.sendUplinkStateUpdate(this);
+        }
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
