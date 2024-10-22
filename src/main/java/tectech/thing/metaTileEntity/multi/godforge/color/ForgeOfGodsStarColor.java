@@ -43,11 +43,11 @@ public class ForgeOfGodsStarColor {
         .setCustomDrawable(TecTechUITextures.PICTURE_RAINBOW_SQUARE)
         .registerPreset();
 
-    public static final ForgeOfGodsStarColor CLOUD_PICK = new ForgeOfGodsStarColor("Cloud's Pick")
+    public static final ForgeOfGodsStarColor CLOUDS_PICK = new ForgeOfGodsStarColor("Cloud's Pick")
         .addColor(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE, DEFAULT_GAMMA) // todo @cloud
         .registerPreset();
 
-    public static final ForgeOfGodsStarColor MAYA_PICK = new ForgeOfGodsStarColor("Maya's Pick")
+    public static final ForgeOfGodsStarColor MAYAS_PICK = new ForgeOfGodsStarColor("Maya's Pick")
         .addColor(0, 0, 0, 0.0f)
         .addColor(109, 201, 225, 1.0f)
         .addColor(255, 255, 255, 3.0f)

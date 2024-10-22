@@ -133,6 +133,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final int DEFAULT_FUEL_CONSUMPTION_FACTOR = 1;
     private static final int DEFAULT_MAX_BATTERY_CHARGE = 100;
     private static final int DEFAULT_RING_AMOUNT = 1;
+    private static final int DEFAULT_ROTATION_SPEED = 5;
+    private static final int DEFAULT_STAR_SIZE = 20;
+    private static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
 
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
@@ -171,9 +174,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     // Star cosmetics fields
     // actual star cosmetics
     private final StarColorStorage starColors = new StarColorStorage();
-    private String selectedStarColor = ForgeOfGodsStarColor.DEFAULT.getName();
-    private int rotationSpeed = 5;
-    private int starSize = 20;
+    private String selectedStarColor = DEFAULT_STAR_COLOR;
+    private int rotationSpeed = DEFAULT_ROTATION_SPEED;
+    private int starSize = DEFAULT_STAR_SIZE;
     // editing star color
     private ForgeOfGodsStarColor newStarColor = starColors.newTemplateColor();
     private int starColorR, starColorG, starColorB;
