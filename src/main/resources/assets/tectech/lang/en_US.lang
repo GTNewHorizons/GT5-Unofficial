@@ -1022,7 +1022,7 @@ fog.upgrade.text.30=Unlocks Magmatter production in the Heliofusion Exoticizer, 
 fog.debug.resetbutton.text=Reset
 fog.debug.resetbutton.tooltip=Resets all upgrades to zero
 fog.debug.unlockall.text=Unlock all upgrades
-fog.debug.gravitonshardsetter.tooltip=Set the amount of availabe graviton shards
+fog.debug.gravitonshardsetter.tooltip=Set the amount of available graviton shards
 
 fog.button.fuelconfig.tooltip=Fuel Configuration Menu
 fog.button.upgradetree.tooltip=Path of Celestial Transcendence
