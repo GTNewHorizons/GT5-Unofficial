@@ -3376,101 +3376,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + "Clicking on the logo in the controller gui opens an extensive information window,")
             .addInfo("explaining everything there is to know about this multiblock.")
             .beginStructureBlock(127, 29, 186, false)
+            .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
             .addStructureInfo(
-                "Total blocks needed for the structure with " + EnumChatFormatting.DARK_PURPLE
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "3"
-                    + EnumChatFormatting.GRAY
-                    + " rings:")
+                getRingText("3943", "7279", "11005") + "Transcendentally Amplified Magnetic Confinement Casing")
+            .addStructureInfo(getRingText("2819", "4831", "6567") + "Singularity Reinforced Stellar Shielding Casing")
+            .addStructureInfo(getRingText("272", "512", "824") + "Celestial Matter Guidance Casing")
+            .addStructureInfo(getRingText("130", "144", "158") + "Boundless Gravitationally Severed Structure Casing")
+            .addStructureInfo(getRingText("9", "54", "155") + "Spatially Transcendent Gravitational Lens Block")
             .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "3943"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "7279"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "11005"
-                    + EnumChatFormatting.GRAY
-                    + " Transcendentally Amplified Magnetic Confinement Casing")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "2819"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "4831"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "6567"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "272"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "512"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "824"
-                    + EnumChatFormatting.GRAY
-                    + " Celestial Matter Guidance Casing")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "130"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "144"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "158"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "9"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "54"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "155"
-                    + EnumChatFormatting.GRAY
-                    + " Spatially Transcendent Gravitational Lens Block")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "345"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "357"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "397"
-                    + EnumChatFormatting.DARK_PURPLE
-                    + " Remote"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "Medial"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "Central"
-                    + EnumChatFormatting.GRAY
-                    + " Graviton Flow Modulator")
+                getRingText("345", "357", "397") + getRingText("Remote", "Medial", "Central")
+                    + "Graviton Flow Modulator")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "36" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .addStructureInfoSeparator()
@@ -3479,6 +3394,20 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
             .toolTipFinisher(EnumChatFormatting.AQUA, 73);
         return tt;
+    }
+
+    private static String getRingText(String oneRing, String twoRings, String threeRings) {
+        return EnumChatFormatting.DARK_PURPLE + oneRing
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.DARK_GREEN
+            + twoRings
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.AQUA
+            + threeRings
+            + EnumChatFormatting.GRAY
+            + " ";
     }
 
     @Override

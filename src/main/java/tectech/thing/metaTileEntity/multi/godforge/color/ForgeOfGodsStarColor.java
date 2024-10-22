@@ -29,6 +29,7 @@ public class ForgeOfGodsStarColor {
     public static final int DEFAULT_GREEN = 204;
     public static final int DEFAULT_BLUE = 255;
     public static final float DEFAULT_GAMMA = 3.0f;
+    public static final int DEFAULT_CYCLE_SPEED = 1;
 
     public static final ForgeOfGodsStarColor DEFAULT = new ForgeOfGodsStarColor("Default")
         .addColor(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE, DEFAULT_GAMMA)
@@ -70,7 +71,7 @@ public class ForgeOfGodsStarColor {
 
     // Star render settings
     private final List<StarColorSetting> settings = new ArrayList<>();
-    private int cycleSpeed = 1;
+    private int cycleSpeed = DEFAULT_CYCLE_SPEED;
 
     protected ForgeOfGodsStarColor(String name) {
         this(name, LATEST_VERSION);
