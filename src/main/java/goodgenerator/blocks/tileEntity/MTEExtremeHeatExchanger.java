@@ -300,9 +300,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     public double getUnitSteamPower(String steam) {
         return switch (steam) {
             case "steam" -> 0.5;
-            case "ic2superheatedsteam" -> 1;
-            case "supercriticalsteam" -> 100;
-            case "densesupercriticalsteam" -> 1;
+            case "ic2superheatedsteam", "supercriticalsteam", "densesupercriticalsteam" -> 1;
             default -> -1;
         };
     }
