@@ -1179,7 +1179,7 @@ public class ItemMatterManipulator extends Item
 
         static {
             try {
-                Field field = ReflectionHelper.findField(EffectRenderer.class, "fxLayers");
+                Field field = ReflectionHelper.findField(EffectRenderer.class, "fxLayers", "field_78876_b", "c");
                 field.setAccessible(true);
                 GET_FXLAYERS = MethodHandles.lookup()
                     .unreflectGetter(field);
