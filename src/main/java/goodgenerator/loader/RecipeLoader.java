@@ -718,7 +718,7 @@ public class RecipeLoader {
                     ItemList.Electric_Pump_UV.get(8),
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64),
                     GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 64),
-                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Americium, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Americium, 8),
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.BlackPlutonium, 16),
                     ItemList.Circuit_Wafer_PPIC.get(32),
                     new Object[] { OrePrefixes.circuit.get(Materials.UHV), 1L })
