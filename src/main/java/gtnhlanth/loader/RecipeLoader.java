@@ -13,6 +13,7 @@ import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
@@ -3383,7 +3384,7 @@ public class RecipeLoader {
             .fluidOutputs(Materials.Acetone.getFluid(150))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(vacuumFreezerRecipes);
+            .addTo(fluidHeaterRecipes);
 
         // PTMEG Manipulation
 

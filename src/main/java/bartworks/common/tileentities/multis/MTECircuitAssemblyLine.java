@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static bartworks.util.BWUtil.ofGlassTieredMixed;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -64,7 +63,6 @@ import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
-import bartworks.util.BWTooltipReference;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -158,32 +156,22 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Circuit Assembler/Circuit Assembly Line")
-            .addInfo("Controller block for the Circuit Assembly Line")
+        tt.addMachineType("Circuit Assembler")
             .addInfo("Change Mode with Screwdriver")
             .addInfo("Does not lose efficiency when overclocked")
-            .addInfo(
-                "--------- " + EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("chat.cal.mode.0")
-                    + EnumChatFormatting.GRAY
-                    + " --------")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.0") + ":")
             .addInfo("Imprint this machine with a Circuit Imprint,")
             .addInfo("by putting the imprint in the controller")
             .addInfo("Every Circuit Assembly Line can only be imprinted ONCE")
-            .addInfo(
-                "--------- " + EnumChatFormatting.GOLD
-                    + StatCollector.translateToLocal("chat.cal.mode.1")
-                    + EnumChatFormatting.GRAY
-                    + " --------")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + StatCollector.translateToLocal("chat.cal.mode.1") + ":")
             .addInfo(
                 "Does Circuit Assembler recipes, Minimum Length: " + EnumChatFormatting.RED
                     + MINIMUM_CIRCUIT_ASSEMBLER_LENGTH
                     + EnumChatFormatting.GRAY)
             .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1.")
             .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
-            .addInfo("")
-            .addSeparator()
-            .addInfo(BWTooltipReference.TT_BLUEPRINT)
             .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
@@ -205,7 +193,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addOutputBus("As specified in final slice on layer 1", 4)
             .addOtherStructurePart(getColoredTierNameFromTier((byte) 4) + "+ Tier Glass", "As specified on layer 2", 5)
             .addMaintenanceHatch("Any layer 1 casing", 2)
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -275,8 +263,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         if (isImprinted()) aNBT.setTag(IMPRINT_KEY, this.type);
-        aNBT.setInteger(RUNNING_MODE_KEY, mode);
-        super.saveNBTData(aNBT);
+        super.setItemNBT(aNBT);
     }
 
     @Override

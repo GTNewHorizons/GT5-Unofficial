@@ -66,7 +66,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import ggfab.ConfigurationHandler;
-import ggfab.GGConstants;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -201,9 +200,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     private int currentInputLength;
     private String lastStopReason = "";
     private int currentRecipeParallel = 1;
-    // Batch mode will increase parallel per slice to try to get as close as possible to this amount of ticks
-    // per slice, but will never go over this amount.
-    private static final int BATCH_MODE_DESIRED_TICKS_PER_SLICE = 128;
 
     public MTEAdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -308,7 +304,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Assembling Line")
-            .addInfo("Controller block for the Advanced Assembling Line")
             .addInfo("Built exactly the same as standard Assembling Line")
             .addInfo("Assembling Line with item pipelining")
             .addInfo("All fluids are however consumed at start")
@@ -321,7 +316,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                     + " * total laser overclock count)")
             .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick.")
             .addInfo("EU/t is (number of slices working) * (overclocked EU/t)")
-            .addSeparator()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
@@ -338,7 +332,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInputHatch("Any layer 1 casing", 3)
             .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
             .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
-            .toolTipFinisher(GGConstants.GGMARK);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -586,6 +580,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             }
         }
 
+        endRecipeProcessing();
+
         boolean foundWorking = false;
         int working = 0;
         for (Slice slice : slices) {
@@ -609,10 +605,9 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 }
             }
         } else {
-            if (!super.onRunningTick(aStack)) return false;
+            return super.onRunningTick(aStack);
         }
 
-        endRecipeProcessing();
         return true;
     }
 
@@ -773,7 +768,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setEUt(inputVoltage);
 
             if (!mExoticEnergyHatches.isEmpty()) {
-                normalOCCalculator.setCurrentParallel((int) (1 / normalOCCalculator.calculateDurationUnderOneTick()))
+                normalOCCalculator
+                    .setCurrentParallel((int) Math.max(1 / normalOCCalculator.calculateDurationUnderOneTick(), 1))
                     .calculate();
                 int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
 

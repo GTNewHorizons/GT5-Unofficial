@@ -49,12 +49,11 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.api.objects.GTPPRenderedTexture;
@@ -149,7 +148,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected final MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the XL " + getTurbineType() + " Turbine")
             .addInfo("Runs as fast as 16 Large Turbines of the same type, takes the space of 12")
             .addInfo("Right-click with screwdriver to enable loose fit")
             .addInfo("Optimal flow will increase or decrease depending on fitting")
@@ -162,7 +160,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
         }
         tt.addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top Middle")
             .addCasingInfoMin(getCasingName(), 360, false)
@@ -178,7 +175,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         if (requiresMufflers()) {
             tt.addMufflerHatch("Any 7 dot hint (x4)", 7);
         }
-        tt.toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+        tt.toolTipFinisher();
         return tt;
     }
 
@@ -662,7 +659,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             mPollution += aPollutionLevel * getPollutionMultiplier() * mufflerReduction;
             for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
                 if (mPollution >= 10000) {
-                    if (PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10000)) {
+                    if (GTMod.gregtechproxy.mPollution) {
+                        Pollution.addPollution(this.getBaseMetaTileEntity(), 10000);
                         mPollution -= 10000;
                     }
                 } else {

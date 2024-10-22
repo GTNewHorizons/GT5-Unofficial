@@ -183,7 +183,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
-            .addInfo("Controller Block for the Fluid Shaper")
             .addInfo("Speeds up to a maximum of 200% faster than singleblock machines while running")
             .addInfo("Decays at double the Rate that it Speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")
@@ -191,38 +190,19 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             .addInfo("Gain " + PARALLELS_PER_WIDTH + " Parallels per Width Expansion and Multiplied by Voltage Tier")
             .addInfo("Energy Hatch Based on Glass Tier, UMV Glass Unlocks all")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .addInfo(AuthorOmdaCZ)
-            .addInfo(
-                "With the Help Of" + " "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Four"
-                    + EnumChatFormatting.RESET
-                    + ", "
-                    + EnumChatFormatting.AQUA
-                    + "GDCloud"
-                    + EnumChatFormatting.RESET
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "Ba"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "ps"
-                    + EnumChatFormatting.RESET
-                    + " & "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "TheEpicGamer274")
-            .addSeparator()
             .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
-            .addCasingInfoMin("Solidifier Casing", 146, false)
-            .addCasingInfoMin("Radiator Casing", 18, false)
-            .addCasingInfoMin("Heat Proof Casing", 4, false)
-            .addCasingInfoMin("Solid Steel Casing", 4, false)
+            .addCasingInfoRange("Solidifier Casing", 91, 211, false)
+            .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
+            .addCasingInfoRange("Heat Proof Machine Casing", 4, 16, false)
+            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 4, 16, false)
+            .addCasingInfoRange("Glass", 21, 117, true)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
 
@@ -281,14 +261,14 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         if (!checkPiece(MS_END, -4 - 2 * width, 4, 0) || !checkPiece(MS_END, 4 + 2 * width, 4, 0)) {
             return false;
         }
-        if (glassTier >= VoltageIndex.UMV) return true;
+
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (mEnergyHatch.mTier > glassTier) {
+            if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
                 return false;
             }
         }
 
-        return casingAmount >= (100 + width * 23);
+        return casingAmount >= (91 + width * 20) && mMaintenanceHatches.size() == 1;
     }
 
     @Override

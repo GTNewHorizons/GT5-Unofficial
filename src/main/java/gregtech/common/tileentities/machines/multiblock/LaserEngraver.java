@@ -289,7 +289,6 @@ public class LaserEngraver extends ComplexParallelController<LaserEngraver, Lase
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Laser Engraver")
             .addInfo("Used for Engraving")
-            .addSeparator()
             .beginStructureBlock(3, 3, 5, true)
             .addController("Front right center")
             .toolTipFinisher(GTValues.AuthorTheEpicGamer274);

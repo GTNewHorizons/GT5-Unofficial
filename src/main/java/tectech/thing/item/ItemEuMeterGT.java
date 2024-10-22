@@ -58,7 +58,11 @@ public class ItemEuMeterGT extends Item {
             if (tTileEntity instanceof BaseMetaTileEntity) {
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    EnumChatFormatting.AQUA + "----- X:"
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.STRIKETHROUGH
+                        + "-----"
+                        + EnumChatFormatting.RESET
+                        + EnumChatFormatting.AQUA
+                        + " X:"
                         + aX
                         + " Y:"
                         + aY
@@ -68,7 +72,9 @@ public class ItemEuMeterGT extends Item {
                         + aWorld.provider.dimensionId
                         + " S:"
                         + ordinalSide
-                        + " -----");
+                        + " "
+                        + EnumChatFormatting.STRIKETHROUGH
+                        + "-----");
                 GTUtility.sendChatToPlayer(
                     aPlayer,
                     translateToLocalFormatted("tt.keyphrase.Stored_energy", clientLocale) + ": "

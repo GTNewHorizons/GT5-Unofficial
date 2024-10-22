@@ -35,7 +35,6 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -209,7 +208,6 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
                                                                                          // distribute computation
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2")) // Needs a Parametrizer to
                                                                                          // be configured
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, false)
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
             .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.1.name"), 0, false) // 0x Computer Casing
@@ -230,7 +228,7 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 1) // Maintenance
                                                                                                 // Hatch: Any
                                                                                                 // Computer Casing
-            .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .toolTipFinisher();
         return tt;
     }
 

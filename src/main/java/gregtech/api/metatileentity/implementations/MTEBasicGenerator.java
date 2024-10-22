@@ -22,7 +22,7 @@ import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 
 public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMapWorkable {
 

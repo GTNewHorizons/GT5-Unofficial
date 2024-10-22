@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge_modules;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -27,7 +27,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.util.CommonValues;
 
 public class MTEMoltenModule extends MTEBaseModule {
 
@@ -151,17 +150,15 @@ public class MTEMoltenModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Smelter")
-            .addInfo("Controller block for the Helioflux Melting Core, a module of the Godforge.")
+            .addInfo("This is a module of the Godforge.")
             .addInfo("Must be part of a Godforge to function.")
             .addInfo("Used for high temperature material liquefaction.")
-            .addInfo(TOOLTIP_BAR)
+            .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The second module of the Godforge, this module melts materials directly into")
             .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
             .addInfo("as a regular solid instead.")
             .addInfo("This module is specialized towards parallel processing.")
-            .addInfo(TOOLTIP_BAR)
             .beginStructureBlock(7, 7, 13, false)
-            .addStructureInfo("The structure is too complex! See schematic for details.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY
@@ -175,7 +172,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(CommonValues.GODFORGE_MARK);
+            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
         return tt;
     }
 
