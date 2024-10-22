@@ -11,9 +11,9 @@ import net.minecraft.network.PacketBuffer;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.utils.Color;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
+import com.gtnewhorizons.modularui.api.math.Color;
 
 import tectech.thing.gui.TecTechUITextures;
 
@@ -48,10 +48,12 @@ public class ForgeOfGodsStarColor {
         .registerPreset();
 
     public static final ForgeOfGodsStarColor MAYA_PICK = new ForgeOfGodsStarColor("Maya's Pick")
-        .addColor(91, 206, 250, 3.0f)
-        .addColor(245, 169, 184, 3.0f)
+        .addColor(0, 0, 0, 0.0f)
+        .addColor(109, 201, 225, 1.0f)
         .addColor(255, 255, 255, 3.0f)
+        .addColor(255, 172, 210, 1.0f)
         .setCycleSpeed(1)
+        .setCustomDrawable(new Rectangle().setColor(Color.rgb(255, 172, 210)))
         .registerPreset();
 
     public static List<ForgeOfGodsStarColor> getDefaultColors() {
