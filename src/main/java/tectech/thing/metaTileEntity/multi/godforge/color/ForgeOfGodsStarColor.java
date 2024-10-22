@@ -61,7 +61,12 @@ public class ForgeOfGodsStarColor {
         .addColor(255, 255, 255, 3.0f)
         .addColor(255, 172, 210, 1.0f)
         .setCycleSpeed(1)
-        .setCustomDrawable(new Rectangle().setColor(Color.rgb(255, 172, 210)))
+        .setCustomDrawable(
+            new Rectangle().setColor(
+                Color.rgb(255, 172, 210),
+                Color.rgb(255, 255, 255),
+                Color.rgb(0, 0, 0),
+                Color.rgb(109, 201, 225)))
         .registerPreset();
 
     public static List<ForgeOfGodsStarColor> getDefaultColors() {
