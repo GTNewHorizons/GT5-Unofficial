@@ -75,7 +75,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 ComponentType.Electric_Motor.getComponent(7)
                     .get(32),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Polybenzimidazole, 16),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Iridium, 32),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 4),
                 ItemList.FluidSolidifierZPM.get(16L),
                 getALCircuit(8, 16),
                 getALCircuit(7, 20),
@@ -234,7 +234,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .metadata(RESEARCH_TIME, (2250 << t) * TICKS)
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Iridium, 6),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 1),
                 ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
                 ComponentType.Electric_Piston.getComponent(t)
@@ -263,7 +263,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .metadata(RESEARCH_TIME, (2250 << t) * TICKS)
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmium, 6),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Osmium, 1),
                 ComponentType.Robot_Arm.getComponent(t)
                     .get(8),
                 ComponentType.Electric_Piston.getComponent(t)

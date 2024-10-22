@@ -114,7 +114,8 @@ public class AssemblyLine implements Runnable {
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8) },
-                CustomItemList.DATApipe.get(8))
+                CustomItemList.DATApipe.get(8),
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Polybenzimidazole, 2) })
             .fluidInputs(
                 Materials.UUMatter.getFluid(1000),
                 Materials.Iridium.getMolten(1296),
