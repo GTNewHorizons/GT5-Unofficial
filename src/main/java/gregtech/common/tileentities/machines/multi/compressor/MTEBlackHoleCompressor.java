@@ -633,7 +633,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (shouldRender) {
             if (rendererTileEntity != null || createRenderBlock()) {
                 rendererTileEntity.toggleLaser(didDrain);
-                rendererTileEntity.setStability(blackHoleStability / 100F);
+                rendererTileEntity.setStability(Math.max(0, blackHoleStability / 100F));
             }
         }
 
