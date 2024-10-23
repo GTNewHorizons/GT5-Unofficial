@@ -217,7 +217,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             return true;
         } else {
             if (renderer != null) {
-                renderer.realism = !renderer.realism;
+                renderer.toggleRealism();
                 PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
                 return true;
             }
