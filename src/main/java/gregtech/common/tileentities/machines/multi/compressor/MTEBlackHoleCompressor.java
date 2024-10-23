@@ -45,6 +45,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -630,9 +631,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         } else blackHoleStatus = 3;
 
         if (shouldRender) {
-            if (rendererTileEntity == null) createRenderBlock();
-            rendererTileEntity.toggleLaser(didDrain);
-            rendererTileEntity.setStability(blackHoleStability / 100F);
+            if (rendererTileEntity != null || createRenderBlock()) {
+                rendererTileEntity.toggleLaser(didDrain);
+                rendererTileEntity.setStability(blackHoleStability / 100F);
+            }
         }
 
         blackHoleStability -= stabilityDecrease;
@@ -702,6 +704,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d != ForgeDirection.UP && d != ForgeDirection.DOWN;
+    }
+
+    @Override
     public void onBlockDestroyed() {
         destroyRenderBlock();
         super.onBlockDestroyed();
@@ -715,8 +722,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private boolean shouldRender = true;
     private TileEntityBlackhole rendererTileEntity = null;
 
-    private void createRenderBlock() {
-        if (!shouldRender) return;
+    // Returns true if render was actually created
+    private boolean createRenderBlock() {
+        if (!shouldRender || !mMachine) return false;
         IGregTechTileEntity base = this.getBaseMetaTileEntity();
         ForgeDirection opposite = getDirection().getOpposite();
         int x = 7 * opposite.offsetX;
@@ -732,6 +740,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         rendererTileEntity.startScaleChange(true);
         rendererTileEntity.setStability(blackHoleStability / 100F);
+        return true;
     }
 
     private void destroyRenderBlock() {
