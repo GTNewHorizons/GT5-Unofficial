@@ -2518,6 +2518,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Carbon.add(SubTag.NO_SMELTING);
         Boron.add(SubTag.SMELTING_TO_FLUID);
 
+<<<<<<< HEAD
+        Infinity.add(SubTag.BLACK_HOLE);
+=======
+>>>>>>> origin/master
         MaterialsUEVplus.TranscendentMetal.add(SubTag.BLACK_HOLE);
     }
 
