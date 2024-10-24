@@ -2,7 +2,6 @@ package gtPlusPlus.core.handler.events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,8 +26,8 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = "mobsinfo")
 public class EntityDeathHandler implements IMobExtraInfoProvider {
 
-    private static final HashMap<Class, ArrayList<Triplet<ItemStack, Integer, Integer>>> mMobDropMap = new HashMap<>();
-    private static final HashSet<Class> mInternalClassKeyCache = new HashSet<>();
+    private static final HashMap<Class<?>, ArrayList<Triplet<ItemStack, Integer, Integer>>> mMobDropMap = new HashMap<>();
+    private static final ArrayList<Class<?>> mInternalClassKeyCache = new ArrayList<>();
 
     /**
      * Provides the ability to provide custom drops upon the death of EntityLivingBase objects.
