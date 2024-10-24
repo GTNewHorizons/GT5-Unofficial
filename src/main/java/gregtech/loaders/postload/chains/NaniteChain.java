@@ -53,7 +53,8 @@ public class NaniteChain {
                 ItemList.Conveyor_Module_UV.get(16),
                 ItemList.Electric_Motor_UV.get(32),
                 new Object[] { OrePrefixes.circuit.get(Materials.LuV), 16 },
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32))
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.NaquadahAlloy, 4))
             .fluidInputs(
                 new FluidStack(solderIndalloy, 144 * 32),
                 Materials.HSSS.getMolten(144L * 32),
