@@ -25,12 +25,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -57,6 +57,9 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import appeng.api.features.INetworkEncodable;
+import appeng.api.implementations.parts.IPartCable;
+import appeng.api.parts.IPartHost;
+import appeng.api.parts.PartItemStack;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -64,8 +67,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntityPipe;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
@@ -75,8 +80,6 @@ import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
-import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
 
@@ -129,16 +132,17 @@ public class ItemMatterManipulator extends Item
     public static final int ALLOW_COPYING = 0b1 << counter++;
     public static final int ALLOW_EXCHANGING = 0b1 << counter++;
     public static final int ALLOW_MOVING = 0b1 << counter++;
+    public static final int ALLOW_CABLES = 0b1 << counter++;
 
-    public static final int ALL_MODES = ALLOW_GEOMETRY | ALLOW_COPYING | ALLOW_EXCHANGING | ALLOW_MOVING;
+    public static final int ALL_MODES = ALLOW_GEOMETRY | ALLOW_COPYING | ALLOW_EXCHANGING | ALLOW_MOVING | ALLOW_CABLES;
 
     public static enum ManipulatorTier {
 
         // spotless:off
         Tier0(32, 16, 20, 3,      1_000_000d, ALLOW_GEOMETRY),
-        Tier1(64, 32, 10, 5,    100_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING),
-        Tier2(128, 64, 5, 6,  1_000_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING),
-        Tier3(-1, 256, 2, 7, 10_000_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING | CONNECTS_TO_UPLINK);
+        Tier1(64, 32, 10, 5,    100_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_CONFIGURING | ALLOW_CABLES),
+        Tier2(128, 64, 5, 6,  1_000_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_CONFIGURING | ALLOW_CABLES | ALLOW_COPYING | ALLOW_MOVING),
+        Tier3(-1, 256, 2, 7, 10_000_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_CONFIGURING | ALLOW_CABLES | ALLOW_COPYING | ALLOW_MOVING | CONNECTS_TO_UPLINK);
         // spotless:on
 
         public final int tier = ordinal();
@@ -253,51 +257,19 @@ public class ItemMatterManipulator extends Item
 
     @Override
     public final boolean use(ItemStack stack, double toDischarge, EntityLivingBase holder) {
-        chargeFromArmor(stack, holder);
         if (holder instanceof EntityPlayer player && player.capabilities.isCreativeMode) return true;
         double toTransfer = discharge(stack, toDischarge, Integer.MAX_VALUE, true, false, true);
         if (Math.abs(toTransfer - toDischarge) < .0000001) {
             discharge(stack, toDischarge, Integer.MAX_VALUE, true, false, false);
-            chargeFromArmor(stack, holder);
             return true;
         }
         discharge(stack, toDischarge, Integer.MAX_VALUE, true, false, false);
-        chargeFromArmor(stack, holder);
         return false;
     }
 
     @Override
     public final void chargeFromArmor(ItemStack heldStack, EntityLivingBase holder) {
-        if (holder == null || holder.worldObj.isRemote) return;
-
-        for (int i = 1; i < 5; i++) {
-            ItemStack armourStack = holder.getEquipmentInSlot(i);
-
-            if (GTModHandler.isElectricItem(armourStack) && armourStack.getItem() instanceof IElectricItem armourItem) {
-
-                // don't suck small armours dry when they won't help meaningfully
-                if (armourItem.getMaxCharge(heldStack) < this.getMaxCharge(heldStack)) {
-                    continue;
-                }
-
-                if (armourItem.canProvideEnergy(armourStack) && armourItem.getTier(armourStack) >= getTier(heldStack)) {
-                    double discharged = ElectricItem.manager.discharge(
-                        armourStack,
-                        charge(heldStack, Integer.MAX_VALUE - 1, Integer.MAX_VALUE, true, true),
-                        Integer.MAX_VALUE,
-                        true,
-                        true,
-                        false);
-                    if (discharged > 0) {
-                        charge(heldStack, discharged, Integer.MAX_VALUE, true, false);
-                        if (holder instanceof EntityPlayer) {
-                            Container container = ((EntityPlayer) holder).openContainer;
-                            if (container != null) container.detectAndSendChanges();
-                        }
-                    }
-                }
-            }
-        }
+        // do nothing, there's no point in charging from armour because manipulator buffers are huge
     }
 
     @Override
@@ -400,17 +372,17 @@ public class ItemMatterManipulator extends Item
 
             if (state.config.action != null) {
                 addInfoLine(desc, "Pending Action: %s", switch (state.config.action) {
-                    case GEOM_MOVING_COORDS -> "Moving coordinates";
+                    case MOVING_COORDS -> "Moving coordinates";
                     case GEOM_SELECTING_BLOCK -> "Selecting blocks to place";
                     case MARK_COPY_A -> "Marking first copy corner";
                     case MARK_COPY_B -> "Marking second copy corner";
                     case MARK_CUT_A -> "Marking first cut corner";
                     case MARK_CUT_B -> "Marking second cut corner";
                     case MARK_PASTE -> "Marking paste location";
-                    case EXCH_MOVING_COORDS -> "Moving coordinates";
                     case EXCH_ADD_REPLACE -> "Adding block to replace whitelist";
                     case EXCH_SET_REPLACE -> "Setting block in replace whitelist";
                     case EXCH_SET_TARGET -> "Setting block to replace with";
+                    case PICK_CABLE -> "Picking cable";
                 });
             }
 
@@ -420,6 +392,7 @@ public class ItemMatterManipulator extends Item
                     case MOVING -> "Moving";
                     case COPYING -> "Copying";
                     case EXCHANGING -> "Exchanging";
+                    case CABLES -> "Cables";
                 });
             }
 
@@ -463,7 +436,7 @@ public class ItemMatterManipulator extends Item
             }
 
             if (state.config.placeMode == PlaceMode.EXCHANGING) {
-                var whitelist = state.config.replaceWhitelist;
+                List<JsonElement> whitelist = state.config.replaceWhitelist;
 
                 if (whitelist != null && whitelist.isEmpty()) whitelist = null;
 
@@ -471,10 +444,17 @@ public class ItemMatterManipulator extends Item
                     return blocks.stream()
                         .map(NBTState.Config::loadStack)
                         .map(stack -> stack.getDisplayName())
-                        .reduce((a, b) -> a + b)
+                        .reduce((a, b) -> a + ", " + b)
                         .get();
                 });
                 addInfoLine(desc, "Replacing blocks with: %s", state.config.replaceWith, with -> Config.loadStack(with).getDisplayName());
+            }
+
+            if (state.config.placeMode == PlaceMode.CABLES) {
+                addInfoLine(desc, "Coordinate A: %s", state.config.coordA);
+                addInfoLine(desc, "Coordinate B: %s", state.config.coordB);
+        
+                addInfoLine(desc, "Cable: %s", state.config.getCables(), ItemStack::getDisplayName);
             }
         }
 
@@ -528,20 +508,13 @@ public class ItemMatterManipulator extends Item
                 location.offset(ForgeDirection.getOrientation(hit.sideHit));
             }
 
-            if (state.config.placeMode == PlaceMode.GEOMETRY) {
+            if (state.config.placeMode == PlaceMode.GEOMETRY || state.config.placeMode == PlaceMode.EXCHANGING
+                || state.config.placeMode == PlaceMode.CABLES) {
                 state.config.coordA = location;
                 state.config.coordB = null;
                 state.config.coordC = null;
                 state.config.coordBOffset = new Vector3i();
-                state.config.action = PendingAction.GEOM_MOVING_COORDS;
-            }
-
-            if (state.config.placeMode == PlaceMode.EXCHANGING) {
-                state.config.coordA = location;
-                state.config.coordB = null;
-                state.config.coordC = null;
-                state.config.coordBOffset = new Vector3i();
-                state.config.action = PendingAction.EXCH_MOVING_COORDS;
+                state.config.action = PendingAction.MOVING_COORDS;
             }
 
             setState(stack, state);
@@ -560,10 +533,11 @@ public class ItemMatterManipulator extends Item
     public boolean handleAction(ItemStack itemStack, World world, EntityPlayer player, NBTState state,
         MovingObjectPosition hit) {
         switch (state.config.action) {
-            case GEOM_MOVING_COORDS: {
+            case MOVING_COORDS: {
                 Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
 
-                if (state.config.coordAOffset == null && state.config.coordBOffset != null
+                if (state.config.placeMode == PlaceMode.GEOMETRY && state.config.coordAOffset == null
+                    && state.config.coordBOffset != null
                     && state.config.coordCOffset == null
                     && state.config.shape.requiresC()) {
                     state.config.coordA = state.config.getCoordA(world, lookingAt);
@@ -614,17 +588,6 @@ public class ItemMatterManipulator extends Item
             case MARK_PASTE: {
                 state.config.coordC = new Location(world, MMUtils.getLookingAtLocation(player));
                 state.config.action = null;
-                return true;
-            }
-            case EXCH_MOVING_COORDS: {
-                Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
-
-                state.config.coordA = state.config.getCoordA(world, lookingAt);
-                state.config.coordB = state.config.getCoordB(world, lookingAt);
-                state.config.coordAOffset = null;
-                state.config.coordBOffset = null;
-                state.config.action = null;
-
                 return true;
             }
             case EXCH_SET_TARGET: {
@@ -691,6 +654,11 @@ public class ItemMatterManipulator extends Item
 
                 return true;
             }
+            case PICK_CABLE: {
+                onPickCable(world, player, itemStack, state, hit);
+                state.config.action = null;
+                return true;
+            }
         }
 
         return false;
@@ -728,6 +696,9 @@ public class ItemMatterManipulator extends Item
         if (state.config.placeMode == PlaceMode.EXCHANGING) {
             state.config.action = player.isSneaking() ? PendingAction.EXCH_SET_REPLACE : PendingAction.EXCH_SET_TARGET;
             handleAction(stack, player.worldObj, player, state, MMUtils.getHitResult(player));
+        }
+        if (state.config.placeMode == PlaceMode.CABLES) {
+            onPickCable(player.getEntityWorld(), player, stack, state, MMUtils.getHitResult(player));
         }
     }
 
@@ -775,6 +746,30 @@ public class ItemMatterManipulator extends Item
             String.format("Set %s to: %s", what, selected == null ? "nothing" : selected.getDisplayName()));
     }
 
+    private void onPickCable(World world, EntityPlayer player, ItemStack stack, NBTState state,
+        MovingObjectPosition hit) {
+        TileEntity te = hit == null ? null : world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);
+
+        ItemStack selected = null;
+
+        if (te instanceof IGregTechTileEntity igte && (igte.getMetaTileEntity() instanceof IMetaTileEntityCable
+            || igte.getMetaTileEntity() instanceof IMetaTileEntityPipe)) {
+            PendingBlock block = PendingBlock.fromPickBlock(world, player, hit);
+
+            selected = block == null ? null : block.toStack();
+        }
+
+        if (te instanceof IPartHost partHost && partHost.getPart(ForgeDirection.UNKNOWN) instanceof IPartCable cable) {
+            selected = cable.getItemStack(PartItemStack.Pick);
+        }
+
+        state.config.setCables(selected);
+
+        GTUtility.sendInfoToPlayer(
+            player,
+            String.format("Set cables to: %s", selected == null ? "nothing" : selected.getDisplayName()));
+    }
+
     static final Map<EntityPlayer, IBuildable> PENDING_BUILDS = new MapMaker().weakKeys()
         .makeMap();
 
@@ -808,7 +803,8 @@ public class ItemMatterManipulator extends Item
                 switch (state.config.placeMode) {
                     case GEOMETRY:
                     case COPYING:
-                    case EXCHANGING: {
+                    case EXCHANGING:
+                    case CABLES: {
                         PENDING_BUILDS.put(player, getPendingBuild(player, stack, state));
                         break;
                     }
@@ -927,6 +923,7 @@ public class ItemMatterManipulator extends Item
                     case COPYING -> addCopyingOptions(builder, buildContext, heldStack);
                     case MOVING -> addMovingOptions(builder, buildContext, heldStack);
                     case EXCHANGING -> addExchangingOptions(builder, buildContext, heldStack);
+                    case CABLES -> addCableOptions(builder, buildContext, heldStack);
                 }
             });
     }
@@ -982,6 +979,13 @@ public class ItemMatterManipulator extends Item
                     .hidden(!tier.hasCap(ALLOW_EXCHANGING))
                     .onClicked(() -> {
                         Messages.SetPlaceMode.sendToServer(PlaceMode.EXCHANGING);
+                    })
+                .done()
+                .option()
+                    .label("Cables")
+                    .hidden(!tier.hasCap(ALLOW_CABLES))
+                    .onClicked(() -> {
+                        Messages.SetPlaceMode.sendToServer(PlaceMode.CABLES);
                     })
                 .done()
             .done();
@@ -1200,6 +1204,43 @@ public class ItemMatterManipulator extends Item
             .done();
     }
 
+    private void addCableOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
+        builder
+            .option()
+                .label("Set Cable")
+                .onClicked(() -> {
+                    Messages.SetPendingAction.sendToServer(PendingAction.PICK_CABLE);
+                })
+            .done()
+            .branch()
+                .label("Move Coords")
+                .option()
+                    .label("Move Coord A")
+                    .onClicked(() -> {
+                        Messages.MoveA.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Move All")
+                    .onClicked(() -> {
+                        Messages.MoveAll.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Move Coord B")
+                    .onClicked(() -> {
+                        Messages.MoveB.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Move Here")
+                    .onClicked(() -> {
+                        Messages.MoveHere.sendToServer();
+                    })
+                .done()
+            .done();
+    }
+
     // spotless:on
 
     // #endregion
@@ -1251,7 +1292,8 @@ public class ItemMatterManipulator extends Item
 
                 switch (state.config.placeMode) {
                     case GEOMETRY:
-                    case EXCHANGING: {
+                    case EXCHANGING:
+                    case CABLES: {
                         renderGeom(event, state, player);
                         break;
                     }
@@ -1290,6 +1332,7 @@ public class ItemMatterManipulator extends Item
             Location coordA = state.config.getCoordA(player.worldObj, lookingAt);
             Location coordB = state.config.getCoordB(player.worldObj, lookingAt);
             Location coordC = state.config.getCoordC(player.worldObj, lookingAt);
+
             state.config.coordA = coordA;
             state.config.coordB = coordB;
             state.config.coordC = coordC;
@@ -1297,21 +1340,6 @@ public class ItemMatterManipulator extends Item
             boolean isAValid = coordA != null && coordA.isInWorld(player.worldObj);
             boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
             boolean isCValid = coordC != null && coordC.isInWorld(player.worldObj);
-
-            if (isAValid && state.config.coordAOffset != null) {
-                GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
-                drawRulers(player, coordA, false, event.partialTicks);
-            }
-
-            if (isBValid && state.config.coordBOffset != null) {
-                GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
-                drawRulers(player, coordB, false, event.partialTicks);
-            }
-
-            if (isCValid && state.config.coordCOffset != null) {
-                GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
-                drawRulers(player, coordC, false, event.partialTicks);
-            }
 
             if (state.config.placeMode == PlaceMode.GEOMETRY && state.config.shape == Shape.CYLINDER) {
                 if (isAValid && isBValid) {
@@ -1333,6 +1361,32 @@ public class ItemMatterManipulator extends Item
                         coordC.z = height.z;
                     }
                 }
+            }
+
+            if (isAValid && isBValid && state.config.placeMode == PlaceMode.CABLES) {
+                Objects.requireNonNull(coordA);
+                Objects.requireNonNull(coordB);
+
+                Vector3i b = NBTState.pinToAxes(coordA.toVec(), coordB.toVec());
+
+                coordB.x = b.x;
+                coordB.y = b.y;
+                coordB.z = b.z;
+            }
+
+            if (isAValid && state.config.coordAOffset != null) {
+                GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+                drawRulers(player, coordA, false, event.partialTicks);
+            }
+
+            if (isBValid && state.config.coordBOffset != null) {
+                GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+                drawRulers(player, coordB, false, event.partialTicks);
+            }
+
+            if (isCValid && state.config.coordCOffset != null) {
+                GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
+                drawRulers(player, coordC, false, event.partialTicks);
             }
 
             if (isAValid && isBValid) {

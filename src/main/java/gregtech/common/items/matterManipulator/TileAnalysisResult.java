@@ -92,7 +92,7 @@ public class TileAnalysisResult {
 
     private static final ForgeDirection[] ALL_DIRECTIONS = ForgeDirection.values();
 
-    private TileAnalysisResult() {
+    public TileAnalysisResult() {
 
     }
 

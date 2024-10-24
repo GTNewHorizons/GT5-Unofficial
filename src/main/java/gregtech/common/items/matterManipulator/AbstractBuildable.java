@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
@@ -629,12 +628,10 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
 
     private final HashMap<Pair<SoundResource, World>, SoundInfo> pendingSounds = new HashMap<>();
 
-    private static final Function<Pair<SoundResource, World>, SoundInfo> SOUND_INFO_CTOR = ignored -> new SoundInfo();
-
     protected void playSound(World world, int x, int y, int z, SoundResource sound) {
         Pair<SoundResource, World> pair = Pair.of(sound, world);
 
-        SoundInfo info = pendingSounds.computeIfAbsent(pair, SOUND_INFO_CTOR);
+        SoundInfo info = pendingSounds.computeIfAbsent(pair, ignored -> new SoundInfo());
 
         info.eventCount++;
         info.sumX += x;
@@ -644,16 +641,15 @@ public abstract class AbstractBuildable implements IPseudoInventory, IBuildable 
 
     protected void playSounds() {
         pendingSounds.forEach((pair, info) -> {
-            if (info.eventCount > 0) {
-                GTUtility.sendSoundToPlayers(
-                    pair.right(),
-                    pair.left(),
-                    5.0F,
-                    -1,
-                    (int) (info.sumX / info.eventCount),
-                    (int) (info.sumY / info.eventCount),
-                    (int) (info.sumZ / info.eventCount));
-            }
+            GTUtility.sendSoundToPlayers(
+                pair.right(),
+                pair.left(),
+                5.0F,
+                -1,
+                (int) (info.sumX / info.eventCount),
+                (int) (info.sumY / info.eventCount),
+                (int) (info.sumZ / info.eventCount));
         });
+        pendingSounds.clear();
     }
 }

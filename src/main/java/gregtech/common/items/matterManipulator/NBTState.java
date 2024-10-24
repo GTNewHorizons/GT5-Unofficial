@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -34,24 +32,25 @@ import com.google.gson.JsonElement;
 import appeng.api.AEApi;
 import appeng.api.config.SecurityPermissions;
 import appeng.api.features.ILocatable;
+import appeng.api.implementations.parts.IPartCable;
 import appeng.api.implementations.tiles.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.security.ISecurityGrid;
 import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.parts.IPartItem;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.DimensionalCoord;
 import appeng.tile.misc.TileSecurity;
 import appeng.tile.networking.TileWireless;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
+import gregtech.api.util.Lazy;
+import gregtech.common.blocks.BlockMachines;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.RegionAnalysis;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 
@@ -198,6 +197,7 @@ class NBTState {
             case COPYING, MOVING -> getAnalysis(world);
             case GEOMETRY -> getGeomPendingBlocks(world);
             case EXCHANGING -> getExchangeBlocks(world);
+            case CABLES -> getCableBlocks(world);
         };
     }
 
@@ -210,7 +210,7 @@ class NBTState {
             return new ArrayList<>();
         }
 
-        // Moving's result is only used visually since it has a special build algorithm
+        // MOVING's result is only used visually since it has a special build algorithm
         RegionAnalysis analysis = BlockAnalyzer
             .analyzeRegion(coordA.getWorld(), coordA, coordB, config.placeMode == PlaceMode.COPYING ? true : false);
 
@@ -256,6 +256,104 @@ class NBTState {
         }
 
         return pending;
+    }
+
+    private List<PendingBlock> getCableBlocks(World world) {
+        Location coordA = config.coordA;
+        Location coordB = config.coordB;
+
+        if (!Location.areCompatible(coordA, coordB) || !coordA.isInWorld(world)) {
+            return new ArrayList<>();
+        }
+
+        Vector3i a = coordA.toVec();
+        Vector3i b = pinToAxes(a, coordB.toVec());
+
+        ArrayList<PendingBlock> out = new ArrayList<>();
+
+        ItemStack stack = config.getCables();
+
+        if (stack == null) {
+            TileAnalysisResult noop = new TileAnalysisResult();
+
+            for (Vector3i voxel : getLineVoxels(a.x, a.y, a.z, b.x, b.y, b.z)) {
+                PendingBlock pendingBlock = new PendingBlock(
+                    world.provider.dimensionId,
+                    voxel.x,
+                    voxel.y,
+                    voxel.z,
+                    null);
+
+                pendingBlock.tileData = noop;
+
+                out.add(pendingBlock);
+            }
+        } else {
+            Block block = Block.getBlockFromItem(stack.getItem());
+
+            if (block instanceof BlockMachines) {
+                int start = 0, end = 0;
+                switch (new Vector3i(b).sub(a)
+                    .maxComponent()) {
+                    case 0: {
+                        start = b.x > 0 ? ForgeDirection.EAST.flag : ForgeDirection.WEST.flag;
+                        end = b.x < 0 ? ForgeDirection.EAST.flag : ForgeDirection.WEST.flag;
+                        break;
+                    }
+                    case 1: {
+                        start = b.y > 0 ? ForgeDirection.UP.flag : ForgeDirection.DOWN.flag;
+                        end = b.y < 0 ? ForgeDirection.UP.flag : ForgeDirection.DOWN.flag;
+                        break;
+                    }
+                    case 2: {
+                        start = b.z > 0 ? ForgeDirection.NORTH.flag : ForgeDirection.SOUTH.flag;
+                        end = b.z < 0 ? ForgeDirection.NORTH.flag : ForgeDirection.SOUTH.flag;
+                        break;
+                    }
+                }
+
+                for (Vector3i voxel : getLineVoxels(a.x, a.y, a.z, b.x, b.y, b.z)) {
+                    PendingBlock pendingBlock = new PendingBlock(
+                        world.provider.dimensionId,
+                        voxel.x,
+                        voxel.y,
+                        voxel.z,
+                        stack);
+
+                    pendingBlock.tileData = new TileAnalysisResult();
+                    pendingBlock.tileData.mConnections = (byte) (start | end);
+
+                    out.add(pendingBlock);
+                }
+
+                if (!out.isEmpty()) {
+                    out.get(0).tileData.mConnections &= ~start;
+                    out.get(out.size() - 1).tileData.mConnections &= ~end;
+                }
+            } else if (stack.getItem() instanceof IPartItem partItem
+                && partItem.createPartFromItemStack(stack) instanceof IPartCable cable) {
+                    Block cableBus = PendingBlock.AE_BLOCK_CABLE.get();
+
+                    for (Vector3i voxel : getLineVoxels(a.x, a.y, a.z, b.x, b.y, b.z)) {
+                        PendingBlock pendingBlock = new PendingBlock(
+                            world.provider.dimensionId,
+                            voxel.x,
+                            voxel.y,
+                            voxel.z,
+                            stack);
+
+                        pendingBlock.setBlock(cableBus, 0);
+
+                        pendingBlock.tileData = new TileAnalysisResult();
+                        pendingBlock.tileData.mAEParts = new AEPartData[7];
+                        pendingBlock.tileData.mAEParts[ForgeDirection.UNKNOWN.ordinal()] = new AEPartData(cable);
+
+                        out.add(pendingBlock);
+                    }
+                }
+        }
+
+        return out;
     }
 
     private List<PendingBlock> getGeomPendingBlocks(World world) {
@@ -401,6 +499,7 @@ class NBTState {
         ItemStack edges = config.getEdges();
         ItemStack faces = config.getFaces();
         ItemStack volumes = config.getVolumes();
+
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
@@ -623,13 +722,13 @@ class NBTState {
         public Location coordA, coordB, coordC;
         public Vector3i coordAOffset, coordBOffset, coordCOffset;
 
-        public JsonElement corners, edges, faces, volumes;
+        public JsonElement corners, edges, faces, volumes, cables;
 
         public List<JsonElement> replaceWhitelist;
         public JsonElement replaceWith;
 
         public static JsonElement saveStack(ItemStack stack) {
-            if (stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemBlock)) {
+            if (stack == null || stack.getItem() == null) {
                 return null;
             }
 
@@ -672,6 +771,14 @@ class NBTState {
 
         public ItemStack getVolumes() {
             return loadStack(volumes);
+        }
+
+        public void setCables(ItemStack cables) {
+            this.cables = saveStack(cables);
+        }
+
+        public ItemStack getCables() {
+            return loadStack(cables);
         }
 
         public Location getCoordA(World world, Vector3i lookingAt) {
@@ -717,6 +824,7 @@ class NBTState {
             result = prime * result + ((edges == null) ? 0 : edges.hashCode());
             result = prime * result + ((faces == null) ? 0 : faces.hashCode());
             result = prime * result + ((volumes == null) ? 0 : volumes.hashCode());
+            result = prime * result + ((cables == null) ? 0 : cables.hashCode());
             result = prime * result + ((replaceWhitelist == null) ? 0 : replaceWhitelist.hashCode());
             result = prime * result + ((replaceWith == null) ? 0 : replaceWith.hashCode());
             return result;
@@ -763,6 +871,9 @@ class NBTState {
             if (volumes == null) {
                 if (other.volumes != null) return false;
             } else if (!volumes.equals(other.volumes)) return false;
+            if (cables == null) {
+                if (other.cables != null) return false;
+            } else if (!cables.equals(other.cables)) return false;
             if (replaceWhitelist == null) {
                 if (other.replaceWhitelist != null) return false;
             } else if (!replaceWhitelist.equals(other.replaceWhitelist)) return false;
@@ -771,7 +882,6 @@ class NBTState {
             } else if (!replaceWith.equals(other.replaceWith)) return false;
             return true;
         }
-
     }
 
     public static Vector3i pinToPlanes(Vector3i origin, Vector3i point) {
@@ -800,6 +910,16 @@ class NBTState {
         };
     }
 
+    public static Vector3i pinToAxes(Vector3i origin, Vector3i point) {
+        return switch (new Vector3i(point).sub(origin)
+            .maxComponent()) {
+            case 0 -> new Vector3i(point.x, origin.y, origin.z);
+            case 1 -> new Vector3i(origin.x, point.y, origin.z);
+            case 2 -> new Vector3i(origin.x, origin.y, point.z);
+            default -> throw new AssertionError();
+        };
+    }
+
     static enum Shape {
 
         LINE,
@@ -816,17 +936,17 @@ class NBTState {
     }
 
     static enum PendingAction {
-        GEOM_MOVING_COORDS,
-        GEOM_SELECTING_BLOCK,
+        MOVING_COORDS,
         MARK_COPY_A,
         MARK_COPY_B,
         MARK_CUT_A,
         MARK_CUT_B,
         MARK_PASTE,
-        EXCH_MOVING_COORDS,
+        GEOM_SELECTING_BLOCK,
         EXCH_SET_TARGET,
         EXCH_ADD_REPLACE,
         EXCH_SET_REPLACE,
+        PICK_CABLE,
     }
 
     static enum BlockSelectMode {
@@ -848,6 +968,7 @@ class NBTState {
         MOVING,
         COPYING,
         EXCHANGING,
+        CABLES,
     }
 
     static class PendingBlock extends Location {
@@ -876,21 +997,25 @@ class NBTState {
             setBlock(block, meta);
         }
 
-        public void reset() {
+        public PendingBlock reset() {
             this.block = null;
             this.item = null;
             this.blockId = null;
             this.metadata = 0;
+
+            return this;
         }
 
-        public void setBlock(Block block, int metadata) {
+        public PendingBlock setBlock(Block block, int metadata) {
             reset();
 
             this.blockId = GameRegistry.findUniqueIdentifierFor(block == null ? Blocks.air : block);
             this.metadata = metadata;
+
+            return this;
         }
 
-        public void setBlock(ItemStack stack) {
+        public PendingBlock setBlock(ItemStack stack) {
             reset();
 
             Optional<Block> block = Optional.ofNullable(stack)
@@ -901,8 +1026,15 @@ class NBTState {
                 this.block = block.get();
                 this.item = (ItemBlock) Item.getItemFromBlock(block.get());
                 this.blockId = GameRegistry.findUniqueIdentifierFor(block.get());
-                this.metadata = this.item.getMetadata(Items.feather.getDamage(stack));
+                this.metadata = this.item != null && this.item.getHasSubtypes() ? Items.feather.getDamage(stack) : 0;
             }
+
+            return this;
+        }
+
+        public PendingBlock setTileData(TileAnalysisResult tileData) {
+            this.tileData = tileData;
+            return this;
         }
 
         public Block getBlock() {
@@ -931,6 +1063,14 @@ class NBTState {
             return item == null ? null : new ItemStack(item, 1, metadata);
         }
 
+        public static final Lazy<Block> AE_BLOCK_CABLE = new Lazy<>(
+            () -> AEApi.instance()
+                .definitions()
+                .blocks()
+                .multiPart()
+                .maybeBlock()
+                .get());
+
         public boolean isFree() {
             Block block = getBlock();
 
@@ -938,12 +1078,7 @@ class NBTState {
                 return true;
             }
 
-            if (block == AEApi.instance()
-                .definitions()
-                .blocks()
-                .multiPart()
-                .maybeBlock()
-                .get()) {
+            if (block == AE_BLOCK_CABLE.get() && tileData != null) {
                 return true;
             }
 
@@ -1085,24 +1220,7 @@ class NBTState {
         }
 
         public World getWorld() {
-            if (FMLCommonHandler.instance()
-                .getSide() == Side.SERVER) {
-                return getServerWorld();
-            } else {
-                return getClientWorld();
-            }
-        }
-
-        @SideOnly(Side.SERVER)
-        private World getServerWorld() {
             return DimensionManager.getWorld(worldId);
-        }
-
-        @SideOnly(Side.CLIENT)
-        private World getClientWorld() {
-            WorldClient world = Minecraft.getMinecraft().theWorld;
-
-            return world.provider.dimensionId == worldId ? world : null;
         }
 
         public Location offset(ForgeDirection dir) {

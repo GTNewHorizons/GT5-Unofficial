@@ -83,7 +83,7 @@ public class PendingBuild extends AbstractBuildable {
             if (PendingBlock.isSameBlock(next, existing)) {
                 PendingBlock block = pendingBlocks.removeFirst();
 
-                if (block.tileData != null) {
+                if (block.tileData != null && tier.hasCap(ItemMatterManipulator.ALLOW_CONFIGURING)) {
                     applyContext.pendingBlock = block;
                     block.tileData.apply(applyContext);
                 }
@@ -205,7 +205,7 @@ public class PendingBuild extends AbstractBuildable {
                     0,
                     pending.metadata);
 
-                if (pending.tileData != null) {
+                if (pending.tileData != null && tier.hasCap(ItemMatterManipulator.ALLOW_CONFIGURING)) {
                     applyContext.pendingBlock = pending;
                     pending.tileData.apply(applyContext);
                 }

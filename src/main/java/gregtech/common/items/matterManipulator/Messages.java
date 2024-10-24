@@ -54,6 +54,7 @@ enum Messages {
             case EXCHANGING -> ItemMatterManipulator.ALLOW_EXCHANGING;
             case GEOMETRY -> 0;
             case MOVING -> ItemMatterManipulator.ALLOW_MOVING;
+            case CABLES -> ItemMatterManipulator.ALLOW_CABLES;
         };
 
         if (manipulator.tier.hasCap(requiredBit)) {
@@ -72,25 +73,25 @@ enum Messages {
     }))),
     SetShape(server(enumPacket(Shape.values(), (state, value) -> state.config.shape = value))),
     MoveA(server(simple((player, stack, manipulator, state) -> {
-        state.config.action = PendingAction.GEOM_MOVING_COORDS;
+        state.config.action = PendingAction.MOVING_COORDS;
         state.config.coordAOffset = new Vector3i();
         state.config.coordBOffset = null;
         state.config.coordBOffset = null;
     }))),
     MoveB(server(simple((player, stack, manipulator, state) -> {
-        state.config.action = PendingAction.GEOM_MOVING_COORDS;
+        state.config.action = PendingAction.MOVING_COORDS;
         state.config.coordAOffset = null;
         state.config.coordBOffset = new Vector3i();
         state.config.coordBOffset = null;
     }))),
     MoveC(server(simple((player, stack, manipulator, state) -> {
-        state.config.action = PendingAction.GEOM_MOVING_COORDS;
+        state.config.action = PendingAction.MOVING_COORDS;
         state.config.coordAOffset = null;
         state.config.coordBOffset = null;
         state.config.coordBOffset = new Vector3i();
     }))),
     MoveAll(server(simple((player, stack, manipulator, state) -> {
-        state.config.action = PendingAction.GEOM_MOVING_COORDS;
+        state.config.action = PendingAction.MOVING_COORDS;
 
         Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
 
