@@ -92,6 +92,7 @@ import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.entities.EntityItemLarge;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
@@ -626,6 +627,8 @@ public class GTClient extends GTProxy implements Runnable {
         mPreference = new GTClientPreference();
 
         Materials.initClient();
+
+        EntityItemLarge.registerClient();
     }
 
     @Override

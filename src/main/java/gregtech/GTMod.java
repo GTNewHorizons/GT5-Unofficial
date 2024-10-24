@@ -88,6 +88,7 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
 import gregtech.common.covers.CoverFacadeAE;
+import gregtech.common.items.MetaGeneratedItem04;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
@@ -371,6 +372,7 @@ public class GTMod implements IGTMod {
         new GTItemIterator().run();
         gregtechproxy.registerUnificationEntries();
         new FuelLoader().run();
+        MetaGeneratedItem04.INSTANCE.addRecipes();
 
         if (Mods.Waila.isModLoaded()) {
             Waila.init();

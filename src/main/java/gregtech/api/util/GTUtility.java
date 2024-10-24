@@ -83,6 +83,7 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
@@ -120,6 +121,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
@@ -498,6 +500,41 @@ public class GTUtility {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
             aPlayer.addChatComponentMessage(new ChatComponentText(aChatMessage));
         }
+    }
+
+    public static void sendErrorToPlayer(EntityPlayer aPlayer, String aChatMessage) {
+        if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
+            aPlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED + aChatMessage));
+        }
+    }
+
+    public static void sendInfoToPlayer(EntityPlayer aPlayer, String aChatMessage) {
+        if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
+            aPlayer.addChatComponentMessage(
+                new ChatComponentText(
+                    EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY.toString() + aChatMessage));
+        }
+    }
+
+    public static void sendChatToPlayer(UUID playerId, String chatMessage) {
+        EntityPlayer player = getPlayerById(playerId);
+
+        if (player != null) {
+            sendChatToPlayer(player, chatMessage);
+        }
+    }
+
+    public static EntityPlayer getPlayerById(UUID playerId) {
+        for (EntityPlayer player : MinecraftServer.getServer()
+            .getConfigurationManager().playerEntityList) {
+            if (player.getGameProfile()
+                .getId()
+                .equals(playerId)) {
+                return player;
+            }
+        }
+
+        return null;
     }
 
     public static void checkAvailabilities() {
@@ -1774,6 +1811,88 @@ public class GTUtility {
             GTOreDictUnificator.get_nocopy(aStack1),
             GTOreDictUnificator.get_nocopy(aStack2),
             aIgnoreNBT);
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(Iterable<ItemStack> stacks) {
+        return getItemStackHistogram(stacks, true);
+    }
+
+    public static ItemStackMap<Long> getItemStackHistogram(Iterable<ItemStack> stacks, boolean NBTSensitive) {
+        ItemStackMap<Long> histogram = new ItemStackMap<>(NBTSensitive);
+
+        if (stacks == null) return histogram;
+
+        for (ItemStack stack : stacks) {
+            if (stack == null || stack.getItem() == null) continue;
+            histogram.merge(stack, (long) stack.stackSize, (Long a, Long b) -> a + b);
+        }
+
+        return histogram;
+    }
+
+    public static List<ItemStack> getStacksOfSize(ItemStackMap<Long> map, int maxStackSize) {
+        ArrayList<ItemStack> list = new ArrayList<>();
+
+        map.forEach((item, amount) -> {
+            while (amount > 0) {
+                int toRemove = Math
+                    .min(amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : amount.intValue(), maxStackSize);
+
+                ItemStack copy = item.copy();
+                copy.stackSize = toRemove;
+                list.add(copy);
+
+                amount -= toRemove;
+            }
+        });
+
+        return list;
+    }
+
+    public static List<ItemStack> getStacksOfSize(List<ItemStack> map, int maxStackSize) {
+        ArrayList<ItemStack> list = new ArrayList<>();
+
+        map.forEach(stack -> {
+            while (stack.stackSize > 0) {
+                int toRemove = Math.min(stack.stackSize, maxStackSize);
+
+                ItemStack copy = stack.copy();
+                copy.stackSize = toRemove;
+                list.add(copy);
+
+                stack.stackSize -= toRemove;
+            }
+        });
+
+        return list;
+    }
+
+    public static List<ItemStack> mergeStacks(List<ItemStack> stacks) {
+        return mergeStacks(stacks, false, false);
+    }
+
+    public static List<ItemStack> mergeStacks(List<ItemStack> stacks, boolean keepNBT, boolean NBTSensitive) {
+        ArrayList<ItemStack> out = new ArrayList<>();
+        HashMap<ItemId, ItemStack> map = new HashMap<>();
+
+        for (ItemStack stack : stacks) {
+            if (stack == null || stack.getItem() == null) continue;
+
+            ItemId id = NBTSensitive ? ItemId.create(stack) : ItemId.createWithoutNBT(stack);
+
+            ItemStack match = map.get(id);
+
+            if (match == null) {
+                match = stack.copy();
+                if (!keepNBT) match.setTagCompound(null);
+                map.put(id, match);
+                out.add(match);
+            } else {
+                match.stackSize += stack.stackSize;
+            }
+        }
+
+        return out;
     }
 
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
@@ -4516,10 +4635,26 @@ public class GTUtility {
         return MathHelper.clamp_int(val, lo, hi);
     }
 
+    public static int min(int first, int... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            int l = rest[i];
+            if (l < first) first = l;
+        }
+        return first;
+    }
+
     public static long min(long first, long... rest) {
         for (int i = 0; i < rest.length; i++) {
             long l = rest[i];
             if (l < first) first = l;
+        }
+        return first;
+    }
+
+    public static int max(int first, int... rest) {
+        for (int i = 0; i < rest.length; i++) {
+            int l = rest[i];
+            if (l > first) first = l;
         }
         return first;
     }
@@ -4633,6 +4768,25 @@ public class GTUtility {
         if (list == null) return Stream.empty();
         return IntStream.range(0, list.tagCount())
             .mapToObj(list::getCompoundTagAt);
+    }
+
+    public static Stream<ItemStack> streamInventory(IInventory inv) {
+        return IntStream.range(0, inv.getSizeInventory())
+            .mapToObj(inv::getStackInSlot);
+    }
+
+    public static ItemStack[] inventoryToArray(IInventory inv) {
+        return inventoryToArray(inv, true);
+    }
+
+    public static ItemStack[] inventoryToArray(IInventory inv, boolean copyStacks) {
+        ItemStack[] array = new ItemStack[inv.getSizeInventory()];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = copyStacks ? ItemStack.copyItemStack(inv.getStackInSlot(i)) : inv.getStackInSlot(i);
+        }
+
+        return array;
     }
 
     public static boolean equals(ItemStack[] a, ItemStack[] b) {
@@ -4839,8 +4993,83 @@ public class GTUtility {
         @Nonnull
         public ItemStack getItemStack() {
             ItemStack itemStack = new ItemStack(item(), 1, metaData());
-            itemStack.setTagCompound(nbt());
+            NBTTagCompound nbt = nbt();
+            itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
             return itemStack;
+        }
+
+        @Nonnull
+        public ItemStack getItemStack(int stackSize) {
+            ItemStack itemStack = new ItemStack(item(), stackSize, metaData());
+            NBTTagCompound nbt = nbt();
+            itemStack.setTagCompound(nbt == null ? null : (NBTTagCompound) nbt.copy());
+            return itemStack;
+        }
+    }
+
+    @AutoValue
+    public abstract static class FluidId {
+
+        public static FluidId create(NBTTagCompound tag) {
+            return new AutoValue_GTUtility_FluidId(
+                FluidRegistry.getFluid(tag.getString("FluidName")),
+                tag.hasKey("Tag", Constants.NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
+                tag.hasKey("Amount", Constants.NBT.TAG_INT) ? tag.getInteger("Amount") : null);
+        }
+
+        public NBTTagCompound writeToNBT() {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setString("FluidName", fluid().getName());
+            if (nbt() != null) tag.setTag("Tag", nbt());
+            Integer amount = amount();
+            if (amount != null) tag.setInteger("Amount", amount);
+            return tag;
+        }
+
+        public static FluidId create(FluidStack fluidStack) {
+            return createWithCopy(fluidStack.getFluid(), null, fluidStack.tag);
+        }
+
+        public static FluidId createWithAmount(FluidStack fluidStack) {
+            return createWithCopy(fluidStack.getFluid(), (Integer) fluidStack.amount, fluidStack.tag);
+        }
+
+        public static FluidId create(Fluid fluid) {
+            return createNoCopy(fluid, null, null);
+        }
+
+        public static FluidId createWithCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+            return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
+        }
+
+        /**
+         * This method does not copy the NBT tag.
+         */
+        public static FluidId createNoCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+            return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
+        }
+
+        protected abstract Fluid fluid();
+
+        @Nullable
+        protected abstract NBTTagCompound nbt();
+
+        @Nullable
+        protected abstract Integer amount();
+
+        @Nonnull
+        public FluidStack getFluidStack() {
+            NBTTagCompound nbt = nbt();
+            return new FluidStack(fluid(), 1, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+        }
+
+        @Nonnull
+        public FluidStack getFluidStack(int amount) {
+            NBTTagCompound nbt = nbt();
+            return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
     }
 
