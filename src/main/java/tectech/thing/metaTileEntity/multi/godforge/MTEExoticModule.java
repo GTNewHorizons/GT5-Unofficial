@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -42,6 +43,8 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.fluids.FluidTanksHandler;
 import com.gtnewhorizons.modularui.api.fluids.IFluidTanksHandler;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -53,6 +56,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.MaterialsUEVplus;
@@ -87,12 +91,14 @@ public class MTEExoticModule extends MTEBaseModule {
     private boolean recipeInProgress = false;
     private boolean recipeRegenerated = false;
     private boolean magmatterMode = false;
+    private boolean isCoremodPresent = NewHorizonsCoreMod.isModLoaded();
     private FluidStack[] randomizedFluidInput = new FluidStack[] {};
     private ItemStack[] randomizedItemInput = new ItemStack[] {};
     private GTRecipe plasmaRecipe = null;
     private BigInteger powerForRecipe = BigInteger.ZERO;
     private static final int NUMBER_OF_INPUTS = 7;
     private static final int INPUT_LIST_WINDOW_ID = 11;
+    private static final int POSSIBLE_INPUTS_WINDOW_ID = 12;
 
     public MTEExoticModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -465,6 +471,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
         super.addUIWidgets(builder, buildContext);
         buildContext.addSyncedWindow(INPUT_LIST_WINDOW_ID, this::createInputListWindow);
+        buildContext.addSyncedWindow(POSSIBLE_INPUTS_WINDOW_ID, this::createPossibleInputsWindow);
         builder.widget(createMagmatterSwitch(builder));
         builder.widget(createExpectedInputsButton());
         builder.widget(
@@ -548,6 +555,10 @@ public class MTEExoticModule extends MTEBaseModule {
                 builder,
                 (widget, val) -> widget.notifyTooltipChange()));
 
+        if (isCoremodPresent) {
+            builder.widget(createPossibleInputsButton());
+        }
+
         return builder.build();
     }
 
@@ -561,6 +572,153 @@ public class MTEExoticModule extends MTEBaseModule {
             .setPlayClickSound(true)
             .setSize(16, 16)
             .setPos(8, 69);
+    }
+
+    protected ModularWindow createPossibleInputsWindow(final EntityPlayer player) {
+        final int WIDTH = 300;
+        final int HEIGHT = 143;
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setPos(284, 4));
+
+        int QGPItemMapSize = exoticModulePlasmaItemMap.size();
+        int QGPFluidMapSize = exoticModulePlasmaFluidMap.size();
+
+        IItemHandlerModifiable QGPItemHandler = new ItemStackHandler(QGPItemMapSize);
+        IFluidTanksHandler QGPFluidHandler = new FluidTanksHandler(QGPFluidMapSize, 128000);
+
+        List<Map.Entry<ItemStack, Integer>> itemEntryList = new ArrayList<>(exoticModulePlasmaItemMap.entrySet());
+        List<Map.Entry<FluidStack, Integer>> fluidEntryList = new ArrayList<>(exoticModulePlasmaFluidMap.entrySet());
+
+        int slotYQGP = 0;
+
+        for (int i = 0; i < QGPItemMapSize + QGPFluidMapSize; i++) {
+
+            int slotXQGP = 6 + i % 16 * 18;
+            slotYQGP = 17 + i / 16 * 18;
+
+            if (i < QGPItemMapSize) {
+                QGPItemHandler.setStackInSlot(
+                    i,
+                    itemEntryList.get(i)
+                        .getKey()
+                        .splitStack(1));
+                builder.widget(
+                    new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
+                        .setPos(slotXQGP, slotYQGP)
+                        .setSize(18, 18));
+                builder.widget(
+                    new SlotWidget(QGPItemHandler, i).setAccess(false, false)
+                        .setRenderStackSize(false)
+                        .disableInteraction()
+                        .setPos(slotXQGP, slotYQGP)
+                        .setSize(18, 18));
+            } else {
+                QGPFluidHandler.setFluidInTank(
+                    i - QGPItemMapSize,
+                    fluidEntryList.get(i - QGPItemMapSize)
+                        .getKey()
+                        .getFluid(),
+                    1);
+                builder.widget(
+                    new DrawableWidget().setDrawable(ModularUITextures.FLUID_SLOT)
+                        .setSize(18, 18)
+                        .setPos(slotXQGP, slotYQGP))
+                    .widget(
+                        new FluidSlotWidget(QGPFluidHandler, i - QGPItemMapSize).setInteraction(false, false)
+                            .setSize(18, 18)
+                            .setPos(slotXQGP, slotYQGP));
+            }
+        }
+
+        int magMatterItemMapSize = exoticModuleMagmatterItemMap.size();
+
+        IItemHandlerModifiable magMatterItemHandler = new ItemStackHandler(magMatterItemMapSize);
+        IFluidTanksHandler magMatterFluidHandler = new FluidTanksHandler(2, 128000);
+        magMatterFluidHandler.setFluidInTank(
+            0,
+            MaterialsUEVplus.Space.getMolten(1)
+                .getFluid(),
+            1);
+        magMatterFluidHandler.setFluidInTank(
+            1,
+            MaterialsUEVplus.Time.getMolten(1)
+                .getFluid(),
+            1);
+
+        List<Map.Entry<ItemStack, Integer>> magMatteritemEntryList = new ArrayList<>(
+            exoticModuleMagmatterItemMap.entrySet());
+
+        int slotXMagmatter;
+        int slotYMagmatter;
+
+        for (int i = 0; i < magMatterItemMapSize + 2; i++) {
+            slotXMagmatter = 6 + i % 16 * 18;
+            slotYMagmatter = slotYQGP + 30 + i / 16 * 18;
+
+            if (i < magMatterItemMapSize) {
+                magMatterItemHandler.setStackInSlot(
+                    i,
+                    magMatteritemEntryList.get(i)
+                        .getKey()
+                        .splitStack(1));
+                builder.widget(
+                    new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
+                        .setPos(slotXMagmatter, slotYMagmatter)
+                        .setSize(18, 18));
+                builder.widget(
+                    new SlotWidget(magMatterItemHandler, i).setAccess(false, false)
+                        .setRenderStackSize(false)
+                        .disableInteraction()
+                        .setPos(slotXMagmatter, slotYMagmatter)
+                        .setSize(18, 18));
+            } else {
+                builder.widget(
+                    new DrawableWidget().setDrawable(ModularUITextures.FLUID_SLOT)
+                        .setSize(18, 18)
+                        .setPos(slotXMagmatter, slotYMagmatter))
+                    .widget(
+                        new FluidSlotWidget(magMatterFluidHandler, i - magMatterItemMapSize)
+                            .setInteraction(false, false)
+                            .setSize(18, 18)
+                            .setPos(slotXMagmatter, slotYMagmatter));
+            }
+        }
+
+        builder.widget(
+            new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.possibleinputsqgp"))
+                .setDefaultColor(EnumChatFormatting.BLACK)
+                .setTextAlignment(Alignment.Center)
+                .setSize(300, 9)
+                .setPos(0, 6));
+
+        builder.widget(
+            new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.possibleinputsmagmatter"))
+                .setDefaultColor(EnumChatFormatting.BLACK)
+                .setTextAlignment(Alignment.Center)
+                .setSize(300, 9)
+                .setPos(0, slotYQGP + 21));
+
+        return builder.build();
+    }
+
+    private Widget createPossibleInputsButton() {
+        return new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                widget.getContext()
+                    .openSyncedWindow(POSSIBLE_INPUTS_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(ModularUITextures.ICON_INFO)
+            .addTooltip(translateToLocal("fog.button.possibleexoticinputs.tooltip"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(16, 16)
+            .setPos(79, 37);
     }
 
     protected ButtonWidget createMagmatterSwitch(IWidgetBuilder<?> builder) {
