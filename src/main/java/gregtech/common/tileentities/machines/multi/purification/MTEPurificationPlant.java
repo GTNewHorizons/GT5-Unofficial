@@ -721,7 +721,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Add status window button
         builder.widget(makeStatusWindowButton());
 
-        //
         builder.widget(
             new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder).setPlayClickSound(true)
                 .setOnClick((c, w) -> debugMode = !debugMode)
