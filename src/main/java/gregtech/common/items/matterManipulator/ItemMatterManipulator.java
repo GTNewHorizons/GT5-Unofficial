@@ -135,10 +135,10 @@ public class ItemMatterManipulator extends Item
     public static enum ManipulatorTier {
 
         // spotless:off
-        Tier0(32, 16, 20, 4,     1_000_000, ALLOW_GEOMETRY),
-        Tier1(64, 32, 10, 5,    10_000_000, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING),
-        Tier2(128, 64, 5, 6,   100_000_000, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING),
-        Tier3(-1, 256, 2, 7, 1_000_000_000, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING | CONNECTS_TO_UPLINK);
+        Tier0(32, 16, 20, 3,      1_000_000d, ALLOW_GEOMETRY),
+        Tier1(64, 32, 10, 5,    100_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING),
+        Tier2(128, 64, 5, 6,  1_000_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING),
+        Tier3(-1, 256, 2, 7, 10_000_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_COPYING | ALLOW_MOVING | CONNECTS_TO_UPLINK);
         // spotless:on
 
         public final int tier = ordinal();
@@ -340,10 +340,9 @@ public class ItemMatterManipulator extends Item
         // spotless:off
         boolean isHandValid = event.player.getItemInUse() != null && event.player.getItemInUse().getItem() == this;
         boolean isCurrentItemValid = event.player.inventory.getCurrentItem() != null && event.player.inventory.getCurrentItem().getItem() == this;
-        boolean isClient = FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
         // spotless:on
 
-        if (isHandValid && isCurrentItemValid && isClient) {
+        if (isHandValid && isCurrentItemValid) {
             NBTTagCompound inInventory = event.player.inventory.getCurrentItem()
                 .getTagCompound();
             NBTTagCompound using = (NBTTagCompound) event.player.getItemInUse()
@@ -447,6 +446,20 @@ public class ItemMatterManipulator extends Item
                 addInfoLine(desc, "Edge block: %s", state.config.getEdges(), ItemStack::getDisplayName);
                 addInfoLine(desc, "Face block: %s", state.config.getFaces(), ItemStack::getDisplayName);
                 addInfoLine(desc, "Volume block: %s", state.config.getVolumes(), ItemStack::getDisplayName);
+            }
+
+            if (state.config.placeMode == PlaceMode.COPYING) {
+                addInfoLine(desc, "Copy Coordinate A: %s", state.config.coordA);
+                addInfoLine(desc, "Copy Coordinate B: %s", state.config.coordB);
+
+                addInfoLine(desc, "Paste Coordinate: %s", state.config.coordC);
+            }
+
+            if (state.config.placeMode == PlaceMode.MOVING) {
+                addInfoLine(desc, "Cut Coordinate A: %s", state.config.coordA);
+                addInfoLine(desc, "Cut Coordinate B: %s", state.config.coordB);
+
+                addInfoLine(desc, "Paste Coordinate: %s", state.config.coordC);
             }
 
             if (state.config.placeMode == PlaceMode.EXCHANGING) {
@@ -1157,6 +1170,33 @@ public class ItemMatterManipulator extends Item
                 .onClicked(() -> {
                     Messages.SetPendingAction.sendToServer(PendingAction.EXCH_SET_TARGET);
                 })
+            .done()
+            .branch()
+                .label("Move Coords")
+                .option()
+                    .label("Move Coord A")
+                    .onClicked(() -> {
+                        Messages.MoveA.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Move All")
+                    .onClicked(() -> {
+                        Messages.MoveAll.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Move Coord B")
+                    .onClicked(() -> {
+                        Messages.MoveB.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Move Here")
+                    .onClicked(() -> {
+                        Messages.MoveHere.sendToServer();
+                    })
+                .done()
             .done();
     }
 

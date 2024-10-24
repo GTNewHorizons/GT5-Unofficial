@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.gson.JsonElement;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
 import appeng.api.AEApi;
@@ -33,7 +32,7 @@ public class AEPartData {
 
     public PortableItemStack mPart;
     public String mSettingsName = null;
-    public JsonElement mSettings = null;
+    public NBTTagCompound mSettings = null;
     public String mCustomName = null;
 
     public PortableItemStack[] mAEUpgrades = null;
@@ -44,6 +43,10 @@ public class AEPartData {
     public Long mP2PFreq = null;
 
     private transient Optional<Class<? extends IPart>> mPartClass;
+
+    public AEPartData() {
+
+    }
 
     public AEPartData(IPart part) {
         mPart = new PortableItemStack(part.getItemStack(PartItemStack.Wrench));
@@ -62,7 +65,7 @@ public class AEPartData {
             NBTTagCompound settings = new NBTTagCompound();
             configurable.getConfigManager()
                 .writeToNBT(settings);
-            mSettings = settings.hasNoTags() ? null : MMUtils.toJsonObject(settings);
+            mSettings = settings.hasNoTags() ? null : settings;
         }
 
         if (part instanceof PartP2PTunnel tunnel) {
@@ -145,8 +148,7 @@ public class AEPartData {
         }
 
         if (part instanceof IConfigurableObject configurable && configurable.getConfigManager() != null) {
-            NBTTagCompound settings = mSettings == null ? new NBTTagCompound()
-                : (NBTTagCompound) MMUtils.toNbt(mSettings);
+            NBTTagCompound settings = mSettings == null ? new NBTTagCompound() : mSettings;
             configurable.getConfigManager()
                 .readFromNBT(settings);
         }

@@ -5,8 +5,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 
-import com.google.gson.JsonElement;
-
 import gregtech.api.GregTechAPI;
 import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
@@ -15,7 +13,7 @@ import gregtech.common.covers.CoverInfo;
 public class CoverData {
 
     public PortableItemStack cover;
-    public JsonElement coverData;
+    public NBTBase coverData;
     public Integer tickRateAddition;
 
     public transient Integer coverID;
@@ -24,7 +22,7 @@ public class CoverData {
 
     public CoverData(PortableItemStack cover, NBTBase coverData, int tickRateAddition) {
         this.cover = cover;
-        this.coverData = MMUtils.toJsonObject(coverData);
+        this.coverData = coverData;
         this.tickRateAddition = tickRateAddition == 0 ? null : tickRateAddition;
     }
 
@@ -53,7 +51,7 @@ public class CoverData {
 
     public ISerializableObject getCoverData() {
         if (coverDataObject == null) {
-            coverDataObject = getCoverBehaviour().createDataObject(MMUtils.toNbt(coverData));
+            coverDataObject = getCoverBehaviour().createDataObject(coverData);
         }
 
         return coverDataObject;
