@@ -20,7 +20,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.everglades.dimension.DimensionEverglades;
@@ -42,7 +41,6 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int ordinalSide, int meta) {
-
         if (ordinalSide == 0) return gor;
         else if (ordinalSide == 1) return dol;
         else if (ordinalSide == 2) return st1;
@@ -67,21 +65,27 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
      * Ticks the block if it's been scheduled
      */
     @Override
-    public void updateTick(World par1World, int x, int y, int z, Random par5Random) {
-        super.updateTick(par1World, x, y, z, par5Random);
+    public void updateTick(World world, int x, int y, int z, Random random) {
+        super.updateTick(world, x, y, z, random);
+        validatePortalStructure(world, x, y, z);
+    }
 
+    private static void validatePortalStructure(World world, int x, int y, int z) {
         int blockCount = 0;
-        BlockPos portal = new BlockPos(x, y, z, par1World.provider.dimensionId);
-
-        for (BlockPos side : portal.getSurroundingBlocks()) {
-            Block b = side.getBlockAtPos();
-            if (b == DimensionEverglades.blockPortalFrame || b == DimensionEverglades.portalBlock) {
-                blockCount++;
-            }
-        }
+        blockCount += isPortalBlock(world.getBlock(x, y + 1, z));
+        blockCount += isPortalBlock(world.getBlock(x, y - 1, z));
+        blockCount += isPortalBlock(world.getBlock(x + 1, y, z));
+        blockCount += isPortalBlock(world.getBlock(x - 1, y, z));
+        blockCount += isPortalBlock(world.getBlock(x, y, z + 1));
+        blockCount += isPortalBlock(world.getBlock(x, y, z - 1));
         if (blockCount < 4) {
-            par1World.setBlockToAir(x, y, z);
+            world.setBlockToAir(x, y, z);
         }
+    }
+
+    private static int isPortalBlock(Block b) {
+        final boolean validBlock = b == DimensionEverglades.blockPortalFrame || b == DimensionEverglades.portalBlock;
+        return validBlock ? 1 : 0;
     }
 
     /**
@@ -181,72 +185,54 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void onNeighborBlockChange(BlockPos pos) {
-        int x = pos.xPos, y = pos.yPos, z = pos.zPos;
+    public void onNeighborBlockChange(World world, int x, int y, int z) {
         Logger.INFO("Trigger");
-        int blockCount = 0;
-        World par1World = pos.world;
-        for (BlockPos side : pos.getSurroundingBlocks()) {
-            Block b = side.getBlockAtPos();
-            if (b == DimensionEverglades.blockPortalFrame || b == DimensionEverglades.portalBlock) {
-                blockCount++;
-            }
-        }
-        if (blockCount < 4) {
-            par1World.setBlockToAir(x, y, z);
-            par1World.scheduleBlockUpdate(x, y, z, pos.getBlockAtPos(), 0);
-        }
+        validatePortalStructure(world, x, y, z);
 
         byte b0 = 0;
         byte b1 = 1;
-        if (par1World.getBlock(x - 1, y, z) == this || par1World.getBlock(x + 1, y, z) == this) {
+        if (world.getBlock(x - 1, y, z) == this || world.getBlock(x + 1, y, z) == this) {
             b0 = 1;
             b1 = 0;
         }
         int i1;
-        for (i1 = y; par1World.getBlock(x, i1 - 1, z) == this; --i1) {}
-        if (par1World.getBlock(x, i1 - 1, z) != DimensionEverglades.blockPortalFrame) {
-            par1World.setBlockToAir(x, y, z);
+        for (i1 = y; world.getBlock(x, i1 - 1, z) == this; --i1) {}
+        if (world.getBlock(x, i1 - 1, z) != DimensionEverglades.blockPortalFrame) {
+            world.setBlockToAir(x, y, z);
         } else {
             int j1;
-            for (j1 = 1; j1 < 4 && par1World.getBlock(x, i1 + j1, z) == this; ++j1) {}
-            if (j1 == 3 && par1World.getBlock(x, i1 + j1, z) == DimensionEverglades.blockPortalFrame) {
-                boolean flag = par1World.getBlock(x - 1, y, z) == this || par1World.getBlock(x + 1, y, z) == this;
-                boolean flag1 = par1World.getBlock(x, y, z - 1) == this || par1World.getBlock(x, y, z + 1) == this;
+            for (j1 = 1; j1 < 4 && world.getBlock(x, i1 + j1, z) == this; ++j1) {}
+            if (j1 == 3 && world.getBlock(x, i1 + j1, z) == DimensionEverglades.blockPortalFrame) {
+                boolean flag = world.getBlock(x - 1, y, z) == this || world.getBlock(x + 1, y, z) == this;
+                boolean flag1 = world.getBlock(x, y, z - 1) == this || world.getBlock(x, y, z + 1) == this;
                 if (flag && flag1) {
-                    par1World.setBlockToAir(x, y, z);
+                    world.setBlockToAir(x, y, z);
                 } else {
-                    if ((par1World.getBlock(x + b0, y, z + b1) != DimensionEverglades.blockPortalFrame
-                        || par1World.getBlock(x - b0, y, z - b1) != this)
-                        && (par1World.getBlock(x - b0, y, z - b1) != DimensionEverglades.blockPortalFrame
-                            || par1World.getBlock(x + b0, y, z + b1) != this)) {
-                        par1World.setBlockToAir(x, y, z);
+                    if ((world.getBlock(x + b0, y, z + b1) != DimensionEverglades.blockPortalFrame
+                        || world.getBlock(x - b0, y, z - b1) != this)
+                        && (world.getBlock(x - b0, y, z - b1) != DimensionEverglades.blockPortalFrame
+                            || world.getBlock(x + b0, y, z + b1) != this)) {
+                        world.setBlockToAir(x, y, z);
                     }
                 }
             } else {
-                par1World.setBlockToAir(x, y, z);
+                world.setBlockToAir(x, y, z);
             }
         }
     }
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        onNeighborBlockChange(new BlockPos(x, y, z, world.provider.dimensionId));
+        onNeighborBlockChange(world, x, y, z);
         super.onNeighborBlockChange(world, x, y, z, block);
     }
 
-    /*
-     * @Override public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ)
-     * { onNeighborBlockChange(new BlockPos(x, y, z, world.)); super.onNeighborChange(world, x, y, z, tileX, tileY,
-     * tileZ); }
-     */
-
-    @Override
-    @SideOnly(Side.CLIENT)
     /**
      * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
      * coordinates. Args: blockAccess, x, y, z, side
      */
+    @Override
+    @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
         if (par1IBlockAccess.getBlock(par2, par3, par4) == this) {
             return false;
@@ -301,20 +287,20 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         }
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
     /**
      * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
      */
+    @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
         return 1;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
+    @Override
+    @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
         if (GTPPCore.RANDOM.nextInt(100) == 0) {
             par1World.playSound(
@@ -357,10 +343,10 @@ public class BlockEvergladesPortal extends BlockBreakable implements ITileToolti
         }
     }
 
-    @SideOnly(Side.CLIENT)
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
+    @SideOnly(Side.CLIENT)
     public int idPicked(World par1World, int par2, int par3, int par4) {
         return 0;
     }
