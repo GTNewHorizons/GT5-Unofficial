@@ -83,8 +83,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.Pollution;
 import gregtech.common.covers.CoverInfo;
+import gregtech.common.pollution.Pollution;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -1342,8 +1342,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
         if (!canAccessData()) return false;
-        if (aCheckPrecicely || privateAccess() || (mOwnerName.length() == 0))
-            if ((mOwnerName.length() == 0) && isServerSide()) {
+        if (aCheckPrecicely || privateAccess() || (mOwnerName.isEmpty()))
+            if ((mOwnerName.isEmpty()) && isServerSide()) {
                 setOwnerName(aPlayer.getDisplayName());
                 setOwnerUuid(aPlayer.getUniqueID());
             } else return !privateAccess() || aPlayer.getDisplayName()

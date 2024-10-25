@@ -382,8 +382,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static Materials Nano                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Nano"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 11)));
     public static Materials Piko                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Piko"                    ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 12)));
-    public static Materials Quantum                 = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  0, 0                         , 255, 255, 255,   0,   "Quantum"                 ,   "Bio"                           ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeLightGray   , Collections.singletonList(new TC_AspectStack(TCAspects.ELECTRUM, 13)));
-
 
     /**
      * Aliases for the old style of tiered circuits
@@ -2520,7 +2518,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Carbon.add(SubTag.NO_SMELTING);
         Boron.add(SubTag.SMELTING_TO_FLUID);
 
-        Infinity.add(SubTag.BLACK_HOLE);
+        MaterialsUEVplus.TranscendentMetal.add(SubTag.BLACK_HOLE);
     }
 
     public static void init() {
@@ -2794,7 +2792,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public long getProtons() {
         if (mElement != null) return mElement.getProtons();
-        if (mMaterialList.size() == 0) return Element.Tc.getProtons();
+        if (mMaterialList.isEmpty()) return Element.Tc.getProtons();
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
@@ -2805,7 +2803,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public long getNeutrons() {
         if (mElement != null) return mElement.getNeutrons();
-        if (mMaterialList.size() == 0) return Element.Tc.getNeutrons();
+        if (mMaterialList.isEmpty()) return Element.Tc.getNeutrons();
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;
@@ -2816,7 +2814,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public long getMass() {
         if (mElement != null) return mElement.getMass();
-        if (mMaterialList.size() == 0) return Element.Tc.getMass();
+        if (mMaterialList.isEmpty()) return Element.Tc.getMass();
         long rAmount = 0, tAmount = 0;
         for (MaterialStack tMaterial : mMaterialList) {
             tAmount += tMaterial.mAmount;

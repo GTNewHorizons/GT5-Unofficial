@@ -635,16 +635,6 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1))
-            .itemOutputs(ItemList.Block_Plascrete.get(1))
-            .fluidInputs(Materials.Concrete.getMolten(144))
-            .duration(10 * SECONDS)
-            .eut(48)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TungstenSteel, 16),
                 GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.EV), 4),
                 ItemList.Electric_Motor_IV.get(16),
@@ -2596,7 +2586,8 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
+                GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Casing_FrostProof.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
@@ -3607,7 +3598,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_UV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Americium, 2),
                 ItemList.Field_Generator_UV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Longasssuperconductornameforuhvwire, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUHV, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2))
             .itemOutputs(ItemList.Generator_Plasma_UV.get(1))
             .duration(5 * SECONDS)

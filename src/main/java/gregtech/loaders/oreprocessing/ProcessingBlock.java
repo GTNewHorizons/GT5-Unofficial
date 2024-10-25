@@ -30,7 +30,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
 
-        if (aMaterial == Materials.Ichorium) {
+        if (aMaterial == Materials.Ichorium || aMaterial == Materials.NetherQuartz) {
             return;
         }
 
@@ -159,9 +159,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .duration(5 * SECONDS)
                 .eut(24)
                 .addTo(hammerRecipes);
-        }
-
-        if (tStack2 != null && aMaterial != Materials.NetherQuartz) {
             if (tStack3 != null)
                 GTModHandler.addShapelessCraftingRecipe(tStack3, new Object[] { OrePrefixes.block.get(aMaterial) });
             GTModHandler.addShapelessCraftingRecipe(tStack2, new Object[] { OrePrefixes.block.get(aMaterial) });
@@ -179,8 +176,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(compressorRecipes);
         }
 
-        switch (aMaterial.mName) {
-            case "Mercury" -> System.err.println(
+        if (aMaterial.mName.equals("Mercury")) {
+            System.err.println(
                 "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
         }
     }

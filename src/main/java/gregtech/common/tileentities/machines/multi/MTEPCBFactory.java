@@ -105,7 +105,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     private static final String ocTier1Upgrade = "ocTier1Upgrade";
     private static final String ocTier2Upgrade = "ocTier2Upgrade";
     private float mRoughnessMultiplier = 1;
-    private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0, mCurrentParallel = 0, mMaxParallel = 0;
+    private int mTier = 1;
+    private int mSetTier = 1;
+    private int mUpgradesInstalled = 0;
+    private final int mCurrentParallel = 0;
+    private int mMaxParallel = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
     private final int[] mBioOffsets = new int[] { -5, -1 };
     private final int[] mOCTier1Offsets = new int[] { 2, -11 };
@@ -839,7 +843,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Circuit Board Fabricator")
-            .addInfo("Controller for the PCB Factory")
             .addInfo(
                 EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD
                     + "IMPORTANT!"
@@ -856,9 +859,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
             .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks.")
             .addInfo("Trace size can be changed to modify the material usage and machine speed.")
-            .addInfo(AuthorBlueWeabo)
             .beginStructureBlock(30, 38, 13, false)
-            .addSeparator()
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addEnergyHatch(
                 EnumChatFormatting.GOLD + "1"
@@ -952,7 +953,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
             .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }
 

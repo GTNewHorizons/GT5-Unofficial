@@ -32,7 +32,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -619,10 +618,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + GTUtility.formatNumbers(efficiency_decay_rate)
                     + EnumChatFormatting.GRAY
                     + " as fast as it builds up.")
-            .addInfo(AuthorColen)
-            .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
-            .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
@@ -634,7 +630,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 EnumChatFormatting.GOLD + "2,121"
                     + EnumChatFormatting.GRAY
                     + " Dimensionally transcendent casings required.")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + "1"
@@ -684,8 +680,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + max_input_bus
                     + EnumChatFormatting.GRAY
                     + " output busses.")
-            .addStructureInfo("--------------------------------------------")
-            .toolTipFinisher("Gregtech");
+            .addStructureInfo("")
+            .toolTipFinisher(AuthorColen);
         return tt;
     }
 
@@ -850,13 +846,13 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
         // If there is more than 1 TT energy hatch, the structure check will fail.
         // If there is a TT hatch and a normal hatch, the structure check will fail.
-        if (mExoticEnergyHatches.size() > 0) {
-            if (mEnergyHatches.size() > 0) return false;
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) return false;
             if (mExoticEnergyHatches.size() > 1) return false;
         }
 
         // If there is 0 or more than 2 energy hatches structure check will fail.
-        if (mEnergyHatches.size() > 0) {
+        if (!mEnergyHatches.isEmpty()) {
             if (mEnergyHatches.size() > 2) return false;
 
             // Check will also fail if energy hatches are not of the same tier.
@@ -869,7 +865,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         }
 
         // If there are no energy hatches or TT energy hatches, structure will fail to form.
-        if ((mEnergyHatches.size() == 0) && (mExoticEnergyHatches.size() == 0)) return false;
+        if ((mEnergyHatches.isEmpty()) && (mExoticEnergyHatches.isEmpty())) return false;
 
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
@@ -919,7 +915,12 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         // Calculate discount to make sure it is shown properly even when machine is off but decaying
         recalculateDiscount();
 
-        return new String[] { "------------ Critical Information ------------",
+        return new String[] {
+            EnumChatFormatting.STRIKETHROUGH + "------------"
+                + EnumChatFormatting.RESET
+                + " Critical Information "
+                + EnumChatFormatting.STRIKETHROUGH
+                + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime)
@@ -971,7 +972,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + EnumChatFormatting.RESET
                 + "%",
             "Convergence: " + (convergence ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"),
-            "-----------------------------------------" };
+            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
     private void recalculateDiscount() {
@@ -1113,8 +1114,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_PLASMAFORGE_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_PLASMAFORGE_LOOP;
     }
 
     @Override

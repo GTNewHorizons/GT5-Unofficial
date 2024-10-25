@@ -453,7 +453,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + EnumChatFormatting.GRAY
                     + "-fold"
                     + " for every capacitor tier above.")
-            .addSeparator()
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addStructureInfo("Modular height of 4-50 blocks.")
             .addController("Front center bottom")
@@ -492,7 +491,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addSubChannelUsage("capacitor", "Maximum Capacitor Tier")
             .addSubChannelUsage("height", "Height of structure")
             .addMaintenanceHatch("Any casing")
-            .toolTipFinisher("KekzTech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -577,7 +576,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         // Glass has to be at least UV-tier to allow TT Laser hatches
         if (glassTier < 8) {
-            if (mEnergyTunnelsTT.size() > 0 || mDynamoTunnelsTT.size() > 0) return false;
+            if (!mEnergyTunnelsTT.isEmpty() || !mDynamoTunnelsTT.isEmpty()) return false;
         }
 
         // Check if enough (more than 50%) non-empty caps
@@ -854,11 +853,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
 
         // Passive loss is multiplied by number of maintenance issues.
-        long total_passive_loss = temp_capacity_divided * (getIdealStatus() - repairStatus + 1);
-
         // Maximum of 100,000 EU/t drained per UHV cell. The logic is 1% of EU capacity should be drained every 86400
         // seconds (1 day).
-        return total_passive_loss;
+        return temp_capacity_divided * (getIdealStatus() - repairStatus + 1);
     }
 
     /**

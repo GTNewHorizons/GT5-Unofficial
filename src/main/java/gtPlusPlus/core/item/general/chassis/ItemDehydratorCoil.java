@@ -30,10 +30,10 @@ public class ItemDehydratorCoil extends Item {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        this.icons[0] = reg.registerIcon(GTPlusPlus.ID + ":" + "dehydrator/itemDehydratorCoil_0");
-        this.icons[1] = reg.registerIcon(GTPlusPlus.ID + ":" + "dehydrator/itemDehydratorCoil_1");
-        this.icons[2] = reg.registerIcon(GTPlusPlus.ID + ":" + "dehydrator/itemDehydratorCoil_2");
-        this.icons[3] = reg.registerIcon(GTPlusPlus.ID + ":" + "dehydrator/itemDehydratorCoil_3");
+        this.icons[0] = reg.registerIcon(GTPlusPlus.ID + ":itemDehydratorCoil_0");
+        this.icons[1] = reg.registerIcon(GTPlusPlus.ID + ":itemDehydratorCoil_1");
+        this.icons[2] = reg.registerIcon(GTPlusPlus.ID + ":itemDehydratorCoil_2");
+        this.icons[3] = reg.registerIcon(GTPlusPlus.ID + ":itemDehydratorCoil_3");
     }
 
     @Override

@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static bartworks.util.BWUtil.ofGlassTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -50,16 +49,17 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.SideReference;
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.MainMod;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.FluidLoader;
-import bartworks.common.net.RendererPacket;
+import bartworks.common.net.PacketBioVatRenderer;
 import bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
 import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
@@ -67,6 +67,7 @@ import bartworks.util.Coords;
 import bartworks.util.MathUtils;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -84,7 +85,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 
-public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
+public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements ISurvivalConstructable {
 
     public static final HashMap<Coords, Integer> staticColorMap = new HashMap<>();
 
@@ -151,9 +152,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bacterial Vat")
-            .addInfo("Controller block for the Bacterial Vat")
             .addInfo("For maximum efficiency boost keep the Output Hatch always half filled!")
-            .addSeparator()
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
@@ -167,7 +166,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
             .addInputHatch("Any casing", 1)
             .addOutputHatch("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -311,7 +310,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null || !(aMetaTileEntity instanceof GT_MetaTileEntity_RadioHatch)) {
+        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_RadioHatch)) {
             return false;
         } else {
             ((GT_MetaTileEntity_RadioHatch) aMetaTileEntity).updateTexture(CasingIndex);
@@ -330,8 +329,8 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
         return this.mCasing >= 19 && this.mRadHatches.size() <= 1
             && this.mOutputHatches.size() == 1
             && this.mMaintenanceHatches.size() == 1
-            && this.mInputHatches.size() > 0
-            && this.mEnergyHatches.size() > 0;
+            && !this.mInputHatches.isEmpty()
+            && !this.mEnergyHatches.isEmpty();
     }
 
     @Override
@@ -388,10 +387,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
             lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB());
 
         if (SideReference.Side.Server) {
-            MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+            GTValues.NW.sendPacketToAllPlayersInRange(
                 this.getBaseMetaTileEntity()
                     .getWorld(),
-                new RendererPacket(
+                new PacketBioVatRenderer(
                     new Coords(
                         xDir + x
                             + this.getBaseMetaTileEntity()
@@ -409,10 +408,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
                     .getXCoord(),
                 this.getBaseMetaTileEntity()
                     .getZCoord());
-            MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+            GTValues.NW.sendPacketToAllPlayersInRange(
                 this.getBaseMetaTileEntity()
                     .getWorld(),
-                new RendererPacket(
+                new PacketBioVatRenderer(
                     new Coords(
                         xDir + x
                             + this.getBaseMetaTileEntity()
@@ -701,10 +700,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
             for (int x = -1; x < 2; x++) {
                 for (int y = 1; y < 3; y++) {
                     for (int z = -1; z < 2; z++) {
-                        MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+                        GTValues.NW.sendPacketToAllPlayersInRange(
                             this.getBaseMetaTileEntity()
                                 .getWorld(),
-                            new RendererPacket(
+                            new PacketBioVatRenderer(
                                 new Coords(
                                     xDir + x
                                         + this.getBaseMetaTileEntity()
@@ -781,6 +780,12 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> {
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         this.buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 3, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
 
     @Override

@@ -9,7 +9,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,9 +17,8 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import cofh.api.energy.IEnergyContainerItem;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -30,13 +28,11 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import tectech.Reference;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -246,7 +242,6 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements IConstructable
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"))
             // Stocking Bus is not supported
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.3"))
-            .addSeparator()
             .beginStructureBlock(3, 5, 3, false)
             // Controller: Front 3rd layer center
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))
@@ -271,16 +266,13 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements IConstructable
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             // Maintenance Hatch: Any High Power Casing
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            .toolTipFinisher(CommonValues.TEC_MARK_GENERAL);
+            .toolTipFinisher();
         return tt;
     }
 
-    public static final ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_whooum");
-
     @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return activitySound;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.TECTECH_MACHINES_FX_WHOOUM;
     }
 
     @Override

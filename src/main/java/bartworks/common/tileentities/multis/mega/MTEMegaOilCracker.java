@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
@@ -58,6 +57,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -81,16 +81,16 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             STRUCTURE_PIECE_MAIN,
             transpose(
                 new String[][] {
-                    { " p         p ", "ppgggggggggpp", " pgggggggggp ", " pgggpppgggp ", " pgggpMpgggp ",
-                        " pgggpppgggp ", " pgggggggggp ", "ppgggggggggpp", " p         p " },
+                    { " p         p ", "ppgggggggggpp", " pgggggggggp ", " pgggMMMgggp ", " pgggMMMgggp ",
+                        " pgggMMMgggp ", " pgggggggggp ", "ppgggggggggpp", " p         p " },
                     { " p         p ", "pgggggggggggp", " g c c c c g ", " g c c c c g ", " g c c c c g ",
                         " g c c c c g ", " g c c c c g ", "pgggggggggggp", " p         p " },
-                    { " p         p ", "pgggggggggggp", " g c c c c g ", " p   c   c p ", " p c c c c p ",
-                        " p   c   c p ", " g c c c c g ", "pgggggggggggp", " p         p " },
-                    { " p         p ", "pgggggggggggp", " g c c c c g ", " p c c c c p ", " l c c c c r ",
-                        " p c c c c p ", " g c c c c g ", "pgggggggggggp", " p         p " },
-                    { " p         p ", "pgggggggggggp", " g c c c c g ", " p   c   c p ", " p c c c c p ",
-                        " p   c   c p ", " g c c c c g ", "pgggggggggggp", " p         p " },
+                    { " p         p ", "pgggggggggggp", " g c c c c g ", " l   c   c r ", " l c c c c r ",
+                        " l   c   c r ", " g c c c c g ", "pgggggggggggp", " p         p " },
+                    { " p         p ", "pgggggggggggp", " g c c c c g ", " l c c c c r ", " l c c c c r ",
+                        " l c c c c r ", " g c c c c g ", "pgggggggggggp", " p         p " },
+                    { " p         p ", "pgggggggggggp", " g c c c c g ", " l   c   c r ", " l c c c c r ",
+                        " l   c   c r ", " g c c c c g ", "pgggggggggggp", " p         p " },
                     { " p         p ", "pgggggggggggp", " g c c c c g ", " g c c c c g ", " g c c c c g ",
                         " g c c c c g ", " g c c c c g ", "pgggggggggggp", " p         p " },
                     { "ppmmmm~mmmmpp", "ppppppppppppp", "ppppppppppppp", "ppppppppppppp", "ppppppppppppp",
@@ -100,12 +100,18 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'l',
-            InputHatch.withAdder(MTEMegaOilCracker::addLeftHatchToMachineList)
-                .newAny(CASING_INDEX, 2))
+            buildHatchAdder(MTEMegaOilCracker.class)
+                .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addLeftHatchToMachineList))
+                .dot(2)
+                .casingIndex(CASING_INDEX)
+                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'r',
-            OutputHatch.withAdder(MTEMegaOilCracker::addRightHatchToMachineList)
-                .newAny(CASING_INDEX, 3))
+            buildHatchAdder(MTEMegaOilCracker.class)
+                .atLeast(OutputHatch.withAdder(MTEMegaOilCracker::addRightHatchToMachineList))
+                .dot(3)
+                .casingIndex(CASING_INDEX)
+                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'm',
             buildHatchAdder(MTEMegaOilCracker.class).atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus)
@@ -114,8 +120,11 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'M',
-            InputHatch.withAdder(MTEMegaOilCracker::addMiddleInputToMachineList)
-                .newAny(CASING_INDEX, 4))
+            buildHatchAdder(MTEMegaOilCracker.class)
+                .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addMiddleInputToMachineList))
+                .dot(4)
+                .casingIndex(CASING_INDEX)
+                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'g',
             withChannel(
@@ -141,7 +150,6 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cracker")
-            .addInfo("Controller block for the Mega Oil Cracking")
             .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
             .addInfo("More efficient than the Chemical Reactor")
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")
@@ -159,7 +167,6 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                     + "Tech"
                     + EnumChatFormatting.GRAY
                     + " Laser Hatches.")
-            .addSeparator()
             .beginStructureBlock(13, 7, 9, true)
             .addController("Front bottom")
             .addStructureInfo("The glass tier limits the Energy Input tier")
@@ -170,7 +177,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addOutputHatch("Hint block", 2, 3)
             .addInputHatch("Steam/Hydrogen ONLY, Hint block", 4)
             .addInputBus("Optional, for programmed circuit automation. Hint block", 1)
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -255,8 +262,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 6, 6, 0) || this.mMaintenanceHatches.size() != 1) return false;
 
         if (this.glassTier < 8) {
-            for (int i = 0; i < this.mExoticEnergyHatches.size(); ++i) {
-                MTEHatch hatch = this.mExoticEnergyHatches.get(i);
+            for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
                     return false;
                 }
@@ -264,8 +270,8 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
                     return false;
                 }
             }
-            for (int i = 0; i < this.mEnergyHatches.size(); ++i) {
-                if (this.glassTier < this.mEnergyHatches.get(i).mTier) {
+            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+                if (this.glassTier < mEnergyHatch.mTier) {
                     return false;
                 }
             }
@@ -282,24 +288,22 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
+        if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
             if (this.mInputOnSide == 1) {
                 return false;
             }
             this.mInputOnSide = 0;
             this.mOutputOnSide = 1;
-            MTEHatchInput tHatch = (MTEHatchInput) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = this.getRecipeMap();
             return this.mInputHatches.add(tHatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
+        if (aMetaTileEntity instanceof MTEHatchOutput tHatch) {
             if (this.mOutputOnSide == 1) {
                 return false;
             }
             this.mInputOnSide = 1;
             this.mOutputOnSide = 0;
-            MTEHatchOutput tHatch = (MTEHatchOutput) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             return this.mOutputHatches.add(tHatch);
         }
@@ -314,24 +318,22 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
+        if (aMetaTileEntity instanceof MTEHatchInput tHatch) {
             if (this.mInputOnSide == 0) {
                 return false;
             }
             this.mInputOnSide = 1;
             this.mOutputOnSide = 0;
-            MTEHatchInput tHatch = (MTEHatchInput) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = this.getRecipeMap();
             return this.mInputHatches.add(tHatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
+        if (aMetaTileEntity instanceof MTEHatchOutput tHatch) {
             if (this.mOutputOnSide == 0) {
                 return false;
             }
             this.mInputOnSide = 0;
             this.mOutputOnSide = 1;
-            MTEHatchOutput tHatch = (MTEHatchOutput) aMetaTileEntity;
             tHatch.updateTexture(aBaseCasingIndex);
             return this.mOutputHatches.add(tHatch);
         }

@@ -41,7 +41,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -99,7 +98,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInfo("Bonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16")
             .addInfo("Total number of reflectors based on how many rings are built:")
             .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340")
-            .addSeparator()
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
             .addController("Top Middle")
             .addCasingInfoMin("Structural Solar Casing", 229, false)
@@ -109,7 +107,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInputHatch("Any 2 dot hint(min 1)", 2)
             .addOutputHatch("Any 2 dot hint(min 1)", 2)
             .addMaintenanceHatch("Any 2 dot hint", 2)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -281,8 +279,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         boolean aAllCasings = aCasingCount1 && aCasingCount2 && aCasingCount3 && aCasingCount4;
         if (!aAllCasings || !aAllStructure
             || mMaintenanceHatches.size() != 1
-            || mInputHatches.size() < 1
-            || mOutputHatches.size() < 1) {
+            || mInputHatches.isEmpty()
+            || mOutputHatches.isEmpty()) {
             log(
                 "Bad Hatches - Solar Heaters: " + mSolarHeaters.size()
                     + ", Maint: "
@@ -486,7 +484,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                 // log("Found Ring: "+(aRing++)+", Total: "+this.mSolarHeaters.size());
             }
         }
-        return mSolarHeaters.size() > 0;
+        return !mSolarHeaters.isEmpty();
     }
 
     private boolean addSolarHeater(IGregTechTileEntity aTileEntity, int a) {

@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GTMultiTexture;
 import gregtech.api.objects.GTRenderedTexture;
 import gtPlusPlus.api.objects.Logger;
@@ -74,7 +73,7 @@ public class MetaCustomCoverItem extends Item {
             }
             GregTechAPI.registerCover(
                 thisStack,
-                new GTMultiTexture(new ITexture[] { new GTRenderedTexture(mTextures[i]) }),
+                new GTMultiTexture(new GTRenderedTexture(mTextures[i])),
                 new CoverToggleVisual());
         }
     }
@@ -112,7 +111,7 @@ public class MetaCustomCoverItem extends Item {
         return true;
     }
 
-    public static final long getCoverDamage(final ItemStack aStack) {
+    public static long getCoverDamage(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");
@@ -125,7 +124,7 @@ public class MetaCustomCoverItem extends Item {
         return 0L;
     }
 
-    public static final boolean setCoverDamage(final ItemStack aStack, final long aDamage) {
+    public static boolean setCoverDamage(final ItemStack aStack, final long aDamage) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");
@@ -137,7 +136,7 @@ public class MetaCustomCoverItem extends Item {
         return false;
     }
 
-    public static final boolean getCoverConnections(final ItemStack aStack) {
+    public static boolean getCoverConnections(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");
@@ -150,7 +149,7 @@ public class MetaCustomCoverItem extends Item {
         return false;
     }
 
-    public static final boolean setCoverConnections(final ItemStack aStack, final boolean aConnections) {
+    public static boolean setCoverConnections(final ItemStack aStack, final boolean aConnections) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");
@@ -169,19 +168,14 @@ public class MetaCustomCoverItem extends Item {
         }
         double currentDamage = getCoverDamage(stack);
         double meta = stack.getItemDamage() == 0 ? 50 : 2500;
-        double durabilitypercent = currentDamage / meta;
-        return durabilitypercent;
+        return currentDamage / meta;
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (KeyboardUtils.isShiftKeyDown()) {
             boolean con = getCoverConnections(stack);
-            if (con) {
-                setCoverConnections(stack, false);
-            } else {
-                setCoverConnections(stack, true);
-            }
+            setCoverConnections(stack, !con);
         }
         return stack;
     }

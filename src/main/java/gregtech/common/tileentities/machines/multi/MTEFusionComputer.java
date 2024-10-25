@@ -21,7 +21,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -223,11 +222,9 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addController("Fusion Reactor")
             .addInfo("Some kind of fusion reactor, maybe")
-            .addSeparator()
-            .addInfo("Some kind of fusion reactor, maybe")
             .addStructureInfo("Should probably be built similar to other fusions")
             .addStructureInfo("See controller tooltip for details")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -546,8 +543,8 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
     @Override

@@ -121,13 +121,6 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
         }
     }
 
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(getAverageInputVoltage());
-        logic.setAvailableAmperage(getMaxInputAmps());
-        logic.setAmperageOC(true);
-    }
-
     @Nonnull
     @Override
     protected CheckRecipeResult postCheckRecipe(@Nonnull CheckRecipeResult result,

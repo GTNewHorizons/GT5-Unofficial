@@ -87,7 +87,7 @@ public class ItemTeaUltimate extends ItemTeaCollection implements IItemProxyGUI 
         if (checkTeaOwner(stack, Minecraft.getMinecraft().thePlayer.getCommandSenderName())) {
             return getUltimateTeaDisplayName(super.getDisplayName(stack));
         }
-        return EnumChatFormatting.GOLD + "" + EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + "???????";
+        return EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.ITALIC + "???????";
     }
 
     @Override

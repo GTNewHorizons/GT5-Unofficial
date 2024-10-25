@@ -6,7 +6,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
-import static gregtech.api.enums.GTValues.AuthorEvgenWarGold;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -24,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -41,6 +39,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -82,7 +81,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         return "Mixer";
     }
 
-    private static final String STRUCTUR_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private IStructureDefinition<MTESteamMixer> STRUCTURE_DEFINITION = null;
     // spotless:off
@@ -181,7 +180,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamMixer>builder()
 
-                .addShape(STRUCTUR_PIECE_MAIN, transpose(shape))
+                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'B',
                     ofBlocksTiered(
@@ -230,14 +229,20 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece(STRUCTUR_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        this.buildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
         return this.survivialBuildPiece(
-            STRUCTUR_PIECE_MAIN,
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
             VERTICAL_OFF_SET,
@@ -254,16 +259,12 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         tierPipeCasing = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
-        if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierGearBoxCasing < 0 && tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
             && tCountCasing >= 90
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mInputHatches.isEmpty()
-            && !mOutputHatches.isEmpty()) {
+            && !mSteamInputFluids.isEmpty()) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
@@ -271,11 +272,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
             && tierMachineCasing == 2
             && tCountCasing >= 90
-            && !mSteamInputFluids.isEmpty()
-            && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && !mInputHatches.isEmpty()
-            && !mOutputHatches.isEmpty()) {
+            && !mSteamInputFluids.isEmpty()) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
@@ -325,12 +322,10 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Blender")
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .addSeparator()
             .beginStructureBlock(7, 6, 7, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -355,8 +350,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Block of Iron")
-            .addStructureInfo("")
-            .toolTipFinisher(AuthorEvgenWarGold);
+            .toolTipFinisher(GTValues.AuthorEvgenWarGold);
         return tt;
     }
 
@@ -407,8 +401,8 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_STEAM_CENTRIFUGE_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_STEAM_CENTRIFUGE_LOOP;
     }
 
 }

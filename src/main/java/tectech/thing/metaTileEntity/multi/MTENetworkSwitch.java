@@ -8,7 +8,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +16,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -26,7 +24,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import tectech.Reference;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
@@ -38,7 +35,6 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -212,7 +208,6 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
                                                                                          // distribute computation
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2")) // Needs a Parametrizer to
                                                                                          // be configured
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, false)
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
             .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.1.name"), 0, false) // 0x Computer Casing
@@ -233,7 +228,7 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 1) // Maintenance
                                                                                                 // Hatch: Any
                                                                                                 // Computer Casing
-            .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -247,12 +242,9 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][1] };
     }
 
-    public static final ResourceLocation activitySound = new ResourceLocation(Reference.MODID + ":fx_hi_freq");
-
     @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return activitySound;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
     }
 
     @Override

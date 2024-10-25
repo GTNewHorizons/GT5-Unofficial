@@ -688,8 +688,6 @@ public enum MetaTileEntityIDs {
     PUMP_LV(1140),
     PUMP_MV(1141),
     PUMP_HV(1142),
-    PUMP_EV(1143),
-    PUMP_IV(1144),
     TELEPORTER(1145),
     MONSTER_REPELLATOR_LV(1146),
     MONSTER_REPELLATOR_MV(1147),
@@ -1065,8 +1063,6 @@ public enum MetaTileEntityIDs {
     WIREMILL_UEV(11054),
     WIREMILL_UIV(11055),
     WIREMILL_UMV(11056),
-    PUMP_LuV(11060),
-    PUMP_ZPM(11061),
     ARC_FURNACE_LuV(11070),
     ARC_FURNACE_ZPM(11071),
     ARC_FURNACE_UV(11072),
@@ -1953,7 +1949,7 @@ public enum MetaTileEntityIDs {
 
     public final int ID;
 
-    private MetaTileEntityIDs(int ID) {
+    MetaTileEntityIDs(int ID) {
         this.ID = ID;
     }
 }

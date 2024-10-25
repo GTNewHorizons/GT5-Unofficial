@@ -36,11 +36,11 @@ import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.Pollution;
 import gregtech.common.UndergroundOil;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.items.behaviors.BehaviourNone;
+import gregtech.common.pollution.Pollution;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -55,7 +55,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
     protected final int mCosts;
 
-    static final String CHAT_MSG_SEPARATOR = "--------------------";
+    static final String CHAT_MSG_SEPARATOR = EnumChatFormatting.STRIKETHROUGH + "--------------------";
 
     public BehaviourDetravToolProspector(int aCosts) {
         mCosts = aCosts;
@@ -99,7 +99,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 .getMaterial() == Material.ground
             || aWorld.getBlock(aX, aY, aZ) == GregTechAPI.sBlockOres1) {
             if (!aWorld.isRemote) {
-                prospectChunks((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
+                prospectChunks(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
             }
             return true;
         }
@@ -114,7 +114,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         badluck = 0;
         ores = new HashMap<>();
 
-        int range = ((DetravMetaGeneratedTool01) aItem).getHarvestLevel(aStack, "") / 2 + (aStack.getItemDamage() / 4);
+        int range = aItem.getHarvestLevel(aStack, "") / 2 + (aStack.getItemDamage() / 4);
         if ((range % 2) == 0) {
             range += 1; // kinda not needed here, divide takes it out, but we put it back in with the range+1 in the
                         // loop
@@ -163,7 +163,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         }
 
         // List to hold unsorted scanner messages
-        List<ChatComponentText> oreMessages = new ArrayList<ChatComponentText>();
+        List<ChatComponentText> oreMessages = new ArrayList<>();
 
         for (String key : ores.keySet()) {
             int value = ores.get(key);
@@ -178,7 +178,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             StatCollector.translateToLocal("detrav.scanner.distance.texts.1"),
             StatCollector.translateToLocal("detrav.scanner.distance.texts.0"));
 
-        List<ChatComponentText> oreMessagesSorted = new ArrayList<ChatComponentText>();
+        List<ChatComponentText> oreMessagesSorted = new ArrayList<>();
         oreMessagesSorted.add(new ChatComponentText(CHAT_MSG_SEPARATOR));
 
         // Sort ore messages by distance, separated by -----
@@ -298,7 +298,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                     if (tBlock instanceof BlockOresAbstract) {
                         TileEntity tTileEntity = aChunk.getTileEntityUnsafe(x, y, z);
                         if ((tTileEntity instanceof TileEntityOres) && ((TileEntityOres) tTileEntity).mNatural) {
-                            tMetaID = (short) ((TileEntityOres) tTileEntity).getMetaData();
+                            tMetaID = ((TileEntityOres) tTileEntity).getMetaData();
                             try {
                                 String format = LanguageRegistry.instance()
                                     .getStringLocalization(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");

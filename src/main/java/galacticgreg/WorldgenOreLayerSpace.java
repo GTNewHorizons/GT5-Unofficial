@@ -36,7 +36,7 @@ public class WorldgenOreLayerSpace extends GTWorldgen {
 
     private long mProfilingStart;
     private long mProfilingEnd;
-    private Map<String, Boolean> allowedDims;
+    private final Map<String, Boolean> allowedDims;
 
     public WorldgenOreLayerSpace(OreMixBuilder mix) {
         super(mix.oreMixName, GalacticGreg.oreVeinWorldgenList, mix.enabledByDefault);
@@ -82,7 +82,7 @@ public class WorldgenOreLayerSpace extends GTWorldgen {
         return allowedDims.getOrDefault(pDimensionDef.getDimIdentifier(), false);
     }
 
-    private static Map<String, List<String>> _mBufferedVeinList = new HashMap<>();
+    private static final Map<String, List<String>> _mBufferedVeinList = new HashMap<>();
 
     /**
      * Get a List of all Veins which are enabled for given Dim. Query is buffered
@@ -126,8 +126,9 @@ public class WorldgenOreLayerSpace extends GTWorldgen {
             String tVeinName = tEnabledVeins.get(tRnd);
 
             GTWorldgen tGen = null;
-            for (GTWorldgen tWorldGen : GalacticGreg.oreVeinWorldgenList) if (tWorldGen instanceof WorldgenOreLayerSpace
-                && ((WorldgenOreLayerSpace) tWorldGen).mWorldGenName.equals(tVeinName)) tGen = tWorldGen;
+            for (GTWorldgen tWorldGen : GalacticGreg.oreVeinWorldgenList)
+                if (tWorldGen instanceof WorldgenOreLayerSpace && tWorldGen.mWorldGenName.equals(tVeinName))
+                    tGen = tWorldGen;
 
             if (tGen != null) {
                 // GT_Worldgen_GT_Ore_Layer_Space tGen = GalacticGreg.oreVeinWorldgenList.get(tRndMix);
@@ -138,7 +139,7 @@ public class WorldgenOreLayerSpace extends GTWorldgen {
                 sporadicMeta = ((WorldgenOreLayerSpace) tGen).mSporadicMeta;
             }
         } else {
-            if ((WorldgenOreLayerSpace.sWeight > 0) && (GalacticGreg.oreVeinWorldgenList.size() > 0)) {
+            if ((WorldgenOreLayerSpace.sWeight > 0) && (!GalacticGreg.oreVeinWorldgenList.isEmpty())) {
                 GalacticGreg.Logger.trace("About to select oremix");
                 boolean temp = true;
                 int tRandomWeight;

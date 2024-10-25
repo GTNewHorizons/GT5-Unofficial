@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
@@ -54,7 +53,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
 
     private IStructureDefinition<MTEFuelRefineFactory> multiDefinition = null;
     private int Tier = -1;
-    private int[] cnt = new int[] { 0, 0, 0, 0 };
+    private final int[] cnt = new int[] { 0, 0, 0, 0 };
     private static final Block[] coils = new Block[] { Loaders.FRF_Coil_1, Loaders.FRF_Coil_2, Loaders.FRF_Coil_3,
         Loaders.FRF_Coil_4 };
 
@@ -128,7 +127,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     }
 
     public static <T> IStructureElement<T> ofFieldCoil(int aIndex) {
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -181,20 +180,16 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Naquadah Fuel Refinery")
-            .addInfo("Controller block for the Naquadah Fuel Refinery")
             .addInfo("But at what cost?")
             .addInfo("Produces naquadah fuels.")
             .addInfo("Needs field restriction coils to control the fatal radiation.")
             .addInfo("Use higher tier coils to unlock more fuel types and reduce the processing times.")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .beginStructureBlock(3, 15, 15, false)
             .addInputHatch("The casings adjacent to field restriction glass.")
             .addInputBus("The casings adjacent to field restriction glass.", 1)
             .addOutputHatch("The casings adjacent to field restriction glass.", 1)
             .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

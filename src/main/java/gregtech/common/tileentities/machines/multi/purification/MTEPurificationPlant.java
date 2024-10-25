@@ -235,7 +235,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "purification processes, and this multiblock is the heart of the operation.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 9, 8, false)
             .addCasingInfoExactlyColored(
                 "Superplasticizer-Treated High Strength Concrete",
@@ -273,8 +272,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addStructureInfo("Requires water to be placed in the tank.")
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -338,11 +336,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         }
 
         // using nano forge method of detecting hatches.
-        if (!checkExoticAndNormalEnergyHatches()) {
-            return false;
-        }
-
-        return true;
+        return checkExoticAndNormalEnergyHatches();
     }
 
     private boolean checkHatches() {
@@ -499,7 +493,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     public void registerLinkedUnit(MTEPurificationUnitBase<?> unit) {
-        this.mLinkedUnits.add(new LinkedPurificationUnit(unit));
+        LinkedPurificationUnit link = new LinkedPurificationUnit(unit);
+        // Make sure to mark it as active if it is running a recipe. This happens on server restart and fixes
+        // waterline multiblocks not resuming their progress until the next cycle.
+        link.setActive(unit.mMaxProgresstime > 0);
+        this.mLinkedUnits.add(link);
     }
 
     public void unregisterLinkedUnit(MTEPurificationUnitBase<?> unit) {

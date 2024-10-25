@@ -71,8 +71,7 @@ public class GGItemBlocks extends ItemBlock {
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
         if (stack == null) return;
         tooltip.add(mNoMobsToolTip);
-        if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTEContainer) {
-            BlockTEContainer tile = (BlockTEContainer) Block.getBlockFromItem(stack.getItem());
+        if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTEContainer tile) {
             if (tile.getIndex() == 1)
                 tooltip.addAll(Arrays.asList(DescTextLocalization.addText("EssentiaHatch.tooltip", 2)));
             if (tile.getIndex() == 2) {

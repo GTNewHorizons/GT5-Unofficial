@@ -18,13 +18,13 @@ import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import tectech.util.TTUtility;
 
 public class MTERTGenerator extends MTEBasicGenerator {
 
@@ -45,13 +45,11 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     // Generates fuel value based on MC days
     public static int convertDaysToTicks(float days) {
-        int value = 0;
-        value = MathUtils.roundToClosestInt(20 * 86400 * days);
-        return value;
+        return MathUtils.roundToClosestInt(20 * 86400 * days);
     }
 
     public static long getTotalEUGenerated(int ticks, int voltage) {
-        return ticks * voltage;
+        return (long) ticks * voltage;
     }
 
     @Override
@@ -84,18 +82,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
         this.mDaysRemaining = aNBT.getInteger("mDaysRemaining");
         this.mDayTick = aNBT.getInteger("mDayTick");
         this.mNewTier = aNBT.getByte("mNewTier");
-
-        try {
-            ReflectionUtils.setByte(this, "mTier", this.mNewTier);
-        } catch (Exception e) {
-            if (this.getBaseMetaTileEntity() != null) {
-                IGregTechTileEntity thisTile = this.getBaseMetaTileEntity();
-                if (thisTile.isAllowedToWork() || thisTile.isActive()) {
-                    thisTile.setActive(false);
-                }
-            }
-        }
-
+        TTUtility.setTier(this.mNewTier, this);
         final NBTTagList list = aNBT.getTagList("mRecipeItem", 10);
         final NBTTagCompound data = list.getCompoundTagAt(0);
         ItemStack lastUsedFuel = ItemStack.loadItemStackFromNBT(data);
@@ -111,7 +98,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mDayTick < 24000) {
                 this.mDayTick++;
-            } else if (this.mDayTick >= 24000) {
+            } else {
                 this.mDayTick = 0;
                 this.mDaysRemaining = this.removeDayOfTime();
             }
@@ -160,7 +147,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
                 }
             }
             if ((tProducedEU > 0L) && (getPollution() > 0)) {
-                PollutionUtils
+                Pollution
                     .addPollution(aBaseMetaTileEntity, (int) (tProducedEU * getPollution() / 500 * this.mTier + 1L));
             }
         }
@@ -182,7 +169,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
     }
 
     public MTERTGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires RTG Pellets", new ITexture[0]);
+        super(aID, aName, aNameRegional, aTier, "Requires RTG Pellets");
     }
 
     private byte getTier() {
@@ -327,7 +314,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
                 } else {
                     mTier2 = 0;
                 }
-                ReflectionUtils.setByte(this, "mTier", mTier2);
+                TTUtility.setTier(mTier2, this);
                 this.mNewTier = mTier2;
             } catch (Exception e) {
                 Logger.WARNING("Failed setting mTier.");

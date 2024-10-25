@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.base;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -41,9 +42,7 @@ public enum LedStatus {
 
     public static LedStatus[] makeArray(int count, LedStatus defaultValue) {
         LedStatus[] statuses = new LedStatus[count];
-        for (int i = 0; i < count; i++) {
-            statuses[i] = defaultValue;
-        }
+        Arrays.fill(statuses, defaultValue);
         return statuses;
     }
 

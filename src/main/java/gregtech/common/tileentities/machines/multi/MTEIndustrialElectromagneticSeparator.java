@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_ACTIVE;
@@ -34,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -211,19 +211,10 @@ public class MTEIndustrialElectromagneticSeparator
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Electromagnetic Separator/Polarizer")
-            .addInfo("Controller Block for the Magnetic Flux Exhibitor")
             .addInfo("Use screwdriver to switch mode")
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
             .addInfo("With Tengam electromagnet, multiamp (NOT laser) hatches are allowed")
-            .addInfo(
-                AuthorFourIsTheNumber + EnumChatFormatting.GRAY
-                    + " & "
-                    + EnumChatFormatting.GOLD
-                    + "Ba"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "ps")
-            .addSeparator()
             .beginStructureBlock(7, 6, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
@@ -234,7 +225,7 @@ public class MTEIndustrialElectromagneticSeparator
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(GTValues.AuthorFourIsTheNumber, GTValues.authorBaps);
         return tt;
     }
 
@@ -270,8 +261,8 @@ public class MTEIndustrialElectromagneticSeparator
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) return false;
             if (mExoticEnergyHatches.size() > 1) return false;
-            if (mExoticEnergyHatches.get(0)
-                .maxWorkingAmperesIn() > 64) return false;
+            return mExoticEnergyHatches.get(0)
+                .maxWorkingAmperesIn() <= 64;
         }
 
         // All checks passed!

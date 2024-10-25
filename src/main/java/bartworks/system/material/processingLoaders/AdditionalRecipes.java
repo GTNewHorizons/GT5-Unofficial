@@ -239,8 +239,6 @@ public class AdditionalRecipes {
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1000))
                         .duration(25 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
-                        .ignoreCollision()
-                        .fake()
                         .addTo(bioLabRecipes);
                 }
             }
@@ -274,7 +272,6 @@ public class AdditionalRecipes {
             .addTo(BartWorksRecipeMaps.acidGenFuels);
     }
 
-    @SuppressWarnings("deprecation")
     public static void run() {
         runBWRecipes();
 
@@ -485,8 +482,6 @@ public class AdditionalRecipes {
             .eut(0)
             .metadata(FUEL_VALUE, 125_000)
             .addTo(ultraHugeNaquadahReactorFuels);
-
-        LoadItemContainers.run();
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), WerkstoffLoader.Tiberium.get(dust, 3))

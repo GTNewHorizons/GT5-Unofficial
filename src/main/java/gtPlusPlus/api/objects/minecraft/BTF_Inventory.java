@@ -75,12 +75,12 @@ public class BTF_Inventory implements ISidedInventory {
                 if (this.setStackToZeroInsteadOfNull(aIndex)) {
                     tStack.stackSize = 0;
                 } else {
-                    this.setInventorySlotContents(aIndex, (ItemStack) null);
+                    this.setInventorySlotContents(aIndex, null);
                 }
             } else {
                 rStack = tStack.splitStack(aAmount);
                 if (tStack.stackSize == 0 && !this.setStackToZeroInsteadOfNull(aIndex)) {
-                    this.setInventorySlotContents(aIndex, (ItemStack) null);
+                    this.setInventorySlotContents(aIndex, null);
                 }
             }
         }
@@ -143,7 +143,7 @@ public class BTF_Inventory implements ISidedInventory {
 
     @Override
     public final boolean hasCustomInventoryName() {
-        return mTile != null ? mTile.hasCustomInventoryName() : false;
+        return mTile != null && mTile.hasCustomInventoryName();
     }
 
     @Override
@@ -183,11 +183,7 @@ public class BTF_Inventory implements ISidedInventory {
     public boolean isEmpty() {
         for (int s = 0; s < this.getSizeInventory(); s++) {
             ItemStack slot = mInventory[s];
-            if (slot == null) {
-                continue;
-            } else {
-                return false;
-            }
+            if (slot != null) return false;
         }
         return true;
     }

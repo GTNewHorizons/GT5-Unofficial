@@ -151,12 +151,10 @@ public class PurifiedWaterRecipes {
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
-        // Diluted is twice what chem balance would suggest, but it is 2:1 with hydrochloric acid which makes it
-        // correct I believe.
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.FlocculationWasteLiquid.getFluid(10000L))
-            .itemOutputs(Materials.Aluminium.getDust(11))
-            .fluidOutputs(Materials.Oxygen.getGas(29000L), Materials.DilutedHydrochloricAcid.getFluid(58000L))
+            .itemOutputs(Materials.Aluminium.getDust(20))
+            .fluidOutputs(Materials.Oxygen.getGas(30000L), Materials.HydrochloricAcid.getFluid(30000L))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
@@ -274,8 +272,8 @@ public class PurifiedWaterRecipes {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 8),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 },
                 ItemList.Field_Generator_UEV.get(1))
             .fluidInputs(
                 Materials.Neutronium.getMolten(16 * 144),

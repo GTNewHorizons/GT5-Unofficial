@@ -68,8 +68,8 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
     public static final int CONSUMED_FLUID = 32_000; // Fluid consumed per processed recipe, maybe increase with EU
     public static final int MIN_INPUT_FOCUS = 25; // Inclusive
 
-    private ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     public ArrayList<BlockAntennaCasing> mAntennaCasings = new ArrayList<>();
 
@@ -492,12 +492,10 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Accelerator")
-            .addInfo("Controller block for the Synchrotron")
             .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation,")
             .addInfo("in the form of photons")
             .addInfo("Antenna Casings can be one of two tiers, upgrade them to improve output rate and energy scaling")
             .addInfo("Minimum input focus: " + MIN_INPUT_FOCUS)
-            .addInfo(DescTextLocalization.BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
 
             .addInfo("Use a lower temperature coolant to improve output focus")
@@ -513,7 +511,6 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
         }
 
         tt.addInfo("Requires 32 kL/s of coolant")
-            .addSeparator()
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front middle")
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 676, false)
@@ -528,8 +525,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
             .addInputHatch(addDotText(4))
             .addOutputHatch(addDotText(5))
             .addEnergyHatch(addDotText(6))
-
-            .toolTipFinisher("GTNH: Lanthanides");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -624,12 +620,10 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-
-            MTEHatchEnergy hatch = (MTEHatchEnergy) aMetaTileEntity;
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
 
             // First energy hatch added
-            if (this.mEnergyHatches.size() == 0) this.energyHatchTier = hatch.mTier;
+            if (this.mEnergyHatches.isEmpty()) this.energyHatchTier = hatch.mTier;
 
             // Disallow any hatches that don't match the tier of the first hatch added
             if (hatch.mTier != this.energyHatchTier) return false;
@@ -645,14 +639,12 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
 
         if (block == null) return false;
 
-        if (!(block instanceof BlockAntennaCasing)) return false;
-
-        BlockAntennaCasing antennaBlock = (BlockAntennaCasing) block;
+        if (!(block instanceof BlockAntennaCasing antennaBlock)) return false;
 
         int antennaTier = antennaBlock.getTier();
 
         // First antenna casing added
-        if (this.mAntennaCasings.size() == 0) this.antennaeTier = antennaTier;
+        if (this.mAntennaCasings.isEmpty()) this.antennaeTier = antennaTier;
 
         if (antennaTier != this.antennaeTier) return false;
 
@@ -687,7 +679,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
 
         ArrayList<FluidStack> fluidList = this.getStoredFluids();
 
-        if (fluidList.size() == 0) {
+        if (fluidList.isEmpty()) {
 
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.nocoolant"));
 
@@ -857,16 +849,12 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
     }
 
     private static float getVoltageFactor(long mEU, int antennaTier) {
-
         // float factor = (float) Math.pow(1.00004, -mEU * Math.pow(antennaTier, 1.0/3.0) + 80000);
         // float factor = (float) -Math.pow(1.1, -mEU / 2000 * Math.pow(antennaTier, 2.0 / 3.0)) + 1; // Strictly
         // improves
         // with higher tier
         // antenna
-        float factor = (float) (Math.sqrt(mEU) / 1500);
-
-        return factor;
-
+        return (float) (Math.sqrt(mEU) / 1500);
     }
 
     /*
@@ -886,11 +874,10 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
          * \ +\ \frac{l^{1.11t^{\frac{1}{3}}}}{40000000}
          */
 
-        double energy = (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0 / 9.0)) / 40_000_000)
-            * (-Math.pow(Math.pow(0.15, 2.0 / (Math.pow(antennaTier, 5.0 / 2.0))), voltage / 60768.0) + 1); // In
-                                                                                                            // keV
+        // keV
 
-        return energy;
+        return (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0 / 9.0)) / 40_000_000)
+            * (-Math.pow(Math.pow(0.15, 2.0 / (Math.pow(antennaTier, 5.0 / 2.0))), voltage / 60768.0) + 1);
 
     }
 
@@ -971,7 +958,7 @@ public class MTESynchrotron extends MTEEnhancedMultiBlockBase<MTESynchrotron> im
                 + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + Float.toString(mEfficiency / 100.0F)
+                + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
 

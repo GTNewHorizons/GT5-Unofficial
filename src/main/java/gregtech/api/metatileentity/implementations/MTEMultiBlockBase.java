@@ -32,7 +32,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -96,11 +95,11 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
-import gregtech.common.Pollution;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -134,7 +133,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public int damageFactorLow = 5;
     public float damageFactorHigh = 0.6f;
     public int machineMode = 0;
-    public List<UITexture> machineModeIcons = new ArrayList<UITexture>();
+    public List<UITexture> machineModeIcons = new ArrayList<>();
 
     public boolean mLockedToSingleRecipe = getDefaultRecipeLockingMode();
     protected boolean inputSeparation = getDefaultInputSeparationMode();
@@ -677,10 +676,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @SideOnly(Side.CLIENT)
-    protected void doActivitySound(ResourceLocation activitySound) {
+    protected void doActivitySound(SoundResource activitySound) {
         if (getBaseMetaTileEntity().isActive() && activitySound != null) {
             if (activitySoundLoop == null) {
-                activitySoundLoop = new GTSoundLoop(activitySound, getBaseMetaTileEntity(), false, true);
+                activitySoundLoop = new GTSoundLoop(
+                    activitySound.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true);
                 Minecraft.getMinecraft()
                     .getSoundHandler()
                     .playSound(activitySoundLoop);
@@ -710,7 +713,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * @return Sound that will be looped for as long as the machine is doing a recipe
      */
     @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySoundLoop() {
+    protected SoundResource getActivitySoundLoop() {
         return null;
     }
 
@@ -808,7 +811,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(getMaxInputAmps());
-        logic.setAmperageOC(mEnergyHatches.size() != 1);
+        logic.setAmperageOC(mExoticEnergyHatches.size() > 0 || mEnergyHatches.size() != 1);
     }
 
     protected boolean supportsCraftingMEBuffer() {
@@ -1320,7 +1323,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         boolean outputSuccess = true;
-        // noinspection DataFlowIssue
         final List<MTEHatchOutput> filteredHatches = filterValidMTEs(mOutputHatches);
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
@@ -1508,8 +1510,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     if (items == null) {
                         continue;
                     }
-                    for (int i = 0; i < items.length; i++) {
-                        ItemStack item = items[i];
+                    for (ItemStack item : items) {
                         if (item != null) {
                             rList.add(item);
                         }

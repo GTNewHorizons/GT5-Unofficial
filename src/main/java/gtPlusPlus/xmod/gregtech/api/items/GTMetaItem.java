@@ -106,7 +106,6 @@ public abstract class GTMetaItem extends GTMetaItemBase {
                     }
                     if (tRandomData == SubTag.NO_UNIFICATION) {
                         GTOreDictUnificator.addToBlacklist(rStack);
-                        continue;
                     }
                 }
             }
@@ -140,7 +139,6 @@ public abstract class GTMetaItem extends GTMetaItemBase {
                     }
                     if (tUseOreDict) {
                         GTOreDictUnificator.registerOre(tRandomData, rStack);
-                        continue;
                     }
                 }
             }

@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -54,7 +53,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -271,12 +269,10 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Squasher")
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -293,8 +289,7 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
             .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "25-30x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo("")
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -345,8 +340,8 @@ public class MTESteamCompressor extends MTESteamMultiBase<MTESteamCompressor> im
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_COMPRESSOR_OP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.IC2_MACHINES_COMPRESSOR_OP;
     }
 
 }

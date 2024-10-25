@@ -13,7 +13,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
@@ -56,9 +55,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
     private static final IStructureDefinition<MTETargetChamber> STRUCTURE_DEFINITION;
 
-    private ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
-    private ArrayList<MTEBusInputFocus> mInputFocus = new ArrayList<>();
+    private final ArrayList<MTEBusInputFocus> mInputFocus = new ArrayList<>();
 
     private static final int CASING_INDEX_FRONT = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings3, 10); // Grate
     private static final int CASING_INDEX_CENTRE = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14); // Shielded
@@ -183,12 +182,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Collision Chamber")
-            .addInfo("Controller block for the Target Chamber")
             .addInfo("Hitting things with other things")
-
-            .addInfo(BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Grate Machine Casing", 29, false)
@@ -205,7 +200,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInputBus(addDotText(3))
             .addOutputBus(addDotText(4))
             .addOtherStructurePart("Beamline Input Hatch", addDotText(5))
-            .toolTipFinisher("GTNH: Lanthanides");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -447,7 +442,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
                 + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + Float.toString(mEfficiency / 100.0F)
+                + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
 

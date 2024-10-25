@@ -19,8 +19,6 @@ public class Configuration {
 
     public static final SingleBlocks singleBlocks = new SingleBlocks();
 
-    public static final Pollution pollution = new Pollution();
-
     public static final RossRuinMetas rossRuinMetas = new RossRuinMetas();
 
     @Config.Comment("Mixins section.")
@@ -72,10 +70,6 @@ public class Configuration {
         @Config.DefaultInt(20_000_000)
         public int energyPerCell;
 
-        @Config.Comment("This switch enables the Direct Steam Mode of the DEHP. If enabled it will take in Waterand output steam. If disabled it will Input IC2Coolant and output hot coolant")
-        @Config.DefaultBoolean(false)
-        public boolean DEHPDirectSteam;
-
         @Config.Ignore()
         public static int megaMachinesMax = 256;
 
@@ -108,18 +102,6 @@ public class Configuration {
         @Config.Comment("mL Water per Sec for the StirlingPump")
         @Config.DefaultInt(150)
         public int mbWaterperSec;
-    }
-
-    @Config.Comment("Pollution section.")
-    public static class Pollution {
-
-        @Config.Comment("How much should the Simple Stirling Water Pump produce pollution per second")
-        @Config.DefaultInt(5)
-        public int pollutionHeatedWaterPumpSecond;
-
-        @Config.Comment("How much should the MBF produce pollution per tick per ingot. Then it'll be multiplied by the amount of ingots done in parallel")
-        @Config.DefaultInt(400)
-        public int basePollutionMBFSecond;
     }
 
     @Config.Comment("Ross' ruins machine metaIDs section.")

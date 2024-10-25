@@ -18,9 +18,9 @@ public class SoundLoopAnyBlock extends MovingSound {
     private final boolean stopWhenBlockInactive;
     private final int worldID;
     private boolean fadeOut = false;
-    private int tileX;
-    private int tileY;
-    private int tileZ;
+    private final int tileX;
+    private final int tileY;
+    private final int tileZ;
     private Block blockToTriggerEnd = null;
 
     /**

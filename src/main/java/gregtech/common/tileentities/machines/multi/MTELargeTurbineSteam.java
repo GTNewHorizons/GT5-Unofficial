@@ -60,12 +60,10 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine")
-            .addInfo("Controller block for the Large Steam Turbine")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Outputs Distilled Water as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Turbine Casing", 8, 31, false)
@@ -73,7 +71,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Steam, Side centered", 2)
             .addOutputHatch("Distilled Water, Side centered", 2)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -208,7 +206,6 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
 
     @Override
     public String[] getInfoData() {
-        super.looseFit = looseFit;
         return super.getInfoData();
     }
 

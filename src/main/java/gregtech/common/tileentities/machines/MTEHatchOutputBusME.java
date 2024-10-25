@@ -50,7 +50,8 @@ import gregtech.api.util.GTUtility;
 
 public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState {
 
-    private long baseCapacity = 1_600;
+    private static final long DEFAULT_CAPACITY = 1_600;
+    private long baseCapacity = DEFAULT_CAPACITY;
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -125,10 +126,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
      * Check if the internal cache can still fit more items in it
      */
     public boolean canAcceptItem() {
-        if (getCachedAmount() < getCacheCapacity()) {
-            return true;
-        }
-        return false;
+        return getCachedAmount() < getCacheCapacity();
     }
 
     /**
@@ -271,7 +269,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
-        aNBT.setLong("baseCapacity", baseCapacity);
+        if (baseCapacity != DEFAULT_CAPACITY) aNBT.setLong("baseCapacity", baseCapacity);
     }
 
     @Override

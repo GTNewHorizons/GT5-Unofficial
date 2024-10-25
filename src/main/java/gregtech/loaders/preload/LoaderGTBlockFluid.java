@@ -200,11 +200,11 @@ public class LoaderGTBlockFluid implements Runnable {
             .set(new ItemCoolantCellIC("180k_Helium_Coolantcell", "180k He Coolant Cell", 180000));
         ItemList.Reactor_Coolant_He_6
             .set(new ItemCoolantCellIC("360k_Helium_Coolantcell", "360k He Coolant Cell", 360000));
-        ItemList.Reactor_Coolant_NaK_1.set(new ItemCoolantCellIC("60k_NaK_Coolantcell", "60k NaK Coolantcell", 60000));
+        ItemList.Reactor_Coolant_NaK_1.set(new ItemCoolantCellIC("60k_NaK_Coolantcell", "60k NaK Coolant Cell", 60000));
         ItemList.Reactor_Coolant_NaK_3
-            .set(new ItemCoolantCellIC("180k_NaK_Coolantcell", "180k NaK Coolantcell", 180000));
+            .set(new ItemCoolantCellIC("180k_NaK_Coolantcell", "180k NaK Coolant Cell", 180000));
         ItemList.Reactor_Coolant_NaK_6
-            .set(new ItemCoolantCellIC("360k_NaK_Coolantcell", "360k NaK Coolantcell", 360000));
+            .set(new ItemCoolantCellIC("360k_NaK_Coolantcell", "360k NaK Coolant Cell", 360000));
 
         ItemList.Reactor_Coolant_Sp_1
             .set(new ItemCoolantCellIC("180k_Space_Coolantcell", "180k Sp Coolant Cell", 180000));
@@ -1310,7 +1310,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, MaterialsUEVplus.Protomatter, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder("InfinityPlasma")
+        GTFluidFactory.builder("plasma.infinity")
             .withLocalizedName("Infinity Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
@@ -2032,20 +2032,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L), new ItemStack(Items.flint, 1))
             .outputChances(10000, 1000)
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.furnace, 1, WILDCARD))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.lit_furnace, 1, WILDCARD))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 8L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);

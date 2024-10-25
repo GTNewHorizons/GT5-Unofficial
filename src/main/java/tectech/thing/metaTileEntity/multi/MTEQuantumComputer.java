@@ -22,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +33,7 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -354,8 +354,6 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                            // computation (and heat)
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.2")) // Use screwdriver to toggle
                                                                                            // wireless mode
-            .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-            .addSeparator()
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
@@ -394,7 +392,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                                                 // or
                                                                                                                 // last
                                                                                                                 // slice
-            .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -431,9 +429,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    protected ResourceLocation getActivitySound() {
-        return MTENetworkSwitch.activitySound;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
     }
 
     @Override

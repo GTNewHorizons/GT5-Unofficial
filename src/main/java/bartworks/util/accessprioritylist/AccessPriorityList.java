@@ -72,7 +72,6 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         this.head = node.getNext();
         this.head.setBefore(null);
         node.destroy();
-        node = null;
         this.size--;
         return first;
     }
@@ -84,7 +83,6 @@ public class AccessPriorityList<E> implements List<E>, Deque<E>, Set<E> {
         this.tail = node.getBefore();
         this.tail.setNext(null);
         node.destroy();
-        node = null;
         this.size--;
         return last;
     }

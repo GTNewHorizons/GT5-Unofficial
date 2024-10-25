@@ -46,7 +46,6 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -232,7 +231,6 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
                                                                                             // with a Parametrizer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5")) // (Do not insert a
                                                                                             // Wither)
-            .addSeparator()
             .beginStructureBlock(5, 4, 5, true)
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
             .addCasingInfoMin(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60, false) // 60x
@@ -256,7 +254,7 @@ public class MTEMicrowave extends TTMultiblockBase implements IConstructable {
                                                                                                      // outer casing
                                                                                                      // on the
                                                                                                      // bottom layer
-            .toolTipFinisher(CommonValues.THETA_MOVEMENT);
+            .toolTipFinisher();
         return tt;
     }
 

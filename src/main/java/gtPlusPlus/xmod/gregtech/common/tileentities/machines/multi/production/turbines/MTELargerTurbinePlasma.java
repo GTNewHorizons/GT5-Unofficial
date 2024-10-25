@@ -8,11 +8,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -24,9 +22,7 @@ import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-@SuppressWarnings("deprecation")
 public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
     public MTELargerTurbinePlasma(int aID, String aName, String aNameRegional) {
@@ -95,7 +91,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
         try {
             ArrayList<MTEHatchTurbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();
-            if (aEmptyTurbineRotorHatches.size() > 0) {
+            if (!aEmptyTurbineRotorHatches.isEmpty()) {
                 hatch: for (MTEHatchTurbine aHatch : aEmptyTurbineRotorHatches) {
                     ArrayList<ItemStack> aTurbines = getAllBufferedTurbines();
                     for (ItemStack aTurbineItem : aTurbines) {
@@ -110,7 +106,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
                 }
             }
 
-            if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
+            if (!getEmptyTurbineAssemblies().isEmpty() || !areAllTurbinesTheSame()) {
                 stopMachine(ShutDownReasonRegistry.NO_TURBINE);
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
@@ -125,7 +121,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
             ArrayList<FluidStack> tFluids = getStoredFluids();
 
-            if (tFluids.size() > 0) {
+            if (!tFluids.isEmpty()) {
                 if (baseEff == 0 || optFlow == 0
                     || counter >= 512
                     || this.getBaseMetaTileEntity()
@@ -172,7 +168,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             // formula:
             // EU/t = EU/t * MIN(1, ( ( (FuelValue / 200) ^ 2 ) / EUPerTurbine))
             int fuelValue = 0;
-            if (tFluids.size() > 0) {
+            if (!tFluids.isEmpty()) {
                 fuelValue = getFuelValue(new FluidStack(tFluids.get(0), 0));
             }
             float magicValue = (fuelValue * 0.005f) * (fuelValue * 0.005f);
@@ -184,7 +180,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             // Magic numbers: can always change by at least 200 eu/s, but otherwise by at most 20 percent of the
             // difference in power level (per second)
             // This is how much the turbine can actually change during this tick
-            int maxChangeAllowed = Math.max(200, GTUtility.safeInt((long) Math.abs(difference) / 5));
+            int maxChangeAllowed = Math.max(200, GTUtility.safeInt(Math.abs(difference) / 5));
 
             if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed
                 // change
@@ -212,7 +208,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
     }
 
     long fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
-        if (aFluids.size() >= 1) {
+        if (!aFluids.isEmpty()) {
             int tEU = 0;
 
             int actualOptimalFlow = 0;
@@ -258,18 +254,12 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
             if (totalFlow <= 0) return 0;
             tEU = GTUtility.safeInt((long) ((fuelValue / 20D) * (double) totalFlow));
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GTUtility.safeInt(
-                    (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency())
-                        * tEU));
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 double efficiency = 1.0D - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
-
                 tEU = (int) (tEU * efficiency);
-                tEU = GTUtility.safeInt(
-                    (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency())
-                        * tEU));
             }
+            tEU = GTUtility.safeInt(
+                (long) ((isLooseMode() ? turbine.getLoosePlasmaEfficiency() : turbine.getPlasmaEfficiency()) * tEU));
 
             return tEU;
         }
@@ -294,15 +284,5 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
     @Override
     protected String getCasingName() {
         return "Reinforced Plasma Turbine Casing";
-    }
-
-    @Override
-    protected ITexture getTextureFrontFace() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
-    }
-
-    @Override
-    protected ITexture getTextureFrontFaceActive() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
     }
 }

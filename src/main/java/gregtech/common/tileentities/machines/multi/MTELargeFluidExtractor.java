@@ -176,6 +176,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
             if (mGlassTier < 10 && energyHatch.getTierForStructure() > mGlassTier) {
                 mStructureBadGlassTier = true;
+                break;
             }
         }
 
@@ -203,10 +204,9 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         logic.setAmperageOC(true);
         logic.setAvailableVoltage(this.getMaxInputEu());
         logic.setAvailableAmperage(1);
-
-        logic.setEuModifier((float) (getEUMultiplier()));
+        logic.setEuModifier(getEUMultiplier());
         logic.setMaxParallel(getParallels());
-        logic.setSpeedBonus(1.0f / (float) (getSpeedBonus()));
+        logic.setSpeedBonus(1.0f / getSpeedBonus());
     }
 
     @Override
@@ -272,7 +272,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
         // spotless:off
         tt.addMachineType("Fluid Extractor")
-            .addInfo("Controller block for the Large Fluid Extractor")
             .addInfo(String.format(
                 "%d%% faster than single block machines of the same voltage",
                 (int) Math.round((BASE_SPEED_BONUS - 1) * 100)
@@ -300,7 +299,6 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 EnumChatFormatting.GRAY
             ))
             .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers.")
-            .addSeparator()
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front Center (Bottom Layer)")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
@@ -313,7 +311,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             .addOutputHatch("Any Robust Tungstensteel Machine Casing", 1)
             .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
             .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
         // spotless:on
 
         return tt;
@@ -390,16 +388,15 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public String[] getInfoData() {
-        var data = new ArrayList<String>();
 
-        data.addAll(Arrays.asList(super.getInfoData()));
+        ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(String.format("Max Parallels: %s%d%s", YELLOW, getParallels(), RESET));
         data.add(String.format("Heating Coil Speed Bonus: +%s%.0f%s %%", YELLOW, getCoilSpeedBonus() * 100, RESET));
         data.add(String.format("Total Speed Multiplier: %s%.0f%s %%", YELLOW, getSpeedBonus() * 100, RESET));
         data.add(String.format("Total EU/t Multiplier: %s%.0f%s %%", YELLOW, getEUMultiplier() * 100, RESET));
 
-        return data.toArray(new String[data.size()]);
+        return data.toArray(new String[0]);
     }
 
     public int getParallels() {

@@ -10,7 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
@@ -58,7 +57,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
 
     /**
      * Callback for item usage. If the item does something special on right clicking,
-     *
+     * <p>
      * he will have one of those. Return True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
     @Override
@@ -94,7 +93,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
 
     /**
      * Called whenever this item is equipped and the right mouse button is pressed.
-     *
+     * <p>
      * Args: itemStack, world, entityPlayer
      */
     @Override
@@ -143,7 +142,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
 
     /**
      * Spawns the creature specified by the egg's type in the location specified by
-     *
+     * <p>
      * the last three parameters. Parameters: world, entityID, x, y, z.
      */
     public Entity spawnEntity(final World parWorld, final double parX, final double parY, final double parZ) {
@@ -162,7 +161,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer {
                     0.0F);
 
                 parWorld.spawnEntityInWorld(this.entityToSpawn);
-                this.entityToSpawn.onSpawnWithEgg((IEntityLivingData) null);
+                this.entityToSpawn.onSpawnWithEgg(null);
                 this.entityToSpawn.playLivingSound();
             } else {
                 // DEBUG

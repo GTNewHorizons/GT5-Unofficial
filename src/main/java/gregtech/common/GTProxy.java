@@ -167,6 +167,7 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
 
@@ -687,6 +688,17 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int mTitleTabStyle = 0;
 
     /**
+     * Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line
+     */
+    public int separatorStyle = 2;
+
+    /**
+     * Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+:
+     * continuous line
+     */
+    public int tooltipFinisherStyle = 1;
+
+    /**
      * Whether to show seconds or ticks on NEI
      */
     public boolean mNEIRecipeSecondMode = true;
@@ -802,22 +814,15 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
         }
-        try {
-            for (String tOreName : OreDictionary.getOreNames()) {
-                ItemStack tOreStack;
-                for (Iterator<ItemStack> i$ = OreDictionary.getOres(tOreName)
-                    .iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
-                    tOreStack = i$.next();
-                }
+        for (String tOreName : OreDictionary.getOreNames()) {
+            for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {
+                registerOre(new OreDictionary.OreRegisterEvent(tOreName, itemStack));
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
     }
 
     public void onPreLoad() {
         GTLog.out.println("GTMod: Preload-Phase started!");
-        GTLog.ore.println("GTMod: Preload-Phase started!");
 
         GregTechAPI.sPreloadStarted = true;
         this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
@@ -1816,7 +1821,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     return;
                 }
                 String tName = aEvent.Name.replaceFirst(aPrefix.toString(), "");
-                if (tName.length() > 0) {
+                if (!tName.isEmpty()) {
                     char firstChar = tName.charAt(0);
                     if (Character.isUpperCase(firstChar) || Character.isLowerCase(firstChar)
                         || firstChar == '_'
@@ -2197,7 +2202,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 && ((this.mItemDespawnTime != 6000) || (this.mMaxEqualEntitiesAtOneSpot > 0))) {
                 long startTime = System.nanoTime();
                 double oldX = 0, oldY = 0, oldZ = 0;
-                if (debugEntityCramming && (aEvent.world.loadedEntityList.size() != 0)) {
+                if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
                     GTLog.out.println("CRAM: Entity list size " + aEvent.world.loadedEntityList.size());
                 }
                 for (int i = 0; i < aEvent.world.loadedEntityList.size(); i++) {
@@ -2247,7 +2252,7 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                             }
                     }
                 }
-                if (debugEntityCramming && (aEvent.world.loadedEntityList.size() != 0)) {
+                if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
                     GTLog.out.println(
                         "CRAM: Time spent checking " + (System.nanoTime() - startTime) / 1000 + " microseconds");
                 }

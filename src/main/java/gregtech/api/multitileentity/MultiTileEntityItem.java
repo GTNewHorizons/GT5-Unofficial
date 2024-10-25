@@ -38,7 +38,6 @@ public class MultiTileEntityItem extends ItemBlock {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean F3_H) {
         final IMultiTileEntity mute = block.getRegistry()
             .getReferenceTileEntity(stack);
@@ -58,7 +57,6 @@ public class MultiTileEntityItem extends ItemBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
     public void getSubItems(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         for (MultiTileEntityClassContainer tClass : block.getRegistry().registrations) {
             if (!tClass.hidden && ((IMultiTileEntity) tClass.getReferenceTileEntity())

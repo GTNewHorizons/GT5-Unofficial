@@ -49,91 +49,18 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
+import gtPlusPlus.xmod.gregtech.api.objects.GTPPRenderedTexture;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerTurbineBase>
     implements ISurvivalConstructable {
-
-    protected int baseEff = 0;
-    protected long optFlow = 0;
-    protected long euPerTurbine = 0;
-    protected double realOptFlow = 0;
-    protected int storedFluid = 0;
-    protected int counter = 0;
-    protected boolean looseFit = false;
-    protected double mufflerReduction = 1;
-    protected float[] flowMultipliers = new float[] { 1, 1, 1 };
-
-    public ITexture frontFace;
-    public ITexture frontFaceActive;
-
-    public ArrayList<MTEHatchTurbine> mTurbineRotorHatches = new ArrayList<>();
-
-    public MTELargerTurbineBase(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
-        frontFace = getTextureFrontFace();
-        frontFaceActive = getTextureFrontFaceActive();
-    }
-
-    public MTELargerTurbineBase(String aName) {
-        super(aName);
-        frontFace = getTextureFrontFace();
-        frontFaceActive = getTextureFrontFaceActive();
-    }
-
-    protected abstract ITexture getTextureFrontFace();
-
-    protected abstract ITexture getTextureFrontFaceActive();
-
-    protected abstract String getTurbineType();
-
-    protected abstract String getCasingName();
-
-    protected abstract boolean requiresOutputHatch();
-
-    @Override
-    protected final MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the XL " + getTurbineType() + " Turbine")
-            .addInfo("Runs as fast as 16 Large Turbines of the same type, takes the space of 12")
-            .addInfo("Right-click with screwdriver to enable loose fit")
-            .addInfo("Optimal flow will increase or decrease depending on fitting")
-            .addInfo("Loose fit increases flow in exchange for efficiency");
-        if (getTurbineType().contains("Steam")) {
-            tt.addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode");
-        }
-        if (getTurbineType().equals("Plasma")) {
-            tt.addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
-                .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
-        }
-        tt.addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
-            .beginStructureBlock(7, 9, 7, false)
-            .addController("Top Middle")
-            .addCasingInfoMin(getCasingName(), 360, false)
-            .addCasingInfoMin("Rotor Shaft", 30, false)
-            .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
-            .addInputBus("Any 4 dot hint (min 1)", 4)
-            .addInputHatch("Any 4 dot hint(min 1)", 4);
-        if (requiresOutputHatch()) {
-            tt.addOutputHatch("Any 4 dot hint(min 1)", 4);
-        }
-        tt.addDynamoHatch("Any 4 dot hint(min 1)", 4)
-            .addMaintenanceHatch("Any 4 dot hint(min 1)", 4);
-        if (requiresMufflers()) {
-            tt.addMufflerHatch("Any 7 dot hint (x4)", 7);
-        }
-        tt.toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
-        return tt;
-    }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<MTELargerTurbineBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -187,6 +114,71 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         }
     };
 
+    protected int baseEff = 0;
+    protected long optFlow = 0;
+    protected long euPerTurbine = 0;
+    protected double realOptFlow = 0;
+    protected int storedFluid = 0;
+    protected int counter = 0;
+    protected boolean looseFit = false;
+    protected double mufflerReduction = 1;
+    protected float[] flowMultipliers = new float[] { 1, 1, 1 };
+
+    public ITexture frontFace = new GTPPRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
+    public ITexture frontFaceActive = new GTPPRenderedTexture(
+        TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
+
+    public ArrayList<MTEHatchTurbine> mTurbineRotorHatches = new ArrayList<>();
+
+    public MTELargerTurbineBase(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTELargerTurbineBase(String aName) {
+        super(aName);
+    }
+
+    protected abstract String getTurbineType();
+
+    protected abstract String getCasingName();
+
+    protected abstract boolean requiresOutputHatch();
+
+    @Override
+    protected final MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType(getMachineType())
+            .addInfo("Runs as fast as 16 Large Turbines of the same type, takes the space of 12")
+            .addInfo("Right-click with screwdriver to enable loose fit")
+            .addInfo("Optimal flow will increase or decrease depending on fitting")
+            .addInfo("Loose fit increases flow in exchange for efficiency");
+        if (getTurbineType().contains("Steam")) {
+            tt.addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode");
+        }
+        if (getTurbineType().equals("Plasma")) {
+            tt.addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
+                .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
+        }
+        tt.addPollutionAmount(getPollutionPerSecond(null))
+            .beginStructureBlock(7, 9, 7, false)
+            .addController("Top Middle")
+            .addCasingInfoMin(getCasingName(), 360, false)
+            .addCasingInfoMin("Rotor Shaft", 30, false)
+            .addOtherStructurePart("Rotor Assembly", "Any 1 dot hint", 1)
+            .addInputBus("Any 4 dot hint (min 1)", 4)
+            .addInputHatch("Any 4 dot hint(min 1)", 4);
+        if (requiresOutputHatch()) {
+            tt.addOutputHatch("Any 4 dot hint(min 1)", 4);
+        }
+        tt.addDynamoHatch("Any 4 dot hint(min 1)", 4)
+            .addMaintenanceHatch("Any 4 dot hint(min 1)", 4);
+        if (requiresMufflers()) {
+            tt.addMufflerHatch("Any 7 dot hint (x4)", 7);
+        }
+        tt.toolTipFinisher();
+        return tt;
+    }
+
     @Override
     public IStructureDefinition<MTELargerTurbineBase> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
@@ -219,11 +211,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
         log("Structure Check: " + aStructure);
         if (mTurbineRotorHatches.size() != 12 || mMaintenanceHatches.size() != 1
-            || (mDynamoHatches.size() < 1 && mTecTechDynamoHatches.size() < 1)
+            || (mDynamoHatches.isEmpty() && mTecTechDynamoHatches.isEmpty())
             || (requiresMufflers() && mMufflerHatches.size() != 4)
-            || mInputBusses.size() < 1
-            || mInputHatches.size() < 1
-            || (requiresOutputHatch() && mOutputHatches.size() < 1)) {
+            || mInputBusses.isEmpty()
+            || mInputHatches.isEmpty()
+            || (requiresOutputHatch() && mOutputHatches.isEmpty())) {
             log(
                 "Bad Hatches - Turbine Housings: " + mTurbineRotorHatches.size()
                     + ", Maint: "
@@ -411,7 +403,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         for (MTEHatchInputBus aInputBus : this.mInputBusses) {
             for (int slot = aInputBus.getSizeInventory() - 1; slot >= 0; slot--) {
                 ItemStack aStack = aInputBus.getStackInSlot(slot);
-                if (aStack != null && GTUtility.areStacksEqual(aStack, aTurbine)) {
+                if (GTUtility.areStacksEqual(aStack, aTurbine)) {
                     aStack.stackSize -= aTurbine.stackSize;
                     updateSlots();
                     endRecipeProcessing();
@@ -426,7 +418,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public @NotNull CheckRecipeResult checkProcessing() {
         try {
             ArrayList<MTEHatchTurbine> aEmptyTurbineRotorHatches = getEmptyTurbineAssemblies();
-            if (aEmptyTurbineRotorHatches.size() > 0) {
+            if (!aEmptyTurbineRotorHatches.isEmpty()) {
                 hatch: for (MTEHatchTurbine aHatch : aEmptyTurbineRotorHatches) {
                     ArrayList<ItemStack> aTurbines = getAllBufferedTurbines();
                     for (ItemStack aTurbineItem : aTurbines) {
@@ -441,7 +433,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 }
             }
 
-            if (getEmptyTurbineAssemblies().size() > 0 || !areAllTurbinesTheSame()) {
+            if (!getEmptyTurbineAssemblies().isEmpty() || !areAllTurbinesTheSame()) {
                 stopMachine(ShutDownReasonRegistry.NO_TURBINE);
                 return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
             }
@@ -453,7 +445,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
             TurbineStatCalculator turbine = new TurbineStatCalculator((MetaGeneratedTool) aStack.getItem(), aStack);
 
-            if (tFluids.size() > 0) {
+            if (!tFluids.isEmpty()) {
                 if (baseEff == 0 || optFlow == 0
                     || counter >= 512
                     || this.getBaseMetaTileEntity()
@@ -611,7 +603,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .toLowerCase()
             .contains("steam");
 
-        String[] ret = new String[] {
+        return new String[] {
             // 8 Lines available for information panels
             tRunning + ": "
                 + EnumChatFormatting.RED
@@ -654,7 +646,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 + GTUtility.formatNumbers(mPollutionReduction)
                 + EnumChatFormatting.RESET
                 + " %" };
-        return ret;
     }
 
     @Override
@@ -668,7 +659,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             mPollution += aPollutionLevel * getPollutionMultiplier() * mufflerReduction;
             for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
                 if (mPollution >= 10000) {
-                    if (PollutionUtils.addPollution(this.getBaseMetaTileEntity(), 10000)) {
+                    if (GTMod.gregtechproxy.mPollution) {
+                        Pollution.addPollution(this.getBaseMetaTileEntity(), 10000);
                         mPollution -= 10000;
                     }
                 } else {
@@ -799,7 +791,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         if (aEU <= 0) {
             return true;
         }
-        if (this.mAllDynamoHatches.size() > 0) {
+        if (!this.mAllDynamoHatches.isEmpty()) {
             return addEnergyOutputMultipleDynamos(aEU, true);
         }
         return false;
