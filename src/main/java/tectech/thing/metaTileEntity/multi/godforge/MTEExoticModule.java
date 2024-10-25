@@ -73,6 +73,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import tectech.TecTech;
@@ -604,9 +605,10 @@ public class MTEExoticModule extends MTEBaseModule {
             if (i < QGPItemMapSize) {
                 QGPItemHandler.setStackInSlot(
                     i,
-                    itemEntryList.get(i)
-                        .getKey()
-                        .splitStack(1));
+                    GTUtility.copyAmount(
+                        1,
+                        itemEntryList.get(i)
+                            .getKey()));
                 builder.widget(
                     new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
                         .setPos(slotXQGP, slotYQGP)
@@ -663,9 +665,10 @@ public class MTEExoticModule extends MTEBaseModule {
             if (i < magMatterItemMapSize) {
                 magMatterItemHandler.setStackInSlot(
                     i,
-                    magMatteritemEntryList.get(i)
-                        .getKey()
-                        .splitStack(1));
+                    GTUtility.copyAmount(
+                        1,
+                        magMatteritemEntryList.get(i)
+                            .getKey()));
                 builder.widget(
                     new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
                         .setPos(slotXMagmatter, slotYMagmatter)
