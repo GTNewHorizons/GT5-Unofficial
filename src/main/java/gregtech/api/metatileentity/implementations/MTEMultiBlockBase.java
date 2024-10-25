@@ -1337,6 +1337,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return outputSuccess;
     }
 
+    public void addItemOutputs(ItemStack[] mOutputItems2) {
+        for (ItemStack outputItemStack : mOutputItems2) {
+            addOutput(outputItemStack);
+        }
+    }
+
     private boolean dumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly) {
         for (MTEHatchOutputBus outputBus : outputBuses) {
             if (restrictiveBusesOnly && !outputBus.isLocked()) {
