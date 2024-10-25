@@ -60,6 +60,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -722,7 +723,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         //
         builder.widget(
-            new ButtonWidget().setPlayClickSound(true)
+            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder).setPlayClickSound(true)
                 .setOnClick((c, w) -> debugMode = !debugMode)
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
