@@ -376,7 +376,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
     @Override
     public boolean supportsBatchMode() {
-        return false;
+        return true;
     }
 
     @Override
