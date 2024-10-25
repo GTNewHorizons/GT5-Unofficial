@@ -54,6 +54,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeBoiler>
     implements ISurvivalConstructable {
@@ -95,7 +96,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     };
     private boolean firstRun = true;
     private int mSuperEfficencyIncrease = 0;
-    private int integratedCircuitConfig = 0; // Steam output is reduced by 1000L per config
+    private float integratedCircuitConfig = 0; // Steam output is reduced by 1000L per config
     private int excessWater = 0; // Eliminate rounding errors for water
     private int excessFuel = 0; // Eliminate rounding errors for fuels that burn half items
     private int excessProjectedEU = 0; // Eliminate rounding errors from throttling the boiler
@@ -182,7 +183,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
 
     public abstract int getEfficiencyIncrease();
 
-    public int getIntegratedCircuitConfig() {
+    public float getIntegratedCircuitConfig() {
         return integratedCircuitConfig;
     }
 
@@ -258,11 +259,33 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     public CheckRecipeResult checkProcessing() {
         if (!isFuelValid()) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         // Do we have an integrated circuit with a valid configuration?
-        if (Circuit_Integrated.isStackEqual(mInventory[1], true, true)) {
-            int circuit_config = mInventory[1].getItemDamage();
+
+        // If we don't have a circuit in the main inventory, check the hatch(s) for a ghost circuit
+        ItemStack hatchCircuit = mInventory[1] != null ? mInventory[1] : getConfigurationCircuit();
+
+        if (Circuit_Integrated.isStackEqual(hatchCircuit, true, true)) {
+            int circuit_config = hatchCircuit.getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
                 // If so, overwrite the current config
                 this.integratedCircuitConfig = circuit_config;
+            }
+        }
+        // TODO: Add logic for breakthrough and bio circuits
+        // Logically, biocircuit should be 1/2 of a normal circuit, however, throttle calculations are in eu/t (int)
+        // If we change the config to be a float, it will work since numbers such as 0.5, 0.75, 0.875, etc are evenly
+        // represented in binary
+        // EX: 1/2 of a normal circuit would be 12.5 eu/t, it would round to 12 eu/t
+        else if (GregtechItemList.Circuit_BioRecipeSelector.isStackEqual(hatchCircuit, true, true)) {
+            float circuit_config = hatchCircuit.getItemDamage();
+            if (circuit_config >= 1 && circuit_config <= 25) {
+                // If so, overwrite the current config
+                this.integratedCircuitConfig = circuit_config / 2;
+            }
+        } else if (GregtechItemList.Circuit_T3RecipeSelector.isStackEqual(hatchCircuit, true, true)) {
+            int circuit_config = hatchCircuit.getItemDamage();
+            if (circuit_config >= 1 && circuit_config <= 25) {
+                // If so, overwrite the current config
+                this.integratedCircuitConfig = circuit_config * 2;
             }
         } else {
             // If not, set the config to zero
@@ -470,7 +493,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     }
 
     private int adjustEUtForConfig(int rawEUt) {
-        int adjustedSteamOutput = rawEUt - (isSuperheated() ? 75 : 25) * integratedCircuitConfig;
+        int adjustedSteamOutput = (int) (rawEUt - (isSuperheated() ? 75 : 25) * integratedCircuitConfig);
         return Math.max(adjustedSteamOutput, 25);
     }
 
@@ -485,7 +508,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         if (mEfficiencyIncrease <= 5000 && mEfficiency < getCorrectedMaxEfficiency(mInventory[1])) {
             return rawBurnTime;
         }
-        int adjustedEUt = Math.max(25, getEUt() - (isSuperheated() ? 75 : 25) * integratedCircuitConfig);
+        int adjustedEUt = (int) Math.max(25, getEUt() - (isSuperheated() ? 75 : 25) * integratedCircuitConfig);
         int adjustedBurnTime = (int) (rawBurnTime * (long) getEUt() / adjustedEUt);
         this.excessProjectedEU += getEUt() * rawBurnTime - adjustedEUt * adjustedBurnTime;
         adjustedBurnTime += this.excessProjectedEU / adjustedEUt;
