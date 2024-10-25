@@ -39,8 +39,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemifluidGenerator>
@@ -295,7 +295,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiLargeSemiFluidGenerator;
+        return PollutionConfig.pollutionPerSecondMultiLargeSemiFluidGenerator;
     }
 
     @Override

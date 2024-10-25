@@ -58,7 +58,8 @@ import gregtech.api.util.GTUtility;
 
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState {
 
-    private long baseCapacity = 128_000;
+    private static final long DEFAULT_CAPACITY = 128_000;
+    private long baseCapacity = DEFAULT_CAPACITY;
 
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
@@ -302,7 +303,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
-        aNBT.setLong("baseCapacity", baseCapacity);
+        if (baseCapacity != DEFAULT_CAPACITY) aNBT.setLong("baseCapacity", baseCapacity);
     }
 
     @Override

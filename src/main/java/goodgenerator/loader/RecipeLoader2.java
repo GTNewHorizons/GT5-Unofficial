@@ -1076,7 +1076,7 @@ public class RecipeLoader2 {
             FluidRegistry.getFluidStack("ic2coolant", 16000),
             FluidRegistry.getFluidStack("ic2distilledwater", 20000),
             FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 32000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 3200000),
             8000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
@@ -1084,7 +1084,7 @@ public class RecipeLoader2 {
             FluidRegistry.getFluidStack("molten.solarsaltcold", 3200),
             FluidRegistry.getFluidStack("ic2distilledwater", 20000),
             FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 32000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 3200000),
             1600);
 
         GTValues.RA.stdBuilder()

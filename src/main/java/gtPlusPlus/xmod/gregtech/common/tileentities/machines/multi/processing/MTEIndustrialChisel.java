@@ -37,8 +37,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -324,7 +324,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialChisel;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialChisel;
     }
 
     @Override

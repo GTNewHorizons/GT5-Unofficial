@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge_modules;
+package tectech.thing.metaTileEntity.multi.godforge;
 
 import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
