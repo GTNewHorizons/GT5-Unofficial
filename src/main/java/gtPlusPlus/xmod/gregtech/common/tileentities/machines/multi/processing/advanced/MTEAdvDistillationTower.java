@@ -355,17 +355,17 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
+    protected void addFluidOutputs(FluidStack[] outputFluids) {
         if (mMode == Mode.DistillationTower) {
             // dt mode
-            for (int i = 0; i < mOutputFluids2.length && i < mOutputHatchesByLayer.size(); i++) {
-                FluidStack tStack = mOutputFluids2[i].copy();
+            for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
+                FluidStack tStack = outputFluids[i].copy();
                 if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
                     dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
             }
         } else {
             // distillery mode
-            for (FluidStack outputFluidStack : mOutputFluids2) {
+            for (FluidStack outputFluidStack : outputFluids) {
                 addOutput(outputFluidStack);
             }
         }
