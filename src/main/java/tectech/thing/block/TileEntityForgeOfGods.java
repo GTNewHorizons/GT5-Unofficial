@@ -200,7 +200,7 @@ public class TileEntityForgeOfGods extends TileEntity {
                 cycleStep = 0;
             } else {
                 // update interp values to the next set, reset cycleStep then interpolate
-                cycleStep = -255;
+                cycleStep -= 255;
                 cycleStarColors();
                 interpolateColors();
             }

@@ -129,36 +129,44 @@ import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
+    // Field default values for non-zero value defaults for item NBT checks
+    private static final int DEFAULT_FUEL_CONSUMPTION_FACTOR = 1;
+    private static final int DEFAULT_MAX_BATTERY_CHARGE = 100;
+    private static final int DEFAULT_RING_AMOUNT = 1;
+    private static final int DEFAULT_ROTATION_SPEED = 5;
+    private static final int DEFAULT_STAR_SIZE = 20;
+    private static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
+
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
-    private int fuelConsumptionFactor = 1;
-    private int selectedFuelType = 0;
-    private int internalBattery = 0;
-    private int maxBatteryCharge = 100;
-    private int gravitonShardsAvailable = 0;
-    private int gravitonShardsSpent = 0;
-    private int ringAmount = 1;
-    private int stellarFuelAmount = 0;
-    private int neededStartupFuel = 0;
-    private long fuelConsumption = 0;
-    private long totalRecipesProcessed = 0;
-    private long totalFuelConsumed = 0;
-    private float totalExtensionsBuilt = 0;
-    private float powerMilestonePercentage = 0;
-    private float recipeMilestonePercentage = 0;
-    private float fuelMilestonePercentage = 0;
-    private float structureMilestonePercentage = 0;
-    private float invertedPowerMilestonePercentage = 0;
-    private float invertedRecipeMilestonePercentage = 0;
-    private float invertedFuelMilestonePercentage = 0;
-    private float invertedStructureMilestonePercentage = 0;
+    private int fuelConsumptionFactor = DEFAULT_FUEL_CONSUMPTION_FACTOR;
+    private int selectedFuelType;
+    private int internalBattery;
+    private int maxBatteryCharge = DEFAULT_MAX_BATTERY_CHARGE;
+    private int gravitonShardsAvailable;
+    private int gravitonShardsSpent;
+    private int ringAmount = DEFAULT_RING_AMOUNT;
+    private int stellarFuelAmount;
+    private int neededStartupFuel;
+    private long fuelConsumption;
+    private long totalRecipesProcessed;
+    private long totalFuelConsumed;
+    private float totalExtensionsBuilt;
+    private float powerMilestonePercentage;
+    private float recipeMilestonePercentage;
+    private float fuelMilestonePercentage;
+    private float structureMilestonePercentage;
+    private float invertedPowerMilestonePercentage;
+    private float invertedRecipeMilestonePercentage;
+    private float invertedFuelMilestonePercentage;
+    private float invertedStructureMilestonePercentage;
     private BigInteger totalPowerConsumed = BigInteger.ZERO;
-    private boolean batteryCharging = false;
-    private boolean inversion = false;
-    private boolean gravitonShardEjection = false;
+    private boolean batteryCharging;
+    private boolean inversion;
+    private boolean gravitonShardEjection;
     private FormattingMode formattingMode = FormattingMode.NONE;
-    private boolean isRenderActive = false;
-    private boolean secretUpgrade = false;
+    private boolean isRenderActive;
+    private boolean secretUpgrade;
     private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
@@ -166,9 +174,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     // Star cosmetics fields
     // actual star cosmetics
     private final StarColorStorage starColors = new StarColorStorage();
-    private String selectedStarColor = ForgeOfGodsStarColor.DEFAULT.getName();
-    private int rotationSpeed = 5;
-    private int starSize = 20;
+    private String selectedStarColor = DEFAULT_STAR_COLOR;
+    private int rotationSpeed = DEFAULT_ROTATION_SPEED;
+    private int starSize = DEFAULT_STAR_SIZE;
     // editing star color
     private ForgeOfGodsStarColor newStarColor = starColors.newTemplateColor();
     private int starColorR, starColorG, starColorB;
@@ -858,7 +866,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         button.add(TecTechUITextures.OVERLAY_BUTTON_ARROW_BLUE_UP);
                         return button.toArray(new IDrawable[0]);
                     })
-                    .addTooltip("Path of Celestial Transcendence")
+                    .addTooltip(translateToLocal("fog.button.upgradetree.tooltip"))
                     .setPos(174, 167)
                     .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
@@ -3368,101 +3376,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + "Clicking on the logo in the controller gui opens an extensive information window,")
             .addInfo("explaining everything there is to know about this multiblock.")
             .beginStructureBlock(127, 29, 186, false)
+            .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
             .addStructureInfo(
-                "Total blocks needed for the structure with " + EnumChatFormatting.DARK_PURPLE
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "3"
-                    + EnumChatFormatting.GRAY
-                    + " rings:")
+                getRingText("3943", "7279", "11005") + "Transcendentally Amplified Magnetic Confinement Casing")
+            .addStructureInfo(getRingText("2819", "4831", "6567") + "Singularity Reinforced Stellar Shielding Casing")
+            .addStructureInfo(getRingText("272", "512", "824") + "Celestial Matter Guidance Casing")
+            .addStructureInfo(getRingText("130", "144", "158") + "Boundless Gravitationally Severed Structure Casing")
+            .addStructureInfo(getRingText("9", "54", "155") + "Spatially Transcendent Gravitational Lens Block")
             .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "3943"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "7279"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "11005"
-                    + EnumChatFormatting.GRAY
-                    + " Transcendentally Amplified Magnetic Confinement Casing")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "2819"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "4831"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "6567"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "272"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "512"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "824"
-                    + EnumChatFormatting.GRAY
-                    + " Celestial Matter Guidance Casing")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "130"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "144"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "158"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "9"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "54"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "155"
-                    + EnumChatFormatting.GRAY
-                    + " Spatially Transcendent Gravitational Lens Block")
-            .addStructureInfo(
-                EnumChatFormatting.DARK_PURPLE + "345"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "357"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "397"
-                    + EnumChatFormatting.DARK_PURPLE
-                    + " Remote"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.DARK_GREEN
-                    + "Medial"
-                    + EnumChatFormatting.GRAY
-                    + "/"
-                    + EnumChatFormatting.AQUA
-                    + "Central"
-                    + EnumChatFormatting.GRAY
-                    + " Graviton Flow Modulator")
+                getRingText("345", "357", "397") + getRingText("Remote", "Medial", "Central")
+                    + "Graviton Flow Modulator")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "36" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .addStructureInfoSeparator()
@@ -3471,6 +3394,20 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
             .toolTipFinisher(EnumChatFormatting.AQUA, 73);
         return tt;
+    }
+
+    private static String getRingText(String oneRing, String twoRings, String threeRings) {
+        return EnumChatFormatting.DARK_PURPLE + oneRing
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.DARK_GREEN
+            + twoRings
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.AQUA
+            + threeRings
+            + EnumChatFormatting.GRAY
+            + " ";
     }
 
     @Override
@@ -3922,86 +3859,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public void setItemNBT(NBTTagCompound NBT) {
-        NBT.setInteger("selectedFuelType", selectedFuelType);
-        NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
-        NBT.setInteger("internalBattery", internalBattery);
-        NBT.setBoolean("batteryCharging", batteryCharging);
-        NBT.setInteger("batterySize", maxBatteryCharge);
-        NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
-        NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
-        NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
-        NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
-        NBT.setLong("totalFuelConsumed", totalFuelConsumed);
-        NBT.setInteger("starFuelStored", stellarFuelAmount);
-        NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
-        NBT.setBoolean("secretUpgrde", secretUpgrade);
-
-        // Store booleanArrays of all upgrades
-        NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
-
-        int upgradeIndex = 0;
-        for (Boolean upgrade : upgrades) {
-            upgradeBooleanArrayNBTTag.setBoolean("upgrade" + upgradeIndex, upgrade);
-            upgradeIndex++;
-        }
-
-        NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
-
-        NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
-
-        int upgradeMaterialIndex = 0;
-        for (Boolean upgrade : materialPaidUpgrades) {
-            upgradeBooleanArrayNBTTag.setBoolean("upgradeMaterial" + upgradeMaterialIndex, upgrade);
-            upgradeMaterialIndex++;
-        }
-
-        NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
-
-        starColors.serializeToNBT(NBT);
-
+        saveGeneralNBT(NBT, false);
         super.saveNBTData(NBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound NBT) {
-        NBT.setInteger("selectedFuelType", selectedFuelType);
-        NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
-        NBT.setInteger("internalBattery", internalBattery);
-        NBT.setBoolean("batteryCharging", batteryCharging);
-        NBT.setInteger("batterySize", maxBatteryCharge);
-        NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
-        NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
-        NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
-        NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
-        NBT.setLong("totalFuelConsumed", totalFuelConsumed);
-        NBT.setInteger("starFuelStored", stellarFuelAmount);
-        NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
-        NBT.setInteger("ringAmount", ringAmount);
-        NBT.setBoolean("secretUpgrade", secretUpgrade);
+        saveGeneralNBT(NBT, true);
 
-        // Store booleanArray of all upgrades
-        NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
-
-        int upgradeIndex = 0;
-        for (boolean upgrade : upgrades) {
-            upgradeBooleanArrayNBTTag.setBoolean("upgrade" + upgradeIndex, upgrade);
-            upgradeIndex++;
-        }
-
-        NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
-
-        NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
-
-        int upgradeMaterialIndex = 0;
-        for (boolean upgrade : materialPaidUpgrades) {
-            upgradeMaterialBooleanArrayNBTTag.setBoolean("upgradeMaterial" + upgradeMaterialIndex, upgrade);
-            upgradeMaterialIndex++;
-        }
-
-        NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
-
+        // Upgrade window stored items
         NBTTagCompound upgradeWindowStorageNBTTag = new NBTTagCompound();
-
         int storageIndex = 0;
         for (ItemStack itemStack : inputSlotHandler.getStacks()) {
             if (itemStack != null) {
@@ -4011,27 +3878,69 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
             storageIndex++;
         }
-
         NBT.setTag("upgradeWindowStorage", upgradeWindowStorageNBTTag);
 
         // Renderer information
         NBT.setInteger("rotationSpeed", rotationSpeed);
         NBT.setInteger("starSize", starSize);
         NBT.setString("selectedStarColor", selectedStarColor);
+        NBT.setInteger("ringAmount", ringAmount);
         NBT.setBoolean("isRenderActive", isRenderActive);
 
-        starColors.serializeToNBT(NBT);
-
         super.saveNBTData(NBT);
+    }
+
+    private void saveGeneralNBT(NBTTagCompound NBT, boolean force) {
+        if (force || selectedFuelType != 0) NBT.setInteger("selectedFuelType", selectedFuelType);
+        if (force || internalBattery != 0) NBT.setInteger("internalBattery", internalBattery);
+        if (force || batteryCharging) NBT.setBoolean("batteryCharging", true);
+        if (force || gravitonShardsAvailable != 0) NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
+        if (force || gravitonShardsSpent != 0) NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
+        if (force || !BigInteger.ZERO.equals(totalPowerConsumed))
+            NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
+        if (force || totalRecipesProcessed != 0) NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
+        if (force || totalFuelConsumed != 0) NBT.setLong("totalFuelConsumed", totalFuelConsumed);
+        if (force || stellarFuelAmount != 0) NBT.setInteger("starFuelStored", stellarFuelAmount);
+        if (force || gravitonShardEjection) NBT.setBoolean("gravitonShardEjection", true);
+        if (force || secretUpgrade) NBT.setBoolean("secretUpgrade", true);
+
+        // Fields with non-zero defaults
+        if (force || fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
+            NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
+        }
+        if (force || maxBatteryCharge != DEFAULT_MAX_BATTERY_CHARGE) {
+            NBT.setInteger("batterySize", maxBatteryCharge);
+        }
+
+        // Upgrades
+        NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
+        boolean hasSomeUpgrade = false;
+        for (int i = 0; i < upgrades.length; i++) {
+            boolean value = upgrades[i];
+            upgradeBooleanArrayNBTTag.setBoolean("upgrade" + i, value);
+            if (value) hasSomeUpgrade = true;
+        }
+        if (force || hasSomeUpgrade) NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
+
+        // Upgrade material costs paid
+        NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
+        boolean someCostPaid = false;
+        for (int i = 0; i < materialPaidUpgrades.length; i++) {
+            boolean value = materialPaidUpgrades[i];
+            upgradeMaterialBooleanArrayNBTTag.setBoolean("upgradeMaterial" + i, value);
+            if (value) someCostPaid = true;
+        }
+        if (force || someCostPaid) NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
+
+        // Custom star colors
+        starColors.serializeToNBT(NBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound NBT) {
         selectedFuelType = NBT.getInteger("selectedFuelType");
-        fuelConsumptionFactor = NBT.getInteger("fuelConsumptionFactor");
         internalBattery = NBT.getInteger("internalBattery");
         batteryCharging = NBT.getBoolean("batteryCharging");
-        maxBatteryCharge = NBT.getInteger("batterySize");
         gravitonShardsAvailable = NBT.getInteger("gravitonShardsAvailable");
         gravitonShardsSpent = NBT.getInteger("gravitonShardsSpent");
         totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));
@@ -4039,21 +3948,30 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         totalFuelConsumed = NBT.getLong("totalFuelConsumed");
         stellarFuelAmount = NBT.getInteger("starFuelStored");
         gravitonShardEjection = NBT.getBoolean("gravitonShardEjection");
-        ringAmount = NBT.getInteger("ringAmount");
         secretUpgrade = NBT.getBoolean("secretUpgrade");
 
-        NBTTagCompound tempBooleanTag = NBT.getCompoundTag("upgrades");
-
-        for (int upgradeIndex = 0; upgradeIndex < 31; upgradeIndex++) {
-            boolean upgrade = tempBooleanTag.getBoolean("upgrade" + upgradeIndex);
-            upgrades[upgradeIndex] = upgrade;
+        // Fields with non-zero defaults
+        if (NBT.hasKey("fuelConsumptionFactor")) {
+            fuelConsumptionFactor = NBT.getInteger("fuelConsumptionFactor");
+        }
+        if (NBT.hasKey("batterySize")) {
+            maxBatteryCharge = NBT.getInteger("batterySize");
         }
 
-        tempBooleanTag = NBT.getCompoundTag("upgradeMaterials");
+        if (NBT.hasKey("upgrades")) {
+            NBTTagCompound upgradesTag = NBT.getCompoundTag("upgrades");
+            for (int i = 0; i < upgrades.length; i++) {
+                boolean upgrade = upgradesTag.getBoolean("upgrade" + i);
+                upgrades[i] = upgrade;
+            }
+        }
 
-        for (int upgradeIndex = 0; upgradeIndex < 7; upgradeIndex++) {
-            boolean upgrade = tempBooleanTag.getBoolean("upgradeMaterial" + upgradeIndex);
-            materialPaidUpgrades[upgradeIndex] = upgrade;
+        if (NBT.hasKey("upgradeMaterials")) {
+            NBTTagCompound materialsTag = NBT.getCompoundTag("upgradeMaterials");
+            for (int i = 0; i < materialPaidUpgrades.length; i++) {
+                boolean upgrade = materialsTag.getBoolean("upgradeMaterial" + i);
+                materialPaidUpgrades[i] = upgrade;
+            }
         }
 
         NBTTagCompound tempItemTag = NBT.getCompoundTag("upgradeWindowStorage");
@@ -4069,9 +3987,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
 
         // Renderer information
-        rotationSpeed = NBT.getInteger("rotationSpeed");
-        starSize = NBT.getInteger("starSize");
-        selectedStarColor = NBT.getString("selectedStarColor");
+        if (NBT.hasKey("rotationSpeed")) rotationSpeed = NBT.getInteger("rotationSpeed");
+        if (NBT.hasKey("starSize")) starSize = NBT.getInteger("starSize");
+        if (NBT.hasKey("selectedStarColor")) selectedStarColor = NBT.getString("selectedStarColor");
+        if (NBT.hasKey("ringAmount")) ringAmount = NBT.getInteger("ringAmount");
         isRenderActive = NBT.getBoolean("isRenderActive");
 
         starColors.rebuildFromNBT(NBT);
