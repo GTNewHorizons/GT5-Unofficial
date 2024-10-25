@@ -621,9 +621,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) {
-            return false;
-        }
 
         // Right-clicking could be a data stick linking action, so try this first.
         if (tryLinkDataStick(aPlayer)) {

@@ -145,6 +145,15 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         GTValues.RA.stdBuilder()
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))
                             .itemOutputs(
+                                GTUtility.copyOrNull(tPlanks),
+                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                            .fluidInputs(Materials.Lubricant.getFluid(1L))
+                            .duration(10 * SECONDS)
+                            .eut(8)
+                            .addTo(cutterRecipes);
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
+                            .itemOutputs(
                                 GTUtility.copyAmount(
                                     GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                     tStack),
@@ -162,17 +171,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
                             .fluidInputs(GTModHandler.getDistilledWater(3))
                             .duration(20 * SECONDS)
-                            .eut(8)
-                            .addTo(cutterRecipes);
-                        GTValues.RA.stdBuilder()
-                            .itemInputs(new ItemStack(aStack.getItem(), 1, i))
-                            .itemOutputs(
-                                GTUtility.copyAmount(
-                                    GTMod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
-                                    tStack),
-                                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L))
-                            .fluidInputs(Materials.Lubricant.getFluid(1))
-                            .duration(10 * SECONDS)
                             .eut(8)
                             .addTo(cutterRecipes);
                         GTModHandler.removeRecipeDelayed(new ItemStack(aStack.getItem(), 1, i));
