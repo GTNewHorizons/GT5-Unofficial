@@ -117,7 +117,7 @@ public final class CheckRecipeResultRegistry {
     public static final CheckRecipeResult NO_SEE_SKY = SimpleCheckRecipeResult.ofFailure("no_see_sky");
 
     /**
-     * Successfully found recipe.
+     * Machine is waiting for the main controller to start the cycle.
      */
     @Nonnull
     public static final CheckRecipeResult CYCLE_IDLE = SimpleCheckRecipeResult.ofSuccess("cycle_idle");
