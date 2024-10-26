@@ -117,6 +117,12 @@ public final class CheckRecipeResultRegistry {
     public static final CheckRecipeResult NO_SEE_SKY = SimpleCheckRecipeResult.ofFailure("no_see_sky");
 
     /**
+     * Successfully found recipe.
+     */
+    @Nonnull
+    public static final CheckRecipeResult CYCLE_IDLE = SimpleCheckRecipeResult.ofSuccess("cycle_idle");
+
+    /**
      * Cannot process recipe because the machine cannot handle required EUt.
      */
     @Nonnull
