@@ -451,6 +451,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        if (mTotalRunTime <= 0) getBaseMetaTileEntity().disableWorking();
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Time Counter
