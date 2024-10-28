@@ -14,14 +14,19 @@ import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
@@ -50,10 +55,14 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.API.BorosilicateGlass;
 import gregtech.api.enums.Dyes;
@@ -73,6 +82,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import kekztech.client.gui.KTUITextures;
@@ -897,6 +907,55 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return sum / Math.max(energyOutputValues.size(), 1);
     }
 
+    private String getTimeTo() {
+        double avgIn = getAvgIn();
+        double avgOut = getAvgOut();
+        if (avgIn > avgOut) {
+            // Calculate time to full if charging
+            if (avgIn != 0) {
+                BigInteger timeToFull = (capacity.subtract(stored)).divide(
+                    BigDecimal.valueOf(avgIn)
+                        .toBigInteger())
+                    .divide(BigInteger.valueOf(20));
+                String timeToFullString = formatTime(timeToFull);
+                return "Time to Full: " + timeToFullString;
+            }
+        } else {
+            // Calculate time to empty if discharging
+            if (avgOut != 0) {
+                BigInteger timeToEmpty = stored.divide(
+                    BigDecimal.valueOf(avgOut)
+                        .toBigInteger())
+                    .divide(BigInteger.valueOf(20));
+                String timeToEmptyString = formatTime(timeToEmpty);
+                return "Time to Empty: " + timeToEmptyString;
+            }
+        }
+        return "";
+    }
+
+    private String getCapacityCache() {
+        return capacity.compareTo(BigInteger.valueOf(1_000_000_000_000L)) > 0 ? standardFormat.format(capacity)
+            : numberFormat.format(capacity);
+    }
+
+    private String getStoredCache() {
+        return stored.compareTo(BigInteger.valueOf(1_000_000_000_000L)) > 0 ? standardFormat.format(stored)
+            : numberFormat.format(stored);
+    }
+
+    private String getUsedPercentCache() {
+        return toPercentageFrom(stored, capacity);
+    }
+
+    private String getWirelessStoredCache() {
+        return standardFormat.format(WirelessNetworkManager.getUserEU(global_energy_user_uuid));
+    }
+
+    private boolean isActiveCache() {
+        return getBaseMetaTileEntity().isActive();
+    }
+
     @Override
     public String[] getInfoData() {
         NumberFormat nf = NumberFormat.getNumberInstance();
@@ -919,22 +978,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ll.add("Avg EU IN: " + nf.format(avgIn) + " (last " + secInterval + " seconds)");
         ll.add("Avg EU OUT: " + nf.format(avgOut) + " (last " + secInterval + " seconds)");
 
-        // Check if the system is charging or discharging
-        if (avgIn > avgOut) {
-            // Calculate time to full if charging
-            if (avgIn != 0) {
-                double timeToFull = (capacity.longValue() - stored.longValue()) / avgIn / 20;
-                String timeToFullString = formatTime(timeToFull);
-                ll.add("Time to Full: " + timeToFullString);
-            }
-        } else {
-            // Calculate time to empty if discharging
-            if (avgOut != 0) {
-                double timeToEmpty = stored.longValue() / avgOut / 20;
-                String timeToEmptyString = formatTime(timeToEmpty);
-                ll.add("Time to Empty: " + timeToEmptyString);
-            }
+        String TimeTO = getTimeTo();
+        if (!TimeTO.isEmpty()) {
+            ll.add(getTimeTo());
         }
+
         ll.add(
             "Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
                 ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
@@ -975,20 +1023,191 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return ll.toArray(a);
     }
 
+    protected static DecimalFormat standardFormat;
+
+    static {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
+        dfs.setExponentSeparator("e");
+        standardFormat = new DecimalFormat("0.00E0", dfs);
+    }
+
+    protected String CapacityCache = "";
+    protected String StoredEUCache = "";
+    protected String UsedPercentCache = "";
+    protected String WirelessStoreCache = "";
+    protected long AvgInCache;
+    protected long AvgOutCache;
+    protected String TimeToCache = "";
+    protected boolean isActiveCache;
+
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        screenElements.setSynced(false)
+            .setSpace(0)
+            .setPos(10, 7);
+        screenElements
+            .widget(
+                new TextWidget(GTUtility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mWrench))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+        screenElements
+            .widget(
+                new TextWidget(GTUtility.trans("133", "Screws are loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mScrewdriver))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
+        screenElements
+            .widget(
+                new TextWidget(GTUtility.trans("134", "Something is stuck.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mSoftHammer))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+        screenElements
+            .widget(
+                new TextWidget(GTUtility.trans("135", "Platings are dented.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mHardHammer))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
+        screenElements
+            .widget(
+                new TextWidget(GTUtility.trans("136", "Circuitry burned out.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mSolderingTool))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
+        screenElements.widget(
+            new TextWidget(GTUtility.trans("137", "That doesn't belong there.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> !mCrowbar))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
+        screenElements
+            .widget(
+                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+
+        screenElements.widget(
+            new TextWidget(GTUtility.trans("139", "Hit with Soft Mallet")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(
+                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
+            .widget(
+                new FakeSyncWidget.IntegerSyncer(
+                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                    val -> getBaseMetaTileEntity().setErrorDisplayID(val)))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().isActive(),
+                    val -> getBaseMetaTileEntity().setActive(val)));
+        screenElements.widget(
+            new TextWidget(GTUtility.trans("140", "to (re-)start the Machine")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(
+                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+        screenElements.widget(
+            new TextWidget(GTUtility.trans("141", "if it doesn't start.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(
+                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
+        screenElements.widget(
+            new TextWidget(GTUtility.trans("142", "Running perfectly.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(
+                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
+
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
+            return StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.shutdown_duration",
+                time.toHours(),
+                time.toMinutes() % 60,
+                time.getSeconds() % 60);
+        })
+            .setEnabled(
+                widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                    && getBaseMetaTileEntity().wasShutdown()))
+            .widget(new FakeSyncWidget.LongSyncer(() -> mTotalRunTime, time -> mTotalRunTime = time))
+            .widget(new FakeSyncWidget.LongSyncer(() -> mLastWorkingTick, time -> mLastWorkingTick = time));
+        screenElements.widget(
+            TextWidget.dynamicString(
+                () -> getBaseMetaTileEntity().getLastShutDownReason()
+                    .getDisplayString())
+                .setSynced(false)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(
+                    widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
+                        && GTUtility.isStringValid(
+                            getBaseMetaTileEntity().getLastShutDownReason()
+                                .getDisplayString())
+                        && getBaseMetaTileEntity().wasShutdown()))
+            .widget(
+                new ShutDownReasonSyncer(
+                    () -> getBaseMetaTileEntity().getLastShutDownReason(),
+                    reason -> getBaseMetaTileEntity().setShutDownReason(reason)))
+            .widget(
+                new FakeSyncWidget.BooleanSyncer(
+                    () -> getBaseMetaTileEntity().wasShutdown(),
+                    wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
+        screenElements.widget(
+            new TextWidget().setStringSupplier(
+                () -> "Total Capacity: " + EnumChatFormatting.BLUE + CapacityCache + EnumChatFormatting.WHITE + " EU")
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> isActiveCache))
+            .widget(new FakeSyncWidget.StringSyncer(this::getCapacityCache, val -> CapacityCache = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> "Stored: " + EnumChatFormatting.RED + StoredEUCache + EnumChatFormatting.WHITE + " EU")
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> isActiveCache))
+            .widget(new FakeSyncWidget.StringSyncer(this::getStoredCache, val -> StoredEUCache = val))
+            .widget(
+                new TextWidget().setStringSupplier(() -> "Used capacity: " + EnumChatFormatting.RED + UsedPercentCache)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> isActiveCache))
+            .widget(new FakeSyncWidget.StringSyncer(this::getUsedPercentCache, val -> UsedPercentCache = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> "Avg EU IN: " + EnumChatFormatting.GREEN
+                            + (AvgInCache > 100_000_000_000L ? standardFormat.format(AvgInCache)
+                                : numberFormat.format(AvgInCache))
+                            + EnumChatFormatting.WHITE
+                            + " last 5s")
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> isActiveCache))
+            .widget(new FakeSyncWidget.LongSyncer(this::getAvgIn, val -> AvgInCache = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> "Avg EU OUT: " + EnumChatFormatting.RED
+                            + (AvgOutCache > 100_000_000_000L ? standardFormat.format(AvgOutCache)
+                                : numberFormat.format(AvgOutCache))
+                            + EnumChatFormatting.WHITE
+                            + " last 5s")
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> isActiveCache))
+            .widget(new FakeSyncWidget.LongSyncer(this::getAvgOut, val -> AvgOutCache = val))
+            .widget(
+                new TextWidget().setStringSupplier(() -> EnumChatFormatting.WHITE + TimeToCache)
+                    .setEnabled(widget -> !TimeToCache.isEmpty() && isActiveCache))
+            .widget(new FakeSyncWidget.StringSyncer(this::getTimeTo, val -> TimeToCache = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> "Total wireless EU: " + EnumChatFormatting.BLUE
+                            + WirelessStoreCache
+                            + EnumChatFormatting.WHITE
+                            + " EU")
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> isActiveCache))
+            .widget(new FakeSyncWidget.StringSyncer(this::getWirelessStoredCache, val -> WirelessStoreCache = val))
+            .widget(new FakeSyncWidget.BooleanSyncer(this::isActiveCache, val -> isActiveCache = val));
+    }
+
     // Method to format time in seconds, minutes, days, and years
-    private String formatTime(double time) {
-        if (time < 1) {
-            return "Completely " + (time < 0 ? "empty" : "full");
-        } else if (time < 60) {
-            return String.format("%.2f seconds", time);
-        } else if (time < 3600) {
-            return String.format("%.2f minutes", time / 60);
-        } else if (time < 86400) {
-            return String.format("%.2f hours", time / 3600);
-        } else if (time < 31536000) {
-            return String.format("%.2f days", time / 86400);
+    private String formatTime(BigInteger time) {
+        if (time.compareTo(BigInteger.valueOf(1)) < 0) {
+            return "Completely " + ((time.compareTo(BigInteger.valueOf(0)) > 0) ? "empty" : "full");
+        } else if (time.compareTo(BigInteger.valueOf(60)) < 0) {
+            return String.format("%,d seconds", time);
+        } else if (time.compareTo(BigInteger.valueOf(3600)) < 0) {
+            return String.format("%,d minutes", time.divide(BigInteger.valueOf(60)));
+        } else if (time.compareTo(BigInteger.valueOf(86400)) < 0) {
+            return String.format("%,d hours", time.divide(BigInteger.valueOf(3600)));
+        } else if (time.compareTo(BigInteger.valueOf(31536000)) < 0) {
+            return String.format("%,d days", time.divide(BigInteger.valueOf(86400)));
         } else {
-            return String.format("%.2f years", time / 31536000);
+            return String.format("%,d years", time.divide(BigInteger.valueOf(31536000)));
         }
     }
 
