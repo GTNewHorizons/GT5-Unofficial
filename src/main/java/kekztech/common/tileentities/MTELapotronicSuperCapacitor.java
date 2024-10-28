@@ -910,28 +910,23 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private String getTimeTo() {
         double avgIn = getAvgIn();
         double avgOut = getAvgOut();
-        if (avgIn > avgOut) {
+        double passLoss = passiveDischargeAmount;
+        double cap = capacity.doubleValue();
+        double sto = stored.doubleValue();
+        if (avgIn > avgOut + passLoss) {
             // Calculate time to full if charging
-            if (avgIn != 0) {
-                BigInteger timeToFull = (capacity.subtract(stored)).divide(
-                    BigDecimal.valueOf(avgIn)
-                        .toBigInteger())
-                    .divide(BigInteger.valueOf(20));
-                String timeToFullString = formatTime(timeToFull);
+            if (avgIn - passLoss >= 0) {
+                double timeToFull = (cap - sto) / (avgIn - passLoss) / 20;
+                String timeToFullString = formatTime(timeToFull, true);
                 return "Time to Full: " + timeToFullString;
             }
-        } else {
+        } else if (avgIn < avgOut + passLoss){
             // Calculate time to empty if discharging
-            if (avgOut != 0) {
-                BigInteger timeToEmpty = stored.divide(
-                    BigDecimal.valueOf(avgOut)
-                        .toBigInteger())
-                    .divide(BigInteger.valueOf(20));
-                String timeToEmptyString = formatTime(timeToEmpty);
-                return "Time to Empty: " + timeToEmptyString;
-            }
+            double timeToEmpty = sto / (avgOut + passLoss) / 20;
+            String timeToEmptyString = formatTime(timeToEmpty, false);
+            return "Time to Empty: " + timeToEmptyString;
         }
-        return "";
+        return "Time to §kpray§r§f: §kpray";
     }
 
     private String getCapacityCache() {
@@ -978,10 +973,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ll.add("Avg EU IN: " + nf.format(avgIn) + " (last " + secInterval + " seconds)");
         ll.add("Avg EU OUT: " + nf.format(avgOut) + " (last " + secInterval + " seconds)");
 
-        String TimeTO = getTimeTo();
-        if (!TimeTO.isEmpty()) {
-            ll.add(getTimeTo());
-        }
+        ll.add(getTimeTo());
 
         ll.add(
             "Maintenance Status: " + ((super.getRepairStatus() == super.getIdealStatus())
@@ -1179,7 +1171,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(new FakeSyncWidget.LongSyncer(this::getAvgOut, val -> AvgOutCache = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> EnumChatFormatting.WHITE + TimeToCache)
-                    .setEnabled(widget -> !TimeToCache.isEmpty() && isActiveCache))
+                    .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getTimeTo, val -> TimeToCache = val))
             .widget(
                 new TextWidget()
@@ -1195,19 +1187,19 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     // Method to format time in seconds, minutes, days, and years
-    private String formatTime(BigInteger time) {
-        if (time.compareTo(BigInteger.valueOf(1)) < 0) {
-            return "Completely " + ((time.compareTo(BigInteger.valueOf(0)) > 0) ? "empty" : "full");
-        } else if (time.compareTo(BigInteger.valueOf(60)) < 0) {
-            return String.format("%,d seconds", time);
-        } else if (time.compareTo(BigInteger.valueOf(3600)) < 0) {
-            return String.format("%,d minutes", time.divide(BigInteger.valueOf(60)));
-        } else if (time.compareTo(BigInteger.valueOf(86400)) < 0) {
-            return String.format("%,d hours", time.divide(BigInteger.valueOf(3600)));
-        } else if (time.compareTo(BigInteger.valueOf(31536000)) < 0) {
-            return String.format("%,d days", time.divide(BigInteger.valueOf(86400)));
+    private String formatTime(double time, boolean fill) {
+        if (time < 1) {
+            return "Completely " + (fill ? "full" : "empty");
+        } else if (time < 60) {
+            return String.format("%.2f seconds", time);
+        } else if (time < 3600) {
+            return String.format("%.2f minutes", time / 60);
+        } else if (time < 86400) {
+            return String.format("%.2f hours", time / 3600);
+        } else if (time < 31536000) {
+            return String.format("%.2f days", time / 86400);
         } else {
-            return String.format("%,d years", time.divide(BigInteger.valueOf(31536000)));
+            return String.format("%.2f years", time / 31536000);
         }
     }
 
