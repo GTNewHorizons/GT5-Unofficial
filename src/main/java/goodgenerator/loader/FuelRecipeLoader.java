@@ -192,7 +192,7 @@ public class FuelRecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("molten.shirabon", 1440))
+                FluidRegistry.getFluidStack("molten.shirabon", 360))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
