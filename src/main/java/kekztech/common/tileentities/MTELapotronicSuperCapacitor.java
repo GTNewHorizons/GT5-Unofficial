@@ -936,36 +936,36 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return sum / Math.max(energyOutputValues.size(), 1);
     }
 
-    private double getAvgIn5m() {
+    private long getAvgIn5m() {
         double sum = 0;
         for (long l : energyInputValues5m) {
             sum += l;
         }
-        return sum / Math.max(energyInputValues5m.size(), 1);
+        return (long) sum / Math.max(energyInputValues5m.size(), 1);
     }
 
-    private double getAvgOut5m() {
+    private long getAvgOut5m() {
         double sum = 0;
         for (long l : energyOutputValues5m) {
             sum += l;
         }
-        return sum / Math.max(energyOutputValues5m.size(), 1);
+        return (long) sum / Math.max(energyOutputValues5m.size(), 1);
     }
 
-    private double getAvgIn1h() {
+    private long getAvgIn1h() {
         double sum = 0;
         for (long l : energyInputValues1h) {
             sum += l;
         }
-        return sum / Math.max(energyInputValues1h.size(), 1);
+        return (long) sum / Math.max(energyInputValues1h.size(), 1);
     }
 
-    private double getAvgOut1h() {
+    private long getAvgOut1h() {
         double sum = 0;
         for (long l : energyOutputValues1h) {
             sum += l;
         }
-        return sum / Math.max(energyOutputValues1h.size(), 1);
+        return (long) sum / Math.max(energyOutputValues1h.size(), 1);
     }
 
     private String getTimeTo() {
@@ -1020,14 +1020,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         NumberFormat nf = NumberFormat.getNumberInstance();
         int secInterval = DURATION_AVERAGE_TICKS / 20;
 
-        // Caching avgin and avgout
-        double avgIn = getAvgIn();
-        double avgOut = getAvgOut();
-        double avgIn5m = getAvgIn5m();
-        double avgOut5m = getAvgOut5m();
-        double avgIn1h = getAvgIn1h();
-        double avgOut1h = getAvgOut1h();
-
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
         ll.add("EU Stored: " + nf.format(stored) + " EU");
@@ -1038,12 +1030,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ll.add("Passive Loss: " + nf.format(passiveDischargeAmount) + " EU/t");
         ll.add("EU IN: " + GTUtility.formatNumbers(inputLastTick) + " EU/t");
         ll.add("EU OUT: " + GTUtility.formatNumbers(outputLastTick) + " EU/t");
-        ll.add("Avg EU IN: " + nf.format(avgIn) + " (last " + secInterval + " seconds)");
-        ll.add("Avg EU OUT: " + nf.format(avgOut) + " (last " + secInterval + " seconds)");
-        ll.add("Avg EU IN: " + nf.format(avgIn5m) + " (last " + 5 + " minutes)");
-        ll.add("Avg EU OUT: " + nf.format(avgOut5m) + " (last " + 5 + " minutes)");
-        ll.add("Avg EU IN: " + nf.format(avgIn1h) + " (last " + 1 + " hour)");
-        ll.add("Avg EU OUT: " + nf.format(avgOut1h) + " (last " + 1 + " hour)");
+        ll.add("Avg EU IN: " + nf.format(getAvgIn()) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU OUT: " + nf.format(getAvgOut()) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU IN: " + nf.format(getAvgIn5m()) + " (last " + 5 + " minutes)");
+        ll.add("Avg EU OUT: " + nf.format(getAvgOut5m()) + " (last " + 5 + " minutes)");
+        ll.add("Avg EU IN: " + nf.format(getAvgIn1h()) + " (last " + 1 + " hour)");
+        ll.add("Avg EU OUT: " + nf.format(getAvgOut1h()) + " (last " + 1 + " hour)");
 
         ll.add(getTimeTo());
 
