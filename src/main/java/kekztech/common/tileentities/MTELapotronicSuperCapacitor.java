@@ -109,6 +109,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final Queue<Long> energyInputValues = new LinkedList<>();
     private final Queue<Long> energyOutputValues = new LinkedList<>();
 
+    private final Queue<Long> energyInputValues5m = new LinkedList<>();
+    private final Queue<Long> energyOutputValues5m = new LinkedList<>();
+
+    private final Queue<Long> energyInputValues1h = new LinkedList<>();
+    private final Queue<Long> energyOutputValues1h = new LinkedList<>();
+
     private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
     private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
     private final long max_passive_drain_eu_per_tick_per_uiv_cap = (long) Math.pow(10, 10);
@@ -791,6 +797,30 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         energyOutputValues.offer(outputLastTick);
 
+        // Add I/O values to Queues 5 min
+        if (energyInputValues5m.size() > 6000) {
+            energyInputValues5m.remove();
+        }
+        energyInputValues5m.offer(inputLastTick);
+
+        if (energyOutputValues5m.size() > 6000) {
+            energyOutputValues5m.remove();
+        }
+
+        energyOutputValues5m.offer(outputLastTick);
+
+        // Add I/O values to Queues 1 hour
+        if (energyInputValues1h.size() > 72000) {
+            energyInputValues1h.remove();
+        }
+        energyInputValues1h.offer(inputLastTick);
+
+        if (energyOutputValues1h.size() > 72000) {
+            energyOutputValues1h.remove();
+        }
+
+        energyOutputValues1h.offer(outputLastTick);
+
         return true;
     }
 
@@ -906,6 +936,38 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return sum / Math.max(energyOutputValues.size(), 1);
     }
 
+    private double getAvgIn5m() {
+        double sum = 0;
+        for (long l : energyInputValues5m) {
+            sum += l;
+        }
+        return sum / Math.max(energyInputValues5m.size(), 1);
+    }
+
+    private double getAvgOut5m() {
+        double sum = 0;
+        for (long l : energyOutputValues5m) {
+            sum += l;
+        }
+        return sum / Math.max(energyOutputValues5m.size(), 1);
+    }
+
+    private double getAvgIn1h() {
+        double sum = 0;
+        for (long l : energyInputValues1h) {
+            sum += l;
+        }
+        return sum / Math.max(energyInputValues1h.size(), 1);
+    }
+
+    private double getAvgOut1h() {
+        double sum = 0;
+        for (long l : energyOutputValues1h) {
+            sum += l;
+        }
+        return sum / Math.max(energyOutputValues1h.size(), 1);
+    }
+
     private String getTimeTo() {
         double avgIn = getAvgIn();
         double avgOut = getAvgOut();
@@ -961,6 +1023,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         // Caching avgin and avgout
         double avgIn = getAvgIn();
         double avgOut = getAvgOut();
+        double avgIn5m = getAvgIn5m();
+        double avgOut5m = getAvgOut5m();
+        double avgIn1h = getAvgIn1h();
+        double avgOut1h = getAvgOut1h();
 
         final ArrayList<String> ll = new ArrayList<>();
         ll.add(EnumChatFormatting.YELLOW + "Operational Data:" + EnumChatFormatting.RESET);
@@ -974,6 +1040,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ll.add("EU OUT: " + GTUtility.formatNumbers(outputLastTick) + " EU/t");
         ll.add("Avg EU IN: " + nf.format(avgIn) + " (last " + secInterval + " seconds)");
         ll.add("Avg EU OUT: " + nf.format(avgOut) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU IN: " + nf.format(avgIn5m) + " (last " + 5 + " minutes)");
+        ll.add("Avg EU OUT: " + nf.format(avgOut5m) + " (last " + 5 + " minutes)");
+        ll.add("Avg EU IN: " + nf.format(avgIn1h) + " (last " + 1 + " hour)");
+        ll.add("Avg EU OUT: " + nf.format(avgOut1h) + " (last " + 1 + " hour)");
 
         ll.add(getTimeTo());
 
