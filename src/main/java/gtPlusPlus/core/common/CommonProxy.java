@@ -82,7 +82,8 @@ public class CommonProxy implements IFuelHandler {
     public void init(final FMLInitializationEvent e) {
         CI.init();
 
-        if (Mods.AdvancedSolarPanel.isModLoaded()) {
+        if (e.getSide()
+            .isClient() && Mods.AdvancedSolarPanel.isModLoaded()) {
             MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
         }
         // Handles Sleep Benefits

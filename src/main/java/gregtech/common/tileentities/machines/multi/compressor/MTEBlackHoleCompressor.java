@@ -45,6 +45,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -496,8 +497,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                                 blackHoleStatus = 1;
                                 blackHoleStability = 100;
                                 catalyzingCostModifier = 1;
-                                rendererTileEntity = null;
-                                destroyRenderBlock();
+                                if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
+                                collapseTimer = 40;
                                 return;
                             }
                         }
@@ -574,11 +575,22 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         return super.onRunningTick(aStack);
     }
 
+    // Asynchronous timer to destroy render block after collapse animation is done playing.
+    // This might not sync perfectly to the renderer but this is very low stakes
+    private int collapseTimer = -1;
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!aBaseMetaTileEntity.isServerSide()) {
             playBlackHoleSounds();
+        }
+
+        if (collapseTimer != -1) {
+            if (collapseTimer == 0) {
+                destroyRenderBlock();
+            }
+            collapseTimer--;
         }
 
         // Run stability checks once per second if a black hole is open
@@ -619,9 +631,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         } else blackHoleStatus = 3;
 
         if (shouldRender) {
-            if (rendererTileEntity == null) createRenderBlock();
-            rendererTileEntity.toggleLaser(didDrain);
-            rendererTileEntity.setStability(blackHoleStability / 100F);
+            if (rendererTileEntity != null || createRenderBlock()) {
+                rendererTileEntity.toggleLaser(didDrain);
+                rendererTileEntity.setStability(Math.max(0, blackHoleStability / 100F));
+            }
         }
 
         blackHoleStability -= stabilityDecrease;
@@ -691,6 +704,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d != ForgeDirection.UP && d != ForgeDirection.DOWN;
+    }
+
+    @Override
     public void onBlockDestroyed() {
         destroyRenderBlock();
         super.onBlockDestroyed();
@@ -704,8 +722,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private boolean shouldRender = true;
     private TileEntityBlackhole rendererTileEntity = null;
 
-    private void createRenderBlock() {
-        if (!shouldRender) return;
+    // Returns true if render was actually created
+    private boolean createRenderBlock() {
+        if (!shouldRender || !mMachine) return false;
         IGregTechTileEntity base = this.getBaseMetaTileEntity();
         ForgeDirection opposite = getDirection().getOpposite();
         int x = 7 * opposite.offsetX;
@@ -719,7 +738,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         rendererTileEntity = (TileEntityBlackhole) base.getWorld()
             .getTileEntity(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z);
 
+        rendererTileEntity.startScaleChange(true);
         rendererTileEntity.setStability(blackHoleStability / 100F);
+        return true;
     }
 
     private void destroyRenderBlock() {

@@ -41,7 +41,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 
 public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, IAddUIWidgets {
 

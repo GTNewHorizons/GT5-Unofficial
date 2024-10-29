@@ -20,31 +20,15 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.objects.GTRenderedTexture;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGregtechLogo {
 
     protected int SLOT_FILTER = 0;
-
-    @Override
-    public void onConfigLoad() {
-        super.onConfigLoad();
-        try {
-            int a1 = GTMod.gregtechproxy.mPollutionSmogLimit;
-            if (a1 > 0) {
-                mPollutionSmogLimit = a1;
-            }
-        } catch (Throwable t) {
-            mPollutionSmogLimit = 500000;
-        }
-    }
-
-    private int mPollutionSmogLimit = 500000;
 
     public MTEHatchMufflerAdvanced(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, new String[] { "" });
@@ -271,8 +255,8 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         boolean chk1 = ran1 * 100.0F < (float) this.calculatePollutionReduction(100);
         boolean chk2;
         boolean chk3;
-        int aPollutionAmount = PollutionUtils.getPollution(getBaseMetaTileEntity());
-        if (aPollutionAmount >= mPollutionSmogLimit) {
+        int aPollutionAmount = Pollution.getPollution(getBaseMetaTileEntity());
+        if (aPollutionAmount >= GTMod.gregtechproxy.mPollutionSmogLimit) {
             ran2 = GTPPCore.RANDOM.nextFloat();
             ran3 = GTPPCore.RANDOM.nextFloat();
             chk2 = ran2 * 100.0F < (float) this.calculatePollutionReduction(100);

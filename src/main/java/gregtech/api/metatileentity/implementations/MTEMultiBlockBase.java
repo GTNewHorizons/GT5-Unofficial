@@ -95,11 +95,11 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
-import gregtech.common.Pollution;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.widget.CheckRecipeResultSyncer;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -1287,8 +1287,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
-    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
-        for (FluidStack outputFluidStack : mOutputFluids2) {
+    protected void addFluidOutputs(FluidStack[] outputFluids) {
+        for (FluidStack outputFluidStack : outputFluids) {
             addOutput(outputFluidStack);
         }
     }
@@ -1335,6 +1335,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
         return outputSuccess;
+    }
+
+    public void addItemOutputs(ItemStack[] outputItems) {
+        for (ItemStack outputItemStack : outputItems) {
+            addOutput(outputItemStack);
+        }
     }
 
     private boolean dumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly) {
