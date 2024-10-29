@@ -14,7 +14,6 @@ import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -913,20 +912,18 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         double passLoss = passiveDischargeAmount;
         double cap = capacity.doubleValue();
         double sto = stored.doubleValue();
-        if (avgIn > avgOut + passLoss) {
+        if (avgIn >= avgOut + passLoss) {
             // Calculate time to full if charging
-            if (avgIn - passLoss >= 0) {
+            if (avgIn - passLoss > 0) {
                 double timeToFull = (cap - sto) / (avgIn - passLoss) / 20;
-                String timeToFullString = formatTime(timeToFull, true);
-                return "Time to Full: " + timeToFullString;
+                return "Time to Full: " + formatTime(timeToFull, true);
             }
-        } else if (avgIn < avgOut + passLoss){
+            return "Time to Something: Infinity years";
+        } else {
             // Calculate time to empty if discharging
             double timeToEmpty = sto / (avgOut + passLoss) / 20;
-            String timeToEmptyString = formatTime(timeToEmpty, false);
-            return "Time to Empty: " + timeToEmptyString;
+            return "Time to Empty: " + formatTime(timeToEmpty, false);
         }
-        return "Time to §kpray§r§f: §kpray";
     }
 
     private String getCapacityCache() {
