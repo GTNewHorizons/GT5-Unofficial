@@ -123,13 +123,13 @@ public enum MaskList {
 
     ItemList[] forbiddenWafers;
 
-    MaskList(String name, String englishName, int maxDamage, String spectrum, MaskList precursor, Dyes lensColour,
+    MaskList(String name, String englishName, int maxUses, String spectrum, MaskList precursor, Dyes lensColour,
         long engraverEUt, float minEnergy, float maxEnergy, float minFocus, int baselineAmount, ItemStack producedItem, ItemStack tcTargetItem,
         ItemList... forbiddenWafers) {
         this.name = name;
         this.englishName = englishName;
         this.spectrum = spectrum;
-        this.maxDamage = maxDamage;
+        this.maxDamage = maxUses - 1; // 0-durability masks still function, so e.g. maxUses = 100 corresponds to durability levels 0-99
         this.precursor = precursor;
         this.lensColour = lensColour;
         this.engraverEUt = engraverEUt;
