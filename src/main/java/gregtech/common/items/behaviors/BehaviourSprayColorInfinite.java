@@ -156,9 +156,13 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     // region Raw Event Handlers
     @Override
     public boolean onLeftClick(MetaBaseItem item, ItemStack itemStack, EntityPlayer aPlayer) {
+        if (isPreventingShake(itemStack)) {
+            return false;
+        }
+
         if (isLocked(itemStack)) {
             displayLockedMessage();
-        } else if (!isPreventingShake(itemStack)) {
+        } else {
             sendPacket(GTPacketInfiniteSpraycan.Action.INCREMENT_COLOR);
         }
         return true;
