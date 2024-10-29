@@ -948,6 +948,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return getBaseMetaTileEntity().isActive();
     }
 
+    private String getPassiveDischargeAmountCache() {
+        return passiveDischargeAmount > 100_000_000_000L ? standardFormat.format(passiveDischargeAmount)
+            : numberFormat.format(passiveDischargeAmount);
+    }
+
     @Override
     public String[] getInfoData() {
         NumberFormat nf = NumberFormat.getNumberInstance();
@@ -1023,6 +1028,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     protected String CapacityCache = "";
     protected String StoredEUCache = "";
     protected String UsedPercentCache = "";
+    protected String passiveDischargeAmountCache = "";
     protected String WirelessStoreCache = "";
     protected long AvgInCache;
     protected long AvgOutCache;
@@ -1088,10 +1094,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             new TextWidget(GTUtility.trans("141", "if it doesn't start.")).setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
-        screenElements.widget(
-            new TextWidget(GTUtility.trans("142", "Running perfectly.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(
-                    widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(TextWidget.dynamicString(() -> {
             Duration time = Duration.ofSeconds((mTotalRunTime - mLastWorkingTick) / 20);
@@ -1147,6 +1149,19 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .widget(
                 new TextWidget()
                     .setStringSupplier(
+                        () -> "Passive Loss: " + EnumChatFormatting.RED
+                            + passiveDischargeAmountCache
+                            + EnumChatFormatting.WHITE
+                            + " EU/t")
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> isActiveCache))
+            .widget(
+                new FakeSyncWidget.StringSyncer(
+                    this::getPassiveDischargeAmountCache,
+                    val -> passiveDischargeAmountCache = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
                         () -> "Avg EU IN: " + EnumChatFormatting.GREEN
                             + (AvgInCache > 100_000_000_000L ? standardFormat.format(AvgInCache)
                                 : numberFormat.format(AvgInCache))
@@ -1196,7 +1211,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         } else if (time < 31536000) {
             return String.format("%.2f days", time / 86400);
         } else {
-            return String.format("%.2f years", time / 31536000);
+            double y = time / 31536000;
+            return y < 9_000 ? String.format("%.2f years", y) : "Over9000 years";
         }
     }
 
