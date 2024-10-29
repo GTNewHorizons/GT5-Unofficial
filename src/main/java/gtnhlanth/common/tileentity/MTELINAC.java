@@ -196,7 +196,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         }
 
-        tt.addInfo("Requires (length + 1)kL/s of coolant")
+        tt.addInfo("Requires (length)kL/s of coolant")
             .addSeparator()
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController("Front bottom")
@@ -286,7 +286,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         FluidStack primFluid = tFluidInputs.get(0);
 
         // 1b (1000L)/m/operation
-        final int fluidConsumed = 1000 * length;
+        final int fluidConsumed = 1000 * (length + 1); // length variable is technically physical length - 1, adding here so as to not affect existing math
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
@@ -512,7 +512,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
             StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant usage:
                 + EnumChatFormatting.AQUA
-                + length
+                + (length + 1)
                 + EnumChatFormatting.RESET
                 + " kL/s", // e.g. "24 kL/s
 
