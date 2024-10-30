@@ -66,7 +66,7 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
         ItemList.MatterManipulatorPowerCore0
             .set(addItem(IDMetaItem04.MatterManipulatorPowerCore0.ID, "Prototype Matter Manipulator Power Core", ""));
         ItemList.MatterManipulatorComputerCore0.set(
-            addItem(IDMetaItem04.MatterManipulatorComputerCore0.ID, "Prototype Matter Manipulator Computer Core", ""));
+            addItem(IDMetaItem04.MatterManipulatorComputerCore0.ID, "Prototype Matter Manipulator 'Computer' Core", ""));
         ItemList.MatterManipulatorTeleporterCore0.set(
             addItem(
                 IDMetaItem04.MatterManipulatorTeleporterCore0.ID,
@@ -266,8 +266,8 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Enderium, 1),
                 getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0), // teleporter
                 ItemList.Emitter_IV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Enderium, 8),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Enderium, 16))
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.TungstenSteel, 8),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 16))
             .fluidInputs(new FluidStack(solderIndalloy, (int) (L * 16)))
             .itemOutputs(ItemList.MatterManipulatorTeleporterCore1.get(1))
             .eut((int) TierEU.RECIPE_IV)
@@ -362,8 +362,8 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
                 ItemList.Field_Generator_LuV.get(1),
                 ItemList.QuantumStar.get(4),
                 getModItem(Mods.GraviSuite.ID, "itemSimpleItem", 4, 3), // gravitation engine
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Duranium, 8),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Duranium, 16))
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.HSSS, 8),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 16))
             .fluidInputs(
                 new FluidStack(solderIndalloy, (int) (L * 16)),
                 Materials.Quantium.getMolten(L * 16),
@@ -386,10 +386,10 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
 
         // Lens MK2
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, GGMaterial.orundum.get(OrePrefixes.lens, 1))
+            .metadata(RESEARCH_ITEM, WerkstoffLoader.RedZircon.get(OrePrefixes.lens, 1))
             .metadata(RESEARCH_TIME, 40 * MINUTES)
             .itemInputs(
-                GGMaterial.orundum.get(OrePrefixes.lens, 2),
+                WerkstoffLoader.RedZircon.get(OrePrefixes.lens, 2),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.HSSS, 4),
                 ItemList.Field_Generator_LuV.get(1),
                 ItemList.Electric_Motor_LuV.get(2),
@@ -460,8 +460,8 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
                 ItemList.Gravistar.get(4),
                 new ItemStack(ModItems.itemStandarParticleBase, 16, 0), // gravitons
                 getModItem(Mods.GraviSuite.ID, "itemSimpleItem", 16, 3),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tritanium, 8),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Tritanium, 16))
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Trinium, 8),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Trinium, 16))
             .fluidInputs(
                 new FluidStack(solderIndalloy, (int) (L * 16)),
                 Materials.MysteriousCrystal.getMolten(L * 16),
