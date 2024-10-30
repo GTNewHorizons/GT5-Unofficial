@@ -670,7 +670,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             FluidStack waterOutput = currentRecipe.mFluidOutputs[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
-                (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
+                (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
             this.addOutput(bonusOutput);
         }
     }
