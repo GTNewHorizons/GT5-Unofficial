@@ -268,7 +268,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 6,
                 EnumChatFormatting.GOLD,
                 false)
-            .addCasingInfoExactlyColored("Reinforced Door", EnumChatFormatting.GRAY, 1, EnumChatFormatting.GOLD, false)
             .addController("Front center")
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
