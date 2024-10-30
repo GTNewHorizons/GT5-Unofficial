@@ -1142,9 +1142,10 @@ public final class RecipeMaps {
                     recipe -> recipe.getMetadataOrDefault(PurificationPlantBaseChanceKey.INSTANCE, 0.0f))
                 .thenComparing(GTRecipe::compareTo))
         .frontend(PurificationUnitOzonationFrontend::new)
-        .neiHandlerInfo(builder -> builder.setMaxRecipesPerPage(1)
-            // When setting a builder, apparently setting a display stack is also necessary
-            .setDisplayStack(ItemList.Machine_Multi_PurificationUnitOzonation.get(1)))
+        .neiHandlerInfo(
+            builder -> builder.setMaxRecipesPerPage(1)
+                // When setting a builder, apparently setting a display stack is also necessary
+                .setDisplayStack(ItemList.Machine_Multi_PurificationUnitOzonation.get(1)))
         .disableOptimize()
         .build();
     public static final RecipeMap<RecipeMapBackend> purificationFlocculationRecipes = RecipeMapBuilder
