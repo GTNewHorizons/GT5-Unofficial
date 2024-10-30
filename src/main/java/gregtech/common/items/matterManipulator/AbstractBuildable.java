@@ -7,6 +7,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import appeng.api.config.Actionable;
 import appeng.api.implementations.tiles.ISegmentedInventory;
 import appeng.api.parts.IPart;
@@ -27,20 +42,6 @@ import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import ic2.api.item.ElectricItem;
 import it.unimi.dsi.fastutil.Pair;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public abstract class AbstractBuildable extends MMInventory implements IBuildable {
 

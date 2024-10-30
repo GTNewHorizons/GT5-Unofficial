@@ -349,7 +349,7 @@ public class MTEMMUplinkMEHatch extends MTEHatch
         additionalConnection = aNBT.getBoolean("additionalConnection");
 
         loadRequestsImpl(aNBT);
-        
+
         getProxy().readFromNBT(aNBT);
 
         onRequestsChanged();
@@ -398,7 +398,7 @@ public class MTEMMUplinkMEHatch extends MTEHatch
             GTUtility.streamInventory(table)
                 .filter(i -> i != null)
                 .collect(Collectors.toList()));
-    
+
         PatternHelper pattern = (PatternHelper) patternDetails;
 
         IAEItemStack hologram = pattern.getCondensedOutputs()[0];
@@ -438,17 +438,23 @@ public class MTEMMUplinkMEHatch extends MTEHatch
     public void provideCrafting(ICraftingProviderHelper craftingTracker) {
         for (ManipulatorRequest request : manualRequests) {
             try {
-                PatternHelper pattern = new PatternHelper(request.getPattern(), this.getBaseMetaTileEntity().getWorld());
+                PatternHelper pattern = new PatternHelper(
+                    request.getPattern(),
+                    this.getBaseMetaTileEntity()
+                        .getWorld());
                 craftingTracker.addCraftingOption(this, pattern);
             } catch (IllegalStateException e) {
                 GTMod.GT_FML_LOGGER.error("Could not load matter manipulator plan", e);
                 continue;
             }
         }
-        
+
         for (ManipulatorRequest request : autoRequests) {
             try {
-                PatternHelper pattern = new PatternHelper(request.getPattern(), this.getBaseMetaTileEntity().getWorld());
+                PatternHelper pattern = new PatternHelper(
+                    request.getPattern(),
+                    this.getBaseMetaTileEntity()
+                        .getWorld());
                 craftingTracker.addCraftingOption(this, pattern);
             } catch (IllegalStateException e) {
                 GTMod.GT_FML_LOGGER.error("Could not load matter manipulator plan", e);
@@ -513,7 +519,9 @@ public class MTEMMUplinkMEHatch extends MTEHatch
         while (iter.hasNext()) {
             ManipulatorRequest req = iter.next();
 
-            if (!req.requester.equals(player.getGameProfile().getId())) {
+            if (!req.requester.equals(
+                player.getGameProfile()
+                    .getId())) {
                 continue;
             }
 
@@ -697,7 +705,10 @@ public class MTEMMUplinkMEHatch extends MTEHatch
             tag.setBoolean("beSubstitute", false);
 
             EntityPlayer player = GTUtility.getPlayerById(requester);
-            tag.setString("author", player != null ? player.getGameProfile().getName() : requester.toString());
+            tag.setString(
+                "author",
+                player != null ? player.getGameProfile()
+                    .getName() : requester.toString());
 
             NBTTagList out = new NBTTagList();
 
@@ -713,7 +724,12 @@ public class MTEMMUplinkMEHatch extends MTEHatch
 
             tag.setTag("in", in);
 
-            ItemStack pattern = AEApi.instance().definitions().items().encodedPattern().maybeStack(1).get();
+            ItemStack pattern = AEApi.instance()
+                .definitions()
+                .items()
+                .encodedPattern()
+                .maybeStack(1)
+                .get();
 
             pattern.setTagCompound(tag);
 

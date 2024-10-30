@@ -510,9 +510,7 @@ public class GTUtility {
 
     public static void sendInfoToPlayer(EntityPlayer aPlayer, String aChatMessage) {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
-            aPlayer.addChatComponentMessage(
-                new ChatComponentText(
-                    EnumChatFormatting.GRAY.toString() + aChatMessage));
+            aPlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.GRAY.toString() + aChatMessage));
         }
     }
 
@@ -1901,7 +1899,7 @@ public class GTUtility {
 
     public static <S, T> T[] mapToArray(Collection<S> in, IntFunction<T[]> ctor, Function<S, T> mapper) {
         T[] out = ctor.apply(in.size());
-        
+
         Iterator<S> iter = in.iterator();
         for (int i = 0; i < out.length && iter.hasNext(); i++) {
             out[i] = mapper.apply(iter.next());

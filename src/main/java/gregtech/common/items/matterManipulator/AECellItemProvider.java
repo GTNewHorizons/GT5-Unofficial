@@ -69,10 +69,12 @@ public class AECellItemProvider implements IItemProvider {
 
         List<ItemStack> items = new ArrayList<>();
         items.add(cell);
-        items.addAll(GTUtility.mapToList(mUpgrades == null ? new PortableItemStack[0] : mUpgrades, PortableItemStack::toStack));
+        items.addAll(
+            GTUtility.mapToList(mUpgrades == null ? new PortableItemStack[0] : mUpgrades, PortableItemStack::toStack));
 
         if (consume) {
-            var result = inv.tryConsumeItems(GTUtility.mapToList(items, AEItemStack::create), IPseudoInventory.CONSUME_FUZZY);
+            var result = inv
+                .tryConsumeItems(GTUtility.mapToList(items, AEItemStack::create), IPseudoInventory.CONSUME_FUZZY);
 
             if (!result.left()) {
                 return null;

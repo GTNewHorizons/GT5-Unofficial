@@ -8,6 +8,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
@@ -26,16 +34,9 @@ import gregtech.common.items.matterManipulator.ItemMatterManipulator.Manipulator
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink.UplinkStatus;
 import it.unimi.dsi.fastutil.Pair;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class MMInventory implements IPseudoInventory {
-    
+
     public EntityPlayer player;
     public NBTState state;
     public ManipulatorTier tier;
@@ -69,7 +70,8 @@ public class MMInventory implements IPseudoInventory {
             }
 
             if ((flags & CONSUME_PARTIAL) == 0) {
-                if (simulated.stream().anyMatch(s -> s.getStackSize() > 0)) {
+                if (simulated.stream()
+                    .anyMatch(s -> s.getStackSize() > 0)) {
                     return Pair.of(false, null);
                 }
             }
@@ -113,7 +115,7 @@ public class MMInventory implements IPseudoInventory {
 
         for (ItemStack item : items) {
             if (item != null && item.getItem() != null) {
-                pendingItems.merge(ItemId.create(item), (long) item.stackSize, (Long a, Long b) -> a + b);   
+                pendingItems.merge(ItemId.create(item), (long) item.stackSize, (Long a, Long b) -> a + b);
             }
         }
     }
@@ -306,7 +308,8 @@ public class MMInventory implements IPseudoInventory {
         pendingFluids.clear();
     }
 
-    private void consumeItemsFromPending(List<IAEItemStack> requestedItems, List<IAEItemStack> extractedItems, int flags) {
+    private void consumeItemsFromPending(List<IAEItemStack> requestedItems, List<IAEItemStack> extractedItems,
+        int flags) {
         boolean simulate = (flags & CONSUME_SIMULATED) != 0;
         boolean fuzzy = (flags & CONSUME_FUZZY) != 0;
 
@@ -326,7 +329,9 @@ public class MMInventory implements IPseudoInventory {
 
                 long toRemove = Math.min(amtInPending, req.getStackSize());
 
-                extractedItems.add(req.copy().setStackSize(toRemove));
+                extractedItems.add(
+                    req.copy()
+                        .setStackSize(toRemove));
                 amtInPending -= toRemove;
                 req.decStackSize(toRemove);
 
@@ -338,7 +343,8 @@ public class MMInventory implements IPseudoInventory {
                     }
                 }
             } else {
-                var iter = pendingItems.entrySet().iterator();
+                var iter = pendingItems.entrySet()
+                    .iterator();
 
                 while (iter.hasNext()) {
                     var e = iter.next();
@@ -347,7 +353,8 @@ public class MMInventory implements IPseudoInventory {
                         continue;
                     }
 
-                    ItemStack stack = e.getKey().getItemStack();
+                    ItemStack stack = e.getKey()
+                        .getItemStack();
 
                     if (stack.getItem() != req.getItem()) {
                         continue;
@@ -360,7 +367,9 @@ public class MMInventory implements IPseudoInventory {
                     long amtInPending = e.getValue();
                     long toRemove = Math.min(amtInPending, req.getStackSize());
 
-                    extractedItems.add(req.copy().setStackSize(toRemove));
+                    extractedItems.add(
+                        req.copy()
+                            .setStackSize(toRemove));
                     amtInPending -= toRemove;
                     req.decStackSize(toRemove);
 
@@ -376,7 +385,8 @@ public class MMInventory implements IPseudoInventory {
         }
     }
 
-    private void consumeItemsFromPlayer(List<IAEItemStack> requestedItems, List<IAEItemStack> extractedItems, int flags) {
+    private void consumeItemsFromPlayer(List<IAEItemStack> requestedItems, List<IAEItemStack> extractedItems,
+        int flags) {
         boolean simulate = (flags & CONSUME_SIMULATED) != 0;
         boolean fuzzy = (flags & CONSUME_FUZZY) != 0;
 
@@ -402,14 +412,18 @@ public class MMInventory implements IPseudoInventory {
 
                 if (fuzzy ? slot.isItemEqual(reqStack) : MMUtils.areStacksBasicallyEqual(slot, reqStack)) {
                     if (slot.stackSize == 111) {
-                        extractedItems.add(Objects.requireNonNull(AEItemStack.create(slot)).setStackSize(req.getStackSize()));
+                        extractedItems.add(
+                            Objects.requireNonNull(AEItemStack.create(slot))
+                                .setStackSize(req.getStackSize()));
                         req.setStackSize(0);
                     } else {
                         int toRemove = Math.min(slot.stackSize, reqStack.stackSize);
-    
+
                         req.decStackSize(toRemove);
-                        extractedItems.add(Objects.requireNonNull(AEItemStack.create(slot)).setStackSize(toRemove));
-    
+                        extractedItems.add(
+                            Objects.requireNonNull(AEItemStack.create(slot))
+                                .setStackSize(toRemove));
+
                         if (!simulate) {
                             slot.stackSize -= toRemove;
                             if (slot.stackSize == 0) {
@@ -446,9 +460,11 @@ public class MMInventory implements IPseudoInventory {
                 continue;
             }
 
+            // spotless:off
             List<IAEItemStack> matches = fuzzy ?
                 ImmutableList.copyOf(state.itemStorage.getStorageList().findFuzzy(req, FuzzyMode.IGNORE_ALL)) :
                 Arrays.asList(state.itemStorage.getStorageList().findPrecise(req));
+            // spotless:on
 
             for (IAEItemStack match : matches) {
                 if (req.getStackSize() == 0) {
@@ -459,7 +475,8 @@ public class MMInventory implements IPseudoInventory {
                     continue;
                 }
 
-                match = match.copy().setStackSize(req.getStackSize());
+                match = match.copy()
+                    .setStackSize(req.getStackSize());
 
                 IAEItemStack result = state.itemStorage.extractItems(
                     match,
@@ -474,7 +491,8 @@ public class MMInventory implements IPseudoInventory {
         }
     }
 
-    private void consumeItemsFromUplink(List<IAEItemStack> requestedItems, List<IAEItemStack> extractedItems, int flags) {
+    private void consumeItemsFromUplink(List<IAEItemStack> requestedItems, List<IAEItemStack> extractedItems,
+        int flags) {
         boolean simulate = (flags & CONSUME_SIMULATED) != 0;
         boolean fuzzy = (flags & CONSUME_FUZZY) != 0;
 
@@ -490,7 +508,10 @@ public class MMInventory implements IPseudoInventory {
 
         if (result.left() != UplinkStatus.OK && !printedUplinkWarning) {
             printedUplinkWarning = true;
-            GTUtility.sendErrorToPlayer(player, "Could not request items from uplink: " + result.left().toString());
+            GTUtility.sendErrorToPlayer(
+                player,
+                "Could not request items from uplink: " + result.left()
+                    .toString());
         }
 
         if (result.right() != null) extractedItems.addAll(result.right());

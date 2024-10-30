@@ -6,8 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import appeng.api.storage.data.IAEItemStack;
-import appeng.util.item.AEItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -21,6 +19,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
 
+import appeng.api.storage.data.IAEItemStack;
+import appeng.util.item.AEItemStack;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
@@ -34,7 +34,8 @@ public class PendingBuild extends AbstractBuildable {
 
     private boolean printedProtectedBlockWarning = false;
 
-    public PendingBuild(EntityPlayer player, NBTState state, ManipulatorTier tier, LinkedList<PendingBlock> pendingBlocks) {
+    public PendingBuild(EntityPlayer player, NBTState state, ManipulatorTier tier,
+        LinkedList<PendingBlock> pendingBlocks) {
         super(player, state, tier);
         this.pendingBlocks = pendingBlocks;
     }
@@ -178,17 +179,18 @@ public class PendingBuild extends AbstractBuildable {
             if (item != null) {
                 item.stackSize = toPlace.size();
 
-                List<IAEItemStack> extracted = tryConsumeItems(Arrays.asList(AEItemStack.create(item)), CONSUME_PARTIAL).right();
+                List<IAEItemStack> extracted = tryConsumeItems(Arrays.asList(AEItemStack.create(item)), CONSUME_PARTIAL)
+                    .right();
 
-                ItemStack extractedStack = extracted.size() == 1 ? extracted.get(0).getItemStack() : null;
+                ItemStack extractedStack = extracted.size() == 1 ? extracted.get(0)
+                    .getItemStack() : null;
 
                 int extractedAmount = extractedStack == null ? 0 : extractedStack.stackSize;
 
                 if (extractedAmount < item.stackSize) {
                     GTUtility.sendErrorToPlayer(
                         player,
-                        "Could not find item, the corresponding blocks will be skipped: "
-                            + item.getDisplayName()
+                        "Could not find item, the corresponding blocks will be skipped: " + item.getDisplayName()
                             + " x "
                             + (item.stackSize - extractedAmount));
 

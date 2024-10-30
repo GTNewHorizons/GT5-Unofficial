@@ -621,7 +621,8 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
-    public Pair<UplinkStatus, List<IAEItemStack>> tryConsumeItems(List<IAEItemStack> requestedItems, boolean simulate, boolean fuzzy) {
+    public Pair<UplinkStatus, List<IAEItemStack>> tryConsumeItems(List<IAEItemStack> requestedItems, boolean simulate,
+        boolean fuzzy) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
 
         if (hatch == null) return Pair.of(UplinkStatus.NO_HATCH, null);
@@ -645,9 +646,11 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
             requiredEU += req.getStackSize() * BASE_PLASMA_EU_COST;
 
+            // spotless:off
             List<IAEItemStack> matches = fuzzy ?
                 ImmutableList.copyOf(itemInventory.getStorageList().findFuzzy(req, FuzzyMode.IGNORE_ALL)) :
                 Arrays.asList(itemInventory.getStorageList().findPrecise(req));
+            // spotless:on
 
             for (IAEItemStack match : matches) {
                 if (req.getStackSize() == 0) {
@@ -658,7 +661,8 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
                     continue;
                 }
 
-                match = match.copy().setStackSize(req.getStackSize());
+                match = match.copy()
+                    .setStackSize(req.getStackSize());
 
                 IAEItemStack result = itemInventory.extractItems(
                     match,
@@ -782,7 +786,8 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
-    public void submitPlan(EntityPlayer submitter, String details, List<IAEItemStack> requiredItems, boolean autocraft) {
+    public void submitPlan(EntityPlayer submitter, String details, List<IAEItemStack> requiredItems,
+        boolean autocraft) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
 
         if (hatch != null) {

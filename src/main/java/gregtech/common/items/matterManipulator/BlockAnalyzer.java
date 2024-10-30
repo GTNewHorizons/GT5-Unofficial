@@ -7,6 +7,15 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fluids.FluidStack;
+
 import org.joml.Vector3i;
 
 import com.mojang.authlib.GameProfile;
@@ -18,14 +27,6 @@ import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import it.unimi.dsi.fastutil.Pair;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fluids.FluidStack;
 
 public class BlockAnalyzer {
 
@@ -239,7 +240,7 @@ public class BlockAnalyzer {
         public Pair<Boolean, List<IAEItemStack>> tryConsumeItems(List<IAEItemStack> items, int flags) {
             boolean simulate = (flags & CONSUME_SIMULATED) != 0;
             boolean fuzzy = (flags & CONSUME_FUZZY) != 0;
-    
+
             List<IAEItemStack> extractedItems = new ArrayList<>();
 
             for (IAEItemStack req : items) {
@@ -255,10 +256,12 @@ public class BlockAnalyzer {
                     long toRemove = Math.min(amtInPending, req.getStackSize());
 
                     if (toRemove > 0) {
-                        extractedItems.add(req.copy().setStackSize(toRemove));
+                        extractedItems.add(
+                            req.copy()
+                                .setStackSize(toRemove));
                         amtInPending -= toRemove;
                         req.decStackSize(toRemove);
-    
+
                         if (!simulate) {
                             if (amtInPending == 0) {
                                 storedItems.remove(id);
@@ -268,7 +271,8 @@ public class BlockAnalyzer {
                         }
                     }
                 } else {
-                    var iter = storedItems.entrySet().iterator();
+                    var iter = storedItems.entrySet()
+                        .iterator();
 
                     while (iter.hasNext()) {
                         var e = iter.next();
@@ -277,7 +281,8 @@ public class BlockAnalyzer {
                             continue;
                         }
 
-                        ItemStack stack = e.getKey().getItemStack();
+                        ItemStack stack = e.getKey()
+                            .getItemStack();
 
                         if (stack.getItem() != req.getItem()) {
                             continue;
@@ -291,10 +296,12 @@ public class BlockAnalyzer {
                         long toRemove = Math.min(amtInPending, req.getStackSize());
 
                         if (toRemove > 0) {
-                            extractedItems.add(req.copy().setStackSize(toRemove));
+                            extractedItems.add(
+                                req.copy()
+                                    .setStackSize(toRemove));
                             amtInPending -= toRemove;
                             req.decStackSize(toRemove);
-    
+
                             if (!simulate) {
                                 if (amtInPending == 0) {
                                     iter.remove();
@@ -308,7 +315,8 @@ public class BlockAnalyzer {
 
                 ItemId id;
 
-                if (fuzzy && !req.getItem().getHasSubtypes()) {
+                if (fuzzy && !req.getItem()
+                    .getHasSubtypes()) {
                     id = ItemId.createAsWildcard(req.getItemStack());
                 } else {
                     id = ItemId.create(req.getItemStack());
@@ -352,7 +360,8 @@ public class BlockAnalyzer {
         public HashMap<FluidId, Long> storedFluids;
     }
 
-    public static RequiredItemAnalysis getRequiredItemsForBuild(EntityPlayer player, List<PendingBlock> blocks, boolean fromScratch) {
+    public static RequiredItemAnalysis getRequiredItemsForBuild(EntityPlayer player, List<PendingBlock> blocks,
+        boolean fromScratch) {
         BlockItemCheckContext context = new BlockItemCheckContext();
         context.player = player;
         context.world = player.getEntityWorld();

@@ -488,7 +488,7 @@ enum Messages {
             MEHatchPacket message = new MEHatchPacket(super.message);
             message.worldId = buffer.readInt();
             message.location = buffer.readLong();
-            
+
             int size = buffer.readInt();
             byte[] data = new byte[size];
             buffer.readFully(data);

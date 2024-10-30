@@ -42,7 +42,6 @@ import com.google.gson.JsonPrimitive;
 import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.storage.ICellWorkbenchItem;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.crafting.v2.resolvers.CraftableItemResolver;
 import appeng.parts.automation.UpgradeInventory;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
@@ -256,7 +255,8 @@ public class MMUtils {
         stacks.removeIf(i -> i == null || !(i.getItem() instanceof IUpgradeModule));
 
         for (ItemStack stack : stacks) {
-            stack.stackSize = Math.min(stack.stackSize, dest.getMaxInstalled(((IUpgradeModule) stack.getItem()).getType(stack)));
+            stack.stackSize = Math
+                .min(stack.stackSize, dest.getMaxInstalled(((IUpgradeModule) stack.getItem()).getType(stack)));
         }
 
         List<ItemStack> split = GTUtility.getStacksOfSize(stacks, dest.getInventoryStackLimit());
@@ -453,21 +453,26 @@ public class MMUtils {
             && ItemStack.areItemStackTagsEqual(a, b);
     }
 
-    public static void createPlanImpl(EntityPlayer player, NBTState state, ItemMatterManipulator manipulator, int flags) {
+    public static void createPlanImpl(EntityPlayer player, NBTState state, ItemMatterManipulator manipulator,
+        int flags) {
         List<PendingBlock> blocks = state.getPendingBlocks(player.getEntityWorld());
-        RequiredItemAnalysis itemAnalysis = BlockAnalyzer.getRequiredItemsForBuild(player, blocks, (flags & Messages.PLAN_ALL) != 0);
+        RequiredItemAnalysis itemAnalysis = BlockAnalyzer
+            .getRequiredItemsForBuild(player, blocks, (flags & Messages.PLAN_ALL) != 0);
 
         List<IAEItemStack> requiredItems = GTUtility.mapToList(
             itemAnalysis.requiredItems.entrySet(),
-            e -> Objects.requireNonNull(AEItemStack.create(e.getKey().getItemStack())).setStackSize(e.getValue()));
+            e -> Objects.requireNonNull(
+                AEItemStack.create(
+                    e.getKey()
+                        .getItemStack()))
+                .setStackSize(e.getValue()));
 
         MMInventory inv = new MMInventory(player, state, manipulator.tier);
 
         Pair<Boolean, List<IAEItemStack>> extractResult = inv.tryConsumeItems(
             requiredItems,
-            IPseudoInventory.CONSUME_SIMULATED |
-            IPseudoInventory.CONSUME_PARTIAL |
-            IPseudoInventory.CONSUME_IGNORE_CREATIVE);
+            IPseudoInventory.CONSUME_SIMULATED | IPseudoInventory.CONSUME_PARTIAL
+                | IPseudoInventory.CONSUME_IGNORE_CREATIVE);
 
         List<IAEItemStack> availableItems = extractResult.right() == null ? new ArrayList<>() : extractResult.right();
 
@@ -476,8 +481,7 @@ public class MMUtils {
         if (!requiredItems.isEmpty()) {
             requiredItems.stream()
                 .map((IAEItemStack stack) -> {
-                    long available = availableItems
-                        .stream()
+                    long available = availableItems.stream()
                         .filter(s -> s.isSameType(stack))
                         .mapToLong(s -> s.getStackSize())
                         .sum();
@@ -486,7 +490,8 @@ public class MMUtils {
                         return String.format(
                             "%s%s%s: %s%d%s (%s%d%s missing)",
                             EnumChatFormatting.AQUA.toString(),
-                            stack.getItemStack().getDisplayName(),
+                            stack.getItemStack()
+                                .getDisplayName(),
                             EnumChatFormatting.GRAY.toString(),
                             EnumChatFormatting.GOLD.toString(),
                             stack.getStackSize(),
@@ -498,7 +503,8 @@ public class MMUtils {
                         return String.format(
                             "%s%s%s: %s%d%s",
                             EnumChatFormatting.AQUA.toString(),
-                            stack.getItemStack().getDisplayName(),
+                            stack.getItemStack()
+                                .getDisplayName(),
                             EnumChatFormatting.GRAY.toString(),
                             EnumChatFormatting.GOLD.toString(),
                             stack.getStackSize(),
@@ -506,9 +512,7 @@ public class MMUtils {
                     }
                 })
                 .sorted()
-                .forEach(message -> {
-                    GTUtility.sendInfoToPlayer(player, message);
-                });
+                .forEach(message -> { GTUtility.sendInfoToPlayer(player, message); });
         } else {
             GTUtility.sendInfoToPlayer(player, "None");
         }
@@ -517,8 +521,7 @@ public class MMUtils {
             if (state.connectToUplink()) {
                 if ((flags & Messages.PLAN_ALL) == 0) {
                     requiredItems.forEach(stack -> {
-                        long available = availableItems
-                            .stream()
+                        long available = availableItems.stream()
                             .filter(s -> s.isSameType(stack))
                             .mapToLong(s -> s.getStackSize())
                             .sum();
@@ -542,14 +545,11 @@ public class MMUtils {
                         requiredItems,
                         (flags & Messages.PLAN_AUTO_SUBMIT) != 0);
                 } else {
-                    GTUtility.sendInfoToPlayer(
-                        player,
-                        "Not creating pattern because all required items are present.");
+                    GTUtility.sendInfoToPlayer(player, "Not creating pattern because all required items are present.");
                 }
             } else {
-                GTUtility.sendErrorToPlayer(
-                    player,
-                    "Manipulator not connected to an uplink: cannot create a fake pattern.");
+                GTUtility
+                    .sendErrorToPlayer(player, "Manipulator not connected to an uplink: cannot create a fake pattern.");
             }
         }
     }
