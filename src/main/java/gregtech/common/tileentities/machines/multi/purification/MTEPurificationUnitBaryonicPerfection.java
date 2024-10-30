@@ -14,12 +14,15 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -246,6 +249,11 @@ public class MTEPurificationUnitBaryonicPerfection
         numCasings = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         if (numCasings < MIN_CASINGS) return false;
+        // Blacklist stocking bus because it's incredibly buggy with this and keeps duping catalyst no matter how much
+        // I try to fix it.
+        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
+            if (bus instanceof MTEHatchInputBusME) return false;
+        }
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
@@ -364,7 +372,7 @@ public class MTEPurificationUnitBaryonicPerfection
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front Center")
-            .addInputBus("Any Quark Exclusion Casing", 1)
+            .addInputBus("Any Quark Exclusion Casing. Stocking bus is blacklisted.", 1)
             .addInputHatch("Any Quark Exclusion Casing", 1)
             .addOutputBus("Any Quark Exclusion Casing", 1)
             .addOutputHatch("Any Quark Exclusion Casing", 1)
