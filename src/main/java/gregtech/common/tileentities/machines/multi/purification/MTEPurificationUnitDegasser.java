@@ -474,7 +474,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             .addCasingInfoExactlyColored(
                 "Bedrockium Frame Box",
                 EnumChatFormatting.GRAY,
-                126,
+                124,
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front center")

@@ -243,17 +243,17 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 56,
                 EnumChatFormatting.GOLD,
                 false)
-            .addCasingInfoExactlyColored(
-                "Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                77,
-                EnumChatFormatting.GOLD,
-                false)
             .addCasingInfoRangeColored(
-                "Reinforced Sterile Water Plant Casing",
+                "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 71,
                 72,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Reinforced Sterile Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                77,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
