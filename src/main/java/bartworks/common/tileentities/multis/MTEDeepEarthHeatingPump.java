@@ -22,27 +22,33 @@ import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
+import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 
 public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     private static float nulearHeatMod = 2f;
-    private byte mMode;
+    private static final int MACHINEMODE_STEAM = 0;
+    private static final int MACHINEMODE_COOLANT = 1;
     private byte mTier;
+    private byte mMode;
 
     public MTEDeepEarthHeatingPump(int aID, int tier, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -96,9 +102,9 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .getDisplayName();
         tt.addMachineType("Geothermal Heat Pump")
             .addInfo("Consumes " + GTValues.V[this.mTier + 2] + "EU/t")
-            .addInfo("Has 3 Modes, use the Screwdriver to change them:");
+            .addInfo("Has 2 Modes, use the Screwdriver to change them:");
 
-        tt.addInfo("Direct Steam, Coolant Heating, Retract")
+        tt.addInfo("Direct Steam and Coolant Heating")
             .addInfo(
                 "Direct Steam Mode: Consumes Distilled Water to produce " + (long) (this.mTier * 25600 * 20)
                     + "L/s of Superheated Steam")
@@ -140,6 +146,28 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public Pos2d getMachineModeSwitchButtonPos() {
+        return new Pos2d(98, 91);
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.DEHP.mode." + machineMode);
+    }
+
+    @Override
     protected int getMinTier() {
         return 2 + this.mTier;
     }
@@ -178,49 +206,34 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     }
 
     @Override
-    protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
-        int yHead, int oldYHead) {
-        if (this.mMode != 3) {
-            this.isPickingPipes = false;
-            this.workState = 0;
-            return true;
-        }
-        return super.workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
+    protected void addOperatingMessages() {
+        // Inheritors can overwrite these to add custom operating messages.
+        addResultMessage(STATE_DOWNWARD, true, "deploying_pipe");
+        addResultMessage(STATE_DOWNWARD, false, "extracting_pipe");
+        addResultMessage(STATE_AT_BOTTOM, true, "circulating_fluid");
+        addResultMessage(STATE_AT_BOTTOM, false, "no_mining_pipe");
+        addResultMessage(STATE_UPWARD, true, "retracting_pipe");
+        addResultMessage(STATE_UPWARD, false, "drill_generic_finished");
+        addResultMessage(STATE_ABORT, true, "retracting_pipe");
+        addResultMessage(STATE_ABORT, false, "drill_retract_pipes_finished");
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (this.getBaseMetaTileEntity()
-            .getWorld().isRemote) return;
-        ++this.mMode;
-        if (this.mMode >= 3) this.mMode = 0;
-        if (this.mMode == 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "Mode: Direct Steam");
-        } else if (this.mMode == 1) {
-            GTUtility.sendChatToPlayer(aPlayer, "Mode: Coolant Heating");
-        } else if (this.mMode == 2) {
-            GTUtility.sendChatToPlayer(aPlayer, "Mode: Retract");
-        }
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
     }
 
     @Override
-    protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
+    protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
-        if (this.mMode == 2) {
-            this.isPickingPipes = true;
-            this.workState = 2;
+        if (tryLowerPipeState(true) == 0) {
+            workState = STATE_DOWNWARD;
             return true;
         }
-
-        if (this.tryLowerPipeState(false) == 0) {
-            return true;
-        }
-        if (this.waitForPipes()) {
-            return false;
-        }
-
-        if (this.mMode == 0) {
+        if (this.machineMode == 0) {
             long steamProduced = this.mTier * 25600L * this.mEfficiency / 10000L;
             long waterConsume = (steamProduced + 160) / 160;
 
@@ -234,7 +247,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 this.explodeMultiblock();
                 return false;
             }
-        } else if (this.mMode == 1) {
+        } else if (this.machineMode == 1) {
             long coolantConverted = (long) (this.mTier * 96L
                 * (double) MTEDeepEarthHeatingPump.nulearHeatMod
                 * this.mEfficiency
@@ -242,10 +255,11 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
                 this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
                 this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
-            } else {
-                this.explodeMultiblock();
-                return false;
             }
+            // else {
+            // this.explodeMultiblock();
+            // return false;
+            // }
         }
         return true;
     }
@@ -297,7 +311,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected void setElectricityStats() {
         try {
-            this.mEUt = this.isPickingPipes ? -60 : -1 * Math.toIntExact(GTValues.V[this.getMinTier()]);
+            this.mEUt = this.isPickingPipes ? -60 : (-480);
         } catch (ArithmeticException e) {
             e.printStackTrace();
             this.mEUt = Integer.MAX_VALUE - 7;
