@@ -2083,7 +2083,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     // NEW METHOD
-    public final boolean addDataConnectorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    public final boolean addDataInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
@@ -2094,6 +2094,18 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchDataInput) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eInputData.add((MTEHatchDataInput) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    // NEW METHOD
+    public final boolean addDataOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        }
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) {
+            return false;
         }
         if (aMetaTileEntity instanceof MTEHatchDataOutput) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
@@ -2173,14 +2185,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 return t.eDynamoMulti.size();
             }
         },
-        InputData(TTMultiblockBase::addDataConnectorToMachineList, MTEHatchDataInput.class) {
+        InputData(TTMultiblockBase::addDataInputToMachineList, MTEHatchDataInput.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
                 return t.eInputData.size();
             }
         },
-        OutputData(TTMultiblockBase::addDataConnectorToMachineList, MTEHatchDataOutput.class) {
+        OutputData(TTMultiblockBase::addDataOutputToMachineList, MTEHatchDataOutput.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
