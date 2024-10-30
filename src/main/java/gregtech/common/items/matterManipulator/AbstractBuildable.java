@@ -1,10 +1,15 @@
 package gregtech.common.items.matterManipulator;
 
+import static gregtech.api.enums.Mods.EnderIO;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
@@ -30,8 +35,10 @@ import appeng.api.parts.PartItemStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.helpers.ICustomNameObject;
 import appeng.parts.AEBasePart;
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
+import gregtech.api.enums.Mods.Names;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,7 +47,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.ItemMatterManipulator.ManipulatorTier;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
-import ic2.api.item.ElectricItem;
 import it.unimi.dsi.fastutil.Pair;
 
 public abstract class AbstractBuildable extends MMInventory implements IBuildable {
@@ -88,7 +94,7 @@ public abstract class AbstractBuildable extends MMInventory implements IBuildabl
 
         euUsage *= Math.pow(player.getDistance(x, y, z), EU_DISTANCE_EXP);
 
-        return ElectricItem.manager.use(stack, euUsage, player);
+        return ((ItemMatterManipulator) stack.getItem()).use(stack, euUsage, player);
     }
 
     protected void removeBlock(World world, int x, int y, int z, Block existing, int existingMeta) {
@@ -100,6 +106,9 @@ public abstract class AbstractBuildable extends MMInventory implements IBuildabl
         removeCovers(te);
         resetAEMachine(te);
         resetKeptSettings(te);
+        if (EnderIO.isModLoaded()) {
+            resetConduitBundle(te);
+        }
 
         if (existing instanceof IFluidBlock fluidBlock && fluidBlock.canDrain(world, x, y, z)) {
             givePlayerFluids(fluidBlock.drain(world, x, y, z, true));
@@ -230,6 +239,48 @@ public abstract class AbstractBuildable extends MMInventory implements IBuildabl
         if (te instanceof IRedstoneEmitter emitter) {
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 emitter.setRedstoneOutputStrength(side, false);
+            }
+        }
+    }
+
+    @Method(modid = Names.ENDER_I_O)
+    protected void resetConduitBundle(TileEntity te) {
+        EnderIOIntegration.resetConduitBundle(this, te);
+    }
+
+    protected static class EnderIOIntegration {
+
+        private static final Class<?> ICONDUITBUNDLE;
+        private static final MethodHandle GET_CONDUITS, GET_DROPS, REMOVE_CONDUIT;
+
+        static {
+            try {
+                ICONDUITBUNDLE = Class.forName("crazypants.enderio.conduit.IConduitBundle");
+
+                Class<?> IConduit = Class.forName("crazypants.enderio.conduit.IConduit");
+
+                GET_CONDUITS = MethodHandles.lookup()
+                    .findVirtual(ICONDUITBUNDLE, "getConduits", MethodType.methodType(Collection.class));
+                GET_DROPS = MethodHandles.lookup()
+                    .findVirtual(IConduit, "getDrops", MethodType.methodType(List.class));
+                REMOVE_CONDUIT = MethodHandles.lookup()
+                    .findVirtual(ICONDUITBUNDLE, "removeConduit", MethodType.methodType(void.class, IConduit));
+            } catch (NoSuchMethodException | IllegalAccessException | ClassNotFoundException e) {
+                throw new RuntimeException("Could not initialize matter manipulator Ender IO integration", e);
+            }
+        }
+
+        protected static void resetConduitBundle(AbstractBuildable buildable, TileEntity te) {
+            try {
+                if (ICONDUITBUNDLE.isAssignableFrom(te.getClass())) {
+                    for (Object conduit : (Collection<Object>) GET_CONDUITS.invoke(te)) {
+                        buildable
+                            .givePlayerItems(((List<ItemStack>) GET_DROPS.invoke(conduit)).toArray(new ItemStack[0]));
+                        REMOVE_CONDUIT.invoke(te, conduit);
+                    }
+                }
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Error while resetting conduit bundle", t);
             }
         }
     }
