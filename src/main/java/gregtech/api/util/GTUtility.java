@@ -512,15 +512,7 @@ public class GTUtility {
         if (aPlayer instanceof EntityPlayerMP && aChatMessage != null) {
             aPlayer.addChatComponentMessage(
                 new ChatComponentText(
-                    EnumChatFormatting.ITALIC.toString() + EnumChatFormatting.GRAY.toString() + aChatMessage));
-        }
-    }
-
-    public static void sendChatToPlayer(UUID playerId, String chatMessage) {
-        EntityPlayer player = getPlayerById(playerId);
-
-        if (player != null) {
-            sendChatToPlayer(player, chatMessage);
+                    EnumChatFormatting.GRAY.toString() + aChatMessage));
         }
     }
 
@@ -1892,6 +1884,35 @@ public class GTUtility {
             }
         }
 
+        return out;
+    }
+
+    public static <S, T> List<T> mapToList(Collection<S> in, Function<S, T> mapper) {
+        List<T> out = new ArrayList<>(in.size());
+        for (S s : in) out.add(mapper.apply(s));
+        return out;
+    }
+
+    public static <S, T> List<T> mapToList(S[] in, Function<S, T> mapper) {
+        List<T> out = new ArrayList<>(in.length);
+        for (S s : in) out.add(mapper.apply(s));
+        return out;
+    }
+
+    public static <S, T> T[] mapToArray(Collection<S> in, IntFunction<T[]> ctor, Function<S, T> mapper) {
+        T[] out = ctor.apply(in.size());
+        
+        Iterator<S> iter = in.iterator();
+        for (int i = 0; i < out.length && iter.hasNext(); i++) {
+            out[i] = mapper.apply(iter.next());
+        }
+
+        return out;
+    }
+
+    public static <S, T> T[] mapToArray(S[] in, IntFunction<T[]> ctor, Function<S, T> mapper) {
+        T[] out = ctor.apply(in.length);
+        for (int i = 0; i < out.length; i++) out[i] = mapper.apply(in[i]);
         return out;
     }
 
@@ -4933,6 +4954,14 @@ public class GTUtility {
          */
         public static ItemId createAsWildcard(ItemStack itemStack) {
             return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, null, null);
+        }
+
+        public static ItemId createAsWildcardWithNBT(ItemStack itemStack) {
+            NBTTagCompound nbt = itemStack.getTagCompound();
+            if (nbt != null) {
+                nbt = (NBTTagCompound) nbt.copy();
+            }
+            return new AutoValue_GTUtility_ItemId(itemStack.getItem(), W, nbt, null);
         }
 
         /**

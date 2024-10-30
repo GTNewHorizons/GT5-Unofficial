@@ -3,9 +3,10 @@ package gregtech.common.items.matterManipulator;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,6 +25,7 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
@@ -37,12 +39,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-import appeng.api.config.FuzzyMode;
 import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.storage.ICellWorkbenchItem;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.crafting.v2.resolvers.CraftableItemResolver;
 import appeng.parts.automation.UpgradeInventory;
+import appeng.util.Platform;
+import appeng.util.item.AEItemStack;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.matterManipulator.BlockAnalyzer.RequiredItemAnalysis;
 import gregtech.common.items.matterManipulator.NBTState.Location;
+import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
+import it.unimi.dsi.fastutil.Pair;
 
 public class MMUtils {
 
@@ -176,6 +184,8 @@ public class MMUtils {
     }
 
     public static void emptyInventory(IPseudoInventory dest, IInventory src) {
+        if (src == null) return;
+
         int size = src.getSizeInventory();
 
         for (int i = 0; i < size; i++) {
@@ -189,8 +199,15 @@ public class MMUtils {
                     emptyInventory(dest, cellWorkbenchItem.getUpgradesInventory(stack));
                     clearInventory(cellWorkbenchItem.getConfigInventory(stack));
 
-                    cellWorkbenchItem.setFuzzyMode(stack, FuzzyMode.IGNORE_ALL);
-                    cellWorkbenchItem.setOreFilter(stack, "");
+                    NBTTagCompound tag = Platform.openNbtData(stack);
+                    tag.removeTag("FuzzyMode");
+                    tag.removeTag("upgrades");
+                    tag.removeTag("list");
+                    tag.removeTag("OreFilter");
+
+                    if (tag.hasNoTags()) tag = null;
+
+                    stack.setTagCompound(tag);
 
                     dest.givePlayerItems(stack);
                 } else {
@@ -234,16 +251,13 @@ public class MMUtils {
 
     public static boolean installUpgrades(IPseudoInventory src, UpgradeInventory dest, PortableItemStack[] pupgrades,
         boolean consume, boolean simulate) {
-        List<ItemStack> stacks = Arrays.stream(pupgrades)
-            .map(PortableItemStack::toStack)
-            .collect(Collectors.toList());
+        List<ItemStack> stacks = GTUtility.mapToList(pupgrades, PortableItemStack::toStack);
 
         stacks.removeIf(i -> i == null || !(i.getItem() instanceof IUpgradeModule));
 
-        stacks.forEach(
-            i -> {
-                i.stackSize = Math.min(i.stackSize, dest.getMaxInstalled(((IUpgradeModule) i.getItem()).getType(i)));
-            });
+        for (ItemStack stack : stacks) {
+            stack.stackSize = Math.min(stack.stackSize, dest.getMaxInstalled(((IUpgradeModule) stack.getItem()).getType(stack)));
+        }
 
         List<ItemStack> split = GTUtility.getStacksOfSize(stacks, dest.getInventoryStackLimit());
 
@@ -424,5 +438,119 @@ public class MMUtils {
         }
 
         throw new IllegalArgumentException("Unhandled element " + jsonElement);
+    }
+
+    public static boolean areBlocksBasicallyEqual(PendingBlock a, PendingBlock b) {
+        return a.getBlock() == b.getBlock() && a.metadata == b.metadata;
+    }
+
+    public static boolean areStacksBasicallyEqual(ItemStack a, ItemStack b) {
+        if (a == null || b == null) {
+            return a == null && b == null;
+        }
+
+        return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage()
+            && ItemStack.areItemStackTagsEqual(a, b);
+    }
+
+    public static void createPlanImpl(EntityPlayer player, NBTState state, ItemMatterManipulator manipulator, int flags) {
+        List<PendingBlock> blocks = state.getPendingBlocks(player.getEntityWorld());
+        RequiredItemAnalysis itemAnalysis = BlockAnalyzer.getRequiredItemsForBuild(player, blocks, (flags & Messages.PLAN_ALL) != 0);
+
+        List<IAEItemStack> requiredItems = GTUtility.mapToList(
+            itemAnalysis.requiredItems.entrySet(),
+            e -> Objects.requireNonNull(AEItemStack.create(e.getKey().getItemStack())).setStackSize(e.getValue()));
+
+        MMInventory inv = new MMInventory(player, state, manipulator.tier);
+
+        Pair<Boolean, List<IAEItemStack>> extractResult = inv.tryConsumeItems(
+            requiredItems,
+            IPseudoInventory.CONSUME_SIMULATED |
+            IPseudoInventory.CONSUME_PARTIAL |
+            IPseudoInventory.CONSUME_IGNORE_CREATIVE);
+
+        List<IAEItemStack> availableItems = extractResult.right() == null ? new ArrayList<>() : extractResult.right();
+
+        GTUtility.sendInfoToPlayer(player, "Required items:");
+
+        if (!requiredItems.isEmpty()) {
+            requiredItems.stream()
+                .map((IAEItemStack stack) -> {
+                    long available = availableItems
+                        .stream()
+                        .filter(s -> s.isSameType(stack))
+                        .mapToLong(s -> s.getStackSize())
+                        .sum();
+
+                    if (stack.getStackSize() - available > 0) {
+                        return String.format(
+                            "%s%s%s: %s%d%s (%s%d%s missing)",
+                            EnumChatFormatting.AQUA.toString(),
+                            stack.getItemStack().getDisplayName(),
+                            EnumChatFormatting.GRAY.toString(),
+                            EnumChatFormatting.GOLD.toString(),
+                            stack.getStackSize(),
+                            EnumChatFormatting.GRAY.toString(),
+                            EnumChatFormatting.RED.toString(),
+                            stack.getStackSize() - available,
+                            EnumChatFormatting.GRAY.toString());
+                    } else {
+                        return String.format(
+                            "%s%s%s: %s%d%s",
+                            EnumChatFormatting.AQUA.toString(),
+                            stack.getItemStack().getDisplayName(),
+                            EnumChatFormatting.GRAY.toString(),
+                            EnumChatFormatting.GOLD.toString(),
+                            stack.getStackSize(),
+                            EnumChatFormatting.GRAY.toString());
+                    }
+                })
+                .sorted()
+                .forEach(message -> {
+                    GTUtility.sendInfoToPlayer(player, message);
+                });
+        } else {
+            GTUtility.sendInfoToPlayer(player, "None");
+        }
+
+        if (!requiredItems.isEmpty()) {
+            if (state.connectToUplink()) {
+                if ((flags & Messages.PLAN_ALL) == 0) {
+                    requiredItems.forEach(stack -> {
+                        long available = availableItems
+                            .stream()
+                            .filter(s -> s.isSameType(stack))
+                            .mapToLong(s -> s.getStackSize())
+                            .sum();
+
+                        stack.decStackSize(available);
+                    });
+
+                    Iterator<IAEItemStack> iter = requiredItems.iterator();
+
+                    while (iter.hasNext()) {
+                        IAEItemStack stack = iter.next();
+
+                        if (stack.getStackSize() == 0) iter.remove();
+                    }
+                }
+
+                if (!requiredItems.isEmpty()) {
+                    state.uplink.submitPlan(
+                        player,
+                        state.config.coordA.toString(),
+                        requiredItems,
+                        (flags & Messages.PLAN_AUTO_SUBMIT) != 0);
+                } else {
+                    GTUtility.sendInfoToPlayer(
+                        player,
+                        "Not creating pattern because all required items are present.");
+                }
+            } else {
+                GTUtility.sendErrorToPlayer(
+                    player,
+                    "Manipulator not connected to an uplink: cannot create a fake pattern.");
+            }
+        }
     }
 }

@@ -22,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IIC2Enet;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.items.matterManipulator.ItemMatterManipulator.ManipulatorTier;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import it.unimi.dsi.fastutil.Pair;
@@ -33,13 +34,17 @@ public class PendingMove extends AbstractBuildable {
 
     private int cursor = 0;
 
+    public PendingMove(EntityPlayer player, NBTState state, ManipulatorTier tier) {
+        super(player, state, tier);
+    }
+
     @Override
     public void tryPlaceBlocks(ItemStack stack, EntityPlayer player) {
         if (moves == null) {
             initMoves();
         }
 
-        World world = placingPlayer.worldObj;
+        World world = player.worldObj;
 
         for (int i = 0; i < tier.placeSpeed; i++) {
             Pair<Location, Location> move = moves.get(cursor);

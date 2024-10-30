@@ -823,12 +823,7 @@ public class ItemMatterManipulator extends Item
     }
 
     private IBuildable getPendingBuild(EntityPlayer player, ItemStack stack, NBTState state) {
-        PendingBuild pending = new PendingBuild();
-        pending.placingPlayer = player;
-        pending.tier = tier;
-        pending.state = state;
-
-        List<PendingBlock> blocks = pending.state.getPendingBlocks(player.getEntityWorld());
+        List<PendingBlock> blocks = state.getPendingBlocks(player.getEntityWorld());
 
         if (tier.maxRange != -1) {
             int maxRange2 = tier.maxRange * tier.maxRange;
@@ -843,19 +838,12 @@ public class ItemMatterManipulator extends Item
         }
 
         blocks.sort(PendingBlock.getComparator());
-        pending.pendingBlocks = new LinkedList<>(blocks);
 
-        return pending;
+        return new PendingBuild(player, state, tier, new LinkedList<>(blocks));
     }
 
     private IBuildable getPendingMove(EntityPlayer player, ItemStack stack, NBTState state) {
-        PendingMove move = new PendingMove();
-
-        move.placingPlayer = player;
-        move.tier = tier;
-        move.state = state;
-
-        return move;
+        return new PendingMove(player, state, tier);
     }
 
     @Override
@@ -1104,19 +1092,37 @@ public class ItemMatterManipulator extends Item
             .branch()
                 .label("Planning")
                 .option()
+                    .label("Cancel Auto Plans")
+                    .onClicked(() -> {
+                        Messages.CancelAutoPlans.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Plan (All, Auto)")
+                    .onClicked(() -> {
+                        Messages.GetRequiredItems.sendToServer(Messages.PLAN_ALL | Messages.PLAN_AUTO_SUBMIT);
+                    })
+                .done()
+                .option()
+                    .label("Plan (All, Manual)")
+                    .onClicked(() -> {
+                        Messages.GetRequiredItems.sendToServer(Messages.PLAN_ALL);
+                    })
+                .done()
+                .option()
                     .label("Clear Manual Plans")
                     .onClicked(() -> {
                         Messages.ClearManualPlans.sendToServer();
                     })
                 .done()
                 .option()
-                    .label("Plan (Manual)")
+                    .label("Plan (Missing, Manual)")
                     .onClicked(() -> {
                         Messages.GetRequiredItems.sendToServer(0);
                     })
                 .done()
                 .option()
-                    .label("Plan (Auto)")
+                    .label("Plan (Missing, Auto)")
                     .onClicked(() -> {
                         Messages.GetRequiredItems.sendToServer(Messages.PLAN_AUTO_SUBMIT);
                     })

@@ -19,7 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
+import tectech.recipe.TTRecipeAdder;
+import tectech.thing.CustomItemList;
 import appeng.api.AEApi;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -599,5 +600,105 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
             .eut((int) TierEU.RECIPE_ZPM)
             .duration(30 * SECONDS)
             .addTo(RecipeMaps.assemblerRecipes);
+
+        // Quantum Uplink ME Connector Hatch
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            AEApi.instance()
+                .definitions()
+                .parts()
+                .patternTerminal()
+                .maybeStack(1)
+                .get(),
+            80_000,
+            32,
+            (int) TierEU.RECIPE_UV,
+            2,
+            new Object[] {
+                CustomItemList.dataIn_Hatch.get(1),
+                AEApi.instance()
+                    .definitions()
+                    .materials()
+                    .cell16384kPart()
+                    .maybeStack(1)
+                    .get(),
+                getModItem(AE2FluidCraft.ID, "fluid_interface", 1),
+                AEApi.instance()
+                    .definitions()
+                    .parts()
+                    .patternTerminal()
+                    .maybeStack(1)
+                    .get(),
+                ItemList.Robot_Arm_UV.get(1),
+                AEApi.instance()
+                    .definitions()
+                    .materials()
+                    .blankPattern()
+                    .maybeStack(64)
+                    .get(),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4)
+            },
+            new FluidStack[] {
+                new FluidStack(solderIndalloy, (int) (L * 32)),
+                Materials.Naquadria.getMolten(L * 16),
+            },
+            ItemList.Hatch_MatterManipulatorUplink_ME.get(1),
+            60 * SECONDS,
+            (int) TierEU.RECIPE_UV);
+
+        // Matter Manipulator Quantum Uplink
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            AEApi.instance()
+                .definitions()
+                .blocks()
+                .quantumLink()
+                .maybeStack(1)
+                .get(),
+            160_000,
+            32,
+            (int) TierEU.RECIPE_UV,
+            4,
+            new Object[] {
+                CustomItemList.Machine_Multi_DataBank.get(1),
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .controller()
+                    .maybeStack(4)
+                    .get(),
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .quantumRing()
+                    .maybeStack(8)
+                    .get(),
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .quantumLink()
+                    .maybeStack(1)
+                    .get(),
+                AEApi.instance()
+                    .definitions()
+                    .blocks()
+                    .iOPort()
+                    .maybeStack(1)
+                    .get(),
+                AEApi.instance()
+                    .definitions()
+                    .materials()
+                    .cardSuperSpeed()
+                    .maybeStack(2)
+                    .get(),
+                CustomItemList.dataOut_Hatch.get(1),
+                CustomItemList.DATApipe.get(32),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 2)
+            },
+            new FluidStack[] {
+                new FluidStack(solderIndalloy, (int) (L * 64)),
+                Materials.Naquadria.getMolten(L * 32),
+            },
+            ItemList.MatterManipulatorUplink.get(1),
+            60 * SECONDS,
+            (int) TierEU.RECIPE_UV);
     }
 }

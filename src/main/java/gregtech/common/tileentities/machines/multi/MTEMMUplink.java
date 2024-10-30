@@ -32,18 +32,18 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.joml.Vector3i;
 import org.spongepowered.libraries.com.google.common.collect.MapMaker;
 
-import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import appeng.api.config.Actionable;
+import appeng.api.config.FuzzyMode;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -72,6 +72,7 @@ import gregtech.common.items.matterManipulator.ItemMatterManipulator;
 import gregtech.common.items.matterManipulator.MatterManipulator;
 import gregtech.common.tileentities.machines.MTEMMUplinkMEHatch;
 import gtPlusPlus.core.block.ModBlocks;
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.chars.Char2IntArrayMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -468,11 +469,14 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         // spotless:off
         tt.addMachineType("Matter Manipulator Quantum Uplink")
             .addInfo("Interdimensional and infinite range uplink for matter manipulators.")
+            .addInfo("Allows manipulators to convert plans into AE patterns.")
             .addInfo("Connects directly to an ME system via a " + EnumChatFormatting.GOLD + ItemList.Hatch_MatterManipulatorUplink_ME.get(0).getDisplayName() + EnumChatFormatting.GRAY + ".")
+            .addSeparator()
             .addInfo("Consumes 1A ZPM while active.")
             .addInfo("Must be fed with plasma via an input hatch.")
             .addInfo("Transfers to/from the manipulator cost " + String.format("%,d", BASE_PLASMA_EU_COST) + " EU in plasma per item or per bucket.")
             .addInfo("Insert a compatible manipulator in the controller slot while the machine is running to bind it to the uplink.")
+            .addSeparator()
             .beginStructureBlock(structure.width, structure.height, structure.length, true)
             .addController("Front Center")
             .addCasingInfoRange("Advanced Iridium Plated Machine Casing", structure.defCasingCounts.get('A') - structure.maxHatches, structure.defCasingCounts.get('A'), false)
@@ -617,49 +621,64 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
-    public UplinkStatus tryConsumeItems(ItemStackMap<Long> requestedItems, boolean simulate) {
+    public Pair<UplinkStatus, List<IAEItemStack>> tryConsumeItems(List<IAEItemStack> requestedItems, boolean simulate, boolean fuzzy) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
 
-        if (hatch == null) return UplinkStatus.NO_HATCH;
+        if (hatch == null) return Pair.of(UplinkStatus.NO_HATCH, null);
 
         IStorageGrid storage = hatch.getStorageGrid();
 
-        if (storage == null) return UplinkStatus.AE_OFFLINE;
+        if (storage == null) return Pair.of(UplinkStatus.AE_OFFLINE, null);
 
         IMEMonitor<IAEItemStack> itemInventory = storage.getItemInventory();
 
-        if (itemInventory == null) return UplinkStatus.AE_OFFLINE;
+        if (itemInventory == null) return Pair.of(UplinkStatus.AE_OFFLINE, null);
 
-        var iter = requestedItems.entrySet()
-            .iterator();
+        List<IAEItemStack> out = new ArrayList<>();
 
-        while (iter.hasNext()) {
-            var e = iter.next();
+        long requiredEU = 0;
 
-            if (e.getKey() == null || e.getKey()
-                .getItem() == null || e.getValue() == null || e.getValue() == 0) {
-                iter.remove();
+        for (IAEItemStack req : requestedItems) {
+            if (req.getStackSize() == 0) {
                 continue;
             }
 
-            if (!consumePlasmaEU(e.getValue())) return UplinkStatus.NO_PLASMA;
+            requiredEU += req.getStackSize() * BASE_PLASMA_EU_COST;
 
-            IAEItemStack result = itemInventory.extractItems(
-                Objects.requireNonNull(AEItemStack.create(e.getKey()))
-                    .setStackSize(e.getValue()),
-                simulate ? Actionable.SIMULATE : Actionable.MODULATE,
-                hatch.getRequestSource());
+            List<IAEItemStack> matches = fuzzy ?
+                ImmutableList.copyOf(itemInventory.getStorageList().findFuzzy(req, FuzzyMode.IGNORE_ALL)) :
+                Arrays.asList(itemInventory.getStorageList().findPrecise(req));
 
-            if (result != null) {
-                if (result.getStackSize() == e.getValue()) {
-                    iter.remove();
-                } else {
-                    e.setValue(e.getValue() - result.getStackSize());
+            for (IAEItemStack match : matches) {
+                if (req.getStackSize() == 0) {
+                    break;
+                }
+
+                if (match == null) {
+                    continue;
+                }
+
+                match = match.copy().setStackSize(req.getStackSize());
+
+                IAEItemStack result = itemInventory.extractItems(
+                    match,
+                    simulate ? Actionable.SIMULATE : Actionable.MODULATE,
+                    hatch.getRequestSource());
+
+                if (result != null) {
+                    out.add(result);
+                    req.setStackSize(req.getStackSize() - result.getStackSize());
                 }
             }
         }
 
-        return UplinkStatus.OK;
+        if (!simulate) {
+            if (!consumePlasmaEU(requiredEU)) {
+                return Pair.of(UplinkStatus.NO_PLASMA, null);
+            }
+        }
+
+        return Pair.of(UplinkStatus.OK, out);
     }
 
     public UplinkStatus tryGivePlayerItems(List<IAEItemStack> items) {
@@ -678,7 +697,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         for (IAEItemStack item : items) {
             if (item == null) continue;
 
-            if (!consumePlasmaEU(item.getStackSize())) return UplinkStatus.NO_PLASMA;
+            if (!consumePlasmaEU(item.getStackSize() * BASE_PLASMA_EU_COST)) {
+                return UplinkStatus.NO_PLASMA;
+            }
 
             IAEItemStack result = itemInventory.injectItems(item, Actionable.MODULATE, hatch.getRequestSource());
 
@@ -704,7 +725,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         for (IAEFluidStack fluid : fluids) {
             if (fluid == null) continue;
 
-            if (!consumePlasmaEU(GTUtility.ceilDiv(fluid.getStackSize(), 1000))) return UplinkStatus.NO_PLASMA;
+            if (!consumePlasmaEU(GTUtility.ceilDiv(fluid.getStackSize(), 1000) * BASE_PLASMA_EU_COST)) {
+                return UplinkStatus.NO_PLASMA;
+            }
 
             IAEFluidStack result = fluidInventory.injectItems(fluid, Actionable.MODULATE, hatch.getRequestSource());
 
@@ -714,9 +737,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         return UplinkStatus.OK;
     }
 
-    private boolean consumePlasmaEU(long multiplier) {
-        long euToConsume = multiplier * BASE_PLASMA_EU_COST;
-
+    private boolean consumePlasmaEU(long euToConsume) {
         if (pendingPlasmaEU < euToConsume) {
             generatePlasmaEU(euToConsume);
         }
@@ -761,7 +782,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
-    public void submitPlan(EntityPlayer submitter, String details, List<ItemStack> requiredItems, boolean autocraft) {
+    public void submitPlan(EntityPlayer submitter, String details, List<IAEItemStack> requiredItems, boolean autocraft) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
 
         if (hatch != null) {
@@ -776,7 +797,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
             hatch.addRequest(submitter, patternName, requiredItems, autocraft);
 
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendInfoToPlayer(
                 submitter,
                 "Pushed a new virtual ME pattern to the uplink called '" + patternName + "'.");
         }
@@ -787,7 +808,14 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
         if (hatch != null) {
             hatch.clearManualPlans(player);
-            GTUtility.sendChatToPlayer(player, "Cleared manual plans.");
+        }
+    }
+
+    public void cancelAutoPlans(EntityPlayer player) {
+        MTEMMUplinkMEHatch hatch = getMEHatch();
+
+        if (hatch != null) {
+            hatch.cancelAutoPlans(player);
         }
     }
 

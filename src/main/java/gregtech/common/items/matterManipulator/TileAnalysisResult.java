@@ -72,6 +72,7 @@ public class TileAnalysisResult {
     public String mAECustomName = null;
     public AEPartData[] mAEParts = null;
     public InventoryAnalysis mAECells = null;
+    public InventoryAnalysis mAEPatterns = null;
 
     public InventoryAnalysis mInventory = null;
 
@@ -234,6 +235,11 @@ public class TileAnalysisResult {
             IInventory cells = segmentedInventory.getInventoryByName("cells");
             if (cells != null) {
                 mAECells = InventoryAnalysis.fromInventory(cells, false);
+            }
+
+            IInventory patterns = segmentedInventory.getInventoryByName("patterns");
+            if (patterns != null) {
+                mAEPatterns = InventoryAnalysis.fromInventory(patterns, false);
             }
         }
 
@@ -419,6 +425,11 @@ public class TileAnalysisResult {
             IInventory cells = segmentedInventory.getInventoryByName("cells");
             if (mAECells != null && cells != null) {
                 mAECells.apply(ctx, cells, true, false);
+            }
+
+            IInventory patterns = segmentedInventory.getInventoryByName("patterns");
+            if (mAEPatterns != null && patterns != null) {
+                mAEPatterns.apply(ctx, patterns, true, false);
             }
         }
 

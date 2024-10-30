@@ -130,7 +130,7 @@ public class AEPartData {
         if (part instanceof PartP2PTunnel<?>tunnel) {
             long freq = mP2PFreq == null ? 0 : mP2PFreq;
 
-            tunnel.output = true;
+            tunnel.output = mP2POutput;
 
             try {
                 final P2PCache p2p = tunnel.getProxy()

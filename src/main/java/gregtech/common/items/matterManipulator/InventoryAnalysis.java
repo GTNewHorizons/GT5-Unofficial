@@ -36,6 +36,10 @@ public class InventoryAnalysis {
             if (cell != null) return cell;
         }
 
+        PatternItemProvider pattern = PatternItemProvider.fromPattern(stack);
+
+        if (pattern != null) return pattern;
+
         return fuzzy ? new PortableItemStack(stack) : PortableItemStack.withNBT(stack);
     }
 

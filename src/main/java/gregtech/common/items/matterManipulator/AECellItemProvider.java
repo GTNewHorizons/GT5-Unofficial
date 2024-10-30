@@ -3,7 +3,6 @@ package gregtech.common.items.matterManipulator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -12,7 +11,9 @@ import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
 import appeng.api.definitions.IItemDefinition;
 import appeng.api.storage.ICellWorkbenchItem;
+import appeng.api.storage.data.IAEItemStack;
 import appeng.parts.automation.UpgradeInventory;
+import appeng.util.item.AEItemStack;
 import gregtech.api.util.GTUtility;
 
 public class AECellItemProvider implements IItemProvider {
@@ -68,19 +69,29 @@ public class AECellItemProvider implements IItemProvider {
 
         List<ItemStack> items = new ArrayList<>();
         items.add(cell);
-        items.addAll(
-            Arrays.asList(mUpgrades == null ? new PortableItemStack[0] : mUpgrades)
-                .stream()
-                .map(PortableItemStack::toStack)
-                .collect(Collectors.toList()));
+        items.addAll(GTUtility.mapToList(mUpgrades == null ? new PortableItemStack[0] : mUpgrades, PortableItemStack::toStack));
 
-        if (consume && !inv.tryConsumeItems(items.toArray(new ItemStack[0]))) {
-            return null;
+        if (consume) {
+            var result = inv.tryConsumeItems(GTUtility.mapToList(items, AEItemStack::create), IPseudoInventory.CONSUME_FUZZY);
+
+            if (!result.left()) {
+                return null;
+            }
+
+            for (IAEItemStack extracted : result.right()) {
+                ItemStack extractedStack = extracted.getItemStack();
+
+                if (extractedStack.isItemEqual(cell)) {
+                    cell = extractedStack;
+                }
+            }
         }
 
         UpgradeInventory upgrades = (UpgradeInventory) cellWorkbenchItem.getUpgradesInventory(cell);
         if (upgrades != null) {
-            MMUtils.installUpgrades(inv, upgrades, mUpgrades, consume, false);
+            // don't consume because we already consumed the upgrades above
+            MMUtils.installUpgrades(inv, upgrades, mUpgrades, false, false);
+            upgrades.markDirty();
         }
 
         IInventory config = cellWorkbenchItem.getConfigInventory(cell);
@@ -110,8 +121,10 @@ public class AECellItemProvider implements IItemProvider {
             .definitions()
             .materials()
             .cardOreFilter();
+
         boolean hasOredictCard = GTUtility.streamInventory(upgrades)
             .anyMatch(oredictCard::isSameAs);
+
         if (hasOredictCard) {
             cellWorkbenchItem.setOreFilter(cell, mOreDict);
         }

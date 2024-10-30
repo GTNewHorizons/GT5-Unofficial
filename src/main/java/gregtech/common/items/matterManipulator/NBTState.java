@@ -301,8 +301,8 @@ class NBTState {
                         break;
                     }
                     case 1: {
-                        start = b.y > 0 ? ForgeDirection.UP.flag : ForgeDirection.DOWN.flag;
-                        end = b.y < 0 ? ForgeDirection.UP.flag : ForgeDirection.DOWN.flag;
+                        start = b.y > 0 ? ForgeDirection.DOWN.flag : ForgeDirection.UP.flag;
+                        end = b.y < 0 ? ForgeDirection.DOWN.flag : ForgeDirection.UP.flag;
                         break;
                     }
                     case 2: {

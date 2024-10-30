@@ -1,14 +1,13 @@
 package gregtech.common.items.matterManipulator;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
@@ -21,6 +20,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,19 +28,18 @@ import gregtech.GTMod;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacket;
 import gregtech.api.net.IGT_NetworkHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.common.GTNetwork;
-import gregtech.common.items.matterManipulator.BlockAnalyzer.RequiredItemAnalysis;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingAction;
-import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
+import gregtech.common.tileentities.machines.MTEMMUplinkMEHatch;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink.UplinkState;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 enum Messages {
 
@@ -166,7 +165,7 @@ enum Messages {
         public void handle(EntityPlayer player, IntPacket packet) {
             ItemStack held = player.inventory.getCurrentItem();
 
-            if (held != null && held.getItem() instanceof ItemMatterManipulator) {
+            if (held != null && held.getItem() instanceof ItemMatterManipulator manipulator) {
                 NBTState state = ItemMatterManipulator.getState(held);
 
                 if (state.config.placeMode != PlaceMode.COPYING) {
@@ -177,88 +176,7 @@ enum Messages {
                     return;
                 }
 
-                List<PendingBlock> blocks = state.getPendingBlocks(player.getEntityWorld());
-                RequiredItemAnalysis itemAnalysis = BlockAnalyzer.getRequiredItemsForBuild(player, blocks);
-
-                if (itemAnalysis.requiredItems.isEmpty()) {
-                    var requiredItems = itemAnalysis.requiredItems.entrySet()
-                        .stream()
-                        .map(
-                            e -> String.format(
-                                "%s: %d",
-                                e.getKey()
-                                    .getItemStack()
-                                    .getDisplayName(),
-                                e.getValue()))
-                        .sorted()
-                        .collect(Collectors.toList());
-
-                    GTUtility.sendInfoToPlayer(player, "Required items:");
-
-                    for (String item : requiredItems) {
-                        GTUtility.sendInfoToPlayer(player, item);
-                    }
-
-                    GTUtility.sendInfoToPlayer(player, "All required items are present.");
-                    return;
-                }
-
-                if (state.connectToUplink()) {
-                    List<ItemStack> requiredItems = itemAnalysis.requiredItems.entrySet()
-                        .stream()
-                        .flatMap(e -> {
-                            List<ItemStack> items = new ArrayList<>();
-
-                            long amount = e.getValue() == null ? 0
-                                : e.getValue()
-                                    .longValue();
-
-                            while (amount > 0) {
-                                int toRemove = amount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) amount;
-
-                                items.add(
-                                    e.getKey()
-                                        .getItemStack(toRemove));
-
-                                amount -= toRemove;
-                            }
-
-                            return items.stream();
-                        })
-                        .collect(Collectors.toList());
-
-                    state.uplink.submitPlan(
-                        player,
-                        state.config.coordA.toString(),
-                        requiredItems,
-                        (packet.value & PLAN_AUTO_SUBMIT) != 0);
-                } else {
-                    GTUtility.sendErrorToPlayer(
-                        player,
-                        "Manipulator not connected to an uplink: cannot create a fake pattern.");
-
-                    if (!itemAnalysis.requiredItems.isEmpty()) {
-                        var requiredItems = itemAnalysis.requiredItems.entrySet()
-                            .stream()
-                            .map(
-                                e -> String.format(
-                                    "%s: %d",
-                                    e.getKey()
-                                        .getItemStack()
-                                        .getDisplayName(),
-                                    e.getValue()))
-                            .sorted()
-                            .collect(Collectors.toList());
-
-                        GTUtility.sendInfoToPlayer(player, "Required items:");
-
-                        for (String item : requiredItems) {
-                            GTUtility.sendInfoToPlayer(player, item);
-                        }
-                    }
-                }
-
-                ItemMatterManipulator.setState(held, state);
+                MMUtils.createPlanImpl(player, state, manipulator, packet.value);
             }
         }
 
@@ -272,6 +190,11 @@ enum Messages {
     ClearManualPlans(server(simple((player, stack, manipulator, state) -> {
         if (state.connectToUplink()) {
             state.uplink.clearManualPlans(player);
+        }
+    }))),
+    CancelAutoPlans(server(simple((player, stack, manipulator, state) -> {
+        if (state.connectToUplink()) {
+            state.uplink.cancelAutoPlans(player);
         }
     }))),
     ClearWhitelist(server(simple((player, stack, manipulator, state) -> { state.config.replaceWhitelist = null; }))),
@@ -313,6 +236,34 @@ enum Messages {
             return packet;
         }
     })),
+    UpdateMEHatchPatterns(client(new ISimplePacketHandler<MEHatchPacket>() {
+
+        @Override
+        @SideOnly(Side.CLIENT)
+        public void handle(EntityPlayer player, MEHatchPacket packet) {
+            World theWorld = Minecraft.getMinecraft().theWorld;
+
+            if (theWorld.provider.dimensionId == packet.worldId) {
+                Location l = packet.getLocation();
+
+                if (theWorld.getTileEntity(l.x, l.y, l.z) instanceof IGregTechTileEntity igte
+                    && igte.getMetaTileEntity() instanceof MTEMMUplinkMEHatch hatch) {
+                    hatch.loadRequests(packet.patterns);
+                }
+            }
+        }
+
+        @Override
+        public MEHatchPacket getNewPacket(Messages message, @Nullable Object value) {
+            MEHatchPacket packet = new MEHatchPacket(message);
+
+            if (value != null) {
+                packet.save((MTEMMUplinkMEHatch) value);
+            }
+
+            return packet;
+        }
+    }))
 
     ;
 
@@ -372,7 +323,11 @@ enum Messages {
         ArrayList<GTPacket> packets = new ArrayList<>();
 
         for (Messages message : values()) {
-            packets.add(message.getNewPacket());
+            try {
+                packets.add(message.getNewPacket());
+            } catch (Throwable t) {
+                throw new RuntimeException("Could not construct packet in createNetwork", t);
+            }
         }
 
         return new GTNetwork("MatterManipulator", packets.toArray(new GTPacket[0]));
@@ -487,6 +442,58 @@ enum Messages {
             message.worldId = buffer.readInt();
             message.location = buffer.readLong();
             message.state = buffer.readByte();
+            return message;
+        }
+    }
+
+    private static class MEHatchPacket extends SimplePacket {
+
+        public int worldId;
+        public long location;
+        public NBTTagCompound patterns;
+
+        public MEHatchPacket(Messages message) {
+            super(message);
+        }
+
+        public void save(MTEMMUplinkMEHatch hatch) {
+            IGregTechTileEntity igte = hatch.getBaseMetaTileEntity();
+            this.worldId = igte.getWorld().provider.dimensionId;
+            this.location = CoordinatePacker.pack(igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
+            this.patterns = new NBTTagCompound();
+            hatch.saveRequests(this.patterns);
+        }
+
+        public Location getLocation() {
+            return new Location(
+                worldId,
+                CoordinatePacker.unpackX(location),
+                CoordinatePacker.unpackY(location),
+                CoordinatePacker.unpackZ(location));
+        }
+
+        @Override
+        public void encode(ByteBuf buffer) {
+            buffer.writeInt(worldId);
+            buffer.writeLong(location);
+
+            ByteBuf temp = Unpooled.buffer();
+            ByteBufUtils.writeTag(temp, patterns);
+            buffer.writeInt(temp.readableBytes());
+            buffer.writeBytes(temp);
+        }
+
+        @Override
+        public GTPacket decode(ByteArrayDataInput buffer) {
+            MEHatchPacket message = new MEHatchPacket(super.message);
+            message.worldId = buffer.readInt();
+            message.location = buffer.readLong();
+            
+            int size = buffer.readInt();
+            byte[] data = new byte[size];
+            buffer.readFully(data);
+            message.patterns = ByteBufUtils.readTag(Unpooled.copiedBuffer(data));
+
             return message;
         }
     }
@@ -632,4 +639,5 @@ enum Messages {
     }
 
     public static final int PLAN_AUTO_SUBMIT = 0b1;
+    public static final int PLAN_ALL = 0b10;
 }

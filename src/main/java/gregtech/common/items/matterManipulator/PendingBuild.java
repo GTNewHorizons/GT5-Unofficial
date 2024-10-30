@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import appeng.api.storage.data.IAEItemStack;
+import appeng.util.item.AEItemStack;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -22,13 +24,20 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
+import gregtech.common.items.matterManipulator.ItemMatterManipulator.ManipulatorTier;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
+import it.unimi.dsi.fastutil.Pair;
 
 public class PendingBuild extends AbstractBuildable {
 
     public LinkedList<PendingBlock> pendingBlocks;
 
     private boolean printedProtectedBlockWarning = false;
+
+    public PendingBuild(EntityPlayer player, NBTState state, ManipulatorTier tier, LinkedList<PendingBlock> pendingBlocks) {
+        super(player, state, tier);
+        this.pendingBlocks = pendingBlocks;
+    }
 
     @Override
     public void tryPlaceBlocks(ItemStack stack, EntityPlayer player) {
@@ -37,7 +46,7 @@ public class PendingBuild extends AbstractBuildable {
         Integer lastChunkX = null, lastChunkZ = null;
         int shuffleCount = 0;
 
-        World world = placingPlayer.worldObj;
+        World world = player.worldObj;
 
         PendingBuildApplyContext applyContext = new PendingBuildApplyContext(stack);
 
@@ -74,7 +83,7 @@ public class PendingBuild extends AbstractBuildable {
                 continue;
             }
 
-            if (!toPlace.isEmpty() && !areBlocksBasicallyEqual(next, toPlace.get(0))) {
+            if (!toPlace.isEmpty() && !MMUtils.areBlocksBasicallyEqual(next, toPlace.get(0))) {
                 break;
             }
 
@@ -169,19 +178,21 @@ public class PendingBuild extends AbstractBuildable {
             if (item != null) {
                 item.stackSize = toPlace.size();
 
-                List<ItemStack> rejected = tryConsumeItemsAllowPartial(Arrays.asList(item));
+                List<IAEItemStack> extracted = tryConsumeItems(Arrays.asList(AEItemStack.create(item)), CONSUME_PARTIAL).right();
 
-                if (!rejected.isEmpty()) {
-                    ItemStack rejectedStack = rejected.get(0);
+                ItemStack extractedStack = extracted.size() == 1 ? extracted.get(0).getItemStack() : null;
 
-                    toPlace = toPlace.subList(0, toPlace.size() - rejectedStack.stackSize);
+                int extractedAmount = extractedStack == null ? 0 : extractedStack.stackSize;
 
+                if (extractedAmount < item.stackSize) {
                     GTUtility.sendErrorToPlayer(
                         player,
                         "Could not find item, the corresponding blocks will be skipped: "
-                            + rejectedStack.getDisplayName()
+                            + item.getDisplayName()
                             + " x "
-                            + rejectedStack.stackSize);
+                            + (item.stackSize - extractedAmount));
+
+                    toPlace = toPlace.subList(0, extractedAmount);
                 }
             }
         }
@@ -232,8 +243,8 @@ public class PendingBuild extends AbstractBuildable {
         public EntityPlayer getFakePlayer() {
             if (fakePlayer == null) {
                 fakePlayer = new FakePlayer(
-                    (WorldServer) PendingBuild.this.placingPlayer.worldObj,
-                    PendingBuild.this.placingPlayer.getGameProfile());
+                    (WorldServer) PendingBuild.this.player.worldObj,
+                    PendingBuild.this.player.getGameProfile());
             }
 
             return fakePlayer;
@@ -241,8 +252,8 @@ public class PendingBuild extends AbstractBuildable {
 
         @Override
         public TileEntity getTileEntity() {
-            if (pendingBlock.isInWorld(placingPlayer.worldObj)) {
-                return placingPlayer.worldObj.getTileEntity(pendingBlock.x, pendingBlock.y, pendingBlock.z);
+            if (pendingBlock.isInWorld(player.worldObj)) {
+                return player.worldObj.getTileEntity(pendingBlock.x, pendingBlock.y, pendingBlock.z);
             } else {
                 return null;
             }
@@ -250,7 +261,7 @@ public class PendingBuild extends AbstractBuildable {
 
         @Override
         public EntityPlayer getRealPlayer() {
-            return placingPlayer;
+            return player;
         }
 
         @Override
@@ -264,8 +275,8 @@ public class PendingBuild extends AbstractBuildable {
         }
 
         @Override
-        public boolean tryConsumeItems(ItemStack... items) {
-            return PendingBuild.this.tryConsumeItems(items);
+        public Pair<Boolean, List<IAEItemStack>> tryConsumeItems(List<IAEItemStack> items, int flags) {
+            return PendingBuild.this.tryConsumeItems(items, flags);
         }
 
         @Override
@@ -281,7 +292,7 @@ public class PendingBuild extends AbstractBuildable {
         @Override
         public void warn(String message) {
             GTUtility.sendChatToPlayer(
-                placingPlayer,
+                player,
                 String.format(
                     "§cWarning at block %d, %d, %d: %s§r",
                     pendingBlock.x,
@@ -293,7 +304,7 @@ public class PendingBuild extends AbstractBuildable {
         @Override
         public void error(String message) {
             GTUtility.sendChatToPlayer(
-                placingPlayer,
+                player,
                 String.format(
                     "§cError at block %d, %d, %d: %s§r",
                     pendingBlock.x,
