@@ -368,8 +368,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
                 translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
                 2) // Computer Rack: Any Advanced Computer Casing, except the outer ones
-            .addEnergyHatch(
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Energy
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Energy
                                                                                                            // Hatch:
                                                                                                            // Any
                                                                                                            // Computer
@@ -379,8 +378,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                                            // or
                                                                                                            // last
                                                                                                            // slice
-            .addMaintenanceHatch(
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Maintenance
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Maintenance
                                                                                                                 // Hatch:
                                                                                                                 // Any
                                                                                                                 // Computer

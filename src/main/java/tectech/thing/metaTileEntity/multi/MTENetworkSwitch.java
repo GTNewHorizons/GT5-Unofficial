@@ -46,8 +46,10 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
     // region structure
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.em.switch.hint.0"), // 1 - Data Input/Output Hatches or Advanced computer casing
-        translateToLocal("gt.blockmachines.multimachine.em.switch.hint.1"), // 2 - Data Output Hatches or Computer casing
+        translateToLocal("gt.blockmachines.multimachine.em.switch.hint.0"), // 1 - Data Input/Output Hatches or Advanced
+                                                                            // computer casing
+        translateToLocal("gt.blockmachines.multimachine.em.switch.hint.1"), // 2 - Data Output Hatches or Computer
+                                                                            // casing
     };
 
     private static final IStructureDefinition<MTENetworkSwitch> STRUCTURE_DEFINITION = IStructureDefinition
@@ -55,21 +57,24 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
         .addShape(
             "main",
             transpose(new String[][] { { "BBB", "BAB", "BBB" }, { "B~B", "AAA", "BAB" }, { "BBB", "BAB", "BBB" } }))
-        .addElement('A', buildHatchAdder(MTENetworkSwitch.class).atLeast(
-            Energy.or(HatchElement.EnergyMulti),
-            Maintenance,
-            HatchElement.InputData,
-            HatchElement.OutputData)
-            .casingIndex(BlockGTCasingsTT.textureOffset + 3)
-            .dot(1)
-            .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 3)))
-        .addElement('B', buildHatchAdder(MTENetworkSwitch.class).atLeast(
-            Energy.or(HatchElement.EnergyMulti),
-            Maintenance,
-            HatchElement.OutputData) // No Input Data
-            .casingIndex(BlockGTCasingsTT.textureOffset + 1)
-            .dot(2)
-            .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 1)))
+        .addElement(
+            'A',
+            buildHatchAdder(MTENetworkSwitch.class)
+                .atLeast(
+                    Energy.or(HatchElement.EnergyMulti),
+                    Maintenance,
+                    HatchElement.InputData,
+                    HatchElement.OutputData)
+                .casingIndex(BlockGTCasingsTT.textureOffset + 3)
+                .dot(1)
+                .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 3)))
+        .addElement(
+            'B',
+            buildHatchAdder(MTENetworkSwitch.class)
+                .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, HatchElement.OutputData) // No Input Data
+                .casingIndex(BlockGTCasingsTT.textureOffset + 1)
+                .dot(2)
+                .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 1)))
         .build();
     // endregion
 
@@ -219,10 +224,12 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
             .addOtherStructurePart(
                 translateToLocal("tt.keyword.Structure.DataInput"), // Data Input Hatch: Any Advanced Computer Casing
-                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
+                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"),
+                1)
             .addOtherStructurePart(
                 translateToLocal("tt.keyword.Structure.DataOutput"), // Data Output Hatch: Any Computer Casing
-                translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
+                2)
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Energy Hatch: Any
                                                                                            // Computer Casing
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Maintenance
