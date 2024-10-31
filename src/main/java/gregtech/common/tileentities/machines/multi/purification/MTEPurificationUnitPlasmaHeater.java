@@ -362,7 +362,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addCasingInfoExactlyColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
-                1091,
+                669,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -387,7 +387,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addCasingInfoExactlyColored(
                 "Superconducting Coil Block",
                 EnumChatFormatting.GRAY,
-                8,
+                9,
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front center")
