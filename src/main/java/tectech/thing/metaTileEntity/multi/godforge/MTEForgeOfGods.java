@@ -48,6 +48,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -167,6 +168,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private FormattingMode formattingMode = FormattingMode.NONE;
     private boolean isRenderActive;
     private boolean secretUpgrade;
+    private boolean isRendererDisabled;
     private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
@@ -408,7 +410,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             return false;
         }
 
-        if (internalBattery != 0 && !isRenderActive) {
+        if (internalBattery != 0 && !isRenderActive && !isRendererDisabled) {
             createRenderer();
         }
         // Check there is 1 input bus
@@ -539,7 +541,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             if (stellarFuelAmount >= neededStartupFuel) {
                                 stellarFuelAmount -= neededStartupFuel;
                                 increaseBattery(neededStartupFuel);
-                                createRenderer();
+                                if (!isRendererDisabled) createRenderer();
                             }
                         }
                     }
@@ -794,15 +796,15 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!ConfigHandler.debug.DEBUG_MODE) return;
-        if (isRenderActive) {
-            destroyRenderer();
-            isRenderActive = false;
+        if (isRendererDisabled) {
+            isRendererDisabled = false;
+            // let the renderer automatically rebuild itself as needed through normal logic
         } else {
-            ringAmount = 3;
-            createRenderer();
-            isRenderActive = true;
+            isRendererDisabled = true;
+            if (isRenderActive) destroyRenderer();
         }
+        aPlayer.addChatMessage(
+            new ChatComponentText("Animations are now " + (isRendererDisabled ? "disabled" : "enabled") + "."));
     }
 
     @Override
@@ -3886,6 +3888,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         NBT.setString("selectedStarColor", selectedStarColor);
         NBT.setInteger("ringAmount", ringAmount);
         NBT.setBoolean("isRenderActive", isRenderActive);
+        NBT.setBoolean("isRendererDisabled", isRendererDisabled);
 
         super.saveNBTData(NBT);
     }
@@ -3992,6 +3995,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (NBT.hasKey("selectedStarColor")) selectedStarColor = NBT.getString("selectedStarColor");
         if (NBT.hasKey("ringAmount")) ringAmount = NBT.getInteger("ringAmount");
         isRenderActive = NBT.getBoolean("isRenderActive");
+        isRendererDisabled = NBT.getBoolean("isRendererDisabled");
 
         starColors.rebuildFromNBT(NBT);
 
