@@ -255,11 +255,10 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
                 this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
                 this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
+            } else {
+                this.explodeMultiblock();
+                return false;
             }
-            // else {
-            // this.explodeMultiblock();
-            // return false;
-            // }
         }
         return true;
     }
