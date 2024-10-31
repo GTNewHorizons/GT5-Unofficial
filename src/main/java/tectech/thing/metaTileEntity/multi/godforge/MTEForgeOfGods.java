@@ -898,7 +898,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setPos(6, 8)
                     .setSize(74, 34))
-            .widget(createPowerSwitchButton())
             .widget(createBatteryButton(builder))
             .widget(createEjectionSwitch(builder))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
@@ -967,7 +966,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         if (!widget.isClient()) widget.getContext()
                             .openSyncedWindow(STAR_COSMETICS_WINDOW_ID);
                     })
-                    .setSize(16, 16)
                     .addTooltip(translateToLocal("fog.button.color.tooltip"))
                     .setBackground(() -> {
                         List<UITexture> button = new ArrayList<>();
@@ -975,7 +973,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         button.add(TecTechUITextures.OVERLAY_BUTTON_RAINBOW_SPIRAL);
                         return button.toArray(new IDrawable[0]);
                     })
-                    .setPos(152, 91)
+                    .setPos(174, 148)
+                    .setSize(16, 16)
                     .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
