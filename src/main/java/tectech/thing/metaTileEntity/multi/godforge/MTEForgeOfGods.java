@@ -137,6 +137,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final int DEFAULT_ROTATION_SPEED = 5;
     private static final int DEFAULT_STAR_SIZE = 20;
     private static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
+    private static final FormattingMode DEFAULT_FORMATTING_MODE = FormattingMode.NONE;
+    private static final BigInteger DEFAULT_TOTAL_POWER = BigInteger.ZERO;
 
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
@@ -161,11 +163,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private float invertedRecipeMilestonePercentage;
     private float invertedFuelMilestonePercentage;
     private float invertedStructureMilestonePercentage;
-    private BigInteger totalPowerConsumed = BigInteger.ZERO;
+    private BigInteger totalPowerConsumed = DEFAULT_TOTAL_POWER;
     private boolean batteryCharging;
     private boolean inversion;
     private boolean gravitonShardEjection;
-    private FormattingMode formattingMode = FormattingMode.NONE;
+    private FormattingMode formattingMode = DEFAULT_FORMATTING_MODE;
     private boolean isRenderActive;
     private boolean secretUpgrade;
     private boolean isRendererDisabled;
@@ -3899,8 +3901,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         if (force || batteryCharging) NBT.setBoolean("batteryCharging", true);
         if (force || gravitonShardsAvailable != 0) NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
         if (force || gravitonShardsSpent != 0) NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
-        if (force || !BigInteger.ZERO.equals(totalPowerConsumed))
-            NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
         if (force || totalRecipesProcessed != 0) NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
         if (force || totalFuelConsumed != 0) NBT.setLong("totalFuelConsumed", totalFuelConsumed);
         if (force || stellarFuelAmount != 0) NBT.setInteger("starFuelStored", stellarFuelAmount);
@@ -3913,6 +3913,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
         if (force || maxBatteryCharge != DEFAULT_MAX_BATTERY_CHARGE) {
             NBT.setInteger("batterySize", maxBatteryCharge);
+        }
+        if (force || !DEFAULT_TOTAL_POWER.equals(totalPowerConsumed)) {
+            NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
+        }
+        if (force || formattingMode != DEFAULT_FORMATTING_MODE) {
+            NBT.setInteger("formattingMode", formattingMode.ordinal());
         }
 
         // Upgrades
@@ -3946,7 +3952,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         batteryCharging = NBT.getBoolean("batteryCharging");
         gravitonShardsAvailable = NBT.getInteger("gravitonShardsAvailable");
         gravitonShardsSpent = NBT.getInteger("gravitonShardsSpent");
-        totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));
         totalRecipesProcessed = NBT.getLong("totalRecipesProcessed");
         totalFuelConsumed = NBT.getLong("totalFuelConsumed");
         stellarFuelAmount = NBT.getInteger("starFuelStored");
@@ -3959,6 +3964,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
         if (NBT.hasKey("batterySize")) {
             maxBatteryCharge = NBT.getInteger("batterySize");
+        }
+        if (NBT.hasKey("totalPowerConsumed")) {
+            totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));
+        }
+        if (NBT.hasKey("formattingMode")) {
+            int index = MathHelper.clamp_int(NBT.getInteger("formattingMode"), 0, FormattingMode.VALUES.length);
+            formattingMode = FormattingMode.VALUES[index];
         }
 
         if (NBT.hasKey("upgrades")) {
