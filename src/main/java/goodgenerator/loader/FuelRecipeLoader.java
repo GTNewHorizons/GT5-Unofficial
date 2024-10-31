@@ -193,7 +193,7 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
                 FluidRegistry.getFluidStack("molten.shirabon", 360),
-                MaterialsUEVplus.RawStarMatter.getFluid(72L))
+                MaterialsUEVplus.RawStarMatter.getFluid(60L))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(1250))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
