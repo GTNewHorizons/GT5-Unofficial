@@ -31,6 +31,7 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
     public static ArrayList<WorldgenGTOreSmallPieces> sList = new ArrayList<>();
 
     public Class[] mAllowedProviders;
+    public String[] blackListedProviders;
 
     public WorldgenGTOreSmallPieces(SmallOreBuilder ore) {
         super(ore.smallOreName, GregTechAPI.sWorldgenList, ore.enabledByDefault);
@@ -54,6 +55,7 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
 
         if (this.mOverworld) {
             allowedProviders.add(WorldProviderSurface.class);
+            blackListedProviders = new String[] {"twilightforest.world.WorldProviderTwilightForest"};
         }
 
         if (this.mEnd) {
