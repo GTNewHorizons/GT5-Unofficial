@@ -6,7 +6,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -327,6 +329,21 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
         System.arraycopy(super.getInfoData(), 0, infoData, 0, super.getInfoData().length);
         infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.Tier;
         return infoData;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+                                          float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes.");
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes.");
+            }
+        }
+
+        return true;
     }
 
     @Override
