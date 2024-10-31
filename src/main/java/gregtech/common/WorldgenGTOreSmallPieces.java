@@ -55,7 +55,10 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
 
         if (this.mOverworld) {
             allowedProviders.add(WorldProviderSurface.class);
-            blackListedProviders = new String[] {"twilightforest.world.WorldProviderTwilightForest"};
+            if (!this.twilightForest)
+            {
+                blackListedProviders = new String[] { "twilightforest.world.WorldProviderTwilightForest" };
+            }
         }
 
         if (this.mEnd) {
