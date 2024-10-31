@@ -516,6 +516,7 @@ GT5U.gui.text.crash=§4Machine turned off due to crash. Refer to the log for mor
 GT5U.gui.text.no_fuel=§7No valid fuel found
 GT5U.gui.text.no_turbine=§7No valid turbine found
 GT5U.gui.text.no_lubricant=§7No lubricant found
+GT5U.gui.text.cycle_idle=§6Waiting for cycle to start
 GT5U.gui.text.fuel_quality_too_high=§7Fuel quality too high to run without boost
 GT5U.gui.text.no_data_sticks=§7No Data Sticks found
 GT5U.gui.text.bio_upgrade_missing=§7Recipe needs Bio Upgrade to start
@@ -1463,9 +1464,9 @@ for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
 for.bees.species.dragonblood=Dragonblood
 
-for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Diddy & Noila
+for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Aditya & Noila
 
-for.bees.authority.machinist=Diddy & Noila
+for.bees.authority.machinist=Aditya & Noila
 
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension

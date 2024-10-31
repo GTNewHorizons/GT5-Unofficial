@@ -283,9 +283,9 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
-        for (int i = 0; i < mOutputFluids2.length && i < mOutputHatchesByLayer.size(); i++) {
-            final FluidStack fluidStack = mOutputFluids2[i];
+    protected void addFluidOutputs(FluidStack[] outputFluids) {
+        for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
+            final FluidStack fluidStack = outputFluids[i];
             if (fluidStack == null) continue;
             FluidStack tStack = fluidStack.copy();
             if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
