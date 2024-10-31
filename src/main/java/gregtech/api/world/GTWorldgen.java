@@ -97,7 +97,7 @@ public abstract class GTWorldgen {
         if (tAllowed == null) {
             boolean value = false;
             for (Class aAllowedDimensionType : aAllowedDimensionTypes) {
-                if (aAllowedDimensionType.isInstance(aWorld.provider)) {
+                if (aAllowedDimensionType.isInstance(aWorld.provider) && !(aWorld.provider.dimensionId == 7)) {
                     value = true;
                     break;
                 }
