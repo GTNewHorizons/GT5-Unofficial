@@ -15,7 +15,6 @@ import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -51,9 +50,7 @@ public class NeutronActivatorLoader {
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(64)
-            )
+            .fluidInputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(64))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkVDepleted.getFluidOrGas(64))
             .duration(8 * SECONDS)
             .eut(0)
@@ -62,9 +59,7 @@ public class NeutronActivatorLoader {
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(64)
-            )
+            .fluidInputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(64))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkVIDepleted.getFluidOrGas(64))
             .duration(12 * SECONDS)
             .eut(0)
