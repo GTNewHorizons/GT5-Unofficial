@@ -137,7 +137,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final int DEFAULT_ROTATION_SPEED = 5;
     private static final int DEFAULT_STAR_SIZE = 20;
     private static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
-    private static final FormattingMode DEFAULT_FORMATTING_MODE = FormattingMode.NONE;
+    private static final FormattingMode DEFAULT_FORMATTING_MODE = FormattingMode.COMMA;
     private static final BigInteger DEFAULT_TOTAL_POWER = BigInteger.ZERO;
 
     private static Textures.BlockIcons.CustomIcon ScreenON;
