@@ -156,14 +156,15 @@ public class FuelRecipeLoader {
         // Alternate higher tier recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 16),
                 GGMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 48))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("heavyradox", 250))
+                FluidRegistry.getFluidStack("heavyradox", 250),
+                MaterialsUEVplus.Mellion.getMolten(288L),
+                MaterialsUEVplus.Creon.getMolten(288L))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(750))
-            .duration(5 * SECONDS)
+            .duration(2 * SECONDS + 10 * TICKS)
             .eut(300_000_000)
             .metadata(NFR_COIL_TIER, 3)
             .noOptimize()
@@ -177,7 +178,7 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
                 FluidRegistry.getFluidStack("molten.shirabon", 360))
-            .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(500))
+            .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750))
             .duration(12 * SECONDS)
             .eut(320_000_000)
             .metadata(NFR_COIL_TIER, 3)
@@ -187,14 +188,14 @@ public class FuelRecipeLoader {
         // Alternate higher tier recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.WhiteDwarfMatter, 4),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getDust(64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tritanium, 48))
             .fluidInputs(
                 GGMaterial.naquadahBasedFuelMkV.getFluidOrGas(2000),
-                FluidRegistry.getFluidStack("molten.shirabon", 1440))
-            .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(750))
-            .duration(4 * SECONDS)
+                FluidRegistry.getFluidStack("molten.shirabon", 1440),
+                MaterialsUEVplus.RawStarMatter.getFluid(72L))
+            .fluidOutputs(GGMaterial.naquadahBasedFuelMkVI.getFluidOrGas(1250))
+            .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .metadata(NFR_COIL_TIER, 4)
             .noOptimize()
