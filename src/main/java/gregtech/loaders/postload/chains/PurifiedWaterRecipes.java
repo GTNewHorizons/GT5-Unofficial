@@ -272,8 +272,8 @@ public class PurifiedWaterRecipes {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Tritanium, 64),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.CosmicNeutronium, 64),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 16),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 8),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 8 },
                 ItemList.Field_Generator_UEV.get(1))
             .fluidInputs(
                 Materials.Neutronium.getMolten(16 * 144),

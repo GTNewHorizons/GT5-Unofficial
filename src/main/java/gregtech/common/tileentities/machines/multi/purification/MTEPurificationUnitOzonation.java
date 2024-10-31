@@ -219,7 +219,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
             .addCasingInfoExactlyColored(
                 "Reactive Gas Containment Casing",
                 EnumChatFormatting.GRAY,
-                27,
+                28,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
