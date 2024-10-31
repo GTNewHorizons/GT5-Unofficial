@@ -222,7 +222,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addCasingInfoExactlyColored(
                 "Iridium Frame Box",
                 EnumChatFormatting.GRAY,
-                21,
+                12,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
