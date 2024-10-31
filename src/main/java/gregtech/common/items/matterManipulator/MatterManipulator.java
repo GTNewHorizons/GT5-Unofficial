@@ -1,7 +1,6 @@
 package gregtech.common.items.matterManipulator;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.tileentities.machines.MTEMMUplinkMEHatch;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 
 /*
@@ -23,17 +22,5 @@ public class MatterManipulator {
             igte.getZCoord());
 
         Messages.UpdateUplinkState.sendToPlayersAround(l, uplink);
-    }
-
-    public static void sendHatchUpdate(MTEMMUplinkMEHatch hatch) {
-        IGregTechTileEntity igte = hatch.getBaseMetaTileEntity();
-
-        NBTState.Location l = new NBTState.Location(
-            igte.getWorld(),
-            igte.getXCoord(),
-            igte.getYCoord(),
-            igte.getZCoord());
-
-        Messages.UpdateMEHatchPatterns.sendToPlayersAround(l, hatch);
     }
 }

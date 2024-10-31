@@ -47,6 +47,8 @@ import appeng.tile.misc.TileSecurity;
 import appeng.tile.networking.TileWireless;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import gregtech.api.interfaces.metatileentity.IConnectable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.Lazy;
@@ -296,8 +298,8 @@ class NBTState {
                 switch (new Vector3i(b).sub(a)
                     .maxComponent()) {
                     case 0: {
-                        start = b.x > 0 ? ForgeDirection.EAST.flag : ForgeDirection.WEST.flag;
-                        end = b.x < 0 ? ForgeDirection.EAST.flag : ForgeDirection.WEST.flag;
+                        start = b.x > 0 ? ForgeDirection.WEST.flag : ForgeDirection.EAST.flag;
+                        end = b.x < 0 ? ForgeDirection.WEST.flag : ForgeDirection.EAST.flag;
                         break;
                     }
                     case 1: {
@@ -313,6 +315,17 @@ class NBTState {
                 }
 
                 for (Vector3i voxel : getLineVoxels(a.x, a.y, a.z, b.x, b.y, b.z)) {
+                    byte existingConnections = 0;
+
+                    if (world.getTileEntity(voxel.x, voxel.y, voxel.z) instanceof IGregTechTileEntity igte
+                        && igte.getMetaTileEntity() instanceof IConnectable connectable) {
+                        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+                            if (connectable.isConnectedAtSide(dir)) {
+                                existingConnections |= dir.flag;
+                            }
+                        }
+                    }
+
                     PendingBlock pendingBlock = new PendingBlock(
                         world.provider.dimensionId,
                         voxel.x,
@@ -321,7 +334,7 @@ class NBTState {
                         stack);
 
                     pendingBlock.tileData = new TileAnalysisResult();
-                    pendingBlock.tileData.mConnections = (byte) (start | end);
+                    pendingBlock.tileData.mConnections = (byte) (existingConnections | start | end);
 
                     out.add(pendingBlock);
                 }

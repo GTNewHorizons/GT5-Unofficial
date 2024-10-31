@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
@@ -20,7 +19,6 @@ import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -35,11 +33,9 @@ import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
-import gregtech.common.tileentities.machines.MTEMMUplinkMEHatch;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink.UplinkState;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
 enum Messages {
 
@@ -75,19 +71,19 @@ enum Messages {
         state.config.action = PendingAction.MOVING_COORDS;
         state.config.coordAOffset = new Vector3i();
         state.config.coordBOffset = null;
-        state.config.coordBOffset = null;
+        state.config.coordCOffset = null;
     }))),
     MoveB(server(simple((player, stack, manipulator, state) -> {
         state.config.action = PendingAction.MOVING_COORDS;
         state.config.coordAOffset = null;
         state.config.coordBOffset = new Vector3i();
-        state.config.coordBOffset = null;
+        state.config.coordCOffset = null;
     }))),
     MoveC(server(simple((player, stack, manipulator, state) -> {
         state.config.action = PendingAction.MOVING_COORDS;
         state.config.coordAOffset = null;
         state.config.coordBOffset = null;
-        state.config.coordBOffset = new Vector3i();
+        state.config.coordCOffset = new Vector3i();
     }))),
     MoveAll(server(simple((player, stack, manipulator, state) -> {
         state.config.action = PendingAction.MOVING_COORDS;
@@ -236,34 +232,6 @@ enum Messages {
             return packet;
         }
     })),
-    UpdateMEHatchPatterns(client(new ISimplePacketHandler<MEHatchPacket>() {
-
-        @Override
-        @SideOnly(Side.CLIENT)
-        public void handle(EntityPlayer player, MEHatchPacket packet) {
-            World theWorld = Minecraft.getMinecraft().theWorld;
-
-            if (theWorld.provider.dimensionId == packet.worldId) {
-                Location l = packet.getLocation();
-
-                if (theWorld.getTileEntity(l.x, l.y, l.z) instanceof IGregTechTileEntity igte
-                    && igte.getMetaTileEntity() instanceof MTEMMUplinkMEHatch hatch) {
-                    hatch.loadRequests(packet.patterns);
-                }
-            }
-        }
-
-        @Override
-        public MEHatchPacket getNewPacket(Messages message, @Nullable Object value) {
-            MEHatchPacket packet = new MEHatchPacket(message);
-
-            if (value != null) {
-                packet.save((MTEMMUplinkMEHatch) value);
-            }
-
-            return packet;
-        }
-    }))
 
     ;
 
@@ -446,67 +414,14 @@ enum Messages {
         }
     }
 
-    private static class MEHatchPacket extends SimplePacket {
-
-        public int worldId;
-        public long location;
-        public NBTTagCompound patterns;
-
-        public MEHatchPacket(Messages message) {
-            super(message);
-        }
-
-        public void save(MTEMMUplinkMEHatch hatch) {
-            IGregTechTileEntity igte = hatch.getBaseMetaTileEntity();
-            this.worldId = igte.getWorld().provider.dimensionId;
-            this.location = CoordinatePacker.pack(igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
-            this.patterns = new NBTTagCompound();
-            hatch.saveRequests(this.patterns);
-        }
-
-        public Location getLocation() {
-            return new Location(
-                worldId,
-                CoordinatePacker.unpackX(location),
-                CoordinatePacker.unpackY(location),
-                CoordinatePacker.unpackZ(location));
-        }
-
-        @Override
-        public void encode(ByteBuf buffer) {
-            buffer.writeInt(worldId);
-            buffer.writeLong(location);
-
-            ByteBuf temp = Unpooled.buffer();
-            ByteBufUtils.writeTag(temp, patterns);
-            buffer.writeInt(temp.readableBytes());
-            buffer.writeBytes(temp);
-        }
-
-        @Override
-        public GTPacket decode(ByteArrayDataInput buffer) {
-            MEHatchPacket message = new MEHatchPacket(super.message);
-            message.worldId = buffer.readInt();
-            message.location = buffer.readLong();
-
-            int size = buffer.readInt();
-            byte[] data = new byte[size];
-            buffer.readFully(data);
-            message.patterns = ByteBufUtils.readTag(Unpooled.copiedBuffer(data));
-
-            return message;
-        }
-    }
-
     private static <T extends SimplePacket> ISimplePacketHandler<T> server(ISimplePacketHandler<T> next) {
         return new ISimplePacketHandler<T>() {
 
             @Override
             public void handle(EntityPlayer player, T packet) {
                 if (player == null) {
-                    GTMod.GT_FML_LOGGER.error(
-                        "Player was null when trying to process " + packet.message.name()
-                            + " packet: it will be ignored");
+                    GTMod.GT_FML_LOGGER
+                        .error("Client received server packet, it will be ignored: " + packet.message.name());
                     return;
                 }
 
@@ -526,9 +441,8 @@ enum Messages {
             @Override
             public void handle(EntityPlayer player, T packet) {
                 if (player != null) {
-                    GTMod.GT_FML_LOGGER.error(
-                        "Player wasn't null when trying to process " + packet.message.name()
-                            + " packet: it will be ignored");
+                    GTMod.GT_FML_LOGGER
+                        .error("Server received client packet, it will be ignored: " + packet.message.name());
                     return;
                 }
 

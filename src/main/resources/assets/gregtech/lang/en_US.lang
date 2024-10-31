@@ -1959,3 +1959,10 @@ achievement.gt.blockmachines.moleculartransformer.controller.tier.single.desc=[A
 achievement.gt.blockmachines.gtpp.multimachine.replicator=Elemental Duplicator
 achievement.gt.blockmachines.gtpp.multimachine.replicator.desc=[AL] Pickup this item to see the recipe in NEI
 
+
+# Keybindings
+key.mm=Matter Manipulator
+key.mm-ctrl=Control
+key.mm-cut=Mark Cut
+key.mm-copy=Mark Copy
+key.mm-paste=Mark Paste

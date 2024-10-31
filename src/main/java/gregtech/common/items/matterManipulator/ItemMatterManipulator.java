@@ -8,6 +8,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,6 +46,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.libraries.com.google.common.collect.MapMaker;
 
@@ -60,6 +63,7 @@ import appeng.api.features.INetworkEncodable;
 import appeng.api.implementations.parts.IPartCable;
 import appeng.api.parts.IPartHost;
 import appeng.api.parts.PartItemStack;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -191,7 +195,7 @@ public class ItemMatterManipulator extends Item
 
     @Override
     public double getTransferLimit(ItemStack itemStack) {
-        return V[tier.voltageTier];
+        return V[tier.voltageTier] * 16;
     }
 
     @Override
@@ -207,10 +211,6 @@ public class ItemMatterManipulator extends Item
     @Override
     public final double charge(ItemStack stack, double toCharge, int voltageTier, boolean ignoreTransferLimit,
         boolean simulate) {
-        if (voltageTier > tier.voltageTier) {
-            return toCharge;
-        }
-
         NBTTagCompound tag = getOrCreateNbtData(stack);
 
         double maxTransfer = ignoreTransferLimit ? toCharge : Math.min(toCharge, V[tier.voltageTier]);
@@ -221,7 +221,7 @@ public class ItemMatterManipulator extends Item
 
         if (!simulate) tag.setDouble("charge", currentCharge + toConsume);
 
-        return toCharge - toConsume;
+        return toConsume;
     }
 
     @Override
@@ -462,7 +462,7 @@ public class ItemMatterManipulator extends Item
             EnumChatFormatting.AQUA
                 + String.format(
                     GTLanguageManager.addStringLocalization("Item_DESCRIPTION_Index_11", "%s / %s EU - Voltage: %s"),
-                    formatNumbers(state.charge),
+                    formatNumbers(MathHelper.floor_double_long(state.charge)),
                     formatNumbers(tier.maxCharge),
                     formatNumbers(V[tier.voltageTier]))
                 + EnumChatFormatting.GRAY);
@@ -1287,7 +1287,21 @@ public class ItemMatterManipulator extends Item
 
         private static final long ANALYSIS_INTERVAL_MS = 10_000;
 
-        private static final int MAX_PREVIEW_BLOCKS = 100_000;
+        private static final int MAX_PREVIEW_BLOCKS = 10_000;
+
+        public static final KeyBinding CONTROL = new KeyBinding("key.mm-ctrl", Keyboard.KEY_LCONTROL, "key.mm");
+        public static final KeyBinding CUT = new KeyBinding("key.mm-cut", Keyboard.KEY_X, "key.mm");
+        public static final KeyBinding COPY = new KeyBinding("key.mm-copy", Keyboard.KEY_C, "key.mm");
+        public static final KeyBinding PASTE = new KeyBinding("key.mm-paste", Keyboard.KEY_V, "key.mm");
+
+        private static boolean CUT_WAS_PRESSED = false, COPY_WAS_PRESSED = false, PASTE_WAS_PRESSED = false;
+
+        static {
+            ClientRegistry.registerKeyBinding(CONTROL);
+            ClientRegistry.registerKeyBinding(CUT);
+            ClientRegistry.registerKeyBinding(COPY);
+            ClientRegistry.registerKeyBinding(PASTE);
+        }
 
         public void renderSelection(RenderWorldLastEvent event) {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
@@ -1318,6 +1332,29 @@ public class ItemMatterManipulator extends Item
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
+
+                if (CONTROL.getKeyCode() == 0 || Keyboard.isKeyDown(CONTROL.getKeyCode())) {
+                    if (!CUT_WAS_PRESSED && Keyboard.isKeyDown(CUT.getKeyCode())) {
+                        if (state.config.placeMode != PlaceMode.MOVING) {
+                            Messages.SetPlaceMode.sendToServer(PlaceMode.MOVING);
+                        }
+                        Messages.MarkCut.sendToServer();
+                    } else if (!COPY_WAS_PRESSED && Keyboard.isKeyDown(COPY.getKeyCode())) {
+                        if (state.config.placeMode != PlaceMode.COPYING) {
+                            Messages.SetPlaceMode.sendToServer(PlaceMode.COPYING);
+                        }
+                        Messages.MarkCopy.sendToServer();
+                    } else if (!PASTE_WAS_PRESSED && Keyboard.isKeyDown(PASTE.getKeyCode())) {
+                        if (state.config.placeMode != PlaceMode.COPYING && state.config.placeMode != PlaceMode.MOVING) {
+                            Messages.SetPlaceMode.sendToServer(PlaceMode.COPYING);
+                        }
+                        Messages.MarkPaste.sendToServer();
+                    }
+                }
+
+                CUT_WAS_PRESSED = Keyboard.isKeyDown(CUT.getKeyCode());
+                COPY_WAS_PRESSED = Keyboard.isKeyDown(COPY.getKeyCode());
+                PASTE_WAS_PRESSED = Keyboard.isKeyDown(PASTE.getKeyCode());
             } else {
                 if (lastDrawer == this) {
                     lastAnalysisMS = 0;
@@ -1439,6 +1476,8 @@ public class ItemMatterManipulator extends Item
                     lastAnalysisMS = System.currentTimeMillis();
                     lastAnalyzedConfig = state.config;
                     analysisCache = state.getPendingBlocks(player.getEntityWorld());
+                    analysisCache.removeIf(b -> b == null || b.getBlock() == Blocks.air);
+                    analysisCache.sort(Comparator.comparingInt((PendingBlock b) -> b.renderOrder));
 
                     AboveHotbarHUD.renderTextAboveHotbar(
                         String.format("dX=%d dY=%d dZ=%d", max.x - min.x, max.y - min.y, max.z - min.z),

@@ -271,16 +271,18 @@ public abstract class AbstractBuildable extends MMInventory implements IBuildabl
         }
 
         protected static void resetConduitBundle(AbstractBuildable buildable, TileEntity te) {
-            try {
-                if (ICONDUITBUNDLE.isAssignableFrom(te.getClass())) {
-                    for (Object conduit : (Collection<Object>) GET_CONDUITS.invoke(te)) {
-                        buildable
-                            .givePlayerItems(((List<ItemStack>) GET_DROPS.invoke(conduit)).toArray(new ItemStack[0]));
-                        REMOVE_CONDUIT.invoke(te, conduit);
+            if (te != null) {
+                try {
+                    if (ICONDUITBUNDLE.isAssignableFrom(te.getClass())) {
+                        for (Object conduit : (Collection<Object>) GET_CONDUITS.invoke(te)) {
+                            buildable.givePlayerItems(
+                                ((List<ItemStack>) GET_DROPS.invoke(conduit)).toArray(new ItemStack[0]));
+                            REMOVE_CONDUIT.invoke(te, conduit);
+                        }
                     }
+                } catch (Throwable t) {
+                    GTMod.GT_FML_LOGGER.error("Error while resetting conduit bundle", t);
                 }
-            } catch (Throwable t) {
-                GTMod.GT_FML_LOGGER.error("Error while resetting conduit bundle", t);
             }
         }
     }

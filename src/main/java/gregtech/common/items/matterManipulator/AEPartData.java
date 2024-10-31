@@ -37,6 +37,7 @@ public class AEPartData {
 
     public PortableItemStack[] mAEUpgrades = null;
     public InventoryAnalysis mConfig = null;
+    public InventoryAnalysis mAEPatterns = null;
     public String mOreDict = null;
 
     public Boolean mP2POutput = null;
@@ -75,7 +76,6 @@ public class AEPartData {
 
         if (part instanceof ISegmentedInventory segmentedInventory) {
             IInventory upgrades = segmentedInventory.getInventoryByName("upgrades");
-
             if (upgrades != null) {
                 mAEUpgrades = GTUtility.streamInventory(upgrades)
                     .filter(x -> x != null)
@@ -84,9 +84,13 @@ public class AEPartData {
             }
 
             IInventory config = segmentedInventory.getInventoryByName("config");
-
             if (config != null) {
                 mConfig = InventoryAnalysis.fromInventory(config, false);
+            }
+
+            IInventory patterns = segmentedInventory.getInventoryByName("patterns");
+            if (patterns != null) {
+                mAEPatterns = InventoryAnalysis.fromInventory(patterns, false);
             }
         }
     }
@@ -170,9 +174,13 @@ public class AEPartData {
             }
 
             IInventory config = segmentedInventory.getInventoryByName("config");
-
             if (config != null) {
                 mConfig.apply(context, config, false, false);
+            }
+
+            IInventory patterns = segmentedInventory.getInventoryByName("patterns");
+            if (mAEPatterns != null && patterns != null) {
+                mAEPatterns.apply(context, patterns, true, false);
             }
         }
 

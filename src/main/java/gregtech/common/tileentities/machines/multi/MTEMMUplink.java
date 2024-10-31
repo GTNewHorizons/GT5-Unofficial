@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.AuthorPineapple;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -257,52 +257,51 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         public int maxHatches = 8;
         public int width, height, length;
 
-        public IStructureDefinition<MTEMMUplink> getStructureDefinition() {
-            String[][] structure = getStructure();
+        public BasicStructureWrapper() {
+            defText = getStructure();
+            defCasingCounts = new Char2IntArrayMap();
 
-            if (!Objects.equals(structure, defText)) {
-                defText = structure;
-                defCasingCounts = new Char2IntArrayMap();
+            width = 0;
+            height = 0;
+            length = defText.length;
 
-                width = 0;
-                height = 0;
-                length = defText.length;
+            int z = 0;
+            for (String[] a : defText) {
+                int y = 0;
+                height = Math.max(height, a.length);
+                for (String b : a) {
+                    width = Math.max(width, b.length());
+                    for (int x = 0; x < b.length(); x++) {
+                        char c = b.charAt(x);
+                        defCasingCounts.put(c, defCasingCounts.getOrDefault(c, 0) + 1);
 
-                int z = 0;
-                for (String[] a : defText) {
-                    int y = 0;
-                    height = Math.max(height, a.length);
-                    for (String b : a) {
-                        width = Math.max(width, b.length());
-                        for (int x = 0; x < b.length(); x++) {
-                            char c = b.charAt(x);
-                            defCasingCounts.put(c, defCasingCounts.getOrDefault(c, 0) + 1);
-
-                            if (c == '~') {
-                                offset = new Vector3i(x, y, z);
-                            }
+                        if (c == '~') {
+                            offset = new Vector3i(x, y, z);
                         }
-                        y++;
                     }
-                    z++;
+                    y++;
                 }
+                z++;
+            }
 
-                structureDefinition = StructureDefinition.<MTEMMUplink>builder()
-                    .addShape(STRUCTURE_PIECE_MAIN, defText)
-                    .addElement(
-                        'A',
-                        buildHatchAdder(MTEMMUplink.class)
+            structureDefinition = StructureDefinition.<MTEMMUplink>builder()
+                .addShape(STRUCTURE_PIECE_MAIN, defText)
+                .addElement(
+                    'A',
+                    lazy(
+                        () -> buildHatchAdder(MTEMMUplink.class)
                             .atLeast(InputHatch, Energy, Maintenance, new UplinkHatchAdder())
                             .casingIndex(getCasingIndex())
                             .dot(1)
-                            .buildAndChain(onElementPass(this::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
-                    .addElement('B', ofFrame(Materials.NaquadahAlloy))
-                    .addElement('C', ofFrame(Materials.Trinium))
-                    .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 8))
-                    .addElement('E', ofBlock(GregTechAPI.sBlockCasings8, 10))
-                    .build();
-            }
+                            .buildAndChain(onElementPass(this::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7)))))
+                .addElement('B', lazy(() -> ofFrame(Materials.NaquadahAlloy)))
+                .addElement('C', lazy(() -> ofFrame(Materials.Trinium)))
+                .addElement('D', lazy(() -> ofBlock(ModBlocks.blockCasingsMisc, 8)))
+                .addElement('E', lazy(() -> ofBlock(GregTechAPI.sBlockCasings8, 10)))
+                .build();
+        }
 
+        public IStructureDefinition<MTEMMUplink> getStructureDefinition() {
             return structureDefinition;
         }
 
@@ -471,12 +470,11 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
             .addInfo("Interdimensional and infinite range uplink for matter manipulators.")
             .addInfo("Allows manipulators to convert plans into AE patterns.")
             .addInfo("Connects directly to an ME system via a " + EnumChatFormatting.GOLD + ItemList.Hatch_MatterManipulatorUplink_ME.get(0).getDisplayName() + EnumChatFormatting.GRAY + ".")
-            .addSeparator()
+            .addInfo("")
             .addInfo("Consumes 1A ZPM while active.")
             .addInfo("Must be fed with plasma via an input hatch.")
             .addInfo("Transfers to/from the manipulator cost " + String.format("%,d", BASE_PLASMA_EU_COST) + " EU in plasma per item or per bucket.")
             .addInfo("Insert a compatible manipulator in the controller slot while the machine is running to bind it to the uplink.")
-            .addSeparator()
             .beginStructureBlock(structure.width, structure.height, structure.length, true)
             .addController("Front Center")
             .addCasingInfoRange("Advanced Iridium Plated Machine Casing", structure.defCasingCounts.get('A') - structure.maxHatches, structure.defCasingCounts.get('A'), false)
@@ -842,6 +840,8 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
     private UplinkState lastState;
 
+    private int stateCounter = 0;
+
     @Override
     @Nonnull
     public CheckRecipeResult checkProcessing() {
@@ -853,8 +853,11 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
         UplinkState state = getState();
 
-        if (state != lastState) {
+        stateCounter++;
+
+        if (state != lastState || stateCounter > 10) {
             lastState = state;
+            stateCounter = 0;
             MatterManipulator.sendUplinkStateUpdate(this);
         }
 
@@ -866,6 +869,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         super.stopMachine(reason);
 
         UPLINKS.remove(address);
+        mMaxProgresstime = 0;
+        mEUt = 0;
+        mEfficiency = 0;
     }
 
     @Override

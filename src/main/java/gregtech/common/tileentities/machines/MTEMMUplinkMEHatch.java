@@ -59,7 +59,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.matterManipulator.MatterManipulator;
 
 public class MTEMMUplinkMEHatch extends MTEHatch
     implements IGridProxyable, IPowerChannelState, ICraftingProvider, ICraftingRequester {
@@ -547,10 +546,6 @@ public class MTEMMUplinkMEHatch extends MTEHatch
                 .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
         } catch (final GridAccessException e) {
             // :P
-        }
-
-        if (getBaseMetaTileEntity().isServerSide()) {
-            MatterManipulator.sendHatchUpdate(this);
         }
     }
 

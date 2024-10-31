@@ -205,9 +205,8 @@ public class TileAnalysisResult {
 
             if (mte instanceof IDataCopyable copyable) {
                 try {
-                    // There's no reason for this EntityPlayer parameter besides sending chat messages.
-                    // If an IDataCopyable needs to send a message, it wouldn't work with a fake player anyways.
-                    // Since this is called from a worker thread, we can't just use the real player here.
+                    // There's no reason for this EntityPlayer parameter besides sending chat messages, so we just fail
+                    // if it actually needs the player.
                     NBTTagCompound data = copyable.getCopiedData(null);
 
                     if (data != null && !data.hasNoTags()) {
@@ -274,9 +273,12 @@ public class TileAnalysisResult {
             gte.setColorization(mGTColour);
 
             if (mte instanceof MTEBasicMachine basicMachine) {
-                if (mGTMainFacing != null) basicMachine.mMainFacing = mGTMainFacing;
-
-                mGTMainFacing = basicMachine.mMainFacing;
+                if (mGTMainFacing != null) {
+                    basicMachine.setMainFacing(mGTMainFacing);
+                    // stop MTEBasicMachine.doDisplayThings from overwriting the setFrontFacing call when the block is
+                    // new
+                    basicMachine.mHasBeenUpdated = true;
+                }
 
                 basicMachine.mItemTransfer = (mGTFlags & GT_BASIC_IO_PUSH_ITEMS) != 0;
                 basicMachine.mFluidTransfer = (mGTFlags & GT_BASIC_IO_PUSH_FLUIDS) != 0;
