@@ -88,8 +88,7 @@ public class WorldgenGTOreLayer extends GTWorldgen {
 
         if (this.mOverworld) {
             allowedProviders.add(WorldProviderSurface.class);
-            if (!this.twilightForest)
-            {
+            if (!this.twilightForest) {
                 blackListedProviders = new String[] { "twilightforest.world.WorldProviderTwilightForest" };
             }
         }

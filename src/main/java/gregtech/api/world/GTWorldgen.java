@@ -85,12 +85,13 @@ public abstract class GTWorldgen {
      *         Overworld, Twilight Forest and Deep Dark)
      */
     public boolean isGenerationAllowed(World aWorld, Class... aAllowedDimensionTypes) {
-        return isGenerationAllowed(aWorld,  null, aAllowedDimensionTypes);
+        return isGenerationAllowed(aWorld, null, aAllowedDimensionTypes);
     }
+
     /**
      *
      * @param aWorld                 The World Object
-     * @param blackListedProviders List of blacklisted Worldgeneration classes
+     * @param blackListedProviders   List of blacklisted Worldgeneration classes
      * @param aAllowedDimensionTypes The Types of allowed Worldgeneration
      * @return if generation for this world is allowed for MoronTech (tm) OreGen (ATM (2.0.3.1Dev) only End, Nether,
      *         Overworld, Twilight Forest and Deep Dark)
@@ -108,7 +109,9 @@ public abstract class GTWorldgen {
         if (tAllowed == null) {
             if (blackListedProviders != null) {
                 for (String dimClass : blackListedProviders) {
-                    if (dimClass.equals(aWorld.provider.getClass().getName())) {
+                    if (dimClass.equals(
+                        aWorld.provider.getClass()
+                            .getName())) {
                         return false;
                     }
                 }
