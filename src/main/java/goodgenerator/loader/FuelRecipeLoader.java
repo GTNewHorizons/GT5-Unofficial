@@ -132,7 +132,7 @@ public class FuelRecipeLoader {
                 new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 120),
                 new FluidStack(FluidRegistry.getFluid("molten.chromaticglass"), 6480))
             .fluidOutputs(GGMaterial.naquadahBasedFuelMkIV.getFluidOrGas(250))
-            .duration(10 * TICKS)
+            .duration(2 * TICKS)
             .eut(350_000_000)
             .metadata(NFR_COIL_TIER, 4)
             .noOptimize()
