@@ -16,7 +16,6 @@ package bartworks.common.tileentities.multis;
 import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static gregtech.api.enums.GTValues.VN;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,9 +28,9 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -40,58 +39,34 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 
 public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
-    private static float nulearHeatMod = 2f;
-    private static final int MACHINEMODE_STEAM = 0;
-    private static final int MACHINEMODE_COOLANT = 1;
-    private byte mTier;
     private byte mMode;
 
-    public MTEDeepEarthHeatingPump(int aID, int tier, String aName, String aNameRegional) {
+    public MTEDeepEarthHeatingPump(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        this.mTier = (byte) tier;
     }
 
-    public MTEDeepEarthHeatingPump(String aName, byte mTier) {
+    public MTEDeepEarthHeatingPump(String aName) {
         super(aName);
-        this.mTier = mTier;
-    }
-
-    @Override
-    @SuppressWarnings("rawtypes")
-    public void onConfigLoad() {
-        try {
-            Class c = TileEntityNuclearReactorElectric.class;
-            Field f = c.getDeclaredField("huOutputModifier");
-            f.setAccessible(true);
-            MTEDeepEarthHeatingPump.nulearHeatMod = f.getFloat(f);
-        } catch (SecurityException | IllegalArgumentException | ExceptionInInitializerError | NullPointerException
-            | IllegalAccessException | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        super.onConfigLoad();
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mTier", this.mTier);
         aNBT.setByte("mMode", this.mMode);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.mTier = aNBT.getByte("mTier");
         this.mMode = aNBT.getByte("mMode");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MTEDeepEarthHeatingPump(this.mName, this.mTier);
+        return new MTEDeepEarthHeatingPump(this.mName);
     }
 
     @Override
@@ -101,15 +76,14 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .get(0)
             .getDisplayName();
         tt.addMachineType("Geothermal Heat Pump")
-            .addInfo("Consumes " + GTValues.V[this.mTier + 2] + "EU/t")
+            .addInfo("Consumes " + TierEU.RECIPE_HV + "EU/t")
             .addInfo("Has 2 Modes, use the Screwdriver to change them:");
 
         tt.addInfo("Direct Steam and Coolant Heating")
             .addInfo(
-                "Direct Steam Mode: Consumes Distilled Water to produce " + (long) (this.mTier * 25600 * 20)
+                "Direct Steam Mode: Consumes Distilled Water to produce " + (long) (25600 * 20)
                     + "L/s of Superheated Steam")
-            .addInfo(
-                "Coolant Heating Mode: Converts " + (long) (this.mTier * 96 * 2 * 20) + "L/s Coolant to Hot Coolant")
+            .addInfo("Coolant Heating Mode: Converts " + (long) (192 * 20) + "L/s Coolant to Hot Coolant")
             .addInfo("Each maintenance issue lowers output efficiency by 10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant");
 
@@ -169,7 +143,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     protected int getMinTier() {
-        return 2 + this.mTier;
+        return 3;
     }
 
     @Override
@@ -234,7 +208,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             return true;
         }
         if (this.machineMode == 0) {
-            long steamProduced = this.mTier * 25600L * this.mEfficiency / 10000L;
+            long steamProduced = 25600L * this.mEfficiency / 10000L;
             long waterConsume = (steamProduced + 160) / 160;
 
             if (this.getWaterFromHatches(true) - waterConsume > 0) {
@@ -248,10 +222,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                 return false;
             }
         } else if (this.machineMode == 1) {
-            long coolantConverted = (long) (this.mTier * 96L
-                * (double) MTEDeepEarthHeatingPump.nulearHeatMod
-                * this.mEfficiency
-                / 10000L);
+            long coolantConverted = (long) (192L * this.mEfficiency / 10000L);
             if (this.getFluidFromHatches(FluidRegistry.getFluid("ic2coolant")) - coolantConverted > 0) {
                 this.consumeFluid(FluidRegistry.getFluid("ic2coolant"), coolantConverted);
                 this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
@@ -310,7 +281,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected void setElectricityStats() {
         try {
-            this.mEUt = this.isPickingPipes ? -60 : (-480);
+            this.mEUt = this.isPickingPipes ? -60 : -((int) TierEU.RECIPE_HV);
         } catch (ArithmeticException e) {
             e.printStackTrace();
             this.mEUt = Integer.MAX_VALUE - 7;
