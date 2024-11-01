@@ -20,6 +20,7 @@ import appeng.api.parts.PartItemStack;
 import appeng.api.util.IConfigurableObject;
 import appeng.helpers.ICustomNameObject;
 import appeng.helpers.IOreFilterable;
+import appeng.helpers.IPriorityHost;
 import appeng.me.GridAccessException;
 import appeng.me.cache.P2PCache;
 import appeng.parts.automation.UpgradeInventory;
@@ -40,8 +41,10 @@ public class AEPartData {
     public InventoryAnalysis mAEPatterns = null;
     public String mOreDict = null;
 
-    public Boolean mP2POutput = null;
-    public Long mP2PFreq = null;
+    public boolean mP2POutput = false;
+    public long mP2PFreq = 0;
+
+    public int priority = 0;
 
     private transient Optional<Class<? extends IPart>> mPartClass;
 
@@ -93,6 +96,10 @@ public class AEPartData {
                 mAEPatterns = InventoryAnalysis.fromInventory(patterns, false);
             }
         }
+
+        if (part instanceof IPriorityHost priorityHost) {
+            priority = priorityHost.getPriority();
+        }
     }
 
     public Class<? extends IPart> getPartClass() {
@@ -132,16 +139,14 @@ public class AEPartData {
         }
 
         if (part instanceof PartP2PTunnel<?>tunnel) {
-            long freq = mP2PFreq == null ? 0 : mP2PFreq;
-
             tunnel.output = mP2POutput;
 
             try {
                 final P2PCache p2p = tunnel.getProxy()
                     .getP2P();
-                p2p.updateFreq(tunnel, freq);
+                p2p.updateFreq(tunnel, mP2PFreq);
             } catch (final GridAccessException e) {
-                tunnel.setFrequency(freq);
+                tunnel.setFrequency(mP2PFreq);
             }
 
             tunnel.onTunnelConfigChange();
@@ -186,6 +191,10 @@ public class AEPartData {
 
         if (part instanceof IOreFilterable filterable) {
             filterable.setFilter(mOreDict == null ? "" : mOreDict);
+        }
+
+        if (part instanceof IPriorityHost priorityHost) {
+            priorityHost.setPriority(priority);
         }
 
         return true;
@@ -249,8 +258,8 @@ public class AEPartData {
         result = prime * result + Arrays.hashCode(mAEUpgrades);
         result = prime * result + ((mConfig == null) ? 0 : mConfig.hashCode());
         result = prime * result + ((mOreDict == null) ? 0 : mOreDict.hashCode());
-        result = prime * result + ((mP2POutput == null) ? 0 : mP2POutput.hashCode());
-        result = prime * result + ((mP2PFreq == null) ? 0 : mP2PFreq.hashCode());
+        result = prime * result + Boolean.hashCode(mP2POutput);
+        result = prime * result + Long.hashCode(mP2PFreq);
         result = prime * result + ((mPartClass == null) ? 0 : mPartClass.hashCode());
         return result;
     }
@@ -280,12 +289,8 @@ public class AEPartData {
         if (mOreDict == null) {
             if (other.mOreDict != null) return false;
         } else if (!mOreDict.equals(other.mOreDict)) return false;
-        if (mP2POutput == null) {
-            if (other.mP2POutput != null) return false;
-        } else if (!mP2POutput.equals(other.mP2POutput)) return false;
-        if (mP2PFreq == null) {
-            if (other.mP2PFreq != null) return false;
-        } else if (!mP2PFreq.equals(other.mP2PFreq)) return false;
+        if (mP2POutput != other.mP2POutput) return false;
+        if (mP2PFreq != other.mP2PFreq) return false;
         if (mPartClass == null) {
             if (other.mPartClass != null) return false;
         } else if (!mPartClass.equals(other.mPartClass)) return false;

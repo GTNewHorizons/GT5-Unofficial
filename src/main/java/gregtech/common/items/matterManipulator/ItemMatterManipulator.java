@@ -66,6 +66,7 @@ import appeng.api.parts.PartItemStack;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -1259,6 +1260,17 @@ public class ItemMatterManipulator extends Item
         renderer.renderSelection(event);
     }
 
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onKeyPressed(InputEvent.KeyInputEvent event) {
+        renderer.onKeyPressed();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void initKeybindings() {
+        MatterManipulatorRenderer.initKeybindings();
+    }
+
     @SideOnly(Side.CLIENT)
     private class MatterManipulatorRenderer {
 
@@ -1294,13 +1306,40 @@ public class ItemMatterManipulator extends Item
         public static final KeyBinding COPY = new KeyBinding("key.mm-copy", Keyboard.KEY_C, "key.mm");
         public static final KeyBinding PASTE = new KeyBinding("key.mm-paste", Keyboard.KEY_V, "key.mm");
 
-        private static boolean CUT_WAS_PRESSED = false, COPY_WAS_PRESSED = false, PASTE_WAS_PRESSED = false;
-
-        static {
+        public static void initKeybindings() {
             ClientRegistry.registerKeyBinding(CONTROL);
             ClientRegistry.registerKeyBinding(CUT);
             ClientRegistry.registerKeyBinding(COPY);
             ClientRegistry.registerKeyBinding(PASTE);
+        }
+
+        public void onKeyPressed() {
+            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            ItemStack held = player.getHeldItem();
+
+            if (held != null && held.getItem() == ItemMatterManipulator.this) {
+                NBTState state = getState(held);
+
+                // Need to use isKeyDown here because isPressed doesn't work with ctrl+... for some reason
+                if (CONTROL.getKeyCode() == 0 || Keyboard.isKeyDown(CONTROL.getKeyCode())) {
+                    if (Keyboard.isKeyDown(CUT.getKeyCode())) {
+                        if (state.config.placeMode != PlaceMode.MOVING) {
+                            Messages.SetPlaceMode.sendToServer(PlaceMode.MOVING);
+                        }
+                        Messages.MarkCut.sendToServer();
+                    } else if (Keyboard.isKeyDown(COPY.getKeyCode())) {
+                        if (state.config.placeMode != PlaceMode.COPYING) {
+                            Messages.SetPlaceMode.sendToServer(PlaceMode.COPYING);
+                        }
+                        Messages.MarkCopy.sendToServer();
+                    } else if (Keyboard.isKeyDown(PASTE.getKeyCode())) {
+                        if (state.config.placeMode != PlaceMode.COPYING && state.config.placeMode != PlaceMode.MOVING) {
+                            Messages.SetPlaceMode.sendToServer(PlaceMode.COPYING);
+                        }
+                        Messages.MarkPaste.sendToServer();
+                    }
+                }
+            }
         }
 
         public void renderSelection(RenderWorldLastEvent event) {
@@ -1332,29 +1371,6 @@ public class ItemMatterManipulator extends Item
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
-
-                if (CONTROL.getKeyCode() == 0 || Keyboard.isKeyDown(CONTROL.getKeyCode())) {
-                    if (!CUT_WAS_PRESSED && Keyboard.isKeyDown(CUT.getKeyCode())) {
-                        if (state.config.placeMode != PlaceMode.MOVING) {
-                            Messages.SetPlaceMode.sendToServer(PlaceMode.MOVING);
-                        }
-                        Messages.MarkCut.sendToServer();
-                    } else if (!COPY_WAS_PRESSED && Keyboard.isKeyDown(COPY.getKeyCode())) {
-                        if (state.config.placeMode != PlaceMode.COPYING) {
-                            Messages.SetPlaceMode.sendToServer(PlaceMode.COPYING);
-                        }
-                        Messages.MarkCopy.sendToServer();
-                    } else if (!PASTE_WAS_PRESSED && Keyboard.isKeyDown(PASTE.getKeyCode())) {
-                        if (state.config.placeMode != PlaceMode.COPYING && state.config.placeMode != PlaceMode.MOVING) {
-                            Messages.SetPlaceMode.sendToServer(PlaceMode.COPYING);
-                        }
-                        Messages.MarkPaste.sendToServer();
-                    }
-                }
-
-                CUT_WAS_PRESSED = Keyboard.isKeyDown(CUT.getKeyCode());
-                COPY_WAS_PRESSED = Keyboard.isKeyDown(COPY.getKeyCode());
-                PASTE_WAS_PRESSED = Keyboard.isKeyDown(PASTE.getKeyCode());
             } else {
                 if (lastDrawer == this) {
                     lastAnalysisMS = 0;

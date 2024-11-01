@@ -276,7 +276,7 @@ public class TileAnalysisResult {
                 if (mGTMainFacing != null) {
                     basicMachine.setMainFacing(mGTMainFacing);
                     // stop MTEBasicMachine.doDisplayThings from overwriting the setFrontFacing call when the block is
-                    // new
+                    // newly placed
                     basicMachine.mHasBeenUpdated = true;
                 }
 
@@ -304,8 +304,8 @@ public class TileAnalysisResult {
                 IAlignment alignment = provider.getAlignment();
 
                 if (mGTFacing != null && alignment != null) {
-                    alignment.setExtendedFacing(mGTFacing);
                     gte.setFrontFacing(mGTFacing.getDirection());
+                    alignment.setExtendedFacing(mGTFacing);
                 }
             } else {
                 if (mGTFront != null) {
