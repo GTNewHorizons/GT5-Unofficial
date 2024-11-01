@@ -1551,435 +1551,66 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .widget(createUpgradeConnectorLine(new Pos2d(233, 772), 78, 0, 0, 28, 29))
             .widget(createUpgradeConnectorLine(new Pos2d(191, 747), 75, 62.3f, 0, 29, 30));
 
+        // spotless:off
         scrollable
-            .widget(
-                createUpgradeBox(
-                    0,
-                    0,
-                    3,
-                    new int[] {},
-                    false,
-                    new int[] { 1 },
-                    false,
-                    true,
-                    0,
-                    new Pos2d(126, 56),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    1,
-                    0,
-                    1,
-                    new int[] { 0 },
-                    false,
-                    new int[] { 2, 3 },
-                    false,
-                    false,
-                    1,
-                    new Pos2d(126, 116),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    2,
-                    0,
-                    2,
-                    new int[] { 1 },
-                    false,
-                    new int[] { 4, 5 },
-                    false,
-                    false,
-                    1,
-                    new Pos2d(96, 176),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    3,
-                    0,
-                    2,
-                    new int[] { 1 },
-                    false,
-                    new int[] { 5, 6 },
-                    false,
-                    false,
-                    1,
-                    new Pos2d(156, 176),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    4,
-                    0,
-                    0,
-                    new int[] { 2 },
-                    false,
-                    new int[] { 8 },
-                    false,
-                    false,
-                    1,
-                    new Pos2d(66, 236),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    5,
-                    0,
-                    3,
-                    new int[] { 2, 3 },
-                    false,
-                    new int[] { 7 },
-                    false,
-                    true,
-                    1,
-                    new Pos2d(126, 236),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    6,
-                    0,
-                    1,
-                    new int[] { 3 },
-                    false,
-                    new int[] { 10 },
-                    false,
-                    false,
-                    1,
-                    new Pos2d(186, 236),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    7,
-                    0,
-                    3,
-                    new int[] { 5 },
-                    false,
-                    new int[] { 8, 9, 10 },
-                    false,
-                    true,
-                    2,
-                    new Pos2d(126, 296),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    8,
-                    4,
-                    0,
-                    new int[] { 4, 7 },
-                    true,
-                    new int[] { 11 },
-                    false,
-                    false,
-                    2,
-                    new Pos2d(56, 356),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    9,
-                    0,
-                    2,
-                    new int[] { 7 },
-                    false,
-                    new int[] {},
-                    false,
-                    false,
-                    2,
-                    new Pos2d(126, 356),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    10,
-                    4,
-                    1,
-                    new int[] { 6, 7 },
-                    true,
-                    new int[] { 11 },
-                    false,
-                    false,
-                    2,
-                    new Pos2d(196, 356),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    11,
-                    0,
-                    3,
-                    new int[] { 8, 10 },
-                    false,
-                    new int[] { 12, 13, 14 },
-                    false,
-                    true,
-                    2,
-                    new Pos2d(126, 416),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    12,
-                    1,
-                    2,
-                    new int[] { 11 },
-                    false,
-                    new int[] { 17 },
-                    true,
-                    false,
-                    3,
-                    new Pos2d(66, 476),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    13,
-                    2,
-                    1,
-                    new int[] { 11 },
-                    false,
-                    new int[] { 18 },
-                    true,
-                    false,
-                    3,
-                    new Pos2d(126, 476),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    14,
-                    3,
-                    0,
-                    new int[] { 11 },
-                    false,
-                    new int[] { 15, 19 },
-                    true,
-                    false,
-                    3,
-                    new Pos2d(186, 476),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    15,
-                    3,
-                    1,
-                    new int[] { 14 },
-                    false,
-                    new int[] {},
-                    false,
-                    false,
-                    4,
-                    new Pos2d(246, 496),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    16,
-                    1,
-                    1,
-                    new int[] { 17 },
-                    false,
-                    new int[] {},
-                    false,
-                    false,
-                    4,
-                    new Pos2d(6, 556),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    17,
-                    1,
-                    0,
-                    new int[] { 12 },
-                    false,
-                    new int[] { 16, 20 },
-                    false,
-                    false,
-                    3,
-                    new Pos2d(66, 536),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    18,
-                    2,
-                    1,
-                    new int[] { 13 },
-                    false,
-                    new int[] { 21 },
-                    false,
-                    false,
-                    3,
-                    new Pos2d(126, 536),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    19,
-                    3,
-                    0,
-                    new int[] { 14 },
-                    false,
-                    new int[] { 22 },
-                    false,
-                    false,
-                    3,
-                    new Pos2d(186, 536),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    20,
-                    1,
-                    0,
-                    new int[] { 17 },
-                    false,
-                    new int[] { 23 },
-                    false,
-                    false,
-                    3,
-                    new Pos2d(66, 596),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    21,
-                    2,
-                    1,
-                    new int[] { 18 },
-                    false,
-                    new int[] { 23 },
-                    false,
-                    false,
-                    3,
-                    new Pos2d(126, 596),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    22,
-                    3,
-                    1,
-                    new int[] { 19 },
-                    false,
-                    new int[] { 23 },
-                    false,
-                    false,
-                    3,
-                    new Pos2d(186, 596),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    23,
-                    0,
-                    0,
-                    new int[] { 20, 21, 22 },
-                    false,
-                    new int[] { 24 },
-                    false,
-                    false,
-                    4,
-                    new Pos2d(126, 656),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    24,
-                    0,
-                    1,
-                    new int[] { 23 },
-                    false,
-                    new int[] { 25 },
-                    false,
-                    false,
-                    5,
-                    new Pos2d(126, 718),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    25,
-                    0,
-                    1,
-                    new int[] { 24 },
-                    false,
-                    new int[] { 26 },
-                    false,
-                    false,
-                    6,
-                    new Pos2d(36, 758),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    26,
-                    0,
-                    3,
-                    new int[] { 25 },
-                    false,
-                    new int[] { 27 },
-                    false,
-                    true,
-                    7,
-                    new Pos2d(36, 848),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    27,
-                    0,
-                    2,
-                    new int[] { 26 },
-                    false,
-                    new int[] { 28 },
-                    false,
-                    false,
-                    8,
-                    new Pos2d(126, 888),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    28,
-                    0,
-                    0,
-                    new int[] { 27 },
-                    false,
-                    new int[] { 29 },
-                    false,
-                    false,
-                    9,
-                    new Pos2d(216, 848),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    29,
-                    0,
-                    3,
-                    new int[] { 28 },
-                    false,
-                    new int[] { 30 },
-                    false,
-                    true,
-                    10,
-                    new Pos2d(216, 758),
-                    scrollable))
-            .widget(
-                createUpgradeBox(
-                    30,
-                    0,
-                    3,
-                    new int[] { 29 },
-                    false,
-                    new int[] {},
-                    false,
-                    true,
-                    12,
-                    new Pos2d(126, 798),
-                    scrollable))
-            .widget(
-                new MultiChildWidget().addChild(
-                    new ButtonWidget().setOnClick(((clickData, widget) -> secretUpgrade = !secretUpgrade))
-                        .setSize(40, 15)
-                        .setBackground(() -> {
-                            if (secretUpgrade) {
-                                return new IDrawable[] { TecTechUITextures.BUTTON_SPACE_PRESSED_32x16 };
-                            }
-                            return new IDrawable[0];
-                        })
-                        .addTooltip(translateToLocal("fog.upgrade.tt.secret"))
-                        .setTooltipShowUpDelay(20))
-                    .addChild(
-                        new TextWidget(translateToLocal("fog.upgrade.tt.short.secret")).setScale(0.8f)
-                            .setDefaultColor(EnumChatFormatting.GOLD)
-                            .setTextAlignment(Alignment.Center)
-                            .setSize(34, 9)
-                            .setPos(3, 4)
-                            .setEnabled((widget -> secretUpgrade)))
-                    .addChild(
-                        new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE)
-                            .setEnabled(widget -> secretUpgrade)
-                            .setPos(40, 4)
-                            .setSize(20, 6))
-                    .setPos(new Pos2d(66, 56)))
+            .widget(createUpgradeBox(0, 0, 3, new int[] {}, false, new int[] { 1 }, false, true, 0, new Pos2d(126, 56), scrollable))
+            .widget(createUpgradeBox(1, 0, 1, new int[] { 0 }, false, new int[] { 2, 3 }, false, false, 1, new Pos2d(126, 116), scrollable))
+            .widget(createUpgradeBox(2, 0, 2, new int[] { 1 }, false, new int[] { 4, 5 }, false, false, 1, new Pos2d(96, 176), scrollable))
+            .widget(createUpgradeBox(3, 0, 2, new int[] { 1 }, false, new int[] { 5, 6 }, false, false, 1, new Pos2d(156, 176), scrollable))
+            .widget(createUpgradeBox(4, 0, 0, new int[] { 2 }, false, new int[] { 8 }, false, false, 1, new Pos2d(66, 236), scrollable))
+            .widget(createUpgradeBox(5, 0, 3, new int[] { 2, 3 }, false, new int[] { 7 }, false, true, 1, new Pos2d(126, 236), scrollable))
+            .widget(createUpgradeBox(6, 0, 1, new int[] { 3 }, false, new int[] { 10 }, false, false, 1, new Pos2d(186, 236), scrollable))
+            .widget(createUpgradeBox(7, 0, 3, new int[] { 5 }, false, new int[] { 8, 9, 10 }, false, true, 2, new Pos2d(126, 296), scrollable))
+            .widget(createUpgradeBox(8, 4, 0, new int[] { 4, 7 }, true, new int[] { 11 }, false, false, 2, new Pos2d(56, 356), scrollable))
+            .widget(createUpgradeBox(9, 0, 2, new int[] { 7 }, false, new int[] {}, false, false, 2, new Pos2d(126, 356), scrollable))
+            .widget(createUpgradeBox(10, 4, 1, new int[] { 6, 7 }, true, new int[] { 11 }, false, false, 2, new Pos2d(196, 356), scrollable))
+            .widget(createUpgradeBox(11, 0, 3, new int[] { 8, 10 }, false, new int[] { 12, 13, 14 }, false, true, 2, new Pos2d(126, 416), scrollable))
+            .widget(createUpgradeBox(12, 1, 2, new int[] { 11 }, false, new int[] { 17 }, true, false, 3, new Pos2d(66, 476), scrollable))
+            .widget(createUpgradeBox(13, 2, 1, new int[] { 11 }, false, new int[] { 18 }, true, false, 3, new Pos2d(126, 476), scrollable))
+            .widget(createUpgradeBox(14, 3, 0, new int[] { 11 }, false, new int[] { 15, 19 }, true, false, 3, new Pos2d(186, 476), scrollable))
+            .widget(createUpgradeBox(15, 3, 1, new int[] { 14 }, false, new int[] {}, false, false, 4, new Pos2d(246, 496), scrollable))
+            .widget(createUpgradeBox(16, 1, 1, new int[] { 17 }, false, new int[] {}, false, false, 4, new Pos2d(6, 556), scrollable))
+            .widget(createUpgradeBox(17, 1, 0, new int[] { 12 }, false, new int[] { 16, 20 }, false, false, 3, new Pos2d(66, 536), scrollable))
+            .widget(createUpgradeBox(18, 2, 1, new int[] { 13 }, false, new int[] { 21 }, false, false, 3, new Pos2d(126, 536), scrollable))
+            .widget(createUpgradeBox(19, 3, 0, new int[] { 14 }, false, new int[] { 22 }, false, false, 3, new Pos2d(186, 536), scrollable))
+            .widget(createUpgradeBox(20, 1, 0, new int[] { 17 }, false, new int[] { 23 }, false, false, 3, new Pos2d(66, 596), scrollable))
+            .widget(createUpgradeBox(21, 2, 1, new int[] { 18 }, false, new int[] { 23 }, false, false, 3, new Pos2d(126, 596), scrollable))
+            .widget(createUpgradeBox(22, 3, 1, new int[] { 19 }, false, new int[] { 23 }, false, false, 3, new Pos2d(186, 596), scrollable))
+            .widget(createUpgradeBox(23, 0, 0, new int[] { 20, 21, 22 }, false, new int[] { 24 }, false, false, 4, new Pos2d(126, 656), scrollable))
+            .widget(createUpgradeBox(24, 0, 1, new int[] { 23 }, false, new int[] { 25 }, false, false, 5, new Pos2d(126, 718), scrollable))
+            .widget(createUpgradeBox(25, 0, 1, new int[] { 24 }, false, new int[] { 26 }, false, false, 6, new Pos2d(36, 758), scrollable))
+            .widget(createUpgradeBox(26, 0, 3, new int[] { 25 }, false, new int[] { 27 }, false, true, 7, new Pos2d(36, 848), scrollable))
+            .widget(createUpgradeBox(27, 0, 2, new int[] { 26 }, false, new int[] { 28 }, false, false, 8, new Pos2d(126, 888), scrollable))
+            .widget(createUpgradeBox(28, 0, 0, new int[] { 27 }, false, new int[] { 29 }, false, false, 9, new Pos2d(216, 848), scrollable))
+            .widget(createUpgradeBox(29, 0, 3, new int[] { 28 }, false, new int[] { 30 }, false, true, 10, new Pos2d(216, 758), scrollable))
+            .widget(createUpgradeBox(30, 0, 3, new int[] { 29 }, false, new int[] {}, false, true, 12, new Pos2d(126, 798), scrollable));
+        // spotless:on
+
+        scrollable.widget(
+            new MultiChildWidget().addChild(
+                new ButtonWidget().setOnClick(((clickData, widget) -> secretUpgrade = !secretUpgrade))
+                    .setSize(40, 15)
+                    .setBackground(() -> {
+                        if (secretUpgrade) {
+                            return new IDrawable[] { TecTechUITextures.BUTTON_SPACE_PRESSED_32x16 };
+                        }
+                        return new IDrawable[0];
+                    })
+                    .addTooltip(translateToLocal("fog.upgrade.tt.secret"))
+                    .setTooltipShowUpDelay(20))
+                .addChild(
+                    new TextWidget(translateToLocal("fog.upgrade.tt.short.secret")).setScale(0.8f)
+                        .setDefaultColor(EnumChatFormatting.GOLD)
+                        .setTextAlignment(Alignment.Center)
+                        .setSize(34, 9)
+                        .setPos(3, 4)
+                        .setEnabled((widget -> secretUpgrade)))
+                .addChild(
+                    new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE)
+                        .setEnabled(widget -> secretUpgrade)
+                        .setPos(40, 4)
+                        .setSize(20, 6))
+                .setPos(new Pos2d(66, 56)))
             .widget(new TextWidget("").setPos(0, 945));
 
         builder.widget(
