@@ -993,35 +993,22 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     protected ButtonWidget createEjectionSwitch(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (upgrades[30]) {
-                gravitonShardEjection = !gravitonShardEjection;
-            }
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            gravitonShardEjection = !gravitonShardEjection;
         })
-            .setPlayClickSound(upgrades[30])
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (!upgrades[30]) {
-                    return ret.toArray(new IDrawable[0]);
-                }
-                if (gravitonShardEjection) {
-                    ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
-                    ret.add(TecTechUITextures.OVERLAY_EJECTION_ON);
-                } else {
-                    ret.add(TecTechUITextures.BUTTON_CELESTIAL_32x32);
-                    ret.add(TecTechUITextures.OVERLAY_EJECTION_LOCKED);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
+            .setBackground(
+                () -> new UITexture[] { TecTechUITextures.BUTTON_CELESTIAL_32x32,
+                    gravitonShardEjection ? TecTechUITextures.OVERLAY_EJECTION_ON
+                        : TecTechUITextures.OVERLAY_EJECTION_LOCKED })
+            .addTooltip(translateToLocal("fog.button.ejection.tooltip"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(() -> gravitonShardEjection, val -> gravitonShardEjection = val),
                 builder)
             .setPos(26, 91)
             .setSize(16, 16)
+            .setEnabled($ -> upgrades[30])
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> upgrades[30], val -> upgrades[30] = val), builder);
-        if (upgrades[30]) {
-            button.addTooltip(translateToLocal("fog.button.ejection.tooltip"));
-            button.setTooltipShowUpDelay(TOOLTIP_DELAY);
-        }
         return (ButtonWidget) button;
     }
 
