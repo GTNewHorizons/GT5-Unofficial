@@ -92,7 +92,6 @@ public class MTEExoticModule extends MTEBaseModule {
     private boolean recipeInProgress = false;
     private boolean recipeRegenerated = false;
     private boolean magmatterMode = false;
-    private boolean isCoremodPresent = NewHorizonsCoreMod.isModLoaded();
     private FluidStack[] randomizedFluidInput = new FluidStack[] {};
     private ItemStack[] randomizedItemInput = new ItemStack[] {};
     private GTRecipe plasmaRecipe = null;
@@ -556,7 +555,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 builder,
                 (widget, val) -> widget.notifyTooltipChange()));
 
-        if (isCoremodPresent) {
+        if (NewHorizonsCoreMod.isModLoaded()) {
             builder.widget(createPossibleInputsButton());
         }
 
