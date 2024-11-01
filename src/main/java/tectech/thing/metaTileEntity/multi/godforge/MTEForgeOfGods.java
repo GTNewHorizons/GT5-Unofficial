@@ -2680,8 +2680,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Syncers
         builder.widget(new FakeSyncWidget.StringSyncer(() -> selectedStarColor, val -> selectedStarColor = val));
-        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> rotationSpeed, val -> rotationSpeed = val));
-        builder.widget(new FakeSyncWidget.IntegerSyncer(() -> starSize, val -> starSize = val));
         builder.widget(new FakeSyncWidget.IntegerSyncer(() -> editingStarIndex, val -> editingStarIndex = val));
         builder.widget(starColors.getSyncer());
 
@@ -2751,50 +2749,73 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         builder.widget(newPreset);
 
-        // Miscellaneous options not related to color settings
-        builder
-            .widget(
-                new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.misc"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(120, 25)
-                    .setSize(80, 10))
-            .widget(
-                TextWidget.localised("fog.cosmetics.spin")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(120, 45)
-                    .setSize(60, 18))
-            .widget(
-                new NumericWidget().setSetter(val -> rotationSpeed = (int) val)
-                    .setGetter(() -> rotationSpeed)
-                    .setBounds(0, 100)
-                    .setDefaultValue(5)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(35, 18)
-                    .setPos(155, 45)
-                    .addTooltip(translateToLocal("fog.cosmetics.onlyintegers"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD))
-            .widget(
-                TextWidget.localised("fog.cosmetics.size")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(120, 65)
-                    .setSize(60, 18))
-            .widget(
-                new NumericWidget().setSetter(val -> starSize = (int) val)
-                    .setGetter(() -> starSize)
-                    .setBounds(1, 40)
-                    .setDefaultValue(20)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(35, 18)
-                    .setPos(155, 65)
-                    .addTooltip(translateToLocal("fog.cosmetics.onlyintegers"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+        // Misc Section
+
+        // Header
+        builder.widget(
+            new TextWidget(EnumChatFormatting.UNDERLINE + translateToLocal("fog.cosmetics.misc"))
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(120, 25)
+                .setSize(80, 10));
+
+        // Spin Textbox
+        builder.widget(
+            TextWidget.localised("fog.cosmetics.spin")
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(120, 45)
+                .setSize(60, 18));
+
+        NumericWidget rotationWidget = new NumericWidget();
+        rotationWidget.setGetter(() -> rotationSpeed)
+            .setSetter(val -> {
+                if (rotationSpeed != (int) val) {
+                    rotationSpeed = (int) val;
+                    if (!rotationWidget.isClient()) {
+                        updateRenderer();
+                    }
+                }
+            })
+            .setBounds(0, 100)
+            .setDefaultValue(5)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .setSize(35, 18)
+            .setPos(155, 45)
+            .addTooltip(translateToLocal("fog.cosmetics.onlyintegers"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+        builder.widget(rotationWidget);
+
+        // Size Textbox
+        builder.widget(
+            TextWidget.localised("fog.cosmetics.size")
+                .setDefaultColor(EnumChatFormatting.GOLD)
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(120, 65)
+                .setSize(60, 18));
+
+        NumericWidget spinWidget = new NumericWidget();
+        spinWidget.setGetter(() -> starSize)
+            .setSetter(val -> {
+                if (starSize != (int) val) {
+                    starSize = (int) val;
+                    if (!spinWidget.isClient()) {
+                        updateRenderer();
+                    }
+                }
+            })
+            .setBounds(1, 40)
+            .setDefaultValue(20)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .setSize(35, 18)
+            .setPos(155, 65)
+            .addTooltip(translateToLocal("fog.cosmetics.onlyintegers"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+        builder.widget(spinWidget);
 
         return builder.build();
     }
