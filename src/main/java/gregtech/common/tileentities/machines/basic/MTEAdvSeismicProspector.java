@@ -1,21 +1,5 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_ROCK_BREAKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ROCK_BREAKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_ROCK_BREAKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_GLOW;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
@@ -36,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -67,51 +52,51 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
             1, // input slot count
             1, // output slot count
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_SIDE_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_SIDE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_SIDE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_FRONT_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_TOP_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_TOP")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_TOP_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
+                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW)
+                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/seismic/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
         radius = aRadius;
