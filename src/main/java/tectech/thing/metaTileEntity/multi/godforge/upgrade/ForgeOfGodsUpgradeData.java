@@ -1,6 +1,7 @@
 package tectech.thing.metaTileEntity.multi.godforge.upgrade;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Size;
 
 import tectech.thing.gui.TecTechUITextures;
 
@@ -64,13 +65,19 @@ enum BGWindowSize {
 
     ;
 
-    private final int width;
-    private final int height;
+    private final Size size;
     private final int loreY;
 
     BGWindowSize(int width, int height, int loreY) {
-        this.width = width;
-        this.height = height;
+        this.size = new Size(width, height);
         this.loreY = loreY;
+    }
+
+    public Size getWindowSize() {
+        return size;
+    }
+
+    public int getLoreY() {
+        return loreY;
     }
 }

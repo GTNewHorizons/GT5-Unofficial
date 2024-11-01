@@ -5,19 +5,23 @@ import static tectech.thing.metaTileEntity.multi.godforge.upgrade.BGIcon.*;
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.BGWindowSize.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Set;
 import java.util.function.UnaryOperator;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
+import com.google.common.collect.ImmutableSet;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.math.Size;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import it.unimi.dsi.fastutil.objects.ObjectLists;
 
-// todo extra cost items
 public enum ForgeOfGodsUpgrade {
 
     START,
@@ -31,7 +35,7 @@ public enum ForgeOfGodsUpgrade {
     REC,
     GEM,
     CTCDD,
-    QGIPU,
+    QGPIU,
     SEFCP,
     TCT,
     GGEBE,
@@ -57,6 +61,8 @@ public enum ForgeOfGodsUpgrade {
     ;
 
     public static final ForgeOfGodsUpgrade[] VALUES = values();
+
+    static final Set<ForgeOfGodsUpgrade> SPLIT_UPGRADES;
 
     static {
         // Build upgrade data. Done here due to potential forward references
@@ -130,26 +136,26 @@ public enum ForgeOfGodsUpgrade {
             .background(RED, CONVERSION)
             .treePos(196, 356));
 
-        QGIPU.build(b -> b
+        QGPIU.build(b -> b
             .prereqs(REC, CTCDD)
             .cost(2)
             .background(BLUE, CATALYST)
             .treePos(126, 416));
 
         SEFCP.build(b -> b
-            .prereqs(QGIPU)
+            .prereqs(QGPIU)
             .cost(3)
             .background(PURPLE, CATALYST)
             .treePos(66, 476));
 
         TCT.build(b -> b
-            .prereqs(QGIPU)
+            .prereqs(QGPIU)
             .cost(3)
             .background(ORANGE, CONVERSION)
             .treePos(126, 476));
 
         GGEBE.build(b -> b
-            .prereqs(QGIPU)
+            .prereqs(QGPIU)
             .cost(3)
             .background(GREEN, CHARGE)
             .treePos(186, 476));
@@ -253,6 +259,9 @@ public enum ForgeOfGodsUpgrade {
 
         // spotless:on
 
+        // Build split upgrade set
+        SPLIT_UPGRADES = ImmutableSet.of(SEFCP, TCT, GGEBE);
+
         // Build inverse dependents mapping
         // todo make sure this is right
         EnumMap<ForgeOfGodsUpgrade, List<ForgeOfGodsUpgrade>> dependencies = new EnumMap<>(ForgeOfGodsUpgrade.class);
@@ -265,20 +274,8 @@ public enum ForgeOfGodsUpgrade {
         for (var entry : dependencies.entrySet()) {
             ForgeOfGodsUpgrade upgrade = entry.getKey();
             List<ForgeOfGodsUpgrade> deps = entry.getValue();
-            if (deps == null) {
-                upgrade.dependents = new ForgeOfGodsUpgrade[0];
-            } else {
+            if (deps != null) {
                 upgrade.dependents = deps.toArray(new ForgeOfGodsUpgrade[0]);
-            }
-        }
-
-        // scan for start of split upgrades
-        // todo make sure this is right
-        for (ForgeOfGodsUpgrade upgrade : VALUES) {
-            if (upgrade.dependents.length > 1) {
-                for (ForgeOfGodsUpgrade u : upgrade.dependents) {
-                    u.startOfSplit = true;
-                }
             }
         }
     }
@@ -289,7 +286,7 @@ public enum ForgeOfGodsUpgrade {
 
     // Cost
     private int shardCost;
-    private List<ItemStack> extraCost;
+    private final List<ItemStack> extraCost = new ArrayList<>();
 
     // UI
     private BGColor color;
@@ -298,8 +295,7 @@ public enum ForgeOfGodsUpgrade {
     private Pos2d treePos;
 
     // Pre-generated data
-    private ForgeOfGodsUpgrade[] dependents;
-    private boolean startOfSplit;
+    private ForgeOfGodsUpgrade[] dependents = new ForgeOfGodsUpgrade[0];
     private final String name;
     private final String nameShort;
     private final String bodyText;
@@ -319,11 +315,82 @@ public enum ForgeOfGodsUpgrade {
             : new ForgeOfGodsUpgrade[0];
         this.requireAllPrerequisites = b.requireAllPrerequisites;
         this.shardCost = b.shardCost;
-        this.extraCost = b.extraCost != null ? ObjectLists.unmodifiable(b.extraCost) : ObjectLists.emptyList();
         this.color = b.color;
         this.icon = b.icon;
         this.windowSize = b.windowSize;
         this.treePos = b.treePos;
+    }
+
+    public void addExtraCost(ItemStack... cost) {
+        extraCost.addAll(Arrays.asList(cost));
+    }
+
+    public ForgeOfGodsUpgrade[] getPrerequisites() {
+        return prerequisites;
+    }
+
+    public boolean requiresAllPrerequisites() {
+        return requireAllPrerequisites;
+    }
+
+    public ForgeOfGodsUpgrade[] getDependents() {
+        return dependents;
+    }
+
+    public int getShardCost() {
+        return shardCost;
+    }
+
+    public boolean hasExtraCost() {
+        return !extraCost.isEmpty();
+    }
+
+    public ItemStack[] getExtraCost() {
+        return extraCost.toArray(new ItemStack[0]);
+    }
+
+    public UITexture getBackground() {
+        return color.getBackground();
+    }
+
+    public UITexture getOverlay() {
+        return color.getOverlay();
+    }
+
+    public UITexture getSymbol() {
+        return icon.getSymbol();
+    }
+
+    public float getSymbolWidthRatio() {
+        return icon.getWidthRatio();
+    }
+
+    public Size getWindowSize() {
+        return windowSize.getWindowSize();
+    }
+
+    public int getLoreYPos() {
+        return windowSize.getLoreY();
+    }
+
+    public Pos2d getTreePos() {
+        return treePos;
+    }
+
+    public String getNameText() {
+        return StatCollector.translateToLocal(name);
+    }
+
+    public String getShortNameText() {
+        return StatCollector.translateToLocal(nameShort);
+    }
+
+    public String getBodyText() {
+        return StatCollector.translateToLocal(bodyText);
+    }
+
+    public String getLoreText() {
+        return StatCollector.translateToLocal(loreText);
     }
 
     public static class Builder {
@@ -334,7 +401,6 @@ public enum ForgeOfGodsUpgrade {
 
         // Cost
         private int shardCost;
-        private ObjectList<ItemStack> extraCost;
 
         // UI
         private BGColor color = BLUE;
@@ -358,14 +424,8 @@ public enum ForgeOfGodsUpgrade {
         }
 
         // Cost
-        public Builder cost(int shards, ItemStack... extraCost) {
+        public Builder cost(int shards) {
             this.shardCost = shards;
-            if (extraCost != null) {
-                if (this.extraCost != null) {
-                    throw new IllegalArgumentException("Cannot repeat calls to ForgeOfGodsUpgrade$Builder#cost");
-                }
-                this.extraCost = new ObjectArrayList<>(extraCost);
-            }
             return this;
         }
 

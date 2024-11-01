@@ -11,7 +11,6 @@ import static java.lang.Math.floor;
 import static java.lang.Math.log;
 import static java.lang.Math.max;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static tectech.loader.recipe.Godforge.godforgeUpgradeMats;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 import static tectech.thing.casing.TTCasingsContainer.forgeOfGodsRenderBlock;
 import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.allowModuleConnection;
@@ -25,6 +24,7 @@ import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculate
 import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculateStartupFuelConsumption;
 import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.queryMilestoneStats;
 import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.setMiscModuleParameters;
+import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.*;
 import static tectech.util.TTUtility.toExponentForm;
 
 import java.awt.Desktop;
@@ -46,7 +46,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -56,7 +55,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.math.LongMath;
-import com.google.common.primitives.Booleans;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -127,6 +125,8 @@ import tectech.thing.metaTileEntity.multi.godforge.ForgeOfGodsUI.StarColorRGBM;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
+import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
+import tectech.thing.metaTileEntity.multi.godforge.upgrade.UpgradeStorage;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
@@ -175,6 +175,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     public ArrayList<MTEBaseModule> moduleHatches = new ArrayList<>();
     protected ItemStackHandler inputSlotHandler = new ItemStackHandler(16);
 
+    private final UpgradeStorage upgrades = new UpgradeStorage();
+    private ForgeOfGodsUpgrade currentUpgradeWindow;
+
     // Star cosmetics fields
     // actual star cosmetics
     private final StarColorStorage starColors = new StarColorStorage();
@@ -202,8 +205,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final int STAR_CUSTOM_COLOR_WINDOW_ID = 19;
     private static final int STAR_CUSTOM_COLOR_IMPORT_WINDOW_ID = 20;
     private static final int TEXTURE_INDEX = 960;
-    private static final int[] FIRST_SPLIT_UPGRADES = new int[] { 12, 13, 14 };
-    private static final Integer[] UPGRADE_MATERIAL_ID_CONVERSION = { 0, 5, 7, 11, 26, 29, 30 };
     private static final long POWER_MILESTONE_CONSTANT = LongMath.pow(10, 15);
     private static final long RECIPE_MILESTONE_CONSTANT = LongMath.pow(10, 7);
     private static final long FUEL_MILESTONE_CONSTANT = 10_000;
@@ -446,7 +447,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             return false;
         }
 
-        if (isUpgradeActive(26)) {
+        if (isUpgradeActive(CD)) {
             if (checkPiece(STRUCTURE_PIECE_SECOND_RING, 55, 11, -67)) {
                 ringAmount = 2;
                 destroySecondRing();
@@ -466,7 +467,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
         }
 
-        if (isUpgradeActive(29)) {
+        if (isUpgradeActive(EE)) {
             if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
                 ringAmount = 3;
                 destroyThirdRing();
@@ -499,21 +500,19 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 startRecipeProcessing();
 
                 int maxModuleCount = 8;
-                if (upgrades[26]) {
+                if (isUpgradeActive(CD)) {
                     maxModuleCount += 4;
                 }
-                if (upgrades[29]) {
+                if (isUpgradeActive(EE)) {
                     maxModuleCount += 4;
                 }
-
-                boolean isFinalUpgradeUnlocked = upgrades[30];
 
                 if (!mInputBusses.isEmpty()) {
-                    if (internalBattery == 0 || isFinalUpgradeUnlocked) {
+                    if (internalBattery == 0 || isUpgradeActive(END)) {
                         MTEHatchInputBus inputBus = mInputBusses.get(0);
                         ItemStack[] inputBusInventory = inputBus.getRealInventory();
                         ItemStack itemToAbsorb = STELLAR_FUEL;
-                        if (isFinalUpgradeUnlocked && internalBattery != 0) {
+                        if (isUpgradeActive(END) && internalBattery != 0) {
                             itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1);
                         }
                         if (inputBusInventory != null) {
@@ -559,7 +558,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (!ConfigHandler.debug.DEBUG_MODE) {
                     determineGravitonShardAmount();
                 }
-                if (upgrades[30] && gravitonShardEjection) {
+                if (isUpgradeActive(END) && gravitonShardEjection) {
                     ejectGravitonShards();
                 }
 
@@ -574,7 +573,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                             calculateEnergyDiscountForModules(module, this);
                             setMiscModuleParameters(module, this);
                             queryMilestoneStats(module, this);
-                            if (!upgrades[28]) {
+                            if (!isUpgradeActive(TBF)) {
                                 calculateProcessingVoltageForModules(module, this);
                             }
                         } else {
@@ -1002,8 +1001,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 builder)
             .setPos(26, 91)
             .setSize(16, 16)
-            .setEnabled($ -> upgrades[30])
-            .attachSyncer(new FakeSyncWidget.BooleanSyncer(() -> upgrades[30], val -> upgrades[30] = val), builder);
+            .setEnabled($ -> isUpgradeActive(END))
+            .attachSyncer(upgrades.getSingleSyncer(END), builder);
         return (ButtonWidget) button;
     }
 
@@ -1012,7 +1011,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
             if (clickData.mouseButton == 0) {
                 batteryCharging = !batteryCharging;
-            } else if (clickData.mouseButton == 1 && !widget.isClient() && upgrades[8]) {
+            } else if (clickData.mouseButton == 1 && !widget.isClient() && isUpgradeActive(REC)) {
                 widget.getContext()
                     .openSyncedWindow(BATTERY_CONFIG_WINDOW_ID);
             }
@@ -1101,12 +1100,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setSize(70, 18)
                     .setPos(4, 35)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    // todo try to reduce
                     .attachSyncer(
-                        new FakeSyncWidget.ListSyncer<>(
-                            () -> Booleans.asList(upgrades),
-                            val -> upgrades = Booleans.toArray(val),
-                            PacketBuffer::writeBoolean,
-                            PacketBuffer::readBoolean),
+                        upgrades.getFullSyncer(),
                         builder,
                         (widget, val) -> ((NumericWidget) widget).setMaxValue(calculateMaxFuelFactor(this))))
             .widget(
@@ -1478,96 +1474,51 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setTooltipShowUpDelay(TOOLTIP_DELAY);
     }
 
-    private int currentUpgradeID = 0;
-    private int currentColorCode = 0;
-    private int currentMilestoneBG = 0;
-    private int gravitonShardCost = 0;
-    private final int[][] prereqUpgrades = new int[31][];
-    private int[] followupUpgrades = new int[] {};
-    private boolean isUpradeSplitStart = false;
-    private boolean doesCurrentUpgradeRequireExtraMats = false;
-    private final boolean[] allPrereqRequired = new boolean[31];
-    private boolean[] upgrades = new boolean[31];
-    private boolean[] materialPaidUpgrades = new boolean[7];
-
     protected ModularWindow createUpgradeTreeWindow(final EntityPlayer player) {
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        final int PARENT_WIDTH = 300;
-        final int PARENT_HEIGHT = 300;
-        ModularWindow.Builder builder = ModularWindow.builder(PARENT_WIDTH, PARENT_HEIGHT);
+        ModularWindow.Builder builder = ModularWindow.builder(300, 300);
+        Scrollable scrollable = new Scrollable().setVerticalScroll();
 
         // spotless:off
-        scrollable
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 71),  45,  0,      0,  0,  1))
-            .widget(createUpgradeConnectorLine(new Pos2d(124, 124), 60,  27,     0,  1,  2))
-            .widget(createUpgradeConnectorLine(new Pos2d(162, 124), 60,  333,    0,  1,  3))
-            .widget(createUpgradeConnectorLine(new Pos2d(94, 184),  60,  27,     0,  2,  4))
-            .widget(createUpgradeConnectorLine(new Pos2d(130, 184), 60,  336,    0,  2,  5))
-            .widget(createUpgradeConnectorLine(new Pos2d(156, 184), 60,  24,     0,  3,  5))
-            .widget(createUpgradeConnectorLine(new Pos2d(192, 184), 60,  333,    0,  3,  6))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 251), 45,  0,      0,  5,  7))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 311), 45,  0,      0,  7,  9))
-            .widget(createUpgradeConnectorLine(new Pos2d(78, 250),  110, 5,      4,  4,  8))
-            .widget(createUpgradeConnectorLine(new Pos2d(110, 290), 80,  40,     4,  7,  8))
-            .widget(createUpgradeConnectorLine(new Pos2d(208, 250), 110, 355,    4,  6,  10))
-            .widget(createUpgradeConnectorLine(new Pos2d(176, 290), 80,  320,    4,  7,  10))
-            .widget(createUpgradeConnectorLine(new Pos2d(100, 355), 80,  313,    0,  8,  11))
-            .widget(createUpgradeConnectorLine(new Pos2d(186, 355), 80,  47,     0,  10, 11))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 430), 48,  0,      2,  11, 13))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 490), 48,  0,      2,  13, 18))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 550), 48,  0,      2,  18, 21))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 610), 48,  0,      2,  21, 23))
-            .widget(createUpgradeConnectorLine(new Pos2d(110, 410), 80,  40,     1,  11, 12))
-            .widget(createUpgradeConnectorLine(new Pos2d(83, 490),  48,  0,      1,  12, 17))
-            .widget(createUpgradeConnectorLine(new Pos2d(83, 550),  48,  0,      1,  17, 20))
-            .widget(createUpgradeConnectorLine(new Pos2d(101, 590), 80,  320,    1,  20, 23))
-            .widget(createUpgradeConnectorLine(new Pos2d(53, 536),  35,  45,     1,  17, 16))
-            .widget(createUpgradeConnectorLine(new Pos2d(176, 410), 80,  320,    3,  11, 14))
-            .widget(createUpgradeConnectorLine(new Pos2d(203, 490), 48,  0,      3,  14, 19))
-            .widget(createUpgradeConnectorLine(new Pos2d(203, 550), 48,  0,      3,  19, 22))
-            .widget(createUpgradeConnectorLine(new Pos2d(185, 590), 80,  40,     3,  22, 23))
-            .widget(createUpgradeConnectorLine(new Pos2d(233, 476), 35,  315,    3,  14, 15))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 670), 48,  0,      0,  23, 24))
-            .widget(createUpgradeConnectorLine(new Pos2d(101, 707), 75,  62.3f,  0,  24, 25))
-            .widget(createUpgradeConnectorLine(new Pos2d(53, 772),  78,  0,      0,  25, 26))
-            .widget(createUpgradeConnectorLine(new Pos2d(95, 837),  75,  297.7f, 0,  26, 27))
-            .widget(createUpgradeConnectorLine(new Pos2d(191, 837), 75,  62.3f,  0,  27, 28))
-            .widget(createUpgradeConnectorLine(new Pos2d(233, 772), 78,  0,      0,  28, 29))
-            .widget(createUpgradeConnectorLine(new Pos2d(191, 747), 75,  62.3f,  0,  29, 30));
+        scrollable.widget(createUpgradeConnectorLine(new Pos2d(143, 71), 45, 0, 0, START, IGCC))
+            .widget(createUpgradeConnectorLine(new Pos2d(124, 124), 60, 27, 0, IGCC, STEM))
+            .widget(createUpgradeConnectorLine(new Pos2d(162, 124), 60, 333, 0, IGCC, CFCE))
+            .widget(createUpgradeConnectorLine(new Pos2d(94, 184), 60, 27, 0, STEM, GISS))
+            .widget(createUpgradeConnectorLine(new Pos2d(130, 184), 60, 336, 0, STEM, FDIM))
+            .widget(createUpgradeConnectorLine(new Pos2d(156, 184), 60, 24, 0, CFCE, FDIM))
+            .widget(createUpgradeConnectorLine(new Pos2d(192, 184), 60, 333, 0, CFCE, SA))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 251), 45, 0, 0, FDIM, GPCI))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 311), 45, 0, 0, GPCI, GEM))
+            .widget(createUpgradeConnectorLine(new Pos2d(78, 250), 110, 5, 4, GISS, REC))
+            .widget(createUpgradeConnectorLine(new Pos2d(110, 290), 80, 40, 4, GPCI, REC))
+            .widget(createUpgradeConnectorLine(new Pos2d(208, 250), 110, 355, 4, SA, CTCDD))
+            .widget(createUpgradeConnectorLine(new Pos2d(176, 290), 80, 320, 4, GPCI, CTCDD))
+            .widget(createUpgradeConnectorLine(new Pos2d(100, 355), 80, 313, 0, REC, QGPIU))
+            .widget(createUpgradeConnectorLine(new Pos2d(186, 355), 80, 47, 0, CTCDD, QGPIU))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 430), 48, 0, 2, QGPIU, TCT))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 490), 48, 0, 2, TCT, EPEC))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 550), 48, 0, 2, EPEC, POS))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 610), 48, 0, 2, POS, NGMS))
+            .widget(createUpgradeConnectorLine(new Pos2d(110, 410), 80, 40, 1, QGPIU, SEFCP))
+            .widget(createUpgradeConnectorLine(new Pos2d(83, 490), 48, 0, 1, SEFCP, CNTI))
+            .widget(createUpgradeConnectorLine(new Pos2d(83, 550), 48, 0, 1, CNTI, NDPE))
+            .widget(createUpgradeConnectorLine(new Pos2d(101, 590), 80, 320, 1, NDPE, NGMS))
+            .widget(createUpgradeConnectorLine(new Pos2d(53, 536), 35, 45, 1, CNTI, DOP))
+            .widget(createUpgradeConnectorLine(new Pos2d(176, 410), 80, 320, 3, QGPIU, GGEBE))
+            .widget(createUpgradeConnectorLine(new Pos2d(203, 490), 48, 0, 3, GGEBE, IMKG))
+            .widget(createUpgradeConnectorLine(new Pos2d(203, 550), 48, 0, 3, IMKG, DOR))
+            .widget(createUpgradeConnectorLine(new Pos2d(185, 590), 80, 40, 3, DOR, NGMS))
+            .widget(createUpgradeConnectorLine(new Pos2d(233, 476), 35, 315, 3, GGEBE, TPTP))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 670), 48, 0, 0, NGMS, SEDS))
+            .widget(createUpgradeConnectorLine(new Pos2d(101, 707), 75, 62.3f, 0, SEDS, PA))
+            .widget(createUpgradeConnectorLine(new Pos2d(53, 772), 78, 0, 0, PA, CD))
+            .widget(createUpgradeConnectorLine(new Pos2d(95, 837), 75, 297.7f, 0, CD, TSE))
+            .widget(createUpgradeConnectorLine(new Pos2d(191, 837), 75, 62.3f, 0, TSE, TBF))
+            .widget(createUpgradeConnectorLine(new Pos2d(233, 772), 78, 0, 0, TBF, EE))
+            .widget(createUpgradeConnectorLine(new Pos2d(191, 747), 75, 62.3f, 0, EE, END));
 
-        scrollable
-            .widget(createUpgradeBox(0,  0, 3, new int[] {},             false, new int[] { 1 },          false, true,  0,  new Pos2d(126, 56),    scrollable))
-            .widget(createUpgradeBox(1,  0, 1, new int[] { 0 },          false, new int[] { 2, 3 },       false, false, 1,  new Pos2d(126, 116),   scrollable))
-            .widget(createUpgradeBox(2,  0, 2, new int[] { 1 },          false, new int[] { 4, 5 },       false, false, 1,  new Pos2d(96,  176),   scrollable))
-            .widget(createUpgradeBox(3,  0, 2, new int[] { 1 },          false, new int[] { 5, 6 },       false, false, 1,  new Pos2d(156, 176),   scrollable))
-            .widget(createUpgradeBox(4,  0, 0, new int[] { 2 },          false, new int[] { 8 },          false, false, 1,  new Pos2d(66,  236),   scrollable))
-            .widget(createUpgradeBox(5,  0, 3, new int[] { 2, 3 },       false, new int[] { 7 },          false, true,  1,  new Pos2d(126, 236),   scrollable))
-            .widget(createUpgradeBox(6,  0, 1, new int[] { 3 },          false, new int[] { 10 },         false, false, 1,  new Pos2d(186, 236),   scrollable))
-            .widget(createUpgradeBox(7,  0, 3, new int[] { 5 },          false, new int[] { 8, 9, 10 },   false, true,  2,  new Pos2d(126, 296),   scrollable))
-            .widget(createUpgradeBox(8,  4, 0, new int[] { 4, 7 },       true,  new int[] { 11 },         false, false, 2,  new Pos2d(56,  356),   scrollable))
-            .widget(createUpgradeBox(9,  0, 2, new int[] { 7 },          false, new int[] {},             false, false, 2,  new Pos2d(126, 356),   scrollable))
-            .widget(createUpgradeBox(10, 4, 1, new int[] { 6, 7 },       true,  new int[] { 11 },         false, false, 2,  new Pos2d(196, 356),   scrollable))
-            .widget(createUpgradeBox(11, 0, 3, new int[] { 8, 10 },      false, new int[] { 12, 13, 14 }, false, true,  2,  new Pos2d(126, 416),   scrollable))
-            .widget(createUpgradeBox(12, 1, 2, new int[] { 11 },         false, new int[] { 17 },         true,  false, 3,  new Pos2d(66,  476),   scrollable))
-            .widget(createUpgradeBox(13, 2, 1, new int[] { 11 },         false, new int[] { 18 },         true,  false, 3,  new Pos2d(126, 476),   scrollable))
-            .widget(createUpgradeBox(14, 3, 0, new int[] { 11 },         false, new int[] { 15, 19 },     true,  false, 3,  new Pos2d(186, 476),   scrollable))
-            .widget(createUpgradeBox(15, 3, 1, new int[] { 14 },         false, new int[] {},             false, false, 4,  new Pos2d(246, 496),   scrollable))
-            .widget(createUpgradeBox(16, 1, 1, new int[] { 17 },         false, new int[] {},             false, false, 4,  new Pos2d(6,   556),   scrollable))
-            .widget(createUpgradeBox(17, 1, 0, new int[] { 12 },         false, new int[] { 16, 20 },     false, false, 3,  new Pos2d(66,  536),   scrollable))
-            .widget(createUpgradeBox(18, 2, 1, new int[] { 13 },         false, new int[] { 21 },         false, false, 3,  new Pos2d(126, 536),   scrollable))
-            .widget(createUpgradeBox(19, 3, 0, new int[] { 14 },         false, new int[] { 22 },         false, false, 3,  new Pos2d(186, 536),   scrollable))
-            .widget(createUpgradeBox(20, 1, 0, new int[] { 17 },         false, new int[] { 23 },         false, false, 3,  new Pos2d(66,  596),   scrollable))
-            .widget(createUpgradeBox(21, 2, 1, new int[] { 18 },         false, new int[] { 23 },         false, false, 3,  new Pos2d(126, 596),   scrollable))
-            .widget(createUpgradeBox(22, 3, 1, new int[] { 19 },         false, new int[] { 23 },         false, false, 3,  new Pos2d(186, 596),   scrollable))
-            .widget(createUpgradeBox(23, 0, 0, new int[] { 20, 21, 22 }, false, new int[] { 24 },         false, false, 4,  new Pos2d(126, 656),   scrollable))
-            .widget(createUpgradeBox(24, 0, 1, new int[] { 23 },         false, new int[] { 25 },         false, false, 5,  new Pos2d(126, 718),   scrollable))
-            .widget(createUpgradeBox(25, 0, 1, new int[] { 24 },         false, new int[] { 26 },         false, false, 6,  new Pos2d(36,  758),   scrollable))
-            .widget(createUpgradeBox(26, 0, 3, new int[] { 25 },         false, new int[] { 27 },         false, true,  7,  new Pos2d(36,  848),   scrollable))
-            .widget(createUpgradeBox(27, 0, 2, new int[] { 26 },         false, new int[] { 28 },         false, false, 8,  new Pos2d(126, 888),   scrollable))
-            .widget(createUpgradeBox(28, 0, 0, new int[] { 27 },         false, new int[] { 29 },         false, false, 9,  new Pos2d(216, 848),   scrollable))
-            .widget(createUpgradeBox(29, 0, 3, new int[] { 28 },         false, new int[] { 30 },         false, true,  10, new Pos2d(216, 758),   scrollable))
-            .widget(createUpgradeBox(30, 0, 3, new int[] { 29 },         false, new int[] {},             false, true,  12, new Pos2d(126, 798),   scrollable));
-        // spotless:on
+        for (ForgeOfGodsUpgrade upgrade : upgrades.getAllUpgrades()) {
+            scrollable.widget(createUpgradeBox(upgrade, scrollable));
+        }
 
         scrollable.widget(
             new MultiChildWidget().addChild(
@@ -1615,341 +1566,117 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     })
                     .setPos(282, 4));
         if (ConfigHandler.debug.DEBUG_MODE) {
-            builder.widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
-                upgrades = new boolean[31];
-                materialPaidUpgrades = new boolean[7];
-            })
-                .setSize(40, 15)
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .addTooltip(translateToLocal("fog.debug.resetbutton.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY))
-                .addChild(
-                    new TextWidget(translateToLocal("fog.debug.resetbutton.text")).setTextAlignment(Alignment.Center)
-                        .setScale(0.57f)
-                        .setMaxWidth(36)
-                        .setPos(3, 3))
-                .addChild(
-                    new NumericWidget().setSetter(val -> gravitonShardsAvailable = (int) val)
-                        .setGetter(() -> gravitonShardsAvailable)
-                        .setBounds(0, 112)
-                        .setDefaultValue(0)
-                        .setScrollValues(1, 4, 64)
-                        .setTextAlignment(Alignment.Center)
-                        .setTextColor(Color.WHITE.normal)
-                        .setSize(25, 18)
-                        .setPos(4, 16)
-                        .addTooltip(translateToLocal("fog.debug.gravitonshardsetter.tooltip"))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                        .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD))
-                .addChild(
-                    new ButtonWidget().setOnClick((clickData, widget) -> Arrays.fill(upgrades, true))
-                        .setSize(40, 15)
-                        .setBackground(GTUITextures.BUTTON_STANDARD)
-                        .addTooltip(translateToLocal("fog.debug.unlockall.text"))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                        .setPos(0, 35))
-                .addChild(
-                    new TextWidget(translateToLocal("fog.debug.unlockall.text")).setTextAlignment(Alignment.Center)
-                        .setScale(0.57f)
-                        .setMaxWidth(36)
-                        .setPos(3, 38))
-                .setPos(4, 4));
+            builder.widget(
+                new MultiChildWidget()
+                    .addChild(
+                        new ButtonWidget().setOnClick((clickData, widget) -> upgrades.resetAll())
+                            .setSize(40, 15)
+                            .setBackground(GTUITextures.BUTTON_STANDARD)
+                            .addTooltip(translateToLocal("fog.debug.resetbutton.tooltip"))
+                            .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                    .addChild(
+                        new TextWidget(translateToLocal("fog.debug.resetbutton.text"))
+                            .setTextAlignment(Alignment.Center)
+                            .setScale(0.57f)
+                            .setMaxWidth(36)
+                            .setPos(3, 3))
+                    .addChild(
+                        new NumericWidget().setSetter(val -> gravitonShardsAvailable = (int) val)
+                            .setGetter(() -> gravitonShardsAvailable)
+                            .setBounds(0, 112)
+                            .setDefaultValue(0)
+                            .setScrollValues(1, 4, 64)
+                            .setTextAlignment(Alignment.Center)
+                            .setTextColor(Color.WHITE.normal)
+                            .setSize(25, 18)
+                            .setPos(4, 16)
+                            .addTooltip(translateToLocal("fog.debug.gravitonshardsetter.tooltip"))
+                            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD))
+                    .addChild(
+                        new ButtonWidget().setOnClick((clickData, widget) -> upgrades.unlockAll())
+                            .setSize(40, 15)
+                            .setBackground(GTUITextures.BUTTON_STANDARD)
+                            .addTooltip(translateToLocal("fog.debug.unlockall.text"))
+                            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                            .setPos(0, 35))
+                    .addChild(
+                        new TextWidget(translateToLocal("fog.debug.unlockall.text")).setTextAlignment(Alignment.Center)
+                            .setScale(0.57f)
+                            .setMaxWidth(36)
+                            .setPos(3, 38))
+                    .setPos(4, 4));
 
         }
         return builder.build();
     }
 
     protected ModularWindow createIndividualUpgradeWindow(final EntityPlayer player) {
-        UITexture background;
-        UITexture overlay;
-        UITexture milestoneSymbol;
-        float widthRatio;
-        switch (currentColorCode) {
-            case 1 -> {
-                background = TecTechUITextures.BACKGROUND_GLOW_PURPLE;
-                overlay = TecTechUITextures.PICTURE_OVERLAY_PURPLE;
-            }
-            case 2 -> {
-                background = TecTechUITextures.BACKGROUND_GLOW_ORANGE;
-                overlay = TecTechUITextures.PICTURE_OVERLAY_ORANGE;
-            }
-            case 3 -> {
-                background = TecTechUITextures.BACKGROUND_GLOW_GREEN;
-                overlay = TecTechUITextures.PICTURE_OVERLAY_GREEN;
-            }
-            case 4 -> {
-                background = TecTechUITextures.BACKGROUND_GLOW_RED;
-                overlay = TecTechUITextures.PICTURE_OVERLAY_RED;
-            }
-            default -> {
-                background = TecTechUITextures.BACKGROUND_GLOW_BLUE;
-                overlay = TecTechUITextures.PICTURE_OVERLAY_BLUE;
-            }
-        }
-        switch (currentMilestoneBG) {
-            case 1 -> {
-                milestoneSymbol = TecTechUITextures.PICTURE_GODFORGE_MILESTONE_CONVERSION;
-                widthRatio = 0.72f;
-            }
-            case 2 -> {
-                milestoneSymbol = TecTechUITextures.PICTURE_GODFORGE_MILESTONE_CATALYST;
-                widthRatio = 1f;
-            }
-            case 3 -> {
-                milestoneSymbol = TecTechUITextures.PICTURE_GODFORGE_MILESTONE_COMPOSITION;
-                widthRatio = 1f;
-            }
-            default -> {
-                milestoneSymbol = TecTechUITextures.PICTURE_GODFORGE_MILESTONE_CHARGE;
-                widthRatio = 0.8f;
-            }
-        }
-        int WIDTH = 250;
-        int HEIGHT = 250;
-        int LORE_POS = 110;
-        if (currentUpgradeID == 0 || currentUpgradeID == 30) {
-            WIDTH = 300;
-            HEIGHT = 300;
-            LORE_POS = 85;
-        }
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT)
-            .setBackground(background)
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(WIDTH - 15, 3))
-            .widget(
-                new DrawableWidget().setDrawable(milestoneSymbol)
-                    .setPos((int) ((1 - widthRatio / 2) * WIDTH / 2), HEIGHT / 4)
-                    .setSize((int) (WIDTH / 2 * widthRatio), HEIGHT / 2))
-            .widget(
-                new DrawableWidget().setDrawable(overlay)
-                    .setPos(WIDTH / 4, HEIGHT / 4)
-                    .setSize(WIDTH / 2, HEIGHT / 2))
-            .widget(
-                new MultiChildWidget()
-                    .addChild(
-                        new TextWidget(translateToLocal("fog.upgrade.tt." + (currentUpgradeID)))
-                            .setTextAlignment(Alignment.Center)
-                            .setDefaultColor(EnumChatFormatting.GOLD)
-                            .setSize(WIDTH - 15, 30)
-                            .setPos(9, 5))
-                    .addChild(
-                        new TextWidget(translateToLocal("fog.upgrade.text." + (currentUpgradeID)))
-                            .setTextAlignment(Alignment.Center)
-                            .setDefaultColor(EnumChatFormatting.WHITE)
-                            .setSize(WIDTH - 15, LORE_POS - 30)
-                            .setPos(9, 30))
-                    .addChild(
-                        new TextWidget(
-                            EnumChatFormatting.ITALIC + translateToLocal("fog.upgrade.lore." + (currentUpgradeID)))
-                                .setTextAlignment(Alignment.Center)
-                                .setDefaultColor(0xbbbdbd)
-                                .setSize(WIDTH - 15, (int) (HEIGHT * 0.9) - LORE_POS)
-                                .setPos(9, LORE_POS))
-                    .addChild(
-                        new TextWidget(
-                            translateToLocal("gt.blockmachines.multimachine.FOG.shardcost") + " "
-                                + EnumChatFormatting.BLUE
-                                + gravitonShardCost).setTextAlignment(Alignment.Center)
-                                    .setScale(0.7f)
-                                    .setMaxWidth(70)
-                                    .setDefaultColor(0x9c9c9c)
-                                    .setPos(11, HEIGHT - 25))
-                    .addChild(
-                        new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.availableshards"))
-                            .setTextAlignment(Alignment.Center)
-                            .setScale(0.7f)
-                            .setMaxWidth(90)
-                            .setDefaultColor(0x9c9c9c)
-                            .setPos(WIDTH - 87, HEIGHT - 25))
-                    .addChild(
-                        TextWidget.dynamicText(this::gravitonShardAmount)
-                            .setTextAlignment(Alignment.Center)
-                            .setScale(0.7f)
-                            .setMaxWidth(90)
-                            .setDefaultColor(0x9c9c9c)
-                            .setPos(WIDTH - 27, HEIGHT - 18)))
-            .setSize(WIDTH, HEIGHT)
+        ForgeOfGodsUpgrade upgrade = currentUpgradeWindow;
 
-            .widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (!upgrades[currentUpgradeID]) {
-                    completeUpgrade();
-                } else {
-                    respecUpgrade();
-                }
-            })
-                .setSize(40, 15)
-                .setBackground(() -> {
-                    if (upgrades[currentUpgradeID]) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED };
-                    } else {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD };
-                    }
-                })
-                .dynamicTooltip(this::constructionStatus)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY))
-                .addChild(
-                    TextWidget.dynamicText(this::constructionStatusText)
-                        .setTextAlignment(Alignment.Center)
-                        .setScale(0.7f)
-                        .setMaxWidth(36)
-                        .setPos(3, 5))
-                .setPos(WIDTH / 2 - 21, (int) (HEIGHT * 0.9)));
-        if (Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
-            .contains(currentUpgradeID)) {
-            builder.widget(createMaterialInputButton(currentUpgradeID, WIDTH / 2 - 40, (int) (HEIGHT * 0.9), builder));
+        ModularWindow.Builder builder = ModularWindow.builder(upgrade.getWindowSize());
+        builder.setBackground(upgrade.getBackground());
+
+        // Syncers
+        builder.widget(
+            new FakeSyncWidget.IntegerSyncer(() -> gravitonShardsAvailable, val -> gravitonShardsAvailable = val));
+        builder.widget(upgrades.getSingleSyncer(upgrade));
+
+        builder.widget(
+            ForgeOfGodsUI.getIndividualUpgradeGroup(
+                upgrade,
+                () -> gravitonShardsAvailable,
+                () -> completeUpgrade(upgrade),
+                () -> respecUpgrade(upgrade),
+                () -> isUpgradeActive(upgrade)));
+
+        if (upgrade.hasExtraCost()) {
+            builder.widget(
+                ForgeOfGodsUI
+                    .createMaterialInputButton(upgrade, () -> upgrades.isCostPaid(upgrade), (clickData, widget) -> {
+                        if (!widget.isClient()) {
+                            ModularUIContext ctx = widget.getContext();
+                            ctx.openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
+                            ctx.closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                            ctx.closeWindow(UPGRADE_TREE_WINDOW_ID);
+                        }
+                    }));
         }
+
         return builder.build();
     }
 
-    private void completeUpgrade() {
-        int unlockedPrereqUpgrades = 0;
-        int unlockedSplitUpgrades = 0;
-        if (!upgrades[currentUpgradeID]) {
-            for (int prereqUpgrade : prereqUpgrades[currentUpgradeID]) {
-                if (upgrades[prereqUpgrade]) {
-                    unlockedPrereqUpgrades++;
-                }
-            }
-            if (!doesCurrentUpgradeRequireExtraMats
-                || materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
-                    .indexOf(currentUpgradeID)]) {
-                if (allPrereqRequired[currentUpgradeID]) {
-                    if (unlockedPrereqUpgrades == prereqUpgrades[currentUpgradeID].length
-                        && gravitonShardsAvailable >= gravitonShardCost) {
-                        gravitonShardsAvailable -= gravitonShardCost;
-                        gravitonShardsSpent += gravitonShardCost;
-                        upgrades[currentUpgradeID] = true;
-                    }
-                } else if (unlockedPrereqUpgrades > 0 || prereqUpgrades[currentUpgradeID].length == 0) {
-                    if (isUpradeSplitStart) {
-                        for (int splitUpgrade : FIRST_SPLIT_UPGRADES) {
-                            if (upgrades[splitUpgrade]) {
-                                unlockedSplitUpgrades++;
-                            }
-                        }
-                        unlockedSplitUpgrades -= (ringAmount - 1);
-                    }
-                    if (unlockedSplitUpgrades <= 0 && gravitonShardsAvailable >= gravitonShardCost) {
-                        gravitonShardsAvailable -= gravitonShardCost;
-                        gravitonShardsSpent += gravitonShardCost;
-                        upgrades[currentUpgradeID] = true;
-                    }
-                }
-            }
+    private void completeUpgrade(ForgeOfGodsUpgrade upgrade) {
+        if (isUpgradeActive(upgrade)) return;
+        if (!upgrades.checkPrerequisites(upgrade)) return;
+        if (!upgrades.checkSplit(upgrade, ringAmount)) return;
+        if (!upgrades.checkCost(upgrade, gravitonShardsAvailable)) return;
+
+        upgrades.unlockUpgrade(upgrade);
+        gravitonShardsAvailable -= upgrade.getShardCost();
+        gravitonShardsSpent += upgrade.getShardCost();
+    }
+
+    private void respecUpgrade(ForgeOfGodsUpgrade upgrade) {
+        if (!isUpgradeActive(upgrade)) return;
+        if (!upgrades.checkDependents(upgrade)) return;
+
+        upgrades.respecUpgrade(upgrade);
+        gravitonShardsAvailable += upgrade.getShardCost();
+        gravitonShardsSpent -= upgrade.getShardCost();
+
+        if (upgrade == END) {
+            gravitonShardEjection = false;
         }
     }
 
-    private void respecUpgrade() {
-        int unlockedFollowupUpgrades = 0;
-        int unlockedNeighboringUpgrades = 0;
-        boolean doesFollowupRequireAllPrereqs = false;
-        boolean canFollowupSpareAConnection = true;
-
-        for (int followupUpgrade : followupUpgrades) {
-            if (upgrades[followupUpgrade]) {
-                unlockedFollowupUpgrades++;
-                if (allPrereqRequired[followupUpgrade]) {
-                    doesFollowupRequireAllPrereqs = true;
-                }
-                int[] currentPrereqs = prereqUpgrades[followupUpgrade];
-                for (int prereqUpgrade : currentPrereqs) {
-                    if (upgrades[prereqUpgrade]) {
-                        unlockedNeighboringUpgrades++;
-                    }
-                }
-                if (unlockedNeighboringUpgrades <= 1) {
-                    canFollowupSpareAConnection = false;
-                }
-            }
-
-            unlockedNeighboringUpgrades = 0;
-        }
-
-        if (!doesFollowupRequireAllPrereqs && followupUpgrades.length > 0 && canFollowupSpareAConnection) {
-            unlockedFollowupUpgrades = 0;
-        }
-
-        if (unlockedFollowupUpgrades == 0) {
-            gravitonShardsAvailable += gravitonShardCost;
-            gravitonShardsSpent -= gravitonShardCost;
-            upgrades[currentUpgradeID] = false;
-
-            if (currentUpgradeID == 30) {
-                gravitonShardEjection = false;
-            }
-        }
-    }
-
-    private Widget createMaterialInputButton(int upgradeID, int xCoord, int yCoord, IWidgetBuilder<?> builder) {
-        return new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!widget.isClient() && doesCurrentUpgradeRequireExtraMats) {
-                ModularUIContext ctx = widget.getContext();
-                ctx.openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
-                ctx.closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
-                ctx.closeWindow(UPGRADE_TREE_WINDOW_ID);
-            }
-        })
-            .setPlayClickSound(doesCurrentUpgradeRequireExtraMats)
-            .setBackground(() -> {
-                if (doesCurrentUpgradeRequireExtraMats) {
-                    if (materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
-                        .indexOf(upgradeID)]) {
-                        return new IDrawable[] { TecTechUITextures.BUTTON_BOXED_CHECKMARK_18x18 };
-                    } else {
-                        return new IDrawable[] { TecTechUITextures.BUTTON_BOXED_EXCLAMATION_POINT_18x18 };
-                    }
-                } else {
-                    return new IDrawable[] { GTUITextures.TRANSPARENT };
-                }
-            })
-            .setPos(xCoord, yCoord)
-            .setSize(15, 15)
-            .dynamicTooltip(this::upgradeMaterialRequirements)
-            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("fog.button.materialrequirements.tooltip.clickhere"))
-            .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(
-                    () -> materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
-                        .indexOf(upgradeID)],
-                    val -> materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
-                        .indexOf(upgradeID)] = val),
-                builder);
-    }
-
-    /**
-     * @param upgradeID               ID of the upgrade
-     * @param colorCode               Number deciding which colored background to use, 0 for blue, 1 for purple, 2 for
-     *                                orange and 3 for green
-     * @param milestone               Number deciding which milestone symbol to display in the background, 0 for charge,
-     *                                1 for conversion, 2 for catalyst and 3 for composition
-     * @param prerequisiteUpgradeIDs  IDs of the prior upgrades directly connected to the current one
-     * @param requireAllPrerequisites Decides how many connected prerequisite upgrades have to be unlocked to be able to
-     *                                unlock this one. True means ALL, False means AT LEAST ONE
-     * @param followingUpgradeIDs     IDs of the following upgrades directly connected to the current one
-     * @param isStartOfSplit          Whether this upgrade is one of the initial split upgrades
-     * @param requiresExtraMaterials  Whether this upgrade requires materials other than graviton shards to unlock
-     * @param shardCost               How many graviton shards are needed to unlock this upgrade
-     * @param pos                     Position of the upgrade inside the scrollableWidget
-     */
-    private Widget createUpgradeBox(int upgradeID, int colorCode, int milestone, int[] prerequisiteUpgradeIDs,
-        boolean requireAllPrerequisites, int[] followingUpgradeIDs, boolean isStartOfSplit,
-        boolean requiresExtraMaterials, int shardCost, Pos2d pos, IWidgetBuilder<?> builder) {
-        prereqUpgrades[upgradeID] = prerequisiteUpgradeIDs;
-        allPrereqRequired[upgradeID] = requireAllPrerequisites;
+    private Widget createUpgradeBox(ForgeOfGodsUpgrade upgrade, IWidgetBuilder<?> builder) {
         return new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
-            currentUpgradeID = upgradeID;
-            currentColorCode = colorCode;
-            currentMilestoneBG = milestone;
-            gravitonShardCost = shardCost;
-            followupUpgrades = followingUpgradeIDs;
-            isUpradeSplitStart = isStartOfSplit;
-            doesCurrentUpgradeRequireExtraMats = requiresExtraMaterials;
+            currentUpgradeWindow = upgrade;
             if (clickData.mouseButton == 0) {
                 if (clickData.shift) {
-                    if (!doesCurrentUpgradeRequireExtraMats
-                        || materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
-                            .indexOf(currentUpgradeID)]) {
-                        completeUpgrade();
+                    if (!upgrade.hasExtraCost() || upgrades.isCostPaid(upgrade)) {
+                        completeUpgrade(upgrade);
                     } else if (!widget.isClient()) {
                         ModularUIContext ctx = widget.getContext();
                         ctx.openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
@@ -1960,36 +1687,34 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     ForgeOfGodsUI.reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
                 }
             } else if (clickData.mouseButton == 1) {
-                respecUpgrade();
+                respecUpgrade(upgrade);
             }
         })
             .setSize(40, 15)
             .setBackground(() -> {
-                if (upgrades[upgradeID]) {
+                if (isUpgradeActive(upgrade)) {
                     return new IDrawable[] { TecTechUITextures.BUTTON_SPACE_PRESSED_32x16 };
                 } else {
                     return new IDrawable[] { TecTechUITextures.BUTTON_SPACE_32x16 };
                 }
             })
-            .addTooltip(translateToLocal("fog.upgrade.tt." + upgradeID))
+            .addTooltip(upgrade.getNameText())
             .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .addChild(
-                new TextWidget(translateToLocal("fog.upgrade.tt.short." + upgradeID)).setScale(0.8f)
+                new TextWidget(upgrade.getShortNameText()).setScale(0.8f)
                     .setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.Center)
                     .setSize(34, 9)
                     .setPos(3, 4))
-            .setPos(pos)
-            .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(() -> upgrades[upgradeID], val -> upgrades[upgradeID] = val),
-                builder);
+            .setPos(upgrade.getTreePos())
+            .attachSyncer(upgrades.getSingleSyncer(upgrade), builder);
     }
 
     private Widget createUpgradeConnectorLine(Pos2d pos, int length, float rotationAngle, int colorCode,
-        int startUpgradeID, int endUpgradeID) {
+        ForgeOfGodsUpgrade startUpgrade, ForgeOfGodsUpgrade endUpgrade) {
         return new DrawableWidget()
             .setDrawable(
-                () -> (upgrades[startUpgradeID] && upgrades[endUpgradeID])
+                () -> (isUpgradeActive(startUpgrade) && isUpgradeActive(endUpgrade))
                     ? coloredLine(colorCode, true).withRotationDegree(rotationAngle)
                     : coloredLine(colorCode, false).withRotationDegree(rotationAngle))
             .setPos(pos)
@@ -2024,7 +1749,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     protected ModularWindow createManualInsertionWindow(final EntityPlayer player) {
-        ItemStack[] inputs = godforgeUpgradeMats.get(currentUpgradeID);
+        ForgeOfGodsUpgrade upgrade = currentUpgradeWindow;
+        ItemStack[] inputs = upgrade.getExtraCost();
         final int WIDTH = 189;
         final int HEIGHT = 106;
         final int PARENT_WIDTH = getGUIWidth();
@@ -2092,8 +1818,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     for (int index : foundInputIndices) {
                         inputSlotHandler.extractItem(index, inputSlotHandler.getStackInSlot(index).stackSize, false);
                     }
-                    materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
-                        .indexOf(currentUpgradeID)] = true;
+                    upgrades.paidCost(upgrade);
                 }
             }
         })
@@ -3072,8 +2797,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return fuelConsumptionFactor;
     }
 
-    public boolean isUpgradeActive(int upgradeID) {
-        return upgrades[upgradeID];
+    public boolean isUpgradeActive(ForgeOfGodsUpgrade upgrade) {
+        return upgrades.isUpgradeActive(upgrade);
     }
 
     public int getRingAmount() {
@@ -3081,26 +2806,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     public int getTotalActiveUpgrades() {
-        int totalUpgrades = 0;
-        for (boolean upgrade : upgrades) {
-            if (upgrade) {
-                totalUpgrades++;
-            }
-        }
-        return totalUpgrades;
+        return upgrades.getTotalActiveUpgrades();
     }
 
     private Text fuelUsage() {
         return new Text(fuelConsumption + " L/5s");
-    }
-
-    private Text gravitonShardAmount() {
-        EnumChatFormatting enoughGravitonShards = EnumChatFormatting.RED;
-        if (gravitonShardsAvailable >= gravitonShardCost) {
-            enoughGravitonShards = EnumChatFormatting.GREEN;
-        }
-        return new Text(enoughGravitonShards + Integer.toString(gravitonShardsAvailable));
-
     }
 
     private Text storedFuel() {
@@ -3431,26 +3141,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return new Text(progressText + ": " + EnumChatFormatting.GRAY + formattingMode.format(max) + " " + suffix);
     }
 
-    private Text constructionStatusText() {
-        return upgrades[currentUpgradeID] ? new Text(translateToLocal("fog.upgrade.respec"))
-            : new Text(translateToLocal("fog.upgrade.confirm"));
-    }
-
-    private List<String> constructionStatus() {
-        if (upgrades[currentUpgradeID]) {
-            return ImmutableList.of(translateToLocal("fog.upgrade.respec"));
-        }
-        return ImmutableList.of(translateToLocal("fog.upgrade.confirm"));
-    }
-
-    private List<String> upgradeMaterialRequirements() {
-        if (materialPaidUpgrades[Arrays.asList(UPGRADE_MATERIAL_ID_CONVERSION)
-            .indexOf(currentUpgradeID)]) {
-            return ImmutableList.of(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
-        }
-        return ImmutableList.of(translateToLocal("fog.button.materialrequirements.tooltip"));
-    }
-
     private void increaseBattery(int amount) {
         if ((internalBattery + amount) <= maxBatteryCharge) {
             internalBattery += amount;
@@ -3555,27 +3245,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             NBT.setInteger("formattingMode", formattingMode.ordinal());
         }
 
-        // Upgrades
-        NBTTagCompound upgradeBooleanArrayNBTTag = new NBTTagCompound();
-        boolean hasSomeUpgrade = false;
-        for (int i = 0; i < upgrades.length; i++) {
-            boolean value = upgrades[i];
-            upgradeBooleanArrayNBTTag.setBoolean("upgrade" + i, value);
-            if (value) hasSomeUpgrade = true;
-        }
-        if (force || hasSomeUpgrade) NBT.setTag("upgrades", upgradeBooleanArrayNBTTag);
-
-        // Upgrade material costs paid
-        NBTTagCompound upgradeMaterialBooleanArrayNBTTag = new NBTTagCompound();
-        boolean someCostPaid = false;
-        for (int i = 0; i < materialPaidUpgrades.length; i++) {
-            boolean value = materialPaidUpgrades[i];
-            upgradeMaterialBooleanArrayNBTTag.setBoolean("upgradeMaterial" + i, value);
-            if (value) someCostPaid = true;
-        }
-        if (force || someCostPaid) NBT.setTag("upgradeMaterials", upgradeMaterialBooleanArrayNBTTag);
-
-        // Custom star colors
+        upgrades.serializeToNBT(NBT, force);
         starColors.serializeToNBT(NBT);
     }
 
@@ -3607,29 +3277,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             formattingMode = FormattingMode.VALUES[index];
         }
 
-        if (NBT.hasKey("upgrades")) {
-            NBTTagCompound upgradesTag = NBT.getCompoundTag("upgrades");
-            for (int i = 0; i < upgrades.length; i++) {
-                boolean upgrade = upgradesTag.getBoolean("upgrade" + i);
-                upgrades[i] = upgrade;
-            }
-        }
-
-        if (NBT.hasKey("upgradeMaterials")) {
-            NBTTagCompound materialsTag = NBT.getCompoundTag("upgradeMaterials");
-            for (int i = 0; i < materialPaidUpgrades.length; i++) {
-                boolean upgrade = materialsTag.getBoolean("upgradeMaterial" + i);
-                materialPaidUpgrades[i] = upgrade;
-            }
-        }
-
+        // Stored items
         NBTTagCompound tempItemTag = NBT.getCompoundTag("upgradeWindowStorage");
-
         for (int index = 0; index < 16; index++) {
-
             int stackSize = tempItemTag.getInteger(index + "stacksizeOfStoredUpgradeItems");
             ItemStack itemStack = ItemStack.loadItemStackFromNBT(NBT.getCompoundTag(index + "storedUpgradeItem"));
-
             if (itemStack != null) {
                 storedUpgradeWindowItems[index] = itemStack.splitStack(stackSize);
             }
@@ -3643,6 +3295,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         isRenderActive = NBT.getBoolean("isRenderActive");
         isRendererDisabled = NBT.getBoolean("isRendererDisabled");
 
+        upgrades.rebuildFromNBT(NBT);
         starColors.rebuildFromNBT(NBT);
 
         super.loadNBTData(NBT);
