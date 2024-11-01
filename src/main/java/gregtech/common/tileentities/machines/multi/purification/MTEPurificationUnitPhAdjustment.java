@@ -408,7 +408,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             .addCasingInfoExactlyColored(
                 "Stabilized Naquadah Water Plant Casing",
                 EnumChatFormatting.GRAY,
-                15,
+                16,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
