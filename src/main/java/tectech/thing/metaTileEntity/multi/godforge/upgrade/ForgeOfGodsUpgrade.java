@@ -248,6 +248,7 @@ public enum ForgeOfGodsUpgrade {
             .prereqs(EE)
             .cost(12)
             .background(BLUE, COMPOSITION)
+            .windowSize(LARGE)
             .treePos(126, 798));
 
         // spotless:on
