@@ -986,11 +986,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .setPos(172, 67));
     }
 
-    @Override
-    protected ButtonWidget createPowerSwitchButton() {
-        return ForgeOfGodsUI.createPowerSwitchButton(getBaseMetaTileEntity());
-    }
-
     protected ButtonWidget createEjectionSwitch(IWidgetBuilder<?> builder) {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
