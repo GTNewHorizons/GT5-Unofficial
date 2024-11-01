@@ -11,9 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
@@ -28,11 +26,12 @@ import gregtech.common.items.matterManipulator.ItemMatterManipulator.Manipulator
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import it.unimi.dsi.fastutil.Pair;
 
+/**
+ * Handles all building logic.
+ */
 public class PendingBuild extends AbstractBuildable {
 
-    public LinkedList<PendingBlock> pendingBlocks;
-
-    private boolean printedProtectedBlockWarning = false;
+    private LinkedList<PendingBlock> pendingBlocks;
 
     public PendingBuild(EntityPlayer player, NBTState state, ManipulatorTier tier,
         LinkedList<PendingBlock> pendingBlocks) {
@@ -51,6 +50,7 @@ public class PendingBuild extends AbstractBuildable {
 
         PendingBuildApplyContext applyContext = new PendingBuildApplyContext(stack);
 
+        // check every pending block that's left
         while (toPlace.size() < tier.placeSpeed && pendingBlocks.size() > 0) {
             PendingBlock next = pendingBlocks.getFirst();
 
@@ -59,6 +59,7 @@ public class PendingBuild extends AbstractBuildable {
             int chunkX = x >> 4;
             int chunkZ = z >> 4;
 
+            // if this block's chunk isn't loaded, ignore it completely
             if (!Objects.equals(chunkX, lastChunkX) || !Objects.equals(chunkZ, lastChunkZ)) {
                 if (!world.getChunkProvider()
                     .chunkExists(chunkX, chunkZ)) {
@@ -70,26 +71,21 @@ public class PendingBuild extends AbstractBuildable {
                 }
             }
 
-            // spotless:off
-            if (!world.canMineBlock(player, x, y, z) || MinecraftServer.getServer().isBlockProtected(world, x, y, z, player)) {
-                // spotless:on
-                if (!printedProtectedBlockWarning) {
-                    GTUtility.sendChatToPlayer(
-                        player,
-                        EnumChatFormatting.GOLD + "Tried to break/place a block in a protected area!");
-                    printedProtectedBlockWarning = true;
-                }
-
+            // if this block is protected, ignore it completely and print a warning
+            if (!isEditable(world, x, y, z)) {
                 pendingBlocks.removeFirst();
                 continue;
             }
 
+            // if this block is different from the last one, stop checking blocks
+            // since the pending blocks are sorted by their contained block, this is usually true
             if (!toPlace.isEmpty() && !MMUtils.areBlocksBasicallyEqual(next, toPlace.get(0))) {
                 break;
             }
 
             PendingBlock existing = PendingBlock.fromBlock(world, x, y, z);
 
+            // if the existing block is the same as the one we're trying to place, just apply its tile data
             if (PendingBlock.isSameBlock(next, existing)) {
                 PendingBlock block = pendingBlocks.removeFirst();
 
@@ -103,17 +99,17 @@ public class PendingBuild extends AbstractBuildable {
 
             Block existingBlock = existing == null ? Blocks.air : existing.getBlock();
 
-            if (existingBlock.getBlockHardness(world, x, y, z) < 0) {
-                pendingBlocks.removeFirst();
-                continue;
-            }
-
+            // checks if the existing block is removable
             boolean canPlace = switch (state.config.removeMode) {
                 case NONE -> existingBlock.isAir(world, x, y, z);
                 case REPLACEABLE -> existingBlock.isReplaceable(world, x, y, z);
                 case ALL -> true;
             };
 
+            canPlace &= existingBlock.getBlockHardness(world, x, y, z) >= 0;
+
+            // we don't want to remove these even though they'll never be placed because we want to see how many blocks
+            // couldn't be placed
             if (!canPlace) {
                 pendingBlocks.addLast(pendingBlocks.removeFirst());
                 shuffleCount++;
@@ -125,6 +121,7 @@ public class PendingBuild extends AbstractBuildable {
                 }
             }
 
+            // if there's an existing block then remove it if possible
             if (!existingBlock.isAir(world, x, y, z)) {
                 if (!tier.hasCap(ItemMatterManipulator.ALLOW_REMOVING)) {
                     pendingBlocks.removeFirst();
@@ -139,11 +136,14 @@ public class PendingBuild extends AbstractBuildable {
                 removeBlock(world, x, y, z, existingBlock, existing == null ? 0 : existing.metadata);
             }
 
+            // check block dependencies for things like levers
+            // if we can't place this block, shuffle it to the back of the list
             if (!next.getBlock()
                 .canPlaceBlockAt(world, next.x, next.y, next.z)) {
                 pendingBlocks.addLast(pendingBlocks.removeFirst());
                 shuffleCount++;
 
+                // if we've shuffled every block, then we'll never be able to place any of them
                 if (shuffleCount > pendingBlocks.size()) {
                     break;
                 } else {
@@ -159,23 +159,21 @@ public class PendingBuild extends AbstractBuildable {
             toPlace.add(pendingBlocks.removeFirst());
         }
 
-        actuallyGivePlayerStuff();
-
+        // check if we could place any blocks
         if (toPlace.isEmpty()) {
             if (!pendingBlocks.isEmpty()) {
                 GTUtility.sendErrorToPlayer(player, "Could not place " + pendingBlocks.size() + " remaining blocks.");
             } else {
                 GTUtility.sendInfoToPlayer(player, "Finished placing blocks.");
             }
-
-            player.setItemInUse(null, 0);
             return;
         }
 
-        if (!toPlace.get(0)
-            .isFree()) {
-            ItemStack item = toPlace.get(0)
-                .toStack();
+        // if the block we're placing isn't free (ae cable busses) we need to consume it
+        PendingBlock first = toPlace.get(0);
+        if (!first.isFree()) {
+            ItemStack item = first.toStack();
+
             if (item != null) {
                 item.stackSize = toPlace.size();
 
@@ -187,6 +185,7 @@ public class PendingBuild extends AbstractBuildable {
 
                 int extractedAmount = extractedStack == null ? 0 : extractedStack.stackSize;
 
+                // if we only consumed some of the blocks, only place as many as we got
                 if (extractedAmount < item.stackSize) {
                     GTUtility.sendErrorToPlayer(
                         player,
@@ -225,6 +224,7 @@ public class PendingBuild extends AbstractBuildable {
             }
         }
 
+        actuallyGivePlayerStuff();
         playSounds();
     }
 

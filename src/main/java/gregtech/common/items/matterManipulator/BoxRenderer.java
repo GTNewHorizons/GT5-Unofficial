@@ -39,6 +39,11 @@ public class BoxRenderer {
 
     private CapturingTessellator tes;
 
+    /**
+     * Starts rendering fancy boxes. Should only be called once per frame, to allow quad sorting.
+     * 
+     * @param partialTickTime
+     */
     public void start(double partialTickTime) {
         TessellatorManager.startCapturing();
 
@@ -54,6 +59,9 @@ public class BoxRenderer {
         tes.setTranslation(-d0, -d1, -d2);
     }
 
+    /**
+     * Draws a fancy box around an AABB.
+     */
     public void drawAround(AxisAlignedBB aabb, Vector3f colour) {
         aabb = aabb.copy()
             .expand(0.01, 0.01, 0.01);
@@ -138,6 +146,9 @@ public class BoxRenderer {
         tes.restoreTranslation();
     }
 
+    /**
+     * Actually draws the stored boxes.
+     */
     public void finish() {
         List<QuadView> quads = TessellatorManager.stopCapturingToPooledQuads();
 

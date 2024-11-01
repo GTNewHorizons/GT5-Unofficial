@@ -49,7 +49,12 @@ import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockAnalysisConte
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
+/**
+ * Stores all data needed to reconstruct a tile entity
+ */
 public class TileAnalysisResult {
+
+    // hopefully these field are self explanitory
 
     public byte mConnections = 0;
     public byte mGTColour = -1;
@@ -101,8 +106,10 @@ public class TileAnalysisResult {
         if (te instanceof IGregTechTileEntity gte) {
             IMetaTileEntity mte = gte.getMetaTileEntity();
 
+            // save the colour
             if (gte.getColorization() != -1) mGTColour = gte.getColorization();
 
+            // if the machine is a singleblock, store its data
             if (mte instanceof MTEBasicMachine basicMachine) {
                 mGTMainFacing = basicMachine.mMainFacing;
 
@@ -117,6 +124,7 @@ public class TileAnalysisResult {
                 if (flags != 0) mGTFlags = flags;
             }
 
+            // if the machine is a pipe/cable/etc, store its connections
             if (mte instanceof IConnectable connectable) {
                 byte con = 0;
 
@@ -129,6 +137,7 @@ public class TileAnalysisResult {
                 mConnections = con;
             }
 
+            // if the machine is alignable (basically everything) store its facing directly or extended alignment
             if (mte instanceof IAlignmentProvider provider) {
                 IAlignment alignment = provider.getAlignment();
 
@@ -141,6 +150,7 @@ public class TileAnalysisResult {
             boolean hasCover = false;
             byte strongRedstone = 0;
 
+            // check each side for covers
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
                 if (gte.getCoverIDAtSide(dir) != 0) {
                     covers[dir.ordinal()] = CoverData.fromInfo(gte.getCoverInfoAtSide(dir));
@@ -155,10 +165,12 @@ public class TileAnalysisResult {
             if (hasCover) mCovers = covers;
             mStrongRedstone = strongRedstone;
 
+            // check if the machine has a custom name
             if (mte instanceof ICustomNameObject customName && customName.hasCustomName()) {
                 mGTCustomName = customName.getCustomName();
             }
 
+            // check if the machine has a ghost circuit slot
             if (mte instanceof IConfigurationCircuitSupport ghostCircuit && ghostCircuit.allowSelectCircuit()) {
                 ItemStack circuit = mte.getStackInSlot(ghostCircuit.getCircuitSlot());
 
@@ -173,25 +185,30 @@ public class TileAnalysisResult {
                 }
             }
 
+            // check if the machine is an input bus
             if (mte instanceof MTEHatchInputBus inputBus) {
                 if (inputBus.disableSort) mGTFlags |= GT_INPUT_BUS_NO_SORTING;
                 if (inputBus.disableLimited) mGTFlags |= GT_INPUT_BUS_NO_LIMITING;
                 if (inputBus.disableFilter) mGTFlags |= GT_INPUT_BUS_NO_FILTERING;
             }
 
+            // check if the machine has a locked item
             if (mte instanceof IItemLockable lockable && lockable.acceptsItemLock()
                 && lockable.getLockedItem() != null) {
                 mGTItemLock = new PortableItemStack(lockable.getLockedItem());
             }
 
+            // check if the machine is an output hatch
             if (mte instanceof MTEHatchOutput outputHatch) {
                 mGTMode = outputHatch.getMode();
             }
 
+            // check if the machine has a locked fluid
             if (mte instanceof IFluidLockable lockable && lockable.isFluidLocked()) {
                 mGTFluidLock = lockable.getLockedFluidName();
             }
 
+            // check if the machine is a multi and store its settings
             if (mte instanceof MTEMultiBlockBase multi) {
                 mGTMode = multi.machineMode;
 
@@ -203,6 +220,7 @@ public class TileAnalysisResult {
                 if (multi.isRecipeLockingEnabled()) mGTFlags |= GT_MULTI_RECIPE_LOCK;
             }
 
+            // check if the machine can be copied with a data stick
             if (mte instanceof IDataCopyable copyable) {
                 try {
                     // There's no reason for this EntityPlayer parameter besides sending chat messages, so we just fail
@@ -219,13 +237,19 @@ public class TileAnalysisResult {
             }
         }
 
+        // check if the tile is an ae tile and store its facing info + config
         if (te instanceof AEBaseTile ae) {
             mAEUp = nullIfUnknown(ae.getUp());
             mAEForward = nullIfUnknown(ae.getForward());
             mAEConfig = MMUtils.toJsonObject(ae.downloadSettings(SettingsFrom.MEMORY_CARD));
-            mAECustomName = !(ae instanceof TileCableBus) && ae.hasCustomName() ? ae.getCustomName() : null;
         }
 
+        // check if the tile has a custom name
+        if (te instanceof ICustomNameObject customName && !(te instanceof TileCableBus)) {
+            mAECustomName = customName.hasCustomName() ? customName.getCustomName() : null;
+        }
+
+        // check if the tile has AE inventories
         if (te instanceof ISegmentedInventory segmentedInventory) {
             if (segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgrades) {
                 mAEUpgrades = MMUtils.fromInventory(upgrades);
@@ -242,6 +266,7 @@ public class TileAnalysisResult {
             }
         }
 
+        // check all sides for parts (+UNKNOWN for cables)
         if (te instanceof IPartHost partHost) {
             mAEParts = new AEPartData[ALL_DIRECTIONS.length];
 
@@ -252,6 +277,7 @@ public class TileAnalysisResult {
             }
         }
 
+        // check its inventory
         if (te instanceof IInventory inventory) {
             mInventory = InventoryAnalysis.fromInventory(inventory, false);
         }
@@ -287,6 +313,7 @@ public class TileAnalysisResult {
                 basicMachine.mAllowInputFromOutputSide = (mGTFlags & GT_BASIC_IO_INPUT_FROM_OUTPUT_SIDE) != 0;
             }
 
+            // only (dis)connect sides that need to be updated
             if (mte instanceof IConnectable connectable) {
                 for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
                     boolean shouldBeConnected = (mConnections & dir.flag) != 0;
@@ -300,6 +327,7 @@ public class TileAnalysisResult {
                 }
             }
 
+            // set the machine's facing and alignment
             if (mte instanceof IAlignmentProvider provider) {
                 IAlignment alignment = provider.getAlignment();
 
@@ -313,6 +341,7 @@ public class TileAnalysisResult {
                 }
             }
 
+            // install/remove/update the covers
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
                 CoverData expected = mCovers == null ? null : mCovers[dir.ordinal()];
                 CoverInfo actual = new CoverInfo(
@@ -334,15 +363,16 @@ public class TileAnalysisResult {
                     }
                 }
 
-                if (mStrongRedstone != -1) {
-                    gte.setRedstoneOutputStrength(dir, (mStrongRedstone & dir.flag) != 0);
-                }
+                // set the redstone strength
+                gte.setRedstoneOutputStrength(dir, (mStrongRedstone & dir.flag) != 0);
             }
 
+            // set the custom name
             if (mte instanceof ICustomNameObject customName && mGTCustomName != null) {
                 customName.setCustomName(mGTCustomName);
             }
 
+            // set the ghost circuit
             if (mte instanceof IConfigurationCircuitSupport ghostCircuit && ghostCircuit.allowSelectCircuit()) {
                 ItemStack circuit = null;
 
@@ -358,26 +388,31 @@ public class TileAnalysisResult {
                 mte.markDirty();
             }
 
+            // set the various input bus options
             if (mte instanceof MTEHatchInputBus inputBus) {
                 inputBus.disableSort = (mGTFlags & GT_INPUT_BUS_NO_SORTING) != 0;
                 inputBus.disableLimited = (mGTFlags & GT_INPUT_BUS_NO_LIMITING) != 0;
                 inputBus.disableFilter = (mGTFlags & GT_INPUT_BUS_NO_FILTERING) != 0;
             }
 
+            // set the locked item
             if (mte instanceof IItemLockable lockable && lockable.acceptsItemLock()) {
                 ItemStack lockedItem = mGTItemLock == null ? null : mGTItemLock.toStack();
 
                 lockable.setLockedItem(lockedItem);
             }
 
+            // set the output hatch mode
             if (mte instanceof MTEHatchOutput outputHatch) {
                 outputHatch.mMode = (byte) mGTMode;
             }
 
+            // set the locked fluid
             if (mte instanceof IFluidLockable lockable && lockable.isFluidLocked()) {
                 lockable.setLockedFluidName(mGTFluidLock);
             }
 
+            // set the various multi options
             if (mte instanceof MTEMultiBlockBase multi) {
                 multi.machineMode = mGTMode;
 
@@ -410,15 +445,24 @@ public class TileAnalysisResult {
                 if (multi.supportsSingleRecipeLocking()) multi.setRecipeLocking((mGTFlags & GT_MULTI_RECIPE_LOCK) != 0);
             }
 
+            // paste the data
             if (mte instanceof IDataCopyable copyable) {
                 NBTTagCompound data = mGTData == null ? new NBTTagCompound() : (NBTTagCompound) MMUtils.toNbt(mGTData);
 
-                if (!copyable.pasteCopiedData(ctx.getRealPlayer(), data)) {
-                    return false;
+                try {
+                    // There's no reason for this EntityPlayer parameter besides sending chat messages, so we just fail
+                    // if it actually needs the player.
+                    if (!copyable.pasteCopiedData(null, data)) {
+                        return false;
+                    }
+                } catch (Throwable t) {
+                    // Probably an NPE, but we're catching Throwable just to be safe
+                    GTMod.GT_FML_LOGGER.error("Could not paste IDataCopyable's data", t);
                 }
             }
         }
 
+        // apply upgrades, cells, and patterns
         if (te instanceof ISegmentedInventory segmentedInventory) {
             if (segmentedInventory.getInventoryByName("upgrades") instanceof UpgradeInventory upgrades) {
                 MMUtils.installUpgrades(ctx, upgrades, mAEUpgrades, true, false);
@@ -435,6 +479,7 @@ public class TileAnalysisResult {
             }
         }
 
+        // set ae tile orientation and config
         if (te instanceof AEBaseTile ae) {
             if (mAEUp != null && mAEForward != null) {
                 ae.setOrientation(mAEForward, mAEUp);
@@ -445,10 +490,12 @@ public class TileAnalysisResult {
             }
         }
 
+        // set ae tile custom name
         if (mAECustomName != null && te instanceof ICustomNameObject customName && !(te instanceof TileCableBus)) {
             customName.setCustomName(mAECustomName);
         }
 
+        // add/remove/update ae parts and cables
         if (te instanceof IPartHost partHost && mAEParts != null) {
             for (ForgeDirection dir : ALL_DIRECTIONS) {
                 IPart part = partHost.getPart(dir);
@@ -461,7 +508,9 @@ public class TileAnalysisResult {
 
                 boolean isAttunable = part instanceof PartP2PTunnelNormal && expected != null && expected.isAttunable();
 
+                // if the p2p is attunable (non-interface) then we don't need to remove it
                 if (!isAttunable) {
+                    // change the part into the proper version
                     if (actualItem != null && (expectedItem == null || !Objects.equals(actualItem, expectedItem))) {
                         removePart(ctx, partHost, dir, false);
                         actualItem = null;
@@ -484,6 +533,7 @@ public class TileAnalysisResult {
             }
         }
 
+        // update the inventory
         if (te instanceof IInventory inventory && mInventory != null) {
             mInventory.apply(ctx, inventory, true, false);
         }
@@ -535,6 +585,7 @@ public class TileAnalysisResult {
 
         NBTTagCompound tag = partStack.getTagCompound();
 
+        // manually clear the name
         if (tag != null) {
             tag.removeTag("display");
 
@@ -568,6 +619,11 @@ public class TileAnalysisResult {
         return true;
     }
 
+    /**
+     * Get the required items for a block that exists in the world
+     * 
+     * @return True when this result can be applied to the tile, false otherwise
+     */
     public boolean getRequiredItemsForExistingBlock(IBlockApplyContext context) {
         TileEntity te = context.getTileEntity();
 
@@ -649,6 +705,11 @@ public class TileAnalysisResult {
         return true;
     }
 
+    /**
+     * Get the required items for a block that doesn't exist
+     * 
+     * @return True if this tile result is valid, false otherwise
+     */
     public boolean getRequiredItemsForNewBlock(IBlockApplyContext context) {
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             CoverData target = mCovers == null ? null : mCovers[side.ordinal()];

@@ -16,6 +16,9 @@ import appeng.parts.automation.UpgradeInventory;
 import appeng.util.item.AEItemStack;
 import gregtech.api.util.GTUtility;
 
+/**
+ * An item provider that creates AE cells.
+ */
 public class AECellItemProvider implements IItemProvider {
 
     public PortableItemStack mCell;
@@ -25,6 +28,10 @@ public class AECellItemProvider implements IItemProvider {
 
     public AECellItemProvider() {}
 
+    /**
+     * @param stack A stack that may or may not be a cell.
+     * @return The item provider if the stack is the cell, or null if it wasn't.
+     */
     public static AECellItemProvider fromWorkbenchItem(ItemStack stack) {
         if (stack == null || !(stack.getItem() instanceof ICellWorkbenchItem item) || !item.isEditable(stack)) {
             return null;

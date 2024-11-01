@@ -6,6 +6,11 @@ import org.joml.Vector3f;
 
 import com.gtnewhorizon.gtnhlib.client.renderer.quad.QuadView;
 
+/**
+ * Sorts QuadViews according to their distance from the player.
+ * It's mostly copied from the vanilla comparator.
+ * This can certainly be improved, but it works well enough so I haven't.
+ */
 public class QuadViewComparator implements Comparator<QuadView> {
 
     private float pX, pY, pZ;

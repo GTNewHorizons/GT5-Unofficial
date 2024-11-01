@@ -7,6 +7,9 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
 
+/**
+ * An analysis for an inventory.
+ */
 public class InventoryAnalysis {
 
     public boolean mFuzzy;
@@ -14,6 +17,11 @@ public class InventoryAnalysis {
 
     public InventoryAnalysis() {}
 
+    /**
+     * Gets an analysis for an inventory.
+     * 
+     * @param fuzzy When true, NBT will be ignored and items will be fuzzily-retrieved.
+     */
     public static InventoryAnalysis fromInventory(IInventory inv, boolean fuzzy) {
         InventoryAnalysis analysis = new InventoryAnalysis();
         analysis.mFuzzy = fuzzy;
@@ -43,6 +51,13 @@ public class InventoryAnalysis {
         return fuzzy ? new PortableItemStack(stack) : PortableItemStack.withNBT(stack);
     }
 
+    /**
+     * Applies the analysis
+     * 
+     * @param consume  When true, items will be consumed
+     * @param simulate When true, the inventory will not be modified in any way
+     * @return True when the inventory was successfully updated
+     */
     public boolean apply(IBlockApplyContext context, IInventory inv, boolean consume, boolean simulate) {
         if (inv.getSizeInventory() != mItems.length) {
             context.error("inventory was the wrong size");

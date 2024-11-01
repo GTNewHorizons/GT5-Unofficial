@@ -29,6 +29,9 @@ import appeng.parts.p2p.PartP2PTunnelNormal;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
 
+/**
+ * Stores data for AE facade parts. Also stores the data for AE cables.
+ */
 public class AEPartData {
 
     public PortableItemStack mPart;
@@ -52,6 +55,9 @@ public class AEPartData {
 
     }
 
+    /**
+     * Analyzes the part. An AEPartData always does something if a part is present, so we'll never need to return null.
+     */
     public AEPartData(IPart part) {
         mPart = new PortableItemStack(part.getItemStack(PartItemStack.Wrench));
 
@@ -128,6 +134,12 @@ public class AEPartData {
         return isPartSubclassOf(PartP2PTunnelNormal.class);
     }
 
+    /**
+     * Updates an existing part on a cable bus.
+     * Will attune p2ps to the correct variant if possible.
+     * 
+     * @return True if the part was updated successfully, or false if the TileAnalysisResult should bail.
+     */
     public boolean updatePart(IBlockApplyContext context, IPartHost partHost, ForgeDirection side) {
         IPart part = partHost.getPart(side);
 
@@ -144,8 +156,10 @@ public class AEPartData {
             try {
                 final P2PCache p2p = tunnel.getProxy()
                     .getP2P();
+                // calls setFrequency
                 p2p.updateFreq(tunnel, mP2PFreq);
             } catch (final GridAccessException e) {
+                // not on a grid yet, so we just set the frequency directly
                 tunnel.setFrequency(mP2PFreq);
             }
 
@@ -200,6 +214,12 @@ public class AEPartData {
         return true;
     }
 
+    /**
+     * Gets any required items for a part that exists in the world.
+     * Effectively a no-op, should not be called with a real IBlockApplyContext.
+     * 
+     * @return True if the op succeeded
+     */
     public boolean getRequiredItemsForExistingPart(IBlockApplyContext context, IPartHost partHost,
         ForgeDirection side) {
         IPart part = partHost.getPart(side);
@@ -219,11 +239,22 @@ public class AEPartData {
                     }
                 }
             }
+
+            IInventory patterns = segmentedInventory.getInventoryByName("patterns");
+            if (mAEPatterns != null && patterns != null) {
+                mAEPatterns.apply(context, patterns, true, true);
+            }
         }
 
         return true;
     }
 
+    /**
+     * Gets all required items for a part that doesn't exist.
+     * 
+     * @param context
+     * @return True if the op succeeded
+     */
     public boolean getRequiredItemsForNewPart(IBlockApplyContext context) {
         if (mAEUpgrades != null) {
             for (PortableItemStack upgrade : mAEUpgrades) {
@@ -231,9 +262,18 @@ public class AEPartData {
             }
         }
 
+        if (mAEPatterns != null) {
+            for (IItemProvider item : mAEPatterns.mItems) {
+                item.getStack(context, true);
+            }
+        }
+
         return true;
     }
 
+    /**
+     * Gets the stack that should be consumed/given when this part is created/removed.
+     */
     public ItemStack getEffectivePartStack() {
         if (isAttunable() && isP2P()) {
             return AEApi.instance()
@@ -257,6 +297,7 @@ public class AEPartData {
         result = prime * result + ((mCustomName == null) ? 0 : mCustomName.hashCode());
         result = prime * result + Arrays.hashCode(mAEUpgrades);
         result = prime * result + ((mConfig == null) ? 0 : mConfig.hashCode());
+        result = prime * result + ((mAEPatterns == null) ? 0 : mAEPatterns.hashCode());
         result = prime * result + ((mOreDict == null) ? 0 : mOreDict.hashCode());
         result = prime * result + Boolean.hashCode(mP2POutput);
         result = prime * result + Long.hashCode(mP2PFreq);
@@ -286,6 +327,9 @@ public class AEPartData {
         if (mConfig == null) {
             if (other.mConfig != null) return false;
         } else if (!mConfig.equals(other.mConfig)) return false;
+        if (mAEPatterns == null) {
+            if (other.mAEPatterns != null) return false;
+        } else if (!mAEPatterns.equals(other.mAEPatterns)) return false;
         if (mOreDict == null) {
             if (other.mOreDict != null) return false;
         } else if (!mOreDict.equals(other.mOreDict)) return false;

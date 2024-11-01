@@ -23,6 +23,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.net.GTPacket;
 import gregtech.api.net.IGT_NetworkHandler;
@@ -37,6 +38,10 @@ import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink.UplinkState;
 import io.netty.buffer.ByteBuf;
 
+/**
+ * Contains all networking messages that the manipulator can send.
+ * Entries can be reordered.
+ */
 enum Messages {
 
     MMBPressed(
@@ -235,7 +240,7 @@ enum Messages {
 
     ;
 
-    public static final IGT_NetworkHandler channel = createNetwork();
+    private static final IGT_NetworkHandler CHANNEL = createNetwork();
 
     private ISimplePacketHandler<? extends SimplePacket> handler;
 
@@ -256,8 +261,10 @@ enum Messages {
     }
 
     public void sendToServer(Object data) {
-        GTMod.GT_FML_LOGGER.info("Sending packet to server: " + this + "; " + data);
-        channel.sendToServer(getNewPacket(data));
+        if (GTValues.D1) {
+            GTMod.GT_FML_LOGGER.info("Sending packet to server: " + this + "; " + data);
+        }
+        CHANNEL.sendToServer(getNewPacket(data));
     }
 
     public void sendToPlayer(EntityPlayerMP player) {
@@ -265,8 +272,10 @@ enum Messages {
     }
 
     public void sendToPlayer(EntityPlayerMP player, Object data) {
-        GTMod.GT_FML_LOGGER.info("Sending packet to player: " + this + "; " + data + "; " + player);
-        channel.sendToPlayer(getNewPacket(data), player);
+        if (GTValues.D1) {
+            GTMod.GT_FML_LOGGER.info("Sending packet to player: " + this + "; " + data + "; " + player);
+        }
+        CHANNEL.sendToPlayer(getNewPacket(data), player);
     }
 
     public void sendToPlayersAround(Location location) {
@@ -274,20 +283,25 @@ enum Messages {
     }
 
     public void sendToPlayersAround(Location location, Object data) {
-        GTMod.GT_FML_LOGGER.info("Sending packet to players around " + location.toString() + ": " + this + "; " + data);
-        channel.sendToAllAround(
+        if (GTValues.D1) {
+            GTMod.GT_FML_LOGGER
+                .info("Sending packet to players around " + location.toString() + ": " + this + "; " + data);
+        }
+        CHANNEL.sendToAllAround(
             getNewPacket(data),
             new TargetPoint(location.worldId, location.x, location.y, location.z, 256d));
     }
 
     @SuppressWarnings("unchecked")
     public void handle(EntityPlayer player, SimplePacket packet) {
-        GTMod.GT_FML_LOGGER
-            .info("Handling packet: " + this + "; " + packet + "; " + player + "; " + NetworkUtils.isClient());
+        if (GTValues.D1) {
+            GTMod.GT_FML_LOGGER
+                .info("Handling packet: " + this + "; " + packet + "; " + player + "; " + NetworkUtils.isClient());
+        }
         ((ISimplePacketHandler<SimplePacket>) handler).handle(player, packet);
     }
 
-    public static GTNetwork createNetwork() {
+    private static GTNetwork createNetwork() {
         ArrayList<GTPacket> packets = new ArrayList<>();
 
         for (Messages message : values()) {
@@ -301,17 +315,29 @@ enum Messages {
         return new GTNetwork("MatterManipulator", packets.toArray(new GTPacket[0]));
     }
 
+    /**
+     * Makes sure this class is loaded (initializes {@link #CHANNEL}).
+     */
     public static void init() {
         // does nothing
     }
 
+    /**
+     * Something that can handle and create simple packets.
+     */
     private static interface ISimplePacketHandler<T extends SimplePacket> {
 
         public void handle(EntityPlayer player, T packet);
 
+        /**
+         * Gets a new packet. Called once on initialization with {@code data = null}.
+         */
         public T getNewPacket(Messages message, @Nullable Object data);
     }
 
+    /**
+     * A packet that doesn't contain any data.
+     */
     private static class SimplePacket extends GTPacket {
 
         public final Messages message;
@@ -348,6 +374,9 @@ enum Messages {
         }
     }
 
+    /**
+     * A packet that contains a single int.
+     */
     private static class IntPacket extends SimplePacket {
 
         public int value;
@@ -369,6 +398,9 @@ enum Messages {
         }
     }
 
+    /**
+     * A packet that contains the data needed for updating an uplink.
+     */
     private static class UplinkPacket extends SimplePacket {
 
         public int worldId;
@@ -414,6 +446,9 @@ enum Messages {
         }
     }
 
+    /**
+     * Wraps a handler that must be called on the server. (see currying)
+     */
     private static <T extends SimplePacket> ISimplePacketHandler<T> server(ISimplePacketHandler<T> next) {
         return new ISimplePacketHandler<T>() {
 
@@ -435,6 +470,9 @@ enum Messages {
         };
     }
 
+    /**
+     * Wraps a handler that must be called on the client. (see currying)
+     */
     private static <T extends SimplePacket> ISimplePacketHandler<T> client(ISimplePacketHandler<T> next) {
         return new ISimplePacketHandler<T>() {
 
@@ -466,6 +504,10 @@ enum Messages {
         public void handle(EntityPlayer player, ItemStack stack, ItemMatterManipulator manipulator, NBTState state);
     }
 
+    /**
+     * Handles all manipulator-related state loading & saving.
+     * Useful for packets that only change a manipulator's state.
+     */
     private static ISimplePacketHandler<SimplePacket> simple(ISimpleHandler handler) {
         return new ISimplePacketHandler<Messages.SimplePacket>() {
 
@@ -489,6 +531,9 @@ enum Messages {
         };
     }
 
+    /**
+     * Wraps a handler that updates an enum within a manipulator's state.
+     */
     private static <E extends Enum<E>> ISimplePacketHandler<IntPacket> enumPacket(E[] values,
         BiConsumer<NBTState, E> setter) {
         return new ISimplePacketHandler<IntPacket>() {
@@ -524,6 +569,9 @@ enum Messages {
             E value);
     }
 
+    /**
+     * Wraps a handler that updates an enum. (provides more params than normal)
+     */
     private static <E extends Enum<E>> ISimplePacketHandler<IntPacket> enumPacket(E[] values, IEnumSetter<E> setter) {
         return new ISimplePacketHandler<IntPacket>() {
 
@@ -552,6 +600,12 @@ enum Messages {
         };
     }
 
+    /**
+     * Plans will have jobs automatically started (see {@link #GetRequiredItems}).
+     */
     public static final int PLAN_AUTO_SUBMIT = 0b1;
+    /**
+     * Plans will ignore existing blocks (see {@link #GetRequiredItems}).
+     */
     public static final int PLAN_ALL = 0b10;
 }

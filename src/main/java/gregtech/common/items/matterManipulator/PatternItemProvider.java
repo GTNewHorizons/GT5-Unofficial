@@ -8,6 +8,9 @@ import org.jetbrains.annotations.Nullable;
 import appeng.api.AEApi;
 import appeng.api.definitions.IItemDefinition;
 
+/**
+ * An item provider that creates encoded AE patterns from blank patterns.
+ */
 public class PatternItemProvider implements IItemProvider {
 
     private Integer amount;

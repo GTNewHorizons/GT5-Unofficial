@@ -55,6 +55,9 @@ public class MMUtils {
 
     private MMUtils() {}
 
+    /**
+     * Gets the standard vanilla hit result for a player.
+     */
     public static MovingObjectPosition getHitResult(EntityPlayer player) {
         double reachDistance = player instanceof EntityPlayerMP mp ? mp.theItemInWorldManager.getBlockReachDistance()
             : GTUtility.getClientReachDistance();
@@ -71,6 +74,9 @@ public class MMUtils {
         return hit != null && hit.typeOfHit != MovingObjectType.BLOCK ? null : hit;
     }
 
+    /**
+     * Gets the 'location' that the player is looking at.
+     */
     public static Vector3i getLookingAtLocation(EntityPlayer player) {
         double reachDistance = player instanceof EntityPlayerMP mp ? mp.theItemInWorldManager.getBlockReachDistance()
             : GTUtility.getClientReachDistance();
@@ -103,6 +109,10 @@ public class MMUtils {
         return target;
     }
 
+    /**
+     * Calculates the delta x/y/z for the bounding box around a,b.
+     * This is useful because a,a + deltas will always represent the same bounding box that's around a,b.
+     */
     public static Vector3i getRegionDeltas(Location a, Location b) {
         if (a == null || b == null || a.worldId != b.worldId) return null;
 
@@ -127,6 +137,9 @@ public class MMUtils {
         return new Vector3i(dX, dY, dZ);
     }
 
+    /**
+     * {@link #getRegionDeltas(Location, Location)} but with three params.
+     */
     public static Vector3i getRegionDeltas(Location a, Location b, Location c) {
         if (a == null || b == null || c == null || a.worldId != b.worldId || a.worldId != c.worldId) return null;
 
@@ -146,6 +159,9 @@ public class MMUtils {
         return new Vector3i(dX, dY, dZ);
     }
 
+    /**
+     * Converts deltas to an AABB.
+     */
     public static AxisAlignedBB getBoundingBox(Location l, Vector3i deltas) {
         int minX = Math.min(l.x, l.x + deltas.x);
         int minY = Math.min(l.y, l.y + deltas.y);
@@ -157,6 +173,11 @@ public class MMUtils {
         return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
+    /**
+     * Gets all blocks contained in a bounding box.
+     * This can certainly be improved but I couldn't get the Iterator version to work properly and this doesn't seem to
+     * be a big problem.
+     */
     public static List<Vector3i> getBlocksInBB(Location l, Vector3i deltas) {
         int minX = Math.min(l.x, l.x + deltas.x);
         int minY = Math.min(l.y, l.y + deltas.y);
@@ -182,6 +203,10 @@ public class MMUtils {
         return blocks;
     }
 
+    /**
+     * Empties all items in an inventory into a pseudo inventory.
+     * Will reset/disassemble any items as necessary.
+     */
     public static void emptyInventory(IPseudoInventory dest, IInventory src) {
         if (src == null) return;
 
@@ -218,6 +243,9 @@ public class MMUtils {
         src.markDirty();
     }
 
+    /**
+     * Removes all items in an inventory without returning them.
+     */
     public static void clearInventory(IInventory inv) {
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             inv.setInventorySlotContents(i, null);
@@ -225,6 +253,10 @@ public class MMUtils {
         inv.markDirty();
     }
 
+    /**
+     * Merges stacks together and does not preserve order within the inventory.
+     * Array will never contain null indices.
+     */
     public static PortableItemStack[] fromInventory(IInventory inventory) {
         List<ItemStack> merged = GTUtility.mergeStacks(Arrays.asList(GTUtility.inventoryToArray(inventory, false)));
         ArrayList<PortableItemStack> out = new ArrayList<>();
@@ -236,6 +268,10 @@ public class MMUtils {
         return out.toArray(new PortableItemStack[out.size()]);
     }
 
+    /**
+     * Doesn't merge stacks and preserves the order of stacks.
+     * Empty indices will be null.
+     */
     public static PortableItemStack[] fromInventoryNoMerge(IInventory inventory) {
         PortableItemStack[] out = new PortableItemStack[inventory.getSizeInventory()];
 
@@ -248,6 +284,14 @@ public class MMUtils {
         return out;
     }
 
+    /**
+     * Installs upgrades into an AE UpgradeInventory.
+     * 
+     * @param pupgrades The list of upgrades to install.
+     * @param consume   When true, items will be pulled from the pseudo inventory.
+     * @param simulate  When true, the upgrade inventory won't be touched at all.
+     * @return True when successful.
+     */
     public static boolean installUpgrades(IPseudoInventory src, UpgradeInventory dest, PortableItemStack[] pupgrades,
         boolean consume, boolean simulate) {
         List<ItemStack> stacks = GTUtility.mapToList(pupgrades, PortableItemStack::toStack);
@@ -281,6 +325,11 @@ public class MMUtils {
         }
     }
 
+    /**
+     * Converts an nbt tag to json.
+     * Does not preserve the specific types of the tags, but the returned data will be sane and generally correct.
+     * Compatible with Gson.
+     */
     @SuppressWarnings("unchecked")
     public static JsonElement toJsonObject(NBTBase nbt) {
         if (nbt == null) {
@@ -357,6 +406,9 @@ public class MMUtils {
         }
     }
 
+    /**
+     * The opposite of {@link #toJsonObject(NBTBase)}
+     */
     public static NBTBase toNbt(JsonElement jsonElement) {
         if (jsonElement == null) {
             return null;
@@ -453,6 +505,15 @@ public class MMUtils {
             && ItemStack.areItemStackTagsEqual(a, b);
     }
 
+    /**
+     * The logic for creating a plan.
+     * This really belongs in {@link Messages}, but I put it here so that it's hotswappable.
+     * 
+     * @param player
+     * @param state
+     * @param manipulator
+     * @param flags
+     */
     public static void createPlanImpl(EntityPlayer player, NBTState state, ItemMatterManipulator manipulator,
         int flags) {
         List<PendingBlock> blocks = state.getPendingBlocks(player.getEntityWorld());

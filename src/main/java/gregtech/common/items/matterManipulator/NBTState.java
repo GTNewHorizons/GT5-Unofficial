@@ -3,6 +3,7 @@ package gregtech.common.items.matterManipulator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,6 +57,9 @@ import gregtech.common.blocks.BlockMachines;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.RegionAnalysis;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 
+/**
+ * The NBT state of a manipulator.
+ */
 class NBTState {
 
     static final Gson GSON = new GsonBuilder().create();
@@ -84,6 +88,9 @@ class NBTState {
         return (NBTTagCompound) MMUtils.toNbt(GSON.toJsonTree(this));
     }
 
+    /**
+     * True if the ME system could be connected to.
+     */
     public boolean hasMEConnection() {
         return encKey != null && securityTerminal != null
             && gridNode != null
@@ -92,6 +99,9 @@ class NBTState {
             && itemStorage != null;
     }
 
+    /**
+     * Tries to connect to an ME system, if possible.
+     */
     public boolean connectToMESystem() {
         grid = null;
         storageGrid = null;
@@ -121,6 +131,9 @@ class NBTState {
 
     private transient IWirelessAccessPoint prevAccessPoint;
 
+    /**
+     * Checks if the player is currently within range of an access point and the access point is online.
+     */
     public boolean canInteractWithAE(EntityPlayer player) {
         if (grid == null) {
             return false;
@@ -171,6 +184,9 @@ class NBTState {
 
     public transient MTEMMUplink uplink;
 
+    /**
+     * Tries to connect to the uplink, if possible.
+     */
     public boolean connectToUplink() {
         uplink = null;
 
@@ -194,6 +210,10 @@ class NBTState {
 
     // #region Pending blocks
 
+    /**
+     * Gets the pending blocks for this manipulator.
+     * Note: moving uses a special algorithm, so its value returned here should only be used for drawing the hints.
+     */
     public List<PendingBlock> getPendingBlocks(World world) {
         return switch (config.placeMode) {
             case COPYING, MOVING -> getAnalysis(world);
@@ -295,6 +315,8 @@ class NBTState {
 
             if (block instanceof BlockMachines) {
                 int start = 0, end = 0;
+
+                // calculate the start & end mConnections flags
                 switch (new Vector3i(b).sub(a)
                     .maxComponent()) {
                     case 0: {
@@ -317,6 +339,7 @@ class NBTState {
                 for (Vector3i voxel : getLineVoxels(a.x, a.y, a.z, b.x, b.y, b.z)) {
                     byte existingConnections = 0;
 
+                    // respect existing connections if possible
                     if (world.getTileEntity(voxel.x, voxel.y, voxel.z) instanceof IGregTechTileEntity igte
                         && igte.getMetaTileEntity() instanceof IConnectable connectable) {
                         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -339,12 +362,13 @@ class NBTState {
                     out.add(pendingBlock);
                 }
 
+                // stop the ends from connecting to nothing
                 if (!out.isEmpty()) {
                     out.get(0).tileData.mConnections &= ~start;
                     out.get(out.size() - 1).tileData.mConnections &= ~end;
                 }
-            } else if (stack.getItem() instanceof IPartItem partItem
-                && partItem.createPartFromItemStack(stack) instanceof IPartCable cable) {
+            } else if (stack.getItem() instanceof IPartItem partItem) {
+                if (partItem.createPartFromItemStack(stack) instanceof IPartCable cable) {
                     Block cableBus = PendingBlock.AE_BLOCK_CABLE.get();
 
                     for (Vector3i voxel : getLineVoxels(a.x, a.y, a.z, b.x, b.y, b.z)) {
@@ -364,6 +388,7 @@ class NBTState {
                         out.add(pendingBlock);
                     }
                 }
+            }
         }
 
         return out;
@@ -630,9 +655,13 @@ class NBTState {
         delta.y += signum(delta.y);
         delta.z += signum(delta.z);
 
+        // the deltas for each dimension (A/B/Height)
         int dA = 0, dB = 0, dH = 0;
+        // used to determine the final block position
         Vector3i vecA, vecB, vecH;
 
+        // calculate the delta vectors for each axis
+        // this is kinda cursed and I don't really understand it anymore, so good luck changing it
         switch (delta.minComponent()) {
             case 0: {
                 dA = delta.y;
@@ -668,13 +697,15 @@ class NBTState {
 
         int absA = Math.abs(dA);
         int absB = Math.abs(dB);
-        int absH = Math.abs(dH) + 1;
+        int absH = Math.abs(dH) + 1; // I have no idea why this +1 is needed
 
         float rA = absA / 2f;
         float rB = absB / 2f;
 
         boolean[][][] present = new boolean[absA + 2][absH + 2][absB + 2];
 
+        // generate the blocks in A,B,H space
+        // at this point, x=A, z=B, and y=H
         for (int a = 0; a < absA; a++) {
             for (int b = 0; b < absB; b++) {
                 double distance = Math.pow((a - rA + 0.5) / rA, 2.0) + Math.pow((b - rB + 0.5) / rB, 2.0);
@@ -690,6 +721,7 @@ class NBTState {
             }
         }
 
+        // check the adjacent blocks for each block and determine whether the block should be a volume, edge, or face
         for (PendingBlock block : pending) {
             byte adj = 0;
 
@@ -699,12 +731,18 @@ class NBTState {
                 }
             }
 
+            // I know this looks :ConcerningRead: but this is just an easy way to check which blocks are adjacent to
+            // this one
+
+            // if this block is missing an adjacent block, it's not a volume
             if (adj != 0b111111) {
+                // if this block is missing one of the N/S/E/W blocks, it's an edge (the surface)
                 if ((adj & 0b111100) == 0b111100) {
                     block.setBlock(edges);
                     block.buildOrder = 1;
                     block.renderOrder = 1;
                 } else {
+                    // otherwise, it's a face (top & bottom)
                     block.setBlock(faces);
                     block.buildOrder = 2;
                     block.renderOrder = 0;
@@ -712,6 +750,7 @@ class NBTState {
             }
         }
 
+        // transform the positions of each block from relative A,B,H space into absolute X,Y,Z space
         for (PendingBlock block : pending) {
             int a = block.x, b = block.z, h = block.y;
 
@@ -733,11 +772,15 @@ class NBTState {
         public Shape shape = Shape.LINE;
 
         public Location coordA, coordB, coordC;
+        // these are used to determine which blocks are being moved
+        // if any are non-null, then the corresponding block is being moved
         public Vector3i coordAOffset, coordBOffset, coordCOffset;
 
         public JsonElement corners, edges, faces, volumes, cables;
 
+        /** These blocks should be replaced when exchanging */
         public List<JsonElement> replaceWhitelist;
+        /** These blocks are what gets placed when exchanging */
         public JsonElement replaceWith;
 
         public static JsonElement saveStack(ItemStack stack) {
@@ -897,6 +940,11 @@ class NBTState {
         }
     }
 
+    /**
+     * Pins a point to the axis planes around an origin.
+     * 
+     * @return The pinned point
+     */
     public static Vector3i pinToPlanes(Vector3i origin, Vector3i point) {
         int dX = Math.abs(point.x - origin.x);
         int dY = Math.abs(point.y - origin.y);
@@ -913,6 +961,14 @@ class NBTState {
         }
     }
 
+    /**
+     * Pins a point to the normal of the axis plane described by origin,b.
+     * 
+     * @param origin The origin
+     * @param b      A point on an axis plane of origin
+     * @param point  The point to pin
+     * @return The pinned point on the normal
+     */
     public static Vector3i pinToLine(Vector3i origin, Vector3i b, Vector3i point) {
         return switch (new Vector3i(b).sub(origin)
             .minComponent()) {
@@ -923,6 +979,9 @@ class NBTState {
         };
     }
 
+    /**
+     * Pins a point to the cardinal axes.
+     */
     public static Vector3i pinToAxes(Vector3i origin, Vector3i point) {
         return switch (new Vector3i(point).sub(origin)
             .maxComponent()) {
@@ -984,11 +1043,16 @@ class NBTState {
         CABLES,
     }
 
+    /**
+     * This represents a block in the world.
+     * It stores everything the building algorithm needs to know to place a block.
+     */
     static class PendingBlock extends Location {
 
         public UniqueIdentifier blockId;
         public int metadata;
         public TileAnalysisResult tileData;
+        // various sort orders, one is for drawing hints and one is for the build order
         public int renderOrder, buildOrder;
 
         public transient ItemBlock item;
@@ -1010,6 +1074,9 @@ class NBTState {
             setBlock(block, meta);
         }
 
+        /**
+         * Clears this block's block but not its position.
+         */
         public PendingBlock reset() {
             this.block = null;
             this.item = null;
@@ -1028,6 +1095,9 @@ class NBTState {
             return this;
         }
 
+        /**
+         * If the item in the stack isn't an ItemBlock, this just resets the stored block.
+         */
         public PendingBlock setBlock(ItemStack stack) {
             reset();
 
@@ -1042,11 +1112,6 @@ class NBTState {
                 this.metadata = this.item != null && this.item.getHasSubtypes() ? Items.feather.getDamage(stack) : 0;
             }
 
-            return this;
-        }
-
-        public PendingBlock setTileData(TileAnalysisResult tileData) {
-            this.tileData = tileData;
             return this;
         }
 
@@ -1098,6 +1163,9 @@ class NBTState {
             return false;
         }
 
+        /**
+         * Creates a PendingBlock from an existing block in the world.
+         */
         public static PendingBlock fromBlock(World world, int x, int y, int z) {
             Block block = world.getBlock(x, y, z);
             block = Block.getBlockFromItem(Item.getItemFromBlock(block));
@@ -1107,14 +1175,20 @@ class NBTState {
             return new PendingBlock(world.provider.dimensionId, x, y, z, block, meta);
         }
 
+        /**
+         * Creates a PendingBlock from a picked block.
+         */
         public static PendingBlock fromPickBlock(World world, EntityPlayer player, MovingObjectPosition hit) {
             if (hit == null || hit.typeOfHit != MovingObjectType.BLOCK) return null;
 
             return fromBlock(world, hit.blockX, hit.blockY, hit.blockZ);
         }
 
+        /**
+         * Checks if two PendingBlocks contain the same Block.
+         */
         public static boolean isSameBlock(PendingBlock a, PendingBlock b) {
-            return a.getBlock() == b.getBlock() && a.metadata == b.metadata;
+            return Objects.equals(a.blockId, b.blockId) && a.metadata == b.metadata;
         }
 
         @Override
@@ -1167,6 +1241,9 @@ class NBTState {
             return true;
         }
 
+        /**
+         * A comparator for sorting blocks prior to building.
+         */
         public static Comparator<PendingBlock> getComparator() {
             Comparator<UniqueIdentifier> blockId = Comparator.nullsFirst(
                 Comparator.comparing((UniqueIdentifier id) -> id.modId)
@@ -1184,6 +1261,11 @@ class NBTState {
         }
     }
 
+    /**
+     * Represents a location in a world.
+     * Can probably be improved, but it's not a big problem yet since these aren't meant to be kept around for very
+     * long.
+     */
     static class Location {
 
         public int worldId;
@@ -1254,6 +1336,9 @@ class NBTState {
             return new Location(worldId, x, y, z);
         }
 
+        /**
+         * Checks if two locations are compatible (in the same world).
+         */
         public static boolean areCompatible(Location a, Location b) {
             if (a == null || b == null) return false;
 
@@ -1262,6 +1347,9 @@ class NBTState {
             return true;
         }
 
+        /**
+         * Checks if three locations are compatible (in the same world).
+         */
         public static boolean areCompatible(Location a, Location b, Location c) {
             if (a == null || b == null || c == null) return false;
 

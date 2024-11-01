@@ -15,6 +15,9 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.common.items.matterManipulator.RadialMenu.RadialMenuClickHandler;
 import gregtech.common.items.matterManipulator.RadialMenu.RadialMenuOption;
 
+/**
+ * A builder that significantly helps with making radial menus.
+ */
 public class RadialMenuBuilder {
 
     public final UIBuildContext buildContext;
@@ -26,44 +29,60 @@ public class RadialMenuBuilder {
         this.buildContext = buildContext;
     }
 
+    /** Sets the inner icon */
     public RadialMenuBuilder innerIcon(IDrawable icon) {
         this.innerIcon = icon;
         return this;
     }
 
+    /** Sets the inner icon */
     public RadialMenuBuilder innerIcon(ItemStack item) {
         this.innerIcon = new ItemDrawable(item).withOffset(-8, -8)
             .withFixedSize(32, 32);
         return this;
     }
 
+    /** Sets the inner radius */
     public RadialMenuBuilder innerRadius(float radius) {
         this.innerRadius = radius;
         return this;
     }
 
+    /** Sets the outer radius */
     public RadialMenuBuilder outerRadius(float radius) {
         this.outerRadius = radius;
         return this;
     }
 
+    /** Adds an externally-built option. */
     public RadialMenuBuilder option(RadialMenuOptionBuilder<RadialMenuBuilder> option) {
         options.add(option);
         return this;
     }
 
+    /**
+     * Adds a new option to this builder.
+     * Call {@link RadialMenuOptionBuilderLeaf#done()} once done to finish adding the option.
+     */
     public RadialMenuOptionBuilderLeaf<RadialMenuBuilder> option() {
         var leaf = new RadialMenuOptionBuilderLeaf<>(buildContext, this);
         options.add(leaf);
         return leaf;
     }
 
+    /**
+     * Adds a new sub-menu to this builder.
+     * Call {@link RadialMenuOptionBuilderBranch#done()} once done to finish adding the sub menu.
+     */
     public RadialMenuOptionBuilderBranch<RadialMenuBuilder> branch() {
         var branch = new RadialMenuOptionBuilderBranch<>(buildContext, this);
         options.add(branch);
         return branch;
     }
 
+    /**
+     * Lets you apply a custom function without needing a local variable.
+     */
     public RadialMenuBuilder pipe(Consumer<RadialMenuBuilder> fn) {
         fn.accept(this);
         return this;
@@ -83,6 +102,9 @@ public class RadialMenuBuilder {
         return menu;
     }
 
+    /**
+     * The base data for branch and leaf builders.
+     */
     public static abstract class RadialMenuOptionBuilder<Parent> {
 
         public final UIBuildContext buildContext;
@@ -99,11 +121,17 @@ public class RadialMenuBuilder {
 
         public abstract void apply(RadialMenu menu);
 
+        /**
+         * Finishes constructing this option/sub menu and returns to the parent builder.
+         */
         public Parent done() {
             return parent;
         }
     }
 
+    /**
+     * A builder for radial menu options.
+     */
     public static class RadialMenuOptionBuilderLeaf<Parent> extends RadialMenuOptionBuilder<Parent> {
 
         public RadialMenuClickHandler onClicked;
@@ -186,6 +214,9 @@ public class RadialMenuBuilder {
         }
     }
 
+    /**
+     * A builder for radial menu sub menus.
+     */
     public static class RadialMenuOptionBuilderBranch<Parent> extends RadialMenuOptionBuilder<Parent> {
 
         public final List<RadialMenuOptionBuilder<RadialMenuOptionBuilderBranch<Parent>>> children = new ArrayList<>();

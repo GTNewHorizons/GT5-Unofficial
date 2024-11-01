@@ -28,8 +28,8 @@ public interface IPseudoInventory {
      * Atomically extracts items from this pseudo inventory.
      * 
      * The returned list is guaranteed to at minimum be equal to the items param.
-     * Extraneous items will not be extracted, and the returned list MUST be contain the same items as the request if
-     * the extraction succeeded and partial mode wasn't enabled.
+     * If the extraction succeeded and partial mode wasn't enabled, extraneous items will not be extracted and the
+     * returned list will contain the same items as the request.
      * If fuzzy mode is enabled there may be several stacks with different tags (and damages where relevant), but every
      * stackable item will be merged into the same IAEItemStack.
      * 
@@ -41,6 +41,11 @@ public interface IPseudoInventory {
      */
     public Pair<Boolean, List<IAEItemStack>> tryConsumeItems(List<IAEItemStack> items, int flags);
 
+    /**
+     * Consumes a set of items.
+     * 
+     * @return True when the items were successfully consumed.
+     */
     public default boolean tryConsumeItems(ItemStack... items) {
         List<IAEItemStack> stacks = new ArrayList<>(items.length);
         for (int i = 0; i < items.length; i++) stacks.add(AEItemStack.create(items[i]));

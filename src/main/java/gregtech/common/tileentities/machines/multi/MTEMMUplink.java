@@ -68,6 +68,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.items.matterManipulator.IPseudoInventory;
 import gregtech.common.items.matterManipulator.ItemMatterManipulator;
 import gregtech.common.items.matterManipulator.MatterManipulator;
 import gregtech.common.tileentities.machines.MTEMMUplinkMEHatch;
@@ -242,6 +243,10 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
+    /**
+     * An experimental wrapper that simplifies structure logic.
+     * I'll refactor this into a proper system the next time I make a multi.
+     */
     public class BasicStructureWrapper {
 
         public String[][] defText;
@@ -265,6 +270,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
             height = 0;
             length = defText.length;
 
+            // find the controller offset and count the number of casings
             int z = 0;
             for (String[] a : defText) {
                 int y = 0;
@@ -273,6 +279,8 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
                     width = Math.max(width, b.length());
                     for (int x = 0; x < b.length(); x++) {
                         char c = b.charAt(x);
+                        if (c == ' ' || c == '-' || c == '+') continue;
+
                         defCasingCounts.put(c, defCasingCounts.getOrDefault(c, 0) + 1);
 
                         if (c == '~') {
@@ -470,7 +478,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
             .addInfo("Interdimensional and infinite range uplink for matter manipulators.")
             .addInfo("Allows manipulators to convert plans into AE patterns.")
             .addInfo("Connects directly to an ME system via a " + EnumChatFormatting.GOLD + ItemList.Hatch_MatterManipulatorUplink_ME.get(0).getDisplayName() + EnumChatFormatting.GRAY + ".")
-            .addInfo("")
+            .addInfo(" ")
             .addInfo("Consumes 1A ZPM while active.")
             .addInfo("Must be fed with plasma via an input hatch.")
             .addInfo("Transfers to/from the manipulator cost " + String.format("%,d", BASE_PLASMA_EU_COST) + " EU in plasma per item or per bucket.")
@@ -619,6 +627,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
+    /**
+     * See {@link IPseudoInventory#tryConsumeItems(List, int)}
+     */
     public Pair<UplinkStatus, List<IAEItemStack>> tryConsumeItems(List<IAEItemStack> requestedItems, boolean simulate,
         boolean fuzzy) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
@@ -683,6 +694,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         return Pair.of(UplinkStatus.OK, out);
     }
 
+    /**
+     * See {@link IPseudoInventory#givePlayerItems(ItemStack...)}
+     */
     public UplinkStatus tryGivePlayerItems(List<IAEItemStack> items) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
 
@@ -711,6 +725,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         return UplinkStatus.OK;
     }
 
+    /**
+     * See {@link IPseudoInventory#givePlayerFluids(FluidStack...)}
+     */
     public UplinkStatus tryGivePlayerFluids(List<IAEFluidStack> fluids) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
 
@@ -739,9 +756,13 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         return UplinkStatus.OK;
     }
 
+    /**
+     * Tries to consume plasma EU.
+     * Converts plasma to EU as needed.
+     */
     private boolean consumePlasmaEU(long euToConsume) {
         if (pendingPlasmaEU < euToConsume) {
-            generatePlasmaEU(euToConsume);
+            generatePlasmaEU(euToConsume - pendingPlasmaEU);
         }
 
         if (pendingPlasmaEU >= euToConsume) {
@@ -752,6 +773,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
+    /**
+     * Converts plasma in hatches to EU.
+     */
     private void generatePlasmaEU(long euToGenerate) {
         FuelBackend fuels = RecipeMaps.plasmaFuels.getBackend();
 
@@ -784,6 +808,12 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
+    /**
+     * Submits a new plan to the ME hatch.
+     * 
+     * @param details   Some extra details for the plan
+     * @param autocraft When true, the plan will be automatically crafted
+     */
     public void submitPlan(EntityPlayer submitter, String details, List<IAEItemStack> requiredItems,
         boolean autocraft) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
@@ -806,6 +836,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
+    /**
+     * Clears any manual plans
+     */
     public void clearManualPlans(EntityPlayer player) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
 
@@ -814,6 +847,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
+    /**
+     * Clears and auto plans and cancels their jobs
+     */
     public void cancelAutoPlans(EntityPlayer player) {
         MTEMMUplinkMEHatch hatch = getMEHatch();
 
@@ -822,6 +858,9 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         }
     }
 
+    /**
+     * A weak-valued map containing all active uplinks
+     */
     private static final Map<Long, MTEMMUplink> UPLINKS = new MapMaker().weakValues()
         .makeMap();
 
@@ -855,6 +894,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
 
         stateCounter++;
 
+        // if the state has changed or 10 seconds have passed, send an update to all nearby clients
         if (state != lastState || stateCounter > 10) {
             lastState = state;
             stateCounter = 0;

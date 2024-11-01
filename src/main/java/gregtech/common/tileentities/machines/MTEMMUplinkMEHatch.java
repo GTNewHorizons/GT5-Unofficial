@@ -72,6 +72,9 @@ public class MTEMMUplinkMEHatch extends MTEHatch
     private final List<ManipulatorRequest> manualRequests = new ArrayList<>();
     private final List<ManipulatorRequest> autoRequests = new ArrayList<>();
 
+    /**
+     * Stored items that are being pushed to the ME network.
+     */
     private List<ItemStack> pendingCraft;
 
     public MTEMMUplinkMEHatch(int aID, String aName, String aNameRegional) {
@@ -194,6 +197,7 @@ public class MTEMMUplinkMEHatch extends MTEHatch
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
+                // use the mte as the IGridProxyable so that we don't have to add interfaces to the base tile entity
                 gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_MatterManipulatorUplink_ME.get(1), true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
@@ -312,34 +316,19 @@ public class MTEMMUplinkMEHatch extends MTEHatch
         super.saveNBTData(aNBT);
         aNBT.setBoolean("additionalConnection", additionalConnection);
 
+        if (pendingCraft != null) {
+            NBTTagList pendingItems = new NBTTagList();
+
+            for (ItemStack stack : pendingCraft) {
+                pendingItems.appendTag(stack.writeToNBT(new NBTTagCompound()));
+            }
+
+            aNBT.setTag("items", pendingItems);
+        }
+
         saveRequests(aNBT);
 
         getProxy().writeToNBT(aNBT);
-    }
-
-    private void loadRequestsImpl(NBTTagCompound tag) {
-        autoRequests.clear();
-        manualRequests.clear();
-
-        @SuppressWarnings("unchecked")
-        List<NBTTagCompound> auto = ((NBTTagList) tag.getTag("auto")).tagList;
-        for (NBTTagCompound request : auto) {
-            autoRequests.add(ManipulatorRequest.readFromNBT(this, request));
-        }
-
-        @SuppressWarnings("unchecked")
-        List<NBTTagCompound> manual = ((NBTTagList) tag.getTag("manual")).tagList;
-        for (NBTTagCompound request : manual) {
-            manualRequests.add(ManipulatorRequest.readFromNBT(this, request));
-        }
-
-        autoRequests.remove(null);
-        manualRequests.remove(null);
-    }
-
-    public void loadRequests(NBTTagCompound tag) {
-        loadRequestsImpl(tag);
-        onRequestsChanged();
     }
 
     @Override
@@ -347,7 +336,33 @@ public class MTEMMUplinkMEHatch extends MTEHatch
         super.loadNBTData(aNBT);
         additionalConnection = aNBT.getBoolean("additionalConnection");
 
-        loadRequestsImpl(aNBT);
+        if (aNBT.hasKey("items")) {
+            @SuppressWarnings("unchecked")
+            List<NBTTagCompound> pendingItems = ((NBTTagList) aNBT.getTag("items")).tagList;
+
+            pendingCraft = new LinkedList<>();
+            for (NBTTagCompound item : pendingItems) {
+                pendingCraft.add(ItemStack.loadItemStackFromNBT(item));
+            }
+        }
+
+        autoRequests.clear();
+        manualRequests.clear();
+
+        @SuppressWarnings("unchecked")
+        List<NBTTagCompound> auto = ((NBTTagList) aNBT.getTag("auto")).tagList;
+        for (NBTTagCompound request : auto) {
+            autoRequests.add(ManipulatorRequest.readFromNBT(this, request));
+        }
+
+        @SuppressWarnings("unchecked")
+        List<NBTTagCompound> manual = ((NBTTagList) aNBT.getTag("manual")).tagList;
+        for (NBTTagCompound request : manual) {
+            manualRequests.add(ManipulatorRequest.readFromNBT(this, request));
+        }
+
+        autoRequests.remove(null);
+        manualRequests.remove(null);
 
         getProxy().readFromNBT(aNBT);
 
@@ -563,6 +578,8 @@ public class MTEMMUplinkMEHatch extends MTEHatch
         public Future<ICraftingJob> job;
         public ICraftingLink link;
 
+        private static int counter;
+
         public ManipulatorRequest(UUID requester, String requestName, List<IAEItemStack> requiredItems) {
             this.requester = requester;
             this.requestName = requestName;
@@ -570,6 +587,11 @@ public class MTEMMUplinkMEHatch extends MTEHatch
 
             hologram = ItemList.MatterManipulatorHologram.get(1);
             hologram.setStackDisplayName(EnumChatFormatting.RESET + requestName);
+
+            // add a random number so that holograms with the same name are still different
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("discriminator", counter++);
+            hologram.setTagCompound(tag);
         }
 
         private ManipulatorRequest(UUID requester, String requestName, List<IAEItemStack> requiredItems,
@@ -633,6 +655,13 @@ public class MTEMMUplinkMEHatch extends MTEHatch
             return hatch.new ManipulatorRequest(requester, requestName, requiredItems, link);
         }
 
+        /**
+         * Check the job future and crafting link.
+         * If the job future has finished, submit the plan.
+         * If the crafting link was cancelled, tell the hatch to remove this request.
+         * The crafting job will never actually get completed.
+         * It gets cancelled and this request is removed when the fake pattern is pushed.
+         */
         boolean poll() {
             if (!isActive()) {
                 return true;
@@ -692,6 +721,9 @@ public class MTEMMUplinkMEHatch extends MTEHatch
             return true;
         }
 
+        /**
+         * Creates a fake encoded pattern representing this request.
+         */
         public ItemStack getPattern() {
             NBTTagCompound tag = new NBTTagCompound();
 

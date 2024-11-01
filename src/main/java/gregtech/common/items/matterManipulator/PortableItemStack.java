@@ -8,6 +8,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 
+/**
+ * An item stack that can be moved between worlds without id shifting.
+ */
 public class PortableItemStack implements IItemProvider {
 
     public UniqueIdentifier item;

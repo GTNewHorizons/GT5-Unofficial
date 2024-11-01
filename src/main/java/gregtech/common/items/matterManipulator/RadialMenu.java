@@ -23,12 +23,18 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 
 import gregtech.api.enums.SoundResource;
 
+/**
+ * A radial menu widget that fills the whole screen.
+ */
 public class RadialMenu extends Widget implements Interactable {
 
     private static final double TAU = PI * 2;
 
     public List<RadialMenuOption> options = new ArrayList<>();
     public float innerRadius = 0.25f, outerRadius = 0.60f;
+    /**
+     * An icon to draw in the centre of the menu, or null to skip it.
+     */
     public IDrawable innerIcon;
 
     @Override
@@ -47,6 +53,7 @@ public class RadialMenu extends Widget implements Interactable {
 
         double weightSum = 0;
 
+        // calculate the total weight sum
         for (RadialMenuOption option : options) {
             option.isHidden = option.hidden.getAsBoolean();
 
@@ -57,6 +64,7 @@ public class RadialMenu extends Widget implements Interactable {
 
         double currentAngle = 0;
 
+        // lay out the options
         for (int i = 0; i < options.size(); i++) {
             RadialMenuOption option = options.get(i);
 
@@ -73,6 +81,7 @@ public class RadialMenu extends Widget implements Interactable {
             option.endTheta = currentAngle;
         }
 
+        // shift the options by half the width of the first option, to make it look better
         if (!options.isEmpty()) {
             double offset = Math.abs(options.get(0).startTheta - options.get(0).endTheta) / 2;
 
@@ -106,6 +115,7 @@ public class RadialMenu extends Widget implements Interactable {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
+        // draw the options
         for (RadialMenuOption option : options) {
             if (option.isHidden) {
                 continue;
@@ -142,6 +152,7 @@ public class RadialMenu extends Widget implements Interactable {
 
         GlStateManager.popMatrix();
 
+        // draw the options' labels
         for (RadialMenuOption option : options) {
             if (option.isHidden) {
                 continue;
@@ -150,7 +161,7 @@ public class RadialMenu extends Widget implements Interactable {
             radialText(
                 (innerRadius + outerRadius) / 2,
                 (option.startTheta + option.endTheta) / 2,
-                60,
+                60, // hardcoded wordwrap width, not great but idk how to fix it
                 0xFFCCCCCC,
                 option.label.get());
         }
@@ -205,6 +216,9 @@ public class RadialMenu extends Widget implements Interactable {
         return mod_tau(target - angle1) < angle2 - angle1;
     }
 
+    /**
+     * Gets the mouse position in terms of theta and radius, instead of x,y.
+     */
     private Vector2d getMousePosition() {
         Pos2d pos = getPos();
         Size size = getSize();

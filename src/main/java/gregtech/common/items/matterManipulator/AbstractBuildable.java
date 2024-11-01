@@ -19,13 +19,17 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import org.joml.Vector3d;
 
 import appeng.api.config.Actionable;
 import appeng.api.implementations.tiles.ISegmentedInventory;
@@ -49,6 +53,9 @@ import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import it.unimi.dsi.fastutil.Pair;
 
+/**
+ * Handles all generic manipulator building logic.
+ */
 public abstract class AbstractBuildable extends MMInventory implements IBuildable {
 
     public AbstractBuildable(EntityPlayer player, NBTState state, ManipulatorTier tier) {
@@ -97,6 +104,10 @@ public abstract class AbstractBuildable extends MMInventory implements IBuildabl
         return ((ItemMatterManipulator) stack.getItem()).use(stack, euUsage, player);
     }
 
+    /**
+     * Removes a block and stores its items in this object. Items & fluids must delivered by calling
+     * {@link #actuallyGivePlayerStuff()} or they will be deleted.
+     */
     protected void removeBlock(World world, int x, int y, int z, Block existing, int existingMeta) {
         TileEntity te = world.getTileEntity(x, y, z);
 
@@ -295,6 +306,14 @@ public abstract class AbstractBuildable extends MMInventory implements IBuildabl
 
     private final HashMap<Pair<SoundResource, World>, SoundInfo> pendingSounds = new HashMap<>();
 
+    private boolean printedProtectedBlockWarning = false;
+
+    /**
+     * Queues a sound to be played at a specific spot.
+     * This doesn't actually play anything, {@link #playSounds()} must be called to play all queued sounds.
+     * This mechanism finds the centre point for all played sounds of the same type and makes a single sound event so
+     * that several aren't played in the same tick.
+     */
     protected void playSound(World world, int x, int y, int z, SoundResource sound) {
         Pair<SoundResource, World> pair = Pair.of(sound, world);
 
@@ -308,15 +327,35 @@ public abstract class AbstractBuildable extends MMInventory implements IBuildabl
 
     protected void playSounds() {
         pendingSounds.forEach((pair, info) -> {
-            GTUtility.sendSoundToPlayers(
-                pair.right(),
-                pair.left(),
-                5.0F,
-                -1,
-                (int) (info.sumX / info.eventCount),
-                (int) (info.sumY / info.eventCount),
-                (int) (info.sumZ / info.eventCount));
+            int avgX = (int) (info.sumX / info.eventCount);
+            int avgY = (int) (info.sumY / info.eventCount);
+            int avgZ = (int) (info.sumZ / info.eventCount);
+
+            float distance = (float) new Vector3d(player.posX - avgX, player.posY - avgY, player.posZ - avgZ).length();
+
+            GTUtility.sendSoundToPlayers(pair.right(), pair.left(), (distance / 16f) + 1, -1, avgX, avgY, avgZ);
         });
         pendingSounds.clear();
+    }
+
+    /**
+     * Checks if a block can be edited.
+     */
+    protected boolean isEditable(World world, int x, int y, int z) {
+        // if this block is protected, ignore it completely and print a warning
+        // spotless:off
+        if (!world.canMineBlock(player, x, y, z) || MinecraftServer.getServer().isBlockProtected(world, x, y, z, player)) {
+            // spotless:on
+            if (!printedProtectedBlockWarning) {
+                GTUtility.sendChatToPlayer(
+                    player,
+                    EnumChatFormatting.GOLD + "Tried to break/place a block in a protected area!");
+                printedProtectedBlockWarning = true;
+            }
+
+            return false;
+        } else {
+            return true;
+        }
     }
 }

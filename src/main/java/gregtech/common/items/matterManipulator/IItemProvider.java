@@ -4,6 +4,9 @@ import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Something that can provide items.
+ */
 public interface IItemProvider {
 
     /**

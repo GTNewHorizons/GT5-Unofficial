@@ -147,7 +147,7 @@ public class ItemMatterManipulator extends Item
         Tier0(32, 16, 20, 3,      1_000_000d, ALLOW_GEOMETRY),
         Tier1(64, 32, 10, 5,    100_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_CONFIGURING | ALLOW_CABLES),
         Tier2(128, 64, 5, 6,  1_000_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_CONFIGURING | ALLOW_CABLES | ALLOW_COPYING | ALLOW_MOVING),
-        Tier3(-1, 256, 2, 7, 10_000_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_CONFIGURING | ALLOW_CABLES | ALLOW_COPYING | ALLOW_MOVING | CONNECTS_TO_UPLINK);
+        Tier3(-1, 512, 5, 7, 10_000_000_000d, ALLOW_GEOMETRY | CONNECTS_TO_AE | ALLOW_REMOVING | ALLOW_EXCHANGING | ALLOW_CONFIGURING | ALLOW_CABLES | ALLOW_COPYING | ALLOW_MOVING | CONNECTS_TO_UPLINK);
         // spotless:on
 
         public final int tier = ordinal();
@@ -307,6 +307,9 @@ public class ItemMatterManipulator extends Item
         itemStack.setTagCompound(state.save());
     }
 
+    /**
+     * This is used to prevent the client's held manipulator from wiggling around each time power is drawn.
+     */
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void stopClientClearUsing(PlayerTickEvent event) {
@@ -531,6 +534,11 @@ public class ItemMatterManipulator extends Item
         return stack;
     }
 
+    /**
+     * Handles the pending action. Responsible for clearing the action afterwards.
+     * 
+     * @return True when the action was successfully handled. Treated as a no-op when false.
+     */
     public boolean handleAction(ItemStack itemStack, World world, EntityPlayer player, NBTState state,
         MovingObjectPosition hit) {
         switch (state.config.action) {
@@ -592,67 +600,18 @@ public class ItemMatterManipulator extends Item
                 return true;
             }
             case EXCH_SET_TARGET: {
-                PendingBlock block = PendingBlock.fromPickBlock(player.worldObj, player, hit);
-                ItemStack selected = block == null ? null : block.toStack();
-
-                state.config.replaceWith = Config.saveStack(selected);
+                onExchangeSetTarget(world, player, itemStack, state, hit);
                 state.config.action = null;
-
-                if (selected == null) {
-                    GTUtility.sendInfoToPlayer(player, "Cleared exchange whitelist");
-                } else {
-                    GTUtility.sendInfoToPlayer(
-                        player,
-                        String.format(
-                            "Set block to replace with to: %s",
-                            selected == null ? "nothing" : selected.getDisplayName()));
-                }
-
                 return true;
             }
             case EXCH_ADD_REPLACE: {
-                PendingBlock block = PendingBlock.fromPickBlock(player.worldObj, player, hit);
-                ItemStack selected = block == null ? null : block.toStack();
-
-                if (selected != null) {
-                    if (state.config.replaceWhitelist == null) {
-                        state.config.replaceWhitelist = new ArrayList<>();
-                    }
-
-                    state.config.replaceWhitelist.add(Config.saveStack(selected));
-                }
-
+                onExchangeAddWhitelist(world, player, itemStack, state, hit);
                 state.config.action = null;
-
-                if (selected != null) {
-                    GTUtility.sendInfoToPlayer(
-                        player,
-                        String.format(
-                            "Added block to exchange whitelist: %s",
-                            selected == null ? "nothing" : selected.getDisplayName()));
-                }
-
                 return true;
             }
             case EXCH_SET_REPLACE: {
-                PendingBlock block = PendingBlock.fromPickBlock(player.worldObj, player, hit);
-                ItemStack selected = block == null ? null : block.toStack();
-
-                if (selected != null) {
-                    state.config.replaceWhitelist = new ArrayList<>();
-                    state.config.replaceWhitelist.add(Config.saveStack(selected));
-                } else {
-                    state.config.replaceWhitelist = null;
-                }
-
+                onExchangeSetWhitelist(world, player, itemStack, state, hit);
                 state.config.action = null;
-
-                GTUtility.sendInfoToPlayer(
-                    player,
-                    String.format(
-                        "Set exchange whitelist to only contain: %s",
-                        selected == null ? "nothing" : selected.getDisplayName()));
-
                 return true;
             }
             case PICK_CABLE: {
@@ -665,6 +624,9 @@ public class ItemMatterManipulator extends Item
         return false;
     }
 
+    /**
+     * Used for detecting middle mouse button clicks.
+     */
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onMouseEvent(MouseEvent event) {
@@ -682,6 +644,7 @@ public class ItemMatterManipulator extends Item
         if (event.button == 2 /* MMB */ && event.buttonstate && heldItem.getItem() == this) {
             event.setCanceled(true);
 
+            // call onMMBPressed on the client and the server
             NBTState state = getState(heldItem);
             onMMBPressed(player, heldItem, state);
             setState(heldItem, state);
@@ -695,8 +658,11 @@ public class ItemMatterManipulator extends Item
             onPickBlock(player.getEntityWorld(), player, stack, state, MMUtils.getHitResult(player));
         }
         if (state.config.placeMode == PlaceMode.EXCHANGING) {
-            state.config.action = player.isSneaking() ? PendingAction.EXCH_SET_REPLACE : PendingAction.EXCH_SET_TARGET;
-            handleAction(stack, player.worldObj, player, state, MMUtils.getHitResult(player));
+            if (player.isSneaking()) {
+                onExchangeSetWhitelist(player.worldObj, player, stack, state, MMUtils.getHitResult(player));
+            } else {
+                onExchangeSetTarget(player.worldObj, player, stack, state, MMUtils.getHitResult(player));
+            }
         }
         if (state.config.placeMode == PlaceMode.CABLES) {
             onPickCable(player.getEntityWorld(), player, stack, state, MMUtils.getHitResult(player));
@@ -747,6 +713,66 @@ public class ItemMatterManipulator extends Item
             String.format("Set %s to: %s", what, selected == null ? "nothing" : selected.getDisplayName()));
     }
 
+    private void onExchangeSetTarget(World world, EntityPlayer player, ItemStack stack, NBTState state,
+        MovingObjectPosition hit) {
+
+        PendingBlock block = PendingBlock.fromPickBlock(player.worldObj, player, hit);
+        ItemStack selected = block == null ? null : block.toStack();
+
+        state.config.replaceWith = Config.saveStack(selected);
+
+        if (selected == null) {
+            GTUtility.sendInfoToPlayer(player, "Cleared exchange whitelist");
+        } else {
+            GTUtility.sendInfoToPlayer(
+                player,
+                String.format(
+                    "Set block to replace with to: %s",
+                    selected == null ? "nothing" : selected.getDisplayName()));
+        }
+    }
+
+    private void onExchangeAddWhitelist(World world, EntityPlayer player, ItemStack stack, NBTState state,
+        MovingObjectPosition hit) {
+        PendingBlock block = PendingBlock.fromPickBlock(player.worldObj, player, hit);
+        ItemStack selected = block == null ? null : block.toStack();
+
+        if (selected != null) {
+            if (state.config.replaceWhitelist == null) {
+                state.config.replaceWhitelist = new ArrayList<>();
+            }
+
+            state.config.replaceWhitelist.add(Config.saveStack(selected));
+        }
+
+        if (selected != null) {
+            GTUtility.sendInfoToPlayer(
+                player,
+                String.format(
+                    "Added block to exchange whitelist: %s",
+                    selected == null ? "nothing" : selected.getDisplayName()));
+        }
+    }
+
+    private void onExchangeSetWhitelist(World world, EntityPlayer player, ItemStack stack, NBTState state,
+        MovingObjectPosition hit) {
+        PendingBlock block = PendingBlock.fromPickBlock(player.worldObj, player, hit);
+        ItemStack selected = block == null ? null : block.toStack();
+
+        if (selected != null) {
+            state.config.replaceWhitelist = new ArrayList<>();
+            state.config.replaceWhitelist.add(Config.saveStack(selected));
+        } else {
+            state.config.replaceWhitelist = null;
+        }
+
+        GTUtility.sendInfoToPlayer(
+            player,
+            String.format(
+                "Set exchange whitelist to only contain: %s",
+                selected == null ? "nothing" : selected.getDisplayName()));
+    }
+
     private void onPickCable(World world, EntityPlayer player, ItemStack stack, NBTState state,
         MovingObjectPosition hit) {
         TileEntity te = hit == null ? null : world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);
@@ -771,6 +797,11 @@ public class ItemMatterManipulator extends Item
             String.format("Set cables to: %s", selected == null ? "nothing" : selected.getDisplayName()));
     }
 
+    /**
+     * A weak-keyed map containing every pending build.
+     * Entries are added when the player starts holding shift+right click.
+     * Entries are removed once the player stops holding shift+right click.
+     */
     static final Map<EntityPlayer, IBuildable> PENDING_BUILDS = new MapMaker().weakKeys()
         .makeMap();
 
@@ -796,9 +827,7 @@ public class ItemMatterManipulator extends Item
         int ticksUsed = Integer.MAX_VALUE - count;
 
         if (ticksUsed == 1) {
-            if (player.worldObj.isRemote) {
-                // play startup sound
-            } else {
+            if (!player.worldObj.isRemote) {
                 NBTState state = getState(stack);
 
                 switch (state.config.placeMode) {
@@ -817,7 +846,7 @@ public class ItemMatterManipulator extends Item
             }
         }
 
-        if (ticksUsed >= 20 && (ticksUsed % tier.placeTicks) == 0 && !player.worldObj.isRemote) {
+        if (ticksUsed >= 10 && (ticksUsed % tier.placeTicks) == 0 && !player.worldObj.isRemote) {
             PENDING_BUILDS.get(player)
                 .tryPlaceBlocks(stack, player);
         }
@@ -897,6 +926,9 @@ public class ItemMatterManipulator extends Item
     }
 
     // spotless:off
+    /**
+     * Builds the radial menu. Pretty please don't enable spotless, it'll mangle these builders.
+     */
     private RadialMenuBuilder getMenuOptions(UIBuildContext buildContext) {
         ItemStack heldStack = buildContext.getPlayer().getHeldItem();
         NBTState initialState = getState(heldStack);
@@ -1320,7 +1352,7 @@ public class ItemMatterManipulator extends Item
             if (held != null && held.getItem() == ItemMatterManipulator.this) {
                 NBTState state = getState(held);
 
-                // Need to use isKeyDown here because isPressed doesn't work with ctrl+... for some reason
+                // Need to use isKeyDown here because isPressed doesn't work well with ctrl+... for some reason
                 if (CONTROL.getKeyCode() == 0 || Keyboard.isKeyDown(CONTROL.getKeyCode())) {
                     if (Keyboard.isKeyDown(CUT.getKeyCode())) {
                         if (state.config.placeMode != PlaceMode.MOVING) {
@@ -1333,6 +1365,7 @@ public class ItemMatterManipulator extends Item
                         }
                         Messages.MarkCopy.sendToServer();
                     } else if (Keyboard.isKeyDown(PASTE.getKeyCode())) {
+                        // set the mode to copying if we aren't in a mode supports pasting (moving/copying)
                         if (state.config.placeMode != PlaceMode.COPYING && state.config.placeMode != PlaceMode.MOVING) {
                             Messages.SetPlaceMode.sendToServer(PlaceMode.COPYING);
                         }
@@ -1342,6 +1375,9 @@ public class ItemMatterManipulator extends Item
             }
         }
 
+        /**
+         * Renders the overlay.
+         */
         public void renderSelection(RenderWorldLastEvent event) {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
             ItemStack held = player.getHeldItem();
@@ -1367,6 +1403,7 @@ public class ItemMatterManipulator extends Item
                     List<EntityFX>[] fxLayers = (List<EntityFX>[]) GET_FXLAYERS
                         .invokeExact(Minecraft.getMinecraft().effectRenderer);
 
+                    // remove all of the structurelib hint particles
                     fxLayers[0].removeIf(particle -> particle instanceof WeightlessParticleFX);
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -1379,6 +1416,7 @@ public class ItemMatterManipulator extends Item
                     analysisCache = null;
                     lastDrawer = null;
 
+                    // reset the hints when this item just drew and the player isn't holding it anymore
                     StructureLibAPI.startHinting(player.worldObj);
                     StructureLibAPI.endHinting(player.worldObj);
                 }
@@ -1400,6 +1438,8 @@ public class ItemMatterManipulator extends Item
             boolean isBValid = coordB != null && coordB.isInWorld(player.worldObj);
             boolean isCValid = coordC != null && coordC.isInWorld(player.worldObj);
 
+            // For cylinders, coord B must be pinned to one of the axis planes and coord C must be on the normal of that
+            // plane
             if (state.config.placeMode == PlaceMode.GEOMETRY && state.config.shape == Shape.CYLINDER) {
                 if (isAValid && isBValid) {
                     Objects.requireNonNull(coordA);
@@ -1422,6 +1462,7 @@ public class ItemMatterManipulator extends Item
                 }
             }
 
+            // For cables, coord B must be somewhere on one of the axes
             if (isAValid && isBValid && state.config.placeMode == PlaceMode.CABLES) {
                 Objects.requireNonNull(coordA);
                 Objects.requireNonNull(coordB);
@@ -1465,6 +1506,7 @@ public class ItemMatterManipulator extends Item
                 Vector3i max = new Vector3i(vA).max(vB);
                 Vector3i min = new Vector3i(vA).min(vB);
 
+                // expand the AABB if the shape uses coord C
                 if ((state.config.placeMode != PlaceMode.GEOMETRY || state.config.shape.requiresC()) && isCValid) {
                     Objects.requireNonNull(coordC);
                     vC = coordC.toVec();
@@ -1628,8 +1670,12 @@ public class ItemMatterManipulator extends Item
                 if (i++ > MAX_PREVIEW_BLOCKS) break;
 
                 Block block = pendingBlock.getBlock();
+                PendingBlock existing = PendingBlock
+                    .fromBlock(player.worldObj, pendingBlock.x, pendingBlock.y, pendingBlock.z);
 
-                if (pendingBlock.isInWorld(player.worldObj) && block != null && block != Blocks.air) {
+                if (pendingBlock.isInWorld(player.worldObj) && block != null
+                    && block != Blocks.air
+                    && !PendingBlock.isSameBlock(existing, pendingBlock)) {
                     StructureLibAPI.hintParticle(
                         player.worldObj,
                         pendingBlock.x,
@@ -1638,6 +1684,7 @@ public class ItemMatterManipulator extends Item
                         block,
                         pendingBlock.metadata);
 
+                    // Exchanging hints should be shown through the block
                     if (state.config.placeMode == PlaceMode.EXCHANGING) {
                         StructureLibAPI.markHintParticleError(
                             player,
@@ -1645,6 +1692,7 @@ public class ItemMatterManipulator extends Item
                             pendingBlock.x,
                             pendingBlock.y,
                             pendingBlock.z);
+                        // Reset the hint colour so that it doesn't look like an error
                         StructureLibAPI.updateHintParticleTint(
                             player,
                             player.worldObj,

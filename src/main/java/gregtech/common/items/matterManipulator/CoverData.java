@@ -10,6 +10,9 @@ import gregtech.api.util.CoverBehaviorBase;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
+/**
+ * Contains all GT cover analysis data.
+ */
 public class CoverData {
 
     public PortableItemStack cover;
@@ -57,6 +60,11 @@ public class CoverData {
         return coverDataObject;
     }
 
+    /**
+     * Converts a CoverInfo into a CoverData.
+     * 
+     * @return The CoverData, or null if there's no cover.
+     */
     public static CoverData fromInfo(CoverInfo info) {
         if (info.getCoverID() == 0) return null;
 

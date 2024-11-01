@@ -35,6 +35,9 @@ import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink.UplinkStatus;
 import it.unimi.dsi.fastutil.Pair;
 
+/**
+ * Handles all manipulator-related item sourcing and sinking.
+ */
 public class MMInventory implements IPseudoInventory {
 
     public EntityPlayer player;
@@ -60,6 +63,7 @@ public class MMInventory implements IPseudoInventory {
             List<IAEItemStack> simulated = GTUtility.mapToList(items, IAEItemStack::copy);
             List<IAEItemStack> extracted = new ArrayList<>();
 
+            // the first pass is simulated to make sure the requested items can be provided
             consumeItemsFromPending(simulated, extracted, flags | CONSUME_SIMULATED);
             consumeItemsFromPlayer(simulated, extracted, flags | CONSUME_SIMULATED);
             if (tier.hasCap(ItemMatterManipulator.CONNECTS_TO_AE)) {
@@ -69,6 +73,7 @@ public class MMInventory implements IPseudoInventory {
                 consumeItemsFromUplink(simulated, extracted, flags | CONSUME_SIMULATED);
             }
 
+            // if we aren't allowed to partially consume items, make sure everything was consumed
             if ((flags & CONSUME_PARTIAL) == 0) {
                 if (simulated.stream()
                     .anyMatch(s -> s.getStackSize() > 0)) {
@@ -77,7 +82,7 @@ public class MMInventory implements IPseudoInventory {
             }
 
             simulated = GTUtility.mapToList(items, IAEItemStack::copy);
-            extracted = new ArrayList<>();
+            extracted.clear();
 
             consumeItemsFromPending(simulated, extracted, flags);
             consumeItemsFromPlayer(simulated, extracted, flags);
@@ -96,8 +101,8 @@ public class MMInventory implements IPseudoInventory {
                 IAEItemStack merged = out.get(stack);
 
                 if (merged == null) {
-                    merged = Objects.requireNonNull(AEItemStack.create(stack));
-                    merged.setStackSize(0);
+                    merged = ex.copy()
+                        .setStackSize(0);
                     out.put(stack, merged);
                 }
 
@@ -108,6 +113,7 @@ public class MMInventory implements IPseudoInventory {
         }
     }
 
+    @Override
     public void givePlayerItems(ItemStack... items) {
         if (player.capabilities.isCreativeMode) {
             return;
@@ -120,6 +126,7 @@ public class MMInventory implements IPseudoInventory {
         }
     }
 
+    @Override
     public void givePlayerFluids(FluidStack... fluids) {
         if (player.capabilities.isCreativeMode) {
             return;
@@ -132,6 +139,12 @@ public class MMInventory implements IPseudoInventory {
         }
     }
 
+    /**
+     * Actually delivers stuff stored in pendingItems/pendingFluids so that the inserts are batched.
+     * First tries to insert into AE, then the uplink, then the player's inventory.
+     * If items can't be inserted, they're dropped on the ground as an EntityItemLarge.
+     * If fluids can't be inserted, they're voided.
+     */
     public void actuallyGivePlayerStuff() {
         if (player.capabilities.isCreativeMode) {
             pendingItems.clear();

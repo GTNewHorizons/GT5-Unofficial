@@ -21,6 +21,8 @@ import org.joml.Vector3i;
 import com.mojang.authlib.GameProfile;
 
 import appeng.api.storage.data.IAEItemStack;
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.FluidId;
 import gregtech.api.util.GTUtility.ItemId;
@@ -44,6 +46,11 @@ public class BlockAnalyzer {
         return result.doesAnything() ? result : null;
     }
 
+    /**
+     * Analyzes a region.
+     * The returned PendingBlocks are relative to zero.
+     * The calling code must add another location (for example coord C) to get the real positions.
+     */
     public static RegionAnalysis analyzeRegion(World world, Location a, Location b, boolean checkTiles) {
         if (a == null || b == null || world.provider.dimensionId != a.worldId || a.worldId != b.worldId) return null;
 
@@ -83,7 +90,9 @@ public class BlockAnalyzer {
 
         long post = System.nanoTime();
 
-        System.out.println("Analysis took " + (post - pre) / 1e6 + " ms");
+        if (GTValues.D1) {
+            GTMod.GT_FML_LOGGER.info("Analysis took " + (post - pre) / 1e6 + " ms");
+        }
 
         return analysis;
     }
@@ -94,6 +103,10 @@ public class BlockAnalyzer {
         public List<PendingBlock> blocks;
     }
 
+    /**
+     * The context within which tiles are analyzed.
+     * Contains everything needed to analyze a tile.
+     */
     public static interface IBlockAnalysisContext {
 
         public EntityPlayer getFakePlayer();
@@ -127,6 +140,11 @@ public class BlockAnalyzer {
             return world.getTileEntity(voxel.x, voxel.y, voxel.z);
         }
     }
+
+    /**
+     * The context within which analysis results are applied.
+     * Contains everything needed to apply a TileAnalysisResult.
+     */
 
     public static interface IBlockApplyContext extends IBlockAnalysisContext, IPseudoInventory {
 
@@ -200,6 +218,9 @@ public class BlockAnalyzer {
         }
     }
 
+    /**
+     * A fake apply context that tracks which items were consumed.
+     */
     private static class BlockItemCheckContext implements IBlockApplyContext {
 
         public World world;
@@ -360,6 +381,12 @@ public class BlockAnalyzer {
         public HashMap<FluidId, Long> storedFluids;
     }
 
+    /**
+     * Gets the required items for a build
+     * 
+     * @param fromScratch When true, existing blocks will be ignored.
+     * @return
+     */
     public static RequiredItemAnalysis getRequiredItemsForBuild(EntityPlayer player, List<PendingBlock> blocks,
         boolean fromScratch) {
         BlockItemCheckContext context = new BlockItemCheckContext();

@@ -27,6 +27,9 @@ import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import it.unimi.dsi.fastutil.Pair;
 
+/**
+ * Handles all moving logic.
+ */
 public class PendingMove extends AbstractBuildable {
 
     private List<Pair<Location, Location>> moves = null;
@@ -46,7 +49,8 @@ public class PendingMove extends AbstractBuildable {
 
         World world = player.worldObj;
 
-        for (int i = 0; i < tier.placeSpeed; i++) {
+        // try to move `placeSpeed` blocks from here to there
+        for (int i = 0; i < Math.min(tier.placeSpeed, moves.size()); i++) {
             Pair<Location, Location> move = moves.get(cursor);
             int curr = cursor;
             cursor = (cursor + 1) % moves.size();
@@ -54,28 +58,47 @@ public class PendingMove extends AbstractBuildable {
             Location s = move.left();
             Location d = move.right();
 
-            if (world.isAirBlock(s.x, s.y, s.z)) {
+            if (!remaining[curr] || world.isAirBlock(s.x, s.y, s.z)) {
                 remaining[curr] = false;
+                continue;
+            }
+
+            // if either block is protected, ignore them completely and print a warning
+            if (!isEditable(world, s.x, s.y, s.z) || !isEditable(world, d.x, d.y, d.z)) {
                 continue;
             }
 
             PendingBlock source = PendingBlock.fromBlock(world, s.x, s.y, s.z);
 
+            if (source.getBlock()
+                .getBlockHardness(world, s.x, s.y, s.z) < 0) {
+                GTUtility.sendErrorToPlayer(
+                    player,
+                    String.format("Could not move invulnerable source block X=%d, Y=%d, Z=%d", s.x, s.y, s.z));
+                continue;
+            }
+
             PendingBlock target = PendingBlock.fromBlock(world, d.x, d.y, d.z);
 
             Block existingBlock = target == null ? Blocks.air : target.getBlock();
 
+            // check if we can remove the existing target block
             boolean canPlace = switch (state.config.removeMode) {
                 case NONE -> existingBlock.isAir(world, d.x, d.y, d.z);
                 case REPLACEABLE -> existingBlock.isReplaceable(world, d.x, d.y, d.z);
                 case ALL -> true;
             };
 
+            canPlace &= existingBlock.getBlockHardness(world, d.x, d.y, d.z) >= 0;
+
             if (!canPlace) {
-                GTUtility.sendErrorToPlayer(player, "Destination was blocked for source block " + source);
+                GTUtility.sendErrorToPlayer(
+                    player,
+                    String.format("Destination was blocked for source block X=%d, Y=%d, Z=%d", d.x, d.y, d.z));
                 continue;
             }
 
+            // remove the existing block if needed
             if (!existingBlock.isAir(world, d.x, d.y, d.z)) {
                 if (!tryConsumePower(stack, target)) {
                     GTUtility.sendErrorToPlayer(player, "Matter Manipulator ran out of EU.");
@@ -85,6 +108,7 @@ public class PendingMove extends AbstractBuildable {
                 removeBlock(world, d.x, d.y, d.z, existingBlock, target == null ? 0 : target.metadata);
             }
 
+            // if we can't move the source block then skip it for now
             if (!source.getBlock()
                 .canPlaceBlockAt(world, d.x, d.y, d.z)) {
                 continue;
@@ -95,6 +119,7 @@ public class PendingMove extends AbstractBuildable {
                 break;
             }
 
+            // try to move the source block into the (now empty) target block
             if (!swapBlocks(source, target)) {
                 GTUtility.sendErrorToPlayer(
                     player,
@@ -115,13 +140,15 @@ public class PendingMove extends AbstractBuildable {
         playSounds();
         actuallyGivePlayerStuff();
 
+        // bail if there are any remaining blocks
         for (int i = 0; i < remaining.length; i++) {
             if (remaining[i]) {
                 return;
             }
         }
 
-        for (var move : moves) {
+        // make sure all of the source blocks are actually air
+        for (Pair<Location, Location> move : moves) {
             Location source = move.left();
 
             if (!world.isAirBlock(source.x, source.y, source.z)) {
