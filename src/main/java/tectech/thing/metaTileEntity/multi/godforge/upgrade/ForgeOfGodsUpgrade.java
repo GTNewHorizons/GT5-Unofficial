@@ -1,8 +1,8 @@
 package tectech.thing.metaTileEntity.multi.godforge.upgrade;
 
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.BGWindowSize.*;
-import static tectech.thing.metaTileEntity.multi.godforge.upgrade.MilestoneIcon.*;
-import static tectech.thing.metaTileEntity.multi.godforge.upgrade.UpgradeColor.*;
+import static tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon.*;
+import static tectech.thing.metaTileEntity.multi.godforge.util.UpgradeColor.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +21,8 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
+import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon;
+import tectech.thing.metaTileEntity.multi.godforge.util.UpgradeColor;
 
 public enum ForgeOfGodsUpgrade {
 

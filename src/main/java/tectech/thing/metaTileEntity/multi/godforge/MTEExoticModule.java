@@ -80,6 +80,8 @@ import tectech.TecTech;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 import tectech.thing.gui.TecTechUITextures;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
+import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 
 public class MTEExoticModule extends MTEBaseModule {
 

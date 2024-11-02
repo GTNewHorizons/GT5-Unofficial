@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge.upgrade;
+package tectech.thing.metaTileEntity.multi.godforge.util;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 

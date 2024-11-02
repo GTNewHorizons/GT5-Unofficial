@@ -1,8 +1,15 @@
-package tectech.thing.metaTileEntity.multi.godforge;
+package tectech.thing.metaTileEntity.multi.godforge.util;
 
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.*;
 
 import java.math.BigInteger;
+
+import tectech.thing.metaTileEntity.multi.godforge.MTEBaseModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
+import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 
 public class GodforgeMath {
 

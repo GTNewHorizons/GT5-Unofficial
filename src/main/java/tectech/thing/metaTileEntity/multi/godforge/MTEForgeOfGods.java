@@ -6,26 +6,24 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static java.lang.Math.floor;
 import static java.lang.Math.log;
 import static java.lang.Math.max;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 import static tectech.thing.casing.TTCasingsContainer.forgeOfGodsRenderBlock;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.allowModuleConnection;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculateEnergyDiscountForModules;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculateFuelConsumption;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculateMaxFuelFactor;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculateMaxHeatForModules;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculateMaxParallelForModules;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculateProcessingVoltageForModules;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculateSpeedBonusForModules;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.calculateStartupFuelConsumption;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.queryMilestoneStats;
-import static tectech.thing.metaTileEntity.multi.godforge.GodforgeMath.setMiscModuleParameters;
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.*;
-import static tectech.util.TTUtility.toExponentForm;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.allowModuleConnection;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateEnergyDiscountForModules;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateFuelConsumption;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateMaxFuelFactor;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateMaxHeatForModules;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateMaxParallelForModules;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateProcessingVoltageForModules;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateSpeedBonusForModules;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.calculateStartupFuelConsumption;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.queryMilestoneStats;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.setMiscModuleParameters;
 
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -47,6 +45,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -66,7 +65,6 @@ import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
@@ -76,7 +74,6 @@ import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidNameHolderWidget;
@@ -117,14 +114,18 @@ import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.TileEntityForgeOfGods;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import tectech.thing.metaTileEntity.multi.godforge.ForgeOfGodsUI.StarColorRGBM;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
+import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
+import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
-import tectech.thing.metaTileEntity.multi.godforge.upgrade.MilestoneIcon;
-import tectech.thing.metaTileEntity.multi.godforge.upgrade.UpgradeColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.UpgradeStorage;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI.StarColorRGBM;
+import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneFormatter;
+import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon;
+import tectech.thing.metaTileEntity.multi.godforge.util.UpgradeColor;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
@@ -135,7 +136,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final int DEFAULT_ROTATION_SPEED = 5;
     private static final int DEFAULT_STAR_SIZE = 20;
     private static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
-    private static final FormattingMode DEFAULT_FORMATTING_MODE = FormattingMode.COMMA;
+    private static final MilestoneFormatter DEFAULT_FORMATTING_MODE = MilestoneFormatter.COMMA;
     private static final BigInteger DEFAULT_TOTAL_POWER = BigInteger.ZERO;
 
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -165,7 +166,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private boolean batteryCharging;
     private boolean inversion;
     private boolean gravitonShardEjection;
-    private FormattingMode formattingMode = DEFAULT_FORMATTING_MODE;
+    private MilestoneFormatter formattingMode = DEFAULT_FORMATTING_MODE;
     private boolean isRenderActive;
     private boolean secretUpgrade;
     private boolean isRendererDisabled;
@@ -660,19 +661,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private TileEntityForgeOfGods getRenderer() {
-        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
-
-        int x = gregTechTileEntity.getXCoord();
-        int y = gregTechTileEntity.getYCoord();
-        int z = gregTechTileEntity.getZCoord();
-
-        double xOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-
+        ChunkCoordinates renderPos = getRenderPos();
         TileEntity tile = this.getBaseMetaTileEntity()
             .getWorld()
-            .getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
+            .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
 
         if (tile instanceof TileEntityForgeOfGods forgeTile) {
             return forgeTile;
@@ -693,26 +685,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private void createRenderer() {
-
-        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
-
-        int x = gregTechTileEntity.getXCoord();
-        int y = gregTechTileEntity.getYCoord();
-        int z = gregTechTileEntity.getZCoord();
-
-        double xOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        ChunkCoordinates renderPos = getRenderPos();
 
         this.getBaseMetaTileEntity()
             .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+            .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, Blocks.air);
         this.getBaseMetaTileEntity()
             .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), forgeOfGodsRenderBlock);
+            .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, forgeOfGodsRenderBlock);
         TileEntityForgeOfGods rendererTileEntity = (TileEntityForgeOfGods) this.getBaseMetaTileEntity()
             .getWorld()
-            .getTileEntity((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
+            .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
 
         switch (ringAmount) {
             case 2 -> {
@@ -724,9 +707,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 destroySecondRing();
                 destroyThirdRing();
             }
-            default -> {
-                destroyFirstRing();
-            }
+            default -> destroyFirstRing();
         }
 
         rendererTileEntity.setRenderRotation(getRotation(), getDirection());
@@ -736,20 +717,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     private void destroyRenderer() {
-
-        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
-
-        int x = gregTechTileEntity.getXCoord();
-        int y = gregTechTileEntity.getYCoord();
-        int z = gregTechTileEntity.getZCoord();
-
-        double xOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetX;
-        double zOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
-        double yOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetY;
-
+        ChunkCoordinates renderPos = getRenderPos();
         this.getBaseMetaTileEntity()
             .getWorld()
-            .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+            .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, Blocks.air);
 
         switch (ringAmount) {
             case 2 -> {
@@ -761,12 +732,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 buildSecondRing();
                 buildThirdRing();
             }
-            default -> {
-                buildFirstRing();
-            }
+            default -> buildFirstRing();
         }
 
         isRenderActive = false;
+    }
+
+    private ChunkCoordinates getRenderPos() {
+        IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
+        int x = gregTechTileEntity.getXCoord();
+        int y = gregTechTileEntity.getYCoord();
+        int z = gregTechTileEntity.getZCoord();
+        double xOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+        double yOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetY;
+        double zOffset = 122 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
+        return new ChunkCoordinates((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset));
     }
 
     private void destroyFirstRing() {
@@ -1430,8 +1410,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .attachSyncer(
                     new FakeSyncWidget.ByteSyncer(
                         () -> (byte) formattingMode.ordinal(),
-                        val -> formattingMode = FormattingMode.VALUES[MathHelper
-                            .clamp_int(val, 0, FormattingMode.VALUES.length - 1)]),
+                        val -> formattingMode = MilestoneFormatter.VALUES[MathHelper
+                            .clamp_int(val, 0, MilestoneFormatter.VALUES.length - 1)]),
                     builder));
 
         return builder.build();
@@ -1789,119 +1769,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     protected ModularWindow createSpecialThanksWindow(final EntityPlayer player) {
-        final int WIDTH = 200;
-        final int HEIGHT = 200;
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-
-        builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_RAINBOW);
-        builder.setDraggable(true);
-        builder.widget(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(184, 4))
-            .widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_GODFORGE_THANKS)
-                    .setPos(50, 50)
-                    .setSize(100, 100))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.contributors"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setScale(1f)
-                    .setPos(0, 5)
-                    .setSize(200, 15))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.lead"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 30)
-                        .setSize(60, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.cloud")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.AQUA)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 40)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.programming"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 55)
-                        .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    translateToLocal("gt.blockmachines.multimachine.FOG.serenibyss") + " "
-                        + EnumChatFormatting.DARK_AQUA
-                        + translateToLocal("gt.blockmachines.multimachine.FOG.teg")).setScale(0.8f)
-                            .setTextAlignment(Alignment.CenterLeft)
-                            .setPos(7, 67)
-                            .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.textures"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 85)
-                        .setSize(100, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.ant")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.GREEN)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 95)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.rendering"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 110)
-                        .setSize(100, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.bucket")).setScale(0.8f)
-                    .setDefaultColor(EnumChatFormatting.WHITE)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 120)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.lore"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 135)
-                        .setSize(100, 10))
-            .widget(
-                delenoName().setSpace(-1)
-                    .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                    .setPos(7, 145)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(
-                    EnumChatFormatting.UNDERLINE + translateToLocal("gt.blockmachines.multimachine.FOG.playtesting"))
-                        .setScale(0.8f)
-                        .setDefaultColor(EnumChatFormatting.GOLD)
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(7, 160)
-                        .setSize(100, 10))
-            .widget(
-                new TextWidget(translateToLocal("gt.blockmachines.multimachine.FOG.misi")).setScale(0.8f)
-                    .setDefaultColor(0xffc26f)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(7, 170)
-                    .setSize(60, 10))
-            .widget(
-                new TextWidget(EnumChatFormatting.ITALIC + translateToLocal("gt.blockmachines.multimachine.FOG.thanks"))
-                    .setScale(0.8f)
-                    .setDefaultColor(0xbbbdbd)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(90, 140)
-                    .setSize(100, 60));
-        return builder.build();
+        return ForgeOfGodsUI.createSpecialThanksWindow();
     }
 
     protected ModularWindow createStarCosmeticsWindow(final EntityPlayer player) {
@@ -2580,20 +2448,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         }
     }
 
-    private DynamicPositionedRow delenoName() {
-        DynamicPositionedRow nameRow = new DynamicPositionedRow();
-        String deleno = translateToLocal("gt.blockmachines.multimachine.FOG.deleno");
-        int[] colors = new int[] { 0xffffff, 0xf6fff5, 0xecffec, 0xe3ffe2, 0xd9ffd9, 0xd0ffcf };
-
-        for (int i = 0; i < 6; i++) {
-            nameRow.addChild(
-                new TextWidget(Character.toString(deleno.charAt(i))).setDefaultColor(colors[i])
-                    .setScale(0.8f)
-                    .setTextAlignment(Alignment.CenterLeft));
-        }
-        return nameRow;
-    }
-
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -2909,47 +2763,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             translateToLocal("gt.blockmachines.multimachine.FOG.shardgain") + ": " + EnumChatFormatting.GRAY + sum);
     }
 
-    private enum FormattingMode {
-
-        NONE,
-        COMMA,
-        EXPONENT;
-
-        static final FormattingMode[] VALUES = values();
-
-        FormattingMode cycle() {
-            return switch (this) {
-                case NONE -> COMMA;
-                case COMMA -> EXPONENT;
-                case EXPONENT -> NONE;
-            };
-        }
-
-        String format(Number number) {
-            return switch (this) {
-                case NONE -> number.toString();
-                case COMMA -> {
-                    if (number instanceof BigInteger bi) yield formatNumbers(bi);
-                    else yield formatNumbers(number.longValue());
-                }
-                case EXPONENT -> {
-                    if (number instanceof BigInteger bi) {
-                        if (bi.compareTo(BigInteger.valueOf(1_000L)) > 0) {
-                            yield toExponentForm(bi);
-                        }
-                        yield bi.toString();
-                    } else {
-                        long value = number.longValue();
-                        if (value > 1_000L) {
-                            yield toExponentForm(value);
-                        }
-                        yield Long.toString(value);
-                    }
-                }
-            };
-        }
-    }
-
     private Text totalMilestoneProgress(int milestoneID) {
         Number progress;
         String suffix;
@@ -2994,7 +2807,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         String progressText = translateToLocal("gt.blockmachines.multimachine.FOG.progress");
         Text done = new Text(
             translateToLocal("gt.blockmachines.multimachine.FOG.milestonecomplete")
-                + (formattingMode != FormattingMode.NONE ? EnumChatFormatting.DARK_RED + "?" : ""));
+                + (formattingMode != DEFAULT_FORMATTING_MODE ? EnumChatFormatting.DARK_RED + "?" : ""));
 
         if (milestoneProgress[milestoneID] >= 7 && !inversion) {
             return done;
@@ -3167,8 +2980,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));
         }
         if (NBT.hasKey("formattingMode")) {
-            int index = MathHelper.clamp_int(NBT.getInteger("formattingMode"), 0, FormattingMode.VALUES.length);
-            formattingMode = FormattingMode.VALUES[index];
+            int index = MathHelper.clamp_int(NBT.getInteger("formattingMode"), 0, MilestoneFormatter.VALUES.length);
+            formattingMode = MilestoneFormatter.VALUES[index];
         }
 
         // Stored items
