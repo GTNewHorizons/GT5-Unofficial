@@ -126,6 +126,8 @@ import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
+import tectech.thing.metaTileEntity.multi.godforge.upgrade.MilestoneIcon;
+import tectech.thing.metaTileEntity.multi.godforge.upgrade.UpgradeColor;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.UpgradeStorage;
 
 public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
@@ -1072,50 +1074,63 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     protected ModularWindow createFuelConfigWindow(final EntityPlayer player) {
-        final int WIDTH = 78;
-        final int HEIGHT = 130;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        final int w = 78;
+        final int h = 130;
+        final int parentW = getGUIWidth();
+        final int parentH = getGUIHeight();
+
+        ModularWindow.Builder builder = ModularWindow.builder(w, h);
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
         builder.setDraggable(true);
         builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(parentW, parentH))
                 .add(
-                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)));
+                    Alignment.TopRight.getAlignedPos(new Size(parentW, parentH), new Size(w, h))
+                        .add(w - 3, 0)));
+
+        // Window header
         builder.widget(
             TextWidget.localised("gt.blockmachines.multimachine.FOG.fuelconsumption")
                 .setPos(3, 2)
-                .setSize(74, 34))
-            .widget(
-                new NumericWidget().setSetter(val -> fuelConsumptionFactor = (int) val)
-                    .setGetter(() -> fuelConsumptionFactor)
-                    .setBounds(1, calculateMaxFuelFactor(this))
-                    .setDefaultValue(1)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(4, 35)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    // todo try to reduce
-                    .attachSyncer(
-                        upgrades.getFullSyncer(),
-                        builder,
-                        (widget, val) -> ((NumericWidget) widget).setMaxValue(calculateMaxFuelFactor(this))))
-            .widget(
-                new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
-                    .setPos(64, 24)
-                    .setSize(10, 10)
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.0"))
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.1"))
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.2"))
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.3"))
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.4"))
-                    .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.5"))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                .setSize(74, 34));
+
+        // Fuel factor textbox
+        NumericWidget fuelFactor = new NumericWidget();
+        fuelFactor.setSetter(val -> fuelConsumptionFactor = (int) val)
+            .setGetter(() -> fuelConsumptionFactor)
+            .setBounds(1, calculateMaxFuelFactor(this))
+            .setDefaultValue(1)
+            .setScrollValues(1, 4, 64)
+            .setTextAlignment(Alignment.Center)
+            .setTextColor(Color.WHITE.normal)
+            .setSize(70, 18)
+            .setPos(4, 35)
+            .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD);
+        builder.widget(fuelFactor);
+
+        // Syncers for max fuel factor
+        builder.widget(
+            upgrades.getSingleSyncer(CFCE)
+                .setOnClientUpdate($ -> fuelFactor.setMaxValue(calculateMaxFuelFactor(this))));
+        builder.widget(
+            upgrades.getSingleSyncer(GEM)
+                .setOnClientUpdate($ -> fuelFactor.setMaxValue(calculateMaxFuelFactor(this))));
+        builder.widget(
+            upgrades.getSingleSyncer(TSE)
+                .setOnClientUpdate($ -> fuelFactor.setMaxValue(calculateMaxFuelFactor(this))));
+
+        builder.widget(
+            new DrawableWidget().setDrawable(ModularUITextures.ICON_INFO)
+                .setPos(64, 24)
+                .setSize(10, 10)
+                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.0"))
+                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.1"))
+                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.2"))
+                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.3"))
+                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.4"))
+                .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.fuelinfo.5"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
                 TextWidget.localised("gt.blockmachines.multimachine.FOG.fueltype")
                     .setPos(3, 57)
@@ -1193,8 +1208,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         })
                         .setSize(18, 18))
                     .setPos(29, 82)
-                    .setSize(18, 18)
-                    .attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getFuelType, this::setFuelType), builder))
+                    .setSize(18, 18))
             .widget(
                 new MultiChildWidget().addChild(
                     new FluidNameHolderWidget(
@@ -1352,52 +1366,24 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     protected ModularWindow createIndividualMilestoneWindow(final EntityPlayer player) {
-        final int WIDTH = 150;
-        final int HEIGHT = 150;
-        int symbol_width;
-        int symbol_height;
-        String milestoneType;
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        UITexture symbol;
-        switch (currentMilestoneID) {
-            case 1 -> {
-                symbol = TecTechUITextures.PICTURE_GODFORGE_MILESTONE_CONVERSION;
-                symbol_width = 54;
-                symbol_height = 75;
-                milestoneType = "recipe";
-            }
-            case 2 -> {
-                symbol = TecTechUITextures.PICTURE_GODFORGE_MILESTONE_CATALYST;
-                symbol_width = 75;
-                symbol_height = 75;
-                milestoneType = "fuel";
-            }
-            case 3 -> {
-                symbol = TecTechUITextures.PICTURE_GODFORGE_MILESTONE_COMPOSITION;
-                symbol_width = 75;
-                symbol_height = 75;
-                milestoneType = "purchasable";
-            }
-            default -> {
-                symbol = TecTechUITextures.PICTURE_GODFORGE_MILESTONE_CHARGE;
-                symbol_width = 60;
-                symbol_height = 75;
-                milestoneType = "power";
-            }
-        }
+        final int w = 150;
+        final int h = 150;
+        final MilestoneIcon icon = MilestoneIcon.VALUES[currentMilestoneID];
+        final Size iconSize = icon.getSize();
 
+        ModularWindow.Builder builder = ModularWindow.builder(w, h);
         builder.setBackground(TecTechUITextures.BACKGROUND_GLOW_WHITE);
         builder.setDraggable(true);
+
         builder.widget(
             ButtonWidget.closeWindowButton(true)
                 .setPos(134, 4))
             .widget(
-                new DrawableWidget().setDrawable(symbol)
-                    .setSize(symbol_width, symbol_height)
-                    .setPos((WIDTH - symbol_width) / 2, (HEIGHT - symbol_height) / 2))
+                new DrawableWidget().setDrawable(icon.getSymbol())
+                    .setSize(iconSize)
+                    .setPos((w - iconSize.width) / 2, (h - iconSize.height) / 2))
             .widget(
-                TextWidget.localised("gt.blockmachines.multimachine.FOG." + milestoneType + "milestone")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
+                new TextWidget(icon.getNameText()).setDefaultColor(EnumChatFormatting.GOLD)
                     .setTextAlignment(Alignment.Center)
                     .setPos(0, 8)
                     .setSize(150, 15))
@@ -1479,42 +1465,44 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         Scrollable scrollable = new Scrollable().setVerticalScroll();
 
         // spotless:off
-        scrollable.widget(createUpgradeConnectorLine(new Pos2d(143, 71), 45, 0, 0, START, IGCC))
-            .widget(createUpgradeConnectorLine(new Pos2d(124, 124), 60, 27, 0, IGCC, STEM))
-            .widget(createUpgradeConnectorLine(new Pos2d(162, 124), 60, 333, 0, IGCC, CFCE))
-            .widget(createUpgradeConnectorLine(new Pos2d(94, 184), 60, 27, 0, STEM, GISS))
-            .widget(createUpgradeConnectorLine(new Pos2d(130, 184), 60, 336, 0, STEM, FDIM))
-            .widget(createUpgradeConnectorLine(new Pos2d(156, 184), 60, 24, 0, CFCE, FDIM))
-            .widget(createUpgradeConnectorLine(new Pos2d(192, 184), 60, 333, 0, CFCE, SA))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 251), 45, 0, 0, FDIM, GPCI))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 311), 45, 0, 0, GPCI, GEM))
-            .widget(createUpgradeConnectorLine(new Pos2d(78, 250), 110, 5, 4, GISS, REC))
-            .widget(createUpgradeConnectorLine(new Pos2d(110, 290), 80, 40, 4, GPCI, REC))
-            .widget(createUpgradeConnectorLine(new Pos2d(208, 250), 110, 355, 4, SA, CTCDD))
-            .widget(createUpgradeConnectorLine(new Pos2d(176, 290), 80, 320, 4, GPCI, CTCDD))
-            .widget(createUpgradeConnectorLine(new Pos2d(100, 355), 80, 313, 0, REC, QGPIU))
-            .widget(createUpgradeConnectorLine(new Pos2d(186, 355), 80, 47, 0, CTCDD, QGPIU))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 430), 48, 0, 2, QGPIU, TCT))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 490), 48, 0, 2, TCT, EPEC))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 550), 48, 0, 2, EPEC, POS))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 610), 48, 0, 2, POS, NGMS))
-            .widget(createUpgradeConnectorLine(new Pos2d(110, 410), 80, 40, 1, QGPIU, SEFCP))
-            .widget(createUpgradeConnectorLine(new Pos2d(83, 490), 48, 0, 1, SEFCP, CNTI))
-            .widget(createUpgradeConnectorLine(new Pos2d(83, 550), 48, 0, 1, CNTI, NDPE))
-            .widget(createUpgradeConnectorLine(new Pos2d(101, 590), 80, 320, 1, NDPE, NGMS))
-            .widget(createUpgradeConnectorLine(new Pos2d(53, 536), 35, 45, 1, CNTI, DOP))
-            .widget(createUpgradeConnectorLine(new Pos2d(176, 410), 80, 320, 3, QGPIU, GGEBE))
-            .widget(createUpgradeConnectorLine(new Pos2d(203, 490), 48, 0, 3, GGEBE, IMKG))
-            .widget(createUpgradeConnectorLine(new Pos2d(203, 550), 48, 0, 3, IMKG, DOR))
-            .widget(createUpgradeConnectorLine(new Pos2d(185, 590), 80, 40, 3, DOR, NGMS))
-            .widget(createUpgradeConnectorLine(new Pos2d(233, 476), 35, 315, 3, GGEBE, TPTP))
-            .widget(createUpgradeConnectorLine(new Pos2d(143, 670), 48, 0, 0, NGMS, SEDS))
-            .widget(createUpgradeConnectorLine(new Pos2d(101, 707), 75, 62.3f, 0, SEDS, PA))
-            .widget(createUpgradeConnectorLine(new Pos2d(53, 772), 78, 0, 0, PA, CD))
-            .widget(createUpgradeConnectorLine(new Pos2d(95, 837), 75, 297.7f, 0, CD, TSE))
-            .widget(createUpgradeConnectorLine(new Pos2d(191, 837), 75, 62.3f, 0, TSE, TBF))
-            .widget(createUpgradeConnectorLine(new Pos2d(233, 772), 78, 0, 0, TBF, EE))
-            .widget(createUpgradeConnectorLine(new Pos2d(191, 747), 75, 62.3f, 0, EE, END));
+        scrollable
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 71),  45,  0,      UpgradeColor.BLUE,   START, IGCC))
+            .widget(createUpgradeConnectorLine(new Pos2d(124, 124), 60,  27,     UpgradeColor.BLUE,   IGCC,  STEM))
+            .widget(createUpgradeConnectorLine(new Pos2d(162, 124), 60,  333,    UpgradeColor.BLUE,   IGCC,  CFCE))
+            .widget(createUpgradeConnectorLine(new Pos2d(94,  184), 60,  27,     UpgradeColor.BLUE,   STEM,  GISS))
+            .widget(createUpgradeConnectorLine(new Pos2d(130, 184), 60,  336,    UpgradeColor.BLUE,   STEM,  FDIM))
+            .widget(createUpgradeConnectorLine(new Pos2d(156, 184), 60,  24,     UpgradeColor.BLUE,   CFCE,  FDIM))
+            .widget(createUpgradeConnectorLine(new Pos2d(192, 184), 60,  333,    UpgradeColor.BLUE,   CFCE,  SA))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 251), 45,  0,      UpgradeColor.BLUE,   FDIM,  GPCI))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 311), 45,  0,      UpgradeColor.BLUE,   GPCI,  GEM))
+            .widget(createUpgradeConnectorLine(new Pos2d(78,  250), 110, 5,      UpgradeColor.RED,    GISS,  REC))
+            .widget(createUpgradeConnectorLine(new Pos2d(110, 290), 80,  40,     UpgradeColor.RED,    GPCI,  REC))
+            .widget(createUpgradeConnectorLine(new Pos2d(208, 250), 110, 355,    UpgradeColor.RED,    SA,    CTCDD))
+            .widget(createUpgradeConnectorLine(new Pos2d(176, 290), 80,  320,    UpgradeColor.RED,    GPCI,  CTCDD))
+            .widget(createUpgradeConnectorLine(new Pos2d(100, 355), 80,  313,    UpgradeColor.BLUE,   REC,   QGPIU))
+            .widget(createUpgradeConnectorLine(new Pos2d(186, 355), 80,  47,     UpgradeColor.BLUE,   CTCDD, QGPIU))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 430), 48,  0,      UpgradeColor.ORANGE, QGPIU, TCT))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 490), 48,  0,      UpgradeColor.ORANGE, TCT,   EPEC))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 550), 48,  0,      UpgradeColor.ORANGE, EPEC,  POS))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 610), 48,  0,      UpgradeColor.ORANGE, POS,   NGMS))
+            .widget(createUpgradeConnectorLine(new Pos2d(110, 410), 80,  40,     UpgradeColor.PURPLE, QGPIU, SEFCP))
+            .widget(createUpgradeConnectorLine(new Pos2d(83,  490), 48,  0,      UpgradeColor.PURPLE, SEFCP, CNTI))
+            .widget(createUpgradeConnectorLine(new Pos2d(83,  550), 48,  0,      UpgradeColor.PURPLE, CNTI,  NDPE))
+            .widget(createUpgradeConnectorLine(new Pos2d(101, 590), 80,  320,    UpgradeColor.PURPLE, NDPE,  NGMS))
+            .widget(createUpgradeConnectorLine(new Pos2d(53,  536), 35,  45,     UpgradeColor.PURPLE, CNTI,  DOP))
+            .widget(createUpgradeConnectorLine(new Pos2d(176, 410), 80,  320,    UpgradeColor.GREEN,  QGPIU, GGEBE))
+            .widget(createUpgradeConnectorLine(new Pos2d(203, 490), 48,  0,      UpgradeColor.GREEN,  GGEBE, IMKG))
+            .widget(createUpgradeConnectorLine(new Pos2d(203, 550), 48,  0,      UpgradeColor.GREEN,  IMKG,  DOR))
+            .widget(createUpgradeConnectorLine(new Pos2d(185, 590), 80,  40,     UpgradeColor.GREEN,  DOR,   NGMS))
+            .widget(createUpgradeConnectorLine(new Pos2d(233, 476), 35,  315,    UpgradeColor.GREEN,  GGEBE, TPTP))
+            .widget(createUpgradeConnectorLine(new Pos2d(143, 670), 48,  0,      UpgradeColor.BLUE,   NGMS,  SEDS))
+            .widget(createUpgradeConnectorLine(new Pos2d(101, 707), 75,  62.3f,  UpgradeColor.BLUE,   SEDS,  PA))
+            .widget(createUpgradeConnectorLine(new Pos2d(53,  772), 78,  0,      UpgradeColor.BLUE,   PA,    CD))
+            .widget(createUpgradeConnectorLine(new Pos2d(95,  837), 75,  297.7f, UpgradeColor.BLUE,   CD,    TSE))
+            .widget(createUpgradeConnectorLine(new Pos2d(191, 837), 75,  62.3f,  UpgradeColor.BLUE,   TSE,   TBF))
+            .widget(createUpgradeConnectorLine(new Pos2d(233, 772), 78,  0,      UpgradeColor.BLUE,   TBF,   EE))
+            .widget(createUpgradeConnectorLine(new Pos2d(191, 747), 75,  62.3f,  UpgradeColor.BLUE,   EE,    END));
+        // spotless:on
 
         for (ForgeOfGodsUpgrade upgrade : upgrades.getAllUpgrades()) {
             scrollable.widget(createUpgradeBox(upgrade, scrollable));
@@ -1710,42 +1698,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .attachSyncer(upgrades.getSingleSyncer(upgrade), builder);
     }
 
-    private Widget createUpgradeConnectorLine(Pos2d pos, int length, float rotationAngle, int colorCode,
+    private Widget createUpgradeConnectorLine(Pos2d pos, int length, float rotationAngle, UpgradeColor color,
         ForgeOfGodsUpgrade startUpgrade, ForgeOfGodsUpgrade endUpgrade) {
-        return new DrawableWidget()
-            .setDrawable(
-                () -> (isUpgradeActive(startUpgrade) && isUpgradeActive(endUpgrade))
-                    ? coloredLine(colorCode, true).withRotationDegree(rotationAngle)
-                    : coloredLine(colorCode, false).withRotationDegree(rotationAngle))
+        return new DrawableWidget().setDrawable(() -> {
+            UITexture texture = color.getConnector();
+            if (isUpgradeActive(startUpgrade) && isUpgradeActive(endUpgrade)) {
+                texture = color.getOpaqueConnector();
+            }
+            return texture.withRotationDegree(rotationAngle);
+        })
             .setPos(pos)
             .setSize(6, length);
-    }
-
-    private IDrawable coloredLine(int colorCode, boolean opaque) {
-        IDrawable line;
-        switch (colorCode) {
-            case 1 -> {
-                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_PURPLE_OPAQUE
-                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_PURPLE;
-            }
-            case 2 -> {
-                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_ORANGE_OPAQUE
-                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_ORANGE;
-            }
-            case 3 -> {
-                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_GREEN_OPAQUE
-                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_GREEN;
-            }
-            case 4 -> {
-                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE
-                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_RED;
-            }
-            default -> {
-                line = opaque ? TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_BLUE_OPAQUE
-                    : TecTechUITextures.PICTURE_UPGRADE_CONNECTOR_BLUE;
-            }
-        }
-        return line;
     }
 
     protected ModularWindow createManualInsertionWindow(final EntityPlayer player) {

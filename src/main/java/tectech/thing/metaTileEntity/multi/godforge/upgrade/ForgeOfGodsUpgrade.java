@@ -1,8 +1,8 @@
 package tectech.thing.metaTileEntity.multi.godforge.upgrade;
 
-import static tectech.thing.metaTileEntity.multi.godforge.upgrade.BGColor.*;
-import static tectech.thing.metaTileEntity.multi.godforge.upgrade.BGIcon.*;
-import static tectech.thing.metaTileEntity.multi.godforge.upgrade.BGWindowSize.*;
+import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.BGWindowSize.*;
+import static tectech.thing.metaTileEntity.multi.godforge.upgrade.MilestoneIcon.*;
+import static tectech.thing.metaTileEntity.multi.godforge.upgrade.UpgradeColor.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,8 +55,6 @@ public enum ForgeOfGodsUpgrade {
     TBF,
     EE,
     END,
-
-    // SECRET(), // todo
 
     ;
 
@@ -263,7 +261,6 @@ public enum ForgeOfGodsUpgrade {
         SPLIT_UPGRADES = ImmutableSet.of(SEFCP, TCT, GGEBE);
 
         // Build inverse dependents mapping
-        // todo make sure this is right
         EnumMap<ForgeOfGodsUpgrade, List<ForgeOfGodsUpgrade>> dependencies = new EnumMap<>(ForgeOfGodsUpgrade.class);
         for (ForgeOfGodsUpgrade upgrade : VALUES) {
             for (ForgeOfGodsUpgrade prerequisite : upgrade.prerequisites) {
@@ -289,8 +286,8 @@ public enum ForgeOfGodsUpgrade {
     private final List<ItemStack> extraCost = new ArrayList<>();
 
     // UI
-    private BGColor color;
-    private BGIcon icon;
+    private UpgradeColor color;
+    private MilestoneIcon icon;
     private BGWindowSize windowSize;
     private Pos2d treePos;
 
@@ -403,8 +400,8 @@ public enum ForgeOfGodsUpgrade {
         private int shardCost;
 
         // UI
-        private BGColor color = BLUE;
-        private BGIcon icon = CHARGE;
+        private UpgradeColor color = BLUE;
+        private MilestoneIcon icon = CHARGE;
         private BGWindowSize windowSize = STANDARD;
         private Pos2d treePos = new Pos2d(0, 0);
 
@@ -430,7 +427,7 @@ public enum ForgeOfGodsUpgrade {
         }
 
         // UI
-        public Builder background(BGColor color, BGIcon icon) {
+        public Builder background(UpgradeColor color, MilestoneIcon icon) {
             this.color = color;
             this.icon = icon;
             return this;
@@ -444,6 +441,30 @@ public enum ForgeOfGodsUpgrade {
         public Builder treePos(int x, int y) {
             this.treePos = new Pos2d(x, y);
             return this;
+        }
+    }
+
+    enum BGWindowSize {
+
+        STANDARD(250, 250, 110),
+        LARGE(300, 300, 85),
+
+        ;
+
+        private final Size size;
+        private final int loreY;
+
+        BGWindowSize(int width, int height, int loreY) {
+            this.size = new Size(width, height);
+            this.loreY = loreY;
+        }
+
+        public Size getWindowSize() {
+            return size;
+        }
+
+        public int getLoreY() {
+            return loreY;
         }
     }
 }
