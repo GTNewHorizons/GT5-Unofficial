@@ -319,6 +319,9 @@ public enum ForgeOfGodsUpgrade {
     }
 
     public void addExtraCost(ItemStack... cost) {
+        if (extraCost.size() + cost.length > 12) {
+            throw new IllegalArgumentException("Too many inputs for Godforge upgrade cost, cannot be more than 12!");
+        }
         extraCost.addAll(Arrays.asList(cost));
     }
 

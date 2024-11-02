@@ -762,7 +762,11 @@ public class Godforge implements Runnable {
 
     public static void runDevEnvironmentRecipes() {
         // put something in here to not crash the game in dev environment when opening the manual insertion window
-        ForgeOfGodsUpgrade.START.addExtraCost(new ItemStack(Blocks.cobblestone, 4));
+        ForgeOfGodsUpgrade.START.addExtraCost(
+            new ItemStack(Blocks.cobblestone, 4),
+            new ItemStack(Blocks.dirt, 12),
+            new ItemStack(Blocks.diamond_block, 8),
+            new ItemStack(Blocks.gold_block, 32));
         ForgeOfGodsUpgrade.FDIM.addExtraCost(new ItemStack(Blocks.cobblestone, 8));
         ForgeOfGodsUpgrade.GPCI.addExtraCost(new ItemStack(Blocks.cobblestone, 12));
         ForgeOfGodsUpgrade.QGPIU.addExtraCost(new ItemStack(Blocks.cobblestone, 16));

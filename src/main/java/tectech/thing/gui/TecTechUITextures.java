@@ -226,6 +226,7 @@ public class TecTechUITextures {
         .fullImage(MODID, "gui/picture/connector_red_opaque");
     public static final UITexture SLOT_OUTLINE_GREEN = UITexture.fullImage(MODID, "gui/picture/green_selector");
     public static final UITexture UNSELECTED_OPTION = UITexture.fullImage(MODID, "gui/picture/unselected_option");
+    public static final UITexture GREEN_CHECKMARK_11x9 = UITexture.fullImage(MODID, "gui/picture/green_checkmark");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
         .fullImage(MODID, "gui/picture/milestone_charge");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION = UITexture

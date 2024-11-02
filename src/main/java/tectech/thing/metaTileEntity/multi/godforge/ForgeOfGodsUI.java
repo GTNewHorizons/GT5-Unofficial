@@ -13,6 +13,7 @@ import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -20,6 +21,7 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
@@ -33,6 +35,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SliderWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
@@ -689,7 +692,7 @@ public class ForgeOfGodsUI {
         return ImmutableList.of(translateToLocal("fog.upgrade.confirm"));
     }
 
-    public static Text constructionStatusText(Supplier<Boolean> check) {
+    private static Text constructionStatusText(Supplier<Boolean> check) {
         if (check.get()) {
             return new Text(translateToLocal("fog.upgrade.respec"));
         }
@@ -701,5 +704,51 @@ public class ForgeOfGodsUI {
             return ImmutableList.of(translateToLocal("fog.button.materialrequirementsmet.tooltip"));
         }
         return ImmutableList.of(translateToLocal("fog.button.materialrequirements.tooltip"));
+    }
+
+    public static Widget createExtraCostWidget(final ItemStack costStack, Supplier<Short> paidAmount) {
+        MultiChildWidget widget = new MultiChildWidget();
+        widget.setSize(36, 18);
+
+        if (costStack == null) {
+            // Nothing to pay, so just create a simple disabled slot drawable
+            widget.addChild(
+                new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_DISABLED)
+                    .setSize(18, 18));
+            return widget;
+        }
+
+        // Item slot
+        ItemStackHandler handler = new ItemStackHandler(1);
+        ItemStack handlerStack = costStack.copy();
+        handlerStack.stackSize = Math.max(1, handlerStack.stackSize - paidAmount.get());
+        handler.setStackInSlot(0, handlerStack);
+        widget.addChild(
+            new SlotWidget(handler, 0).setAccess(false, false)
+                .setRenderStackSize(false)
+                .disableInteraction()
+                .setBackground(GTUITextures.BUTTON_STANDARD_PRESSED));
+
+        // Progress text
+        widget.addChild(new DynamicTextWidget(() -> {
+            short paid = paidAmount.get();
+            EnumChatFormatting color = EnumChatFormatting.YELLOW;
+            if (paid == 0) color = EnumChatFormatting.RED;
+            else if (paid == costStack.stackSize) color = EnumChatFormatting.GREEN;
+            return new Text(color + "x" + (costStack.stackSize - paid));
+        }).setTextAlignment(Alignment.Center)
+            .setScale(0.8f)
+            .setPos(18, 5)
+            .setSize(18, 9)
+            .setEnabled(w -> paidAmount.get() < costStack.stackSize));
+
+        // Completed checkmark
+        widget.addChild(
+            new DrawableWidget().setDrawable(TecTechUITextures.GREEN_CHECKMARK_11x9)
+                .setPos(21, 5)
+                .setSize(11, 9)
+                .setEnabled(w -> paidAmount.get() >= costStack.stackSize));
+
+        return widget;
     }
 }

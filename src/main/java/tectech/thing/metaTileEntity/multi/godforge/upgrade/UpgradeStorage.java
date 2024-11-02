@@ -1,15 +1,18 @@
 package tectech.thing.metaTileEntity.multi.godforge.upgrade;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.stream.Stream;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+
+import gregtech.api.util.GTUtility;
 
 public class UpgradeStorage {
 
@@ -30,8 +33,48 @@ public class UpgradeStorage {
         return getData(upgrade).isCostPaid();
     }
 
-    public void paidCost(ForgeOfGodsUpgrade upgrade) {
-        getData(upgrade).costPaid = true;
+    public short[] getPaidCosts(ForgeOfGodsUpgrade upgrade) {
+        return getData(upgrade).amountsPaid;
+    }
+
+    /** Handles consuming items and updating state if successful. Does NOT handle graviton shards! */
+    public void payCost(ForgeOfGodsUpgrade upgrade, ItemStackHandler handler) {
+        UpgradeData data = getData(upgrade);
+
+        if (!upgrade.hasExtraCost()) {
+            data.costPaid = true;
+            return;
+        }
+
+        ItemStack[] extraCost = upgrade.getExtraCost();
+        for (int i = 0; i < handler.getSlots(); i++) {
+            ItemStack inputStack = handler.getStackInSlot(i);
+            if (inputStack == null) continue;
+
+            for (int j = 0; j < extraCost.length; j++) {
+                ItemStack costStack = extraCost[j];
+                int alreadyPaid = data.amountsPaid[j];
+                if (alreadyPaid >= costStack.stackSize) continue;
+
+                if (GTUtility.areStacksEqual(inputStack, costStack)) {
+                    int maxExtract = costStack.stackSize - alreadyPaid;
+                    ItemStack extractedStack = handler.extractItem(i, maxExtract, false);
+                    if (extractedStack != null) {
+                        data.amountsPaid[j] += extractedStack.stackSize;
+                    }
+                }
+            }
+        }
+
+        // Check if all costs are paid
+        for (int i = 0; i < extraCost.length; i++) {
+            ItemStack costStack = extraCost[i];
+            if (costStack == null) continue;
+            if (data.amountsPaid[i] < costStack.stackSize) {
+                return;
+            }
+        }
+        data.costPaid = true;
     }
 
     public void unlockUpgrade(ForgeOfGodsUpgrade upgrade) {
@@ -46,13 +89,16 @@ public class UpgradeStorage {
      * Whether the passed upgrade can be unlocked, checking that the prerequisites are satisfied.
      */
     public boolean checkPrerequisites(ForgeOfGodsUpgrade upgrade) {
-        Stream<UpgradeData> prereqs = Arrays.stream(upgrade.getPrerequisites())
+        ForgeOfGodsUpgrade[] prereqs = upgrade.getPrerequisites();
+        if (prereqs.length == 0) return true;
+
+        Stream<UpgradeData> prereqStream = Arrays.stream(upgrade.getPrerequisites())
             .map(unlockedUpgrades::get);
 
         if (upgrade.requiresAllPrerequisites()) {
-            return prereqs.allMatch(UpgradeData::isActive);
+            return prereqStream.allMatch(UpgradeData::isActive);
         }
-        return prereqs.anyMatch(UpgradeData::isActive);
+        return prereqStream.anyMatch(UpgradeData::isActive);
     }
 
     public boolean checkSplit(ForgeOfGodsUpgrade upgrade, int maxSplitUpgrades) {
@@ -94,9 +140,22 @@ public class UpgradeStorage {
         return unlockedUpgrades.computeIfAbsent(upgrade, $ -> new UpgradeData());
     }
 
-    /**  */
-    public boolean hasAnyUpgrade() {
-        return isUpgradeActive(ForgeOfGodsUpgrade.START);
+    private boolean hasAnyProgress() {
+        if (isUpgradeActive(ForgeOfGodsUpgrade.START)) return true;
+
+        // Check if any costs have been paid in any upgrades
+        for (var entry : unlockedUpgrades.entrySet()) {
+            ForgeOfGodsUpgrade upgrade = entry.getKey();
+            if (upgrade.hasExtraCost()) {
+                UpgradeData data = entry.getValue();
+                if (data.isCostPaid()) return true;
+                for (int i = 0; i < data.amountsPaid.length; i++) {
+                    if (data.amountsPaid[i] != 0) return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public int getTotalActiveUpgrades() {
@@ -124,13 +183,20 @@ public class UpgradeStorage {
     }
 
     public void serializeToNBT(NBTTagCompound NBT, boolean force) {
-        if (!force && !hasAnyUpgrade()) return;
+        if (!force && !hasAnyProgress()) return;
 
         NBTTagCompound upgradeTag = new NBTTagCompound();
         for (ForgeOfGodsUpgrade upgrade : ForgeOfGodsUpgrade.VALUES) {
             UpgradeData data = unlockedUpgrades.get(upgrade);
             upgradeTag.setBoolean("upgrade" + upgrade.ordinal(), data.isActive());
-            upgradeTag.setBoolean("upgrade" + upgrade.ordinal() + "cost", data.isCostPaid());
+            if (upgrade.hasExtraCost()) {
+                NBTTagCompound costTag = new NBTTagCompound();
+                costTag.setBoolean("paid", data.isCostPaid());
+                for (int i = 0; i < data.amountsPaid.length; i++) {
+                    costTag.setShort("costPaid" + i, data.amountsPaid[i]);
+                }
+                upgradeTag.setTag("extraCost" + upgrade.ordinal(), costTag);
+            }
         }
         NBT.setTag("upgrades", upgradeTag);
     }
@@ -143,21 +209,18 @@ public class UpgradeStorage {
             ForgeOfGodsUpgrade upgrade = ForgeOfGodsUpgrade.VALUES[i];
             UpgradeData data = unlockedUpgrades.get(upgrade);
             data.active = upgradeTag.getBoolean("upgrade" + upgrade.ordinal());
-            data.costPaid = upgradeTag.getBoolean("upgrade" + upgrade.ordinal() + "cost");
+            if (upgrade.hasExtraCost() && upgradeTag.hasKey("extraCost" + upgrade.ordinal())) {
+                NBTTagCompound costTag = upgradeTag.getCompoundTag("extraCost" + upgrade.ordinal());
+                data.costPaid = costTag.getBoolean("paid");
+                for (int j = 0; j < data.amountsPaid.length; j++) {
+                    data.amountsPaid[j] = costTag.getShort("costPaid" + j);
+                }
+            }
         }
     }
 
-    /** Sync widget to sync the full upgrade tree. */
-    public FakeSyncWidget<?> getFullSyncer() {
-        return new FakeSyncWidget.ListSyncer<>(() -> new ArrayList<>(unlockedUpgrades.values()), val -> {
-            for (int i = 0; i < val.size(); i++) {
-                unlockedUpgrades.put(ForgeOfGodsUpgrade.VALUES[i], val.get(i));
-            }
-        }, UpgradeData::writeToBuffer, UpgradeData::readFromBuffer);
-    }
-
     /** Sync widget to sync a single upgrade. */
-    public FakeSyncWidget<?> getSingleSyncer(ForgeOfGodsUpgrade upgrade) {
+    public FakeSyncWidget<?> getSyncer(ForgeOfGodsUpgrade upgrade) {
         return new FakeSyncWidget<>(
             () -> unlockedUpgrades.get(upgrade),
             val -> unlockedUpgrades.put(upgrade, val),
@@ -169,6 +232,7 @@ public class UpgradeStorage {
 
         private boolean active;
         private boolean costPaid;
+        private final short[] amountsPaid = new short[12];
 
         public boolean isActive() {
             return active;
@@ -181,12 +245,18 @@ public class UpgradeStorage {
         private static void writeToBuffer(PacketBuffer buf, UpgradeData data) {
             buf.writeBoolean(data.isActive());
             buf.writeBoolean(data.isCostPaid());
+            for (int i = 0; i < data.amountsPaid.length; i++) {
+                buf.writeShort(data.amountsPaid[i]);
+            }
         }
 
         private static UpgradeData readFromBuffer(PacketBuffer buf) {
             UpgradeData data = new UpgradeData();
             data.active = buf.readBoolean();
             data.costPaid = buf.readBoolean();
+            for (int i = 0; i < data.amountsPaid.length; i++) {
+                data.amountsPaid[i] = buf.readShort();
+            }
             return data;
         }
 
@@ -197,7 +267,9 @@ public class UpgradeStorage {
 
             UpgradeData that = (UpgradeData) o;
 
-            return active == that.active && costPaid == that.costPaid;
+            if (active != that.active) return false;
+            if (costPaid != that.costPaid) return false;
+            return Arrays.equals(amountsPaid, that.amountsPaid);
         }
     }
 }

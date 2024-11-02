@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
@@ -64,7 +63,6 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -78,7 +76,6 @@ import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -87,7 +84,6 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
@@ -1004,7 +1000,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setPos(26, 91)
             .setSize(16, 16)
             .setEnabled($ -> isUpgradeActive(END))
-            .attachSyncer(upgrades.getSingleSyncer(END), builder);
+            .attachSyncer(upgrades.getSyncer(END), builder);
         return (ButtonWidget) button;
     }
 
@@ -1111,13 +1107,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         // Syncers for max fuel factor
         builder.widget(
-            upgrades.getSingleSyncer(CFCE)
+            upgrades.getSyncer(CFCE)
                 .setOnClientUpdate($ -> fuelFactor.setMaxValue(calculateMaxFuelFactor(this))));
         builder.widget(
-            upgrades.getSingleSyncer(GEM)
+            upgrades.getSyncer(GEM)
                 .setOnClientUpdate($ -> fuelFactor.setMaxValue(calculateMaxFuelFactor(this))));
         builder.widget(
-            upgrades.getSingleSyncer(TSE)
+            upgrades.getSyncer(TSE)
                 .setOnClientUpdate($ -> fuelFactor.setMaxValue(calculateMaxFuelFactor(this))));
 
         builder.widget(
@@ -1608,7 +1604,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         // Syncers
         builder.widget(
             new FakeSyncWidget.IntegerSyncer(() -> gravitonShardsAvailable, val -> gravitonShardsAvailable = val));
-        builder.widget(upgrades.getSingleSyncer(upgrade));
+        builder.widget(upgrades.getSyncer(upgrade));
 
         builder.widget(
             ForgeOfGodsUI.getIndividualUpgradeGroup(
@@ -1634,6 +1630,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return builder.build();
     }
 
+    // todo ringAmount is not client synced, causing a UI desync when unlocking split upgrades
     private void completeUpgrade(ForgeOfGodsUpgrade upgrade) {
         if (isUpgradeActive(upgrade)) return;
         if (!upgrades.checkPrerequisites(upgrade)) return;
@@ -1695,7 +1692,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setSize(34, 9)
                     .setPos(3, 4))
             .setPos(upgrade.getTreePos())
-            .attachSyncer(upgrades.getSingleSyncer(upgrade), builder);
+            .attachSyncer(upgrades.getSyncer(upgrade), builder);
     }
 
     private Widget createUpgradeConnectorLine(Pos2d pos, int length, float rotationAngle, UpgradeColor color,
@@ -1718,20 +1715,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         final int HEIGHT = 106;
         final int PARENT_WIDTH = getGUIWidth();
         final int PARENT_HEIGHT = getGUIHeight();
-        final MultiChildWidget columns = new MultiChildWidget();
-        final DynamicPositionedColumn column1 = new DynamicPositionedColumn();
-        final DynamicPositionedColumn column2 = new DynamicPositionedColumn();
-        final DynamicPositionedColumn column3 = new DynamicPositionedColumn();
-        final DynamicPositionedColumn column4 = new DynamicPositionedColumn();
-        final DynamicPositionedColumn column5 = new DynamicPositionedColumn();
-        final DynamicPositionedColumn column6 = new DynamicPositionedColumn();
 
         for (int i = 0; i < 16; i++) {
             inputSlotHandler.insertItem(i, storedUpgradeWindowItems[i], false);
             storedUpgradeWindowItems[i] = null;
         }
 
-        List<DynamicPositionedColumn> columnList = Arrays.asList(column1, column2, column3, column4, column5, column6);
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
@@ -1741,6 +1730,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .add(Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT)))
                 .subtract(5, 0)
                 .add(0, 4));
+        builder.widget(upgrades.getSyncer(upgrade));
         builder.widget(
             SlotGroup.ofItemHandler(inputSlotHandler, 4)
                 .startFromSlot(0)
@@ -1764,25 +1754,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setSize(10, 10));
         builder.widget(new MultiChildWidget().addChild(new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
-                ArrayList<ItemStack> list = new ArrayList<>(inputSlotHandler.getStacks());
-                list.removeIf(Objects::isNull);
-                int foundInputs = 0;
-                int[] foundInputIndices = new int[inputs.length];
-                for (ItemStack inputStack : list) {
-                    for (ItemStack requiredStack : inputs) {
-                        if (ItemStack.areItemStacksEqual(requiredStack, inputStack)) {
-                            foundInputIndices[foundInputs] = inputSlotHandler.getStacks()
-                                .indexOf(inputStack);
-                            foundInputs++;
-                        }
-                    }
-                }
-                if (foundInputs == inputs.length) {
-                    for (int index : foundInputIndices) {
-                        inputSlotHandler.extractItem(index, inputSlotHandler.getStackInSlot(index).stackSize, false);
-                    }
-                    upgrades.paidCost(upgrade);
-                }
+                upgrades.payCost(upgrade, inputSlotHandler);
+                ForgeOfGodsUI.reopenWindow(widget, MANUAL_INSERTION_WINDOW_ID);
             }
         })
             .setPlayClickSound(true)
@@ -1797,58 +1770,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             .setPos(5, 82)
             .setSize(179, 16));
 
-        IItemHandlerModifiable upgradeMatsHandler = new ItemStackHandler(12);
-        int uniqueItems = inputs.length;
         for (int i = 0; i < 12; i++) {
-            int cleanDiv4 = i / 4;
-            if (i < uniqueItems) {
-                ItemStack stack = inputs[i];
-                if (stack != null) {
-                    upgradeMatsHandler.setStackInSlot(i, stack.copy());
-                }
-                builder.widget(
-                    new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_PRESSED)
-                        .setPos(5 + cleanDiv4 * 36, 6 + i % 4 * 18)
-                        .setSize(18, 18));
-                columnList.get(cleanDiv4)
-                    .addChild(
-                        new SlotWidget(upgradeMatsHandler, i).setAccess(false, false)
-                            .setRenderStackSize(false)
-                            .disableInteraction());
-                columnList.get(cleanDiv4 + 3)
-                    .addChild(
-                        new TextWidget("x" + inputs[i].stackSize).setTextAlignment(Alignment.CenterLeft)
-                            .setScale(0.8f)
-                            .setSize(18, 8));
-            } else {
-                builder.widget(
-                    new DrawableWidget().setDrawable(GTUITextures.BUTTON_STANDARD_DISABLED)
-                        .setPos(5 + cleanDiv4 * 36, 6 + i % 4 * 18)
-                        .setSize(18, 18));
+            final int ii = i;
+            ItemStack stack = null;
+            if (i < inputs.length) {
+                stack = inputs[i];
             }
+            Widget costWidget = ForgeOfGodsUI.createExtraCostWidget(stack, () -> upgrades.getPaidCosts(upgrade)[ii]);
+            costWidget.setPos(5 + (36 * (i / 4)), 6 + (18 * (i % 4)));
+            builder.widget(costWidget);
         }
-
-        int counter = 0;
-        for (DynamicPositionedColumn column : columnList) {
-            int spacing = 0;
-            int xCord = counter * 36;
-            int yCord = 0;
-            if (counter > 2) {
-                spacing = 10;
-                xCord = 19 + (counter - 3) * 36;
-                yCord = 5;
-            }
-            columns.addChild(
-                column.setSpace(spacing)
-                    .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
-                    .setSize(16, 72)
-                    .setPos(xCord, yCord));
-            counter++;
-        }
-
-        builder.widget(
-            columns.setSize(108, 72)
-                .setPos(5, 6));
 
         return builder.build();
     }
