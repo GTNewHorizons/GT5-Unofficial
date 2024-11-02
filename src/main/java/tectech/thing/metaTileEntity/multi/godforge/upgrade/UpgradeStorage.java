@@ -92,7 +92,7 @@ public class UpgradeStorage {
         ForgeOfGodsUpgrade[] prereqs = upgrade.getPrerequisites();
         if (prereqs.length == 0) return true;
 
-        Stream<UpgradeData> prereqStream = Arrays.stream(upgrade.getPrerequisites())
+        Stream<UpgradeData> prereqStream = Arrays.stream(prereqs)
             .map(unlockedUpgrades::get);
 
         if (upgrade.requiresAllPrerequisites()) {
