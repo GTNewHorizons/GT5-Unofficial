@@ -29,7 +29,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     // Prevent culling when block is out of frame so model can remain active.
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        if (boundingBox == null){
+        if (boundingBox == null) {
             // Assuming your block is at (x, y, z)
             double x = this.xCoord;
             double y = this.yCoord;

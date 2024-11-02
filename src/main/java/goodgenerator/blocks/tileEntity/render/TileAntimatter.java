@@ -86,7 +86,7 @@ public class TileAntimatter extends TileEntity {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        if (boundingBox == null){
+        if (boundingBox == null) {
             boundingBox = AxisAlignedBB.getBoundingBox(
                 xCoord - maximalRadius - 1,
                 yCoord - maximalRadius - 1,

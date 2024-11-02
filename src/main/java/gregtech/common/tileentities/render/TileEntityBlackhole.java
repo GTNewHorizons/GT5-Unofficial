@@ -71,8 +71,9 @@ public class TileEntityBlackhole extends TileEntity {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        if (boundingBox == null){
-            boundingBox = AxisAlignedBB.getBoundingBox(xCoord - 10, yCoord - 10, zCoord - 10, xCoord + 10, yCoord + 10, zCoord + 10);
+        if (boundingBox == null) {
+            boundingBox = AxisAlignedBB
+                .getBoundingBox(xCoord - 10, yCoord - 10, zCoord - 10, xCoord + 10, yCoord + 10, zCoord + 10);
         }
         return boundingBox;
     }
