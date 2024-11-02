@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -133,7 +131,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (!recipeInProgress || recipeRegenerated) {
                     powerForRecipe = BigInteger.valueOf(getProcessingVoltage())
                         .multiply(BigInteger.valueOf(recipe.mDuration * actualParallel));
@@ -171,7 +169,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
+            protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 EUt = calculatedEut;
                 powerForRecipe = BigInteger.valueOf(EUt)
                     .multiply(BigInteger.valueOf(duration * actualParallel));
@@ -188,9 +186,9 @@ public class MTEExoticModule extends MTEBaseModule {
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            @Nonnull
+            @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }
