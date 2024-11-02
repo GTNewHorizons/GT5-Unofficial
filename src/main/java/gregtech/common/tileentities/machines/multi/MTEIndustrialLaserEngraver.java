@@ -226,12 +226,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public void onDisableWorking() {
-        if (renderer != null) renderer.setShouldRender(false);
-        super.onDisableWorking();
-    }
-
-    @Override
     public void onBlockDestroyed() {
         if (renderer != null) renderer.setShouldRender(false);
         super.onBlockDestroyed();
