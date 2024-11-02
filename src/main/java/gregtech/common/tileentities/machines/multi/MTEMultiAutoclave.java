@@ -212,6 +212,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addInputBus("Any Pressure Containment Casing", 1)
             .addOutputBus("Any Pressure Containment Casing", 1)
             .addInputHatch("Any Pressure Containment Casing", 1)
+            .addOutputHatch("Any Pressure Containment Casing", 1)
             .addEnergyHatch("Any Pressure Containment Casing", 1)
             .addMaintenanceHatch("Any Pressure Containment Casing", 1)
             .addMufflerHatch("Any Pressure Containment Casing", 1)
