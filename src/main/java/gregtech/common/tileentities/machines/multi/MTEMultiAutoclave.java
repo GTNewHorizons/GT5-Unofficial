@@ -209,11 +209,12 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addCasingInfoExactly("Pipe Casings", 14, true)
             .addCasingInfoExactly("Heating Coils", 7, true)
             .addCasingInfoExactly("PTFE Frame", 42, false)
-            .addInputBus("Any of the Pressure Containment Casings", 1)
-            .addOutputBus("Any of the Pressure Containment Casings", 1)
-            .addEnergyHatch("Any of the Pressure Containment Casings", 1)
-            .addMaintenanceHatch("Any of the Pressure Containment Casings", 1)
-            .addMufflerHatch("Any of the Pressure Containment Casings", 1)
+            .addInputBus("Any Pressure Containment Casing", 1)
+            .addOutputBus("Any Pressure Containment Casing", 1)
+            .addInputHatch("Any Pressure Containment Casing", 1)
+            .addEnergyHatch("Any Pressure Containment Casing", 1)
+            .addMaintenanceHatch("Any Pressure Containment Casing", 1)
+            .addMufflerHatch("Any Pressure Containment Casing", 1)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
