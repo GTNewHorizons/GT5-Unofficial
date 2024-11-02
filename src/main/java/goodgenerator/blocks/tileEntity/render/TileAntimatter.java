@@ -17,6 +17,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 public class TileAntimatter extends TileEntity {
 
     public boolean shouldRender = true;
+    private AxisAlignedBB boundingBox;
 
     // Antimatter Core settings
     public static final float spikeR = 0.153f, spikeG = 0.435f, spikeB = 1f;
@@ -85,13 +86,16 @@ public class TileAntimatter extends TileEntity {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(
-            xCoord - maximalRadius - 1,
-            yCoord - maximalRadius - 1,
-            zCoord - maximalRadius - 1,
-            xCoord + maximalRadius + 1,
-            yCoord + maximalRadius + 1,
-            zCoord + maximalRadius + 1);
+        if (boundingBox == null){
+            boundingBox = AxisAlignedBB.getBoundingBox(
+                xCoord - maximalRadius - 1,
+                yCoord - maximalRadius - 1,
+                zCoord - maximalRadius - 1,
+                xCoord + maximalRadius + 1,
+                yCoord + maximalRadius + 1,
+                zCoord + maximalRadius + 1);
+        }
+        return boundingBox;
     }
 
     @Override
