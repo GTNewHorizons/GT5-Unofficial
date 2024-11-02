@@ -31,7 +31,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.blocks.BlockCasings9;
 
 public class MTESpatialAnomalyContainmentChamber
     extends MTEExtendedPowerMultiBlockBase<MTESpatialAnomalyContainmentChamber> implements ISurvivalConstructable {
@@ -45,18 +45,18 @@ public class MTESpatialAnomalyContainmentChamber
             STRUCTURE_PIECE_MAIN,
             // spotless:off
             new String[][]{
-                    { "  B    ", " BB  B ", "  BBBBB", "  B~B  ", "BBBBB  ", " B  BB ", "    B  "},
+                    { "  B    ", " BB  B ", "B BBBBB", "  B~B  ", "BBBBB B", " B  BB ", "    B  "},
                     { " BB  B ", "BAAAAAB", "BA   A ", " A   A ", " A   AB", "BAAAAAB", " B  BB "},
                     { "  BBBBB", " A   AB", "B     B", "B     B", "B     B", "BA   A ", "BBBBB  "},
                     { "  BCB  ", " A   A ", "B     B", "C     C", "B     B", " A   A ", "  BCB  "},
                     { "BBBBB  ", "BA   A ", "B     B", "B     B", "B     B", " A   AB", "  BBBBB"},
                     { " B  BB ", "BAAAAAB", " A   AB", " A   A ", "BA   A ", "BAAAAAB", " BB  B "},
-                    { "    B  ", " B  BB ", "BBBBB  ", "  BCB  ", "  BBBBB", " BB  B ", "  B    "}})
+                    { "    B  ", " B  BB ", "BBBBB B", "  BCB  ", "B BBBBB", " BB  B ", "  B    "}})
         //spotless:on
         .addElement(
             'C',
             buildHatchAdder(MTESpatialAnomalyContainmentChamber.class).atLeast(InputBus, OutputBus, InputHatch)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(8))
+                .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(7))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(
@@ -179,23 +179,23 @@ public class MTESpatialAnomalyContainmentChamber
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableVoltage(0L);
         logic.setAvailableAmperage(1L);
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
+        return new ProcessingLogic().setSpeedBonus(1)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (16);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.brewingRecipes;
+        return RecipeMaps.SpatialAnomalyRecipes;
     }
 
     @Override
@@ -215,11 +215,6 @@ public class MTESpatialAnomalyContainmentChamber
 
     @Override
     public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
         return true;
     }
 

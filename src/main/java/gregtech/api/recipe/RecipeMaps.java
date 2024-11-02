@@ -583,6 +583,14 @@ public final class RecipeMaps {
         .frontend(TranscendentPlasmaMixerFrontend::new)
         .disableOptimize()
         .build();
+    public static final RecipeMap<RecipeMapBackend> SpatialAnomalyRecipes = RecipeMapBuilder
+        .of("gt.recipe.spatialanomaly")
+        .maxIO(3, 3, 3, 3)
+        .minInputs(0, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .logoPos(80, 50)
+        .disableOptimize()
+        .build();
     public static final RecipeMap<RecipeMapBackend> spaceProjectFakeRecipes = RecipeMapBuilder
         .of("gt.recipe.fakespaceprojects")
         .maxIO(12, 0, 4, 0)
