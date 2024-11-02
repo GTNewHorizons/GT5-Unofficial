@@ -36,7 +36,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
             double z = this.zCoord;
 
             // Create a bounding box that extends 'size' blocks in all directions from the block.
-            return AxisAlignedBB.getBoundingBox(
+            boundingBox = AxisAlignedBB.getBoundingBox(
                 x - EOH_STAR_FIELD_RADIUS,
                 y - EOH_STAR_FIELD_RADIUS,
                 z - EOH_STAR_FIELD_RADIUS,
