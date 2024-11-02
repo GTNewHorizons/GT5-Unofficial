@@ -231,11 +231,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
-            && mCasingAmount >= 128
-            && itemPipeTier >= 0
-            && !mEnergyHatches.isEmpty()
-            && mMufflerHatches.size() == 1;
+        return mCasingAmount >= 128 && mMufflerHatches.size() == 1;
     }
 
     @Override
