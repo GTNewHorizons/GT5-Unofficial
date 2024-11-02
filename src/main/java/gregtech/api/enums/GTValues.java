@@ -607,6 +607,8 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "APenguin";
 
+    public static final String AuthorNoc = "Author: " + EnumChatFormatting.DARK_GREEN + EnumChatFormatting.BOLD + "Noc";
+
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
