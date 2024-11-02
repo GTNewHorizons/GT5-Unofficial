@@ -9,6 +9,8 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityBlackhole extends TileEntity {
 
+    private AxisAlignedBB boundingBox;
+
     // Should run from 0 to 1, >.5 starts showing changes
     private float stability = 1;
     // true = growing, false = shrinking
@@ -69,8 +71,10 @@ public class TileEntityBlackhole extends TileEntity {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB
-            .getBoundingBox(xCoord - 10, yCoord - 10, zCoord - 10, xCoord + 10, yCoord + 10, zCoord + 10);
+        if (boundingBox == null){
+            boundingBox = AxisAlignedBB.getBoundingBox(xCoord - 10, yCoord - 10, zCoord - 10, xCoord + 10, yCoord + 10, zCoord + 10);
+        }
+        return boundingBox;
     }
 
     public long getStartTime() {
