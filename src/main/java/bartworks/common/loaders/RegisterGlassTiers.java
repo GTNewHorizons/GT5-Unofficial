@@ -23,6 +23,7 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.Map;
 
+import gregtech.api.GregTechAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -67,6 +68,11 @@ public class RegisterGlassTiers {
 
         // Glass block 2 for transcendent (Really?)
         GlassTier.addCustomGlass(BorosilicateGlass.getGlassBlock2(), 0, 12);
+
+        //Tinted Industrial Glass
+        for (int i = 0; i < 4; i++) {
+            GlassTier.addCustomGlass(GregTechAPI.sBlockTintedGlass,i,4);
+        }
 
         // Other mods.
         GlassTier.addCustomGlass(IndustrialCraft2.ID, "blockAlloyGlass", 0, 4);
