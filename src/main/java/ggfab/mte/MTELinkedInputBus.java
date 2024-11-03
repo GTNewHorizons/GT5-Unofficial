@@ -82,7 +82,14 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
     @Override
     public int getCircuitSlot() {
-        return 0;
+        return 18;
+    }
+
+    private ItemStackHandler circuitInventoryHandler = new CircuitSlotItemStackHandler(mInventory, getCircuitSlot());
+
+    @Override
+    public ItemStackHandler getInventoryHandler() {
+        return circuitInventoryHandler;
     }
 
     @Override
@@ -140,9 +147,10 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
     @Override
     public ItemStack getStackInSlot(int aIndex) {
-        if (aIndex == getCircuitSlot()) return super.getStackInSlot(aIndex);
+        if (aIndex == getCircuitSlot()) return super.getStackInSlot(0);
+
         if (mState != State.Blocked && mChannel != null && mRealInventory != null) {
-            if (aIndex > 0 && aIndex <= SIZE_INVENTORY) return mRealInventory.stacks[aIndex - 1];
+            if (aIndex >= 0 && aIndex <= SIZE_INVENTORY - 1) return mRealInventory.stacks[aIndex];
         }
         return null;
     }
@@ -153,8 +161,8 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
             mInventory[0] = GTUtility.copyAmount(0, aStack);
             markDirty();
         } else if (mState != State.Blocked && mChannel != null && mRealInventory != null) {
-            if (aIndex > 0 && aIndex <= SIZE_INVENTORY) {
-                mRealInventory.stacks[aIndex - 1] = aStack;
+            if (aIndex >= 0 && aIndex <= SIZE_INVENTORY - 1) {
+                mRealInventory.stacks[aIndex] = aStack;
                 getWorldSave().markDirty();
             }
         }
@@ -175,10 +183,10 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         return isValidSlot(aIndex) && aStack != null
             && mChannel != null
             && mRealInventory != null
-            && aIndex > getCircuitSlot()
-            && aIndex < SIZE_INVENTORY + 1
-            && (mRealInventory.stacks[aIndex - 1] == null
-                || GTUtility.areStacksEqual(aStack, mRealInventory.stacks[aIndex - 1]))
+            && aIndex < getCircuitSlot()
+            && aIndex >= 0
+            && (mRealInventory.stacks[aIndex] == null
+                || GTUtility.areStacksEqual(aStack, mRealInventory.stacks[aIndex]))
             && allowPutStack(getBaseMetaTileEntity(), aIndex, ForgeDirection.getOrientation(ordinalSide), aStack);
     }
 
@@ -194,8 +202,8 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
         for (int i = 0; i < SIZE_INVENTORY; i++)
             if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(aStack), mRealInventory.stacks[i]))
-                return i == aIndex - 1;
-        return mRealInventory.stacks[aIndex - 1] == null;
+                return i == aIndex;
+        return mRealInventory.stacks[aIndex] == null;
     }
 
     @Override
@@ -205,8 +213,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
 
     @Override
     public int getSizeInventory() {
-        if (mState != State.Blocked && mChannel != null && mRealInventory != null) return SIZE_INVENTORY + 1;
-        return 1;
+        return SIZE_INVENTORY + 1;
     }
 
     @Override
@@ -678,6 +685,50 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         public void deserializeNBT(NBTTagCompound nbt) {
             super.deserializeNBT(nbt);
             fake = nbt.getBoolean("fake");
+        }
+    }
+
+    public static class CircuitSlotItemStackHandler extends ItemStackHandler {
+
+        public CircuitSlotItemStackHandler(ItemStack[] stacks, int circuitSlotIndex) {
+            super(stacks);
+            this.slotIndex = circuitSlotIndex;
+        }
+
+        private int slotIndex;
+
+        @Override
+        public void setStackInSlot(int slot, ItemStack stack) {
+            if (slot == slotIndex) this.stacks.set(0, stack);
+        }
+
+        @Override
+        public int getSlots() {
+            return slotIndex + 1;
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            if (slot == slotIndex) return this.stacks.get(0);
+            return null;
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if (slot == slotIndex) return super.insertItem(0, stack, simulate);
+            return stack;
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (slot == slotIndex) return super.extractItem(0, amount, simulate);
+            return null;
+        }
+
+        protected void validateSlotIndex(int slot) {
+            if (slot != slotIndex) {
+                throw new RuntimeException("Slot " + slot + " not in valid range - [0," + (slotIndex + 1) + ")");
+            }
         }
     }
 }
