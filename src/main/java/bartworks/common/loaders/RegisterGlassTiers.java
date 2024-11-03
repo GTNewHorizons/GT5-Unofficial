@@ -23,12 +23,12 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.Map;
 
-import gregtech.api.GregTechAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.API.BorosilicateGlass;
 import bartworks.API.GlassTier;
+import gregtech.api.GregTechAPI;
 import tectech.thing.block.BlockQuantumGlass;
 
 // Register all your glasses here.
@@ -69,9 +69,9 @@ public class RegisterGlassTiers {
         // Glass block 2 for transcendent (Really?)
         GlassTier.addCustomGlass(BorosilicateGlass.getGlassBlock2(), 0, 12);
 
-        //Tinted Industrial Glass
+        // Tinted Industrial Glass
         for (int i = 0; i < 4; i++) {
-            GlassTier.addCustomGlass(GregTechAPI.sBlockTintedGlass,i,4);
+            GlassTier.addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4);
         }
 
         // Other mods.
