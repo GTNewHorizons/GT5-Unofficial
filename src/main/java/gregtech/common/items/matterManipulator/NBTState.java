@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -46,8 +47,10 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.DimensionalCoord;
 import appeng.tile.misc.TileSecurity;
 import appeng.tile.networking.TileWireless;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
@@ -234,7 +237,7 @@ class NBTState {
 
         // MOVING's result is only used visually since it has a special build algorithm
         RegionAnalysis analysis = BlockAnalyzer
-            .analyzeRegion(coordA.getWorld(), coordA, coordB, config.placeMode == PlaceMode.COPYING ? true : false);
+            .analyzeRegion(world, coordA, coordB, config.placeMode == PlaceMode.COPYING ? true : false);
 
         for (PendingBlock block : analysis.blocks) {
             block.x += coordC.x;
@@ -1315,7 +1318,14 @@ class NBTState {
         }
 
         public World getWorld() {
-            return DimensionManager.getWorld(worldId);
+            if (FMLCommonHandler.instance()
+                .getSide() == Side.CLIENT) {
+                World world = Minecraft.getMinecraft().theWorld;
+
+                return world.provider.dimensionId == this.worldId ? world : null;
+            } else {
+                return DimensionManager.getWorld(this.worldId);
+            }
         }
 
         public Location offset(ForgeDirection dir) {
