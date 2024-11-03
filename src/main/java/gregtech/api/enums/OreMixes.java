@@ -993,7 +993,7 @@ public enum OreMixes {
         .weight(80)
         .density(2)
         .size(32)
-        .enableInDim(MehenBelt)
+        .enableInDim(Seth)
         .primary(Materials.TengamRaw)
         .secondary(Materials.TengamRaw)
         .inBetween(Materials.Electrotine)
