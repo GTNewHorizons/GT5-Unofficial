@@ -117,6 +117,12 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<Integer> NANO_FORGE_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "nano_forge_tier");
 
+    //**
+    // * Spatial Anomaly Tier
+    // */
+    //public static final RecipeMetadataKey<Integer> ANOMALY_TYPE = SimpleRecipeMetadataKey
+    //    .create(Integer.class, "spatial_anomaly_type");
+
     /**
      * PCB Factory nanite material
      */

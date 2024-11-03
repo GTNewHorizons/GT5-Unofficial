@@ -6,9 +6,20 @@ import static gregtech.api.enums.GTValues.AuthorNoc;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Mods.EternalSingularity;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import com.llamalad7.mixinextras.lib.apache.commons.ObjectUtils;
+import gregtech.api.enums.ItemList;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.PCBFactoryTierKey;
+import gregtech.api.recipe.metadata.SpatialAnomalyTierKey;
+import gregtech.api.util.GTRecipe;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,6 +43,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings9;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public class MTESpatialAnomalyContainmentChamber
     extends MTEExtendedPowerMultiBlockBase<MTESpatialAnomalyContainmentChamber> implements ISurvivalConstructable {
@@ -65,6 +79,8 @@ public class MTESpatialAnomalyContainmentChamber
         .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 1))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .build();
+
+    private byte mAnomalyTier = 0;
 
     public MTESpatialAnomalyContainmentChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -185,8 +201,32 @@ public class MTESpatialAnomalyContainmentChamber
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return new ProcessingLogic() {
+
+            @Override
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+
+                int numberOfFoci = 0;
+                ItemStack controllerStack = getControllerSlot();
+                if (controllerStack != null) {
+                    if (controllerStack.isItemEqual(GregtechItemList.Laser_Lens_Special.get(1))) {
+                        mAnomalyTier = 1;
+                    } else if (controllerStack.isItemEqual(GregtechItemList.Compressed_Fusion_Reactor.get(1))) {
+                        mAnomalyTier = 2;
+                    } else if (controllerStack.isItemEqual(ItemList.EnergisedTesseract.get(1))) {
+                        mAnomalyTier = 3;
+                    }
+                    numberOfFoci = controllerStack.stackSize;
+                }
+
+                maxParallel = 2*numberOfFoci;
+
+                int requiredRecipeTier = recipe.getMetadataOrDefault(SpatialAnomalyTierKey.INSTANCE,0);
+                return requiredRecipeTier <= mAnomalyTier ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+        };
     }
 
     public int getMaxParallelRecipes() {
