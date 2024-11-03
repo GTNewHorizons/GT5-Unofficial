@@ -85,11 +85,11 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
         return 18;
     }
 
-    private ItemStackHandler circuitInventoryHandler = new CircuitSlotItemStackHandler(mInventory, getCircuitSlot());
+    private ItemStackHandler circuitHandler = new CircuitSlotItemStackHandler(mInventory, getCircuitSlot());
 
     @Override
     public ItemStackHandler getInventoryHandler() {
-        return circuitInventoryHandler;
+        return circuitHandler;
     }
 
     @Override
