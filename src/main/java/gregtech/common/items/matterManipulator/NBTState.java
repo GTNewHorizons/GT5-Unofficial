@@ -51,6 +51,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
@@ -1342,12 +1343,17 @@ class NBTState {
         public World getWorld() {
             if (FMLCommonHandler.instance()
                 .getSide() == Side.CLIENT) {
-                World world = Minecraft.getMinecraft().theWorld;
-
-                return world.provider.dimensionId == this.worldId ? world : null;
+                return getWorldClient();
             } else {
                 return DimensionManager.getWorld(this.worldId);
             }
+        }
+
+        @SideOnly(Side.CLIENT)
+        private World getWorldClient() {
+            World world = Minecraft.getMinecraft().theWorld;
+
+            return world.provider.dimensionId == this.worldId ? world : null;
         }
 
         public Location offset(ForgeDirection dir) {
