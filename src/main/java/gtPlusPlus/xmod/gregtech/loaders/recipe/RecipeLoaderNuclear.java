@@ -626,6 +626,14 @@ public class RecipeLoaderNuclear {
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000)
             .addTo(fusionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(MaterialsElements.getInstance().MOLYBDENUM.getFluidStack(144), Materials.Helium.getGas(1000))
+            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().RHENIUM.getFluid(), 144))
+            .duration(2 * SECONDS + 4 * TICKS)
+            .eut(TierEU.RECIPE_ZPM / 2)
+            .metadata(FUSION_THRESHOLD, 500_000_000)
+            .addTo(fusionRecipes);
     }
 
     private static void macerator() {
