@@ -1647,7 +1647,7 @@ public class MTERecipeLoader implements Runnable {
             3);
 
         GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_IV_PlasmaArcFurnace.get(1),
+            ItemList.Machine_EV_PlasmaArcFurnace.get(1),
             bitsd,
             new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',

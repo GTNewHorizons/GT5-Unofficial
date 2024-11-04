@@ -436,6 +436,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         }
 
         // Reset recipe values for next iteration
+        checkRecipeResult = CheckRecipeResultRegistry.CYCLE_IDLE;
         this.mMaxProgresstime = 0;
         this.mProgresstime = 0;
         this.lEUt = 0;
