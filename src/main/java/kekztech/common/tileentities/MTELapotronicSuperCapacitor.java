@@ -120,6 +120,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final long max_passive_drain_eu_per_tick_per_uiv_cap = (long) Math.pow(10, 10);
     private final long max_passive_drain_eu_per_tick_per_umv_cap = (long) Math.pow(10, 12);
 
+    private final BigInteger guiCapacityStoredReformatLimit = BigInteger.valueOf(1_000_000_000_000L);
+
     private enum Capacitor {
 
         IV(2, BigInteger.valueOf(ItemBlockLapotronicEnergyUnit.IV_cap_storage)),
@@ -977,24 +979,24 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         if (avgIn >= avgOut + passLoss) {
             // Calculate time to full if charging
             if (avgIn - passLoss > 0) {
-                double timeToFull = (cap - sto) / (avgIn - passLoss) / 20;
+                double timeToFull = (cap - sto) / (avgIn - (passLoss + avgOut)) / 20;
                 return "Time to Full: " + formatTime(timeToFull, true);
             }
             return "Time to Something: Infinity years";
         } else {
             // Calculate time to empty if discharging
-            double timeToEmpty = sto / (avgOut + passLoss) / 20;
+            double timeToEmpty = sto / ((avgOut + passLoss) - avgIn) / 20;
             return "Time to Empty: " + formatTime(timeToEmpty, false);
         }
     }
 
     private String getCapacityCache() {
-        return capacity.compareTo(BigInteger.valueOf(1_000_000_000_000L)) > 0 ? standardFormat.format(capacity)
+        return capacity.compareTo(guiCapacityStoredReformatLimit) > 0 ? standardFormat.format(capacity)
             : numberFormat.format(capacity);
     }
 
     private String getStoredCache() {
-        return stored.compareTo(BigInteger.valueOf(1_000_000_000_000L)) > 0 ? standardFormat.format(stored)
+        return stored.compareTo(guiCapacityStoredReformatLimit) > 0 ? standardFormat.format(stored)
             : numberFormat.format(stored);
     }
 
@@ -1087,14 +1089,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         standardFormat = new DecimalFormat("0.00E0", dfs);
     }
 
-    protected String CapacityCache = "";
-    protected String StoredEUCache = "";
-    protected String UsedPercentCache = "";
+    protected String capacityCache = "";
+    protected String storedEUCache = "";
+    protected String usedPercentCache = "";
     protected String passiveDischargeAmountCache = "";
-    protected String WirelessStoreCache = "";
-    protected long AvgInCache;
-    protected long AvgOutCache;
-    protected String TimeToCache = "";
+    protected String wirelessStoreCache = "";
+    protected long avgInCache;
+    protected long avgOutCache;
+    protected String timeToCache = "";
     protected boolean isActiveCache;
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
@@ -1192,22 +1194,22 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     wasShutDown -> getBaseMetaTileEntity().setShutdownStatus(wasShutDown)));
         screenElements.widget(
             new TextWidget().setStringSupplier(
-                () -> "Total Capacity: " + EnumChatFormatting.BLUE + CapacityCache + EnumChatFormatting.WHITE + " EU")
+                () -> "Total Capacity: " + EnumChatFormatting.BLUE + capacityCache + EnumChatFormatting.WHITE + " EU")
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.StringSyncer(this::getCapacityCache, val -> CapacityCache = val))
+            .widget(new FakeSyncWidget.StringSyncer(this::getCapacityCache, val -> capacityCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> "Stored: " + EnumChatFormatting.RED + StoredEUCache + EnumChatFormatting.WHITE + " EU")
+                        () -> "Stored: " + EnumChatFormatting.RED + storedEUCache + EnumChatFormatting.WHITE + " EU")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.StringSyncer(this::getStoredCache, val -> StoredEUCache = val))
+            .widget(new FakeSyncWidget.StringSyncer(this::getStoredCache, val -> storedEUCache = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> "Used capacity: " + EnumChatFormatting.RED + UsedPercentCache)
+                new TextWidget().setStringSupplier(() -> "Used capacity: " + EnumChatFormatting.RED + usedPercentCache)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.StringSyncer(this::getUsedPercentCache, val -> UsedPercentCache = val))
+            .widget(new FakeSyncWidget.StringSyncer(this::getUsedPercentCache, val -> usedPercentCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -1225,38 +1227,38 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 new TextWidget()
                     .setStringSupplier(
                         () -> "Avg EU IN: " + EnumChatFormatting.GREEN
-                            + (AvgInCache > 100_000_000_000L ? standardFormat.format(AvgInCache)
-                                : numberFormat.format(AvgInCache))
+                            + (avgInCache > 100_000_000_000L ? standardFormat.format(avgInCache)
+                                : numberFormat.format(avgInCache))
                             + EnumChatFormatting.WHITE
                             + " last 5s")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAvgIn, val -> AvgInCache = val))
+            .widget(new FakeSyncWidget.LongSyncer(this::getAvgIn, val -> avgInCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
                         () -> "Avg EU OUT: " + EnumChatFormatting.RED
-                            + (AvgOutCache > 100_000_000_000L ? standardFormat.format(AvgOutCache)
-                                : numberFormat.format(AvgOutCache))
+                            + (avgOutCache > 100_000_000_000L ? standardFormat.format(avgOutCache)
+                                : numberFormat.format(avgOutCache))
                             + EnumChatFormatting.WHITE
                             + " last 5s")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAvgOut, val -> AvgOutCache = val))
+            .widget(new FakeSyncWidget.LongSyncer(this::getAvgOut, val -> avgOutCache = val))
             .widget(
-                new TextWidget().setStringSupplier(() -> EnumChatFormatting.WHITE + TimeToCache)
+                new TextWidget().setStringSupplier(() -> EnumChatFormatting.WHITE + timeToCache)
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.StringSyncer(this::getTimeTo, val -> TimeToCache = val))
+            .widget(new FakeSyncWidget.StringSyncer(this::getTimeTo, val -> timeToCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
                         () -> "Total wireless EU: " + EnumChatFormatting.BLUE
-                            + WirelessStoreCache
+                            + wirelessStoreCache
                             + EnumChatFormatting.WHITE
                             + " EU")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.StringSyncer(this::getWirelessStoredCache, val -> WirelessStoreCache = val))
+            .widget(new FakeSyncWidget.StringSyncer(this::getWirelessStoredCache, val -> wirelessStoreCache = val))
             .widget(new FakeSyncWidget.BooleanSyncer(this::isActiveCache, val -> isActiveCache = val));
     }
 
