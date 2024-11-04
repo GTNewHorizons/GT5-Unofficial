@@ -628,9 +628,9 @@ public class RecipeLoaderNuclear {
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialsElements.getInstance().MOLYBDENUM.getFluidStack(144), Materials.Helium.getGas(1000))
+            .fluidInputs(MaterialsElements.getInstance().MOLYBDENUM.getFluidStack(144), Materials.Yttrium.getMolten(144))
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().RHENIUM.getFluid(), 144))
-            .duration(2 * SECONDS + 4 * TICKS)
+            .duration(3 * SECONDS + 15 * TICKS)
             .eut(TierEU.RECIPE_ZPM / 2)
             .metadata(FUSION_THRESHOLD, 500_000_000)
             .addTo(fusionRecipes);
