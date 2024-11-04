@@ -5,18 +5,15 @@ import static gregtech.api.enums.Mods.EnderIO;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -40,7 +37,6 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.helpers.ICustomNameObject;
 import appeng.parts.AEBasePart;
 import cpw.mods.fml.common.Optional.Method;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.GTMod;
 import gregtech.api.enums.Mods.Names;
 import gregtech.api.enums.SoundResource;
@@ -64,27 +60,16 @@ public abstract class AbstractBuildable extends MMInventory implements IBuildabl
 
     protected static final double EU_PER_BLOCK = 128.0, TE_PENALTY = 16.0, EU_DISTANCE_EXP = 1.25;
 
-    protected static final MethodHandle IS_BLOCK_CONTAINER;
-
-    static {
-        try {
-            Field isBlockContainer = ReflectionHelper.findField(Block.class, "field_149758_A", "isBlockContainer");
-            isBlockContainer.setAccessible(true);
-            Objects.requireNonNull(isBlockContainer);
-            IS_BLOCK_CONTAINER = MethodHandles.lookup()
-                .unreflectGetter(isBlockContainer);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Could not find field Block.isBlockContainer", e);
-        }
-    }
+    protected static final MethodHandle IS_BLOCK_CONTAINER = MMUtils
+        .exposeFieldGetter(Block.class, "isBlockContainer", "field_149758_A");
 
     public boolean tryConsumePower(ItemStack stack, PendingBlock pendingBlock) {
         double euUsage = EU_PER_BLOCK * pendingBlock.getBlock()
             .getBlockHardness(pendingBlock.getWorld(), pendingBlock.x, pendingBlock.y, pendingBlock.z);
 
         try {
-            ItemBlock block = pendingBlock.getItem();
-            if (block != null && (boolean) IS_BLOCK_CONTAINER.invoke(block.field_150939_a)) {
+            Block block = pendingBlock.getBlock();
+            if ((boolean) IS_BLOCK_CONTAINER.invoke(block)) {
                 euUsage *= TE_PENALTY;
             }
         } catch (Throwable e) {

@@ -9,12 +9,14 @@ import java.util.Objects;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import appeng.api.storage.data.IAEItemStack;
@@ -79,7 +81,7 @@ public class PendingBuild extends AbstractBuildable {
 
             // if this block is different from the last one, stop checking blocks
             // since the pending blocks are sorted by their contained block, this is usually true
-            if (!toPlace.isEmpty() && !MMUtils.areBlocksBasicallyEqual(next, toPlace.get(0))) {
+            if (!toPlace.isEmpty() && !PendingBlock.isSameBlock(next, toPlace.get(0))) {
                 break;
             }
 
@@ -88,6 +90,13 @@ public class PendingBuild extends AbstractBuildable {
             // if the existing block is the same as the one we're trying to place, just apply its tile data
             if (PendingBlock.isSameBlock(next, existing)) {
                 PendingBlock block = pendingBlocks.removeFirst();
+
+                if (block.getItem() != null && !block.getItem()
+                    .getHasSubtypes()) {
+                    if (world.getBlockMetadata(block.x, block.y, block.z) != block.metadata) {
+                        world.setBlockMetadataWithNotify(block.x, block.y, block.z, block.metadata, 3);
+                    }
+                }
 
                 if (block.tileData != null && tier.hasCap(ItemMatterManipulator.ALLOW_CONFIGURING)) {
                     applyContext.pendingBlock = block;
@@ -199,28 +208,52 @@ public class PendingBuild extends AbstractBuildable {
         }
 
         for (PendingBlock pending : toPlace) {
-            playSound(world, pending.x, pending.y, pending.z, SoundResource.MOB_ENDERMEN_PORTAL);
+            int x = pending.x;
+            int y = pending.y;
+            int z = pending.z;
 
-            ItemBlock block = pending.getItem();
+            playSound(world, x, y, z, SoundResource.MOB_ENDERMEN_PORTAL);
 
-            if (block != null) {
-                block.placeBlockAt(
-                    pending.toStack(),
-                    player,
-                    player.worldObj,
-                    pending.x,
-                    pending.y,
-                    pending.z,
-                    0,
-                    0,
-                    0,
-                    0,
-                    pending.metadata);
+            Block block = pending.getBlock();
+            Item item = pending.getItem();
+
+            if (item != null) {
+                int metadata = item.getHasSubtypes() ? item.getMetadata(pending.metadata) : pending.metadata;
+
+                if (item instanceof ItemBlock itemBlock) {
+                    itemBlock.placeBlockAt(
+                        pending.toStack(),
+                        player,
+                        player.worldObj,
+                        x,
+                        y,
+                        z,
+                        ForgeDirection.UNKNOWN.ordinal(),
+                        0,
+                        0,
+                        0,
+                        metadata);
+                } else {
+                    if (!world.setBlock(x, y, z, block, metadata, 3)) {
+                        continue;
+                    }
+
+                    if (world.getBlock(x, y, z) == block) {
+                        block.onBlockPlacedBy(world, x, y, z, player, stack);
+                        block.onPostBlockPlaced(world, x, y, z, metadata);
+                    }
+                }
+
+                if (!item.getHasSubtypes()) {
+                    world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
+                }
 
                 if (pending.tileData != null && tier.hasCap(ItemMatterManipulator.ALLOW_CONFIGURING)) {
                     applyContext.pendingBlock = pending;
                     pending.tileData.apply(applyContext);
                 }
+
+                world.notifyBlockOfNeighborChange(x, y, z, Blocks.air);
             }
         }
 

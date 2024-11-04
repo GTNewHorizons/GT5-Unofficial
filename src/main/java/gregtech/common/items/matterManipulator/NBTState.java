@@ -1058,7 +1058,7 @@ class NBTState {
         // various sort orders, one is for drawing hints and one is for the build order
         public int renderOrder, buildOrder;
 
-        public transient ItemBlock item;
+        public transient Item item;
         public transient Block block;
 
         public PendingBlock(int worldId, int x, int y, int z, ItemStack block) {
@@ -1126,12 +1126,12 @@ class NBTState {
             return block;
         }
 
-        public ItemBlock getItem() {
+        public Item getItem() {
             if (item == null) {
                 Block block = getBlock();
 
                 if (block != null) {
-                    item = (ItemBlock) Item.getItemFromBlock(block);
+                    item = MMUtils.getItemFromBlock(block, metadata);
                 }
             }
 
@@ -1141,7 +1141,13 @@ class NBTState {
         public ItemStack toStack() {
             Item item = getItem();
 
-            return item == null ? null : new ItemStack(item, 1, metadata);
+            if (item == null) return null;
+
+            if (item.getHasSubtypes()) {
+                return new ItemStack(item, 1, metadata);
+            } else {
+                return new ItemStack(item, 1, 0);
+            }
         }
 
         public static final Lazy<Block> AE_BLOCK_CABLE = new Lazy<>(
@@ -1171,9 +1177,17 @@ class NBTState {
          */
         public static PendingBlock fromBlock(World world, int x, int y, int z) {
             Block block = world.getBlock(x, y, z);
-            block = Block.getBlockFromItem(Item.getItemFromBlock(block));
+            int meta = world.getBlockMetadata(x, y, z);
 
-            int meta = block.getDamageValue(world, x, y, z);
+            Item item = MMUtils.getItemFromBlock(block, meta);
+
+            if (item == null) {
+                return new PendingBlock(world.provider.dimensionId, x, y, z, Blocks.air, 0);
+            }
+
+            block = MMUtils.getBlockFromItem(item, meta);
+
+            meta = item.getHasSubtypes() ? block.getDamageValue(world, x, y, z) : meta;
 
             return new PendingBlock(world.provider.dimensionId, x, y, z, block, meta);
         }
@@ -1191,7 +1205,15 @@ class NBTState {
          * Checks if two PendingBlocks contain the same Block.
          */
         public static boolean isSameBlock(PendingBlock a, PendingBlock b) {
-            return Objects.equals(a.blockId, b.blockId) && a.metadata == b.metadata;
+            if (!Objects.equals(a.blockId, b.blockId)) return false;
+
+            Item item = a.getItem();
+
+            if (item != null && !item.getHasSubtypes()) {
+                return true;
+            }
+
+            return a.metadata == b.metadata;
         }
 
         @Override

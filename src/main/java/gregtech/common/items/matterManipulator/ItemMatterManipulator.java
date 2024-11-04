@@ -5,8 +5,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -69,7 +67,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
@@ -1306,18 +1303,8 @@ public class ItemMatterManipulator extends Item
     @SideOnly(Side.CLIENT)
     private class MatterManipulatorRenderer {
 
-        private static final MethodHandle GET_FXLAYERS;
-
-        static {
-            try {
-                Field field = ReflectionHelper.findField(EffectRenderer.class, "fxLayers", "field_78876_b", "c");
-                field.setAccessible(true);
-                GET_FXLAYERS = MethodHandles.lookup()
-                    .unreflectGetter(field);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Could not get field EffectRenderer.fxLayers", e);
-            }
-        }
+        private static final MethodHandle GET_FXLAYERS = MMUtils
+            .exposeFieldGetter(EffectRenderer.class, "fxLayers", "field_78876_b", "c");
 
         private long lastAnalysisMS = 0;
 

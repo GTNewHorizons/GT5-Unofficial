@@ -1,5 +1,8 @@
 package gregtech.common.items.matterManipulator;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,10 +10,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemReed;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
@@ -45,6 +54,8 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.parts.automation.UpgradeInventory;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import gregtech.GTMod;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.RequiredItemAnalysis;
 import gregtech.common.items.matterManipulator.NBTState.Location;
@@ -613,5 +624,53 @@ public class MMUtils {
                     .sendErrorToPlayer(player, "Manipulator not connected to an uplink: cannot create a fake pattern.");
             }
         }
+    }
+
+    public static MethodHandle exposeFieldGetter(Class<?> clazz, String... names) {
+        try {
+            Field field = ReflectionHelper.findField(clazz, names);
+            field.setAccessible(true);
+            return MethodHandles.lookup()
+                .unreflectGetter(field);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Could not make field getter for " + clazz.getName() + ":" + names[0], e);
+        }
+    }
+
+    private static final MethodHandle ITEM_REED_BLOCK = MMUtils.exposeFieldGetter(ItemReed.class, "field_150935_a");
+
+    private static final Random RNG = new Random();
+
+    public static Item getItemFromBlock(Block block, int metadata) {
+        if (block == null) block = Blocks.air;
+
+        Item item = Item.getItemFromBlock(block);
+
+        if (item == null) {
+            item = block.getItemDropped(metadata, RNG, 0);
+        }
+
+        return item;
+    }
+
+    public static Block getBlockFromItem(Item item, int metadata) {
+        if (item == null) return Blocks.air;
+
+        Block block = null;
+
+        if (item == Items.redstone) {
+            block = Blocks.redstone_wire;
+        } else if (item instanceof ItemReed specialPlacing) {
+            try {
+                block = (Block) ITEM_REED_BLOCK.invoke(specialPlacing);
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Could not get field ItemReed.field_150935_a for " + specialPlacing, t);
+                return Blocks.air;
+            }
+        } else {
+            block = Block.getBlockFromItem(item);
+        }
+
+        return block;
     }
 }
