@@ -131,11 +131,11 @@ public class AECellItemProvider implements IItemProvider {
             .materials()
             .cardOreFilter();
 
-        boolean hasOredictCard = GTUtility.streamInventory(upgrades)
-            .anyMatch(oredictCard::isSameAs);
-
-        if (hasOredictCard) {
-            cellWorkbenchItem.setOreFilter(cell, mOreDict);
+        if (upgrades != null) {
+            if (GTUtility.streamInventory(upgrades)
+                .anyMatch(oredictCard::isSameAs)) {
+                cellWorkbenchItem.setOreFilter(cell, mOreDict);
+            }
         }
 
         return cell;
