@@ -317,17 +317,19 @@ public class DEFCRecipes {
             .noOptimize()
             .addTo(fusionCraftingRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTModHandler.getModItem(Witchery.ID, "infinityegg", 0),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                GTPPCombType.DRAGONBLOOD.getStackForType(1))
-            .fluidInputs(Materials.Radon.getPlasma(108))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
-            .eut(TierEU.RECIPE_UHV)
-            .duration(2400)
-            .metadata(DEFC_CASING_TIER, 3)
-            .noOptimize()
-            .addTo(fusionCraftingRecipes);
+        if (Witchery.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTModHandler.getModItem(Witchery.ID, "infinityegg", 0),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                    GTPPCombType.DRAGONBLOOD.getStackForType(1))
+                .fluidInputs(Materials.Radon.getPlasma(108))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
+                .eut(TierEU.RECIPE_UHV)
+                .duration(2400)
+                .metadata(DEFC_CASING_TIER, 3)
+                .noOptimize()
+                .addTo(fusionCraftingRecipes);
+        }
     }
 }
