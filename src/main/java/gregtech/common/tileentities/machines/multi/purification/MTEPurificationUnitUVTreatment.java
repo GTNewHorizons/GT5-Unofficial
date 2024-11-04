@@ -288,7 +288,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             .addCasingInfoExactlyColored(
                 "High Energy Ultraviolet Emitter Casing",
                 EnumChatFormatting.GRAY,
-                24,
+                29,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(

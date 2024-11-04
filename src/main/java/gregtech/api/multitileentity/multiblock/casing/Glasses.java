@@ -1,5 +1,6 @@
 package gregtech.api.multitileentity.multiblock.casing;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.Mods.BartWorks;
@@ -8,6 +9,8 @@ import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Thaumcraft;
 
 import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
+
+import gregtech.api.GregTechAPI;
 
 public class Glasses {
 
@@ -24,6 +27,9 @@ public class Glasses {
             // BartWorks glass
             ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
             ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
+
+            // Tinted Industrial Glass
+            ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass, 0),
 
             // warded glass
             ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false));
