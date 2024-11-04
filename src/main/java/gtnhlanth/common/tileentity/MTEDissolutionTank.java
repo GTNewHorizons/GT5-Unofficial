@@ -48,6 +48,7 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
@@ -113,7 +114,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             @Override
             protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
                 if (!checkRatio(recipe, Arrays.asList(inputFluids))) {
-                    criticalStopMachine();
+                    stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                     return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("dissolution_ratio");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
