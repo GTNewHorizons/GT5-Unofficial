@@ -289,18 +289,20 @@ public class DEFCRecipes {
             .noOptimize()
             .addTo(fusionCraftingRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTModHandler.getModItem(Witchery.ID, "infinityegg", 0),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Radon.getPlasma(72))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
-            .eut(TierEU.RECIPE_UHV)
-            .duration(3600)
-            .metadata(DEFC_CASING_TIER, 3)
-            .noOptimize()
-            .addTo(fusionCraftingRecipes);
+        if (Witchery.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTModHandler.getModItem(Witchery.ID, "infinityegg", 0),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                    GTUtility.getIntegratedCircuit(1))
+                .fluidInputs(Materials.Radon.getPlasma(72))
+                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
+                .eut(TierEU.RECIPE_UHV)
+                .duration(3600)
+                .metadata(DEFC_CASING_TIER, 3)
+                .noOptimize()
+                .addTo(fusionCraftingRecipes);
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(
