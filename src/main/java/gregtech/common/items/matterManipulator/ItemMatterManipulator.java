@@ -32,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -69,6 +70,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityPipe;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -844,8 +846,15 @@ public class ItemMatterManipulator extends Item
         }
 
         if (ticksUsed >= 10 && (ticksUsed % tier.placeTicks) == 0 && !player.worldObj.isRemote) {
-            PENDING_BUILDS.get(player)
-                .tryPlaceBlocks(stack, player);
+            try {
+                PENDING_BUILDS.get(player)
+                    .tryPlaceBlocks(stack, player);
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Could not place blocks", t);
+                GTUtility.sendErrorToPlayer(
+                    player,
+                    EnumChatFormatting.RED + "Could not place blocks due to a crash. Check the logs for more info.");
+            }
         }
     }
 
@@ -1283,10 +1292,25 @@ public class ItemMatterManipulator extends Item
 
     // #region Rendering
 
+    private long lastExceptionPrint = 0;
+
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void renderSelection(RenderWorldLastEvent event) {
-        renderer.renderSelection(event);
+        try {
+            renderer.renderSelection(event);
+        } catch (Throwable t) {
+            GTMod.GT_FML_LOGGER.error("Could not render matter manipulator preview", t);
+
+            long now = System.currentTimeMillis();
+            if ((now - lastExceptionPrint) > 10_000) {
+                Minecraft.getMinecraft().thePlayer.addChatMessage(
+                    new ChatComponentText(
+                        EnumChatFormatting.RED
+                            + "Could not render preview due to a crash. Check the logs for more info."));
+                lastExceptionPrint = now;
+            }
+        }
     }
 
     @SubscribeEvent
