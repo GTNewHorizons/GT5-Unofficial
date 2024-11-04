@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
@@ -1691,8 +1692,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
         List<MTEHatch> list = new ArrayList<>();
-        list.addAll(mEnergyHatches);
-        list.addAll(eEnergyMulti);
+        list.addAll(filterValidMTEs(mEnergyHatches));
+        list.addAll(filterValidMTEs(eEnergyMulti));
         return list;
     }
 

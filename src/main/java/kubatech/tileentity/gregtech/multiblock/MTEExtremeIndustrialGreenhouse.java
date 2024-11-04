@@ -842,7 +842,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             }
         }
 
-        this.guiDropTracker.addTo(this.dropTracker, multiplier);
+        this.guiDropTracker.addTo(this.dropTracker);
         this.mOutputItems = this.dropTracker.getDrops();
 
         // consume power
