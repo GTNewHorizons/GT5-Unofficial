@@ -460,6 +460,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         }
 
         BeamInformation information = this.getInputInformation();
+        
+        if (information == null) {
+        	information = new BeamInformation(0, 0, 0, 0);
+        }
 
         return new String[] {
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
