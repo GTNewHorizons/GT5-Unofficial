@@ -10,9 +10,16 @@ import com.gtnewhorizons.gtnhintergalactic.recipe.maps.SpaceResearchFrontend;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
+import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTRecipe;
 
 public class IGRecipeMaps {
+
+    public static final RecipeMetadataKey<String> SPACE_PROJECT = SimpleRecipeMetadataKey
+            .create(String.class, "space_project");
+    public static final RecipeMetadataKey<String> SPACE_LOCATION = SimpleRecipeMetadataKey
+            .create(String.class, "space_project_location");
 
     /** Recipe map for recipes in the Space Research Module */
     public static final RecipeMap<RecipeMapBackend> spaceResearchRecipes = RecipeMapBuilder

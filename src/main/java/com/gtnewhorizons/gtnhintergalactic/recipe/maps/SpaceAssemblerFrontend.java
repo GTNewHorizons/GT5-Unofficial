@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
+import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
@@ -70,23 +70,22 @@ public class SpaceAssemblerFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> specialInfo = new ArrayList<>();
             specialInfo.add(GCCoreUtil.translateWithFormat("ig.nei.module", recipeInfo.recipe.mSpecialValue));
-            if (recipeInfo.recipe instanceof IG_Recipe recipe) {
-                String neededProject = recipe.getNeededSpaceProject();
-                String neededProjectLocation = recipe.getNeededSpaceProjectLocation();
-                if (neededProject != null && !neededProject.isEmpty()) {
-                    specialInfo.add(
-                            String.format(
-                                    GCCoreUtil.translate("ig.nei.spaceassembler.project"),
-                                    SpaceProjectManager.getProject(neededProject).getLocalizedName()));
-                    specialInfo.add(
-                            String.format(
-                                    GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
-                                    neededProjectLocation == null || neededProjectLocation.isEmpty()
-                                            ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
-                                            : GCCoreUtil.translate(
-                                                    SpaceProjectManager.getLocation(neededProjectLocation)
-                                                            .getUnlocalizedName())));
-                }
+
+            String neededProject = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_PROJECT);
+            String neededProjectLocation = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);
+            if (neededProject != null && !neededProject.isEmpty()) {
+                specialInfo.add(
+                        String.format(
+                                GCCoreUtil.translate("ig.nei.spaceassembler.project"),
+                                SpaceProjectManager.getProject(neededProject).getLocalizedName()));
+                specialInfo.add(
+                        String.format(
+                                GCCoreUtil.translate("ig.nei.spaceassembler.projectAt"),
+                                neededProjectLocation == null || neededProjectLocation.isEmpty()
+                                        ? GCCoreUtil.translate("ig.nei.spaceassembler.projectAnyLocation")
+                                        : GCCoreUtil.translate(
+                                                SpaceProjectManager.getLocation(neededProjectLocation)
+                                                        .getUnlocalizedName())));
             }
             return specialInfo;
         }

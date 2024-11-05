@@ -5,10 +5,12 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.RecipeAdder;
 
 /**
@@ -43,30 +45,29 @@ public class IG_RecipeAdder extends RecipeAdder {
      * @param neededSpaceProjectLocation Location of the needed space project or null if any
      * @return True if recipe was added, else false
      */
+    @Deprecated
     public static boolean addSpaceResearchRecipe(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, ItemStack output,
             int computationRequiredPerSec, int duration, int EUt, String neededSpaceProject,
             String neededSpaceProjectLocation) {
-        if (aItemInputs == null) {
-            aItemInputs = nullItem;
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder();
+
+        if (aItemInputs != null) {
+            builder.itemInputs(aItemInputs);
         }
-        if (aFluidInputs == null) {
-            aFluidInputs = nullFluid;
+        if (aFluidInputs != null) {
+            builder.fluidInputs(aFluidInputs);
         }
 
-        IGRecipeMaps.spaceResearchRecipes.add(
-                new IG_Recipe(
-                        false,
-                        aItemInputs,
-                        new ItemStack[] { output },
-                        null,
-                        null,
-                        aFluidInputs,
-                        null,
-                        duration,
-                        EUt,
-                        computationRequiredPerSec,
-                        neededSpaceProject,
-                        neededSpaceProjectLocation));
+        builder.itemOutputs(output).specialValue(computationRequiredPerSec).duration(duration).eut(EUt);
+
+        if (neededSpaceProject != null && !neededSpaceProject.isEmpty()) {
+            builder.metadata(IGRecipeMaps.SPACE_PROJECT, neededSpaceProject);
+        }
+        if (neededSpaceProjectLocation != null && !neededSpaceProjectLocation.isEmpty()) {
+            builder.metadata(IGRecipeMaps.SPACE_LOCATION, neededSpaceProjectLocation);
+        }
+
+        builder.addTo(IGRecipeMaps.spaceResearchRecipes);
         return true;
     }
 
@@ -83,30 +84,29 @@ public class IG_RecipeAdder extends RecipeAdder {
      * @param neededSpaceProjectLocation Location of the needed space project or null if any
      * @return True if recipe was added, else false
      */
+    @Deprecated
     public static boolean addSpaceAssemblerRecipe(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, ItemStack output,
             int requiredModuleTier, int duration, int EUt, String neededSpaceProject,
             String neededSpaceProjectLocation) {
-        if (aItemInputs == null) {
-            aItemInputs = nullItem;
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder();
+
+        if (aItemInputs != null) {
+            builder.itemInputs(aItemInputs);
         }
-        if (aFluidInputs == null) {
-            aFluidInputs = nullFluid;
+        if (aFluidInputs != null) {
+            builder.fluidInputs(aFluidInputs);
         }
 
-        IGRecipeMaps.spaceAssemblerRecipes.add(
-                new IG_Recipe(
-                        false,
-                        aItemInputs,
-                        new ItemStack[] { output },
-                        null,
-                        null,
-                        aFluidInputs,
-                        null,
-                        duration,
-                        EUt,
-                        requiredModuleTier,
-                        neededSpaceProject,
-                        neededSpaceProjectLocation));
+        builder.itemOutputs(output).specialValue(requiredModuleTier).duration(duration).eut(EUt);
+
+        if (neededSpaceProject != null && !neededSpaceProject.isEmpty()) {
+            builder.metadata(IGRecipeMaps.SPACE_PROJECT, neededSpaceProject);
+        }
+        if (neededSpaceProjectLocation != null && !neededSpaceProjectLocation.isEmpty()) {
+            builder.metadata(IGRecipeMaps.SPACE_LOCATION, neededSpaceProjectLocation);
+        }
+
+        builder.addTo(IGRecipeMaps.spaceAssemblerRecipes);
         return true;
     }
 
@@ -174,7 +174,7 @@ public class IG_RecipeAdder extends RecipeAdder {
         }
 
         IGRecipeMaps.spaceMiningRecipes.add(
-                new IG_Recipe.IG_SpaceMiningRecipe(
+                new IG_SpaceMiningRecipe(
                         false,
                         aItemInputs,
                         outputs,
@@ -230,7 +230,7 @@ public class IG_RecipeAdder extends RecipeAdder {
         }
 
         IGRecipeMaps.spaceMiningRecipes.add(
-                new IG_Recipe.IG_SpaceMiningRecipe(
+                new IG_SpaceMiningRecipe(
                         false,
                         aItemInputs,
                         aItemOutputs,

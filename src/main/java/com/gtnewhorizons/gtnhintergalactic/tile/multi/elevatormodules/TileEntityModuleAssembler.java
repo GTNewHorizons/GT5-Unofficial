@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
 import com.gtnewhorizons.gtnhintergalactic.recipe.ResultNoSpaceProject;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
@@ -129,9 +128,9 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (lastRecipe != recipe && recipe instanceof IG_Recipe igRecipe) {
-                    String neededProject = igRecipe.getNeededSpaceProject();
-                    String neededLocation = igRecipe.getNeededSpaceProjectLocation();
+                if (lastRecipe != recipe) {
+                    String neededProject = recipe.getMetadata(IGRecipeMaps.SPACE_PROJECT);
+                    String neededLocation = recipe.getMetadata(IGRecipeMaps.SPACE_LOCATION);
                     if (!ElevatorUtil.isProjectAvailable(
                             getBaseMetaTileEntity().getOwnerUuid(),
                             neededProject,

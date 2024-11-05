@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
+import com.gtnewhorizons.gtnhintergalactic.recipe.IG_SpaceMiningRecipe;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -54,7 +54,7 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> result = new ArrayList<>();
             result.add(GCCoreUtil.translateWithFormat("ig.nei.module", recipeInfo.recipe.mSpecialValue));
-            if (recipeInfo.recipe instanceof IG_Recipe.IG_SpaceMiningRecipe miningRecipe) {
+            if (recipeInfo.recipe instanceof IG_SpaceMiningRecipe miningRecipe) {
                 result.add(
                         GCCoreUtil.translate("ig.nei.spacemining.distance") + " "
                                 + miningRecipe.minDistance

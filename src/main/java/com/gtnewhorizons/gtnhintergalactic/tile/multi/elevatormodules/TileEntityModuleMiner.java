@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
+import com.gtnewhorizons.gtnhintergalactic.recipe.IG_SpaceMiningRecipe;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -299,10 +299,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         // Get all asteroid pools that this drone can pull from
         long tVoltage = getMaxInputVoltage();
         int distance = (int) distanceDisplay.get();
-        List<IG_Recipe.IG_SpaceMiningRecipe> recipes = IGRecipeMaps.spaceMiningRecipes.findRecipeQuery().items(inputs)
-                .fluids(fluidInputs).voltage(tVoltage).findAll()
-                .filter(IG_Recipe.IG_SpaceMiningRecipe.class::isInstance)
-                .map(IG_Recipe.IG_SpaceMiningRecipe.class::cast)
+        List<IG_SpaceMiningRecipe> recipes = IGRecipeMaps.spaceMiningRecipes.findRecipeQuery().items(inputs)
+                .fluids(fluidInputs).voltage(tVoltage).findAll().filter(IG_SpaceMiningRecipe.class::isInstance)
+                .map(IG_SpaceMiningRecipe.class::cast)
                 .filter(
                         recipe -> recipe.minDistance <= distance && recipe.maxDistance >= distance
                                 && recipe.mSpecialValue <= tModuleTier)
@@ -322,13 +321,13 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
 
         // Get a recipe randomly with weight from the pool
-        int totalWeight = recipes.stream().mapToInt(IG_Recipe.IG_SpaceMiningRecipe::getRecipeWeight).sum();
+        int totalWeight = recipes.stream().mapToInt(IG_SpaceMiningRecipe::getRecipeWeight).sum();
         int recipeIndex = 0;
         for (double r = Math.random() * totalWeight; recipeIndex < recipes.size() - 1; ++recipeIndex) {
             r -= recipes.get(recipeIndex).getRecipeWeight();
             if (r <= 0.0) break;
         }
-        IG_Recipe.IG_SpaceMiningRecipe tRecipe = recipes.get(recipeIndex);
+        IG_SpaceMiningRecipe tRecipe = recipes.get(recipeIndex);
 
         // Make sure recipe really exists and we have enough power
         if (tRecipe == null) {
