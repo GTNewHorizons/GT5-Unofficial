@@ -400,7 +400,7 @@ public class MTEPurificationUnitBaryonicPerfection
         // Output incorrect indices unchanged, the spent ones will follow if recipe was successful from the actual
         // recipe outputs
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
-            if (correctStartIndex != -1 && i == correctStartIndex || i == correctStartIndex + 1) continue;
+            if (correctStartIndex != -1 && (i == correctStartIndex || i == correctStartIndex + 1)) continue;
 
             addOutput(insertedCatalysts.get(i));
         }
