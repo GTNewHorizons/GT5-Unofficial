@@ -1049,6 +1049,7 @@ fog.button.refreshtimer.tooltip=Reset ready in
 fog.button.seconds=Seconds
 fog.button.thanks.tooltip=List of Contributors
 fog.button.color.tooltip=Cosmetics Menu
+fog.button.statistics.tooltip=Stats Overview
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1131,6 +1132,17 @@ gt.blockmachines.multimachine.FOG.bucket=BucketBrigade
 gt.blockmachines.multimachine.FOG.playtesting=Playtesting
 gt.blockmachines.multimachine.FOG.misi=Misi
 gt.blockmachines.multimachine.FOG.thanks=A huge thank you to these incredible people for helping to make this a reality! -Cloud
+gt.blockmachines.multimachine.FOG.modulestats=Module Statistics
+gt.blockmachines.multimachine.FOG.powerforge=Power Forge
+gt.blockmachines.multimachine.FOG.meltingcore=Melting Core
+gt.blockmachines.multimachine.FOG.plasmafab=Plasma Fabricator
+gt.blockmachines.multimachine.FOG.exoticizer=Exoticizer
+gt.blockmachines.multimachine.FOG.heat=Heat
+gt.blockmachines.multimachine.FOG.effectiveheat=Effective Heat
+gt.blockmachines.multimachine.FOG.speedbonus=Speed Bonus
+gt.blockmachines.multimachine.FOG.energydiscount=Energy Discount
+gt.blockmachines.multimachine.FOG.ocdivisor=OC Divisor
+gt.blockmachines.multimachine.FOG.clickstat=Click to view value breakdown
 
 gt.blockmachines.multimachine.FOG.hint.0=1 - Classic Hatches or Transcendentally Amplified Magnetic Confinement Casing
 gt.blockmachines.multimachine.FOG.hint.1=2 - Module Controllers or Singularity Reinforced Stellar Shielding Casing

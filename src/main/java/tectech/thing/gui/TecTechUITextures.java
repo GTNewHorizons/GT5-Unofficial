@@ -123,6 +123,8 @@ public class TecTechUITextures {
         .fullImage(MODID, "gui/overlay_button/furnace_mode_on");
     public static final UITexture OVERLAY_BUTTON_FURNACE_MODE_OFF = UITexture
         .fullImage(MODID, "gui/overlay_button/furnace_mode_off");
+    public static final UITexture OVERLAY_BUTTON_STATISTICS = UITexture
+        .fullImage(MODID, "gui/overlay_button/statistics");
     public static final UITexture OVERLAY_CYCLIC_BLUE = UITexture.fullImage(MODID, "gui/overlay_button/cyclic_blue");
     public static final UITexture OVERLAY_EJECTION_LOCKED = UITexture
         .fullImage(MODID, "gui/overlay_button/eject_disabled");
