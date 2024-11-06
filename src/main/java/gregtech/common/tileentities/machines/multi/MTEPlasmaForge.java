@@ -18,6 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -74,6 +75,7 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -142,6 +144,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private int mHeatingCapacity = 0;
     private long running_time = 0;
     private boolean convergence = false;
+    private boolean doesRecipeHaveNativeCatInput = true;
+    private boolean isEnoughCatalystPresent = true;
     private HeatingCoilLevel mCoilLevel;
     private OverclockCalculator overclockCalculator;
 
@@ -766,7 +770,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 overclockCalculator = super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity);
                 if (discount == maximum_discount && convergence) {
-                    overclockCalculator = overclockCalculator.enablePerfectOC();
+                    if (doesRecipeHaveNativeCatInput || isEnoughCatalystPresent) {
+                        overclockCalculator = overclockCalculator.enablePerfectOC();
+                    }
                 }
                 return overclockCalculator;
             }
@@ -787,6 +793,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Nonnull
     protected GTRecipe recipeAfterAdjustments(@Nonnull GTRecipe recipe) {
+        doesRecipeHaveNativeCatInput = true;
         GTRecipe tRecipe = recipe.copy();
         boolean adjusted = false;
         outside: for (int i = 0; i < recipe.mFluidInputs.length; i++) {
@@ -811,11 +818,42 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             && convergence
             && overclockCalculator != null
             && overclockCalculator.getCalculationStatus()) {
+            doesRecipeHaveNativeCatInput = false;
+            isEnoughCatalystPresent = checkCatalyst();
             recalculateDiscount();
             calculateCatalystIncrease(tRecipe, 0, true);
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         }
         return tRecipe;
+    }
+
+    private boolean checkCatalyst() {
+        FluidStack selectedCatalyst = valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1];
+
+        double sub1TickMultiplier = Math.max(Math.floor(1 / recipeDuration), 1d);
+        int neededAmount = (int) Math.min(
+            maximum_discount * (isBatchModeEnabled() ? getMaxBatchSize() : 1)
+                * sub1TickMultiplier
+                * extraCatalystNeeded,
+            Integer.MAX_VALUE);
+        selectedCatalyst.amount = neededAmount;
+        startRecipeProcessing();
+        for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
+            FluidStack checked = hatch.drain(ForgeDirection.UNKNOWN, selectedCatalyst, true);
+
+            if (checked == null) {
+                continue;
+            }
+
+            neededAmount -= checked.amount;
+
+            if (neededAmount == 0) {
+                endRecipeProcessing();
+                return true;
+            }
+        }
+        endRecipeProcessing();
+        return false;
     }
 
     @Override
@@ -984,16 +1022,16 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     private int catalystTypeForRecipesWithoutCatalyst = 1;
+    private int extraCatalystNeeded;
+    private double recipeDuration;
 
     private void calculateCatalystIncrease(GTRecipe recipe, int index, boolean withoutCatalyst) {
         long machineConsumption = overclockCalculator.getConsumption();
         int numberOfOverclocks = (int) Math.ceil(calculateTier(machineConsumption) - GTUtility.getTier(recipe.mEUt));
-        double recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
+        recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
         // Power difference between regular and perfect OCs for this recipe duration
         long extraPowerNeeded = (long) ((Math.pow(2, numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
-        int inputFluids = recipe.mFluidInputs.length;
         int outputFluids = recipe.mFluidOutputs.length;
-        int extraCatalystNeeded;
         Fluid validFuel;
         if (!withoutCatalyst) {
             validFuel = recipe.mFluidInputs[index].getFluid();
@@ -1009,26 +1047,22 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 }
             }
         } else {
-            // Add chosen catalyst as recipe input
+            // Calculate extra catalyst amount
             validFuel = valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1].getFluid();
             extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
                 .getLeft());
-            FluidStack[] newInputFluids = new FluidStack[inputFluids + 1];
-            for (int i = 0; i < inputFluids; i++) {
-                newInputFluids[i] = recipe.mFluidInputs[i].copy();
+            if (isEnoughCatalystPresent) {
+                // Add residue as recipe output
+                FluidStack[] newOutputFluids = new FluidStack[outputFluids + 1];
+                for (int i = 0; i < outputFluids; i++) {
+                    newOutputFluids[i] = recipe.mFluidOutputs[i].copy();
+                }
+                newOutputFluids[outputFluids] = new FluidStack(
+                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1),
+                    (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
+                        .getRight()));
+                recipe.mFluidOutputs = newOutputFluids;
             }
-            newInputFluids[inputFluids] = new FluidStack(validFuel, extraCatalystNeeded / 2);
-            recipe.mFluidInputs = newInputFluids;
-            // Add residue as recipe output
-            FluidStack[] newOutputFluids = new FluidStack[outputFluids + 1];
-            for (int i = 0; i < outputFluids; i++) {
-                newOutputFluids[i] = recipe.mFluidOutputs[i].copy();
-            }
-            newOutputFluids[outputFluids] = new FluidStack(
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1),
-                (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
-                    .getRight()));
-            recipe.mFluidOutputs = newOutputFluids;
         }
     }
 
