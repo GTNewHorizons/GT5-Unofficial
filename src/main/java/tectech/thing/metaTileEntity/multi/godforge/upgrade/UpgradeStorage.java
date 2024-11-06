@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi.godforge.upgrade;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -226,6 +227,15 @@ public class UpgradeStorage {
             val -> unlockedUpgrades.put(upgrade, val),
             UpgradeData::writeToBuffer,
             UpgradeData::readFromBuffer);
+    }
+
+    /** Sync widget to sync the full upgrade tree. */
+    public FakeSyncWidget<?> getFullSyncer() {
+        return new FakeSyncWidget.ListSyncer<>(() -> new ArrayList<>(unlockedUpgrades.values()), val -> {
+            for (int i = 0; i < val.size(); i++) {
+                unlockedUpgrades.put(ForgeOfGodsUpgrade.VALUES[i], val.get(i));
+            }
+        }, UpgradeData::writeToBuffer, UpgradeData::readFromBuffer);
     }
 
     private static class UpgradeData {
