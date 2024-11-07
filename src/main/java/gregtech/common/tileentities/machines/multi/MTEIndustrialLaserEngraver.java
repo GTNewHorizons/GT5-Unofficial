@@ -124,7 +124,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 // Cube root the amperage to get the parallels
                 laserAmps = (int) Math.cbrt(laserSource.maxAmperesOut());
                 laserTier = (int) laserSource.getOutputTier();
-                tierName = GTValues.VN[laserTier];
+                tierName = GTValues.VN[laserTier + 1];
                 return true;
             }
         }
