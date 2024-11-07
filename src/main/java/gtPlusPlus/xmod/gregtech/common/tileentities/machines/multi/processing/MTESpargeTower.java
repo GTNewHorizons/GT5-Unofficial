@@ -393,9 +393,9 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
-        for (int i = 0; i < mOutputFluids2.length && i < mOutputHatchesByLayer.size(); i++) {
-            FluidStack tStack = mOutputFluids2[i] != null ? mOutputFluids2[i].copy() : null;
+    protected void addFluidOutputs(FluidStack[] outputFluids) {
+        for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
+            FluidStack tStack = outputFluids[i] != null ? outputFluids[i].copy() : null;
             if (tStack == null) {
                 continue;
             }

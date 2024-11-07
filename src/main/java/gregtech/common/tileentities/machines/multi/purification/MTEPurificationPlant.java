@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -60,6 +62,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -242,17 +245,17 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 56,
                 EnumChatFormatting.GOLD,
                 false)
-            .addCasingInfoExactlyColored(
-                "Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                77,
-                EnumChatFormatting.GOLD,
-                false)
             .addCasingInfoRangeColored(
-                "Reinforced Sterile Water Plant Casing",
+                "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 71,
                 72,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Reinforced Sterile Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                77,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -267,7 +270,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 6,
                 EnumChatFormatting.GOLD,
                 false)
-            .addCasingInfoExactlyColored("Reinforced Door", EnumChatFormatting.GRAY, 1, EnumChatFormatting.GOLD, false)
             .addController("Front center")
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
@@ -636,7 +638,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 .setSize(windowWidth, 8));
 
         int currentYPosition = 20;
-        Scrollable mainDisp = new Scrollable().setVerticalScroll();
+        Scrollable mainDisp = new Scrollable().setVerticalScroll()
+            .setHorizontalScroll();
 
         int rowHeight = 20;
         for (int i = 0; i < this.mLinkedUnits.size(); i++) {
@@ -685,17 +688,21 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         String name = unit.metaTileEntity()
             .getLocalName();
 
+        String statusString = name + "  " + unit.getStatusString();
+        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
         row.widget(
-            TextWidget.dynamicString(() -> name + "  " + unit.getStatusString())
+            TextWidget.dynamicString(() -> statusString)
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setPos(25, 0)
-                .setSize(0, 20))
+                .fillParent())
             .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}))
             .widget(
                 unit.metaTileEntity()
                     .makeSyncerWidgets())
-            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));
+            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive))
+            .setSize(fontRenderer.getStringWidth(statusString) + 25, 20);
 
         return row;
     }
@@ -722,7 +729,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         //
         builder.widget(
-            new ButtonWidget().setPlayClickSound(true)
+            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder).setPlayClickSound(true)
                 .setOnClick((c, w) -> debugMode = !debugMode)
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
