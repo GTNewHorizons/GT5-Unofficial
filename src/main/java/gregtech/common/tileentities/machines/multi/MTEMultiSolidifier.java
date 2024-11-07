@@ -16,6 +16,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -36,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
+import ggfab.api.GGFabRecipeMaps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -182,7 +185,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier")
+        tt.addMachineType("Fluid Solidifier, Tool Casting Machine")
+            .addInfo(
+                "Can use " + EnumChatFormatting.YELLOW
+                    + "Solidifier Hatches"
+                    + EnumChatFormatting.GRAY
+                    + " to hold different molds")
             .addInfo("Speeds up to a maximum of 200% faster than singleblock machines while running")
             .addInfo("Decays at double the Rate that it Speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")
@@ -275,6 +283,30 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            RecipeMap<?> currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
+
+            // Override is needed so that switching recipe maps does not stop recipe locking.
+            @Override
+            protected RecipeMap<?> preProcess() {
+                lastRecipeMap = currentRecipeMap;
+
+                if (maxParallelSupplier != null) {
+                    maxParallel = maxParallelSupplier.get();
+                }
+                return currentRecipeMap;
+            }
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
+                CheckRecipeResult result = super.process();
+                if (result.wasSuccessful()) return result;
+
+                currentRecipeMap = GGFabRecipeMaps.toolCastRecipes;
+                return super.process();
+            }
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
@@ -308,6 +340,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     public int getMaxParallelRecipes() {
         return 4 + (width * PARALLELS_PER_WIDTH) * GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    @Override
+    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.fluidSolidifierRecipes, GGFabRecipeMaps.toolCastRecipes);
     }
 
     @Override
