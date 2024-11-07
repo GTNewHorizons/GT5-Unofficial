@@ -63,6 +63,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
@@ -294,7 +295,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
             if (mStartUpCheck < 0) {
                 if (mMachine) {
                     if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
-                        criticalStopMachine();
+                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     }
 
                     long energyLimit = getSingleHatchPower();
@@ -325,6 +326,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
+                            mLastWorkingTick = mTotalRunTime;
                             para = 0;
                             if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe();
                         }
@@ -338,7 +340,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                                         < this.mLastRecipe.mSpecialValue + this.lEUt) {
                                         mMaxProgresstime = 0;
                                         turnCasingActive(false);
-                                        criticalStopMachine();
+                                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                                     }
                                     getBaseMetaTileEntity()
                                         .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.lEUt, false);
@@ -347,10 +349,10 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
                         }
                     }
-                } else {
+                } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     turnCasingActive(false);
                     this.mLastRecipe = null;
-                    stopMachine();
+                    stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
             aBaseMetaTileEntity
