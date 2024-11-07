@@ -874,10 +874,15 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 .setPos(174, 110)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY))
             .widget(
-                TextWidget.dynamicText(this::storedFuel)
+                TextWidget.dynamicText(this::storedFuelHeaderText)
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setPos(6, 8)
-                    .setSize(74, 34))
+                    .setSize(185, 10))
+            .widget(
+                TextWidget.dynamicText(this::storedFuel)
+                    .setDefaultColor(EnumChatFormatting.WHITE)
+                    .setPos(6, 20)
+                    .setSize(185, 10))
             .widget(createBatteryButton(builder))
             .widget(createEjectionSwitch(builder))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
@@ -2803,17 +2808,16 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     private Text storedFuel() {
         if (internalBattery == 0) {
-            return new Text(
-                translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel") + " "
-                    + stellarFuelAmount
-                    + "/"
-                    + neededStartupFuel);
+            return new Text(stellarFuelAmount + "/" + neededStartupFuel);
         }
-        return new Text(
-            translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel") + " "
-                + internalBattery
-                + "/"
-                + maxBatteryCharge);
+        return new Text(internalBattery + "/" + maxBatteryCharge);
+    }
+
+    private Text storedFuelHeaderText() {
+        if (internalBattery == 0) {
+            return new Text(translateToLocal("gt.blockmachines.multimachine.FOG.storedstartupfuel"));
+        }
+        return new Text(translateToLocal("gt.blockmachines.multimachine.FOG.storedfuel"));
     }
 
     private void checkInversionStatus() {
