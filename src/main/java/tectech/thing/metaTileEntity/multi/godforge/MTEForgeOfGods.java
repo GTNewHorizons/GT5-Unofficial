@@ -2549,51 +2549,21 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     .setPos(246, 43)
                     .setSize(40, 10));
 
-        builder.widget(
-            new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(190, 200, 0)))
-                .setSize(1, 197)
-                .setPos(81, 38))
-            .widget(
+        // Vertical grid lines
+        for (int i = 0; i < 4; i++) {
+            builder.widget(
                 new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(190, 200, 0)))
                     .setSize(1, 197)
-                    .setPos(134, 38))
-            .widget(
-                new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(190, 200, 0)))
-                    .setSize(1, 197)
-                    .setPos(187, 38))
-            .widget(
-                new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(190, 200, 0)))
-                    .setSize(1, 197)
-                    .setPos(240, 38));
+                    .setPos(81 + 53 * i, 38));
+        }
 
-        builder.widget(
-            new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(0, 170, 170)))
-                .setSize(276, 1)
-                .setPos(12, 55))
-            .widget(
+        // Horizontal grid lines
+        for (int i = 0; i < 7; i++) {
+            builder.widget(
                 new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(0, 170, 170)))
                     .setSize(276, 1)
-                    .setPos(12, 85))
-            .widget(
-                new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(0, 170, 170)))
-                    .setSize(276, 1)
-                    .setPos(12, 115))
-            .widget(
-                new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(0, 170, 170)))
-                    .setSize(276, 1)
-                    .setPos(12, 145))
-            .widget(
-                new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(0, 170, 170)))
-                    .setSize(276, 1)
-                    .setPos(12, 175))
-            .widget(
-                new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(0, 170, 170)))
-                    .setSize(276, 1)
-                    .setPos(12, 205))
-            .widget(
-                new DrawableWidget().setDrawable(new Rectangle().setColor(Color.rgb(0, 170, 170)))
-                    .setSize(276, 1)
-                    .setPos(12, 235));
+                    .setPos(12, 55 + 30 * i));
+        }
 
         MTESmeltingModule smelting = new MTESmeltingModule("smelting");
         MTEMoltenModule molten = new MTEMoltenModule("molten");
