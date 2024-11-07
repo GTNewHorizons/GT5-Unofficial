@@ -295,6 +295,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
+        glassTier = 0;
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
@@ -325,16 +326,16 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                Colors c = Colors.Red;
-                for (int i = 0; i < recipe.mInputs.length; i++) {
-                    String uid = getUniqueIdentifier(recipe.mInputs[i]);
-                    if (lensColors.containsKey(uid)) {
-                        c = lensColors.get(uid);
+                if (!stopAllRendering) {
+                    Colors c = Colors.Red;
+                    for (int i = 0; i < recipe.mInputs.length; i++) {
+                        String uid = getUniqueIdentifier(recipe.mInputs[i]);
+                        if (lensColors.containsKey(uid)) {
+                            c = lensColors.get(uid);
+                        }
                     }
-                }
-                if (renderer != null) {
-                    renderer.setColors(c.r, c.g, c.b);
-                    if (!stopAllRendering) {
+                    if (renderer != null) {
+                        renderer.setColors(c.r, c.g, c.b);
                         renderer.setShouldRender(true);
                     }
                 }
