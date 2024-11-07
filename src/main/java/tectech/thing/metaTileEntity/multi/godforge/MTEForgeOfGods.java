@@ -3169,14 +3169,14 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private void saveGeneralNBT(NBTTagCompound NBT, boolean force) {
         if (force || selectedFuelType != 0) NBT.setInteger("selectedFuelType", selectedFuelType);
         if (force || internalBattery != 0) NBT.setInteger("internalBattery", internalBattery);
-        if (force || batteryCharging) NBT.setBoolean("batteryCharging", true);
+        if (force || batteryCharging) NBT.setBoolean("batteryCharging", batteryCharging);
         if (force || gravitonShardsAvailable != 0) NBT.setInteger("gravitonShardsAvailable", gravitonShardsAvailable);
         if (force || gravitonShardsSpent != 0) NBT.setInteger("gravitonShardsSpent", gravitonShardsSpent);
         if (force || totalRecipesProcessed != 0) NBT.setLong("totalRecipesProcessed", totalRecipesProcessed);
         if (force || totalFuelConsumed != 0) NBT.setLong("totalFuelConsumed", totalFuelConsumed);
         if (force || stellarFuelAmount != 0) NBT.setInteger("starFuelStored", stellarFuelAmount);
-        if (force || gravitonShardEjection) NBT.setBoolean("gravitonShardEjection", true);
-        if (force || secretUpgrade) NBT.setBoolean("secretUpgrade", true);
+        if (force || gravitonShardEjection) NBT.setBoolean("gravitonShardEjection", gravitonShardEjection);
+        if (force || secretUpgrade) NBT.setBoolean("secretUpgrade", secretUpgrade);
 
         // Fields with non-zero defaults
         if (force || fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
