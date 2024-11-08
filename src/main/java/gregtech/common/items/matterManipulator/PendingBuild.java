@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
@@ -22,6 +23,8 @@ import net.minecraftforge.fluids.FluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.util.item.AEItemStack;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
 import gregtech.common.items.matterManipulator.ItemMatterManipulator.ManipulatorTier;
@@ -198,7 +201,7 @@ public class PendingBuild extends AbstractBuildable {
                 if (extractedAmount < item.stackSize) {
                     GTUtility.sendErrorToPlayer(
                         player,
-                        "Could not find item, the corresponding blocks will be skipped: " + item.getDisplayName()
+                        "Could not find item, the corresponding blocks will be skipped: " + first.getDisplayName()
                             + " x "
                             + (item.stackSize - extractedAmount));
 
@@ -326,25 +329,70 @@ public class PendingBuild extends AbstractBuildable {
 
         @Override
         public void warn(String message) {
+            String blockName = null;
+
+            if (pendingBlock.isInWorld(player.worldObj)) {
+                if (player.worldObj.getTileEntity(
+                    pendingBlock.x,
+                    pendingBlock.y,
+                    pendingBlock.z) instanceof IGregTechTileEntity igte) {
+                    IMetaTileEntity imte = igte.getMetaTileEntity();
+                    if (imte != null) {
+                        blockName = imte.getLocalName();
+                    }
+                }
+
+                if (blockName == null) {
+                    blockName = PendingBlock.fromBlock(player.worldObj, pendingBlock.x, pendingBlock.y, pendingBlock.z)
+                        .toStack()
+                        .getDisplayName();
+                }
+            }
+
             GTUtility.sendChatToPlayer(
                 player,
                 String.format(
-                    "§cWarning at block %d, %d, %d: %s§r",
+                    "%sWarning at block %d, %d, %d%s: %s§r",
+                    EnumChatFormatting.GOLD,
                     pendingBlock.x,
                     pendingBlock.y,
                     pendingBlock.z,
+                    blockName != null ? " (" + blockName + ")" : "",
                     message));
         }
 
         @Override
         public void error(String message) {
+
+            String blockName = null;
+
+            if (pendingBlock.isInWorld(player.worldObj)) {
+                if (player.worldObj.getTileEntity(
+                    pendingBlock.x,
+                    pendingBlock.y,
+                    pendingBlock.z) instanceof IGregTechTileEntity igte) {
+                    IMetaTileEntity imte = igte.getMetaTileEntity();
+                    if (imte != null) {
+                        blockName = imte.getLocalName();
+                    }
+                }
+
+                if (blockName == null) {
+                    blockName = PendingBlock.fromBlock(player.worldObj, pendingBlock.x, pendingBlock.y, pendingBlock.z)
+                        .toStack()
+                        .getDisplayName();
+                }
+            }
+
             GTUtility.sendChatToPlayer(
                 player,
                 String.format(
-                    "§cError at block %d, %d, %d: %s§r",
+                    "%sError at block %d, %d, %d%s: %s§r",
+                    EnumChatFormatting.RED,
                     pendingBlock.x,
                     pendingBlock.y,
                     pendingBlock.z,
+                    blockName != null ? " (" + blockName + ")" : "",
                     message));
         }
     }

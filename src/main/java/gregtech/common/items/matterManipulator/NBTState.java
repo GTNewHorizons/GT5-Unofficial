@@ -3,7 +3,6 @@ package gregtech.common.items.matterManipulator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -1061,6 +1060,7 @@ class NBTState {
 
         public transient Item item;
         public transient Block block;
+        public transient ItemStack stack;
 
         public PendingBlock(int worldId, int x, int y, int z, ItemStack block) {
             super(worldId, x, y, z);
@@ -1084,6 +1084,7 @@ class NBTState {
         public PendingBlock reset() {
             this.block = null;
             this.item = null;
+            this.stack = null;
             this.blockId = null;
             this.metadata = 0;
 
@@ -1140,15 +1141,27 @@ class NBTState {
         }
 
         public ItemStack toStack() {
-            Item item = getItem();
+            if (stack == null) {
+                Item item = getItem();
 
-            if (item == null) return null;
+                if (item == null) return null;
 
-            if (item.getHasSubtypes()) {
-                return new ItemStack(item, 1, metadata);
-            } else {
-                return new ItemStack(item, 1, 0);
+                if (item.getHasSubtypes()) {
+                    stack = new ItemStack(item, 1, metadata);
+                } else {
+                    stack = new ItemStack(item, 1, 0);
+                }
+
+                if (tileData != null) {
+                    stack.setTagCompound(tileData.getItemTag());
+                }
             }
+
+            return stack.copy();
+        }
+
+        public String getDisplayName() {
+            return toStack().getDisplayName() + (tileData == null ? "" : tileData.getItemDetails());
         }
 
         public static final Lazy<Block> AE_BLOCK_CABLE = new Lazy<>(
@@ -1206,15 +1219,11 @@ class NBTState {
          * Checks if two PendingBlocks contain the same Block.
          */
         public static boolean isSameBlock(PendingBlock a, PendingBlock b) {
-            if (!Objects.equals(a.blockId, b.blockId)) return false;
-
-            Item item = a.getItem();
-
-            if (item != null && !item.getHasSubtypes()) {
-                return true;
+            if (a == null || b == null) {
+                return a == null && b == null;
             }
 
-            return a.metadata == b.metadata;
+            return ItemStack.areItemStacksEqual(a.toStack(), b.toStack());
         }
 
         @Override

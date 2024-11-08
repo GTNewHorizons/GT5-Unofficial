@@ -27,7 +27,9 @@ import appeng.parts.automation.UpgradeInventory;
 import appeng.parts.p2p.PartP2PTunnelNormal;
 import appeng.tile.AEBaseTile;
 import appeng.tile.networking.TileCableBus;
+import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
+import appeng.util.ReadableNumberConverter;
 import appeng.util.SettingsFrom;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
@@ -47,6 +49,8 @@ import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.covers.CoverInfo;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockAnalysisContext;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
+import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 /**
@@ -69,6 +73,7 @@ public class TileAnalysisResult {
     public String mGTFluidLock = null;
     public int mGTMode = 0;
     public JsonElement mGTData = null;
+    public long mGTMEBusCapacity = 0;
 
     public AEColor mAEColour = null;
     public ForgeDirection mAEUp = null, mAEForward = null;
@@ -234,6 +239,12 @@ public class TileAnalysisResult {
                     // Probably an NPE, but we're catching Throwable just to be safe
                     GTMod.GT_FML_LOGGER.error("Could not copy IDataCopyable's data", t);
                 }
+            }
+
+            if (mte instanceof MTEHatchOutputME || mte instanceof MTEHatchOutputBusME) {
+                NBTTagCompound tag = new NBTTagCompound();
+                mte.setItemNBT(tag);
+                mGTMEBusCapacity = tag.getLong("baseCapacity");
             }
         }
 
@@ -758,6 +769,25 @@ public class TileAnalysisResult {
         return true;
     }
 
+    public NBTTagCompound getItemTag() {
+        if (mGTMEBusCapacity != 0) {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setLong("baseCapacity", mGTMEBusCapacity);
+            return tag;
+        }
+
+        return null;
+    }
+
+    public String getItemDetails() {
+        if (mGTMEBusCapacity != 0) {
+            IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
+            return String.format(" (cache capacity: %s)", nc.toWideReadableForm(mGTMEBusCapacity));
+        }
+
+        return "";
+    }
+
     private static ForgeDirection nullIfUnknown(ForgeDirection dir) {
         return dir == ForgeDirection.UNKNOWN ? null : dir;
     }
@@ -779,6 +809,7 @@ public class TileAnalysisResult {
         result = prime * result + ((mGTItemLock == null) ? 0 : mGTItemLock.hashCode());
         result = prime * result + ((mGTFluidLock == null) ? 0 : mGTFluidLock.hashCode());
         result = prime * result + mGTMode;
+        result = prime * result + Long.hashCode(mGTMEBusCapacity);
         result = prime * result + ((mGTData == null) ? 0 : mGTData.hashCode());
         result = prime * result + ((mAEColour == null) ? 0 : mAEColour.hashCode());
         result = prime * result + ((mAEUp == null) ? 0 : mAEUp.hashCode());
@@ -820,6 +851,7 @@ public class TileAnalysisResult {
         if (mGTData == null) {
             if (other.mGTData != null) return false;
         } else if (!mGTData.equals(other.mGTData)) return false;
+        if (mGTMEBusCapacity != other.mGTMEBusCapacity) return false;
         if (mAEColour != other.mAEColour) return false;
         if (mAEUp != other.mAEUp) return false;
         if (mAEForward != other.mAEForward) return false;

@@ -60,7 +60,8 @@ public class InventoryAnalysis {
      */
     public boolean apply(IBlockApplyContext context, IInventory inv, boolean consume, boolean simulate) {
         if (inv.getSizeInventory() != mItems.length) {
-            context.error("inventory was the wrong size");
+            context.warn(
+                "inventory was the wrong size (expected " + mItems.length + ", was " + inv.getSizeInventory() + ")");
             return false;
         }
 
