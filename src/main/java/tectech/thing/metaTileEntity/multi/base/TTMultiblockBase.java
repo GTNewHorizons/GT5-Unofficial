@@ -851,7 +851,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         for (MTEHatchDataOutput data : eOutputData) {
             data.q = null;
         }
-
+        mLastWorkingTick = mTotalRunTime;
         mOutputItems = null;
         mOutputFluids = null;
         mEfficiency = 0;
@@ -1113,6 +1113,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     mProgresstime = 0;
                                     mMaxProgresstime = 0;
                                     mEfficiencyIncrease = 0;
+                                    mLastWorkingTick = mTotalRunTime;
 
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                                         if (checkRecipe()) {
@@ -1148,10 +1149,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                 updateSlots();
                             } // else notAllowedToWork_stopMachine_EM(); //it is already stopped here
                         }
-                    } else { // not repaired
+                    } else if (aBaseMetaTileEntity.isAllowedToWork()) { // not repaired
                         stopMachine(ShutDownReasonRegistry.NO_REPAIR);
                     }
-                } else { // not complete
+                } else if (aBaseMetaTileEntity.isAllowedToWork()) { // not complete
                     stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
@@ -1461,7 +1462,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 getPowerFlow(),
                 getPowerFlow() * getMaxEfficiency(aStack) / Math.max(1000L, mEfficiency),
                 eAmpereFlow)) {
-                criticalStopMachine();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
             }
         }
