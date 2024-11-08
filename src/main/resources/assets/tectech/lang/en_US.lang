@@ -1050,6 +1050,12 @@ fog.button.seconds=Seconds
 fog.button.thanks.tooltip=List of Contributors
 fog.button.color.tooltip=Cosmetics Menu
 fog.button.statistics.tooltip=Stats Overview
+fog.text.tooltip.heat=Heat value used for checking if a recipe can run
+fog.text.tooltip.effectiveheat=Heat value used for calculating bonuses
+fog.text.tooltip.parallel=Maximum parallel amount
+fog.text.tooltip.speedbonus=Multiplier for base recipe time, making it shorter
+fog.text.tooltip.energydiscount=Multiplier for base energy usage, reducing it
+fog.text.tooltip.ocdivisor=Divisor for recipe time reduction per overclock (does not affect perfect OCs)
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
