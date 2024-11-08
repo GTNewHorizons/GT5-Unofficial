@@ -10,8 +10,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.copyAmount;
 import static gregtech.api.util.GTUtility.copyAmountUnsafe;
 import static net.minecraft.util.EnumChatFormatting.*;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -48,6 +51,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.recipe.metadata.SolarFactoryKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -61,17 +65,28 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTESolarFactory> multiDefinition = null;
-    protected int casingAmount;
-    protected int casingTier;
-    ItemStack waferStack;
-    int foundWaferTier;
-    boolean didFindStack;
-    int minimumWaferTierForRecipe = -1;
     private static final int CASING_INDEX = 16;
+    int casingAmount;
+    int casingTier;
+
+    int outputMultiplierCap = 2;
+    double outputMultiplierSlope = 0.25;
+
+    ItemStack foundWaferStack;
+    int waferAmountInRecipe;
+    int foundWaferTier;
+    int minimumTierForRecipe;
+
+    private void clearVars() {
+        foundWaferStack = null;
+        waferAmountInRecipe = 0;
+        foundWaferTier = 0;
+        minimumTierForRecipe = 0;
+    }
 
     // Left side of the pair is a valid wafer for input, right side is compared to the specialvalue to validate recipe
     // and then used in the output multiplier formula
-    public static final ImmutableList<Pair<ItemStack, Integer>> validWafers = ImmutableList.of(
+    public static ImmutableList<Pair<ItemStack, Integer>> validWafers = ImmutableList.of(
         Pair.of(ItemList.Circuit_Silicon_Wafer.get(1), 1),
         Pair.of(ItemList.Circuit_Silicon_Wafer2.get(1), 2),
         Pair.of(ItemList.Circuit_Silicon_Wafer3.get(1), 3),
@@ -193,15 +208,25 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 8, 0, elementBudget, env, false, true);
     }
 
-    protected int getMaxParallel() {
-        return (int) Math.pow(2, 1 + (casingTier + 2));
-    }
-
-    protected ItemStack[] calculateOutput(ItemStack currentOutput, int seed) {
-        double calculatedMultiplier = ((0.25 * seed) + 1);
-        if (calculatedMultiplier > 2) calculatedMultiplier = 2;
+    protected ItemStack[] calculateNewOutput(ItemStack currentOutput, int seed) {
+        double calculatedMultiplier = ((outputMultiplierSlope * seed) + 1) > outputMultiplierCap ? outputMultiplierCap
+            : ((outputMultiplierSlope * seed) + 1);
         int outputSize = (int) Math.floor(currentOutput.stackSize * calculatedMultiplier);
         return new ItemStack[] { copyAmountUnsafe(outputSize, currentOutput) };
+    }
+
+    // Looks through the inputs and overrides our variables if wafers are found. This is called in validateRecipe.
+    protected void findWafer(GTRecipe recipe, List<Pair<ItemStack, Integer>> waferList) {
+        for (ItemStack items : getStoredInputs()) {
+            for (Pair<ItemStack, Integer> pair : waferList) {
+                if (items.isItemEqual(pair.getLeft())) {
+                    foundWaferStack = items;
+                    foundWaferTier = pair.getRight();
+                    waferAmountInRecipe = recipe.mSpecialValue;
+                    break;
+                }
+            }
+        }
     }
 
     @NotNull
@@ -220,15 +245,15 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         mMaxProgresstime = processingLogic.getDuration();
         setEnergyUsage(processingLogic);
 
-        mOutputItems = calculateOutput(
-            processingLogic.getOutputItems()[0],
-            (foundWaferTier - minimumWaferTierForRecipe));
+        if (minimumTierForRecipe != 0) {
+            mOutputItems = calculateNewOutput(
+                processingLogic.getOutputItems()[0],
+                (foundWaferTier - minimumTierForRecipe));
+        } else mOutputItems = processingLogic.getOutputItems();
+
         mOutputFluids = processingLogic.getOutputFluids();
 
-        waferStack = null;
-        foundWaferTier = 0;
-        minimumWaferTierForRecipe = -1;
-        didFindStack = false;
+        clearVars();
 
         return result;
     }
@@ -237,29 +262,22 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            // validateRecipe is called before createParallelHelper or checkProcessing so checking for wafers and
-            // overriding the variables will go there
             @NotNull
             @Override
             public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                for (ItemStack items : getStoredInputs()) {
-                    // iterate over the validWafers List
-                    for (Pair<ItemStack, Integer> p : validWafers) {
-                        if (items.isItemEqual(p.getLeft())) {
-                            waferStack = p.getLeft();
-                            foundWaferTier = p.getRight();
-                            minimumWaferTierForRecipe = recipe.mSpecialValue;
-                            didFindStack = true;
-                            // items will never equal another entry in validWafers so break out of the loop
-                            break;
-                        }
-                    }
-                }
-                if (!didFindStack) {
+                // No metadata means no wafers used in the recipe, so return successful since this method is called only
+                // when input matching is already successful.
+                minimumTierForRecipe = recipe.getMetadataOrDefault(SolarFactoryKey.INSTANCE, 0);
+                if (minimumTierForRecipe == 0) return CheckRecipeResultRegistry.SUCCESSFUL;
+                findWafer(recipe, validWafers);
+                if (foundWaferStack == null) {
                     return SimpleCheckRecipeResult.ofFailure("no_wafer");
                 }
-                if (minimumWaferTierForRecipe > foundWaferTier) {
+                if (minimumTierForRecipe > foundWaferTier) {
                     return SimpleCheckRecipeResult.ofFailure("low_wafer_tier");
+                }
+                if (waferAmountInRecipe > foundWaferStack.stackSize) {
+                    return SimpleCheckRecipeResult.ofFailure("not_enough_wafer");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -267,7 +285,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             @Nonnull
             private GTRecipe recipeAfterAdjustments(@Nonnull GTRecipe recipe) {
                 GTRecipe tRecipe = recipe.copy();
-                tRecipe.mInputs = ArrayUtils.add(tRecipe.mInputs, waferStack);
+                tRecipe.mInputs = ArrayUtils.add(tRecipe.mInputs, copyAmount(waferAmountInRecipe, foundWaferStack));
                 return tRecipe;
             }
 
@@ -277,6 +295,11 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 return super.createParallelHelper(recipeAfterAdjustments(recipe));
             }
         }.setMaxParallelSupplier(this::getMaxParallel);
+    }
+
+    // 2^(casingTier + 3)
+    protected int getMaxParallel() {
+        return (int) Math.pow(2, 1 + (casingTier + 2));
     }
 
     @Override
@@ -296,6 +319,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("Parallels are based on Precise Casing Tier")
             .addInfo("MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
             .addInfo("Supports " + TT + " energy hatches")
+            .addSeparator()
             .beginStructureBlock(7, 10, 9, true)
             .addStructureInfo(BLUE + "Imprecise Unit Casings cannot be used")
             .addStructureInfo(BLUE + "26 " + DARK_AQUA + "Precise Electronic Unit Casing")
@@ -356,11 +380,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public boolean isInputSeparationEnabled() {
-        return true;
     }
 
     @Override
