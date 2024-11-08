@@ -269,5 +269,18 @@ public class FermenterRecipes implements Runnable {
             .eut(2)
             .addTo(fermentingRecipes);
 
+        GTValues.RA.stdBuilder()
+            .fluidInputs(getFluidStack("fluid.fertile.manure.slurry", 1000))
+            .fluidOutputs(Materials.Methane.getGas(100))
+            .duration(1 * MINUTES)
+            .eut(2)
+            .addTo(fermentingRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(getFluidStack("fluid.manure.slurry", 1000))
+            .fluidOutputs(Materials.Methane.getGas(50))
+            .duration(1 * MINUTES)
+            .eut(2)
+            .addTo(fermentingRecipes);
     }
 }
