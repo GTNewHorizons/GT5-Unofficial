@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import appeng.me.cache.CraftingGridCache;
+import appeng.util.PatternMultiplierHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -30,6 +32,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -95,6 +98,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 public class MTEHatchCraftingInputME extends MTEHatchInputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
@@ -745,7 +750,16 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     .addTooltip(0, "Pattern Optimization:\n§7Allowed")
                     .addTooltip(1, "Pattern Optimization:\n§7Disabled")
                     .setPos(170, 10)
-                    .setSize(16, 16));
+                    .setSize(16, 16))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    int val = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? 1 : 0;
+                    if (Mouse.isButtonDown(1)) val |= 0b10;
+                    doublePatterns(val);
+                }).setPlayClickSound(true)
+                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_X2)
+                .addTooltip(StatCollector.translateToLocal("gui.tooltips.appliedenergistics2.DoublePatterns"))
+                .setSize(16, 5)
+                .setPos(170, 4));;
     }
 
     @Override
@@ -1053,5 +1067,32 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             list.add(outputs[0].getItemStack());
         }
         return list;
+    }
+
+    public void doublePatterns(int val) {
+        boolean fast = (val & 1) != 0;
+        boolean backwards = (val & 2) != 0;
+        CraftingGridCache.pauseRebuilds();
+        try {
+            IInventory patterns = this.getPatterns();
+            TileEntity te = this.getTileEntity();
+            for (int i = 0; i < patterns.getSizeInventory(); i++) {
+                ItemStack stack = patterns.getStackInSlot(i);
+                if (stack != null && stack.getItem() instanceof ICraftingPatternItem cpi) {
+                    ICraftingPatternDetails details = cpi.getPatternForItem(stack, te.getWorldObj());
+                    if (details != null && !details.isCraftable()) {
+                        int max = backwards ? PatternMultiplierHelper.getMaxBitDivider(details)
+                            : PatternMultiplierHelper.getMaxBitMultiplier(details);
+                        if (max > 0) {
+                            ItemStack copy = stack.copy();
+                            PatternMultiplierHelper
+                                .applyModification(copy, (fast ? Math.min(3, max) : 1) * (backwards ? -1 : 1));
+                            patterns.setInventorySlotContents(i, copy);
+                        }
+                    }
+                }
+            }
+        } catch (Throwable ignored) {}
+        CraftingGridCache.unpauseRebuilds();
     }
 }
