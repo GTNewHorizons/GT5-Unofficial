@@ -4,18 +4,23 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -55,6 +60,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState {
 
@@ -297,6 +304,84 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     + ReadableNumberConverter.INSTANCE
                         .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))
                     + "L");
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("cacheCapacity", getCacheCapacity());
+        tag.setInteger("stackCount", fluidCache.size());
+
+        IAEFluidStack[] stacks = fluidCache.toArray(new IAEFluidStack[0]);
+
+        Arrays.sort(
+            stacks,
+            Comparator.comparingLong(IAEFluidStack::getStackSize)
+                .reversed());
+
+        if (stacks.length > 10) {
+            stacks = Arrays.copyOf(stacks, 10);
+        }
+
+        NBTTagList tagList = new NBTTagList();
+        tag.setTag("stacks", tagList);
+
+        for (IAEFluidStack stack : stacks) {
+            NBTTagCompound stackTag = new NBTTagCompound();
+            stack.getFluidStack()
+                .writeToNBT(stackTag);
+            stackTag.setLong("Amount", stack.getStackSize());
+            tagList.appendTag(stackTag);
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, ss, accessor, config);
+        IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
+
+        NBTTagCompound tag = accessor.getNBTData();
+
+        ss.add(
+            String.format(
+                "Fluid cache capacity: %s%s%s",
+                EnumChatFormatting.GOLD,
+                nc.toWideReadableForm(tag.getLong("cacheCapacity")),
+                EnumChatFormatting.RESET));
+
+        NBTTagList stacks = tag.getTagList("stacks", 10);
+        int stackCount = tag.getInteger("stackCount");
+
+        if (stackCount == 0) {
+            ss.add("This hatch has no cached fluids");
+        } else {
+            ss.add(
+                String.format(
+                    "The hatch contains %s%d%s cached fluid%s: ",
+                    EnumChatFormatting.GOLD,
+                    stackCount,
+                    EnumChatFormatting.RESET,
+                    stackCount > 1 ? "s" : ""));
+
+            for (int i = 0; i < stacks.tagCount(); i++) {
+                NBTTagCompound stackTag = stacks.getCompoundTagAt(i);
+                FluidStack stack = FluidStack.loadFluidStackFromNBT(stackTag);
+
+                ss.add(
+                    String.format(
+                        "%s: %s%s mB%s",
+                        stack.getLocalizedName(),
+                        EnumChatFormatting.GOLD,
+                        nc.toWideReadableForm(stackTag.getLong("Amount")),
+                        EnumChatFormatting.RESET));
+            }
+
+            if (stackCount > stacks.tagCount()) {
+                ss.add(EnumChatFormatting.ITALIC + "And " + (stackCount - stacks.tagCount()) + " more...");
+            }
         }
     }
 
