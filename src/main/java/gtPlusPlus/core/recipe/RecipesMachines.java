@@ -1008,27 +1008,27 @@ public class RecipesMachines {
         // Poo Collector
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.machineHull_MV,
-                ItemList.FluidRegulator_MV.get(2),
-                CI.getTieredComponent(OrePrefixes.pipeMedium, 2, 2),
-                MaterialsAlloy.EGLIN_STEEL.getPlate(4),
+                GregtechItemList.GTFluidTank_LV.get(1),
+                ItemList.FluidRegulator_LV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6),
                 MaterialsAlloy.POTIN.getScrew(6))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPooCollector))
+            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 0, 1))
             .fluidInputs(MaterialsAlloy.TUMBAGA.getFluidStack(144 * 4))
-            .duration(60 * SECONDS)
+            .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
         // Adv. Poo Collector
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getTieredMachineHull(-1),
                 ItemUtils.getSimpleStack(ModBlocks.blockPooCollector),
-                ItemList.FluidRegulator_IV.get(2),
-                CI.getTieredComponent(OrePrefixes.pipeHuge, 6, 4),
-                CI.getTieredComponent(OrePrefixes.screw, 6, 16))
+                ItemList.FluidRegulator_HV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.pipeHuge, Materials.StainlessSteel, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 6),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.BlueAlloy, 6))
             .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockPooCollector, 8, 1))
-            .fluidInputs(CI.getAlternativeTieredFluid(5, 144 * 9))
-            .duration(5 * MINUTES)
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("molten.borosilicateglass"), 144 * 8))
+            .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 

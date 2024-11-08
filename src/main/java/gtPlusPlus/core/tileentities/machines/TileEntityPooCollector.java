@@ -1,11 +1,10 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
-import net.minecraft.entity.passive.EntityAnimal;
-
-import net.minecraft.item.ItemStack;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
@@ -30,8 +29,7 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
                 aPoop = GTOreDictUnificator.get(OrePrefixes.dustTiny, "dustTinyManureByproducts", 1);
             }
             // Add to inventory if not full
-            if (!this.mInventory.isFull())
-                this.mInventory.addItemStack(aPoop);
+            if (!this.mInventory.isFull()) this.mInventory.addItemStack(aPoop);
         }
         return false;
     }
@@ -46,7 +44,7 @@ public class TileEntityPooCollector extends TileEntityBaseFluidCollector {
             }
             aPooAmount = Math.max((Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aPooAmount)), 1);
             // if tank isnt full return a value between 10 and 40L
-            return aPooAmount * MathUtils.randInt(1,4);
+            return aPooAmount * MathUtils.randInt(1, 4);
         } else {
             return 0;
         }

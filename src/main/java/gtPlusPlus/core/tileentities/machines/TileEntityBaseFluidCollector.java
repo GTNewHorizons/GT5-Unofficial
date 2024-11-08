@@ -1,9 +1,7 @@
 package gtPlusPlus.core.tileentities.machines;
 
-
 import java.util.List;
 
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -22,6 +20,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
