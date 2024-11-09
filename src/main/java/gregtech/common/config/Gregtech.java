@@ -368,15 +368,10 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean loggingOreDict;
 
-        @Config.Comment("if true, logs all the oredict in logs/Explosion.log.")
+        @Config.Comment("if true, logs all the explosions in logs/Explosion.log.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean loggingExplosions;
-
-        @Config.Comment("if true, log all the oredict in logs/PlayerActivity.log.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean loggingPlayerActicity;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.harvest_level")

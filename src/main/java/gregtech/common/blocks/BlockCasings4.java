@@ -104,7 +104,7 @@ public class BlockCasings4 extends BlockCasingsAbstract {
             case 6 -> Textures.BlockIcons.MACHINE_CASING_FUSION.getIcon();
             case 7 -> Textures.BlockIcons.MACHINE_CASING_FUSION_COIL.getIcon();
             case 8 -> Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
-            case 9 -> Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
+            case 9 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STEEL.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL.getIcon();
@@ -118,6 +118,9 @@ public class BlockCasings4 extends BlockCasingsAbstract {
     @Deprecated
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active, boolean hasTurbine) {
         return switch (meta) {
+            case 9 -> active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
+                : hasTurbine ? Textures.BlockIcons.TURBINE[iconIndex].getIcon()
+                    : Textures.BlockIcons.TURBINE_EMPTY[iconIndex].getIcon();
             case 10 -> active ? Textures.BlockIcons.TURBINE_ACTIVE1[iconIndex].getIcon()
                 : hasTurbine ? Textures.BlockIcons.TURBINE1[iconIndex].getIcon()
                     : Textures.BlockIcons.TURBINE_EMPTY1[iconIndex].getIcon();
@@ -127,9 +130,7 @@ public class BlockCasings4 extends BlockCasingsAbstract {
             case 12 -> active ? Textures.BlockIcons.TURBINE_ACTIVE3[iconIndex].getIcon()
                 : hasTurbine ? Textures.BlockIcons.TURBINE3[iconIndex].getIcon()
                     : Textures.BlockIcons.TURBINE_EMPTY3[iconIndex].getIcon();
-            default -> active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
-                : hasTurbine ? Textures.BlockIcons.TURBINE[iconIndex].getIcon()
-                    : Textures.BlockIcons.TURBINE_EMPTY[iconIndex].getIcon();
+            default -> throw new IllegalStateException("Unexpected value: " + meta);
         };
     }
 
@@ -216,10 +217,11 @@ public class BlockCasings4 extends BlockCasingsAbstract {
                 }
             }
             return switch (tMeta) {
+                case 9 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STEEL.getIcon();
                 case 10 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
                 case 11 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
                 case 12 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL.getIcon();
-                default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+                default -> throw new IllegalStateException("Unexpected value: " + tMeta);
             };
         }
         int tStartIndex = tMeta == 6 ? 1 : 13;

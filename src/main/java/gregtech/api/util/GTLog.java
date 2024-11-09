@@ -16,11 +16,9 @@ public class GTLog {
     public static PrintStream out = System.out;
     public static PrintStream err = System.err;
     public static PrintStream ore = new LogBuffer();
-    public static PrintStream pal = null;
     public static PrintStream exp = new LogBuffer();
     public static File mLogFile;
     public static File mOreDictLogFile;
-    public static File mPlayerActivityLogFile;
     public static File mExplosionLog;
 
     public static class LogBuffer extends PrintStream {
