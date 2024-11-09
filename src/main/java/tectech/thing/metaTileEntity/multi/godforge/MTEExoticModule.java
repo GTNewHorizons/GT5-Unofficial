@@ -160,7 +160,8 @@ public class MTEExoticModule extends MTEBaseModule {
                 }
 
                 for (FluidStack stack : recipe.mFluidInputs) {
-                    if (!ArrayUtils.contains(inputFluids, stack)) {
+                    if (!ArrayUtils.contains(inputFluids, stack)
+                        || inputFluids[ArrayUtils.indexOf(inputFluids, stack)].amount != stack.amount) {
                         return SimpleCheckRecipeResult.ofFailure("waiting_for_inputs");
                     }
                 }
