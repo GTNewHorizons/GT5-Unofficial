@@ -574,15 +574,18 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (!aBaseMetaTileEntity.isServerSide()) {
-            playBlackHoleSounds();
-        }
 
         if (collapseTimer != -1) {
             if (collapseTimer == 0) {
                 destroyRenderBlock();
             }
             collapseTimer--;
+        }
+
+        // Skip all the drain logic for clientside, just play sounds
+        if (!aBaseMetaTileEntity.isServerSide()) {
+            playBlackHoleSounds();
+            return;
         }
 
         // Run stability checks once per second if a black hole is open
