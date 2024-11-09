@@ -231,7 +231,7 @@ public class PendingBuild extends AbstractBuildable {
                         x,
                         y,
                         z,
-                        ForgeDirection.UNKNOWN.ordinal(),
+                        ForgeDirection.NORTH.ordinal(),
                         0,
                         0,
                         0,

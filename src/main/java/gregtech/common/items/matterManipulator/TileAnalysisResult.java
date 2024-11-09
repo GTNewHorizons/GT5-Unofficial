@@ -47,6 +47,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.covers.CoverInfo;
+import gregtech.common.items.matterManipulator.AnalysisHacks.RotationHacks;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockAnalysisContext;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
@@ -85,6 +86,7 @@ public class TileAnalysisResult {
     public InventoryAnalysis mAEPatterns = null;
 
     public InventoryAnalysis mInventory = null;
+    public ForgeDirection mDirection = null;
 
     private static int counter = 0;
     private static final short GT_BASIC_IO_PUSH_ITEMS = (short) (0b1 << counter++);
@@ -292,6 +294,8 @@ public class TileAnalysisResult {
         if (te instanceof IInventory inventory) {
             mInventory = InventoryAnalysis.fromInventory(inventory, false);
         }
+
+        mDirection = nullIfUnknown(RotationHacks.getRotation(te));
     }
 
     private static final TileAnalysisResult NO_OP = new TileAnalysisResult();
@@ -547,6 +551,10 @@ public class TileAnalysisResult {
         // update the inventory
         if (te instanceof IInventory inventory && mInventory != null) {
             mInventory.apply(ctx, inventory, true, false);
+        }
+
+        if (mDirection != null) {
+            RotationHacks.setRotation(te, mDirection);
         }
 
         return true;
