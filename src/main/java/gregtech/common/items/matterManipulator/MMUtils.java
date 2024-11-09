@@ -64,6 +64,32 @@ import it.unimi.dsi.fastutil.Pair;
 
 public class MMUtils {
 
+    /**
+     * Plans will have jobs automatically started (see {@link #GetRequiredItems}).
+     */
+    public static final int PLAN_AUTO_SUBMIT = 0b1;
+    /**
+     * Plans will ignore existing blocks (see {@link #GetRequiredItems}).
+     */
+    public static final int PLAN_ALL = 0b10;
+
+    /**
+     * The encryption key refers to a valid ME network and can be connected to.
+     */
+    public static final int TOOLTIP_HAS_AE = 0b1;
+    /**
+     * The ME network is online and the player is within range of an access point.
+     */
+    public static final int TOOLTIP_AE_WORKS = 0b10;
+    /**
+     * The uplink key is set (can be done on the client, only included to future-proof the mechanism).
+     */
+    public static final int TOOLTIP_HAS_UPLINK = 0b100;
+    /**
+     * The uplink is online and active.
+     */
+    public static final int TOOLTIP_UPLINK_WORKS = 0b1000;
+
     private MMUtils() {}
 
     /**
@@ -529,7 +555,7 @@ public class MMUtils {
         int flags) {
         List<PendingBlock> blocks = state.getPendingBlocks(player.getEntityWorld());
         RequiredItemAnalysis itemAnalysis = BlockAnalyzer
-            .getRequiredItemsForBuild(player, blocks, (flags & Messages.PLAN_ALL) != 0);
+            .getRequiredItemsForBuild(player, blocks, (flags & PLAN_ALL) != 0);
 
         List<IAEItemStack> requiredItems = GTUtility.mapToList(
             itemAnalysis.requiredItems.entrySet(),
@@ -591,7 +617,7 @@ public class MMUtils {
 
         if (!requiredItems.isEmpty()) {
             if (state.connectToUplink()) {
-                if ((flags & Messages.PLAN_ALL) == 0) {
+                if ((flags & PLAN_ALL) == 0) {
                     requiredItems.forEach(stack -> {
                         long available = availableItems.stream()
                             .filter(s -> s.isSameType(stack))
@@ -615,7 +641,7 @@ public class MMUtils {
                         player,
                         state.config.coordA.toString(),
                         requiredItems,
-                        (flags & Messages.PLAN_AUTO_SUBMIT) != 0);
+                        (flags & PLAN_AUTO_SUBMIT) != 0);
                 } else {
                     GTUtility.sendInfoToPlayer(player, "Not creating pattern because all required items are present.");
                 }

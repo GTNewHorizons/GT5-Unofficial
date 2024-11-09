@@ -882,6 +882,24 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
     private int stateCounter = 0;
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 5 == 0) {
+            UplinkState state = getState();
+
+            stateCounter++;
+
+            // if the state has changed or 10 seconds have passed, send an update to all nearby clients
+            if (state != lastState || stateCounter > 10) {
+                lastState = state;
+                stateCounter = 0;
+                MatterManipulator.sendUplinkStateUpdate(this);
+            }
+        }
+    }
+
+    @Override
     @Nonnull
     public CheckRecipeResult checkProcessing() {
         mMaxProgresstime = 20;
@@ -889,17 +907,6 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         mEfficiency = 10_000;
 
         UPLINKS.put(address, this);
-
-        UplinkState state = getState();
-
-        stateCounter++;
-
-        // if the state has changed or 10 seconds have passed, send an update to all nearby clients
-        if (state != lastState || stateCounter > 10) {
-            lastState = state;
-            stateCounter = 0;
-            MatterManipulator.sendUplinkStateUpdate(this);
-        }
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -909,9 +916,7 @@ public class MTEMMUplink extends MTEEnhancedMultiBlockBase<MTEMMUplink> implemen
         super.stopMachine(reason);
 
         UPLINKS.remove(address);
-        mMaxProgresstime = 0;
-        mEUt = 0;
-        mEfficiency = 0;
+        MatterManipulator.sendUplinkStateUpdate(this);
     }
 
     @Override

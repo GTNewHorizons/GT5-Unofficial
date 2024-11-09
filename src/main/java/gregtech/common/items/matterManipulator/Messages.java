@@ -160,34 +160,17 @@ enum Messages {
         state.config.action = PendingAction.MARK_PASTE;
         state.config.coordC = null;
     }))),
-    GetRequiredItems(server(new ISimplePacketHandler<IntPacket>() {
-
-        @Override
-        public void handle(EntityPlayer player, IntPacket packet) {
-            ItemStack held = player.inventory.getCurrentItem();
-
-            if (held != null && held.getItem() instanceof ItemMatterManipulator manipulator) {
-                NBTState state = ItemMatterManipulator.getState(held);
-
-                if (state.config.placeMode != PlaceMode.COPYING) {
-                    return;
-                }
-
-                if (state.config.coordA == null || state.config.coordB == null || state.config.coordC == null) {
-                    return;
-                }
-
-                MMUtils.createPlanImpl(player, state, manipulator, packet.value);
-            }
+    GetRequiredItems(server(intPacket((player, stack, manipulator, state, value) -> {
+        if (state.config.placeMode != PlaceMode.COPYING) {
+            return;
         }
 
-        @Override
-        public IntPacket getNewPacket(Messages message, @Nullable Object value) {
-            IntPacket packet = new IntPacket(message);
-            packet.value = value == null ? 0 : (int) (Integer) value;
-            return packet;
+        if (state.config.coordA == null || state.config.coordB == null || state.config.coordC == null) {
+            return;
         }
-    })),
+
+        MMUtils.createPlanImpl(player, state, manipulator, value);
+    }))),
     ClearManualPlans(server(simple((player, stack, manipulator, state) -> {
         if (state.connectToUplink()) {
             state.uplink.clearManualPlans(player);
@@ -234,6 +217,62 @@ enum Messages {
                 packet.setState(l, uplink.getState());
             }
 
+            return packet;
+        }
+    })),
+    TooltipResponse(client(new ISimplePacketHandler<Messages.IntPacket>() {
+
+        @Override
+        public void handle(EntityPlayer player, IntPacket packet) {
+            ItemMatterManipulator.onTooltipResponse(packet.value);
+        }
+
+        @Override
+        public IntPacket getNewPacket(Messages message, @Nullable Object value) {
+            IntPacket packet = new IntPacket(message);
+            packet.value = value == null ? 0 : (int) (Integer) value;
+            return packet;
+        }
+    })),
+    TooltipQuery(server(new ISimplePacketHandler<Messages.IntPacket>() {
+
+        @Override
+        public void handle(EntityPlayer player, IntPacket packet) {
+            if (packet.value < 0 || packet.value > player.inventory.getSizeInventory()) return;
+
+            ItemStack held = player.inventory.getStackInSlot(packet.value);
+
+            if (held != null && held.getItem() instanceof ItemMatterManipulator manipulator) {
+                NBTState state = ItemMatterManipulator.getState(held);
+
+                int result = 0;
+
+                if (manipulator.tier.hasCap(ItemMatterManipulator.CONNECTS_TO_AE)) {
+                    if (state.connectToMESystem()) {
+                        result |= MMUtils.TOOLTIP_HAS_AE;
+                        if (state.canInteractWithAE(player)) {
+                            result |= MMUtils.TOOLTIP_AE_WORKS;
+                        }
+                    }
+                }
+
+                if (manipulator.tier.hasCap(ItemMatterManipulator.CONNECTS_TO_UPLINK)) {
+                    if (state.uplinkAddress != null) {
+                        result |= MMUtils.TOOLTIP_HAS_UPLINK;
+                        if (state.connectToUplink()) {
+                            result |= MMUtils.TOOLTIP_UPLINK_WORKS;
+                        }
+                    }
+                }
+
+                Messages.TooltipResponse.sendToPlayer((EntityPlayerMP) player, (Integer) result);
+            }
+        }
+
+        @Override
+        public IntPacket getNewPacket(Messages message, @Nullable Object value) {
+            IntPacket packet = new IntPacket(message);
+            packet.value = value == null ? 0 : (int) (Integer) value;
             return packet;
         }
     })),
@@ -447,7 +486,7 @@ enum Messages {
     }
 
     /**
-     * Wraps a handler that must be called on the server. (see currying)
+     * Wraps a handler that must be called on the server.
      */
     private static <T extends SimplePacket> ISimplePacketHandler<T> server(ISimplePacketHandler<T> next) {
         return new ISimplePacketHandler<T>() {
@@ -471,7 +510,7 @@ enum Messages {
     }
 
     /**
-     * Wraps a handler that must be called on the client. (see currying)
+     * Wraps a handler that must be called on the client.
      */
     private static <T extends SimplePacket> ISimplePacketHandler<T> client(ISimplePacketHandler<T> next) {
         return new ISimplePacketHandler<T>() {
@@ -600,12 +639,34 @@ enum Messages {
         };
     }
 
-    /**
-     * Plans will have jobs automatically started (see {@link #GetRequiredItems}).
-     */
-    public static final int PLAN_AUTO_SUBMIT = 0b1;
-    /**
-     * Plans will ignore existing blocks (see {@link #GetRequiredItems}).
-     */
-    public static final int PLAN_ALL = 0b10;
+    private static interface IIntSetter {
+
+        public void set(EntityPlayer player, ItemStack stack, ItemMatterManipulator manipulator, NBTState state,
+            int value);
+    }
+
+    private static ISimplePacketHandler<IntPacket> intPacket(IIntSetter setter) {
+        return new ISimplePacketHandler<Messages.IntPacket>() {
+
+            @Override
+            public void handle(EntityPlayer player, IntPacket packet) {
+                ItemStack held = player.inventory.getCurrentItem();
+
+                if (held != null && held.getItem() instanceof ItemMatterManipulator manipulator) {
+                    NBTState state = ItemMatterManipulator.getState(held);
+
+                    setter.set(player, held, manipulator, state, packet.value);
+
+                    ItemMatterManipulator.setState(held, state);
+                }
+            }
+
+            @Override
+            public IntPacket getNewPacket(Messages message, @Nullable Object value) {
+                IntPacket packet = new IntPacket(message);
+                packet.value = value == null ? 0 : (int) (Integer) value;
+                return packet;
+            }
+        };
+    }
 }

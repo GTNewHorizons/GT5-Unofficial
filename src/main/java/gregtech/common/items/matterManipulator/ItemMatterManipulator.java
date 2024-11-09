@@ -24,6 +24,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
@@ -342,6 +343,18 @@ public class ItemMatterManipulator extends Item
         return ret;
     }
 
+    // this is super cursed but doing it properly would take a ton of effort for no real gain
+    private static boolean ttHasAE, ttAEWorks, ttHasUplink, ttUplinkWorks;
+
+    public static void onTooltipResponse(int state) {
+        ttHasAE = (state & MMUtils.TOOLTIP_HAS_AE) != 0;
+        ttAEWorks = (state & MMUtils.TOOLTIP_AE_WORKS) != 0;
+        ttHasUplink = (state & MMUtils.TOOLTIP_HAS_UPLINK) != 0;
+        ttUplinkWorks = (state & MMUtils.TOOLTIP_UPLINK_WORKS) != 0;
+    }
+
+    private long lastTooltipQueryMS;
+
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> desc,
@@ -352,17 +365,50 @@ public class ItemMatterManipulator extends Item
         if (!GuiScreen.isShiftKeyDown()) {
             desc.add("Hold shift for more information.");
         } else {
+            if (tier.hasCap(CONNECTS_TO_AE) || tier.hasCap(CONNECTS_TO_UPLINK)) {
+                long time = System.currentTimeMillis();
+    
+                if ((time - lastTooltipQueryMS) > 1000) {
+                    lastTooltipQueryMS = time;
+
+                    int slot = -1;
+                    InventoryPlayer inv = player.inventory;
+
+                    for (int i = 0; i < inv.armorInventory.length; ++i) {
+                        if (inv.armorInventory[i] != null && inv.armorInventory[i].isItemEqual(itemStack)) {
+                            slot = i;
+                            break;
+                        }
+                    }
+            
+                    if (slot == -1) {
+                        for (int i = 0; i < inv.mainInventory.length; ++i) {
+                            if (inv.mainInventory[i] != null && inv.mainInventory[i].isItemEqual(itemStack)) {
+                                slot = i;
+                                break;
+                            }
+                        }
+                    }
+            
+                    Messages.TooltipQuery.sendToServer(slot);
+                }
+            }
+
             if (tier.hasCap(CONNECTS_TO_AE)) {
-                if (state.connectToMESystem()) {
-                    desc.add("Has an ME connection. (" + (state.canInteractWithAE(player) ? "Can interact currently" : "Cannot interact currently") + ")");
+                if (ttHasAE) {
+                    if (ttAEWorks) {
+                        desc.add("Has an ME connection. (Can interact currently)");
+                    } else {
+                        desc.add("Has an ME connection. (Cannot interact currently)");
+                    }
                 } else {
                     desc.add("Does not have an ME connection.");
                 }
             }
             
             if (tier.hasCap(CONNECTS_TO_UPLINK)) {
-                if (state.uplinkAddress != null) {
-                    if (state.connectToUplink()) {
+                if (ttHasUplink) {
+                    if (ttUplinkWorks) {
                         desc.add("Has an Uplink connection. (Can interact currently)");
                     } else {
                         desc.add("Has an Uplink connection. (Cannot interact currently)");
@@ -1139,13 +1185,13 @@ public class ItemMatterManipulator extends Item
                 .option()
                     .label("Plan (All, Auto)")
                     .onClicked(() -> {
-                        Messages.GetRequiredItems.sendToServer(Messages.PLAN_ALL | Messages.PLAN_AUTO_SUBMIT);
+                        Messages.GetRequiredItems.sendToServer(MMUtils.PLAN_ALL | MMUtils.PLAN_AUTO_SUBMIT);
                     })
                 .done()
                 .option()
                     .label("Plan (All, Manual)")
                     .onClicked(() -> {
-                        Messages.GetRequiredItems.sendToServer(Messages.PLAN_ALL);
+                        Messages.GetRequiredItems.sendToServer(MMUtils.PLAN_ALL);
                     })
                 .done()
                 .option()
@@ -1163,7 +1209,7 @@ public class ItemMatterManipulator extends Item
                 .option()
                     .label("Plan (Missing, Auto)")
                     .onClicked(() -> {
-                        Messages.GetRequiredItems.sendToServer(Messages.PLAN_AUTO_SUBMIT);
+                        Messages.GetRequiredItems.sendToServer(MMUtils.PLAN_AUTO_SUBMIT);
                     })
                 .done()
             .done()

@@ -589,9 +589,8 @@ public class MTEMMUplinkMEHatch extends MTEHatch
             hologram.setStackDisplayName(EnumChatFormatting.RESET + requestName);
 
             // add a random number so that holograms with the same name are still different
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setInteger("discriminator", counter++);
-            hologram.setTagCompound(tag);
+            hologram.getTagCompound()
+                .setInteger("discriminator", counter++);
         }
 
         private ManipulatorRequest(UUID requester, String requestName, List<IAEItemStack> requiredItems,
