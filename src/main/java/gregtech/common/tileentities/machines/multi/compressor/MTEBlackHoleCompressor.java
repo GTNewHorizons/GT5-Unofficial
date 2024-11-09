@@ -78,6 +78,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -482,15 +483,19 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     if (inputItem.getItem() instanceof MetaGeneratedItem01) {
                         if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
                             bus.decrStackSize(i, 1);
-                            endRecipeProcessing();
-                            startRecipeProcessing();
+                            if (bus instanceof IRecipeProcessingAwareHatch aware) {
+                                setResultIfFailure(aware.endRecipeProcessing(this));
+                                aware.startRecipeProcessing();
+                            }
                             blackHoleStatus = 2;
                             createRenderBlock();
                             return;
                         } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
                             bus.decrStackSize(i, 1);
-                            endRecipeProcessing();
-                            startRecipeProcessing();
+                            if (bus instanceof IRecipeProcessingAwareHatch aware) {
+                                setResultIfFailure(aware.endRecipeProcessing(this));
+                                aware.startRecipeProcessing();
+                            }
                             blackHoleStatus = 1;
                             blackHoleStability = 100;
                             catalyzingCostModifier = 1;
