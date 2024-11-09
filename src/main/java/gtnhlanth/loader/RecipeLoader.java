@@ -996,6 +996,7 @@ public class RecipeLoader {
         // Iodine
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Benzene.getCells(1))
+            .itemOutputs(WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, 1))
             .fluidInputs(WerkstoffMaterialPool.SeaweedConcentrate.getFluidOrGas(2000))
             .fluidOutputs(WerkstoffMaterialPool.SeaweedByproducts.getFluidOrGas(200))
             .eut(TierEU.RECIPE_HV)
