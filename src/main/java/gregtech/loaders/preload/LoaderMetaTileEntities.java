@@ -12372,7 +12372,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         makeWires(Materials.Lead, 1220, 2L, 4L, 4L, GTValues.V[1], true, false);
         makeWires(Materials.Tin, 1240, 1L, 2L, 1L, GTValues.V[1], true, false);
         makeWires(Materials.Zinc, 1260, 1L, 2L, 1L, GTValues.V[1], true, false);
-        
+
         makeWires(Materials.SolderingAlloy, 1280, 1L, 2L, 1L, GTValues.V[2], true, false);
         makeWires(Materials.Iron, 1300, 3L, 6L, 2L, GTValues.V[2], true, false);
         makeWires(Materials.Nickel, 1320, 3L, 6L, 2L, GTValues.V[2], true, false);
@@ -12396,8 +12396,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         makeWires(Materials.Platinum, 1640, 1L, 2L, 2L, GTValues.V[5], true, false);
         makeWires(Materials.TungstenSteel, 1660, 4L, 8L, 8L, GTValues.V[5], true, false);
         makeWires(Materials.Tungsten, 1680, 2L, 4L, 6L, GTValues.V[5], true, false);
-        
-        
+
         makeWires(Materials.Osmium, 1620, 2L, 4L, 12L, GTValues.V[6], true, false);
         makeWires(Materials.HSSG, 1700, 2L, 4L, 4L, GTValues.V[6], true, false);
         makeWires(Materials.NiobiumTitanium, 1720, 2L, 4L, 4L, GTValues.V[6], true, false);
