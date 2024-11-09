@@ -19,6 +19,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_UNS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -474,33 +475,24 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         // Loop through all items and look for the Activation and Deactivation Catalysts
         // Deactivation resets stability to 100 and catalyzing cost to 1
 
-        // Has to do this "start/endRecipeProcessing" nonsense, or it doesn't work with stocking bus.
-        for (MTEHatchInputBus bus : mInputBusses) {
-            ItemStack[] inv = bus.getRealInventory();
-            if (inv != null) {
-                for (int i = 0; i < inv.length; i++) {
-                    ItemStack inputItem = inv[i];
-                    if (inputItem != null) {
-                        if (inputItem.getItem() instanceof MetaGeneratedItem01) {
-                            if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
-                                startRecipeProcessing();
-                                bus.decrStackSize(i, 1);
-                                endRecipeProcessing();
-                                blackHoleStatus = 2;
-                                createRenderBlock();
-                                return;
-                            } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
-                                startRecipeProcessing();
-                                bus.decrStackSize(i, 1);
-                                endRecipeProcessing();
-                                inputItem.stackSize -= 1;
-                                blackHoleStatus = 1;
-                                blackHoleStability = 100;
-                                catalyzingCostModifier = 1;
-                                if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
-                                collapseTimer = 40;
-                                return;
-                            }
+        for (MTEHatchInputBus bus : filterValidMTEs(mInputBusses)) {
+            for (int i = 0; i < bus.getSizeInventory(); i++) {
+                ItemStack inputItem = bus.getStackInSlot(i);
+                if (inputItem != null) {
+                    if (inputItem.getItem() instanceof MetaGeneratedItem01) {
+                        if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
+                            bus.decrStackSize(i, 1);
+                            blackHoleStatus = 2;
+                            createRenderBlock();
+                            return;
+                        } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
+                            bus.decrStackSize(i, 1);
+                            blackHoleStatus = 1;
+                            blackHoleStability = 100;
+                            catalyzingCostModifier = 1;
+                            if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
+                            collapseTimer = 40;
+                            return;
                         }
                     }
                 }
