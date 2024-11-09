@@ -83,7 +83,8 @@ public enum OreMixes {
         .primary(Materials.Magnetite)
         .secondary(Materials.Magnetite)
         .inBetween(Materials.VanadiumMagnetite)
-        .sporadic(Materials.Gold)),
+        .sporadic(Materials.Gold)
+        .localize(Materials.Gold)),
 
     Iron(new OreMixBuilder().name("ore.mix.iron")
         .heightRange(10, 40)

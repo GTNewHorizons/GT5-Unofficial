@@ -9,6 +9,7 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import ggfab.GGItemList;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -30,7 +31,12 @@ public class MTEHatchSolidifier extends MTEHatchInput {
         ItemList.Shape_Mold_Turbine_Blade.get(1), ItemList.Shape_Mold_Pipe_Tiny.get(1),
         ItemList.Shape_Mold_Pipe_Small.get(1), ItemList.Shape_Mold_Pipe_Medium.get(1),
         ItemList.Shape_Mold_Pipe_Large.get(1), ItemList.Shape_Mold_Pipe_Huge.get(1),
-        ItemList.Shape_Mold_ToolHeadDrill.get(1) };
+        ItemList.Shape_Mold_ToolHeadDrill.get(1),
+
+        GGItemList.Shape_One_Use_craftingToolFile.get(1), GGItemList.Shape_One_Use_craftingToolWrench.get(1),
+        GGItemList.Shape_One_Use_craftingToolCrowbar.get(1), GGItemList.Shape_One_Use_craftingToolWireCutter.get(1),
+        GGItemList.Shape_One_Use_craftingToolHardHammer.get(1), GGItemList.Shape_One_Use_craftingToolSoftHammer.get(1),
+        GGItemList.Shape_One_Use_craftingToolScrewdriver.get(1), GGItemList.Shape_One_Use_craftingToolSaw.get(1) };
 
     public MTEHatchSolidifier(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -94,7 +100,8 @@ public class MTEHatchSolidifier extends MTEHatchInput {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
-            new SlotWidget(new MoldSlot(inventoryHandler, moldSlot)).setPos(125, 35)
+            new SlotWidget(new MoldSlot(inventoryHandler, moldSlot)).setShiftClickPriority(-1)
+                .setPos(125, 35)
                 .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_MOLD)
                 .setSize(18, 18));
     }

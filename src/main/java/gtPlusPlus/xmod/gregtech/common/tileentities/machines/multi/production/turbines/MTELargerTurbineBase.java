@@ -152,9 +152,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .addInfo("Right-click with screwdriver to enable loose fit")
             .addInfo("Optimal flow will increase or decrease depending on fitting")
             .addInfo("Loose fit increases flow in exchange for efficiency");
-        if (getTurbineType().contains("Steam")) {
-            tt.addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode");
-        }
         if (getTurbineType().equals("Plasma")) {
             tt.addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
                 .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");

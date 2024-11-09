@@ -109,7 +109,7 @@ public class Client {
         public int separatorStyle;
 
         @Config.Comment("Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+: continuous line.")
-        @Config.DefaultInt(1)
+        @Config.DefaultInt(3)
         public int tooltipFinisherStyle;
     }
 
