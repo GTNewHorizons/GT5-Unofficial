@@ -482,11 +482,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     if (inputItem.getItem() instanceof MetaGeneratedItem01) {
                         if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
                             bus.decrStackSize(i, 1);
+                            endRecipeProcessing();
+                            startRecipeProcessing();
                             blackHoleStatus = 2;
                             createRenderBlock();
                             return;
                         } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
                             bus.decrStackSize(i, 1);
+                            endRecipeProcessing();
+                            startRecipeProcessing();
                             blackHoleStatus = 1;
                             blackHoleStability = 100;
                             catalyzingCostModifier = 1;
@@ -501,14 +505,18 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        super.setupProcessingLogic(logic);
+        searchAndDecrementCatalysts();
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
             @NotNull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                searchAndDecrementCatalysts();
-
                 switch (getModeFromCircuit(inputItems)) {
                     case MACHINEMODE_COMPRESSOR -> {
                         return super.findRecipeMatches(RecipeMaps.compressorRecipes);
