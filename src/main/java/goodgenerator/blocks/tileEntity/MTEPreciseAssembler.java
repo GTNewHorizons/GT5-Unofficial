@@ -532,4 +532,18 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         return SoundResource.GT_MACHINES_MULTI_PRECISE_LOOP;
     }
 
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes");
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes");
+            }
+        }
+
+        return true;
+    }
 }

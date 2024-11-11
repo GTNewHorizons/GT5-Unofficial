@@ -28,6 +28,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -419,5 +420,20 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1L);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes");
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes");
+            }
+        }
+
+        return true;
     }
 }

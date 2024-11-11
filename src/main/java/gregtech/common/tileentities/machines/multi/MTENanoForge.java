@@ -444,6 +444,21 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     }
 
     @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes");
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes");
+            }
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
@@ -457,4 +472,5 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
     public boolean supportsBatchMode() {
         return true;
     }
+
 }

@@ -993,9 +993,9 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch mode enabled");
+                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch mode disabled");
+                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes");
             }
         }
         return true;

@@ -430,9 +430,9 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes.");
+                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes.");
+                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes");
             }
         }
 
