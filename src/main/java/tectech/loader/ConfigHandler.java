@@ -13,19 +13,14 @@ public class ConfigHandler {
     public static Debug debug = new Debug();
     public static TeslaTweaks teslaTweaks = new TeslaTweaks();
 
+    public static Visual visual = new Visual();
+
     @Config.Comment("Debug section")
     public static class Debug {
 
         @Config.Comment("Enables logging and other purely debug features")
         @Config.DefaultBoolean(false)
         public boolean DEBUG_MODE;
-
-        @Config.Comment({ "Eye of Harmony energy input and output display:", " - 'Numerical': Shows the entire number",
-            " - 'Scientific': Uses scientific notation", " - 'SI': Uses the SI notation", })
-
-        @Config.DefaultEnum("Scientific")
-        @Config.RequiresMcRestart
-        public CommonProxy.EOH_Notation_Selection EOH_Notation = CommonProxy.EOH_Notation_Selection.Scientific;
     }
 
     @Config.Comment("Tesla tweaks section")
@@ -65,5 +60,16 @@ public class ConfigHandler {
         @Config.Comment("Set true to enable the cool visual effect when tesla tower running.")
         @Config.DefaultBoolean(true)
         public boolean TESLA_VISUAL_EFFECT;
+    }
+
+    @Config.Comment("Visual section")
+    public static class Visual {
+
+        @Config.Comment({ "Eye of Harmony energy input and output display:", " - 'Numerical': Shows the entire number",
+            " - 'Scientific': Uses scientific notation", " - 'SI': Uses the SI notation", })
+
+        @Config.DefaultEnum("Scientific")
+        @Config.RequiresMcRestart
+        public CommonProxy.EOH_Notation_Selection EOH_NOTATION = CommonProxy.EOH_Notation_Selection.Scientific;
     }
 }
