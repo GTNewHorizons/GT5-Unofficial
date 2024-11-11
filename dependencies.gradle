@@ -99,8 +99,6 @@ dependencies {
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     compileOnly('com.github.GTNewHorizons:BlockRenderer6343:1.2.14:dev'){transitive=false}
 
-    shadowImplementation('com.github.GTNewHorizons:AVRcore:1.0.1')
-
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
 
