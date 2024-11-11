@@ -262,6 +262,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         width = 0;
         casingAmount = 0;
+        glassTier = 0;
 
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
             while (width < (6)) {
