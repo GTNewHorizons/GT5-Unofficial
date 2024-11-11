@@ -92,7 +92,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
 
     @Override
     public int getCasingTextureIndex() {
-        return 16;
+        return 57;
     }
 
     @Override

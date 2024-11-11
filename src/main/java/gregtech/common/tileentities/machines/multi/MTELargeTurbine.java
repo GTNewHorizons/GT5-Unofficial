@@ -214,9 +214,9 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 GTRenderUtil.renderBlockIcon(
                     aRenderer,
                     tBlock,
-                    tX + tDirection.offsetX * 0.01,
-                    tY + tDirection.offsetY * 0.01,
-                    tZ + tDirection.offsetZ * 0.01,
+                    tX + tDirection.offsetX * 0.001,
+                    tY + tDirection.offsetY * 0.001,
+                    tZ + tDirection.offsetZ * 0.001,
                     tTextures[i].getIcon(),
                     tFacing);
             }
