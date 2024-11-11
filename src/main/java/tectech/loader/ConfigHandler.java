@@ -3,6 +3,7 @@ package tectech.loader;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
+import tectech.proxy.CommonProxy;
 
 @Config(modid = Mods.Names.TECTECH, filename = "tectech")
 @Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
@@ -18,6 +19,13 @@ public class ConfigHandler {
         @Config.Comment("Enables logging and other purely debug features")
         @Config.DefaultBoolean(false)
         public boolean DEBUG_MODE;
+
+        @Config.Comment({ "Eye of Harmony energy input and output display:", " - 'Numerical': Shows the entire number",
+            " - 'Scientific': Uses scientific notation", " - 'SI': Uses the SI notation", })
+
+        @Config.DefaultEnum("Scientific")
+        @Config.RequiresMcRestart
+        public CommonProxy.EOH_Notation_Selection EOHNotation = CommonProxy.EOH_Notation_Selection.Scientific;
     }
 
     @Config.Comment("Tesla tweaks section")

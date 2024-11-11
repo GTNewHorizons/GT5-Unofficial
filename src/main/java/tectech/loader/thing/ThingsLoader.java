@@ -5,6 +5,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import tectech.Reference;
 import tectech.TecTech;
+import tectech.loader.ConfigHandler;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.block.BlockReactorSim;
@@ -89,5 +90,7 @@ public class ThingsLoader implements Runnable {
         TecTech.LOGGER.info("Crafting Components registered");
 
         TecTech.LOGGER.info("Debug Items registered");
+
+        TecTech.proxy.EOH_Notation = ConfigHandler.debug.EOHNotation;
     }
 }
