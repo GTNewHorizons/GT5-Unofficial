@@ -426,16 +426,13 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes");
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes");
-            }
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
-
         return true;
     }
 
