@@ -25,7 +25,7 @@ public class ConfigHandler {
 
         @Config.DefaultEnum("Scientific")
         @Config.RequiresMcRestart
-        public CommonProxy.EOH_Notation_Selection EOHNotation = CommonProxy.EOH_Notation_Selection.Scientific;
+        public CommonProxy.EOH_Notation_Selection EOH_Notation = CommonProxy.EOH_Notation_Selection.Scientific;
     }
 
     @Config.Comment("Tesla tweaks section")

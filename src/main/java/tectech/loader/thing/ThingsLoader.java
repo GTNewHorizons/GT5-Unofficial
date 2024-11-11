@@ -91,6 +91,6 @@ public class ThingsLoader implements Runnable {
 
         TecTech.LOGGER.info("Debug Items registered");
 
-        TecTech.proxy.EOH_Notation = ConfigHandler.debug.EOHNotation;
+        TecTech.proxy.EOH_Notation = ConfigHandler.debug.EOH_Notation;
     }
 }
