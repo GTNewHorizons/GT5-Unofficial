@@ -1456,9 +1456,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
         final ItemStack rStack = new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
         final NBTTagCompound tNBT = new NBTTagCompound();
         if (mRecipeStuff != null && !mRecipeStuff.hasNoTags()) tNBT.setTag("GT.CraftingComponents", mRecipeStuff);
-        if (mMuffler) tNBT.setBoolean("mMuffler", mMuffler);
-        if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", mLockUpgrade);
-        if (mSteamConverter) tNBT.setBoolean("mSteamConverter", mSteamConverter);
+        if (mMuffler) tNBT.setBoolean("mMuffler", true);
+        if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", true);
+        if (mSteamConverter) tNBT.setBoolean("mSteamConverter", true);
         if (mColor > 0) tNBT.setByte("mColor", mColor);
         if (mOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", mOtherUpgrades);
 
