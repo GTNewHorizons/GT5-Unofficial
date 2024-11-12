@@ -744,7 +744,8 @@ public final class ModItems {
         Item a8kFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_8k", "Large Volumetric Flask", 8000);
         Item a64kFlask = VolumetricFlaskHelper
             .generateNewFlask("Volumetric_Flask_32k", "Gigantic Volumetric Flask", 32000);
-        Item aMAXINTFlask = VolumetricFlaskHelper.generateNewFlask("Volumetric_Flask_Infinite","Klein Bottle",2147483647);
+        Item aMAXINTFlask = VolumetricFlaskHelper
+            .generateNewFlask("Volumetric_Flask_Infinite", "Klein Bottle", 2147483647);
         GregtechItemList.VOLUMETRIC_FLASK_8k.set(a8kFlask);
         GregtechItemList.VOLUMETRIC_FLASK_32k.set(a64kFlask);
         GregtechItemList.KLEIN_BOTTLE.set(aMAXINTFlask);
