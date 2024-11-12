@@ -107,9 +107,12 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             aPumpName, // Name
             aEuMax, // Eu Storage
             (short) aTier, // Tier/ Tooltip
-            aTier <= 0 ? EnumRarity.common
-                : aTier == 1 ? EnumRarity.uncommon
-                    : aTier == 2 ? EnumRarity.rare : aTier == 3 ? EnumRarity.epic : EnumRarity.common, // Rarity
+            switch (aTier) {
+            case 0 -> EnumRarity.common;
+            case 1 -> EnumRarity.uncommon;
+            case 2 -> EnumRarity.rare;
+            default -> EnumRarity.epic;
+            }, // Rarity
             false // Effect?
         );
     }
@@ -132,16 +135,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (GameRegistry.findItem(GTPlusPlus.ID, unlocalizedName) == null) {
             GameRegistry.registerItem(this, unlocalizedName);
         }
-    }
-
-    public void registerItem(final int id, final String localizedName, final long euStorage, final int tier) {
-        this.registerItem(id, localizedName, euStorage, (short) tier, EnumRarity.common, false);
-    }
-
-    public void registerItem(final int id, final String localizedName, final long euStorage, final int tier,
-        final int burnTime) {
-        this.registerItem(id, localizedName, euStorage, (short) tier, EnumRarity.common, false);
-        this.setBurnValue(id, burnTime);
     }
 
     public void registerItem(final int id, final String localizedName, final long euStorage, final short tier,
@@ -185,21 +178,19 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             GTLanguageManager
                 .getTranslation("gtplusplus." + this.getUnlocalizedName(aStack) + "." + aOffsetMeta + ".tooltip"));
 
-        if (aOffsetMeta <= 3) {
-            FluidStack f = getFluid(aStack);
-            aList.add(StatCollector.translateToLocal("item.itemGregtechPump.tooltip.0"));
-            aList.add(StatCollector.translateToLocal("item.itemGregtechPump.tooltip.1"));
-            aList.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("item.itemGregtechPump.tooltip.2"));
-            aList.add(
-                EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName()
-                    : StatCollector.translateToLocal("item.itemGregtechPump.tooltip.3")));
-            aList.add(
-                EnumChatFormatting.BLUE + (f != null ? "" + f.amount : "" + 0)
-                    + "L"
-                    + " / "
-                    + formatNumbers(getCapacity(aStack))
-                    + "L");
-        }
+        FluidStack f = getFluid(aStack);
+        aList.add(StatCollector.translateToLocal("item.itemGregtechPump.tooltip.0"));
+        aList.add(StatCollector.translateToLocal("item.itemGregtechPump.tooltip.1"));
+        aList.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("item.itemGregtechPump.tooltip.2"));
+        aList.add(
+            EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName()
+                : StatCollector.translateToLocal("item.itemGregtechPump.tooltip.3")));
+        aList.add(
+            EnumChatFormatting.BLUE + (f != null ? "" + f.amount : "" + 0)
+                + "L"
+                + " / "
+                + formatNumbers(getCapacity(aStack))
+                + "L");
 
         final Long[] tStats = this.getElectricStats(aStack);
         if (tStats != null) {
@@ -543,7 +534,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             return mIconMap.get(0);
         } else {
             int newMeta = aMetaData - this.mOffset;
-            newMeta = (Math.max(0, Math.min(3, newMeta)));
+            newMeta = (Math.max(0, Math.min(4, newMeta)));
             return mIconMap.get(newMeta);
         }
     }
@@ -686,9 +677,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     @Override
     public String getItemStackDisplayName(final ItemStack aStack) {
         int keyValue = (getCorrectMetaForItemstack(aStack));
-        if (keyValue < 0 || keyValue > 3) {
-            keyValue = 0;
-        }
+        keyValue = GTUtility.clamp(keyValue, 0, 4);
         return GTLanguageManager
             .getTranslation("gtplusplus." + this.getUnlocalizedName(aStack) + "." + keyValue + ".name");
     }
@@ -767,7 +756,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 .getInteger("mCapacity");
         }
         int aMeta = this.getCorrectMetaForItemstack(container);
-        return aMeta == 0 ? 2000 : aMeta == 1 ? 8000 : aMeta == 2 ? 32000 : 128000;
+
+        return aMeta == 4 ? 16_384_000 : 2000 * (int) Math.pow(4, aMeta);
     }
 
     public int fill(ItemStack container, FluidStack resource) {
@@ -914,7 +904,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             aNewNBT.setBoolean("mInit", true);
             aNewNBT.setString("mFluid", "@@@@@");
             aNewNBT.setInteger("mFluidAmount", 0);
-            int aCapacity = (aMeta == 0 ? 2000 : (aMeta == 1 ? 8000 : (aMeta == 2 ? 32000 : 128000)));
+            int aCapacity = aMeta == 4 ? 16_384_000 : 2000 * (int) Math.pow(4, aMeta);
             aNewNBT.setInteger("mCapacity", aCapacity);
             aStack.setTagCompound(aNewNBT);
         }
@@ -934,19 +924,11 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 return false;
             } else {
                 int aTier = (aStack.getItemDamage() - 1000);
-                int removal;
-                if (aTier == 0) {
-                    removal = 0;
-                } else if (aTier == 1) {
-                    removal = 32;
-                } else if (aTier == 2) {
-                    removal = 128;
-                } else if (aTier == 3) {
-                    removal = 512;
-                } else {
-                    removal = 8;
+                int removal = 0;
+                if (aTier != 0) {
+                    removal = 8 * (int) Math.pow(4, aTier);
                 }
-                if (!canUse(aStack, removal) && aTier > 0) {
+                if (!canUse(aStack, removal) && aTier > 0 && aTier < 4) {
                     PlayerUtils.messagePlayer(aPlayer, "Not enough power.");
                     Logger.INFO("No Power");
                     return false;
@@ -967,7 +949,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                             didDrain = true;
                         }
                     } else {
-                        didDrain = aTier == 0;
+                        didDrain = aTier == 0 || aTier == 4;
                     }
 
                     if (didDrain) {
@@ -1296,7 +1278,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 return 0;
             } else {
                 int newMeta = aStack.getItemDamage() - this.mOffset;
-                newMeta = (Math.max(0, Math.min(3, newMeta)));
+                newMeta = (Math.max(0, Math.min(4, newMeta)));
                 return newMeta;
             }
         }
