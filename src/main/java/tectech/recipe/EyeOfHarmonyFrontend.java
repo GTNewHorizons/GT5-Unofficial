@@ -34,7 +34,7 @@ import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
-import tectech.TecTech;
+import tectech.loader.ConfigHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -158,7 +158,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
                     + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
 
             // Energy Output
-            switch (TecTech.proxy.EOH_Notation) {
+            switch (ConfigHandler.visual.EOH_NOTATION) {
                 case Numerical -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
                         + formatNumbers(recipe.getEUOutput())
@@ -174,7 +174,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             }
 
             // Energy Input
-            switch (TecTech.proxy.EOH_Notation) {
+            switch (ConfigHandler.visual.EOH_NOTATION) {
                 case Numerical -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
                         + formatNumbers(recipe.getEUStartCost())

@@ -3,7 +3,6 @@ package tectech.loader;
 import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
-import tectech.proxy.CommonProxy;
 
 @Config(modid = Mods.Names.TECTECH, filename = "tectech")
 @Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
@@ -70,6 +69,13 @@ public class ConfigHandler {
 
         @Config.DefaultEnum("Scientific")
         @Config.RequiresMcRestart
-        public CommonProxy.EOH_Notation_Selection EOH_NOTATION = CommonProxy.EOH_Notation_Selection.Scientific;
+        public EOHNumberFormat EOH_NOTATION = EOHNumberFormat.Scientific;
+
+        public enum EOHNumberFormat {
+            Numerical,
+            Scientific,
+            SI
+        }
     }
+
 }

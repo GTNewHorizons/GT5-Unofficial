@@ -90,13 +90,4 @@ public class CommonProxy implements IGuiHandler {
         }
         return false;
     }
-
-    public enum EOH_Notation_Selection {
-        Numerical,
-        Scientific,
-        SI
-    }
-
-    public EOH_Notation_Selection EOH_Notation = EOH_Notation_Selection.Scientific;
-
 }
