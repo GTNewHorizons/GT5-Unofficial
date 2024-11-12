@@ -91,7 +91,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
 
     private final HashMap<Integer, IIcon> mIconMap = new LinkedHashMap<>();
     private final HashMap<Integer, EnumRarity> rarity = new LinkedHashMap<>();
-    private final HashMap<Integer, String> itemName = new LinkedHashMap<>();
 
     public final HashMap<Short, Long[]> mElectricStats = new LinkedHashMap<>();
 
@@ -106,8 +105,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             case 1 -> EnumRarity.uncommon;
             case 2 -> EnumRarity.rare;
             default -> EnumRarity.epic;
-            }, // Rarity
-            false // Effect?
+            } // Rarity
         );
     }
 
@@ -132,7 +130,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     }
 
     public void registerItem(final int id, final String localizedName, final long euStorage, final short tier,
-        final EnumRarity regRarity, final boolean Effect) {
+        final EnumRarity regRarity) {
         this.addItem(
             id,
             localizedName,
@@ -140,7 +138,6 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         if (euStorage > 0 && tier > 0)
             this.setElectricStats(this.mOffset + id, euStorage, GTValues.V[tier], tier, -3L, true);
         this.rarity.put(id, regRarity);
-        this.itemName.put(id, localizedName);
     }
 
     @Override
@@ -554,11 +551,10 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     /**
      * This adds a Custom Item to the ending Range.
      *
-     * @param aID           The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
-     * @param aEnglish      The Default Localized Name of the created Item
-     * @param aToolTip      The Default ToolTip of the created Item, you can also insert null for having no ToolTip
-     * @param aFoodBehavior The Food Value of this Item. Can be null aswell. Just a convenience thing.
-     * @param aRandomData   The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
+     * @param aID         The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
+     * @param aEnglish    The Default Localized Name of the created Item
+     * @param aToolTip    The Default ToolTip of the created Item, you can also insert null for having no ToolTip
+     * @param aRandomData The OreDict Names you want to give the Item. Also used for TC Aspects and some other things.
      * @return An ItemStack containing the newly created Item.
      */
     @SuppressWarnings("unchecked")
@@ -661,9 +657,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     }
 
     public void storeFluid(ItemStack aStack, FluidStack aFluid) {
-        if (aFluid == null) {
-            return;
-        } else {
+        if (aFluid != null) {
             String fluidname = aFluid.getFluid()
                 .getName();
             int amount = aFluid.amount;
@@ -806,19 +800,13 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             && container.getTagCompound()
                 .getBoolean("mInit")) {
 
-            String aStored;
-            int aStoredAmount = 0;
             FluidStack aStoredFluid = getFluid(container);
-
-            if (aStoredFluid != null) {
-                aStored = aStoredFluid.getFluid()
-                    .getName();
-                aStoredAmount = aStoredFluid.amount;
-            }
-            // We cannot drain this if it's empty.
-            else if (aStoredFluid == null) {
+            if (aStoredFluid == null) {
+                // We cannot drain this if it's empty.
                 return null;
             }
+
+            int aStoredAmount = aStoredFluid.amount;
 
             if (maxDrain >= aStoredAmount) {
                 emptyStoredFluid(container);
@@ -826,16 +814,10 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             } else {
                 // Handle Partial removal
                 int amountRemaining = (aStoredAmount - maxDrain);
-                if (amountRemaining == 0) {
-                    emptyStoredFluid(container);
-                } else {
-                    FluidStack newAmount = FluidUtils.getFluidStack(aStoredFluid, amountRemaining);
-                    FluidStack drained = FluidUtils.getFluidStack(aStoredFluid, maxDrain);
-                    if (newAmount != null && drained != null) {
-                        storeFluid(container, newAmount);
-                        return drained;
-                    }
-                }
+                FluidStack newAmount = FluidUtils.getFluidStack(aStoredFluid, amountRemaining);
+                FluidStack drained = FluidUtils.getFluidStack(aStoredFluid, maxDrain);
+                storeFluid(container, newAmount);
+                return drained;
             }
         }
         return null;
@@ -909,7 +891,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
 
                     if (didDrain) {
                         if ((tTileEntity instanceof IGregTechTileEntity)) {
-                            return this.drainTankGT(tTileEntity, aStack, aWorld, aPlayer, aX, aY, aZ);
+                            return this.drainTankGT(tTileEntity, aStack, aWorld, aPlayer);
                         }
                     }
                 }
@@ -922,8 +904,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
      * GT Tanks
      */
 
-    public boolean drainTankGT(TileEntity tTileEntity, ItemStack aStack, World aWorld, EntityPlayer aPlayer, int aX,
-        int aY, int aZ) {
+    public boolean drainTankGT(TileEntity tTileEntity, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (tTileEntity == null) {
             return false;
         }
