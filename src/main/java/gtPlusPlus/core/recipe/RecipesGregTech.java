@@ -44,9 +44,13 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cyclotronRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -116,6 +120,7 @@ public class RecipesGregTech {
         chemplantRecipes();
         alloySmelterRecipes();
         thermalBoilerRecipes();
+        craftingTableRecipes();
 
         /*
          * Special Recipe handlers
@@ -1880,5 +1885,37 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_ZPM)
             .addTo(cyclotronRecipes);
 
+    }
+
+    private static void craftingTableRecipes() {
+
+        List<ItemList> tankList = Arrays.asList(
+            ItemList.Super_Tank_LV,
+            ItemList.Super_Tank_MV,
+            ItemList.Super_Tank_HV,
+            ItemList.Super_Tank_EV,
+            ItemList.Super_Tank_IV,
+            ItemList.Quantum_Tank_LV,
+            ItemList.Quantum_Tank_MV,
+            ItemList.Quantum_Tank_HV,
+            ItemList.Quantum_Tank_EV,
+            ItemList.Quantum_Tank_IV);
+
+        for (int i = 0; i < 10; i++) {
+            ItemStack tank = tankList.get(i)
+                .get(1);
+            ItemStack handPump = ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1004, 1);
+            ItemStack pumpWithNBT = handPump.copy();
+            NBTTagCompound nbt = new NBTTagCompound();
+            int capacity = i == 9 ? Integer.MAX_VALUE : 4_000_000 * (int) Math.pow(2, i);
+            nbt.setInteger("mMeta", 4);
+            nbt.setBoolean("mInit", true);
+            nbt.setString("mFluid", "@@@@@");
+            nbt.setInteger("mFluidAmount", 0);
+            nbt.setInteger("mCapacity", capacity);
+            nbt.setBoolean("capacityInit", true);
+            pumpWithNBT.setTagCompound(nbt);
+            GTModHandler.addShapelessCraftingRecipe(pumpWithNBT, new Object[] { handPump, tank });
+        }
     }
 }
