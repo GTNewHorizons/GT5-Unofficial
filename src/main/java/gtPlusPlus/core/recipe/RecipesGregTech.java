@@ -569,6 +569,26 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_UHV / 2)
             .duration(1 * MINUTES)
             .addTo(AssemblyLine);
+
+        // Expandable Hand Pump
+        RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1))
+            .metadata(RESEARCH_TIME, 30 * MINUTES)
+            .itemInputs(
+                ItemList.Electric_Pump_LuV.get(4),
+                ItemList.Electric_Motor_LuV.get(4),
+                GregtechItemList.VOLUMETRIC_FLASK_32k.get(4),
+                MaterialsAlloy.LAFIUM.getScrew(16),
+                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.ring, 8),
+                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.stick, 16),
+                Materials.Osmiridium.getPlates(32))
+            .fluidInputs(
+                MaterialsAlloy.HELICOPTER.getFluidStack(144 * 32),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(144 * 64))
+            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1004, 1))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(30 * SECONDS)
+            .addTo(AssemblyLine);
     }
 
     private static void laserEngraverRecipes() {
