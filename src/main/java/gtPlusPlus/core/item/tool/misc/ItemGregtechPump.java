@@ -167,7 +167,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName()
                 : StatCollector.translateToLocal("item.itemGregtechPump.tooltip.3")));
         aList.add(
-            EnumChatFormatting.BLUE + (f != null ? "" + f.amount : "" + 0)
+            EnumChatFormatting.BLUE + (f != null ? "" + formatNumbers(f.amount) : "" + 0)
                 + "L"
                 + " / "
                 + formatNumbers(getCapacity(aStack))
@@ -706,7 +706,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         }
         int aMeta = this.getCorrectMetaForItemstack(container);
 
-        return aMeta == 4 ? 16_384_000 : 2000 * (int) Math.pow(4, aMeta);
+        return 2000 * (int) Math.pow(4, aMeta);
     }
 
     public int fill(ItemStack container, FluidStack resource) {
@@ -841,8 +841,11 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             aNewNBT.setBoolean("mInit", true);
             aNewNBT.setString("mFluid", "@@@@@");
             aNewNBT.setInteger("mFluidAmount", 0);
-            int aCapacity = aMeta == 4 ? 16_384_000 : 2000 * (int) Math.pow(4, aMeta);
-            aNewNBT.setInteger("mCapacity", aCapacity);
+            if (!aNewNBT.hasKey("capacityInit")) {
+                int aCapacity = 2000 * (int) Math.pow(4, aMeta);
+                aNewNBT.setInteger("mCapacity", aCapacity);
+                aNewNBT.setBoolean("capacityInit", true);
+            }
             aStack.setTagCompound(aNewNBT);
         }
     }
