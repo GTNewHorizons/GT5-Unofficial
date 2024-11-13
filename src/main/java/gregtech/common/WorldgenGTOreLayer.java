@@ -52,6 +52,13 @@ public class WorldgenGTOreLayer extends GTWorldgen {
 
     public Class[] mAllowedProviders;
     public String[] blackListedProviders;
+    public static Class tfProviderClass;
+
+    static {
+        try {
+            tfProviderClass = Class.forName("twilightforest.world.WorldProviderTwilightForest");
+        } catch (ClassNotFoundException ignored) {}
+    }
 
     public WorldgenGTOreLayer(OreMixBuilder mix) {
         super(mix.oreMixName, sList, mix.enabledByDefault);
@@ -91,6 +98,10 @@ public class WorldgenGTOreLayer extends GTWorldgen {
             if (!this.twilightForest) {
                 blackListedProviders = new String[] { "twilightforest.world.WorldProviderTwilightForest" };
             }
+        }
+
+        if (tfProviderClass != null && this.twilightForest) {
+            allowedProviders.add(tfProviderClass);
         }
 
         if (this.mEnd) {

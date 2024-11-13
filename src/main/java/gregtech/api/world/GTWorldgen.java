@@ -9,9 +9,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 
-import gregtech.common.WorldgenGTOreLayer;
-import gregtech.common.WorldgenGTOreSmallPieces;
-
 public abstract class GTWorldgen {
 
     public final String mWorldGenName;
@@ -121,19 +118,6 @@ public abstract class GTWorldgen {
                 if (aAllowedDimensionType.isInstance(aWorld.provider)) {
                     value = true;
                     break;
-                }
-            }
-
-            // ugly, but idk how to do it better without hard depping on tf provider in ore constructors
-            if (this instanceof WorldgenGTOreSmallPieces ore) {
-                if (ore.twilightForest && aWorld.provider.dimensionId == 7) {
-                    value = true;
-                }
-            }
-
-            if (this instanceof WorldgenGTOreLayer ore) {
-                if (ore.twilightForest && aWorld.provider.dimensionId == 7) {
-                    value = true;
                 }
             }
 
