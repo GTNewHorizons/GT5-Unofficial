@@ -9,6 +9,7 @@ import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
+import static tectech.util.TTUtility.toExponentForm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
+import tectech.loader.ConfigHandler;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -155,25 +157,33 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
                 GTLanguageManager.addStringLocalization("EOH.Recipe.SpacetimeTier", "Spacetime Tier") + ": "
                     + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);
 
-            if (recipe.getEUOutput() < TRILLION) {
-                result.add(
+            // Energy Output
+            switch (ConfigHandler.visual.EOH_NOTATION) {
+                case Numerical -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
                         + formatNumbers(recipe.getEUOutput())
                         + " EU");
-            } else {
-                result.add(
+                case Scientific -> result.add(
+                    GTLanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
+                        + toExponentForm(recipe.getEUOutput())
+                        + " EU");
+                case SI -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
                         + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUOutput())
                         + " EU");
             }
 
-            if (recipe.getEUOutput() < TRILLION) {
-                result.add(
+            // Energy Input
+            switch (ConfigHandler.visual.EOH_NOTATION) {
+                case Numerical -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
                         + formatNumbers(recipe.getEUStartCost())
                         + " EU");
-            } else {
-                result.add(
+                case Scientific -> result.add(
+                    GTLanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
+                        + toExponentForm(recipe.getEUStartCost())
+                        + " EU");
+                case SI -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
                         + ReadableNumberConverter.INSTANCE.toWideReadableForm(recipe.getEUStartCost())
                         + " EU");
