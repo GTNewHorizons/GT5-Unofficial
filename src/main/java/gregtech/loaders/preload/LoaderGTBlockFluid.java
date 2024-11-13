@@ -860,7 +860,13 @@ public class LoaderGTBlockFluid implements Runnable {
         Materials.Water.mGas.setTemperature(375)
             .setGaseous(true);
 
-        ItemList.sOilExtraHeavy = GTFluidFactory.of("liquid_extra_heavy_oil", "Very Heavy Oil", LIQUID, 295);
+        ItemList.sOilExtraHeavy = GTFluidFactory.builder("liquid_extra_heavy_oil")
+            .withLocalizedName("Very Heavy Oil")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.OilExtraHeavy)
+            .registerBContainers(Materials.OilExtraHeavy.getCells(1), Materials.Empty.getCells(1))
+            .asFluid();
         ItemList.sEpichlorhydrin = GTFluidFactory.builder("liquid_epichlorhydrin")
             .withLocalizedName("Epichlorohydrin")
             .withStateAndTemperature(LIQUID, 295)

@@ -312,6 +312,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             if (!con.customName.equals(con.machine.getLocalName()))
                 conList.setString(con.machineCoord.toString(), con.customName);
         }
+        for (String pos : tempNameList.keySet()) {
+            conList.setString(pos, tempNameList.get(pos));
+        }
         aNBT.setTag("conList", conList);
     }
 
