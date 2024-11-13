@@ -1823,3 +1823,4 @@ tt.chat.debug.generator=Laser mode: %s
 GT5U.gui.config.general.debug=Debug
 GT5U.gui.config.general.features=Features
 GT5U.gui.config.general.teslatweaks=Tesla Tweaks
+GT5U.gui.config.general.visual=Visual
