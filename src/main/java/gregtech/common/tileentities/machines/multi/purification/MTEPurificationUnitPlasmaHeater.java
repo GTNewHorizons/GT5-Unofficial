@@ -172,7 +172,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             'K',
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .atLeast(InputHatch)
+                    .hatchClass(MTEHatchInput.class)
                     .dot(2)
                     .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (Coolant)")
@@ -183,7 +183,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             'P',
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .atLeast(InputHatch)
+                    .hatchClass(MTEHatchInput.class)
                     .dot(3)
                     .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (Plasma)")

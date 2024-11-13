@@ -92,7 +92,7 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
     public static IIcon getStaticIcon(final int ordinalSide, final byte aMeta) {
         return switch (aMeta) {
             case 0 -> TexturesGtBlock.Casing_Redox_1.getIcon();
-            case 1 -> Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STEEL.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
             case 4 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL.getIcon();
