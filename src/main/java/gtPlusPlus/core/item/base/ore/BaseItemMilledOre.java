@@ -41,13 +41,13 @@ public class BaseItemMilledOre extends BaseOreComponent {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(12), rawStack, millingBall_Soapstone)
             .itemOutputs(material.getMilled(48))
-            .duration(2 * MINUTES + 15 * SECONDS)
+            .duration(2 * MINUTES + 30 * SECONDS)
             .eut(materialEU)
             .addTo(millingRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(12), rawStack, millingBall_Alumina)
-            .itemOutputs(material.getMilled(56))
-            .duration(1 * MINUTES + 45 * SECONDS)
+            .itemOutputs(material.getMilled(64))
+            .duration(2 * MINUTES)
             .eut(materialEU)
             .addTo(millingRecipes);
         GTValues.RA.stdBuilder()
