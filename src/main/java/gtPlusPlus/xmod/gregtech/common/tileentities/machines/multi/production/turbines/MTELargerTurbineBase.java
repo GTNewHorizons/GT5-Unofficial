@@ -156,6 +156,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             tt.addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
                 .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
         }
+        tt.addTecTechHatchInfo();
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top Middle")
