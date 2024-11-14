@@ -998,7 +998,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side.")
             .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started.")
             .addInfo("Right click the controller with a screwdriver to disable overclocking.")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .beginStructureBlock(7, 9, 7, false)
             .addCasingInfoExactly("Molecular Casing", 2 * 12, false)
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)

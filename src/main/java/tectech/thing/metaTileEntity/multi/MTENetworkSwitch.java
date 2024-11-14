@@ -208,7 +208,7 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
                                                                                          // distribute computation
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2")) // Needs a Parametrizer to
                                                                                          // be configured
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 3, false)
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
             .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.1.name"), 0, false) // 0x Computer Casing

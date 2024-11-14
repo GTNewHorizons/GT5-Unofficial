@@ -259,7 +259,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Casing functions:")
             .addInfo("Pulse Manipulators: Recipe Tier Allowed (check NEI for the tier of each recipe)")
             .addInfo("Shielding Cores: Focusing Tier (equal to or higher than recipe tier to allow focus)")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 21, 15, true)
             .addController("Bottom Center")

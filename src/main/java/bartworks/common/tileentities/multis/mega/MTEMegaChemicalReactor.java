@@ -73,7 +73,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
             .addInfo("What molecule do you want to synthesize ?")
             .addInfo("Or you want to replace something in this molecule ?")
             .addInfo("Processes up to 256 recipes at once")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .addInfo(
                 GTValues.TIER_COLORS[8] + GTValues.VN[8]
                     + EnumChatFormatting.GRAY

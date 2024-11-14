@@ -198,7 +198,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                     + EnumChatFormatting.GRAY
                     + ".")
             .addInfo("The efficiency is up to 150%.")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .beginStructureBlock(5, 4, 9, false)
             .addMaintenanceHatch("Hint block with dot 1")
             .addMufflerHatch("Hint block with dot 2 (fill all slots with mufflers)")

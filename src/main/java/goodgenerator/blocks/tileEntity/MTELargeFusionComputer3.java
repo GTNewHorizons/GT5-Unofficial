@@ -66,7 +66,7 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
             .addInfo("Startup < 160,000,000 EU: 192x Parallel")
             .addInfo("Startup < 320,000,000 EU: 128x Parallel")
             .addInfo("Startup >= 320,000,000 EU: 64x Parallel")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .addCasingInfoMin("Fusion Machine Casing MK II", 1664, false)
             .addCasingInfoMin("Advanced Compact Fusion Coil", 560, false)
             .addCasingInfoMin("Neutronium Frame Box", 128, false)

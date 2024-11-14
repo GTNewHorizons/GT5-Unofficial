@@ -298,7 +298,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY)
             .addInfo("The glass limits the tier of the energy hatch. UEV glass unlocks all tiers.")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .addInfo("UV glass required for " + TT + " laser hatches.")
             .addInfo(
                 EnumChatFormatting.ITALIC + "\"all it does is make metals hot\""

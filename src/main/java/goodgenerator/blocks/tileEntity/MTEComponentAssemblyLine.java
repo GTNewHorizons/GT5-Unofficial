@@ -232,7 +232,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     + " laser and multi-amp hatches!")
             .addInfo("Supports overclocking beyond MAX!")
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .beginStructureBlock(9, 10, 33, false)
             .addOtherStructurePart("Borosilicate Glass", "Can be UV tier or higher")
             .addInputBus("Start of conveyor belt", 1)

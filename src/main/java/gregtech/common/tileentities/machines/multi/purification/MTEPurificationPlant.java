@@ -189,7 +189,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + " blocks along each axis.")
             .addInfo("Left click this controller with a data stick, then right click a purification unit to link.")
             .addInfo("Supplies power to linked purification units.")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
                 "Works in fixed time processing cycles of " + EnumChatFormatting.RED

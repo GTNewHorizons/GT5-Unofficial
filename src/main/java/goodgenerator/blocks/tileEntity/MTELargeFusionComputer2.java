@@ -65,7 +65,7 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
             .addInfo("chunk area of the ring center (not controller).")
             .addInfo("Startup < 160,000,000 EU: 128x Parallel")
             .addInfo("Startup >= 160,000,000 EU: 64x Parallel")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .addCasingInfoMin("Fusion Machine Casing", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil", 560, false)
             .addCasingInfoMin("Duranium Frame Box", 128, false)

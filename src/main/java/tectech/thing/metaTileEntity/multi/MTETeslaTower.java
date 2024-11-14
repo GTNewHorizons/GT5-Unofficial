@@ -549,7 +549,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
                                                                                             // Windings need to
             // be at least the same tier as
             // the Tesla Capacitor
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .beginStructureBlock(7, 17, 7, false)
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),

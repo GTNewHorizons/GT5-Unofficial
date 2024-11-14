@@ -285,7 +285,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             // the Data Stick is written
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4")) // Use screwdriver to change
                                                                                            // mode
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),

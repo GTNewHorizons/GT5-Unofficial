@@ -310,7 +310,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInfo("All fluids are however consumed at start")
             .addInfo("Use voltage of worst energy hatch for overclocking")
             .addInfo("Performs normal overclock with given voltage")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .addInfo("Performs laser overclock with extra amperage from multi-amp energy hatches")
             .addInfo("Each laser overclock reduces recipe time by 50%")
             .addInfo(

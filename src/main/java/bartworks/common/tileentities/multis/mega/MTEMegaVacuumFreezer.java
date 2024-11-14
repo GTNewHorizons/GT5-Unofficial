@@ -236,7 +236,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
         tt.addMachineType("Vacuum Freezer")
             .addInfo("Cools hot ingots and cells")
             .addInfo("Processes up to 256 recipes at once")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")
             .addInfo(

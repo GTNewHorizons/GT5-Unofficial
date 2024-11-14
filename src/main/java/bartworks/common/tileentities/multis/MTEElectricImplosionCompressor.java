@@ -268,7 +268,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInfo("Tier is determined by containment block")
             .addInfo("Valid blocks: Neutronium, Infinity, Transcendent Metal, Spacetime, Universium")
             .addInfo("Minimum allowed energy hatch tier is one below recipe tier")
-            .addTecTechHatch()
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front 3rd layer center")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
