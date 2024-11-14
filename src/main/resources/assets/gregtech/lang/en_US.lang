@@ -104,6 +104,8 @@ GT5U.coil.MAX=Eternal
 
 GT5U.MS.multismelting=Multi smelting
 
+gt.casing.tiertooltip=Casing Tier: %s
+
 # Machine types
 gt.recipe.alloysmelter=Alloy Smelter
 gt.recipe.alloysmelter.description=HighTech combination Smelter
