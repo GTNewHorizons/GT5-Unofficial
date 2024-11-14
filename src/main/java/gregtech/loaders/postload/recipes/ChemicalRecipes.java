@@ -33,6 +33,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ChemicalRecipes implements Runnable {
 
@@ -665,6 +666,19 @@ public class ChemicalRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 5))
             .fluidInputs(Materials.Oxygen.getGas(3000))
+            .duration(25 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        // 2 Cl2 + 2 Ca(OH)2 = CaCl2 + Ca(OCl)2 + 2H20
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 2))
+            .itemOutputs(
+                WerkstoffLoader.CalciumChloride.get(OrePrefixes.dust, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.CalciumHypochlorite, 1))
+            .fluidInputs(Materials.Chlorine.getGas(4000))
+            .fluidOutputs(Materials.Water.getFluid(2000))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

@@ -615,6 +615,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Quicklime;
     public static Materials Potash;
     public static Materials SodaAsh;
+    public static Materials CalciumHypochlorite;
 
     public static Materials BioDiesel;
     public static Materials NitrationMixture;
