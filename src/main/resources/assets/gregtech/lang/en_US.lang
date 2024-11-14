@@ -18,6 +18,7 @@ GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
+GT5U.MBTT.Parallels=Processes up to %d recipes at once
 GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure

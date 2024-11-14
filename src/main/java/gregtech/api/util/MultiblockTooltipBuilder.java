@@ -47,6 +47,7 @@ public class MultiblockTooltipBuilder {
     private static final String COLON = ": ";
     private static final String SEPARATOR = ", ";
     private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
+    private static final String TT_Parallels = StatCollector.translateToLocal("GT5U.MBTT.Parallels");
     private static final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private static final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private static final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
@@ -114,6 +115,18 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addInfo(String info) {
         iLines.add(info);
+        return this;
+    }
+
+    /**
+     * Add a line for static parallel count
+     * Processes up to {parallels} recipes at once
+     *
+     * @param parallels Maximum parallels
+     * @returnInstance this method was called on.
+     */
+    public MultiblockTooltipBuilder addParallelInfo(Integer parallels) {
+        iLines.add(String.format(TT_Parallels, parallels));
         return this;
     }
 

@@ -235,7 +235,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Vacuum Freezer")
             .addInfo("Cools hot ingots and cells")
-            .addInfo("Processes up to " + Configuration.Multiblocks.megaMachinesMax + " recipes at once")
+            .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addTecTechHatchInfo()
             .addSeparator()
             .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")

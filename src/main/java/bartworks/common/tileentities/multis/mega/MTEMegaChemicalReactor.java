@@ -72,7 +72,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
         tt.addMachineType("Chemical Reactor")
             .addInfo("What molecule do you want to synthesize ?")
             .addInfo("Or you want to replace something in this molecule ?")
-            .addInfo("Processes up to " + Configuration.Multiblocks.megaMachinesMax + " recipes at once")
+            .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addTecTechHatchInfo()
             .addInfo(
                 GTValues.TIER_COLORS[8] + GTValues.VN[8]
