@@ -3,8 +3,12 @@ package gtPlusPlus.core.recipe;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.plasmaForgeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN;
+import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
@@ -186,6 +190,18 @@ public class RecipesGeneral {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Shape_Mold_Bottle.get(1), ItemList.Tesseract.get(1), ItemList.Shape_Mold_Bottle.get(1))
+            .itemOutputs(VolumetricFlaskHelper.getKleinBottle(1))
+            .fluidInputs(
+                CHRONOMATIC_GLASS.getFluidStack(1440),
+                FluidUtils.getFluidStack("molten.borosilicateglass", 1000000),
+                CELESTIAL_TUNGSTEN.getFluidStack(1440))
+            .duration(60 * SECONDS)
+            .metadata(COIL_HEAT, 4500)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(plasmaForgeRecipes);
 
         // Mining Explosive
         Logger.RECIPE("[Inspection] Explosives");
@@ -416,7 +432,7 @@ public class RecipesGeneral {
         generateWireRecipes(MaterialsAlloy.LEAGRISIUM);
         generateWireRecipes(MaterialsAlloy.TRINIUM_TITANIUM);
         generateWireRecipes(MaterialsElements.STANDALONE.HYPOGEN);
-        generateWireRecipes(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+        generateWireRecipes(CHRONOMATIC_GLASS);
 
         Material[] gtpp = new Material[] { MaterialsAlloy.STABALLOY, MaterialsAlloy.TANTALLOY_60,
             MaterialsAlloy.TANTALLOY_61, MaterialsAlloy.POTIN, MaterialsAlloy.MARAGING300, MaterialsAlloy.MARAGING350,
