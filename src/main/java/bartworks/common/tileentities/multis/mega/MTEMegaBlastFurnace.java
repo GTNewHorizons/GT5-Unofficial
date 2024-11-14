@@ -172,11 +172,13 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Furnace")
+            .addInfo("Processes up to 256 recipes at once")
             .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
             .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
             .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency).")
             .addInfo("Additionally gives +100K for every tier past MV")
+            .addTecTechHatch()
             .addInfo(
                 GTValues.TIER_COLORS[8] + GTValues.VN[8]
                     + EnumChatFormatting.GRAY

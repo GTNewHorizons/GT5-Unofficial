@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.mega;
 
+import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -297,7 +298,8 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY)
             .addInfo("The glass limits the tier of the energy hatch. UEV glass unlocks all tiers.")
-            .addInfo("UV glass required for TecTech laser hatches.")
+            .addTecTechHatch()
+            .addInfo("UV glass required for " + TT + " laser hatches.")
             .addInfo(
                 EnumChatFormatting.ITALIC + "\"all it does is make metals hot\""
                     + EnumChatFormatting.RESET

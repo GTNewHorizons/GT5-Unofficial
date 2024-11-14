@@ -121,7 +121,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                                                                                            // the same Data
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to toggle
                                                                                            // wireless mode
-
+            .addTecTechHatch()
             .beginStructureBlock(5, 3, 3, false)
             .addOtherStructurePart(
                 translateToLocal("tt.keyword.Structure.DataAccessHatch"),

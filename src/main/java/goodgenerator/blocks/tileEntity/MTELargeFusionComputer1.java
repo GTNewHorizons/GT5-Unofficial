@@ -64,13 +64,7 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
             .addInfo("Make sure the whole structure is built in the 3x3")
             .addInfo("chunk area of the ring center (not controller).")
             .addInfo("It can run 64x recipes at most.")
-            .addInfo(
-                "Support" + EnumChatFormatting.BLUE
-                    + " Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.GRAY
-                    + " Energy/Laser Hatches!")
+            .addTecTechHatch()
             .addCasingInfoMin("LuV Machine Casing", 1664, false)
             .addCasingInfoMin("Ameliorated Superconduct Coil", 560, false)
             .addCasingInfoMin("Naquadah Alloy Frame Boxes", 128, false)

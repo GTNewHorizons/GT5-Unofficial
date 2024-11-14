@@ -32,6 +32,7 @@ GT5U.MBTT.InputBus=Input Bus
 GT5U.MBTT.InputHatch=Input Hatch
 GT5U.MBTT.OutputBus=Output Bus
 GT5U.MBTT.OutputHatch=Output Hatch
+GT5U.MBTT.TecTechHatch=Supports TecTech Multi-Amp and Laser Hatches!
 GT5U.MBTT.Causes=Causes
 GT5U.MBTT.PPS=pollution per second
 GT5U.MBTT.Hold=Hold

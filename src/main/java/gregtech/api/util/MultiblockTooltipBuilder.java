@@ -61,6 +61,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_inputhatch = StatCollector.translateToLocal("GT5U.MBTT.InputHatch");
     private static final String TT_outputbus = StatCollector.translateToLocal("GT5U.MBTT.OutputBus");
     private static final String TT_outputhatch = StatCollector.translateToLocal("GT5U.MBTT.OutputHatch");
+    private static final String TT_tectechhatch = StatCollector.translateToLocal("GT5U.MBTT.TecTechHatch");
     private static final String TT_causes = StatCollector.translateToLocal("GT5U.MBTT.Causes");
     private static final String TT_pps = StatCollector.translateToLocal("GT5U.MBTT.PPS");
     private static final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
@@ -543,6 +544,17 @@ public class MultiblockTooltipBuilder {
     public MultiblockTooltipBuilder addOtherStructurePart(String name, String info, int... dots) {
         sLines.add(EnumChatFormatting.WHITE + TAB + name + COLON + EnumChatFormatting.GRAY + info);
         for (int dot : dots) hBlocks.put(dot, name);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
+     * Supports TecTech Multi-Amp and Laser Hatches!
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addTecTechHatch() {
+        iLines.add(EnumChatFormatting.BLUE + TT_tectechhatch);
         return this;
     }
 

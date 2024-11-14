@@ -428,6 +428,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
             .addInfo(String.format("Molten Naquadah | %dx power | 20 L/s", ExcitedLiquidCoe[2]))
             .addInfo(String.format("Molten Atomic Separation Catalyst | %dx power | 20 L/s", ExcitedLiquidCoe[1]))
             .addInfo(String.format("Spatially Enlarged Fluid | %dx power | 20 L/s", ExcitedLiquidCoe[0]))
+            .addTecTechHatch()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom")
             .addDynamoHatch("Any bottom layer casing, only accept ONE!")

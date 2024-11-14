@@ -97,7 +97,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Generating Power from Rocket Fuels - Supports TecTech Multi-Amp Dynamos!")
+            .addInfo("Generating Power from Rocket Fuels")
             .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
             .addInfo("Produces as much energy as you put fuel in, with optional boosting")
             .addInfo("This multi doesn't accept fluids if not enabled - enable it first!")
@@ -113,6 +113,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
             .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
             .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
+            .addTecTechHatch()
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front Center")
             .addCasingInfoMin(mCasingName, 64, false)

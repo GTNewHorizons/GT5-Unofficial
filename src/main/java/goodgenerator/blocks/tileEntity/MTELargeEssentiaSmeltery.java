@@ -197,6 +197,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             .addInfo("Max parallel dictated by structure size and Essentia Diffusion Cell tier")
             .addInfo("Energy Hatch tier: HV+")
             .addInfo("You can find more information about this machine in the Thaumonomicon.")
+            .addTecTechHatch()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Front center")
             .addCasingInfoMin("Magic Casing", 24, false)

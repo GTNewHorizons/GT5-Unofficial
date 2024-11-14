@@ -859,6 +859,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
             .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks.")
             .addInfo("Trace size can be changed to modify the material usage and machine speed.")
+            .addTecTechHatch()
             .beginStructureBlock(30, 38, 13, false)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addEnergyHatch(

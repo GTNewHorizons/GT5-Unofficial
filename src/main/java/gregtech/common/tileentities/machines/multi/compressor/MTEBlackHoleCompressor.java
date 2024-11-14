@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
-import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -373,7 +372,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " parallels when stability is BELOW "
                     + EnumChatFormatting.RED
                     + "50/20")
-            .addInfo("Accepts " + TT + " energy hatches")
+            .addTecTechHatch()
             .addInfo(
                 EnumChatFormatting.RED
                     + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier.")
