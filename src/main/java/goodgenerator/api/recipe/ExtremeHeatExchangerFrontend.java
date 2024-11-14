@@ -43,10 +43,15 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             FluidStack[] Inputs = recipeInfo.recipe.mFluidInputs;
             FluidStack[] Outputs = recipeInfo.recipe.mFluidOutputs;
-            int denseMultiplier = 1;
+            int[] waterInput = new int[2];
             if (Inputs[0].getUnlocalizedName()
                 .contains("plasma")) {
-                denseMultiplier = 1000;
+                ;
+                waterInput[0] = 0;
+                waterInput[1] = Inputs[1].amount;
+            } else {
+                waterInput[0] = Outputs[0].amount / 160;
+                waterInput[1] = Outputs[1].amount / 160;
             }
             int threshold = recipeInfo.recipe.mSpecialValue;
             return Arrays.asList(
@@ -54,9 +59,9 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
                     + GTUtility.formatNumbers(Inputs[0].amount)
                     + " L/s",
                 StatCollector.translateToLocal("value.extreme_heat_exchanger.1"),
-                GTUtility.formatNumbers(Outputs[0].amount / 160 * denseMultiplier) + " L/s",
+                GTUtility.formatNumbers(waterInput[0]) + " L/s",
                 StatCollector.translateToLocal("value.extreme_heat_exchanger.2"),
-                GTUtility.formatNumbers(Outputs[1].amount / 160 * denseMultiplier) + " L/s",
+                GTUtility.formatNumbers(waterInput[1]) + " L/s",
                 StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + threshold + " L/s");
         }
     }
