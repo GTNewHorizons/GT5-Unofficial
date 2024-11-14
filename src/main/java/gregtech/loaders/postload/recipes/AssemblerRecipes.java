@@ -245,22 +245,23 @@ public class AssemblerRecipes implements Runnable {
                 .eut(256)
                 .addTo(assemblerRecipes);
 
+            // Muffler Upgrades
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                    GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
-                .eut(2)
-                .addTo(assemblerRecipes);
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(ItemList.Upgrade_Muffler.get(4L))
+            .duration(1 * MINUTES + 20 * SECONDS)
+            .eut(2)
+            .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
                     GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
+                .itemOutputs(ItemList.Upgrade_Muffler.get(2L))
+                .duration(1 * MINUTES)
                 .eut(2)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
@@ -269,7 +270,7 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
                     GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
+                .duration(1 * MINUTES)
                 .eut(2)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
@@ -286,7 +287,7 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
                     GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
+                .itemOutputs(ItemList.Upgrade_Muffler.get(2L))
                 .duration(1 * MINUTES + 20 * SECONDS)
                 .eut(2)
                 .addTo(assemblerRecipes);
@@ -296,9 +297,10 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
                     GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
+                .duration(1 * MINUTES)
                 .eut(2)
                 .addTo(assemblerRecipes);
+
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
