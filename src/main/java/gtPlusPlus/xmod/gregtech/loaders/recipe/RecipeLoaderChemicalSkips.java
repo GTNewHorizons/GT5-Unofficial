@@ -212,6 +212,22 @@ public class RecipeLoaderChemicalSkips {
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.Rutile.getDust(32),
+                Materials.Scheelite.getDust(16),
+                Materials.Ilmenite.getDust(16),
+                ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 0))
+            .itemOutputs(
+                Materials.Titanium.getDust(64),
+                Materials.TungstenSteel.getDust(64),
+                Materials.Tantalum.getDust(64),
+                Materials.Indium.getDust(64),
+                Materials.Niobium.getDust(64))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(QFT_FOCUS_TIER, 1)
+            .addTo(quantumForceTransformerRecipes);
         // Thorium, Uranium, Plutonium
         GTValues.RA.stdBuilder()
             .itemInputs(
