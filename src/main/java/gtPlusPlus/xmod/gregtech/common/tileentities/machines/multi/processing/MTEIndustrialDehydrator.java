@@ -69,7 +69,6 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     private static final int MACHINEMODE_VACUUMFURNACE = 0;
     private static final int MACHINEMODE_DEHYDRATOR = 1;
 
-
     public MTEIndustrialDehydrator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         CASING_TEXTURE_ID = TAE.getIndexFromPage(3, 10);
@@ -284,8 +283,9 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector
-                    .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode." + (tag.getBoolean("mode") ? MACHINEMODE_DEHYDRATOR : MACHINEMODE_VACUUMFURNACE))
+                + StatCollector.translateToLocal(
+                    "GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode."
+                        + (tag.getBoolean("mode") ? MACHINEMODE_DEHYDRATOR : MACHINEMODE_VACUUMFURNACE))
                 + EnumChatFormatting.RESET);
     }
 }
