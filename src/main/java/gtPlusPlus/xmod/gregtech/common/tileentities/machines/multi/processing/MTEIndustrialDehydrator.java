@@ -250,15 +250,12 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setInteger("mDehydratorMode", machineMode);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        // Migrates old NBT tag to the new one
+        if (aNBT.hasKey("mDehydratorMode")) {
+            machineMode = (aNBT.getInteger("mDehydratorMode") == 0) ? 0 : 1;
+        }
         super.loadNBTData(aNBT);
-        machineMode = aNBT.getInteger("mDehydratorMode");
     }
 
     public HeatingCoilLevel getCoilLevel() {
