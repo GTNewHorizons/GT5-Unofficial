@@ -95,7 +95,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
 
     compileOnly('com.github.GTNewHorizons:SC2:2.2.0:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Binnie:2.4.3:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Binnie:2.4.4:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     compileOnly('com.github.GTNewHorizons:BlockRenderer6343:1.2.14:dev'){transitive=false}
 
@@ -106,7 +106,7 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.9.16:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.16.0:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.8.5-GTNH:dev')
-    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.4.3:dev')
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.4.4:dev')
 
     testImplementation(platform('org.junit:junit-bom:5.9.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
