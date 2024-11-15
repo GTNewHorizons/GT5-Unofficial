@@ -2,11 +2,10 @@ package gtnhlanth.common.item;
 
 import java.util.List;
 
+import gtnhlanth.Tags;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import gtnhlanth.Tags;
 
 public class ItemPhotolithographicMask extends Item implements ICanFocus {
 
@@ -33,9 +32,8 @@ public class ItemPhotolithographicMask extends Item implements ICanFocus {
         if (!this.descSpectrum.isEmpty())
             list.add("Suitable for the " + this.descSpectrum + " segment of the electromagnetic spectrum and lower");
         
-        if (this.getMaxDamage() < 0) // Not a precursor
+        if (this.getMaxDamage() > 0) // Not a precursor.
         	list.add("Max Uses: " + (this.getMaxDamage() + 1)); // maximum uses = max damage + 1 in general, as 0-durability masks still function
-        
         
 
     }
