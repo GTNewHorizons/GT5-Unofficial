@@ -247,14 +247,14 @@ public class AssemblerRecipes implements Runnable {
 
             // Muffler Upgrades
             GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Upgrade_Muffler.get(4L))
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
-            .addTo(assemblerRecipes);
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
+                    GTUtility.getIntegratedCircuit(1))
+                .itemOutputs(ItemList.Upgrade_Muffler.get(4L))
+                .duration(1 * MINUTES + 20 * SECONDS)
+                .eut(2)
+                .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
