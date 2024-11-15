@@ -66,6 +66,9 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     private HeatingCoilLevel mHeatingCapacity;
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialDehydrator> STRUCTURE_DEFINITION = null;
+    private static final int MACHINEMODE_VACUUMFURNACE = 0;
+    private static final int MACHINEMODE_DEHYDRATOR = 1;
+
 
     public MTEIndustrialDehydrator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -165,7 +168,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == 0) ? GTPPRecipeMaps.vacuumFurnaceRecipes
+        return (machineMode == MACHINEMODE_VACUUMFURNACE) ? GTPPRecipeMaps.vacuumFurnaceRecipes
             : GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
     }
 
@@ -253,7 +256,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     public void loadNBTData(NBTTagCompound aNBT) {
         // Migrates old NBT tag to the new one
         if (aNBT.hasKey("mDehydratorMode")) {
-            machineMode = (aNBT.getInteger("mDehydratorMode") == 0) ? 0 : 1;
+            machineMode = aNBT.getBoolean("mDehydratorMode") ? MACHINEMODE_DEHYDRATOR : MACHINEMODE_VACUUMFURNACE;
         }
         super.loadNBTData(aNBT);
     }
@@ -282,7 +285,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
                 + StatCollector
-                    .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                    .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode." + (tag.getBoolean("mode") ? MACHINEMODE_DEHYDRATOR : MACHINEMODE_VACUUMFURNACE))
                 + EnumChatFormatting.RESET);
     }
 }
