@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -235,8 +234,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Vacuum Freezer")
-            .addInfo("Controller Block for the Mega Vacuum Freezer")
             .addInfo("Cools hot ingots and cells")
+            .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.LIGHT_PURPLE + "Subspace Cooling.")
             .addInfo(
@@ -281,7 +281,6 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                 EnumChatFormatting.LIGHT_PURPLE
                     + "enabling the capture of heat energy in miniature tears in spacetime,")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "massively increasing the efficiency of the cooling process.")
-            .addSeparator()
             .beginStructureBlock(15, 15, 15, true)
             .addController("Front center")
             .addEnergyHatch("Any Frost Proof Machine Casing", 1)
@@ -324,7 +323,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                 384,
                 EnumChatFormatting.GOLD,
                 false)
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 

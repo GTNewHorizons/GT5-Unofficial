@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
@@ -214,7 +213,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High-Capacity Component Assembler")
-            .addInfo("Controller block for the Component Assembly Line.")
             .addInfo("Assembles basic components (motors, pumps, etc.) in large batches.")
             .addInfo(
                 "The " + EnumChatFormatting.BOLD
@@ -234,24 +232,15 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     + " laser and multi-amp hatches!")
             .addInfo("Supports overclocking beyond MAX!")
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginStructureBlock(9, 10, 33, false)
-            .addStructureInfo("This structure is too complex! See schematic for details.")
             .addOtherStructurePart("Borosilicate Glass", "Can be UV tier or higher")
             .addInputBus("Start of conveyor belt", 1)
             .addOutputBus("End of conveyor belt", 2)
             .addEnergyHatch("Second-top layer", 3)
             .addMaintenanceHatch("Around the controller", 4)
             .addInputHatch("Bottom left and right corners", 5)
-            .toolTipFinisher(
-                EnumChatFormatting.AQUA + "MadMan310"
-                    + EnumChatFormatting.GRAY
-                    + " via "
-                    + EnumChatFormatting.GREEN
-                    + "Good Generator");
-
+            .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
 
@@ -356,16 +345,13 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes.");
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes.");
-            }
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
-
         return true;
     }
 

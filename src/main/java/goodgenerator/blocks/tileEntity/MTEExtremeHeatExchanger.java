@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -205,12 +204,9 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger/Plasma Heat Exchanger")
-            .addInfo("Controller block for the Extreme Heat Exchanger.")
             .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
             .addInfo("Output SC Steam/SH Steam/Steam.")
             .addInfo("Check NEI for more info.")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .addController("Front bottom")
             .addOtherStructurePart("Input Hatch", "distilled water", 1)
             .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
@@ -218,7 +214,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
             .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -304,9 +300,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     public double getUnitSteamPower(String steam) {
         return switch (steam) {
             case "steam" -> 0.5;
-            case "ic2superheatedsteam" -> 1;
-            case "supercriticalsteam" -> 100;
-            case "densesupercriticalsteam" -> 1;
+            case "ic2superheatedsteam", "supercriticalsteam", "densesupercriticalsteam" -> 1;
             default -> -1;
         };
     }

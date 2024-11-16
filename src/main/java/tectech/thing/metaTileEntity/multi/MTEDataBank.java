@@ -48,7 +48,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-import tectech.util.CommonValues;
 
 public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructable {
 
@@ -122,10 +121,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                                                                                            // the same Data
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to toggle
                                                                                            // wireless mode
-
-            // Stick
-            .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginStructureBlock(5, 3, 3, false)
             .addOtherStructurePart(
                 translateToLocal("tt.keyword.Structure.DataAccessHatch"),
@@ -140,7 +136,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
                                                                                                  // Hatch: Any High
                                                                                                  // Power Casing
-            .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .toolTipFinisher();
         return tt;
     }
 

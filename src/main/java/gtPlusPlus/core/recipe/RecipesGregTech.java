@@ -574,7 +574,7 @@ public class RecipesGregTech {
             GregtechItemList.TransmissionComponent_EV, GregtechItemList.TransmissionComponent_IV,
             GregtechItemList.TransmissionComponent_LuV, GregtechItemList.TransmissionComponent_ZPM,
             GregtechItemList.TransmissionComponent_UV, GregtechItemList.TransmissionComponent_UHV, };
-        for (int i = 1; i < aTransParts.length; i++) {
+        for (int i = 1; i <= aTransParts.length; i++) {
             RA.stdBuilder()
                 .itemInputs(CI.getEmitter(i, 2), CI.getSensor(i, 2))
                 .itemOutputs(aTransParts[i - 1].get(1))
@@ -879,6 +879,20 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(6),
+                Materials.Iron.getDust(12),
+                Materials.Nickel.getDust(10),
+                Materials.Cobalt.getDust(8),
+                Materials.Titanium.getDust(4),
+                Materials.Molybdenum.getDust(2),
+                Materials.Aluminium.getDust(1))
+            .fluidOutputs(GGMaterial.incoloy903.getMolten(144 * 37))
+            .eut(TierEU.RECIPE_IV)
+            .duration(1 * MINUTES)
+            .addTo(alloyBlastSmelterRecipes);
     }
 
     private static void dehydratorRecipes() {
@@ -1002,7 +1016,7 @@ public class RecipesGregTech {
             .itemInputs(
                 ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4L),
-                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(3), 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2L))
             .itemOutputs(ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1))
             .fluidInputs(Materials.Oxygen.getGas(16 * BUCKETS))
@@ -1014,7 +1028,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 4L),
-                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(4), 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 2L))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_IV.get(1))
             .fluidInputs(Materials.Nitrogen.getGas(16 * BUCKETS))
@@ -1026,7 +1040,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox_IV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TungstenSteel, 4L),
-                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(5), 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 2L))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_LuV.get(1))
             .fluidInputs(Materials.Helium.getGas(8 * BUCKETS))
@@ -1038,7 +1052,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox_LuV.get(1),
                 ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 16),
-                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 2L))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1))
             .fluidInputs(Materials.Argon.getGas(4 * BUCKETS))
@@ -1050,7 +1064,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Naquadah, 4L),
-                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 2L))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_UV.get(1))
             .fluidInputs(Materials.Radon.getGas(4 * BUCKETS))
@@ -1062,7 +1076,7 @@ public class RecipesGregTech {
             .itemInputs(
                 GregtechItemList.Casing_Vanadium_Redox_UV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Americium, 4L),
-                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(8), 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 2L))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_MAX.get(1))
             .fluidInputs(FluidUtils.getFluidStack("krypton", 500))

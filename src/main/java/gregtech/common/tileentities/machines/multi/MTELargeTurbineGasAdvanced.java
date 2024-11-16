@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -56,13 +57,11 @@ public class MTELargeTurbineGasAdvanced extends MTELargeTurbine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Turbine")
-            .addInfo("Warning: This is an experimental multiblock, subject to changes ")
-            .addInfo("Controller block for the Large Advanced Gas Turbine")
+            .addInfo(EnumChatFormatting.DARK_RED + "Warning: This is an experimental multiblock, subject to changes ")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Only accepts gases above 800k EU/bucket")
             .addInfo("Has no maximum EU/t output, only depends on the Dynamo Hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Advanced Gas Turbine Casing", 8, 30, false)
@@ -70,7 +69,7 @@ public class MTELargeTurbineGasAdvanced extends MTELargeTurbine {
             .addMaintenanceHatch("Side centered", 2)
             .addMufflerHatch("Side centered", 2)
             .addInputHatch("Gas Fuel, Side centered", 2)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

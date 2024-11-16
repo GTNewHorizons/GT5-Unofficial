@@ -86,7 +86,7 @@ public class OverclockCalculator {
     /**
      * How many overclocks have been performed
      */
-    private int overclockCount;
+    private int overclockCount = 0;
     /**
      * Should we actually try to calculate overclocking
      */

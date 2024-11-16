@@ -49,7 +49,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 
 public abstract class MTEPrimitiveBlastFurnace extends MetaTileEntity
     implements IAlignment, ISurvivalConstructable, RecipeMapWorkable, IAddUIWidgets, IGetTitleColor {

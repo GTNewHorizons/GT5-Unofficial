@@ -33,7 +33,6 @@ import tectech.loader.ConfigHandler;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -243,7 +242,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements IConstructable
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"))
             // Stocking Bus is not supported
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.3"))
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 5, 3, false)
             // Controller: Front 3rd layer center
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))
@@ -268,7 +267,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements IConstructable
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             // Maintenance Hatch: Any High Power Casing
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            .toolTipFinisher(CommonValues.TEC_MARK_GENERAL);
+            .toolTipFinisher();
         return tt;
     }
 

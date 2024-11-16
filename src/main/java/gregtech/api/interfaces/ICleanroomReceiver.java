@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.tileentity.TileEntity;
 
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 
 /**
  * Implement this interface for TileEntities that can have association to cleanroom.

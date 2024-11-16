@@ -843,7 +843,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Circuit Board Fabricator")
-            .addInfo("Controller for the PCB Factory")
             .addInfo(
                 EnumChatFormatting.GOLD.toString() + EnumChatFormatting.BOLD
                     + "IMPORTANT!"
@@ -860,9 +859,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
             .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks.")
             .addInfo("Trace size can be changed to modify the material usage and machine speed.")
-            .addInfo(AuthorBlueWeabo)
+            .addTecTechHatchInfo()
             .beginStructureBlock(30, 38, 13, false)
-            .addSeparator()
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addEnergyHatch(
                 EnumChatFormatting.GOLD + "1"
@@ -956,7 +954,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
             .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }
 

@@ -72,7 +72,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -276,8 +275,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.type")) // Machine Type: Research
                                                                                               // Station, Scanner
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.0")) // Controller block of
-                                                                                           // the Research Station
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1")) // Used to scan Data
                                                                                            // Sticks for
             // Assembling Line Recipes
@@ -288,8 +285,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             // the Data Stick is written
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4")) // Use screwdriver to change
                                                                                            // mode
-            .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
@@ -313,7 +309,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                                                                                                         // backside
                                                                                                         // of the
                                                                                                         // main body
-            .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .toolTipFinisher();
         return tt;
     }
 

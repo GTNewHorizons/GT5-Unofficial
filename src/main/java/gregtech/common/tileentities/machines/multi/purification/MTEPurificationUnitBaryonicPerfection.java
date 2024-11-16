@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -49,6 +51,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 
 public class MTEPurificationUnitBaryonicPerfection
     extends MTEPurificationUnitBase<MTEPurificationUnitBaryonicPerfection> implements ISurvivalConstructable {
@@ -246,6 +249,11 @@ public class MTEPurificationUnitBaryonicPerfection
         numCasings = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         if (numCasings < MIN_CASINGS) return false;
+        // Blacklist stocking bus because it's incredibly buggy with this and keeps duping catalyst no matter how much
+        // I try to fix it.
+        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
+            if (bus instanceof MTEHatchInputBusME) return false;
+        }
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
@@ -260,7 +268,6 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Absolute Baryonic Perfection Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
@@ -333,7 +340,6 @@ public class MTEPurificationUnitBaryonicPerfection
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 17, 17, false)
             .addCasingInfoMinColored(
                 "Quark Exclusion Casing",
@@ -366,11 +372,11 @@ public class MTEPurificationUnitBaryonicPerfection
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front Center")
-            .addInputBus("Any Quark Exclusion Casing", 1)
+            .addInputBus("Any Quark Exclusion Casing. Stocking bus is blacklisted.", 1)
             .addInputHatch("Any Quark Exclusion Casing", 1)
             .addOutputBus("Any Quark Exclusion Casing", 1)
             .addOutputHatch("Any Quark Exclusion Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -402,7 +408,7 @@ public class MTEPurificationUnitBaryonicPerfection
         // Output incorrect indices unchanged, the spent ones will follow if recipe was successful from the actual
         // recipe outputs
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
-            if (i == correctStartIndex || i == correctStartIndex + 1) continue;
+            if (correctStartIndex != -1 && (i == correctStartIndex || i == correctStartIndex + 1)) continue;
 
             addOutput(insertedCatalysts.get(i));
         }

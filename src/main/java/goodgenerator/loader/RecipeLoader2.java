@@ -449,7 +449,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T8.get(1))
-            .metadata(RESEARCH_TIME, 180 * HOURS)
+            .metadata(RESEARCH_TIME, 18 * HOURS)
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UHV.get(8),
@@ -470,7 +470,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T9.get(1))
-            .metadata(RESEARCH_TIME, 360 * HOURS)
+            .metadata(RESEARCH_TIME, 36 * HOURS)
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UEV.get(8),
@@ -1076,7 +1076,7 @@ public class RecipeLoader2 {
             FluidRegistry.getFluidStack("ic2coolant", 16000),
             FluidRegistry.getFluidStack("ic2distilledwater", 20000),
             FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 32000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 3200000),
             8000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
@@ -1084,7 +1084,7 @@ public class RecipeLoader2 {
             FluidRegistry.getFluidStack("molten.solarsaltcold", 3200),
             FluidRegistry.getFluidStack("ic2distilledwater", 20000),
             FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 32000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 3200000),
             1600);
 
         GTValues.RA.stdBuilder()

@@ -613,7 +613,10 @@ public enum OrePrefixes {
     blockCasingAdvanced("An Advanced Casing block for a Multiblock-Machine", "Rebolted ", " Casing", true, true, true,
         true, false, true, false, true, false, false, 0, M * 9, 64, -1),
     capsuleMolten("Capsule of Molten stuff", "Molten ", " Capsule", true, true, true, true, false, false, false, true,
-        false, false, 0, M * 1, 64, -1);
+        false, false, 0, M * 1, 64, -1),
+    // subatomic particles
+    particle("A Subatomic Particle", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
+        64, -1);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,

@@ -36,11 +36,9 @@ import static gregtech.api.util.GTUtil.LAST_BROKEN_TILEENTITY;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,10 +47,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -167,6 +163,7 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.nei.GTNEIDefaultHandler;
 
@@ -534,8 +531,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             "infusedteslatiteInsulated",
             "redalloyInsulated",
             "infusedteslatiteBundled"));
-    private final DateFormat mDateFormat = DateFormat.getInstance();
-    public final BlockingQueue<String> mBufferedPlayerActivity = new LinkedBlockingQueue<>();
     public final GTBlockMap<Boolean> mCTMBlockCache = new GTBlockMap<>();
     public boolean mDisableVanillaOres = true;
     public boolean mAllowSmallBoilerAutomation = false;
@@ -687,6 +682,17 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public int mTitleTabStyle = 0;
 
     /**
+     * Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line
+     */
+    public int separatorStyle = 2;
+
+    /**
+     * Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+:
+     * continuous line
+     */
+    public int tooltipFinisherStyle = 1;
+
+    /**
      * Whether to show seconds or ticks on NEI
      */
     public boolean mNEIRecipeSecondMode = true;
@@ -802,22 +808,15 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
         }
-        try {
-            for (String tOreName : OreDictionary.getOreNames()) {
-                ItemStack tOreStack;
-                for (Iterator<ItemStack> i$ = OreDictionary.getOres(tOreName)
-                    .iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
-                    tOreStack = i$.next();
-                }
+        for (String tOreName : OreDictionary.getOreNames()) {
+            for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {
+                registerOre(new OreDictionary.OreRegisterEvent(tOreName, itemStack));
             }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
         }
     }
 
     public void onPreLoad() {
         GTLog.out.println("GTMod: Preload-Phase started!");
-        GTLog.ore.println("GTMod: Preload-Phase started!");
 
         GregTechAPI.sPreloadStarted = true;
         this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
@@ -1221,13 +1220,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
 
     public void onPostLoad() {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
-        GTLog.ore.println("GTMod: Beginning PostLoad-Phase.");
-        if (GTLog.pal != null) {
-            final Thread playerActivityLogger = new Thread(new GTPlayerActivityLogger());
-            playerActivityLogger.setDaemon(true);
-            playerActivityLogger.setName("GT5U Player activity logger");
-            playerActivityLogger.start();
-        }
         GregTechAPI.sPostloadStarted = true;
 
         // This needs to happen late enough that all of the fluids we need have been registered.
@@ -1526,38 +1518,12 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
         }
     }
 
-    private String getDataAndTime() {
-        return this.mDateFormat.format(new Date());
-    }
-
     @SubscribeEvent
     public void onPlayerInteraction(PlayerInteractEvent aEvent) {
         if ((aEvent.entityPlayer == null) || (aEvent.entityPlayer.worldObj == null)
             || (aEvent.action == null)
             || (aEvent.world.provider == null)) {
             return;
-        }
-        if ((!aEvent.entityPlayer.worldObj.isRemote) && (aEvent.action != PlayerInteractEvent.Action.RIGHT_CLICK_AIR)
-            && (GTLog.pal != null)) {
-            this.mBufferedPlayerActivity.offer(
-                getDataAndTime() + ";"
-                    + aEvent.action.name()
-                    + ";"
-                    + aEvent.entityPlayer.getDisplayName()
-                    + ";DIM:"
-                    + aEvent.world.provider.dimensionId
-                    + ";"
-                    + aEvent.x
-                    + ";"
-                    + aEvent.y
-                    + ";"
-                    + aEvent.z
-                    + ";|;"
-                    + aEvent.x / 10
-                    + ";"
-                    + aEvent.y / 10
-                    + ";"
-                    + aEvent.z / 10);
         }
         ItemStack aStack = aEvent.entityPlayer.getCurrentEquippedItem();
         if ((aStack != null) && (aEvent.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK)
@@ -1597,26 +1563,6 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     @SubscribeEvent
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
         if (aEvent.harvester == null) return;
-
-        if ((!aEvent.world.isRemote) && (GTLog.pal != null)) {
-            this.mBufferedPlayerActivity.offer(
-                getDataAndTime() + ";HARVEST_BLOCK;"
-                    + aEvent.harvester.getDisplayName()
-                    + ";DIM:"
-                    + aEvent.world.provider.dimensionId
-                    + ";"
-                    + aEvent.x
-                    + ";"
-                    + aEvent.y
-                    + ";"
-                    + aEvent.z
-                    + ";|;"
-                    + aEvent.x / 10
-                    + ";"
-                    + aEvent.y / 10
-                    + ";"
-                    + aEvent.z / 10);
-        }
 
         ItemStack aStack = aEvent.harvester.getCurrentEquippedItem();
         if (aStack == null) return;
