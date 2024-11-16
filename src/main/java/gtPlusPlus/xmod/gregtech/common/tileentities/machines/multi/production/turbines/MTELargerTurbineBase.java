@@ -49,7 +49,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
@@ -156,6 +155,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             tt.addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
                 .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
         }
+        tt.addTecTechHatchInfo();
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top Middle")
@@ -651,25 +651,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     @Override
-    public boolean polluteEnvironment(int aPollutionLevel) {
-        if (this.requiresMufflers()) {
-            mPollution += aPollutionLevel * getPollutionMultiplier() * mufflerReduction;
-            for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-                if (mPollution >= 10000) {
-                    if (GTMod.gregtechproxy.mPollution) {
-                        Pollution.addPollution(this.getBaseMetaTileEntity(), 10000);
-                        mPollution -= 10000;
-                    }
-                } else {
-                    break;
-                }
-            }
-            return mPollution < 10000;
-        }
-        return true;
-    }
-
-    @Override
     public long maxAmperesOut() {
         return 16;
     }
@@ -838,10 +819,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     public int getMaintenanceThreshold() {
-        return 1;
-    }
-
-    public int getPollutionMultiplier() {
         return 1;
     }
 
