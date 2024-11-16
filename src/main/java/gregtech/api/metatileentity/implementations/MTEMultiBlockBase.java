@@ -650,16 +650,22 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 }
             }
         } else {
-            var validMufflers = new ArrayList<MTEHatchMuffler>(mMufflerHatches.size());
-            validMTEList(mMufflerHatches).forEach(validMufflers::add);
-            Collections.shuffle(validMufflers);
-            for (MTEHatchMuffler tHatch : validMufflers) {
-                if (mPollution >= VENT_AMOUNT) {
-                    if (tHatch.polluteEnvironment(this)) {
-                        mPollution -= VENT_AMOUNT;
+            int attempts = mMufflerHatches.size();
+            while (mPollution >= VENT_AMOUNT && attempts > 0) {
+                --attempts;
+                int mufflerIdx = getBaseMetaTileEntity().getRandomNumber(mMufflerHatches.size());
+                MTEHatchMuffler muffler = mMufflerHatches.get(mufflerIdx);
+                if (muffler == null || !muffler.isValid()) {
+                    mMufflerHatches.remove(mufflerIdx);
+                    if (mMufflerHatches.isEmpty()) {
+                        return false;
+                    } else {
+                        continue;
                     }
                 } else {
-                    break;
+                    if (muffler.polluteEnvironment(this)) {
+                        mPollution -= VENT_AMOUNT;
+                    }
                 }
             }
         }
