@@ -1064,14 +1064,6 @@ public class RecipeLoader2 {
             .addTo(assemblerRecipes);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("lava", 20000),
-            FluidRegistry.getFluidStack("ic2pahoehoelava", 20000),
-            FluidRegistry.getFluidStack("ic2distilledwater", 20000),
-            FluidRegistry.getFluidStack("steam", 3200000),
-            FluidRegistry.getFluidStack("ic2superheatedsteam", 1600000),
-            10000);
-
-        MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
             FluidRegistry.getFluidStack("ic2hotcoolant", 16000),
             FluidRegistry.getFluidStack("ic2coolant", 16000),
             FluidRegistry.getFluidStack("ic2distilledwater", 20000),

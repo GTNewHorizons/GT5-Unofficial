@@ -42,27 +42,21 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             FluidStack[] Inputs = recipeInfo.recipe.mFluidInputs;
-            FluidStack[] Outputs = recipeInfo.recipe.mFluidOutputs;
-            int[] waterInput = new int[2];
-            if (Inputs[0].getUnlocalizedName()
-                .contains("plasma")) {
-                ;
-                waterInput[0] = 0;
-                waterInput[1] = Inputs[1].amount;
-            } else {
-                waterInput[0] = Outputs[0].amount / 160;
-                waterInput[1] = Outputs[1].amount / 160;
-            }
             int threshold = recipeInfo.recipe.mSpecialValue;
-            return Arrays.asList(
-                StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
-                    + GTUtility.formatNumbers(Inputs[0].amount)
-                    + " L/s",
-                StatCollector.translateToLocal("value.extreme_heat_exchanger.1"),
-                GTUtility.formatNumbers(waterInput[0]) + " L/s",
-                StatCollector.translateToLocal("value.extreme_heat_exchanger.2"),
-                GTUtility.formatNumbers(waterInput[1]) + " L/s",
-                StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + threshold + " L/s");
+            String[] description = new String[4];
+            description[0] = StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
+                + GTUtility.formatNumbers(Inputs[0].amount)
+                + " L/s";
+            description[1] = StatCollector.translateToLocal("value.extreme_heat_exchanger.1");
+            description[2] = GTUtility.formatNumbers(Inputs[1].amount) + " L/s";
+            if (!Inputs[0].getUnlocalizedName()
+                .contains("plasma")) {
+                description[3] = StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " "
+                    + threshold
+                    + " L/s";
+
+            }
+            return Arrays.asList(description);
         }
     }
 }

@@ -204,9 +204,13 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger/Plasma Heat Exchanger")
-            .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
-            .addInfo("Output SC Steam/SH Steam/Steam.")
-            .addInfo("Check NEI for more info.")
+            .addInfo("Outputs SH steam by cooling hot fluids with distilled water.")
+            .addInfo("Supplying more hot fluid than the threshold causes overheating,")
+            .addInfo("producing SC steam instead.")
+            .addInfo("Plasma always produces SC steam.")
+            .addInfo("Maximum input and output values per second are shown in NEI.")
+            .addInfo("Actual output is proportional to the amount of hot fluid inserted.")
+            .addInfo("Explodes if it runs out of water.")
             .addController("Front bottom")
             .addOtherStructurePart("Input Hatch", "distilled water", 1)
             .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
