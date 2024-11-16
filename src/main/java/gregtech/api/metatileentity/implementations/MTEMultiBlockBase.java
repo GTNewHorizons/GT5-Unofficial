@@ -632,23 +632,38 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean polluteEnvironment(int aPollutionLevel) {
+        final int VENT_AMOUNT = 10_000;
         // Early exit if pollution is disabled
         if (!GTMod.gregtechproxy.mPollution) return true;
         mPollution += aPollutionLevel;
-        if (mPollution < 10000) return true;
-        var validMufflers = new ArrayList<MTEHatchMuffler>(mMufflerHatches.size());
-        validMTEList(mMufflerHatches).forEach(validMufflers::add);
-        Collections.shuffle(validMufflers);
-        for (MTEHatchMuffler tHatch : validMufflers) {
-            if (mPollution >= 10000) {
-                if (tHatch.polluteEnvironment(this)) {
-                    mPollution -= 10000;
-                }
+        if (mPollution < VENT_AMOUNT) return true;
+        if (mMufflerHatches.size() == 0) {
+            return false;
+        } else if (mMufflerHatches.size() == 1) {
+            MTEHatchMuffler muffler = mMufflerHatches.get(0);
+            if (muffler == null || !muffler.isValid()) {
+                mMufflerHatches.remove(0);
+                return false;
             } else {
-                break;
+                if (muffler.polluteEnvironment(this)) {
+                    mPollution -= VENT_AMOUNT;
+                }
+            }
+        } else {
+            var validMufflers = new ArrayList<MTEHatchMuffler>(mMufflerHatches.size());
+            validMTEList(mMufflerHatches).forEach(validMufflers::add);
+            Collections.shuffle(validMufflers);
+            for (MTEHatchMuffler tHatch : validMufflers) {
+                if (mPollution >= VENT_AMOUNT) {
+                    if (tHatch.polluteEnvironment(this)) {
+                        mPollution -= VENT_AMOUNT;
+                    }
+                } else {
+                    break;
+                }
             }
         }
-        return mPollution < 10000;
+        return mPollution < VENT_AMOUNT;
     }
 
     protected void sendStartMultiBlockSoundLoop() {
