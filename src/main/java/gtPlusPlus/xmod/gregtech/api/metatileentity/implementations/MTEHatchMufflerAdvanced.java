@@ -86,7 +86,7 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
     @Override
     public boolean polluteEnvironment(MetaTileEntity parentTileEntity, int pollutionAmount) {
         if (!airCheck()) return false; // Muffler obstructed.
-        if (pollutionAmount < 10000 && pollutionAmount < parentTileEntity.getBaseMetaTileEntity()
+        if (pollutionAmount < 10000 && pollutionAmount <= parentTileEntity.getBaseMetaTileEntity()
             .getRandomNumber(10000)) {
             // If we are venting less than the maximum amount of pollution, damage filter with a lower chance.
             // This happens if a multiblock has more than one muffler.
