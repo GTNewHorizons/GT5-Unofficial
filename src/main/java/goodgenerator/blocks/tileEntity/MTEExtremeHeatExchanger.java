@@ -212,12 +212,15 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             .addInfo("Actual output is proportional to the amount of hot fluid inserted.")
             .addInfo("Explodes if it runs out of water.")
             .addController("Front bottom")
-            .addOtherStructurePart("Input Hatch", "distilled water", 1)
-            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
+            .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
+            .addCasingInfoExactly("EV+ Glass", 72, false)
+            .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
+            .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
+            .addOtherStructurePart("Input Hatch", "Distilled water", 1)
+            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam", 2)
             .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
             .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
-            .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false)
             .toolTipFinisher();
         return tt;
     }
