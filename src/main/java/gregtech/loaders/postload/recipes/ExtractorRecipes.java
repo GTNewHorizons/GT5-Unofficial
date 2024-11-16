@@ -39,6 +39,7 @@ public class ExtractorRecipes implements Runnable {
         addExtractionRecipe(new ItemStack(Blocks.brick_block, 1), new ItemStack(Items.brick, 4));
         addExtractionRecipe(new ItemStack(Blocks.nether_brick, 1), new ItemStack(Items.netherbrick, 4));
         addExtractionRecipe(new ItemStack(Blocks.snow, 1), new ItemStack(Items.snowball, 4));
+        addExtractionRecipe(ItemList.Cell_Water.get(1), getIC2Item("hydratingCell", 1));
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_SU_LV_SulfuricAcid.get(1L))
