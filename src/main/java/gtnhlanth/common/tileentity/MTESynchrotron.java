@@ -19,6 +19,15 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -51,14 +60,6 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron> implements ISurvivalConstructable {
 
@@ -80,7 +81,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     private static final byte MIN_GLASS_TIER = 6;
 
     private int energyHatchTier;
-    
+
     private boolean usingExotic = false;
 
     private int antennaeTier;
@@ -481,7 +482,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     private int machineTemp;
 
-	private long energyHatchAmperage;
+    private long energyHatchAmperage;
 
     public MTESynchrotron(String aName) {
         super(aName);
@@ -632,76 +633,64 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        
-        
-        boolean firstHatch = false;
-        if (this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty())
-        	firstHatch = true;
-        
-        if (aMetaTileEntity instanceof MTEHatch hatch) {
-        	
-        	if (firstHatch) {
-        		
-        		this.energyHatchTier = hatch.mTier;
-        		this.energyHatchAmperage = hatch.maxWorkingAmperesIn();
-        	
-        	}
-        	
-        	// Disallow any hatches that don't match the tier of the first hatch added      	
-        	if (hatch.mTier != this.energyHatchTier)
-        		return false;
-        	
-        	if (hatch.maxWorkingAmperesIn() != this.energyHatchAmperage) // Prevent mixing amperages within a tier
-        		return false;
-      
-        	
-        	if (aMetaTileEntity instanceof MTEHatchEnergy hatchNormal) {
-            	
-            	if (usingExotic) // usingExotic defaults to false, only set when known to be using exotics
-            		return false; // If exotics are already being used, disallow non-exotics
-            	
-            	hatchNormal.updateTexture(aBaseCasingIndex);
-                hatchNormal.updateCraftingIcon(this.getMachineCraftingIcon());
-                return mEnergyHatches.add(hatchNormal);
-            	
-            	
-            } else if (aMetaTileEntity instanceof MTEHatch hatchExotic && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
-            	
-            	if (firstHatch)
-            		usingExotic = true;
-            	
-            	
-            	if (!usingExotic)
-            		return false; // If normal hatches are already being used, disallow exotics
-            	
-            	hatchExotic.updateTexture(aBaseCasingIndex);
-                hatchExotic.updateCraftingIcon(this.getMachineCraftingIcon());
-                return mExoticEnergyHatches.add(hatchExotic);
-            	
-            } else {
-            	return false; // Not an energy hatch
-            }
-        } else {
-        	return false; // Not a hatch of any kind
-        }
-        
-        
-        /*
-        
-        
-        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
 
-            // First energy hatch added
-            if (this.mEnergyHatches.isEmpty()) this.energyHatchTier = hatch.mTier;
+        boolean firstHatch = false;
+        if (this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty()) firstHatch = true;
+
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
+
+            if (firstHatch) {
+
+                this.energyHatchTier = hatch.mTier;
+                this.energyHatchAmperage = hatch.maxWorkingAmperesIn();
+
+            }
 
             // Disallow any hatches that don't match the tier of the first hatch added
             if (hatch.mTier != this.energyHatchTier) return false;
 
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mEnergyHatches.add(hatch);
+            if (hatch.maxWorkingAmperesIn() != this.energyHatchAmperage) // Prevent mixing amperages within a tier
+                return false;
+
+            if (aMetaTileEntity instanceof MTEHatchEnergy hatchNormal) {
+
+                if (usingExotic) // usingExotic defaults to false, only set when known to be using exotics
+                    return false; // If exotics are already being used, disallow non-exotics
+
+                hatchNormal.updateTexture(aBaseCasingIndex);
+                hatchNormal.updateCraftingIcon(this.getMachineCraftingIcon());
+                return mEnergyHatches.add(hatchNormal);
+
+            } else if (aMetaTileEntity instanceof MTEHatch hatchExotic
+                && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
+
+                    if (firstHatch) usingExotic = true;
+
+                    if (!usingExotic) return false; // If normal hatches are already being used, disallow exotics
+
+                    hatchExotic.updateTexture(aBaseCasingIndex);
+                    hatchExotic.updateCraftingIcon(this.getMachineCraftingIcon());
+                    return mExoticEnergyHatches.add(hatchExotic);
+
+                } else {
+                    return false; // Not an energy hatch
+                }
+        } else {
+            return false; // Not a hatch of any kind
         }
-        return false; */
+
+        /*
+         * if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
+         * // First energy hatch added
+         * if (this.mEnergyHatches.isEmpty()) this.energyHatchTier = hatch.mTier;
+         * // Disallow any hatches that don't match the tier of the first hatch added
+         * if (hatch.mTier != this.energyHatchTier) return false;
+         * hatch.updateTexture(aBaseCasingIndex);
+         * hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+         * return mEnergyHatches.add(hatch);
+         * }
+         * return false;
+         */
     }
 
     private boolean addAntenna(Block block, int meta) {
@@ -784,15 +773,11 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         mMaxProgresstime = TickTime.SECOND;
 
-        
-
         long voltage = 0;
-        
-        
+
         voltage = this.getMaxInputEu();
-        	
+
         lEUt = -GTValues.VP[GTUtility.getTier(this.getAverageInputVoltage())] * this.getMaxInputAmps();
-        
 
         outputParticle = 1; // Photon
 
@@ -990,9 +975,9 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         BeamInformation information = this.getInputInformation();
 
         if (information == null) {
-        	information = new BeamInformation(0, 0, 0, 0);
+            information = new BeamInformation(0, 0, 0, 0);
         }
-        
+
         return new String[] {
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
@@ -1040,8 +1025,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
-                
-                
+
             /* 7 */ EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info")
                 + ": "
                 + EnumChatFormatting.RESET,
@@ -1119,7 +1103,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         this.energyHatchTier = 0;
         this.energyHatchAmperage = 0;
         this.usingExotic = false;
-        
+
         this.antennaeTier = 0;
 
         this.glassTier = 0;

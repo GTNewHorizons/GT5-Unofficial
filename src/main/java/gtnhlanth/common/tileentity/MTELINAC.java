@@ -17,6 +17,14 @@ import static gtnhlanth.util.DescTextLocalization.addDotText;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.gtnewhorizon.structurelib.StructureLib;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -46,13 +54,6 @@ import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISurvivalConstructable {
 
@@ -285,7 +286,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         FluidStack primFluid = tFluidInputs.get(0);
 
         // 1b (1000L)/m/operation
-        final int fluidConsumed = 1000 * (length + 1); // length variable is technically physical length - 1, adding here so as to not affect existing math
+        final int fluidConsumed = 1000 * (length + 1); // length variable is technically physical length - 1, adding
+                                                       // here so as to not affect existing math
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
@@ -309,13 +311,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         mMaxProgresstime = 1 * TickTime.SECOND;
-        
+
         // Consume the input tier's corresponding practical voltage instead of the maximum suggested by the logic
         // 1A if one energy hatch, 4A if two
-        mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()] : (int) (-this.getMaxInputAmps() * GTValues.VP[(int) this.getInputVoltageTier()]));
-        
-        //mEUt = (int) (-this.getMaxInputVoltage() / GTValues.V[(int) this.getInputVoltageTier()]
-          //      * GTValues.VP[(int) this.getInputVoltageTier()]);
+        mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
+            : (int) (-this.getMaxInputAmps() * GTValues.VP[(int) this.getInputVoltageTier()]));
+
+        // mEUt = (int) (-this.getMaxInputVoltage() / GTValues.V[(int) this.getInputVoltageTier()]
+        // * GTValues.VP[(int) this.getInputVoltageTier()]);
 
         // Particle stays the same with this multiblock
         outputParticle = particleId;
@@ -452,9 +455,9 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         BeamInformation information = this.getInputInformation();
-        
+
         if (information == null) {
-        	information = new BeamInformation(0, 0, 0, 0);
+            information = new BeamInformation(0, 0, 0, 0);
         }
 
         return new String[] {

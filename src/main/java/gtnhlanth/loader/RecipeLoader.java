@@ -672,19 +672,19 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_ZPM)
             .specialValue(3600)
             .addTo(blastFurnaceRecipes);
-        
+
         GTValues.RA.stdBuilder()
-        	.itemInputs(
-        		new ItemStack(LanthItemList.ETCHED_MASK_1, 4),
-        		Materials.Glass.getPlates(2),
-        		new ItemStack(ModItems.dustLithiumHydroxide, 2),
-        		Materials.Epoxid.getDust(4))
-        	.fluidInputs(Materials.Hydrogen.getGas(2000))
-        	.itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.CBLANK)))
-        	.duration(4 * GTRecipeBuilder.MINUTES)
-        	.eut(TierEU.RECIPE_ZPM)
-        	.specialValue(4200)
-        	.addTo(blastFurnaceRecipes);
+            .itemInputs(
+                new ItemStack(LanthItemList.ETCHED_MASK_1, 4),
+                Materials.Glass.getPlates(2),
+                new ItemStack(ModItems.dustLithiumHydroxide, 2),
+                Materials.Epoxid.getDust(4))
+            .fluidInputs(Materials.Hydrogen.getGas(2000))
+            .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.CBLANK)))
+            .duration(4 * GTRecipeBuilder.MINUTES)
+            .eut(TierEU.RECIPE_ZPM)
+            .specialValue(4200)
+            .addTo(blastFurnaceRecipes);
 
         for (MaskList mask : MaskList.values()) {
 
@@ -3407,14 +3407,13 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .eut(64)
             .addTo(fluidSolidifierRecipes);
-        
+
         GTValues.RA.stdBuilder()
-        	.fluidInputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1000))
-        	.fluidOutputs(Materials.SuperCoolant.getFluid(1000))
-        	.duration(10 * SECONDS)
-        	.eut(TierEU.RECIPE_EV)
-        	.addTo(vacuumFreezerRecipes);
-        	
+            .fluidInputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1000))
+            .fluidOutputs(Materials.SuperCoolant.getFluid(1000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(vacuumFreezerRecipes);
 
         // TODO Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG)
         /**

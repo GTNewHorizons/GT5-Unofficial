@@ -3,6 +3,11 @@ package gtnhlanth.common.tileentity.recipe.beamline;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -14,10 +19,6 @@ import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class BeamlineRecipeLoader {
 
@@ -50,8 +51,8 @@ public class BeamlineRecipeLoader {
             Materials.SuperCoolant.getFluid(1L)
                 .getFluid()
                 .getName(),
-            WerkstoffMaterialPool.HotSuperCoolant
-                .getFluidOrGas(1000).getFluid());
+            WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1000)
+                .getFluid());
 
         /*
          * ELECTRON
@@ -110,55 +111,57 @@ public class BeamlineRecipeLoader {
 
             if (mask.getProducedItem() == null) // Blank or error
                 continue;
-            
+
             if (mask.getTCTargetItem() == null) { // Wafer TC recipe
-            	
-            	 int index = 0;
-                 for (ItemList wafer : VIABLE_WAFERS) {
 
-                     index++;
+                int index = 0;
+                for (ItemList wafer : VIABLE_WAFERS) {
 
-                     if (!Arrays.asList(mask.getForbiddenWafers())
-                         .contains(wafer)) {
+                    index++;
 
-                         BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
-                             wafer.get(1),
-                             GTUtility.copyAmountUnsafe((int) Math.pow(2, index + 2), mask.getProducedItem()),
-                             new ItemStack(LanthItemList.maskMap.get(mask), 0),
-                             1,
-                             (int) Math.round(mask.getBaselineAmount() * Math.pow(Math.sqrt(2), index - 1)), // 2x recipe amount increase
-                                                                                                 // per 2 increases in wafer
-                                                                                                 // tier. This greatly
-                                                                                                 // incentivises the use of
-                                                                                                 // higher tier boule wafer
-                                                                                                 // recipes
-                             mask.getMinEnergy(),
-                             mask.getMaxEnergy(),
-                             mask.getMinFocus(),
-                             1,
-                             1920);
+                    if (!Arrays.asList(mask.getForbiddenWafers())
+                        .contains(wafer)) {
 
-                     }
+                        BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
+                            wafer.get(1),
+                            GTUtility.copyAmountUnsafe((int) Math.pow(2, index + 2), mask.getProducedItem()),
+                            new ItemStack(LanthItemList.maskMap.get(mask), 0),
+                            1,
+                            (int) Math.round(mask.getBaselineAmount() * Math.pow(Math.sqrt(2), index - 1)), // 2x recipe
+                                                                                                            // amount
+                                                                                                            // increase
+                            // per 2 increases in wafer
+                            // tier. This greatly
+                            // incentivises the use of
+                            // higher tier boule wafer
+                            // recipes
+                            mask.getMinEnergy(),
+                            mask.getMaxEnergy(),
+                            mask.getMinFocus(),
+                            1,
+                            1920);
 
-                 }
-            
-                 continue;
-      
+                    }
+
+                }
+
+                continue;
+
             }
-            
+
             // Non-wafer recipes
-        	
-        	BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
-                    GTUtility.copyAmountUnsafe(1, mask.getTCTargetItem()),
-                    GTUtility.copyAmountUnsafe(4, mask.getProducedItem()),
-                    new ItemStack(LanthItemList.maskMap.get(mask), 0),
-                    1,
-                    mask.getBaselineAmount(),                                                              
-                    mask.getMinEnergy(),
-                    mask.getMaxEnergy(),
-                    mask.getMinFocus(),
-                    1,
-                    (int) TierEU.RECIPE_LuV);
+
+            BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
+                GTUtility.copyAmountUnsafe(1, mask.getTCTargetItem()),
+                GTUtility.copyAmountUnsafe(4, mask.getProducedItem()),
+                new ItemStack(LanthItemList.maskMap.get(mask), 0),
+                1,
+                mask.getBaselineAmount(),
+                mask.getMinEnergy(),
+                mask.getMaxEnergy(),
+                mask.getMinFocus(),
+                1,
+                (int) TierEU.RECIPE_LuV);
 
             /*
              * if (!Arrays.asList(MaskList.CPU.getForbiddenWafers()).contains(wafer)) {
@@ -184,37 +187,37 @@ public class BeamlineRecipeLoader {
          * BeamlineRecipeAdder2.instance.addTargetChamberRecipe( new ItemStack(Items.coal, 1), new
          * ItemStack(Items.cooked_chicken, 1), null, 1, 20, 1, 10, 60, 1, 1920);
          */
-        
+
         /* LuAG */
-        
+
         // Raw Advanced Crystal Chip
-        
+
         BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
-                WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1),
-                GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC.get(1)),
-                new ItemStack(LanthItemList.maskMap.get(MaskList.CSOC), 0),
-                1,
-                24,                                                              
-                5,
-                12,
-                60,
-                1,
-                (int) TierEU.RECIPE_LuV);
-        
+            WerkstoffMaterialPool.CeriumDopedLutetiumAluminiumGarnet.get(OrePrefixes.gemExquisite, 1),
+            GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC.get(1)),
+            new ItemStack(LanthItemList.maskMap.get(MaskList.CSOC), 0),
+            1,
+            24,
+            5,
+            12,
+            60,
+            1,
+            (int) TierEU.RECIPE_LuV);
+
         /*
-        BeamlineRecipeAdder2.instance.addTargetChamberRecipe( // TODO Test recipe for subticking
-                new ItemStack(Items.coal, 1),
-                new ItemStack(Items.diamond),
-                new ItemStack(LanthItemList.maskMap.get(MaskList.RAM), 0),
-                Particle.PHOTON.ordinal(),
-                1,
-                0.5f,
-                200,
-                20,
-                1,
-                (int) TierEU.RECIPE_LuV);*/
-        
-        
+         * BeamlineRecipeAdder2.instance.addTargetChamberRecipe( // TODO Test recipe for subticking
+         * new ItemStack(Items.coal, 1),
+         * new ItemStack(Items.diamond),
+         * new ItemStack(LanthItemList.maskMap.get(MaskList.RAM), 0),
+         * Particle.PHOTON.ordinal(),
+         * 1,
+         * 0.5f,
+         * 200,
+         * 20,
+         * 1,
+         * (int) TierEU.RECIPE_LuV);
+         */
+
         BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
             new ItemStack(Items.chicken, 1),
             new ItemStack(Items.cooked_chicken),
