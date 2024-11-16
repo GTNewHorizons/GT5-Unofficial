@@ -242,6 +242,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements IConstructable
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.2"))
             // Stocking Bus is not supported
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.infuser.desc.3"))
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 5, 3, false)
             // Controller: Front 3rd layer center
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))

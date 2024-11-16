@@ -1560,7 +1560,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + RESET
                     + " ("
                     + YELLOW
-                    + spacetimeCompressionFieldMetadata
+                    + (spacetimeCompressionFieldMetadata + 1)
                     + RESET
                     + ")");
         }
@@ -1572,7 +1572,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + RESET
                     + " ("
                     + YELLOW
-                    + timeAccelerationFieldMetadata
+                    + (timeAccelerationFieldMetadata + 1)
                     + RESET
                     + ")");
         }
@@ -1584,7 +1584,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + RESET
                     + " ("
                     + YELLOW
-                    + stabilisationFieldMetadata
+                    + (stabilisationFieldMetadata + 1)
                     + RESET
                     + ")");
         }
