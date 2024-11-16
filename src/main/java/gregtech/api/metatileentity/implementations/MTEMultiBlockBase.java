@@ -638,34 +638,42 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mPollution += aPollutionLevel;
         if (mPollution < VENT_AMOUNT) return true;
         if (mMufflerHatches.size() == 0) {
+            // No muffler present. Fail.
             return false;
         } else if (mMufflerHatches.size() == 1) {
+            // One muffler, use simple method for performance.
             MTEHatchMuffler muffler = mMufflerHatches.get(0);
             if (muffler == null || !muffler.isValid()) {
+                // Muffler invalid. Fail.
                 mMufflerHatches.remove(0);
                 return false;
             } else {
-                if (muffler.polluteEnvironment(this)) {
+                if (muffler.polluteEnvironment(this, VENT_AMOUNT)) {
                     mPollution -= VENT_AMOUNT;
+                } else {
+                    // Muffler blocked. Fail.
+                    return false;
                 }
             }
         } else {
-            int attempts = mMufflerHatches.size();
-            while (mPollution >= VENT_AMOUNT && attempts > 0) {
-                --attempts;
-                int mufflerIdx = getBaseMetaTileEntity().getRandomNumber(mMufflerHatches.size());
-                MTEHatchMuffler muffler = mMufflerHatches.get(mufflerIdx);
-                if (muffler == null || !muffler.isValid()) {
-                    mMufflerHatches.remove(mufflerIdx);
-                    if (mMufflerHatches.isEmpty()) {
-                        break;
-                    } else {
-                        continue;
-                    }
+            // Multiple mufflers, split pollution output evenly between all of them.
+            int mufflerCount = 0;
+            int ventAmount = 0; // Allow venting of up to VENT_AMOUNT of pollution per muffler.
+            for (MTEHatchMuffler muffler : validMTEList(mMufflerHatches)) {
+                mufflerCount++;
+                if (ventAmount + VENT_AMOUNT <= mPollution) {
+                    ventAmount += VENT_AMOUNT;
+                }
+            }
+            // This might lose some small amount of pollution due to rounding, this is fine.
+            ventAmount /= mufflerCount;
+
+            for (MTEHatchMuffler muffler : validMTEList(mMufflerHatches)) {
+                if (muffler.polluteEnvironment(this, ventAmount)) {
+                    mPollution -= ventAmount;
                 } else {
-                    if (muffler.polluteEnvironment(this)) {
-                        mPollution -= VENT_AMOUNT;
-                    }
+                    // Muffler blocked. Fail.
+                    return false;
                 }
             }
         }

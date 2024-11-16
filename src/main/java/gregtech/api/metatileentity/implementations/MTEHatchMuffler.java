@@ -194,13 +194,15 @@ public class MTEHatchMuffler extends MTEHatch {
     }
 
     /**
-     * @param mte The multi-block controller's {@link MetaTileEntity} MetaTileEntity is passed so newer muffler hatches
-     *            can do wacky things with the multis
+     * @param mte             The multi-block controller's {@link MetaTileEntity} MetaTileEntity is passed so newer
+     *                        muffler hatches
+     *                        can do wacky things with the multis
+     * @param pollutionAmount How much pollution to output. Reduced by muffler efficiency.
      * @return pollution success
      */
-    public boolean polluteEnvironment(MetaTileEntity mte) {
+    public boolean polluteEnvironment(MetaTileEntity mte, int pollutionAmount) {
         if (getBaseMetaTileEntity().getAirAtSide(getBaseMetaTileEntity().getFrontFacing())) {
-            Pollution.addPollution(getBaseMetaTileEntity(), calculatePollutionReduction(10000));
+            Pollution.addPollution(getBaseMetaTileEntity(), calculatePollutionReduction(pollutionAmount));
             return true;
         }
         return false;
