@@ -212,6 +212,22 @@ public class RecipeLoaderChemicalSkips {
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.Rutile.getDust(32),
+                Materials.Scheelite.getDust(16),
+                Materials.Ilmenite.getDust(16),
+                ItemUtils.getSimpleStack(GenericChem.mTitaTungstenIndiumCatalyst, 0))
+            .itemOutputs(
+                Materials.Titanium.getDust(64),
+                Materials.TungstenSteel.getDust(64),
+                Materials.Tantalum.getDust(64),
+                Materials.Indium.getDust(64),
+                Materials.Niobium.getDust(64))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .metadata(QFT_FOCUS_TIER, 1)
+            .addTo(quantumForceTransformerRecipes);
         // Thorium, Uranium, Plutonium
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -271,19 +287,6 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Samarium.getDust(64),
                 Materials.Gadolinium.getDust(64),
                 Materials.Lanthanum.getDust(64))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .metadata(QFT_FOCUS_TIER, 2)
-            .addTo(quantumForceTransformerRecipes);
-        // Early Waterline skip (first 4 tiers)
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(GenericChem.mLimpidWaterCatalyst, 0))
-            .fluidInputs(Materials.Water.getFluid(40000L))
-            .fluidOutputs(
-                Materials.Grade1PurifiedWater.getFluid(20000L),
-                Materials.Grade2PurifiedWater.getFluid(10000L),
-                Materials.Grade3PurifiedWater.getFluid(5000L),
-                Materials.Grade4PurifiedWater.getFluid(1000L))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(QFT_FOCUS_TIER, 2)
@@ -378,19 +381,6 @@ public class RecipeLoaderChemicalSkips {
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(144 * 128),
                 Materials.BioMediumSterilized.getFluid(1000 * 256),
                 Materials.BioMediumRaw.getFluid(1000 * 512))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_UIV)
-            .metadata(QFT_FOCUS_TIER, 4)
-            .addTo(quantumForceTransformerRecipes);
-        // Advanced Waterline skip (last 4 tiers)
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(GenericChem.mFlawlessWaterCatalyst, 0))
-            .fluidInputs(Materials.Water.getFluid(40000L))
-            .fluidOutputs(
-                Materials.Grade5PurifiedWater.getFluid(20000L),
-                Materials.Grade6PurifiedWater.getFluid(10000L),
-                Materials.Grade7PurifiedWater.getFluid(5000L),
-                Materials.Grade8PurifiedWater.getFluid(1000L))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .metadata(QFT_FOCUS_TIER, 4)

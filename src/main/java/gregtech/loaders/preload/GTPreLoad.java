@@ -179,18 +179,6 @@ public class GTPreLoad {
                 GTLog.exp = new PrintStream(GTLog.mExplosionLog);
             } catch (Throwable ignored) {}
         }
-
-        if (Gregtech.general.loggingPlayerActicity) {
-            GTLog.mPlayerActivityLogFile = new File(parentFile, "logs/PlayerActivity.log");
-            if (!GTLog.mPlayerActivityLogFile.exists()) {
-                try {
-                    GTLog.mPlayerActivityLogFile.createNewFile();
-                } catch (Throwable ignored) {}
-            }
-            try {
-                GTLog.pal = new PrintStream(GTLog.mPlayerActivityLogFile);
-            } catch (Throwable ignored) {}
-        }
     }
 
     public static void runMineTweakerCompat() {

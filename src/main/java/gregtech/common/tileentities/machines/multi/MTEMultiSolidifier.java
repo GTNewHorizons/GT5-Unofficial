@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -16,8 +17,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.API.BorosilicateGlass;
+import ggfab.api.GGFabRecipeMaps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -107,8 +112,10 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
         .addElement(
             'A',
-            BorosilicateGlass
-                .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier))
+            withChannel(
+                "glass",
+                BorosilicateGlass
+                    .ofBoroGlass((byte) 0, (byte) 1, Byte.MAX_VALUE, (te, t) -> te.glassTier = t, te -> te.glassTier)))
         .addElement(
             'B',
             buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
@@ -182,7 +189,12 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier")
+        tt.addMachineType("Fluid Solidifier, Tool Casting Machine")
+            .addInfo(
+                "Can use " + EnumChatFormatting.YELLOW
+                    + "Solidifier Hatches"
+                    + EnumChatFormatting.GRAY
+                    + " to hold different molds")
             .addInfo("Speeds up to a maximum of 200% faster than singleblock machines while running")
             .addInfo("Decays at double the Rate that it Speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")
@@ -210,7 +222,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 3, 4, 0);
         // max Width, minimal mid-pieces to build on each side
-        int totalWidth = Math.min(stackSize.stackSize + 1, 6);
+        int totalWidth = Math.min(stackSize.stackSize - 1, 6);
         for (int i = 0; i < totalWidth; i++) {
             // pieces are 2 wide so offset 5 from controller and number of pieces times width of each piece
             buildPiece(MS_LEFT_MID, stackSize, hintsOnly, 5 + 2 * i, 4, 0);
@@ -226,7 +238,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         if (mMachine) return -1;
         int built = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
-        int totalWidth = Math.min(stackSize.stackSize + 1, 6);
+        int totalWidth = Math.min(stackSize.stackSize - 1, 6);
         for (int i = 0; i < totalWidth; i++) {
             built = survivialBuildPiece(MS_LEFT_MID, stackSize, 5 + 2 * i, 4, 0, elementBudget, env, false, true);
             built += survivialBuildPiece(MS_RIGHT_MID, stackSize, -4 - 2 * i, 4, 0, elementBudget, env, false, true);
@@ -250,6 +262,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         width = 0;
         casingAmount = 0;
+        glassTier = 0;
 
         if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
             while (width < (6)) {
@@ -274,6 +287,30 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
+            RecipeMap<?> currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
+
+            // Override is needed so that switching recipe maps does not stop recipe locking.
+            @Override
+            protected RecipeMap<?> preProcess() {
+                lastRecipeMap = currentRecipeMap;
+
+                if (maxParallelSupplier != null) {
+                    maxParallel = maxParallelSupplier.get();
+                }
+                return currentRecipeMap;
+            }
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                currentRecipeMap = RecipeMaps.fluidSolidifierRecipes;
+                CheckRecipeResult result = super.process();
+                if (result.wasSuccessful()) return result;
+
+                currentRecipeMap = GGFabRecipeMaps.toolCastRecipes;
+                return super.process();
+            }
 
             @NotNull
             @Override
@@ -308,6 +345,11 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     public int getMaxParallelRecipes() {
         return 4 + (width * PARALLELS_PER_WIDTH) * GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    @Override
+    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.fluidSolidifierRecipes, GGFabRecipeMaps.toolCastRecipes);
     }
 
     @Override
@@ -465,6 +507,18 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
     @Override
     public boolean supportsSingleRecipeLocking() {
+        return true;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
         return true;
     }
 }
