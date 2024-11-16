@@ -1848,13 +1848,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        var validMufflers = new ArrayList<MTEHatchMuffler>(mMufflerHatches.size());
-        validMTEList(mMufflerHatches).forEach(validMufflers::add);
-        if (validMufflers.size() > 0) {
-            for (MTEHatchMuffler tHatch : validMufflers) {
-                mPollutionReduction += tHatch.calculatePollutionReduction(100);
-            }
-            mPollutionReduction /= validMufflers.size();
+        int mMufflerCount = 0;
+        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
+            mPollutionReduction += tHatch.calculatePollutionReduction(100);
+            mMufflerCount++;
+        }
+        if (mMufflerCount > 0) {
+            mPollutionReduction /= mMufflerCount;
+        } else {
+            mPollutionReduction = 100;
         }
 
         long storedEnergy = 0;
@@ -1914,7 +1916,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 + EnumChatFormatting.GREEN
                 + mPollutionReduction
                 + EnumChatFormatting.RESET
-                + " %" };
+                + (mMufflerCount > 1
+                    ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
+                    : " %") };
     }
 
     @Override

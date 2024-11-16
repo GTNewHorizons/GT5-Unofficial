@@ -669,6 +669,7 @@ GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
 GT5U.multiblock.pollution=Pollution reduced to
+GT5U.multiblock.pollution.average=average
 GT5U.multiblock.energy=Stored Energy
 GT5U.multiblock.Progress=Progress
 GT5U.multiblock.efficiency=Efficiency
