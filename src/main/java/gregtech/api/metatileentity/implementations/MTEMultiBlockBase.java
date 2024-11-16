@@ -2604,6 +2604,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 time.toMinutes() % 60,
                 time.getSeconds() % 60);
         })
+            .setSynced(false)
             .setEnabled(
                 widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
                     && getBaseMetaTileEntity().wasShutdown()))
