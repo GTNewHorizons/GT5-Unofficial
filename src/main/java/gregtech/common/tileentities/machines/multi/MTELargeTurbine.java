@@ -433,9 +433,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + (mMufflerHatches.size() > 1
-                    ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
-                    : " %") /* 8 */
+                + " %" /* 8 */
         };
     }
 

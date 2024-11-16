@@ -823,9 +823,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + (mMufflerHatches.size() > 1
-                    ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
-                    : " %"),
+                + " %",
             /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.GREEN
                 + mMaxParallel,

@@ -199,9 +199,7 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + (mMufflerHatches.size() > 1
-                    ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
-                    : " %") };
+                + " %" };
     }
 
     @Override

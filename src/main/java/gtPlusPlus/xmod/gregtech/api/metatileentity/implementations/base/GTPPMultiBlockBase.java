@@ -251,9 +251,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     + EnumChatFormatting.GREEN
                     + getAveragePollutionPercentage()
                     + EnumChatFormatting.RESET
-                    + (mMufflerHatches.size() > 1
-                        ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
-                        : " %"));
+                    + " %");
         }
 
         mInfo.add(
@@ -1399,9 +1397,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                             + EnumChatFormatting.GREEN
                             + getAveragePollutionPercentage()
                             + EnumChatFormatting.RESET
-                            + (mMufflerHatches.size() > 1
-                                ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
-                                : " %"))
+                            + " %")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(

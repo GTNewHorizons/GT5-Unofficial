@@ -1933,9 +1933,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + (mMufflerHatches.size() > 1
-                    ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
-                    : " %") };
+                + " %" };
     }
 
     @Override
