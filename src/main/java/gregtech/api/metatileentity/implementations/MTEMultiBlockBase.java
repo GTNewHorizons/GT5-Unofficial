@@ -658,7 +658,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (muffler == null || !muffler.isValid()) {
                     mMufflerHatches.remove(mufflerIdx);
                     if (mMufflerHatches.isEmpty()) {
-                        return false;
+                        break;
                     } else {
                         continue;
                     }
@@ -675,7 +675,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * How much pollution this outputs to the environment. 100 = outputs all, 0 = outputs none. Calculated as an average
      * across all muffler hatches.
-     * 
+     *
      * @return Fraction of pollution output to the environment (out of 100).
      */
     public int getAveragePollutionPercentage() {
