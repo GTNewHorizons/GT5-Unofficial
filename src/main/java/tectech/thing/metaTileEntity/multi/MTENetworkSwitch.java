@@ -218,8 +218,12 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.0")) // Controller block of the
                                                                                          // Network
             // Switch With QoS
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1")) // Routes and
-                                                                                         // distributes computation
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1")) // Used to route and
+                                                                                         // distribute computation
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2")) // Needs a Parametrizer to
+                                                                                         // be configured
+            .addTecTechHatchInfo()
+
             .beginStructureBlock(3, 3, 3, false)
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
             .addOtherStructurePart(

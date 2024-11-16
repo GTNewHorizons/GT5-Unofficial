@@ -535,7 +535,7 @@ public class ItemRegistry {
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[1],
             +1).getStackForm(1L);
 
-        ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, 1, "DEHP", "Deep Earth Heating Pump")
+        ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
         ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnace(
             MegaBlastFurnace.ID,
