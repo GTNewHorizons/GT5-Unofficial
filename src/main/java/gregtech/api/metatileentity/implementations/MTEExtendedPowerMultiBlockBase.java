@@ -2,7 +2,6 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,11 +137,6 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-        }
-
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatch tHatch : getExoticAndNormalEnergyHatchList()) {
@@ -203,9 +197,11 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
                 + " %",
             /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + mPollutionReduction
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + (mMufflerHatches.size() > 1
+                    ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
+                    : " %") };
     }
 
     @Override

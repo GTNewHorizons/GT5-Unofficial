@@ -20,7 +20,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.util.GTUtility;
 
 public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extends MTEExtendedPowerMultiBlockBase<T> {
@@ -50,12 +49,6 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-        }
-
         long[] ttHatches = this.getCurrentInfoData();
         long storedEnergy = ttHatches[0];
         long maxEnergy = ttHatches[1];
@@ -124,9 +117,11 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
                 + " %",
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + mPollutionReduction
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + (mMufflerHatches.size() > 1
+                    ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
+                    : " %") };
 
         String[] combinedInfo = Arrays.copyOf(baseInfo, baseInfo.length + extendedInfo.length + 1);
 

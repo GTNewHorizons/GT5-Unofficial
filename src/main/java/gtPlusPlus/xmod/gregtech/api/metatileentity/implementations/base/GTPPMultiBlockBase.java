@@ -240,7 +240,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 + " %");
 
         if (this.getPollutionPerSecond(null) > 0) {
-            int mPollutionReduction = getPollutionReductionForAllMufflers();
             mInfo.add(
                 StatCollector.translateToLocal("GTPP.multiblock.pollution") + ": "
                     + EnumChatFormatting.RED
@@ -250,9 +249,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(
                 StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
                     + EnumChatFormatting.GREEN
-                    + mPollutionReduction
+                    + getAveragePollutionPercentage()
                     + EnumChatFormatting.RESET
-                    + " %");
+                    + (mMufflerHatches.size() > 1
+                        ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
+                        : " %"));
         }
 
         mInfo.add(
@@ -1404,9 +1405,11 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .dynamicString(
                         () -> StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
                             + EnumChatFormatting.GREEN
-                            + getPollutionReductionForAllMufflers()
+                            + getAveragePollutionPercentage()
                             + EnumChatFormatting.RESET
-                            + " %")
+                            + (mMufflerHatches.size() > 1
+                                ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
+                                : " %"))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine))
             .widget(

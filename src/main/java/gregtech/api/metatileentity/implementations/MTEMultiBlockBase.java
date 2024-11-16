@@ -672,6 +672,27 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return mPollution < VENT_AMOUNT;
     }
 
+    /**
+     * How much pollution this outputs to the environment. 100 = outputs all, 0 = outputs none. Calculated as an average
+     * across all muffler hatches.
+     * 
+     * @return Fraction of pollution output to the environment (out of 100).
+     */
+    public int getAveragePollutionPercentage() {
+        int pollutionPercent = 0;
+        int mufflerCount = 0;
+        for (MTEHatchMuffler muffler : validMTEList(mMufflerHatches)) {
+            pollutionPercent += muffler.calculatePollutionReduction(100);
+            mufflerCount++;
+        }
+        if (mufflerCount > 0) {
+            pollutionPercent /= mufflerCount;
+        } else {
+            pollutionPercent = 100;
+        }
+        return pollutionPercent;
+    }
+
     protected void sendStartMultiBlockSoundLoop() {
         if (getProcessStartSound() != null) {
             sendLoopStart(PROCESS_START_SOUND_INDEX);
@@ -1847,18 +1868,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-        int mMufflerCount = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            mPollutionReduction += tHatch.calculatePollutionReduction(100);
-            mMufflerCount++;
-        }
-        if (mMufflerCount > 0) {
-            mPollutionReduction /= mMufflerCount;
-        } else {
-            mPollutionReduction = 100;
-        }
-
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
@@ -1914,9 +1923,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 + " %",
             /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + mPollutionReduction
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + (mMufflerCount > 1
+                + (mMufflerHatches.size() > 1
                     ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
                     : " %") };
     }

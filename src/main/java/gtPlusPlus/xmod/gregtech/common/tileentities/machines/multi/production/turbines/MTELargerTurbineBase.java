@@ -41,7 +41,6 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
@@ -559,8 +558,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     public String[] getExtraInfoData() {
-        int mPollutionReduction = (int) (100 * mufflerReduction);
-
         String tRunning = mMaxProgresstime > 0
             ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
                 + EnumChatFormatting.RESET
@@ -640,9 +637,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             StatCollector.translateToLocal("GT5U.turbine.dmg") + ": " + aTurbineDamage,
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mPollutionReduction)
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + (mMufflerHatches.size() > 1
+                    ? " % (" + StatCollector.translateToLocal("GT5U.multiblock.pollution.average") + ")"
+                    : " %") };
     }
 
     @Override
