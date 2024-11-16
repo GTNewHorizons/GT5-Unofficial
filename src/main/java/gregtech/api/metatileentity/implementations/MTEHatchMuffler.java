@@ -195,8 +195,7 @@ public class MTEHatchMuffler extends MTEHatch {
 
     /**
      * @param mte             The multi-block controller's {@link MetaTileEntity} MetaTileEntity is passed so newer
-     *                        muffler hatches
-     *                        can do wacky things with the multis
+     *                        muffler hatches can do wacky things with the multis
      * @param pollutionAmount How much pollution to output. Reduced by muffler efficiency.
      * @return pollution success
      */
@@ -206,5 +205,13 @@ public class MTEHatchMuffler extends MTEHatch {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @deprecated Use {@link #polluteEnvironment(MetaTileEntity, int)}.
+     */
+    @Deprecated
+    public boolean polluteEnvironment(MetaTileEntity mte) {
+        return polluteEnvironment(mte, 10000);
     }
 }
