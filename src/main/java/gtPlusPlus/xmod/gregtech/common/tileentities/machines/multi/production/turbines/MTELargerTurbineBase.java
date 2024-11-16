@@ -119,7 +119,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected int storedFluid = 0;
     protected int counter = 0;
     protected boolean looseFit = false;
-    protected double mufflerReduction = 1;
     protected float[] flowMultipliers = new float[] { 1, 1, 1 };
 
     public ITexture frontFace = new GTPPRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
@@ -187,14 +186,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         return getPollutionPerSecond(null) > 0;
     }
 
-    public final double getMufflerReduction() {
-        double totalReduction = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            totalReduction += ((double) tHatch.calculatePollutionReduction(100)) / 100;
-        }
-        return totalReduction / 4;
-    }
-
     @Override
     public void clearHatches() {
         super.clearHatches();
@@ -228,7 +219,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                     + mOutputHatches.size());
             return false;
         }
-        mufflerReduction = getMufflerReduction();
         return aStructure;
     }
 

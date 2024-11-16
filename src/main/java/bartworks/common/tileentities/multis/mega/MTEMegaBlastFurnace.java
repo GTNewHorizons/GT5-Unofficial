@@ -359,12 +359,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         ArrayList<MTEHatchOutput> tOutputHatches;
         if (isOutputPollution) {
             tOutputHatches = this.mPollutionOutputHatches;
-            int pollutionReduction = 0;
-            for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-                pollutionReduction = 100 - tHatch.calculatePollutionReduction(100);
-                break;
-            }
-            tLiquid.amount = tLiquid.amount * pollutionReduction / 100;
+            tLiquid.amount = tLiquid.amount * Math.min(100 - getAveragePollutionPercentage(), 100) / 100;
         } else {
             tOutputHatches = this.mOutputHatches;
         }

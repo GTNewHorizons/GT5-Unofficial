@@ -288,14 +288,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         return mInfo.toArray(new String[0]);
     }
 
-    public int getPollutionReductionForAllMufflers() {
-        int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            mPollutionReduction = Math.max(calculatePollutionReductionForHatch(tHatch, 100), mPollutionReduction);
-        }
-        return mPollutionReduction;
-    }
-
     public long getStoredEnergyInAllEnergyHatches() {
         long storedEnergy = 0;
         for (MTEHatch tHatch : validMTEList(mAllEnergyHatches)) {
