@@ -635,7 +635,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // Early exit if pollution is disabled
         if (!GTMod.gregtechproxy.mPollution) return true;
         mPollution += aPollutionLevel;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
+        if (mPollution < 10000) return true;
+        var validMufflers = new ArrayList<MTEHatchMuffler>(mMufflerHatches.size());
+        validMTEList(mMufflerHatches).forEach(validMufflers::add);
+        Collections.shuffle(validMufflers);
+        for (MTEHatchMuffler tHatch : validMufflers) {
             if (mPollution >= 10000) {
                 if (tHatch.polluteEnvironment(this)) {
                     mPollution -= 10000;
@@ -1823,8 +1827,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public String[] getInfoData() {
         int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
+        var validMufflers = new ArrayList<MTEHatchMuffler>(mMufflerHatches.size());
+        validMTEList(mMufflerHatches).forEach(validMufflers::add);
+        if (validMufflers.size() > 0) {
+            for (MTEHatchMuffler tHatch : validMufflers) {
+                mPollutionReduction += tHatch.calculatePollutionReduction(100);
+            }
+            mPollutionReduction /= validMufflers.size();
         }
 
         long storedEnergy = 0;
@@ -2595,6 +2604,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 time.toMinutes() % 60,
                 time.getSeconds() % 60);
         })
+            .setSynced(false)
             .setEnabled(
                 widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
                     && getBaseMetaTileEntity().wasShutdown()))
