@@ -281,7 +281,6 @@ value.neutron_activator.1=最高中子动能：
 value.neutron_activator.2= MeV
 value.extreme_heat_exchanger.0=最大热流体输入：
 value.extreme_heat_exchanger.1=最大工质输入：
-value.extreme_heat_exchanger.2=最大热工质输出：
 value.extreme_heat_exchanger.4=阈值：
 value.precise_assembler=要求 MK-%s 机械方块
 
