@@ -12,6 +12,8 @@ public class ConfigHandler {
     public static Debug debug = new Debug();
     public static TeslaTweaks teslaTweaks = new TeslaTweaks();
 
+    public static Visual visual = new Visual();
+
     @Config.Comment("Debug section")
     public static class Debug {
 
@@ -58,4 +60,22 @@ public class ConfigHandler {
         @Config.DefaultBoolean(true)
         public boolean TESLA_VISUAL_EFFECT;
     }
+
+    @Config.Comment("Visual section")
+    public static class Visual {
+
+        @Config.Comment({ "Eye of Harmony energy input and output display:", " - 'Numerical': Shows the entire number",
+            " - 'Scientific': Uses scientific notation", " - 'SI': Uses the SI notation", })
+
+        @Config.DefaultEnum("Scientific")
+        @Config.RequiresMcRestart
+        public EOHNumberFormat EOH_NOTATION = EOHNumberFormat.Scientific;
+
+        public enum EOHNumberFormat {
+            Numerical,
+            Scientific,
+            SI
+        }
+    }
+
 }
