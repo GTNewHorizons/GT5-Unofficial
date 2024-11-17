@@ -991,7 +991,7 @@ fog.upgrade.text.0=Unlocks the base functionality of the Forge of the Gods, mean
 fog.upgrade.text.1=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1 / (Heat^0.01)
 fog.upgrade.text.2=Increases fuel efficiency by multiplying the actual fuel consumption by 0.8
 fog.upgrade.text.3=Multiplies the maximum fuel consumption by 1.2
-fog.upgrade.text.4=Increases the base processing voltage of the multi by: Stellar Fuel Units/sec * 10^8 EU/t
+fog.upgrade.text.4=Increases the base processing voltage of all modules by: Stellar Fuel Units/sec * 10^8 EU/t
 fog.upgrade.text.5=Unlocks the Helioflux Melting Core module.
 fog.upgrade.text.6=Unlocks a multiplier to maximum parallel based on fuel consumption rate. This bonus is calculated via this formula: Multiplier = 1 + (Stellar Fuel Units/sec) / 15
 fog.upgrade.text.7=Unlocks the Heliothermal Plasma Fabricator module and basic element -> plasma processing (1 step plasmas, T3 fusion maximum).
