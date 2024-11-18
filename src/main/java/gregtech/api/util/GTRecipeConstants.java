@@ -508,14 +508,12 @@ public class GTRecipeConstants {
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(tRecipe);
         AssemblyLineUtils.addRecipeToCache(tRecipe);
 
-        ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");
-        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(writesDataStick, tRecipe, false);
         Collection<GTRecipe> ret = new ArrayList<>(3);
         ret.addAll(
             GTValues.RA.stdBuilder()
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
-                .special(writesDataStick)
+                .special(tRecipe.newDataStickForNEI("Writes Research result"))
                 .duration(aResearchTime)
                 .eut(TierEU.RECIPE_LV)
                 .specialValue(-201) // means it's scanned
@@ -524,14 +522,12 @@ public class GTRecipeConstants {
                 .fake()
                 .addTo(scannerFakeRecipes));
 
-        ItemStack readsDataStick = ItemList.Tool_DataStick.getWithName(1L, "Reads Research result");
-        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(readsDataStick, tRecipe, false);
         ret.add(
             RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(
                 false,
                 r.mInputs,
                 new ItemStack[] { aOutput },
-                new ItemStack[] { readsDataStick },
+                new ItemStack[] { tRecipe.newDataStickForNEI("Reads Research result") },
                 r.mFluidInputs,
                 null,
                 r.mDuration,
