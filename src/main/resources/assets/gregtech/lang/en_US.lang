@@ -594,6 +594,10 @@ GT5U.pipe.bio.desc.0=Transports Artificial Organisms
 GT5U.pipe.bio.desc.1=Connects to exactly one Evolution Chamber
 GT5U.pipe.bio.desc.2=Can connect to several AO Machines
 
+GT5U.pipe.bio.desc.0=Transports Artificial Organisms
+GT5U.pipe.bio.desc.1=Connects to exactly one Evolution Chamber
+GT5U.pipe.bio.desc.2=Can connect to several AO Machines
+
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.gui.config.client=Client
