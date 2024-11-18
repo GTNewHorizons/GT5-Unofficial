@@ -199,7 +199,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
             batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
         }
-        int finalParallel = (int) (batchMultiplierMax * maxParallelBeforeBatchMode);
+        int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
         // Consume inputs and generate outputs
         ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();

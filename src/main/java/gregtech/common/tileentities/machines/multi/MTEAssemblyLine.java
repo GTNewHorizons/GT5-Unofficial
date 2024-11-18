@@ -349,7 +349,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 batchMultiplierMax = Math
                     .min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
             }
-            int finalParallel = (int) (batchMultiplierMax * maxParallelBeforeBatchMode);
+            int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
             lEUt = calculator.getConsumption();
             mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
