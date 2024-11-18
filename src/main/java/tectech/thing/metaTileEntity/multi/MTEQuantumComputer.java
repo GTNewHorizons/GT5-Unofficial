@@ -103,6 +103,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                     Energy.or(HatchElement.EnergyMulti),
                     Maintenance,
                     HatchElement.Uncertainty,
+                    HatchElement.InputData,
                     HatchElement.OutputData,
                     WirelessComputationHatchElement.INSTANCE)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
@@ -354,6 +355,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                            // computation (and heat)
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.2")) // Use screwdriver to toggle
                                                                                            // wireless mode
+            .addTecTechHatchInfo()
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
@@ -367,11 +369,6 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
                 translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
                 2) // Computer Rack: Any Advanced Computer Casing, except the outer ones
-            .addOtherStructurePart(
-                translateToLocal("gt.blockmachines.hatch.param.tier.05.name"),
-                translateToLocal("tt.keyword.Structure.Optional") + " "
-                    + translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                2) // Parametrizer: (optional) Any Computer Casing on first or last slice
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Energy
                                                                                                            // Hatch:
                                                                                                            // Any
