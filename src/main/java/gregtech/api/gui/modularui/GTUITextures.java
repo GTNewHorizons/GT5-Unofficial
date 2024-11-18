@@ -460,6 +460,7 @@ public class GTUITextures {
 
     public static final UITexture PICTURE_RADIATION_WARNING = UITexture
         .fullImage(GregTech.ID, "gui/picture/radiation_warning");
+    public static final UITexture PICTURE_BIOHAZARD = UITexture.fullImage(GregTech.ID, "gui/picture/biohazard");
     public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT = UITexture
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent");
     public static final UITexture PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY = UITexture

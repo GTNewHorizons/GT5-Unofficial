@@ -14,21 +14,36 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
@@ -77,6 +92,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     MTEHatchBioOutput bioHatch;
     ArtificialOrganism currentSpecies = new ArtificialOrganism();
+    private int intelligence;
+    private int strength;
+    private int count;
 
     public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -195,6 +213,22 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (!aBaseMetaTileEntity.isServerSide() || aTick % 20 != 0 || currentSpecies == null) return;
+
+        currentSpecies.doReproduction();
+        updateSpecies();
+    }
+
+    private void updateSpecies() {
+        intelligence = currentSpecies.getIntelligence();
+        strength = currentSpecies.getStrength();
+        count = currentSpecies.getCount();
+    }
+
     public int getMaxParallelRecipes() {
         return (8 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
@@ -239,6 +273,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return false;
     }
 
+    private void createNewAOs() {
+        currentSpecies = new ArtificialOrganism();
+        if (bioHatch != null) bioHatch.currentSpecies = currentSpecies;
+    }
+
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (bioHatch != null) {
@@ -254,7 +293,68 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 .setSize(190, 85));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
-        drawTexts(screenElements, null);
+        screenElements.setSynced(false)
+            .setSpace(0)
+            .setPos(10, 7);
+        screenElements.widget(new TextWidget("Current Species: ").setDefaultColor(COLOR_TEXT_WHITE.get()))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+        screenElements.widget(
+            new DynamicTextWidget(() -> new Text("Intelligence: " + intelligence)).setSynced(false)
+                .setDefaultColor(COLOR_TEXT_WHITE.get()))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> intelligence, val -> intelligence = val))
+            .widget(
+                new DynamicTextWidget(() -> new Text("Strength: " + strength)).setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> strength, val -> strength = val))
+            .widget(
+                new DynamicTextWidget(() -> new Text("Count: " + count)).setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> count, val -> count = val));
+
+        builder.widget(createPurgeButton(builder));
+        builder.widget(createBuildAOsButton(builder));
         builder.widget(screenElements);
     }
+
+    private ButtonWidget createPurgeButton(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> currentSpecies.purgeAOs())
+            .setPlayClickSound(supportsVoidProtection())
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(getVoidingMode().buttonTexture);
+                ret.add(getVoidingMode().buttonOverlay);
+                if (!supportsVoidProtection()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .dynamicTooltip(
+                () -> Arrays.asList(
+                    StatCollector.translateToLocal("GT5U.gui.button.voiding_mode"),
+                    StatCollector.translateToLocal(getVoidingMode().getTransKey())))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(getVoidingModeButtonPos())
+            .setSize(16, 16);
+        return (ButtonWidget) button;
+    }
+
+    private ButtonWidget createBuildAOsButton(IWidgetBuilder<?> builder) {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> createNewAOs())
+            .setPlayClickSound(supportsVoidProtection())
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(getVoidingMode().buttonTexture);
+                ret.add(getVoidingMode().buttonOverlay);
+                if (!supportsVoidProtection()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_switch"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(getPowerSwitchButtonPos())
+            .setSize(16, 16);
+        return (ButtonWidget) button;
+    }
+
 }

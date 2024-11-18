@@ -26,6 +26,7 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.api.util.recipe.AORecipeData;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
@@ -105,6 +106,12 @@ public class GTRecipeConstants {
      * For Microwave.
      */
     public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
+
+    /**
+     * AO data containing required intelligence, count, and danger rating
+     */
+    public static final RecipeMetadataKey<AORecipeData> AO_DATA = SimpleRecipeMetadataKey
+        .create(AORecipeData.class, "ao_intelligence");
 
     /**
      * Nano Forge Tier.

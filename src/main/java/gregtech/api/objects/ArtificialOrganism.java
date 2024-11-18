@@ -41,6 +41,20 @@ public class ArtificialOrganism {
         return number;
     }
 
+    /**
+     * Simulate one cycle of AO reproduction.
+     */
+    public void doReproduction() {
+        replenishAOs((count / 10) * reproduction);
+    }
+
+    /**
+     * Kill all AOs.
+     */
+    public void purgeAOs() {
+        count = 0;
+    }
+
     public int getIntelligence() {
         return intelligence;
     }
@@ -62,7 +76,7 @@ public class ArtificialOrganism {
     public ArtificialOrganism() {
         intelligence = 10;
         strength = 10;
-        reproduction = 10;
+        reproduction = 1;
         count = 50;
         sentience = 0;
     }

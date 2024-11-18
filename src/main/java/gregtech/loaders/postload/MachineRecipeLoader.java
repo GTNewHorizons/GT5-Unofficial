@@ -11,6 +11,7 @@ import gregtech.loaders.postload.recipes.AssemblerRecipes;
 import gregtech.loaders.postload.recipes.AssemblyLineRecipes;
 import gregtech.loaders.postload.recipes.AutoclaveRecipes;
 import gregtech.loaders.postload.recipes.BenderRecipes;
+import gregtech.loaders.postload.recipes.BioSynthesizerRecipes;
 import gregtech.loaders.postload.recipes.BlastFurnaceRecipes;
 import gregtech.loaders.postload.recipes.BreweryRecipes;
 import gregtech.loaders.postload.recipes.CannerRecipes;
@@ -72,6 +73,7 @@ public class MachineRecipeLoader implements Runnable {
         new AssemblyLineRecipes().run();
         new AutoclaveRecipes().run();
         new BenderRecipes().run();
+        new BioSynthesizerRecipes().run();
         new BlastFurnaceRecipes().run();
         new BreweryRecipes().run();
         new CannerRecipes().run();

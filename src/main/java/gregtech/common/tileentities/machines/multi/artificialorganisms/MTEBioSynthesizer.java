@@ -40,16 +40,20 @@ import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.recipe.AORecipeData;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioInput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynthesizer> implements ISurvivalConstructable {
+public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynthesizer>
+    implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEBioSynthesizer> STRUCTURE_DEFINITION = StructureDefinition
@@ -202,13 +206,18 @@ public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynt
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+
+                AORecipeData data = recipe.getMetadata(GTRecipeConstants.AO_DATA);
+                if (data == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
                 ArtificialOrganism currentOrganism = getAO();
                 if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
-                else if (currentOrganism.getCount() <= 0) return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
-                else if (currentOrganism.getIntelligence() <= 0)
+                else if (currentOrganism.getCount() <= data.requiredCount)
+                    return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
+                else if (currentOrganism.getIntelligence() <= data.requiredIntelligence)
                     return SimpleCheckRecipeResult.ofFailure("ao_too_stupid");
 
-                AOsInUse = currentOrganism.consumeAOs(50);
+                AOsInUse = currentOrganism.consumeAOs(data.requiredCount);
                 return super.validateRecipe(recipe);
             }
 
@@ -243,7 +252,7 @@ public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynt
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.assemblylineVisualRecipes;
+        return RecipeMaps.bioSynthesizerRecipes;
     }
 
     public int getMaxParallelRecipes() {

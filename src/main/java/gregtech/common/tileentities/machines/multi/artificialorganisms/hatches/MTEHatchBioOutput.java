@@ -17,7 +17,7 @@ import gregtech.common.tileentities.machines.multi.artificialorganisms.util.ICon
 public class MTEHatchBioOutput extends MTEHatch implements IConnectsToBioPipe {
 
     public HashSet<IConnectsToBioPipe> pipenetwork;
-    ArtificialOrganism currentSpecies = new ArtificialOrganism();
+    public ArtificialOrganism currentSpecies;
 
     public MTEHatchBioOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Distributes Artificial Organisms");

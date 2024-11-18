@@ -48,6 +48,7 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
+import gregtech.api.recipe.maps.BioSynthesizerFrontEnd;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
 import gregtech.api.recipe.maps.FluidCannerBackend;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
@@ -1210,6 +1211,17 @@ public final class RecipeMaps {
         .logoPos(152, 41)
         .neiRecipeBackgroundSize(170, 60)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTModHandler.getIC2Item("nuclearReactor", 1, null)))
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> bioSynthesizerRecipes = RecipeMapBuilder
+        .of("gt.recipe.biosynthesizer")
+        .maxIO(6, 6, 3, 3)
+        .minInputs(1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .logo(GTUITextures.PICTURE_BIOHAZARD)
+        .logoPos(152, 100)
+        .disableOptimize()
+        .frontend(BioSynthesizerFrontEnd::new)
         .build();
 
     static {
