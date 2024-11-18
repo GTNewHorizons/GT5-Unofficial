@@ -1111,7 +1111,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
         public ItemStack newDataStickForNEI(String aDisplayName) {
             ItemStack dataStick = ItemList.Tool_DataStick.getWithName(1L, aDisplayName);
             // we don't actually needs to set the recipe data here. no one will read the recipe data before a world load
-            // and before a world load id remap will happen and the recipe data will be finally set in the below reInit() method
+            // and before a world load id remap will happen and the recipe data will be finally set in the below
+            // reInit() method
             // AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(dataStick, this, false);
             dataSticksForNEI.add(dataStick);
             return dataStick;
