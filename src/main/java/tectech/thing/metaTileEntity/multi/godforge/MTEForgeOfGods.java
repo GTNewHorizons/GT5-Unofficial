@@ -1,6 +1,9 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -321,7 +324,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         .addShape(STRUCTURE_PIECE_SECOND_RING_AIR, ForgeOfGodsRingsStructureString.SECOND_RING_AIR)
         .addShape(STRUCTURE_PIECE_THIRD_RING, ForgeOfGodsRingsStructureString.THIRD_RING)
         .addShape(STRUCTURE_PIECE_THIRD_RING_AIR, ForgeOfGodsRingsStructureString.THIRD_RING_AIR)
-        .addElement('A', classicHatches(TEXTURE_INDEX + 3, 1, GodforgeCasings, 3))
+        .addElement(
+            'A',
+            HatchElementBuilder.<MTEForgeOfGods>builder()
+                .atLeast(InputBus, InputHatch, OutputBus)
+                .casingIndex(TEXTURE_INDEX + 3)
+                .dot(1)
+                .buildAndChain(GodforgeCasings, 3))
         .addElement('B', ofBlock(GodforgeCasings, 0))
         .addElement('C', ofBlock(GodforgeCasings, 1))
         .addElement('D', ofBlock(GodforgeCasings, 2))
