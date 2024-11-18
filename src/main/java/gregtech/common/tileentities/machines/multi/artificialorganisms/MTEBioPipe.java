@@ -14,53 +14,52 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
-import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
+import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Client;
+import gregtech.api.util.GTUtility;
+import gregtech.common.GTClient;
+import gregtech.common.config.Other;
 import gregtech.common.covers.CoverInfo;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.Hatch_BioOutput;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioOutput;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.util.IConnectsToBioPipe;
 
-public class MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsToBioPipe {
+public class MTEBioPipe extends MetaPipeEntity implements IConnectsToBioPipe {
 
-    public Hatch_BioOutput networkOutput;
+    public MTEHatchBioOutput networkOutput;
 
     private static Textures.BlockIcons.CustomIcon pipeTexture;
 
-    public MetaPipeEntity_BioPipe(int aID, String aName, String aNameRegional) {
+    public MTEBioPipe(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
     }
 
-    public MetaPipeEntity_BioPipe(String aName) {
+    public MTEBioPipe(String aName) {
         super(aName, 0);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new MetaPipeEntity_BioPipe(mName);
+        return new MTEBioPipe(mName);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (GT_Mod.gregtechproxy.gt6Pipe) {
+        if (GTMod.gregtechproxy.gt6Pipe) {
             aNBT.setByte("mConnections", mConnections);
         }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (GT_Mod.gregtechproxy.gt6Pipe) {
+        if (GTMod.gregtechproxy.gt6Pipe) {
             mConnections = aNBT.getByte("mConnections");
         }
     }
@@ -168,7 +167,7 @@ public class MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsT
 
     @Override
     public float getThickNess() {
-        if (GT_Mod.instance.isClientSide() && GT_Client.hideValue == 1) {
+        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
             return 0.0625F;
         }
         return 0.375f;
@@ -181,8 +180,7 @@ public class MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsT
 
     // Pipes recursively call this function on other pipes, returning a connections hashset.
     @Override
-    public HashSet<IConnectsToBioPipe> getConnected(Hatch_BioOutput output,
-                                                    HashSet<IConnectsToBioPipe> connections) {
+    public HashSet<IConnectsToBioPipe> getConnected(MTEHatchBioOutput output, HashSet<IConnectsToBioPipe> connections) {
         networkOutput = output;
         connections.add(this);
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -208,11 +206,11 @@ public class MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsT
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        if (GT_Mod.gregtechproxy.gt6Pipe) {
-            final int mode = GT_MetaGenerated_Tool.getToolMode(aTool);
+        if (GTMod.gregtechproxy.gt6Pipe) {
+            final int mode = MetaGeneratedTool.getToolMode(aTool);
             IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
-            MetaPipeEntity_BioPipe currentPipe = (MetaPipeEntity_BioPipe) currentPipeBase.getMetaTileEntity();
-            final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
+            MTEBioPipe currentPipe = (MTEBioPipe) currentPipeBase.getMetaTileEntity();
+            final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
 
             if (mode == ToolModes.REGULAR.get()) {
                 currentPipe.connectPipeOnSide(tSide, entityPlayer);
@@ -223,7 +221,7 @@ public class MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsT
 
                 boolean wasActionPerformed = false;
 
-                int limit = GregTech_API.sSpecialFile.get(ConfigCategories.general, "PipeWrenchingChainRange", 64);
+                int limit = Other.pipeWrenchingChainRange;
                 for (int connected = 0; connected < limit; connected++) {
 
                     TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);
@@ -233,10 +231,9 @@ public class MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsT
                         return wasActionPerformed;
                     }
 
-                    MetaPipeEntity_BioPipe nextPipe = nextPipeBase
-                        .getMetaTileEntity() instanceof MetaPipeEntity_BioPipe
-                            ? (MetaPipeEntity_BioPipe) nextPipeBase.getMetaTileEntity()
-                            : null;
+                    MTEBioPipe nextPipe = nextPipeBase.getMetaTileEntity() instanceof MTEBioPipe
+                        ? (MTEBioPipe) nextPipeBase.getMetaTileEntity()
+                        : null;
 
                     // if next tile entity is not a pipe
                     if (nextPipe == null) {
@@ -260,11 +257,11 @@ public class MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsT
     public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
         if (!isConnectedAtSide(side)) {
             if (connect(side) > 0) {
-                GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
+                GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("214", "Connected"));
             }
         } else {
             disconnect(side);
-            GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("215", "Disconnected"));
+            GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("215", "Disconnected"));
         }
     }
 
@@ -295,7 +292,7 @@ public class MetaPipeEntity_BioPipe extends MetaPipeEntity implements IConnectsT
     @Override
     public boolean getGT6StyleConnection() {
         // Yes if GT6 pipes are enabled
-        return GT_Mod.gregtechproxy.gt6Pipe;
+        return GTMod.gregtechproxy.gt6Pipe;
     }
 
     @Override

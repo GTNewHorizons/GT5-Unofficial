@@ -125,10 +125,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BLACKHOLE_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.BIO_HATCH_INPUT;
 import static gregtech.api.enums.MetaTileEntityIDs.BIO_HATCH_OUTPUT;
 import static gregtech.api.enums.MetaTileEntityIDs.BIO_PIPE;
+import static gregtech.api.enums.MetaTileEntityIDs.BLACKHOLE_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_IV;
@@ -1079,6 +1079,11 @@ import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEAOAssembler;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioPipe;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEEvolutionChamber;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioInput;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioOutput;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
@@ -1635,27 +1640,20 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
                 .getStackForm(1));
-            new GT_MetaTileEntity_MultiLathe(
-                MULTI_LATHE_CONTROLLER.ID,
-                "multimachine.lathe",
-                "Industrial Precision Lathe").getStackForm(1));
 
         ItemList.Machine_Multi_EvolutionChamber.set(
-            new EvolutionChamber(
+            new MTEEvolutionChamber(
                 EVOLUTION_CHAMBER.ID,
                 "multimachine.evolutionchamber",
                 "Hyperaccelerated Macroevolution Chamber").getStackForm(1));
-        ItemList.Bio_Pipe
-            .set(new MetaPipeEntity_BioPipe(BIO_PIPE.ID, "pipe.bio", "Sterile Bio Pipe").getStackForm(1));
-        ItemList.Bio_Hatch_Input.set(
-            new Hatch_BioInput(BIO_HATCH_INPUT.ID, "hatch.bioinput", "Bio Hatch (Input)", 8)
-                .getStackForm(1));
+
+        ItemList.Bio_Pipe.set(new MTEBioPipe(BIO_PIPE.ID, "pipe.bio", "Sterile Bio Pipe").getStackForm(1));
+        ItemList.Bio_Hatch_Input
+            .set(new MTEHatchBioInput(BIO_HATCH_INPUT.ID, "hatch.bioinput", "Bio Hatch (Input)", 8).getStackForm(1));
         ItemList.Bio_Hatch_Output.set(
-            new Hatch_BioOutput(BIO_HATCH_OUTPUT.ID, "hatch.biooutput", "Bio Hatch (Output)", 8)
-                .getStackForm(1));
-        ItemList.Machine_Multi_AOAssembler.set(
-            new AOAssembler(AO_ASSEMBLER.ID, "multimachine.aoassembler", "AO Assembling Unit")
-                .getStackForm(1));
+            new MTEHatchBioOutput(BIO_HATCH_OUTPUT.ID, "hatch.biooutput", "Bio Hatch (Output)", 8).getStackForm(1));
+        ItemList.Machine_Multi_AOAssembler
+            .set(new MTEAOAssembler(AO_ASSEMBLER.ID, "multimachine.aoassembler", "AO Assembling Unit").getStackForm(1));
     }
 
     private static void registerSteamMachines() {

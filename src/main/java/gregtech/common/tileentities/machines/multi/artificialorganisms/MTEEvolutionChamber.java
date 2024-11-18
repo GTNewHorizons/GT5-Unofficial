@@ -3,30 +3,19 @@ package gregtech.common.tileentities.machines.multi.artificialorganisms;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
+import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.common.builder.UIInfo;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import gregtech.api.gui.modularui.GT_UITextures;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.Hatch_BioOutput;
-import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,69 +25,69 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioOutput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-public class EvolutionChamber
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<EvolutionChamber>
+public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolutionChamber>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<EvolutionChamber> STRUCTURE_DEFINITION = StructureDefinition
-        .<EvolutionChamber>builder()
+    private static final IStructureDefinition<MTEEvolutionChamber> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEEvolutionChamber>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             new String[][] { { "BBB", "AAA", "B~B" }, { "BBB", "A A", "BBB" }, { "BBB", "AAA", "BBB" } })
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(EvolutionChamber.class)
-                    .adder(EvolutionChamber::addBioHatch)
-                    .hatchClass(Hatch_BioOutput.class)
+                buildHatchAdder(MTEEvolutionChamber.class).adder(MTEEvolutionChamber::addBioHatch)
+                    .hatchClass(MTEHatchBioOutput.class)
                     .shouldReject(t -> !(t.bioHatch == null))
-                    .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                    .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(2)
                     .buildAndChain(
-                        onElementPass(
-                            EvolutionChamber::onCasingAdded,
-                            ofBlock(GregTech_API.sBlockCasings2, 0))),
-                buildHatchAdder(EvolutionChamber.class)
+                        onElementPass(MTEEvolutionChamber::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))),
+                buildHatchAdder(MTEEvolutionChamber.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
-                    .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                    .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
-                        onElementPass(
-                            EvolutionChamber::onCasingAdded,
-                            ofBlock(GregTech_API.sBlockCasings2, 0)))))
+                        onElementPass(MTEEvolutionChamber::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
 
-    Hatch_BioOutput bioHatch;
+    MTEHatchBioOutput bioHatch;
     ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
-    public EvolutionChamber(final int aID, final String aName, final String aNameRegional) {
+    public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public EvolutionChamber(String aName) {
+    public MTEEvolutionChamber(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<EvolutionChamber> getStructureDefinition() {
+    public IStructureDefinition<MTEEvolutionChamber> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -109,7 +98,7 @@ public class EvolutionChamber
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new EvolutionChamber(this.mName);
+        return new MTEEvolutionChamber(this.mName);
     }
 
     @Override
@@ -120,7 +109,7 @@ public class EvolutionChamber
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
                         .extFacing()
@@ -133,7 +122,7 @@ public class EvolutionChamber
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER)
                         .extFacing()
@@ -146,14 +135,14 @@ public class EvolutionChamber
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
         }
         return rTexture;
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Artificial Organism Creator")
             .addInfo("Controller Block for the Hyperaccelerated Macroevolution Chamber")
             .addInfo("Used to create and maintain Artificial Organisms")
@@ -207,7 +196,7 @@ public class EvolutionChamber
     }
 
     public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return (8 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -232,17 +221,17 @@ public class EvolutionChamber
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1L);
     }
 
     private boolean addBioHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof Hatch_BioOutput) {
-                ((Hatch_BioOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            if (aMetaTileEntity instanceof MTEHatchBioOutput) {
+                ((MTEHatchBioOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 if (bioHatch == null) {
-                    bioHatch = (Hatch_BioOutput) aMetaTileEntity;
+                    bioHatch = (MTEHatchBioOutput) aMetaTileEntity;
                     return true;
                 }
             }
@@ -260,7 +249,7 @@ public class EvolutionChamber
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
                 .setSize(190, 85));
 

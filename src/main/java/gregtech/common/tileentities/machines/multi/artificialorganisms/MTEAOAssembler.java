@@ -3,84 +3,80 @@ package gregtech.common.tileentities.machines.multi.artificialorganisms;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GT_HatchElement.Energy;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
-import static gregtech.api.enums.GT_HatchElement.Maintenance;
-import static gregtech.api.enums.GT_HatchElement.OutputBus;
-import static gregtech.api.enums.GT_HatchElement.OutputHatch;
-import static gregtech.api.enums.GT_Values.AuthorFourIsTheNumber;
+import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
-import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import gregtech.api.objects.ArtificialOrganism;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GT_Recipe;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.Hatch_BioInput;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
+import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Casings2;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioInput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import org.jetbrains.annotations.NotNull;
 
-public class AOAssembler extends
-    GT_MetaTileEntity_ExtendedPowerMultiBlockBase<AOAssembler> implements ISurvivalConstructable {
+public class MTEAOAssembler extends MTEExtendedPowerMultiBlockBase<MTEAOAssembler> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<AOAssembler> STRUCTURE_DEFINITION = StructureDefinition
-        .<AOAssembler>builder()
+    private static final IStructureDefinition<MTEAOAssembler> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEAOAssembler>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             new String[][] { { "BBB", "AAA", "B~B" }, { "BBB", "A A", "BBB" }, { "BBB", "AAA", "BBB" } })
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(AOAssembler.class).adder(AOAssembler::addBioHatch)
-                    .hatchClass(Hatch_BioInput.class)
+                buildHatchAdder(MTEAOAssembler.class).adder(MTEAOAssembler::addBioHatch)
+                    .hatchClass(MTEHatchBioInput.class)
                     .shouldReject(t -> !(t.bioHatch == null))
-                    .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                    .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(2)
                     .buildAndChain(
-                        onElementPass(
-                            AOAssembler::onCasingAdded,
-                            ofBlock(GregTech_API.sBlockCasings2, 0))),
-                buildHatchAdder(AOAssembler.class)
+                        onElementPass(MTEAOAssembler::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))),
+                buildHatchAdder(MTEAOAssembler.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
-                    .casingIndex(((GT_Block_Casings2) GregTech_API.sBlockCasings2).getTextureIndex(0))
+                    .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
-                        onElementPass(
-                            AOAssembler::onCasingAdded,
-                            ofBlock(GregTech_API.sBlockCasings2, 0)))))
+                        onElementPass(MTEAOAssembler::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
 
-    Hatch_BioInput bioHatch;
+    MTEHatchBioInput bioHatch;
 
     private int AOsInUse = 0;
 
@@ -89,16 +85,16 @@ public class AOAssembler extends
         return super.onRunningTick(aStack);
     }
 
-    public AOAssembler(final int aID, final String aName, final String aNameRegional) {
+    public MTEAOAssembler(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public AOAssembler(String aName) {
+    public MTEAOAssembler(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<AOAssembler> getStructureDefinition() {
+    public IStructureDefinition<MTEAOAssembler> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -109,7 +105,7 @@ public class AOAssembler extends
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new AOAssembler(this.mName);
+        return new MTEAOAssembler(this.mName);
     }
 
     @Override
@@ -120,7 +116,7 @@ public class AOAssembler extends
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
                         .extFacing()
@@ -133,7 +129,7 @@ public class AOAssembler extends
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER)
                         .extFacing()
@@ -146,14 +142,14 @@ public class AOAssembler extends
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
         }
         return rTexture;
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
+    protected MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Assembling Line")
             .addInfo("Controller Block for the AO Assembler")
             .addInfo("Uses Artificial Organisms to build components")
@@ -203,13 +199,15 @@ public class AOAssembler extends
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
+
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 ArtificialOrganism currentOrganism = getAO();
                 if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
                 else if (currentOrganism.getCount() <= 0) return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
-                else if (currentOrganism.getIntelligence() <= 0) return SimpleCheckRecipeResult.ofFailure("ao_too_stupid");
+                else if (currentOrganism.getIntelligence() <= 0)
+                    return SimpleCheckRecipeResult.ofFailure("ao_too_stupid");
 
                 AOsInUse = currentOrganism.consumeAOs(50);
                 return super.validateRecipe(recipe);
@@ -250,7 +248,7 @@ public class AOAssembler extends
     }
 
     public int getMaxParallelRecipes() {
-        return (8 * GT_Utility.getTier(this.getMaxInputVoltage()));
+        return (8 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -275,17 +273,17 @@ public class AOAssembler extends
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GT_Utility.roundUpVoltage(this.getMaxInputVoltage()));
+        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1L);
     }
 
     private boolean addBioHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof Hatch_BioInput) {
-                ((Hatch_BioInput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            if (aMetaTileEntity instanceof MTEHatchBioInput) {
+                ((MTEHatchBioInput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 if (bioHatch == null) {
-                    bioHatch = (Hatch_BioInput) aMetaTileEntity;
+                    bioHatch = (MTEHatchBioInput) aMetaTileEntity;
                     return true;
                 }
             }

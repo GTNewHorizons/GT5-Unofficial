@@ -8,19 +8,19 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.util.IConnectsToBioPipe;
 
-public class Hatch_BioInput extends GT_MetaTileEntity_Hatch implements IConnectsToBioPipe {
+public class MTEHatchBioInput extends MTEHatch implements IConnectsToBioPipe {
 
-    Hatch_BioOutput networkOutput;
+    MTEHatchBioOutput networkOutput;
 
-    public Hatch_BioInput(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchBioInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Accepts Artificial Organisms");
     }
 
-    public Hatch_BioInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchBioInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -36,7 +36,7 @@ public class Hatch_BioInput extends GT_MetaTileEntity_Hatch implements IConnects
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new Hatch_BioInput(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchBioInput(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -55,8 +55,7 @@ public class Hatch_BioInput extends GT_MetaTileEntity_Hatch implements IConnects
     }
 
     @Override
-    public HashSet<IConnectsToBioPipe> getConnected(Hatch_BioOutput output,
-                                                    HashSet<IConnectsToBioPipe> connections) {
+    public HashSet<IConnectsToBioPipe> getConnected(MTEHatchBioOutput output, HashSet<IConnectsToBioPipe> connections) {
         HashSet<IConnectsToBioPipe> c = new HashSet<>();
         c.add(this);
         networkOutput = output;
