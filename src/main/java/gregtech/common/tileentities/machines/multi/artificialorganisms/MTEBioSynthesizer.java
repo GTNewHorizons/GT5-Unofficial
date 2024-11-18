@@ -49,30 +49,30 @@ import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioInput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-public class MTEAOAssembler extends MTEExtendedPowerMultiBlockBase<MTEAOAssembler> implements ISurvivalConstructable {
+public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynthesizer> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTEAOAssembler> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEAOAssembler>builder()
+    private static final IStructureDefinition<MTEBioSynthesizer> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEBioSynthesizer>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             new String[][] { { "BBB", "AAA", "B~B" }, { "BBB", "A A", "BBB" }, { "BBB", "AAA", "BBB" } })
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(MTEAOAssembler.class).adder(MTEAOAssembler::addBioHatch)
+                buildHatchAdder(MTEBioSynthesizer.class).adder(MTEBioSynthesizer::addBioHatch)
                     .hatchClass(MTEHatchBioInput.class)
                     .shouldReject(t -> !(t.bioHatch == null))
                     .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(2)
                     .buildAndChain(
-                        onElementPass(MTEAOAssembler::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))),
-                buildHatchAdder(MTEAOAssembler.class)
+                        onElementPass(MTEBioSynthesizer::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))),
+                buildHatchAdder(MTEBioSynthesizer.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
                     .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(1)
                     .buildAndChain(
-                        onElementPass(MTEAOAssembler::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
+                        onElementPass(MTEBioSynthesizer::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
 
@@ -85,16 +85,16 @@ public class MTEAOAssembler extends MTEExtendedPowerMultiBlockBase<MTEAOAssemble
         return super.onRunningTick(aStack);
     }
 
-    public MTEAOAssembler(final int aID, final String aName, final String aNameRegional) {
+    public MTEBioSynthesizer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEAOAssembler(String aName) {
+    public MTEBioSynthesizer(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<MTEAOAssembler> getStructureDefinition() {
+    public IStructureDefinition<MTEBioSynthesizer> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -105,7 +105,7 @@ public class MTEAOAssembler extends MTEExtendedPowerMultiBlockBase<MTEAOAssemble
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEAOAssembler(this.mName);
+        return new MTEBioSynthesizer(this.mName);
     }
 
     @Override
@@ -150,9 +150,8 @@ public class MTEAOAssembler extends MTEExtendedPowerMultiBlockBase<MTEAOAssemble
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembling Line")
-            .addInfo("Controller Block for the AO Assembler")
-            .addInfo("Uses Artificial Organisms to build components")
+        tt.addMachineType("Bio Synthesizer")
+            .addInfo("Uses Artificial Organisms to form organic materials")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
