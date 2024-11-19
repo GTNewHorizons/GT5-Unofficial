@@ -49,7 +49,6 @@ import appeng.core.stats.Stats;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.util.IWideReadableNumberConverter;
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -345,15 +344,14 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public void getWailaBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, ss, accessor, config);
-        IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
 
         NBTTagCompound tag = accessor.getNBTData();
 
         ss.add(
             String.format(
-                "Fluid cache capacity: %s%s%s",
+                "Fluid cache capacity: %s%s L%s",
                 EnumChatFormatting.GOLD,
-                nc.toWideReadableForm(tag.getLong("cacheCapacity")),
+                GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
 
         if (!GuiScreen.isShiftKeyDown()) {
@@ -381,10 +379,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
                 ss.add(
                     String.format(
-                        "%s: %s%s mB%s",
+                        "%s: %s%s L%s",
                         stack.getLocalizedName(),
                         EnumChatFormatting.GOLD,
-                        nc.toWideReadableForm(stackTag.getLong("Amount")),
+                        GTUtility.formatNumbers(stackTag.getLong("Amount")),
                         EnumChatFormatting.RESET));
             }
 
@@ -461,8 +459,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         ss.add(
             "The hatch is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
                 : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
-        IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
-        ss.add("Fluid cache capacity: " + nc.toWideReadableForm(getCacheCapacity()) + " mB");
+        ss.add(
+            "Fluid cache capacity: " + EnumChatFormatting.GOLD
+                + GTUtility.formatNumbers(getCacheCapacity())
+                + " L"
+                + EnumChatFormatting.RESET);
         if (fluidCache.isEmpty()) {
             ss.add("The bus has no cached fluids");
         } else {
@@ -473,8 +474,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     s.getFluidStack()
                         .getLocalizedName() + ": "
                         + EnumChatFormatting.GOLD
-                        + nc.toWideReadableForm(s.getStackSize())
-                        + " mB"
+                        + GTUtility.formatNumbers(s.getStackSize())
+                        + " L"
                         + EnumChatFormatting.RESET);
                 if (++counter > 100) break;
             }

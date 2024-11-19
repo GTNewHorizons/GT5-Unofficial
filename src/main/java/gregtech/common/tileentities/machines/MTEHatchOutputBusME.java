@@ -41,7 +41,6 @@ import appeng.items.storage.ItemBasicStorageCell;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
@@ -382,7 +381,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public void getWailaBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, ss, accessor, config);
-        IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
 
         NBTTagCompound tag = accessor.getNBTData();
 
@@ -390,7 +388,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             String.format(
                 "Item cache capacity: %s%s%s",
                 EnumChatFormatting.GOLD,
-                nc.toWideReadableForm(tag.getLong("cacheCapacity")),
+                GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
 
         if (!GuiScreen.isShiftKeyDown()) {
@@ -421,7 +419,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                         stack.getItemStack()
                             .getDisplayName(),
                         EnumChatFormatting.GOLD,
-                        nc.toWideReadableForm(stack.getStackSize()),
+                        GTUtility.formatNumbers(stack.getStackSize()),
                         EnumChatFormatting.RESET));
             }
 
@@ -437,8 +435,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         ss.add(
             "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
                 : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
-        IWideReadableNumberConverter nc = ReadableNumberConverter.INSTANCE;
-        ss.add("Item cache capacity: " + nc.toWideReadableForm(getCacheCapacity()));
+        ss.add(
+            "Item cache capacity: " + EnumChatFormatting.GOLD
+                + GTUtility.formatNumbers(getCacheCapacity())
+                + EnumChatFormatting.RESET);
         if (itemCache.isEmpty()) {
             ss.add("The bus has no cached items");
         } else {
@@ -449,7 +449,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     s.getItem()
                         .getItemStackDisplayName(s.getItemStack()) + ": "
                         + EnumChatFormatting.GOLD
-                        + nc.toWideReadableForm(s.getStackSize())
+                        + GTUtility.formatNumbers(s.getStackSize())
                         + EnumChatFormatting.RESET);
                 if (++counter > 100) break;
             }
