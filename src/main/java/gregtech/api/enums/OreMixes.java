@@ -83,7 +83,8 @@ public enum OreMixes {
         .primary(Materials.Magnetite)
         .secondary(Materials.Magnetite)
         .inBetween(Materials.VanadiumMagnetite)
-        .sporadic(Materials.Gold)),
+        .sporadic(Materials.Gold)
+        .localize(Materials.Gold)),
 
     Iron(new OreMixBuilder().name("ore.mix.iron")
         .heightRange(10, 40)
@@ -247,7 +248,7 @@ public enum OreMixes {
         .localize(Materials.Platinum)),
 
     Pitchblende(new OreMixBuilder().name("ore.mix.pitchblende")
-        .heightRange(60, 60)
+        .heightRange(30, 60)
         .weight(40)
         .density(2)
         .size(16)
@@ -993,7 +994,7 @@ public enum OreMixes {
         .weight(80)
         .density(2)
         .size(32)
-        .enableInDim(MehenBelt)
+        .enableInDim(Seth)
         .primary(Materials.TengamRaw)
         .secondary(Materials.TengamRaw)
         .inBetween(Materials.Electrotine)

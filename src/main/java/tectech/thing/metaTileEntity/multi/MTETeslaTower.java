@@ -79,7 +79,6 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-import tectech.util.CommonValues;
 
 public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstructable, ITeslaConnectable {
 
@@ -550,8 +549,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
                                                                                             // Windings need to
             // be at least the same tier as
             // the Tesla Capacitor
-            .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginStructureBlock(7, 17, 7, false)
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
@@ -564,7 +562,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
                                                                                                       // Hatch: Any
                                                                                                       // outer Tesla
                                                                                                       // Base Casing
-            .toolTipFinisher(CommonValues.THETA_MOVEMENT);
+            .toolTipFinisher();
         return tt;
     }
 

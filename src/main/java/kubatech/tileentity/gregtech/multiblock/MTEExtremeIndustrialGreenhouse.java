@@ -32,8 +32,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static kubatech.api.Variables.Author;
-import static kubatech.api.Variables.StructureHologram;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
 import java.io.IOException;
@@ -115,7 +113,6 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import kubatech.Tags;
 import kubatech.api.EIGDynamicInventory;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
@@ -295,8 +292,6 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
         tt.addMachineType("Crop Farm")
-            .addInfo("Controller block for the Extreme Industrial Greenhouse")
-            .addInfo(Author)
             .addInfo("Grow your crops like a chad!")
             .addInfo("Use screwdriver to enable/change/disable setup mode")
             .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
@@ -309,16 +304,15 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     + " seeds")
             .addInfo("Otherwise, around 1% of seeds will be voided each operation")
             .addInfo("You can insert fertilizer each operation to get more drops (max + " + fertilizerBoostMax + ")")
-            .addInfo("--------------------- SETUP MODE ---------------------")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + "Setup Mode:")
             .addInfo("Does not take power")
             .addInfo("There are two modes: input / output")
             .addInfo("Input mode: machine will take seeds from input bus and plant them")
             .addInfo("[IC2] You need to also input block that is required under the crop")
             .addInfo("Output mode: machine will take planted seeds and output them");
         EIGModes.addTooltipInfo(tt);
-        tt.addInfo(StructureHologram)
-            .addSeparator()
-            .beginStructureBlock(5, 6, 5, false)
+        tt.beginStructureBlock(5, 6, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 70, false)
             .addOtherStructurePart("Borosilicate Glass", "Hollow two middle layers")
@@ -331,7 +325,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addOutputBus("Any casing (Except inner bottom ones)", 1)
             .addInputHatch("Any casing (Except inner bottom ones)", 1)
             .addEnergyHatch("Any casing (Except inner bottom ones)", 1)
-            .toolTipFinisher(Tags.MODNAME);
+            .toolTipFinisher(GTValues.AuthorKuba);
         return tt;
     }
 
@@ -848,7 +842,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             }
         }
 
-        this.guiDropTracker.addTo(this.dropTracker, multiplier);
+        this.guiDropTracker.addTo(this.dropTracker);
         this.mOutputItems = this.dropTracker.getDrops();
 
         // consume power

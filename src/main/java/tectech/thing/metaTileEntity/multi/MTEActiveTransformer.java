@@ -31,7 +31,6 @@ import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -128,9 +127,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.transformer.name")) // Machine Type:
                                                                                                  // Transformer
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.0")) // Controller block of
-                                                                                              // the
-            // Active Transformer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
                                                                                               // and from any
                                                                                               // voltage
@@ -139,7 +135,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.3")) // Will explode if
                                                                                               // broken while
                                                                                               // running
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 3, false)
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
             .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
@@ -151,7 +147,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
                                                                                             // High Power Casing
             .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any
                                                                                             // High Power Casing
-            .toolTipFinisher(CommonValues.TEC_MARK_GENERAL);
+            .toolTipFinisher();
         return tt;
     }
 

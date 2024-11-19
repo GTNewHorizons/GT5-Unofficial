@@ -116,21 +116,21 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
 
     private static final String[][] structure = new String[][] {
         // spotless:off
-        { "            DDDDDDD    ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDKDD     " },
-        { "          DD       DD  ", "            DDDDDDD    ", "             DDDDD     ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DDDDDDDDD   " },
-        { "         D           D ", "          DDD     DDD  ", "            DDDDDDD    ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "          D         D  ", "          D         D  ", "          DDDDDDDDDDD  " },
-        { "         D           D ", "          D        DD  ", "           DD      D   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "          D         D  ", "          D         D  ", "          D         D  ", "          D         D  ", "         D           D ", "         D           D ", "         DDDDDDDDDDDDD " },
-        { "        D             D", "         DD         DD ", "          DD        D  ", "           D       D   ", "           D       D   ", "           D       D   ", "           D       D   ", "           D       D   ", "          D         D  ", "          D         D  ", "          D         D  ", "          D         D  ", "         D           D ", "         D           D ", "         DDDDDDDDDDDDD " },
-        { "        D             D", "         D           D ", "         DD          D ", "          D         D  ", "          D         D  ", "GBBBG     D         D  ", "G   G     D         D  ", "G   G     D         D  ", "G   G    D           D ", "G   G    D           D ", "G   G    D           D ", "G   G    D           D ", "G   G   D             D", "G   G   D             D", "GB~BG   DDDDDDDDDDDDDDD" },
-        { "        D             D", "         D           D ", "         DD          D ", "          D         D  ", " BBB      D         D  ", "BBBBB     D         D  ", " EEE      D         D  ", " EEE      D         D  ", " EEE     D           D ", " EEE     D           D ", " EEE     D           D ", " EEE     D           D ", " EEE    D             D", " EEEBBBBD             D", "BAAAB   DDDDDDDDDDDDDDD" },
-        { "        D             D", "         D           D ", "         DD          D ", "          D         D  ", " BBB      D         D  ", "BBBBB     D         D  ", " EFE      D         D  ", " EFE      D         D  ", " EFE     D           D ", " EFE     D           D ", " EFE     D           D ", " EFE     D           D ", " EFEBBBBD             D", " EFE    D             D", "PAAABBBBDDDDDDDDDDDDDDD" },
-        { "        D             D", "         D           D ", "         DD          D ", "          D         D  ", " BBB      D         D  ", "BBBBB     D         D  ", " EEE      D         D  ", " EEE      D         D  ", " EEE     D           D ", " EEE     D           D ", " EEE     D           D ", " EEE     D           D ", " EEE    D             D", " EEEBBBBD             D", "BAAAB   DDDDDDDDDDDDDDD" },
-        { "        D             D", "         D           D ", "         DD          D ", "          D         D  ", "          D         D  ", "GBBBG     D         D  ", "G   G     D         D  ", "G   G     D         D  ", "G   G    D           D ", "G   G    D           D ", "G   G    D           D ", "G   G    D           D ", "G   G   D             D", "G   G   D             D", "GBBBG   DDDDDDDDDDDDDDD" },
-        { "        D             D", "         D           D ", "          D         D  ", "           D       DD  ", "           D       DD  ", "           D       DD  ", "           D       DD  ", "           D       DD  ", "          D          D ", "          D          D ", "          D          D ", "          D          D ", "         D           D ", "         D           D ", "         DDDDDDDDDDDDD " },
-        { "         D           DD", "          D         D  ", "           D       D   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "          D         D  ", "          D         D  ", "          D         D  ", "          D         D  ", "         D           D ", "         D           D ", "         DDDDDDDDDDDDD " },
-        { "         D           D ", "          DD       DD  ", "            D     D    ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "          D         D  ", "          D         D  ", "          DDDDDDDDDDD  " },
-        { "          DD       DD  ", "            DDDDDDD    ", "             DDDDD     ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DDDDDDDDD   " },
-        { "            DDDDDDD    ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     " } };
+        { "             DDDDD     ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDKDD     " },
+        { "           DD     DD   ", "             DDDDD     ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DDDDDDDDD   " },
+        { "          D         D  ", "           DD     DD   ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "          D         D  ", "          D         D  ", "          D         D  ", "          DDDDDDDDDDD  " },
+        { "         D           D ", "          D         D  ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "          D         D  ", "          D         D  ", "          D         D  ", "         D           D ", "         D           D ", "         D           D ", "         DDDDDDDDDDDDD " },
+        { "         D           D ", "          D         D  ", "           D       D   ", "           D       D   ", "           D       D   ", "           D       D   ", "           D       D   ", "           D       D   ", "          D         D  ", "          D         D  ", "          D         D  ", "         D           D ", "         D           D ", "         D           D ", "         DDDDDDDDDDDDD " },
+        { "        D             D", "         D           D ", "          D         D  ", "          D         D  ", "          D         D  ", "GBBBG     D         D  ", "G   G     D         D  ", "G   G     D         D  ", "G   G    D           D ", "G   G    D           D ", "G   G    D           D ", "G   G   D             D", "G   G   D             D", "G   G   D             D", "GB~BG   DDDDDDDDDDDDDDD" },
+        { "        D             D", "         D           D ", "          D         D  ", "          D         D  ", " BBB      D         D  ", "BBBBB     D         D  ", " EEE      D         D  ", " EEE      D         D  ", " EEE     D           D ", " EEE     D           D ", " EEE     D           D ", " EEE    D             D", " EEE    D             D", " EEEBBBBD             D", "BAAAB   DDDDDDDDDDDDDDD" },
+        { "        D             D", "         D           D ", "          D         D  ", "          D         D  ", " BBB      D         D  ", "BBBBB     D         D  ", " EFE      D         D  ", " EFE      D         D  ", " EFE     D           D ", " EFE     D           D ", " EFE     D           D ", " EFE    D             D", " EFEBBBBD             D", " EFE    D             D", "PAAABBBBDDDDDDDDDDDDDDD" },
+        { "        D             D", "         D           D ", "          D         D  ", "          D         D  ", " BBB      D         D  ", "BBBBB     D         D  ", " EEE      D         D  ", " EEE      D         D  ", " EEE     D           D ", " EEE     D           D ", " EEE     D           D ", " EEE    D             D", " EEE    D             D", " EEEBBBBD             D", "BAAAB   DDDDDDDDDDDDDDD" },
+        { "        D             D", "         D           D ", "          D         D  ", "          D         D  ", "          D         D  ", "GBBBG     D         D  ", "G   G     D         D  ", "G   G     D         D  ", "G   G    D           D ", "G   G    D           D ", "G   G    D           D ", "G   G   D             D", "G   G   D             D", "G   G   D             D", "GBBBG   DDDDDDDDDDDDDDD" },
+        { "         D           D ", "          D         D  ", "           D       D   ", "           D       D   ", "           D       D   ", "           D       D   ", "           D       D   ", "           D       D   ", "          D         D  ", "          D         D  ", "          D         D  ", "         D           D ", "         D           D ", "         D           D ", "         DDDDDDDDDDDDD " },
+        { "         D           D ", "          D         D  ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "          D         D  ", "          D         D  ", "          D         D  ", "         D           D ", "         D           D ", "         D           D ", "         DDDDDDDDDDDDD " },
+        { "          D         D  ", "           DD     DD   ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "          D         D  ", "          D         D  ", "          D         D  ", "          DDDDDDDDDDD  " },
+        { "           DD     DD   ", "             DDDDD     ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "           DD     DD   ", "           DD     DD   ", "           DD     DD   ", "           DDDDDDDDD   " },
+        { "             DDDDD     ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "                       ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     ", "             DDDDD     " } };
     // spotless:on
 
     private int casingCount = 0;
@@ -172,7 +172,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             'K',
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .atLeast(InputHatch)
+                    .hatchClass(MTEHatchInput.class)
                     .dot(2)
                     .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (Coolant)")
@@ -183,7 +183,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             'P',
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .atLeast(InputHatch)
+                    .hatchClass(MTEHatchInput.class)
                     .dot(3)
                     .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (Plasma)")
@@ -281,7 +281,6 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Extreme Temperature Fluctuation Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
@@ -359,12 +358,11 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "supercritical while evaporating any remaining contaminants, ready for filtration.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(23, 15, 15, false)
             .addCasingInfoExactlyColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
-                1091,
+                669,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -389,7 +387,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addCasingInfoExactlyColored(
                 "Superconducting Coil Block",
                 EnumChatFormatting.GRAY,
-                8,
+                9,
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front center")
@@ -397,8 +395,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addOtherStructurePart("Output Hatch", EnumChatFormatting.GOLD + "1", 1)
             .addOtherStructurePart("Input Hatch (Coolant)", EnumChatFormatting.GOLD + "1", 2)
             .addOtherStructurePart("Input Hatch (Plasma)", EnumChatFormatting.GOLD + "1", 3)
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

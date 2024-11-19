@@ -124,7 +124,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 // Cube root the amperage to get the parallels
                 laserAmps = (int) Math.cbrt(laserSource.maxAmperesOut());
                 laserTier = (int) laserSource.getOutputTier();
-                tierName = GTValues.VN[laserTier];
+                tierName = GTValues.VN[laserTier + 1];
                 return true;
             }
         }
@@ -217,18 +217,12 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             return true;
         } else {
             if (renderer != null) {
-                renderer.realism = !renderer.realism;
+                renderer.toggleRealism();
                 PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
                 return true;
             }
         }
         return false;
-    }
-
-    @Override
-    public void onDisableWorking() {
-        if (renderer != null) renderer.setShouldRender(false);
-        super.onDisableWorking();
     }
 
     @Override
@@ -241,7 +235,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Laser Engraver")
-            .addInfo("Controller Block for the Hyper-Intensity Laser Engraver")
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
@@ -252,8 +245,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("UMV glass accepts all laser source hatches")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
-            .addInfo(AuthorFourIsTheNumber)
-            .addSeparator()
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front Center")
             .addCasingInfoMin("Laser Containment Casing", 35, false)
@@ -267,7 +258,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
 
@@ -304,6 +295,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
+        glassTier = 0;
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
@@ -334,16 +326,16 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                Colors c = Colors.Red;
-                for (int i = 0; i < recipe.mInputs.length; i++) {
-                    String uid = getUniqueIdentifier(recipe.mInputs[i]);
-                    if (lensColors.containsKey(uid)) {
-                        c = lensColors.get(uid);
+                if (!stopAllRendering) {
+                    Colors c = Colors.Red;
+                    for (int i = 0; i < recipe.mInputs.length; i++) {
+                        String uid = getUniqueIdentifier(recipe.mInputs[i]);
+                        if (lensColors.containsKey(uid)) {
+                            c = lensColors.get(uid);
+                        }
                     }
-                }
-                if (renderer != null) {
-                    renderer.setColors(c.r, c.g, c.b);
-                    if (!stopAllRendering) {
+                    if (renderer != null) {
+                        renderer.setColors(c.r, c.g, c.b);
                         renderer.setShouldRender(true);
                     }
                 }

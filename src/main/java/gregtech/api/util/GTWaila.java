@@ -10,11 +10,11 @@ public abstract class GTWaila {
 
         if (!isActive) return "Idle";
 
-        return "In progress: " + String.format("%,.2f", (double) progresstime / 20)
+        return "In progress: " + String.format("%,.1f", (double) progresstime / 20)
             + "s / "
-            + String.format("%,.2f", (double) maxProgresstime / 20)
+            + String.format("%,.1f", (double) maxProgresstime / 20)
             + "s ("
-            + GTUtility.formatNumbers((Math.round((double) progresstime / maxProgresstime * 1000) / 10.0))
+            + String.format("%,.1f", (Math.round((double) progresstime / maxProgresstime * 1000) / 10.0))
             + "%)";
     }
 }

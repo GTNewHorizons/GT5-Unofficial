@@ -17,12 +17,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_G
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -231,16 +231,10 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         return rTexture;
     }
 
-    private static final String TOOLTIP_BAR = GOLD
-        + "---------------------------------------------------------------------------------------";
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Lathe")
-            .addInfo(TOOLTIP_BAR)
-            .addInfo("Controller Block for the Industrial Precision Lathe.")
-            .addInfo(TOOLTIP_BAR)
             .addInfo(BLUE + "Allows more parallel recipes based on item pipe casing parallel and voltage.")
             .addInfo("Max Parallel Recipes = Item Pipe Casing Parallel + (Voltage Tier * 2).")
             .addInfo(BLUE + "Increases processing speed based on item pipe casing speed and voltage.")
@@ -251,19 +245,17 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
                     + "For example, using Black Plutonium item pipe casings (boost of 4) and Tier 3 voltage (HV) ")
             .addInfo(DARK_AQUA + "reduces processing time to 57% of the recipe time, making the machine 175% faster.")
             .addInfo(BLUE + "Only uses 80% of the EU/T normally required.")
-            .addInfo(AuthorVolence)
-            .addSeparator()
             .beginStructureBlock(7, 5, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 8, false)
+            .addCasingInfoExactly("Grate Machine Casing", 9, false)
             .addInputBus("Any of the 9 Solid Steel Casing at Each End", 1)
             .addOutputBus("Any of the 9 Solid Steel Casing at Each End", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
             .addMufflerHatch("Any Solid Steel Casing", 1)
             .addOtherStructurePart("4 Item Pipe Casings", "Center of the glass", 4)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorVolence);
         return tt;
     }
 
@@ -409,5 +401,17 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1L);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
+        return true;
     }
 }

@@ -13,7 +13,6 @@
 
 package bartworks.common.tileentities.multis.mega;
 
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -260,10 +259,10 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillery")
-            .addInfo("Controller block for the Distillation Tower")
+            .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
             .addController("Front bottom")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "15 x h - 5 (minimum)")
@@ -274,7 +273,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
             .addOutputHatch("2-11x Output Hatches (One per Output Layer except bottom layer)")
             .addStructureInfo("An \"Output Layer\" consists of 5 layers!")
             .addStructureHint("The interior of this Mega Multiblock's hologram is empty, it should be all air.")
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -420,9 +419,9 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
-        for (int i = 0; i < mOutputFluids2.length && i < this.mOutputHatchesByLayer.size(); i++) {
-            FluidStack tStack = mOutputFluids2[i].copy();
+    protected void addFluidOutputs(FluidStack[] outputFluids) {
+        for (int i = 0; i < outputFluids.length && i < this.mOutputHatchesByLayer.size(); i++) {
+            FluidStack tStack = outputFluids[i].copy();
             if (!dumpFluid(this.mOutputHatchesByLayer.get(i), tStack, true))
                 dumpFluid(this.mOutputHatchesByLayer.get(i), tStack, false);
         }

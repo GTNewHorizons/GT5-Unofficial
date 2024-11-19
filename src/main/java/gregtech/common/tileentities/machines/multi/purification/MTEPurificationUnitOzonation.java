@@ -180,7 +180,6 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Ozonation Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
@@ -209,7 +208,6 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(9, 10, 5, false)
             .addCasingInfoRangeColored(
                 "Inert Filtration Casing",
@@ -221,7 +219,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
             .addCasingInfoExactlyColored(
                 "Reactive Gas Containment Casing",
                 EnumChatFormatting.GRAY,
-                27,
+                28,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -241,7 +239,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOtherStructurePart("Input Hatch (Ozone)", EnumChatFormatting.GOLD + "1", 2)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 

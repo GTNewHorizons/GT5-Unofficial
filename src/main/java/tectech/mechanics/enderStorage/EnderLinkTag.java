@@ -3,6 +3,8 @@ package tectech.mechanics.enderStorage;
 import java.io.Serializable;
 import java.util.UUID;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.google.common.base.Objects;
 
 public class EnderLinkTag implements Serializable {
@@ -35,5 +37,24 @@ public class EnderLinkTag implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(frequency, player);
+    }
+
+    public NBTTagCompound save() {
+        NBTTagCompound data = new NBTTagCompound();
+
+        data.setString("Freq", frequency);
+        if (player != null) {
+            data.setLong("ID1", player.getLeastSignificantBits());
+            data.setLong("ID2", player.getMostSignificantBits());
+        }
+
+        return data;
+    }
+
+    public static EnderLinkTag load(NBTTagCompound data) {
+        String freq = data.getString("Freq");
+        UUID player = data.hasKey("ID1") ? new UUID(data.getLong("ID2"), data.getLong("ID1")) : null;
+
+        return new EnderLinkTag(freq, player);
     }
 }

@@ -18,7 +18,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 
 @SuppressWarnings("unused") // Unused API is expected within scope
 public class MTEHatchMuffler extends MTEHatch {

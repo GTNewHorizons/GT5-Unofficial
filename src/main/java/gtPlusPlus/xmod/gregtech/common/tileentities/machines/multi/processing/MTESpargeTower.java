@@ -48,7 +48,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -130,12 +129,10 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Sparge Tower")
-            .addInfo("Controller block for the Sparging Tower")
             .addInfo("Runs gases through depleted molten salts to extract precious fluids")
             .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
-            .addSeparator()
             .beginStructureBlock(3, 8, 3, true)
             .addController("Front bottom")
             .addOtherStructurePart("Sparge Tower Exterior Casing", "45 (minimum)")
@@ -143,7 +140,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             .addMaintenanceHatch("Any casing", 1, 2, 3)
             .addInputHatch("2x Input Hatches (Any bottom layer casing)", 1)
             .addOutputHatch("6x Output Hatches (At least one per layer except bottom layer)", 2, 3)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -396,9 +393,9 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
-        for (int i = 0; i < mOutputFluids2.length && i < mOutputHatchesByLayer.size(); i++) {
-            FluidStack tStack = mOutputFluids2[i] != null ? mOutputFluids2[i].copy() : null;
+    protected void addFluidOutputs(FluidStack[] outputFluids) {
+        for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
+            FluidStack tStack = outputFluids[i] != null ? outputFluids[i].copy() : null;
             if (tStack == null) {
                 continue;
             }
