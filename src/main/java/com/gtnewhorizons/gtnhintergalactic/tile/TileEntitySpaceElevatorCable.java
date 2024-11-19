@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 
-import com.gtnewhorizons.gtnhintergalactic.config.Config;
+import com.gtnewhorizons.gtnhintergalactic.config.IGConfig;
 
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
@@ -159,7 +159,7 @@ public class TileEntitySpaceElevatorCable extends TileEntityAdvanced {
      */
     @Override
     public void updateEntity() {
-        if (!Config.isCableRenderingEnabled) return;
+        if (!IGConfig.spaceElevator.isCableRenderingEnabled) return;
         super.updateEntity();
         // If the render state changed we need to issue a block renderer update to switch to the block renderer
         if (worldObj != null && worldObj.isRemote) {

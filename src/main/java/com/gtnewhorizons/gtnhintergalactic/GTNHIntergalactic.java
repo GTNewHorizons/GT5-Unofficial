@@ -7,7 +7,10 @@ import net.minecraft.util.IIcon;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.gtnewhorizon.gtnhlib.config.ConfigException;
+import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
+import com.gtnewhorizons.gtnhintergalactic.config.IGConfig;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 import com.gtnewhorizons.gtnhintergalactic.proxy.CommonProxy;
 
@@ -37,6 +40,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
                 + "after:openmodularturrets;"
                 + "after:IronChest;")
 public class GTNHIntergalactic {
+
+    static {
+        try {
+            ConfigurationManager.registerConfig(IGConfig.class);
+        } catch (ConfigException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /** Logger used by this mod */
     public static final Logger LOG = LogManager.getLogger(Tags.MODID);

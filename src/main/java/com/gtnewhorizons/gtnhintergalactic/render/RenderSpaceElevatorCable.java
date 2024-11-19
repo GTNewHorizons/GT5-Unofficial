@@ -27,7 +27,7 @@ import org.lwjgl.opengl.GL20;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
 import com.gtnewhorizons.gtnhintergalactic.block.BlockSpaceElevatorCable;
-import com.gtnewhorizons.gtnhintergalactic.config.Config;
+import com.gtnewhorizons.gtnhintergalactic.config.IGConfig;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -108,7 +108,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      */
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        if (!Config.isCableRenderingEnabled) return;
+        if (!IGConfig.spaceElevator.isCableRenderingEnabled) return;
         if (!(tile instanceof TileEntitySpaceElevatorCable)) return;
 
         final TileEntitySpaceElevatorCable cableTile = (TileEntitySpaceElevatorCable) tile;
