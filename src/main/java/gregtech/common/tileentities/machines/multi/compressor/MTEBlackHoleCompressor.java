@@ -540,17 +540,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 // Limit ocs up to hatch tier
                 int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
                 if (ocs < 0) ocs = 0;
-                return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setSpeedBoost(speedBoost)
-                    .setEUtDiscount(euModifier)
-                    .setAmperageOC(amperageOC)
-                    .setDurationDecreasePerOC(overClockTimeReduction)
-                    .setEUtIncreasePerOC(overClockPowerIncrease)
-                    .setParallel(getMaxParallelRecipes())
-                    .limitOverclockCount(ocs);
+                return super.createOverclockCalculator(recipe).limitOverclockCount(ocs);
             }
 
             @NotNull
@@ -566,6 +556,14 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         }.setMaxParallelSupplier(this::getMaxParallelRecipes)
             .setEuModifier(0.7F)
             .setSpeedBonus(0.2F);
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        if (mExoticEnergyHatches.isEmpty()) {
+            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
+            logic.setAvailableAmperage(1L);
+        } else super.setProcessingLogicPower(logic);
     }
 
     @Override
