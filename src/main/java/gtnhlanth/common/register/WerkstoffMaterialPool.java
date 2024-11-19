@@ -1945,7 +1945,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new short[] { 0, 0, 0 },
         "Reactive-Ion Etching Mixture",
         subscriptNumbers("CHF3/O2"),
-        new Werkstoff.Stats().setCentrifuge(true),
+        new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),

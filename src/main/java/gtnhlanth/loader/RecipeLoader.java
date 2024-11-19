@@ -567,6 +567,15 @@ public class RecipeLoader {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
+        	.fluidInputs(WerkstoffMaterialPool.FluoroformOxygenMix.getFluidOrGas(5000))
+        	.itemInputs(Materials.Empty.getCells(4))
+        	.fluidOutputs(WerkstoffMaterialPool.Fluoroform.getFluidOrGas(3000))
+        	.itemOutputs(Materials.Oxygen.getCells(4))
+        	.duration(5 * GTRecipeBuilder.SECONDS)
+        	.eut(TierEU.RECIPE_HV)
+        	.addTo(centrifugeRecipes);
+        
+        GTValues.RA.stdBuilder()
             .itemInputs(Materials.Iron.getDust(2), Materials.NetherQuartz.getPlates(1))
             .itemOutputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ))
             .duration(10 * GTRecipeBuilder.SECONDS)
