@@ -3472,13 +3472,6 @@ public class MTERecipeLoader implements Runnable {
                 OrePrefixes.circuit.get(Materials.ZPM), 'W', OrePrefixes.wireGt04.get(Materials.Naquadah), 'U',
                 OrePrefixes.stick.get(Materials.Americium) });
 
-        GTModHandler.addCraftingRecipe(
-            ItemList.Processing_Array.get(1L),
-            bitsd,
-            new Object[] { "CTC", "FMF", "CBC", 'M', ItemList.Hull_EV, 'B',
-                OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.IV), 'F',
-                ItemList.Robot_Arm_EV, 'T', ItemList.Energy_LapotronicOrb });
-
         ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
         GTModHandler.addCraftingRecipe(
             ItemList.Distillation_Tower.get(1L),
