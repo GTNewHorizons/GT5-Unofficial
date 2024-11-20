@@ -1218,7 +1218,7 @@ public final class RecipeMaps {
         .maxIO(6, 6, 3, 3)
         .minInputs(1, 0)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
-        .logo(GTUITextures.PICTURE_BIOHAZARD)
+        .logo(GTUITextures.PICTURE_AO_LOGO)
         .logoPos(152, 100)
         .disableOptimize()
         .frontend(BioSynthesizerFrontEnd::new)
