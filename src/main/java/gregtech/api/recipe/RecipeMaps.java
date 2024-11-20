@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import gregtech.api.recipe.metadata.SpatialAnomalyTierKey;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -77,6 +76,7 @@ import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
+import gregtech.api.recipe.metadata.SpatialAnomalyTierKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
