@@ -121,6 +121,10 @@ GT5U.DTPF.convergencebuttontooltip.1=Right Click to open catalyst selection menu
 GT5U.DTPF.catalysttier=Catalyst Tier
 GT5U.DTPF.catalystinfotooltip=Tier of additional catalyst to use for recipes without catalyst in them, from 1-Crude to 5-Stellar
 
+GT5U.SACC.anomalybutton=Spatial Anomaly
+GT5U.SACC.anomalybuttontooltip.0=Open/Close a Spatial Anomaly inside the chamber, capable of distorting reality
+GT5U.SACC.anomalybuttontooltip.1=Requires a instability catalyst in controller slot
+
 GT5U.fusion.req=EU Required
 GT5U.fusion.plasma=Plasma Output
 
@@ -636,6 +640,7 @@ GT5U.gui.text.missing_item=§7Missing required item: §b%s§f
 GT5U.gui.text.ph_sensor=pH threshold
 GT5U.gui.text.critical_ph_value=pH exceeded critical value.
 GT5U.gui.text.heat_sensor=Heat threshold
+GT5U.gui.text.anomaly_unstable=§4Anomaly Destabilized
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
 GT5U.gui.config.client=Client
@@ -1751,6 +1756,9 @@ GT5U.gui.text.warm_up=§aWarming up
 GT5U.gui.text.machine_locked_to_different_recipe=§7Machine is already locked to a different recipe
 GT5U.gui.text.no_output_for_sapling=§7This sapling yields no outputs
 GT5U.gui.text.no_tools=§7Missing applicable tools
+GT5U.gui.text.no_anomaly.0=§7Missing Spatial Anomaly
+GT5U.gui.text.no_anomaly.1=§7Missing Fractal Rift
+GT5U.gui.text.no_anomaly.2=§7Missing Abnormality Field
 
 # Cover Overflow Valve
 GTPP.chat.text.cover_overflow_valve_overflow_point=Overflow Point: %d L

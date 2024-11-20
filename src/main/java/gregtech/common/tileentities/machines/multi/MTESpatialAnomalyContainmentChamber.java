@@ -6,52 +6,72 @@ import static gregtech.api.enums.GTValues.AuthorNoc;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.llamalad7.mixinextras.lib.apache.commons.ObjectUtils;
-import gregtech.api.enums.ItemList;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.metadata.PCBFactoryTierKey;
-import gregtech.api.recipe.metadata.SpatialAnomalyTierKey;
-import gregtech.api.util.GTRecipe;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.recipe.metadata.SpatialAnomalyTierKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings9;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import tectech.thing.gui.TecTechUITextures;
 
 public class MTESpatialAnomalyContainmentChamber
     extends MTEExtendedPowerMultiBlockBase<MTESpatialAnomalyContainmentChamber> implements ISurvivalConstructable {
 
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
+    private boolean active = false;
+    private int numberOfFoci;
+    private ItemStack catalyst;
+    private MTEHatchInput stabilizerHatch;
+    private final FluidStack stabilizer = (Materials.Vyroxeres.getMolten(1));
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTESpatialAnomalyContainmentChamber> STRUCTURE_DEFINITION = StructureDefinition
         .<MTESpatialAnomalyContainmentChamber>builder()
@@ -65,7 +85,7 @@ public class MTESpatialAnomalyContainmentChamber
                     { "  BCB  ", " A   A ", "B     B", "C     C", "B     B", " A   A ", "  BCB  "},
                     { "BBBBB  ", "BA   A ", "B     B", "B     B", "B     B", " A   AB", "  BBBBB"},
                     { " B  BB ", "BAAAAAB", " A   AB", " A   A ", "BA   A ", "BAAAAAB", " BB  B "},
-                    { "    B  ", " B  BB ", "BBBBB B", "  BCB  ", "B BBBBB", " BB  B ", "  B    "}})
+                    { "    B  ", " B  BB ", "BBBBB B", "  BDB  ", "B BBBBB", " BB  B ", "  B    "}})
         //spotless:on
         .addElement(
             'C',
@@ -78,6 +98,13 @@ public class MTESpatialAnomalyContainmentChamber
                         ofBlock(GregTechAPI.sBlockCasings9, 7))))
         .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 1))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        .addElement(
+            'D',
+            buildHatchAdder(MTESpatialAnomalyContainmentChamber.class).atLeast(InputHatch)
+                .adder(MTESpatialAnomalyContainmentChamber::addStabilizerHatch)
+                .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(7))
+                .dot(2)
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 7)))
         .build();
 
     private byte mAnomalyTier = 0;
@@ -147,6 +174,17 @@ public class MTESpatialAnomalyContainmentChamber
         return rTexture;
     }
 
+    private boolean addStabilizerHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTEHatchInput hatch) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            stabilizerHatch = hatch;
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
@@ -194,6 +232,36 @@ public class MTESpatialAnomalyContainmentChamber
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+
+        if (!active || aTick % 20 != 0) return;
+
+        if (drain(stabilizerHatch, stabilizer, false)) {
+            drain(stabilizerHatch, stabilizer, true);
+        } else {
+            mAnomalyTier = 0;
+            active = false;
+            this.catalyst.stackSize = Math.round((float) (numberOfFoci / 2));
+            numberOfFoci = 0;
+            if (this.catalyst.stackSize != 0) mInventory[getControllerSlotIndex()] = this.catalyst;
+        }
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        // Void contents of active recipe without crashing machine if it becomes unstable
+        if (!active) {
+            stopMachine(SimpleShutDownReason.ofCritical("anomaly_unstable"));
+            return false;
+        }
+
+        return super.onRunningTick(aStack);
+    }
+
+    @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(0L);
         logic.setAvailableAmperage(1L);
@@ -205,10 +273,33 @@ public class MTESpatialAnomalyContainmentChamber
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                maxParallel = 2 * numberOfFoci;
 
-                int numberOfFoci = 0;
-                ItemStack controllerStack = getControllerSlot();
-                if (controllerStack != null) {
+                int requiredRecipeTier = recipe.getMetadataOrDefault(SpatialAnomalyTierKey.INSTANCE, 0);
+                if (requiredRecipeTier > mAnomalyTier) {
+                    switch (requiredRecipeTier) {
+                        case 1:
+                            return SimpleCheckRecipeResult.ofFailure("no_anomaly.0");
+                        case 2:
+                            return SimpleCheckRecipeResult.ofFailure("no_anomaly.1");
+                        case 3:
+                            return SimpleCheckRecipeResult.ofFailure("no_anomaly.2");
+                        default:
+                            return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
+                } else {
+                    return CheckRecipeResultRegistry.SUCCESSFUL;
+                }
+            }
+        };
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            ItemStack controllerStack = this.getControllerSlot();
+            if (clickData.mouseButton == 0) {
+                if (controllerStack != null && !active) {
                     if (controllerStack.isItemEqual(GregtechItemList.Laser_Lens_Special.get(1))) {
                         mAnomalyTier = 1;
                     } else if (controllerStack.isItemEqual(GregtechItemList.Compressed_Fusion_Reactor.get(1))) {
@@ -216,17 +307,42 @@ public class MTESpatialAnomalyContainmentChamber
                     } else if (controllerStack.isItemEqual(ItemList.EnergisedTesseract.get(1))) {
                         mAnomalyTier = 3;
                     }
-                    numberOfFoci = controllerStack.stackSize;
+                    if (mAnomalyTier != 0) {
+                        numberOfFoci = controllerStack.stackSize;
+                        this.catalyst = controllerStack;
+                        mInventory[getControllerSlotIndex()] = null;
+                        active = true;
+                    }
+                } else if (controllerStack == null && active) {
+                    mAnomalyTier = 0;
+                    numberOfFoci = 0;
+                    active = false;
+                    mInventory[getControllerSlotIndex()] = this.catalyst;
+                    this.catalyst = null;
+                    System.out.println("a");
                 }
-
-                maxParallel = 2*numberOfFoci;
-
-                int requiredRecipeTier = recipe.getMetadataOrDefault(SpatialAnomalyTierKey.INSTANCE,0);
-                return requiredRecipeTier <= mAnomalyTier ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.NO_RECIPE;
             }
-
-        };
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (active) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("GT5U.SACC.anomalybutton"))
+            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.SACC.anomalybuttontooltip.0"))
+            .addTooltip(EnumChatFormatting.GRAY + translateToLocal("GT5U.SACC.anomalybuttontooltip.1"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 112)
+            .setSize(16, 16))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> active, val -> active = val));
+        super.addUIWidgets(builder, buildContext);
     }
 
     public int getMaxParallelRecipes() {
