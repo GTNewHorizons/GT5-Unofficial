@@ -16,12 +16,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -34,25 +31,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
-import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.recipe.AORecipeData;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioInput;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
-public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynthesizer>
+public class MTEBioSynthesizer extends MTEAOUnitBase<MTEBioSynthesizer>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -64,7 +52,7 @@ public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynt
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(MTEBioSynthesizer.class).adder(MTEBioSynthesizer::addBioHatch)
+                buildHatchAdder(MTEBioSynthesizer.class).adder(MTEAOUnitBase::addBioHatch)
                     .hatchClass(MTEHatchBioInput.class)
                     .shouldReject(t -> !(t.bioHatch == null))
                     .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
@@ -79,10 +67,6 @@ public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynt
                         onElementPass(MTEBioSynthesizer::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
-
-    MTEHatchBioInput bioHatch;
-
-    private int AOsInUse = 0;
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
@@ -200,63 +184,8 @@ public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynt
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-
-                AORecipeData data = recipe.getMetadata(GTRecipeConstants.AO_DATA);
-                if (data == null) return CheckRecipeResultRegistry.NO_RECIPE;
-
-                ArtificialOrganism currentOrganism = getAO();
-                if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
-                else if (currentOrganism.getCount() <= data.requiredCount)
-                    return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
-                else if (currentOrganism.getIntelligence() <= data.requiredIntelligence)
-                    return SimpleCheckRecipeResult.ofFailure("ao_too_stupid");
-
-                AOsInUse = currentOrganism.consumeAOs(data.requiredCount);
-                return super.validateRecipe(recipe);
-            }
-
-            @Override
-            public ProcessingLogic clear() {
-                ArtificialOrganism currentOrganism = getAO();
-                if (currentOrganism != null) {
-                    AOsInUse -= currentOrganism.replenishAOs(AOsInUse);
-                }
-                return super.clear();
-            }
-        }.setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
-    }
-
-    private ArtificialOrganism getAO() {
-        if (bioHatch != null) return bioHatch.getAO();
-        return null;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (bioHatch != null) {
-            if (bioHatch.getAO() != null) {
-                PlayerUtils.messagePlayer(
-                    aPlayer,
-                    "Current AO: " + bioHatch.getAO()
-                        .toString());
-            }
-        }
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.bioSynthesizerRecipes;
-    }
-
-    public int getMaxParallelRecipes() {
-        return (8 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -285,17 +214,5 @@ public class MTEBioSynthesizer extends MTEExtendedPowerMultiBlockBase<MTEBioSynt
         logic.setAvailableAmperage(1L);
     }
 
-    private boolean addBioHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity != null) {
-            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchBioInput) {
-                ((MTEHatchBioInput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                if (bioHatch == null) {
-                    bioHatch = (MTEHatchBioInput) aMetaTileEntity;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+
 }

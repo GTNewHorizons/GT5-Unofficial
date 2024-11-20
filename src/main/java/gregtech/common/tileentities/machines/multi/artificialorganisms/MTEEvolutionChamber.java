@@ -96,6 +96,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private int strength;
     private int count;
 
+    private int maxAOs;
+
     public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -202,15 +204,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         mCasingAmount = 0;
         bioHatch = null;
         mEnergyHatches.clear();
+        maxAOs = 50000;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0)) return false;
         return mCasingAmount >= 0;
-    }
-
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 2F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
     @Override
@@ -219,7 +216,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
         if (!aBaseMetaTileEntity.isServerSide() || aTick % 20 != 0 || currentSpecies == null) return;
 
-        currentSpecies.doReproduction();
+        if (currentSpecies.getCount() < maxAOs) currentSpecies.doReproduction();
         updateSpecies();
     }
 
@@ -227,10 +224,6 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         intelligence = currentSpecies.getIntelligence();
         strength = currentSpecies.getStrength();
         count = currentSpecies.getCount();
-    }
-
-    public int getMaxParallelRecipes() {
-        return (8 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override

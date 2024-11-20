@@ -13,6 +13,15 @@ import gregtech.api.util.recipe.AORecipeData;
 
 public class BioSynthesizerRecipes implements Runnable {
 
+    /**
+     * This is an AO Unit - all recipes MUST use .metadata(AO_DATA, new AORecipeData(x, y, z)) or AO Unit will either
+     * crash or not be able to perform the recipe.
+     * AORecipeData constructors, in order:
+     * - requiredIntelligence: AO population intelligence required to run this recipe.
+     * - requiredCount: Number of AOs that will be drained at the recipe start.
+     * - dangerLevel: This is the percentage of AOs that will die while running the recipe. Use values from 0-100 only.
+     */
+
     @Override
     public void run() {
         GTValues.RA.stdBuilder()

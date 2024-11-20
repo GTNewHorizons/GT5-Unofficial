@@ -11,5 +11,4 @@ public class AORecipeData {
         this.requiredCount = requiredCount;
         this.dangerLevel = dangerLevel;
     }
-
 }
