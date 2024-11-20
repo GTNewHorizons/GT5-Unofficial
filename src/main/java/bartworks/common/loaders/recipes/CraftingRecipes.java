@@ -387,13 +387,10 @@ public class CraftingRecipes implements Runnable {
         GTModHandler.addCraftingRecipe(
             BioItemList.mBioLabParts[3],
             RecipeLoader.BITSD,
-            new Object[] { "SFE", "PCP", "NFN",
-                'N', GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L),
-                'C', "circuit" + Materials.EV,
-                'F', ItemList.Field_Generator_EV.get(1L),
-                'E', ItemList.Emitter_EV.get(1L),
-                'S', ItemList.Sensor_EV.get(1L),
-                'P', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), });
+            new Object[] { "SFE", "PCP", "NFN", 'N',
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L), 'C', "circuit" + Materials.EV,
+                'F', ItemList.Field_Generator_EV.get(1L), 'E', ItemList.Emitter_EV.get(1L), 'S',
+                ItemList.Sensor_EV.get(1L), 'P', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), });
 
         // ClonalCellularSynthesisModule
         GTModHandler.addCraftingRecipe(
