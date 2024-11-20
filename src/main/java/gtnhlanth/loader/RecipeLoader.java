@@ -3428,12 +3428,12 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
-                Materials.Cerium.getDustTiny(1),
+                Materials.Cerium.getDust(1),
                 Materials.Lutetium.getDust(3),
                 Materials.Aluminiumoxide.getDust(5))
             .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 9))
             .eut(TierEU.RECIPE_UV)
-            .duration(20 * SECONDS)
+            .duration(5 * SECONDS)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
