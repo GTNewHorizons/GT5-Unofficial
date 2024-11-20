@@ -2677,16 +2677,16 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .eut(2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Plumbilia.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lead, 1L))
+            .itemInputs(ItemList.Crop_Drop_Plumbilia.get(9L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L))
             .duration(15 * SECONDS)
-            .eut(2)
+            .eut(16)
             .addTo(extractorRecipes);
         RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Argentia.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Silver, 1L))
+            .itemInputs(ItemList.Crop_Drop_Argentia.get(9L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L))
             .duration(15 * SECONDS)
-            .eut(2)
+            .eut(16)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Indigo.get(1L))
@@ -2701,16 +2701,16 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .eut(2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Coppon.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L))
+            .itemInputs(ItemList.Crop_Drop_Coppon.get(9L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L))
             .duration(15 * SECONDS)
-            .eut(2)
+            .eut(16)
             .addTo(extractorRecipes);
         RA.stdBuilder()
-            .itemInputs(ItemList.Crop_Drop_Tine.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L))
+            .itemInputs(ItemList.Crop_Drop_Tine.get(9L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1L))
             .duration(15 * SECONDS)
-            .eut(2)
+            .eut(16)
             .addTo(extractorRecipes);
 
     }
