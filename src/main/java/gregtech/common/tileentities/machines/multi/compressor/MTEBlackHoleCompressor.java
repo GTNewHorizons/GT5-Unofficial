@@ -340,7 +340,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
             .addInfo("Once the black hole becomes unstable, it will void recipes and eventually close itself!")
             .addSeparator()
-            .addInfo("Running recipes in the machine will slow the decay rate by " + EnumChatFormatting.RED + "25%")
             .addInfo(
                 "The decay can be " + EnumChatFormatting.BOLD
                     + "halted"
@@ -608,11 +607,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
         if (blackHoleStability >= 0) {
-
-            // If the machine is running, reduce stability loss by 25%
-            if (this.maxProgresstime() != 0) {
-                stabilityDecrease = 0.75F;
-            }
 
             // Search all hatches for catalyst fluid
             // If found enough, drain it and reduce stability loss to 0
