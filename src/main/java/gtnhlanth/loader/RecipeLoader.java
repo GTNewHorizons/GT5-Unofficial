@@ -3439,7 +3439,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(5),
-                Materials.Cerium.getDust(1),
+                Materials.Cerium.getDust(2),
                 Materials.Lutetium.getDust(60),
                 Materials.Sapphire.getDust(64),
                 Materials.Sapphire.getDust(36))
@@ -3453,7 +3453,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(5),
-                Materials.Cerium.getDust(1),
+                Materials.Cerium.getDust(2),
                 Materials.Lutetium.getDust(60),
                 Materials.GreenSapphire.getDust(64),
                 Materials.GreenSapphire.getDust(64),
