@@ -292,7 +292,7 @@ public class MetaGeneratedItem04 extends MetaGeneratedItem {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(5),
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.NetherStar, 2),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.StainlessSteel, 4),
+                GTOreDictUnificator.get(OrePrefixes.ring, Materials.TungstenSteel, 4),
                 ItemList.Field_Generator_IV.get(1),
                 ItemList.Electric_Piston_IV.get(2),
                 ItemList.Electric_Motor_IV.get(2))
