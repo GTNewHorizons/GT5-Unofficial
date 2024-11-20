@@ -3466,6 +3466,29 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_UV)
             .duration(1800)
             .addTo(mixerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(5),
+                Materials.Cerium.getDust(4),
+                Materials.Lutetium.getDust(64),
+                Materials.Lutetium.getDust(56),
+                Materials.Aluminiumoxide.getDust(64),
+                Materials.Aluminiumoxide.getDust(64),
+                Materials.Aluminiumoxide.getDust(64),
+                Materials.Aluminiumoxide.getDust(64),
+                Materials.Aluminiumoxide.getDust(64),
+                Materials.Aluminiumoxide.getDust(64),
+                Materials.Aluminiumoxide.getDust(64),
+                Materials.Aluminiumoxide.getDust(52))
+            .itemOutputs(
+                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
+                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
+                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
+                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 48))
+            .fluidInputs(Materials.Oxygen.getGas(180000))
+            .eut(TierEU.RECIPE_UV)
+            .duration(7200)
+            .addTo(mixerRecipes);
 
         // Get LuAG Crystal seed
         GTValues.RA.stdBuilder()
