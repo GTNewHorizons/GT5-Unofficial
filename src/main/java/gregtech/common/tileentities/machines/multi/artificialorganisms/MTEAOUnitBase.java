@@ -54,7 +54,7 @@ public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
 
                 setSpeedBonus(currentOrganism.calculateSpeedBonus());
 
-                AOsInUse = currentOrganism.consumeAOs(data.requiredCount);
+                AOsInUse = Math.round((float) currentOrganism.consumeAOs(data.requiredCount) * (100 - data.dangerLevel) / 100F);
                 return super.validateRecipe(recipe);
             }
 

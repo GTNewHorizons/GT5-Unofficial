@@ -57,19 +57,20 @@ public class ArtificialOrganism {
         count = 0;
     }
 
+    private final Random rng = new Random();
+
     /**
      * Calculates the default speed bonus given to AO Units based on sentience, strength, and traits.
      * Pass this directly into setSpeedBonus() on the multiblock.
      */
     public float calculateSpeedBonus() {
         float speedBonus = 1;
-        Random rng = new Random();
 
         // TODO: some increase based on strength
 
         // At this threshold, AOs have a chance to slow down recipes.
         if (sentience > 5) {
-            if (rng.nextInt(0, 10) == 5) speedBonus *= 2;
+            if (rng.nextInt(10) == 0) speedBonus *= 2;
         }
 
         return speedBonus;
