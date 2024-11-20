@@ -1,6 +1,10 @@
 package gregtech.common.tileentities.machines.multi.artificialorganisms;
 
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -14,11 +18,8 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.recipe.AORecipeData;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioInput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.jetbrains.annotations.NotNull;
 
-public abstract class MTEAOUnitBase <T extends MTEExtendedPowerMultiBlockBase<T>>
+public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
 
     protected MTEHatchBioInput bioHatch;
@@ -51,6 +52,8 @@ public abstract class MTEAOUnitBase <T extends MTEExtendedPowerMultiBlockBase<T>
                 else if (currentOrganism.getIntelligence() <= data.requiredIntelligence)
                     return SimpleCheckRecipeResult.ofFailure("ao_too_stupid");
 
+                setSpeedBonus(currentOrganism.calculateSpeedBonus());
+
                 AOsInUse = currentOrganism.consumeAOs(data.requiredCount);
                 return super.validateRecipe(recipe);
             }
@@ -59,16 +62,13 @@ public abstract class MTEAOUnitBase <T extends MTEExtendedPowerMultiBlockBase<T>
             public ProcessingLogic clear() {
                 ArtificialOrganism currentOrganism = getAO();
                 if (currentOrganism != null) {
+                    currentOrganism.increaseSentience(1);
                     currentOrganism.replenishAOs(AOsInUse);
                     AOsInUse = 0;
                 }
                 return super.clear();
             }
         };
-    }
-
-    public IStructureDefinition<MTEAOUnitBase> getStructureDefinition(IStructureDefinition<MTEAOUnitBase> structure) {
-        return structure;
     }
 
     protected ArtificialOrganism getAO() {

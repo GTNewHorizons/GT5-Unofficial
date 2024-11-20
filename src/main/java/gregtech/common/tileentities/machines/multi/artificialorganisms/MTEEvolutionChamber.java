@@ -95,6 +95,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private int intelligence;
     private int strength;
     private int count;
+    private int sentience;
 
     private int maxAOs;
 
@@ -224,6 +225,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         intelligence = currentSpecies.getIntelligence();
         strength = currentSpecies.getStrength();
         count = currentSpecies.getCount();
+        sentience = currentSpecies.getSentience();
     }
 
     @Override
@@ -302,7 +304,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .widget(
                 new DynamicTextWidget(() -> new Text("Count: " + count)).setSynced(false)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> count, val -> count = val));
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> count, val -> count = val))
+            .widget(
+                new DynamicTextWidget(() -> new Text("Sentience: " + count)).setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
+            .widget(new FakeSyncWidget.IntegerSyncer(() -> sentience, val -> sentience = val));
 
         builder.widget(createPurgeButton(builder));
         builder.widget(createBuildAOsButton(builder));

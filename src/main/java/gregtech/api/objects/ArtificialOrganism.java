@@ -1,5 +1,7 @@
 package gregtech.api.objects;
 
+import java.util.Random;
+
 public class ArtificialOrganism {
 
     private int intelligence;
@@ -55,12 +57,38 @@ public class ArtificialOrganism {
         count = 0;
     }
 
+    /**
+     * Calculates the default speed bonus given to AO Units based on sentience, strength, and traits.
+     * Pass this directly into setSpeedBonus() on the multiblock.
+     */
+    public float calculateSpeedBonus() {
+        float speedBonus = 1;
+        Random rng = new Random();
+
+        // TODO: some increase based on strength
+
+        // At this threshold, AOs have a chance to slow down recipes.
+        if (sentience > 5) {
+            if (rng.nextInt(0, 10) == 5) speedBonus *= 2;
+        }
+
+        return speedBonus;
+    }
+
+    public void increaseSentience(int amount) {
+        sentience += amount;
+    }
+
     public int getIntelligence() {
         return intelligence;
     }
 
     public int getStrength() {
         return strength;
+    }
+
+    public int getSentience() {
+        return sentience;
     }
 
     /**

@@ -40,8 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioInput;
 
-public class MTEBioSynthesizer extends MTEAOUnitBase<MTEBioSynthesizer>
-    implements ISurvivalConstructable {
+public class MTEBioSynthesizer extends MTEAOUnitBase<MTEBioSynthesizer> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEBioSynthesizer> STRUCTURE_DEFINITION = StructureDefinition
@@ -213,6 +212,5 @@ public class MTEBioSynthesizer extends MTEAOUnitBase<MTEBioSynthesizer>
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1L);
     }
-
 
 }
