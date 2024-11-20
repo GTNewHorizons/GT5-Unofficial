@@ -497,6 +497,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                             blackHoleStatus = 1;
                             blackHoleStability = 100;
                             catalyzingCostModifier = 1;
+                            catalyzingCounter = 0;
                             if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
                             collapseTimer = 40;
                             return;
