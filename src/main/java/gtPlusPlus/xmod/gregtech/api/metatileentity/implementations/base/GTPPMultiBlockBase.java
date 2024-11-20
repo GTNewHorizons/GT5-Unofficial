@@ -240,7 +240,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 + " %");
 
         if (this.getPollutionPerSecond(null) > 0) {
-            int mPollutionReduction = getPollutionReductionForAllMufflers();
             mInfo.add(
                 StatCollector.translateToLocal("GTPP.multiblock.pollution") + ": "
                     + EnumChatFormatting.RED
@@ -250,7 +249,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(
                 StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
                     + EnumChatFormatting.GREEN
-                    + mPollutionReduction
+                    + getAveragePollutionPercentage()
                     + EnumChatFormatting.RESET
                     + " %");
         }
@@ -285,14 +284,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime);
 
         return mInfo.toArray(new String[0]);
-    }
-
-    public int getPollutionReductionForAllMufflers() {
-        int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            mPollutionReduction = Math.max(calculatePollutionReductionForHatch(tHatch, 100), mPollutionReduction);
-        }
-        return mPollutionReduction;
     }
 
     public long getStoredEnergyInAllEnergyHatches() {
@@ -1404,7 +1395,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .dynamicString(
                         () -> StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
                             + EnumChatFormatting.GREEN
-                            + getPollutionReductionForAllMufflers()
+                            + getAveragePollutionPercentage()
                             + EnumChatFormatting.RESET
                             + " %")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
