@@ -28,6 +28,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -204,15 +205,18 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .beginStructureBlock(7, 7, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Pressure Containment Casings", 128, false)
+            .addCasingInfoExactly("Any Glass", 42, false)
             .addCasingInfoExactly("Item Pipe Casings", 7, true)
             .addCasingInfoExactly("Pipe Casings", 14, true)
             .addCasingInfoExactly("Heating Coils", 7, true)
             .addCasingInfoExactly("PTFE Frame", 42, false)
-            .addInputBus("Any of the Pressure Containment Casings", 1)
-            .addOutputBus("Any of the Pressure Containment Casings", 1)
-            .addEnergyHatch("Any of the Pressure Containment Casings", 1)
-            .addMaintenanceHatch("Any of the Pressure Containment Casings", 1)
-            .addMufflerHatch("Any of the Pressure Containment Casings", 1)
+            .addInputBus("Any Pressure Containment Casing", 1)
+            .addOutputBus("Any Pressure Containment Casing", 1)
+            .addInputHatch("Any Pressure Containment Casing", 1)
+            .addOutputHatch("Any Pressure Containment Casing", 1)
+            .addEnergyHatch("Any Pressure Containment Casing", 1)
+            .addMaintenanceHatch("Any Pressure Containment Casing", 1)
+            .addMufflerHatch("Any Pressure Containment Casing", 1)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -231,11 +235,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
-            && mCasingAmount >= 128
-            && itemPipeTier >= 0
-            && !mEnergyHatches.isEmpty()
-            && mMufflerHatches.size() == 1;
+        return mCasingAmount >= 128 && mMufflerHatches.size() == 1;
     }
 
     @Override
@@ -420,5 +420,17 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1L);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
+        return true;
     }
 }

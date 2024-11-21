@@ -1844,7 +1844,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CeriumDopedLutetiumAluminiumOxygenBlend = new Werkstoff(
         new short[] { 128, 192, 80 },
         "Cerium-doped Lutetium Aluminium Oxygen Blend",
-        subscriptNumbers("(Ce)Lu3Al5O12"),
+        subscriptNumbers("CeLu3(Al2O3)5"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MATERIAL,
         new Werkstoff.GenerationFeatures().disable()
@@ -1856,7 +1856,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CeriumDopedLutetiumAluminiumGarnet = new Werkstoff(
         new short[] { 144, 255, 63 },
         "Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG)",
-        subscriptNumbers("(Ce)Lu3Al5O12"),
+        subscriptNumbers("CeLu3(Al2O3)5"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MATERIAL,
         new Werkstoff.GenerationFeatures().disable()

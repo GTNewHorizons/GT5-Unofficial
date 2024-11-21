@@ -128,6 +128,7 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Processing Array")
+            .addInfo(EnumChatFormatting.RED + "DEPRECATED! This machine will be removed in the next major update.")
             .addInfo("Runs supplied machines as if placed in the world")
             .addInfo("Place up to 64 singleblock GT machines into the controller")
             .addInfo("Note that you still need to supply power to them all")
@@ -135,9 +136,6 @@ public class MTEProcessingArray extends MTEExtendedPowerMultiBlockBase<MTEProces
             .addInfo("Use a wire cutter to disable UEV+ downtiering")
             .addInfo("Doesn't work on certain machines, deal with it")
             .addInfo("Use it if you hate GT++, or want even more speed later on")
-            .addInfo(
-                EnumChatFormatting.GOLD
-                    + "On the way to be slowly removed. Use it strictly if you have no alternative.")
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casing", 14, 24, false)
