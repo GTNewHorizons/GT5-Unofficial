@@ -980,6 +980,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials RadoxGas;
     public static Materials RadoxPolymer;
 
+    // AO materials
+    public static Materials PrimordialSoup;
+    public static Materials NutrientBroth;
+    public static Materials SterilizationFluid;
 
     // spotless:on
 
