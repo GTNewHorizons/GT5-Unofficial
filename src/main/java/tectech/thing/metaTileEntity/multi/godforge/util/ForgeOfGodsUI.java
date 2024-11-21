@@ -426,6 +426,15 @@ public class ForgeOfGodsUI {
         }
     }
 
+    public static void closeWindow(Widget widget, int windowId) {
+        if (!widget.isClient()) {
+            ModularUIContext ctx = widget.getContext();
+            if (ctx.isWindowOpen(windowId)) {
+                ctx.closeWindow(windowId);
+            }
+        }
+    }
+
     public enum StarColorRGBM {
 
         RED(EnumChatFormatting.RED, RED_ARGB, 0, 255, ForgeOfGodsStarColor.DEFAULT_RED),

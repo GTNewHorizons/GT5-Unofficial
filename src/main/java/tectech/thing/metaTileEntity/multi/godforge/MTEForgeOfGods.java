@@ -71,7 +71,6 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
@@ -1366,8 +1365,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         if (!widget.isClient()) {
                             widget.getWindow()
                                 .closeWindow();
-                            widget.getContext()
-                                .closeWindow(INDIVIDUAL_MILESTONE_WINDOW_ID);
+                            ForgeOfGodsUI.closeWindow(widget, INDIVIDUAL_MILESTONE_WINDOW_ID);
                         }
                     })
                     .setPos(382, 6));
@@ -1557,8 +1555,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                         if (!widget.isClient()) {
                             widget.getWindow()
                                 .closeWindow();
-                            widget.getContext()
-                                .closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                            ForgeOfGodsUI.closeWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
                         }
                     })
                     .setPos(282, 4));
@@ -1631,12 +1628,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             builder.widget(
                 ForgeOfGodsUI
                     .createMaterialInputButton(upgrade, () -> upgrades.isCostPaid(upgrade), (clickData, widget) -> {
-                        if (!widget.isClient()) {
-                            ModularUIContext ctx = widget.getContext();
-                            ctx.openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
-                            ctx.closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
-                            ctx.closeWindow(UPGRADE_TREE_WINDOW_ID);
-                        }
+                        ForgeOfGodsUI.reopenWindow(widget, MANUAL_INSERTION_WINDOW_ID);
+                        ForgeOfGodsUI.closeWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
+                        ForgeOfGodsUI.closeWindow(widget, UPGRADE_TREE_WINDOW_ID);
                     }));
         }
 
@@ -1675,11 +1669,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (clickData.shift) {
                     if (!upgrade.hasExtraCost() || upgrades.isCostPaid(upgrade)) {
                         completeUpgrade(upgrade);
-                    } else if (!widget.isClient()) {
-                        ModularUIContext ctx = widget.getContext();
-                        ctx.openSyncedWindow(MANUAL_INSERTION_WINDOW_ID);
-                        ctx.closeWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
-                        ctx.closeWindow(UPGRADE_TREE_WINDOW_ID);
+                    } else {
+                        ForgeOfGodsUI.reopenWindow(widget, MANUAL_INSERTION_WINDOW_ID);
+                        ForgeOfGodsUI.closeWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
+                        ForgeOfGodsUI.closeWindow(widget, UPGRADE_TREE_WINDOW_ID);
                     }
                 } else {
                     ForgeOfGodsUI.reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
@@ -1756,10 +1749,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             if (!widget.isClient()) {
                 widget.getWindow()
                     .closeWindow();
-                widget.getContext()
-                    .openSyncedWindow(UPGRADE_TREE_WINDOW_ID);
-                widget.getContext()
-                    .openSyncedWindow(INDIVIDUAL_UPGRADE_WINDOW_ID);
+                ForgeOfGodsUI.reopenWindow(widget, UPGRADE_TREE_WINDOW_ID);
+                ForgeOfGodsUI.reopenWindow(widget, INDIVIDUAL_UPGRADE_WINDOW_ID);
             }
         })
             .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x"))
