@@ -1,5 +1,8 @@
 package gregtech.common.items.matterManipulator;
 
+import static gregtech.api.util.GTUtility.ceilDiv2;
+import static gregtech.api.util.GTUtility.signum;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -29,6 +32,8 @@ import org.joml.Vector3i;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import appeng.api.AEApi;
 import appeng.api.config.SecurityPermissions;
@@ -243,6 +248,32 @@ class NBTState {
             block.x += coordC.x;
             block.y += coordC.y;
             block.z += coordC.z;
+        }
+
+        if (config.arraySpan != null) {
+            int sx = config.arraySpan.x;
+            int sy = config.arraySpan.y;
+            int sz = config.arraySpan.z;
+
+            List<PendingBlock> base = new ArrayList<>(analysis.blocks);
+
+            for (int y = 0; y < Math.max(sy + (analysis.deltas.y == 0 ? 1 : 0), 1); y++) {
+                for (int z = 0; z < Math.max(sz + (analysis.deltas.z == 0 ? 1 : 0), 1); z++) {
+                    for (int x = 0; x < Math.max(sx + (analysis.deltas.x == 0 ? 1 : 0), 1); x++) {
+                        int dx = x * (analysis.deltas.x + (analysis.deltas.x < 0 ? -1 : 1));
+                        int dy = y * (analysis.deltas.y + (analysis.deltas.y < 0 ? -1 : 1));
+                        int dz = z * (analysis.deltas.z + (analysis.deltas.z < 0 ? -1 : 1));
+
+                        for (PendingBlock original : base) {
+                            PendingBlock dup = original.clone();
+                            dup.x += dx;
+                            dup.y += dy;
+                            dup.z += dz;
+                            analysis.blocks.add(dup);
+                        }
+                    }
+                }
+            }
         }
 
         return analysis.blocks;
@@ -640,10 +671,6 @@ class NBTState {
         }
     }
 
-    private static int signum(int x) {
-        return x > 0 ? 1 : x < 0 ? -1 : 0;
-    }
-
     private void iterateCylinder(ArrayList<PendingBlock> pending, Vector3i coordA, Vector3i coordB, Vector3i coordC) {
         ItemStack faces = config.getFaces();
         ItemStack volumes = config.getVolumes();
@@ -786,6 +813,11 @@ class NBTState {
         /** These blocks are what gets placed when exchanging */
         public JsonElement replaceWith;
 
+        /** The rotation & flip, if any */
+        public ExtendedFacing transform;
+        /** The array size in repetitions. */
+        public Vector3i arraySpan;
+
         public static JsonElement saveStack(ItemStack stack) {
             if (stack == null || stack.getItem() == null) {
                 return null;
@@ -864,6 +896,42 @@ class NBTState {
             }
         }
 
+        public static Vector3i getArrayMult(World world, Location sourceA, Location sourceB, Location paste, Vector3i lookingAt) {
+            if (!Location.areCompatible(sourceA, sourceB)) return new Vector3i(1);
+            if (paste == null || paste.worldId != world.provider.dimensionId) return new Vector3i(1);
+
+            Vector3i copyDeltas = MMUtils.getRegionDeltas(sourceA, sourceB);
+            Vector3i pasteDeltas = new Vector3i(lookingAt).sub(paste.toVec());
+
+            pasteDeltas.x = copyDeltas.x == 0 ? Math.max(pasteDeltas.x, 0) : Math.max(ceilDiv2(pasteDeltas.x, copyDeltas.x), 1);
+            pasteDeltas.y = copyDeltas.y == 0 ? Math.max(pasteDeltas.y, 0) : Math.max(ceilDiv2(pasteDeltas.y, copyDeltas.y), 1);
+            pasteDeltas.z = copyDeltas.z == 0 ? Math.max(pasteDeltas.z, 0) : Math.max(ceilDiv2(pasteDeltas.z, copyDeltas.z), 1);
+
+            return pasteDeltas;
+        }
+
+        public Vector3i getPasteVisualDeltas(World world) {
+            if (coordA == null || coordB == null) return null;
+            if (!coordA.isInWorld(world) || !coordB.isInWorld(world)) return null;
+
+            Vector3i deltas = MMUtils.getRegionDeltas(coordA, coordB);
+
+            if (arraySpan != null) {
+                deltas.x = deltas.x == 0 ? arraySpan.x : ((deltas.x + signum(deltas.x)) * arraySpan.x - signum(deltas.x));
+                deltas.y = deltas.y == 0 ? arraySpan.y : ((deltas.y + signum(deltas.y)) * arraySpan.y - signum(deltas.y));
+                deltas.z = deltas.z == 0 ? arraySpan.z : ((deltas.z + signum(deltas.z)) * arraySpan.z - signum(deltas.z));
+            }
+
+            if (transform != null) {
+                Vec3Impl v = transform.getIntegerAxisSwap().translate(new Vec3Impl(deltas.x, deltas.y, deltas.z));
+                deltas.x = v.get0();
+                deltas.y = v.get1();
+                deltas.z = v.get2();
+            }
+
+            return deltas;
+        }
+
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -886,6 +954,8 @@ class NBTState {
             result = prime * result + ((cables == null) ? 0 : cables.hashCode());
             result = prime * result + ((replaceWhitelist == null) ? 0 : replaceWhitelist.hashCode());
             result = prime * result + ((replaceWith == null) ? 0 : replaceWith.hashCode());
+            result = prime * result + ((transform == null) ? 0 : transform.hashCode());
+            result = prime * result + ((arraySpan == null) ? 0 : arraySpan.hashCode());
             return result;
         }
 
@@ -939,6 +1009,12 @@ class NBTState {
             if (replaceWith == null) {
                 if (other.replaceWith != null) return false;
             } else if (!replaceWith.equals(other.replaceWith)) return false;
+            if (transform == null) {
+                if (other.transform != null) return false;
+            } else if (!transform.equals(other.transform)) return false;
+            if (arraySpan == null) {
+                if (other.arraySpan != null) return false;
+            } else if (!arraySpan.equals(other.arraySpan)) return false;
             return true;
         }
     }
@@ -1022,6 +1098,7 @@ class NBTState {
         EXCH_ADD_REPLACE,
         EXCH_SET_REPLACE,
         PICK_CABLE,
+        MARK_ARRAY,
     }
 
     static enum BlockSelectMode {
@@ -1077,6 +1154,8 @@ class NBTState {
             super(worldId, x, y, z);
             setBlock(block, meta);
         }
+
+        private PendingBlock() { }
 
         /**
          * Clears this block's block but not its position.
@@ -1186,13 +1265,26 @@ class NBTState {
             return false;
         }
 
-        /**
-         * Creates a PendingBlock from an existing block in the world.
-         */
-        public static PendingBlock fromBlock(World world, int x, int y, int z) {
-            Block block = world.getBlock(x, y, z);
-            int meta = world.getBlockMetadata(x, y, z);
+        public PendingBlock clone() {
+            PendingBlock dup = new PendingBlock();
 
+            dup.worldId = worldId;
+            dup.x = x;
+            dup.y = y;
+            dup.z = z;
+            dup.blockId = blockId;
+            dup.metadata = metadata;
+            dup.tileData = tileData;
+            dup.renderOrder = renderOrder;
+            dup.buildOrder = buildOrder;
+            dup.item = item;
+            dup.block = block;
+            dup.stack = stack;
+
+            return dup;
+        }
+
+        public static PendingBlock fromBlock(World world, int x, int y, int z, Block block, int meta) {
             Item item = MMUtils.getItemFromBlock(block, meta);
 
             if (item == null) {
@@ -1204,6 +1296,16 @@ class NBTState {
             meta = item.getHasSubtypes() ? block.getDamageValue(world, x, y, z) : meta;
 
             return new PendingBlock(world.provider.dimensionId, x, y, z, block, meta);
+        }
+
+        /**
+         * Creates a PendingBlock from an existing block in the world.
+         */
+        public static PendingBlock fromBlock(World world, int x, int y, int z) {
+            Block block = world.getBlock(x, y, z);
+            int meta = world.getBlockMetadata(x, y, z);
+
+            return fromBlock(world, x, y, z, block, meta);
         }
 
         /**

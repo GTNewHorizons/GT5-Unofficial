@@ -104,6 +104,7 @@ public class PendingBuild extends AbstractBuildable {
                 if (block.tileData != null && tier.hasCap(ItemMatterManipulator.ALLOW_CONFIGURING)) {
                     applyContext.pendingBlock = block;
                     block.tileData.apply(applyContext);
+                    playSound(world, x, y, z, SoundResource.MOB_ENDERMEN_PORTAL);
                 }
 
                 continue;

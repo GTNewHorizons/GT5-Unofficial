@@ -432,6 +432,7 @@ public class ItemMatterManipulator extends Item
                     case EXCH_SET_REPLACE -> "Setting block in replace whitelist";
                     case EXCH_SET_TARGET -> "Setting block to replace with";
                     case PICK_CABLE -> "Picking cable";
+                    case MARK_ARRAY -> "Marking array bounds";
                 });
             }
 
@@ -664,6 +665,11 @@ public class ItemMatterManipulator extends Item
                 state.config.action = null;
                 return true;
             }
+            case MARK_ARRAY: {
+                onMarkArray(world, player, itemStack, state);
+                state.config.action = null;
+                return true;
+            }
         }
 
         return false;
@@ -840,6 +846,24 @@ public class ItemMatterManipulator extends Item
         GTUtility.sendInfoToPlayer(
             player,
             String.format("Set cables to: %s", selected == null ? "nothing" : selected.getDisplayName()));
+    }
+
+    private void onMarkArray(World world, EntityPlayer player, ItemStack stack, NBTState state) {
+        Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
+
+        if (!Location.areCompatible(state.config.coordA, state.config.coordB)) {
+            GTUtility.sendErrorToPlayer(player, "Cannot mark array: copy region is invalid");
+            state.config.arraySpan = null;
+            return;
+        }
+
+        if (state.config.coordC == null || !state.config.coordC.isInWorld(world)) {
+            GTUtility.sendErrorToPlayer(player, "Cannot mark array: paste coordinate is invalid");
+            state.config.arraySpan = null;
+            return;
+        }
+
+        state.config.arraySpan = Config.getArrayMult(world, state.config.coordA, state.config.coordB, state.config.coordC, lookingAt);
     }
 
     /**
@@ -1173,6 +1197,21 @@ public class ItemMatterManipulator extends Item
                 .onClicked(() -> {
                     Messages.MarkCopy.sendToServer();
                 })
+            .done()
+            .branch()
+                .label("Edit Array")
+                .option()
+                    .label("Reset")
+                    .onClicked(() -> {
+                        Messages.ResetArray.sendToServer();
+                    })
+                .done()
+                .option()
+                    .label("Mark")
+                    .onClicked(() -> {
+                        Messages.SetPendingAction.sendToServer(PendingAction.MARK_ARRAY);
+                    })
+                .done()
             .done()
             .branch()
                 .label("Planning")
@@ -1614,26 +1653,38 @@ public class ItemMatterManipulator extends Item
             Location sourceB = state.config.coordB;
             Location paste = state.config.coordC;
 
+            Vector3i lookingAt = MMUtils.getLookingAtLocation(player);
+
             if (state.config.action != null) {
                 switch (state.config.action) {
                     case MARK_COPY_A:
                     case MARK_CUT_A: {
-                        sourceA = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
+                        sourceA = new Location(player.worldObj, lookingAt);
                         GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
                         drawRulers(player, sourceA, false, event.partialTicks);
                         break;
                     }
                     case MARK_COPY_B:
                     case MARK_CUT_B: {
-                        sourceB = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
+                        sourceB = new Location(player.worldObj, lookingAt);
                         GL11.glColor4f(0.15f, 0.6f, 0.75f, 0.75F);
                         drawRulers(player, sourceB, false, event.partialTicks);
                         break;
                     }
                     case MARK_PASTE: {
-                        paste = new Location(player.worldObj, MMUtils.getLookingAtLocation(player));
+                        paste = new Location(player.worldObj, lookingAt);
                         GL11.glColor4f(0.75f, 0.5f, 0.15f, 0.75F);
                         drawRulers(player, paste, false, event.partialTicks);
+                        break;
+                    }
+                    case MARK_ARRAY: {
+                        GL11.glColor4f(0.4f, 0.75f, 0.15f, 0.75F);
+                        drawRulers(player, new Location(player.worldObj, lookingAt), false, event.partialTicks);
+
+                        if (paste != null && paste.isInWorld(player.worldObj)) {
+                            state.config.arraySpan = Config.getArrayMult(player.worldObj, sourceA, sourceB, paste, lookingAt);
+                        }
+
                         break;
                     }
                     default: {
@@ -1667,10 +1718,12 @@ public class ItemMatterManipulator extends Item
             if (isPasteValid) {
                 Objects.requireNonNull(paste);
 
-                Vector3i deltas2 = deltas == null ? new Vector3i() : deltas;
+                Vector3i pasteDeltas = state.config.getPasteVisualDeltas(player.worldObj);
+
+                if (pasteDeltas == null) pasteDeltas = new Vector3i();
 
                 BoxRenderer.INSTANCE
-                    .drawAround(MMUtils.getBoundingBox(paste, deltas2), new Vector3f(0.75f, 0.5f, 0.15f));
+                    .drawAround(MMUtils.getBoundingBox(paste, pasteDeltas), new Vector3f(0.75f, 0.5f, 0.15f));
 
                 Location playerLocation = new Location(
                     player.getEntityWorld(),
@@ -1691,9 +1744,9 @@ public class ItemMatterManipulator extends Item
                     AboveHotbarHUD.renderTextAboveHotbar(
                         String.format(
                             "dX=%d dY=%d dZ=%d",
-                            Math.abs(deltas2.x) + 1,
-                            Math.abs(deltas2.y) + 1,
-                            Math.abs(deltas2.z) + 1),
+                            Math.abs(pasteDeltas.x) + 1,
+                            Math.abs(pasteDeltas.y) + 1,
+                            Math.abs(pasteDeltas.z) + 1),
                         (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
                         false,
                         false);

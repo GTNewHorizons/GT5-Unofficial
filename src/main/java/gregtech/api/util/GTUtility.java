@@ -56,6 +56,8 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.joml.Vector3i;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -4690,8 +4692,38 @@ public class GTUtility {
         return (lhs + rhs - 1) / rhs;
     }
 
+    public static int ceilDiv2(int lhs, int rhs) {
+        int sign = signum(lhs) * signum(rhs);
+
+        if (lhs == 0) return 0;
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        lhs = Math.abs(lhs);
+        rhs = Math.abs(rhs);
+
+        int unsigned = 1 + ((lhs - 1) / rhs);
+
+        return unsigned * sign;
+    }
+
     public static long ceilDiv(long lhs, long rhs) {
         return (lhs + rhs - 1) / rhs;
+    }
+
+    public static int signum(int x) {
+        return x < 0 ? -1 : x > 0 ? 1 : 0;
+    }
+
+    public static long signum(long x) {
+        return x < 0 ? -1 : x > 0 ? 1 : 0;
+    }
+
+    public static Vector3i signum(Vector3i v) {
+        v.x = signum(v.x);
+        v.y = signum(v.y);
+        v.z = signum(v.z);
+
+        return v;
     }
 
     /**

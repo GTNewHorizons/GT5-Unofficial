@@ -276,6 +276,9 @@ enum Messages {
             return packet;
         }
     })),
+    ResetArray(server(simple((player, stack, manipulator, state) -> {
+        state.config.arraySpan = null;
+    }))),
 
     ;
 
