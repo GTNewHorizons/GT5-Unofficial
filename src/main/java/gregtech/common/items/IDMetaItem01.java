@@ -103,6 +103,8 @@ public enum IDMetaItem01 {
     Steam_Regulator_HV(334),
     Steam_Regulator_EV(335),
     Steam_Regulator_IV(336),
+    Neuron_Cluster(343),
+    Circuit_Tissue(344),
     Electromagnet_Iron(345),
     Electromagnet_Steel(346),
     Electromagnet_Neodymium(347),

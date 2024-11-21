@@ -109,6 +109,7 @@ import static gregtech.common.items.IDMetaItem01.Circuit_Parts_Wiring_Advanced;
 import static gregtech.common.items.IDMetaItem01.Circuit_Parts_Wiring_Basic;
 import static gregtech.common.items.IDMetaItem01.Circuit_Parts_Wiring_Elite;
 import static gregtech.common.items.IDMetaItem01.Circuit_Primitive;
+import static gregtech.common.items.IDMetaItem01.Circuit_Tissue;
 import static gregtech.common.items.IDMetaItem01.Component_Filter;
 import static gregtech.common.items.IDMetaItem01.Component_Grinder_Diamond;
 import static gregtech.common.items.IDMetaItem01.Component_Grinder_Tungsten;
@@ -282,6 +283,7 @@ import static gregtech.common.items.IDMetaItem01.Large_Fluid_Cell_TungstenSteel;
 import static gregtech.common.items.IDMetaItem01.McGuffium_239;
 import static gregtech.common.items.IDMetaItem01.NC_SensorKit;
 import static gregtech.common.items.IDMetaItem01.NaquadriaSupersolid;
+import static gregtech.common.items.IDMetaItem01.Neuron_Cluster;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Empty;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Page;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Pages;
@@ -3234,6 +3236,21 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Safely closes a pseudostable black hole",
                 new TCAspects.TC_AspectStack(TCAspects.ALIENIS, 32),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 64)));
+
+        // AOs
+        ItemList.Circuit_Tissue.set(
+            addItem(
+                Circuit_Tissue.ID,
+                "Circuit Tissue",
+                "Living flesh designed to hold biological circuit components",
+                new TCAspects.TC_AspectStack(TCAspects.VICTUS, 8),
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 4)));
+        ItemList.Neuron_Cluster.set(
+            addItem(
+                Neuron_Cluster.ID,
+                "Neuron Cluster",
+                "A collection of living brain cells",
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 32)));
 
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(
