@@ -39,11 +39,13 @@ import appeng.parts.AEBasePart;
 import cpw.mods.fml.common.Optional.Method;
 import gregtech.GTMod;
 import gregtech.api.enums.Mods.Names;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IRedstoneEmitter;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockOres;
 import gregtech.common.items.matterManipulator.ItemMatterManipulator.ManipulatorTier;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
@@ -94,6 +96,31 @@ public abstract class AbstractBuildable extends MMInventory implements IBuildabl
      * {@link #actuallyGivePlayerStuff()} or they will be deleted.
      */
     protected void removeBlock(World world, int x, int y, int z, Block existing, int existingMeta) {
+
+        PendingBlock block = PendingBlock.fromBlock(world, x, y, z, existing, existingMeta);
+
+        if (block != null) {
+            ItemStack stack = block.toStack();
+
+            boolean isOre = false;
+
+            if (existing instanceof BlockOres) {
+                isOre = true;
+            } else {
+                for (var prefix : OrePrefixes.detectPrefix(stack)) {
+                    if (prefix.left() == OrePrefixes.ore) {
+                        isOre = true;
+                        break;
+                    }
+                }
+            }
+
+            if (isOre) {
+                world.setBlockToAir(x, y, z);
+                return;
+            }
+        }
+
         TileEntity te = world.getTileEntity(x, y, z);
 
         emptySuperchest(te);
