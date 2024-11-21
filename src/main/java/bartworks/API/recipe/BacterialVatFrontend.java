@@ -81,11 +81,13 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             int[] tSpecialA = MTEBioVat.specialValueUnpack(recipeInfo.recipe.mSpecialValue);
             String glassTier = StatCollector.translateToLocalFormatted("nei.biovat.0.name", GTValues.VN[tSpecialA[0]]);
-            String sievert;
-            if (tSpecialA[2] == 1) {
-                sievert = StatCollector.translateToLocalFormatted("nei.biovat.1.name", tSpecialA[3]);
-            } else {
-                sievert = StatCollector.translateToLocalFormatted("nei.biovat.2.name", tSpecialA[3]);
+            String sievert = "";
+            if (!(tSpecialA[3] == 0)) {
+                if (tSpecialA[2] == 1) {
+                    sievert = StatCollector.translateToLocalFormatted("nei.biovat.1.name", tSpecialA[3]);
+                } else {
+                    sievert = StatCollector.translateToLocalFormatted("nei.biovat.2.name", tSpecialA[3]);
+                }
             }
             return Arrays.asList(glassTier, sievert);
         }
