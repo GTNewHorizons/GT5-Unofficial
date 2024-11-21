@@ -18,7 +18,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 
-import gregtech.api.interfaces.IHatchElement;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -46,6 +45,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -82,8 +82,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 .addElement(
                     'h',
                     lazy(
-                        t -> buildHatchAdder(MTELargeTurbine.class)
-                            .atLeast(t.getHatchElements())
+                        t -> buildHatchAdder(MTELargeTurbine.class).atLeast(t.getHatchElements())
                             .casingIndex(t.getCasingTextureIndex())
                             .dot(2)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
@@ -148,8 +147,8 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @SuppressWarnings("unchecked")
     protected IHatchElement<? super MTELargeTurbine>[] getHatchElements() {
         if (getPollutionPerTick(null) == 0)
-            return new IHatchElement[]{Maintenance, InputHatch, OutputHatch, OutputBus, InputBus};
-        return new IHatchElement[]{Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler};
+            return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus };
+        return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler };
     }
 
     @Override
