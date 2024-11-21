@@ -3408,63 +3408,71 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
-                Materials.Cerium.getDustTiny(1),
+                Materials.Cerium.getDust(1),
                 Materials.Lutetium.getDust(3),
                 Materials.Sapphire.getDust(5))
-            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 8))
+            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 9))
             .eut(TierEU.RECIPE_UV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
-                Materials.Cerium.getDustTiny(1),
+                Materials.Cerium.getDust(1),
                 Materials.Lutetium.getDust(3),
-                Materials.GreenSapphire.getDust(10))
-            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 8))
+                Materials.GreenSapphire.getDust(5))
+            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 9))
             .eut(TierEU.RECIPE_UV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
-                Materials.Cerium.getDustTiny(2),
-                Materials.Lutetium.getDust(6),
-                Materials.Aluminiumoxide.getDust(25))
-            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 12))
-            .fluidInputs(Materials.Oxygen.getGas(9000))
+                Materials.Cerium.getDust(1),
+                Materials.Lutetium.getDust(3),
+                Materials.Aluminiumoxide.getDust(5))
+            .itemOutputs(CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 9))
             .eut(TierEU.RECIPE_UV)
-            .duration(400)
+            .duration(5 * SECONDS)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(5),
-                Materials.Cerium.getDust(1),
-                Materials.Lutetium.getDust(60),
-                Materials.Sapphire.getDust(64),
-                Materials.Sapphire.getDust(36))
+                Materials.Cerium.getDust(9),
+                Materials.Lutetium.getDust(27),
+                Materials.Sapphire.getDust(45))
             .itemOutputs(
                 CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
-                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
-                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 32))
+                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 17))
             .eut(TierEU.RECIPE_UV)
-            .duration(1800)
+            .duration(45 * SECONDS)
+            .noOptimize()
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(5),
-                Materials.Cerium.getDust(1),
-                Materials.Lutetium.getDust(60),
-                Materials.GreenSapphire.getDust(64),
-                Materials.GreenSapphire.getDust(64),
-                Materials.GreenSapphire.getDust(64),
-                Materials.GreenSapphire.getDust(8))
+                Materials.Cerium.getDust(9),
+                Materials.Lutetium.getDust(27),
+                Materials.GreenSapphire.getDust(45))
             .itemOutputs(
                 CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
-                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
-                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 32))
+                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 17))
             .eut(TierEU.RECIPE_UV)
-            .duration(1800)
+            .duration(45 * SECONDS)
+            .noOptimize()
+            .addTo(mixerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(5),
+                Materials.Cerium.getDust(9),
+                Materials.Lutetium.getDust(27),
+                Materials.Aluminiumoxide.getDust(45))
+            .itemOutputs(
+                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 64),
+                CeriumDopedLutetiumAluminiumOxygenBlend.get(OrePrefixes.dust, 17))
+            .eut(TierEU.RECIPE_UV)
+            .duration(45 * SECONDS)
+            .noOptimize()
             .addTo(mixerRecipes);
 
         // Get LuAG Crystal seed
