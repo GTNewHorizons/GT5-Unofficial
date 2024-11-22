@@ -17,6 +17,7 @@ import org.joml.Vector3i;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -279,6 +280,7 @@ enum Messages {
     ResetArray(server(simple((player, stack, manipulator, state) -> {
         state.config.arraySpan = null;
     }))),
+    SetTransform(server(enumPacket(ExtendedFacing.values(), (state, transform) -> state.config.transform = transform))),
 
     ;
 

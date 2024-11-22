@@ -53,11 +53,18 @@ import org.spongepowered.libraries.com.google.common.collect.MapMaker;
 import com.google.gson.JsonElement;
 import com.gtnewhorizon.gtnhlib.util.AboveHotbarHUD;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
 import com.gtnewhorizons.modularui.api.UIInfos;
 import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
+import com.gtnewhorizons.modularui.common.widget.Column;
+import com.gtnewhorizons.modularui.common.widget.Row;
+import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
 
 import appeng.api.features.INetworkEncodable;
 import appeng.api.implementations.parts.IPartCable;
@@ -85,6 +92,7 @@ import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
+import gregtech.common.items.matterManipulator.NBTState.Config.VoxelAABB;
 import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
 
@@ -95,6 +103,8 @@ public class ItemMatterManipulator extends Item
 
     @SideOnly(Side.CLIENT)
     private MatterManipulatorRenderer renderer;
+
+    private boolean openTransformWindow = false;
 
     public ItemMatterManipulator(ManipulatorTier tier) {
         String name = "itemMatterManipulator" + tier.tier;
@@ -476,6 +486,11 @@ public class ItemMatterManipulator extends Item
                 addInfoLine(desc, "Copy Coordinate B: %s", state.config.coordB);
 
                 addInfoLine(desc, "Paste Coordinate: %s", state.config.coordC);
+
+                addInfoLine(desc,
+                    "Array: %s",
+                    state.config.arraySpan,
+                    span -> String.format("X: %dx, Y: %dx, Z: %dx", span.x + 1, span.y + 1, span.z + 1));
             }
 
             if (state.config.placeMode == PlaceMode.MOVING) {
@@ -1253,6 +1268,12 @@ public class ItemMatterManipulator extends Item
                 .done()
             .done()
             .option()
+                .label("Edit Transform")
+                .onClicked(() -> {
+                    openTransformWindow = true;
+                })
+            .done()
+            .option()
                 .label("Mark Paste")
                 .onClicked(() -> {
                     Messages.MarkPaste.sendToServer();
@@ -1373,6 +1394,39 @@ public class ItemMatterManipulator extends Item
 
     // spotless:on
 
+    public ModularWindow createTransformWindow(UIBuildContext buildContext) {
+        ItemStack heldStack = buildContext.getPlayer().getHeldItem();
+        NBTState initialState = getState(heldStack);
+
+        buildContext.setShowNEI(false);
+
+        ModularWindow.Builder builder = ModularWindow.builder(new Size(0, 0));
+
+        builder.widget(new Column().widgets(
+            new Row().widgets(
+                new VanillaButtonWidget()
+                    .setDisplayString("Rotate X-")
+                    .setOnClick((t, u) -> {
+                        ExtendedFacing x = ExtendedFacing.DOWN_CLOCKWISE_BOTH;
+                    })
+                    .setSize(40, 18),
+                new VanillaButtonWidget()
+                    .setDisplayString("Rotate X+")
+                    .setSize(40, 18)
+            )
+        ));
+
+        return builder.build();
+    }
+
+    private static class TransparentModularGui extends ModularGui {
+        public TransparentModularGui(ModularUIContainer container) {
+            super(container);
+        }
+
+        public void drawDefaultBackground() {}
+    }
+
     // #endregion
 
     // #region Rendering
@@ -1383,6 +1437,16 @@ public class ItemMatterManipulator extends Item
     @SideOnly(Side.CLIENT)
     public void renderSelection(RenderWorldLastEvent event) {
         try {
+            if (openTransformWindow) {
+                openTransformWindow = false;
+
+                UIBuildContext buildContext = new UIBuildContext(Minecraft.getMinecraft().thePlayer);
+                ModularWindow window = createTransformWindow(buildContext);
+                TransparentModularGui screen = new TransparentModularGui(
+                        new ModularUIContainer(new ModularUIContext(buildContext, null, true), window));
+                FMLCommonHandler.instance().showGuiScreen(screen);
+            }
+
             renderer.renderSelection(event);
         } catch (Throwable t) {
             GTMod.GT_FML_LOGGER.error("Could not render matter manipulator preview", t);
@@ -1599,24 +1663,20 @@ public class ItemMatterManipulator extends Item
                 Vector3i vB = coordB.toVec();
                 Vector3i vC = null;
 
-                Vector3i max = new Vector3i(vA).max(vB);
-                Vector3i min = new Vector3i(vA).min(vB);
+                VoxelAABB aabb = new VoxelAABB(vA, vB);
 
                 // expand the AABB if the shape uses coord C
                 if ((state.config.placeMode != PlaceMode.GEOMETRY || state.config.shape.requiresC()) && isCValid) {
                     Objects.requireNonNull(coordC);
                     vC = coordC.toVec();
 
-                    max.max(vC);
-                    min.min(vC);
+                    aabb.union(vC);
                 }
-
-                max.add(1, 1, 1);
 
                 BoxRenderer.INSTANCE.start(event.partialTicks);
 
                 BoxRenderer.INSTANCE.drawAround(
-                    AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z),
+                    aabb.toBoundingBox(),
                     new Vector3f(0.15f, 0.6f, 0.75f));
 
                 BoxRenderer.INSTANCE.finish();
@@ -1634,7 +1694,7 @@ public class ItemMatterManipulator extends Item
                     analysisCache.sort(Comparator.comparingInt((PendingBlock b) -> b.renderOrder));
 
                     AboveHotbarHUD.renderTextAboveHotbar(
-                        String.format("dX=%d dY=%d dZ=%d", max.x - min.x, max.y - min.y, max.z - min.z),
+                        aabb.describe(),
                         (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
                         false,
                         false);
@@ -1718,12 +1778,14 @@ public class ItemMatterManipulator extends Item
             if (isPasteValid) {
                 Objects.requireNonNull(paste);
 
-                Vector3i pasteDeltas = state.config.getPasteVisualDeltas(player.worldObj);
+                VoxelAABB pasteDeltas = state.config.getPasteVisualDeltas(player.worldObj);
 
-                if (pasteDeltas == null) pasteDeltas = new Vector3i();
+                if (pasteDeltas == null) pasteDeltas = new VoxelAABB();
+
+                pasteDeltas.moveOrigin(paste.toVec());
 
                 BoxRenderer.INSTANCE
-                    .drawAround(MMUtils.getBoundingBox(paste, pasteDeltas), new Vector3f(0.75f, 0.5f, 0.15f));
+                    .drawAround(pasteDeltas.toBoundingBox(), new Vector3f(0.75f, 0.5f, 0.15f));
 
                 Location playerLocation = new Location(
                     player.getEntityWorld(),
@@ -1741,12 +1803,18 @@ public class ItemMatterManipulator extends Item
                     lastAnalyzedConfig = state.config;
                     analysisCache = state.getPendingBlocks(player.getEntityWorld());
 
+                    String array = "";
+
+                    if (state.config.arraySpan != null) {
+                        array = String.format(
+                            " aX=%d aY=%d aZ=%d",
+                            state.config.arraySpan.x,
+                            state.config.arraySpan.y,
+                            state.config.arraySpan.z);
+                    }
+
                     AboveHotbarHUD.renderTextAboveHotbar(
-                        String.format(
-                            "dX=%d dY=%d dZ=%d",
-                            Math.abs(pasteDeltas.x) + 1,
-                            Math.abs(pasteDeltas.y) + 1,
-                            Math.abs(pasteDeltas.z) + 1),
+                        pasteDeltas.describe() + array,
                         (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
                         false,
                         false);

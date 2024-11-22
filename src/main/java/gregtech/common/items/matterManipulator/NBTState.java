@@ -21,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
@@ -33,7 +34,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import appeng.api.AEApi;
 import appeng.api.config.SecurityPermissions;
@@ -257,9 +257,9 @@ class NBTState {
 
             List<PendingBlock> base = new ArrayList<>(analysis.blocks);
 
-            for (int y = 0; y < Math.max(sy + (analysis.deltas.y == 0 ? 1 : 0), 1); y++) {
-                for (int z = 0; z < Math.max(sz + (analysis.deltas.z == 0 ? 1 : 0), 1); z++) {
-                    for (int x = 0; x < Math.max(sx + (analysis.deltas.x == 0 ? 1 : 0), 1); x++) {
+            for (int y = 0; y < sy; y++) {
+                for (int z = 0; z < sz; z++) {
+                    for (int x = 0; x < sx; x++) {
                         int dx = x * (analysis.deltas.x + (analysis.deltas.x < 0 ? -1 : 1));
                         int dy = y * (analysis.deltas.y + (analysis.deltas.y < 0 ? -1 : 1));
                         int dz = z * (analysis.deltas.z + (analysis.deltas.z < 0 ? -1 : 1));
@@ -815,7 +815,7 @@ class NBTState {
 
         /** The rotation & flip, if any */
         public ExtendedFacing transform;
-        /** The array size in repetitions. */
+        /** The array size in repetitions */
         public Vector3i arraySpan;
 
         public static JsonElement saveStack(ItemStack stack) {
@@ -896,40 +896,134 @@ class NBTState {
             }
         }
 
-        public static Vector3i getArrayMult(World world, Location sourceA, Location sourceB, Location paste, Vector3i lookingAt) {
-            if (!Location.areCompatible(sourceA, sourceB)) return new Vector3i(1);
-            if (paste == null || paste.worldId != world.provider.dimensionId) return new Vector3i(1);
+        public static class VoxelAABB {
+            public Vector3i origin, bounds;
 
-            Vector3i copyDeltas = MMUtils.getRegionDeltas(sourceA, sourceB);
-            Vector3i pasteDeltas = new Vector3i(lookingAt).sub(paste.toVec());
+            public VoxelAABB() {
+                origin = new Vector3i();
+                bounds = new Vector3i();
+            }
 
-            pasteDeltas.x = copyDeltas.x == 0 ? Math.max(pasteDeltas.x, 0) : Math.max(ceilDiv2(pasteDeltas.x, copyDeltas.x), 1);
-            pasteDeltas.y = copyDeltas.y == 0 ? Math.max(pasteDeltas.y, 0) : Math.max(ceilDiv2(pasteDeltas.y, copyDeltas.y), 1);
-            pasteDeltas.z = copyDeltas.z == 0 ? Math.max(pasteDeltas.z, 0) : Math.max(ceilDiv2(pasteDeltas.z, copyDeltas.z), 1);
+            public VoxelAABB(Vector3i a, Vector3i b) {
+                origin = new Vector3i(a);
+                bounds = new Vector3i(b);
+            }
 
-            return pasteDeltas;
+            public Vector3i min() {
+                return new Vector3i(origin).min(bounds);
+            }
+
+            public Vector3i max() {
+                return new Vector3i(origin).max(bounds);
+            }
+
+            public VoxelAABB union(Vector3i v) {
+                Vector3i min = min(), max = max();
+
+                origin.set(v).min(min);
+                bounds.set(v).max(max);
+
+                return this;
+            }
+
+            public VoxelAABB moveOrigin(Vector3i newOrigin) {
+                bounds.sub(origin).add(newOrigin);
+                origin.set(newOrigin);
+
+                return this;
+            }
+
+            private static int scaleComponent(int k, int o, int n) {
+                int d = k - o;
+
+                if (d == 0) return n + o - 1;
+
+                return (d + signum(d)) * n + o - signum(d);
+            }
+
+            public VoxelAABB scale(int x, int y, int z) {
+                bounds.x = scaleComponent(bounds.x, origin.x, x);
+                bounds.y = scaleComponent(bounds.y, origin.y, y);
+                bounds.z = scaleComponent(bounds.z, origin.z, z);
+
+                return this;
+            }
+
+            public VoxelAABB clone() {
+                VoxelAABB dup = new VoxelAABB();
+                dup.origin = new Vector3i(origin);
+                dup.bounds = new Vector3i(bounds);
+                return dup;
+            }
+
+            public Vector3i span() {
+                Vector3i min = min(), max = max();
+
+                return new Vector3i(max.x - min.x, max.y - min.y, max.z - min.z);
+            }
+
+            public Vector3i size() {
+                Vector3i min = min(), max = max();
+
+                return new Vector3i(max.x - min.x + 1, max.y - min.y + 1, max.z - min.z + 1);
+            }
+
+            public AxisAlignedBB toBoundingBox() {
+                Vector3i min = min(), max = max();
+
+                return AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
+            }
+
+            public String describe() {
+                Vector3i size = size();
+
+                return String.format(
+                    "dX=%,d dY=%,d dZ=%,d V=%,d",
+                    Math.abs(size.x),
+                    Math.abs(size.y),
+                    Math.abs(size.z),
+                    size.x * size.y * size.z);
+            }
         }
 
-        public Vector3i getPasteVisualDeltas(World world) {
+        public static Vector3i getArrayMult(World world, Location sourceA, Location sourceB, Location dest, Vector3i lookingAt) {
+            if (!Location.areCompatible(sourceA, sourceB)) return new Vector3i(1);
+            if (dest == null || dest.worldId != world.provider.dimensionId) return new Vector3i(1);
+
+            VoxelAABB copy = new VoxelAABB(sourceA.toVec(), sourceB.toVec());
+            VoxelAABB paste = copy.clone().moveOrigin(dest.toVec());
+
+            Vector3i array = new Vector3i(lookingAt).sub(dest.toVec());
+            Vector3i span = paste.size();
+
+            Vector3i delta = sourceB.toVec().sub(sourceA.toVec());
+
+            array.x *= delta.x < 0 ? -1 : 1;
+            array.y *= delta.y < 0 ? -1 : 1;
+            array.z *= delta.z < 0 ? -1 : 1;
+
+            array.x += signum(array.x);
+            array.y += signum(array.y);
+            array.z += signum(array.z);
+
+            array.x = array.x < 1 ? 1 : ceilDiv2(array.x, span.x);
+            array.y = array.y < 1 ? 1 : ceilDiv2(array.y, span.y);
+            array.z = array.z < 1 ? 1 : ceilDiv2(array.z, span.z);
+
+            return array;
+        }
+
+        public VoxelAABB getPasteVisualDeltas(World world) {
             if (coordA == null || coordB == null) return null;
             if (!coordA.isInWorld(world) || !coordB.isInWorld(world)) return null;
 
-            Vector3i deltas = MMUtils.getRegionDeltas(coordA, coordB);
+            VoxelAABB aabb = new VoxelAABB(coordA.toVec(), coordB.toVec());
 
             if (arraySpan != null) {
-                deltas.x = deltas.x == 0 ? arraySpan.x : ((deltas.x + signum(deltas.x)) * arraySpan.x - signum(deltas.x));
-                deltas.y = deltas.y == 0 ? arraySpan.y : ((deltas.y + signum(deltas.y)) * arraySpan.y - signum(deltas.y));
-                deltas.z = deltas.z == 0 ? arraySpan.z : ((deltas.z + signum(deltas.z)) * arraySpan.z - signum(deltas.z));
+                aabb.scale(arraySpan.x, arraySpan.y, arraySpan.z);
             }
 
-            if (transform != null) {
-                Vec3Impl v = transform.getIntegerAxisSwap().translate(new Vec3Impl(deltas.x, deltas.y, deltas.z));
-                deltas.x = v.get0();
-                deltas.y = v.get1();
-                deltas.z = v.get2();
-            }
-
-            return deltas;
+            return aabb;
         }
 
         @Override
