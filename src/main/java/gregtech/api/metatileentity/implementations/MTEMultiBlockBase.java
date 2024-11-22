@@ -589,6 +589,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                 }
                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
+                    onRecipeEnd();
                     if (mOutputItems != null) {
                         for (ItemStack tStack : mOutputItems) {
                             if (tStack != null) {
@@ -630,6 +631,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         }
     }
+
+    /**
+     * Called during runMachine when progressTime reaches or exceeds maxProgressTime. Override to set
+     * custom behavior on recipe end.
+     */
+    public void onRecipeEnd() {}
 
     public boolean polluteEnvironment(int aPollutionLevel) {
         // Early exit if pollution is disabled
