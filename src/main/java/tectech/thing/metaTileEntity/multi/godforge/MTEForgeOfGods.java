@@ -104,6 +104,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.HatchElementBuilder;
@@ -113,6 +114,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
+import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.TileEntityForgeOfGods;
 import tectech.thing.gui.TecTechUITextures;
@@ -3116,6 +3118,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
     @Override
     protected void setHatchRecipeMap(MTEHatchInput hatch) {}
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes;
+    }
 
     @Override
     public void setItemNBT(NBTTagCompound NBT) {

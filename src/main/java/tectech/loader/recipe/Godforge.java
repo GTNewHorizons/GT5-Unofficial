@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FOG_EXOTIC_TIER;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
+import static gregtech.api.util.GTRecipeConstants.FOG_UPGRADE_NAME_SHORT;
 import static tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
 import static tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
 import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.getRandomIntInRange;
@@ -25,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
@@ -773,6 +776,69 @@ public class Godforge implements Runnable {
         ForgeOfGodsUpgrade.CD.addExtraCost(new ItemStack(Blocks.cobblestone, 32));
         ForgeOfGodsUpgrade.EE.addExtraCost(new ItemStack(Blocks.cobblestone, 48));
         ForgeOfGodsUpgrade.END.addExtraCost(new ItemStack(Blocks.cobblestone, 64));
+    }
+
+    public static void addFakeUpgradeCostRecipes() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.START.getExtraCost()))
+            .itemOutputs(
+                CustomItemList.Godforge_GravitonFlowModulatorTier1.get(1),
+                CustomItemList.Machine_Multi_SmeltingModule.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.START.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.FDIM.getExtraCost()))
+            .itemOutputs(CustomItemList.Machine_Multi_MoltenModule.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.FDIM.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.GPCI.getExtraCost()))
+            .itemOutputs(CustomItemList.Machine_Multi_PlasmaModule.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.GPCI.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.QGPIU.getExtraCost()))
+            .itemOutputs(CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(1))
+            .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.QGPIU.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.CD.getExtraCost()))
+            .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.CD.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.EE.getExtraCost()))
+            .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.EE.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.END.getExtraCost()))
+            .itemOutputs(MaterialsUEVplus.GravitonShard.getGems(1))
+            .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(576), Materials.Neutronium.getPlasma(1000))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.END.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
     }
 
     public static void initMoltenModuleRecipes() {

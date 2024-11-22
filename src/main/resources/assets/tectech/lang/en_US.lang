@@ -1339,6 +1339,7 @@ gt.recipe.researchStation=Research Station
 gt.recipe.fog_plasma=Heliothermal Plasma Fabricator
 gt.recipe.fog_exotic=Heliofusion Exoticizer
 gt.recipe.fog_molten=Helioflux Melting Core
+gt.recipe.upgrade_costs=Godforge Upgrades
 
 
 # NEI
