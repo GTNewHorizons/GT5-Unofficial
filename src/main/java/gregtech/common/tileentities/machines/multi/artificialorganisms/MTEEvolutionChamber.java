@@ -18,13 +18,11 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -32,8 +30,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
@@ -43,9 +44,12 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -55,6 +59,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ArtificialOrganism;
+import gregtech.api.objects.ArtificialOrganism.Trait;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -91,7 +96,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         .build();
 
     MTEHatchBioOutput bioHatch;
-    ArtificialOrganism currentSpecies = new ArtificialOrganism();
+    ArtificialOrganism currentSpecies;
     private int intelligence;
     private int strength;
     private int count;
@@ -280,17 +285,21 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         }
     }
 
+    // UI Pit of Doom
+
+    private static final int TRAIT_WINDOW_ID = 9;
+
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(4, 4)
-                .setSize(190, 85));
+                .setPos(24, 4)
+                .setSize(170, 85));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         screenElements.setSynced(false)
             .setSpace(0)
-            .setPos(10, 7);
+            .setPos(34, 7);
         screenElements.widget(new TextWidget("Current Species: ").setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements.widget(
@@ -306,17 +315,66 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> count, val -> count = val))
             .widget(
-                new DynamicTextWidget(() -> new Text("Sentience: " + count)).setSynced(false)
+                new DynamicTextWidget(() -> new Text("Sentience: " + sentience)).setSynced(false)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> sentience, val -> sentience = val));
+        screenElements.setEnabled(widget -> currentSpecies != null);
 
         builder.widget(createPurgeButton(builder));
         builder.widget(createBuildAOsButton(builder));
+        builder.widget(createSentienceBar(builder));
+        builder.widget(createTraitWindowButton(builder, Trait.Photosynthetic, new Pos2d(4, 4)));
+        builder.widget(createTraitWindowButton(builder, Trait.HiveMind, new Pos2d(4, 20)));
+        builder.widget(createTraitWindowButton(builder, Trait.Laborer, new Pos2d(4, 36)));
+        builder.widget(createTraitWindowButton(builder, Trait.Decaying, new Pos2d(4, 52)));
         builder.widget(screenElements);
+
+        // Windows
+        buildContext.addSyncedWindow(TRAIT_WINDOW_ID, this::createTraitWindow);
+    }
+
+    private Widget createSentienceBar(IWidgetBuilder<?> builder) {
+        return new ProgressBar().setProgress(() -> (float) sentience / 100)
+            .setDirection(ProgressBar.Direction.UP)
+            .setTexture(GTUITextures.PROGRESSBAR_SENTIENCE, 64)
+            .setSynced(true, false)
+            .setSize(16, 64)
+            .setPos(170, 120);
+    }
+
+    private ModularWindow createTraitWindow(final EntityPlayer player) {
+        ModularWindow.Builder builder = ModularWindow.builder(190, 85)
+            .setDraggable(false);
+
+        builder.widget(
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
+                .setPos(20, -49)
+                .setSize(170, 85))
+            .widget(createTraitItemWidget(ItemList.IC2_Plantball.get(1)).setPos(95, 0));
+
+        return builder.build();
+    }
+
+    private ButtonWidget createTraitWindowButton(IWidgetBuilder<?> builder, Trait trait, Pos2d pos) {
+        Widget button = new ButtonWidget()
+            .setOnClick(
+                (clickData, widget) -> {
+                    if (!widget.isClient()) widget.getContext()
+                        .openSyncedWindow(TRAIT_WINDOW_ID);
+                })
+            .setPlayClickSound(supportsVoidProtection())
+            .setBackground(
+                () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                    new ItemDrawable(new ItemStack(trait.cultureItem)) })
+            .addTooltip(trait.name)
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(pos)
+            .setSize(16, 16);
+        return (ButtonWidget) button;
     }
 
     private ButtonWidget createPurgeButton(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> currentSpecies.purgeAOs())
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> currentSpecies = null)
             .setPlayClickSound(supportsVoidProtection())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
@@ -327,12 +385,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 }
                 return ret.toArray(new IDrawable[0]);
             })
-            .dynamicTooltip(
-                () -> Arrays.asList(
-                    StatCollector.translateToLocal("GT5U.gui.button.voiding_mode"),
-                    StatCollector.translateToLocal(getVoidingMode().getTransKey())))
+            .addTooltip("Purge tank")
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getVoidingModeButtonPos())
+            .setPos(26, 91)
             .setSize(16, 16);
         return (ButtonWidget) button;
     }
@@ -349,11 +404,23 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 }
                 return ret.toArray(new IDrawable[0]);
             })
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_switch"))
+            .addTooltip("Create default pop")
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getPowerSwitchButtonPos())
+            .setPos(getBatchModeButtonPos())
             .setSize(16, 16);
         return (ButtonWidget) button;
     }
 
+    public Widget createTraitItemWidget(final ItemStack costStack) {
+        // Item slot
+        ItemStackHandler handler = new ItemStackHandler(1);
+        ItemStack handlerStack = costStack.copy();
+        handlerStack.stackSize = 1;
+        return new SlotWidget(handler, 0).setAccess(true, true)
+            .setFilter((stack) -> stack.getItem() == costStack.getItem())
+            .setRenderStackSize(false)
+            .setPos(26, 91)
+            .setSize(16, 16)
+            .setBackground(() -> new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED, new ItemDrawable(costStack) });
+    }
 }

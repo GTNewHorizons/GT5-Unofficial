@@ -2,6 +2,12 @@ package gregtech.api.objects;
 
 import java.util.Random;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+
+import gregtech.api.enums.ItemList;
+
 public class ArtificialOrganism {
 
     private int intelligence;
@@ -11,7 +17,14 @@ public class ArtificialOrganism {
     private int count;
     private int sentience;
 
-    private boolean immortal;
+    // Feature traits
+    public boolean photosynthetic;
+    public boolean hiveMind;
+    public boolean laborer;
+    public boolean cooperative;
+    public boolean decaying;
+    public boolean genius;
+    public boolean immortal;
 
     public ArtificialOrganism(int intelligence, int strength, int reproduction) {
         this.intelligence = intelligence;
@@ -47,6 +60,7 @@ public class ArtificialOrganism {
      * Simulate one cycle of AO reproduction.
      */
     public void doReproduction() {
+        if (immortal || decaying) return;
         replenishAOs((count / 10) * reproduction);
     }
 
@@ -70,7 +84,9 @@ public class ArtificialOrganism {
 
         // At this threshold, AOs have a chance to slow down recipes.
         if (sentience > 5) {
-            if (rng.nextInt(10) == 0) speedBonus *= 2;
+            if (rng.nextInt(10) == 0) {
+                speedBonus = 2;
+            }
         }
 
         return speedBonus;
@@ -127,5 +143,25 @@ public class ArtificialOrganism {
             + reproduction
             + " Count: "
             + count;
+    }
+
+    public enum Trait {
+
+        Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, "Photosynthetic"),
+        HiveMind(Item.getItemFromBlock(Blocks.red_mushroom), 5, 5, 5, "Hive Mind"),
+        Laborer(Items.beef, 3, 8, 5, "Laborer"),
+        Decaying(Items.rotten_flesh, 10, 10, 10, "Decaying");
+
+        public final Item cultureItem;
+        public final int baseInt, baseStr, baseRep;
+        public final String name;
+
+        Trait(Item cultureItem, int baseInt, int baseStr, int baseRep, String name) {
+            this.cultureItem = cultureItem;
+            this.baseInt = baseInt;
+            this.baseStr = baseStr;
+            this.baseRep = baseRep;
+            this.name = name;
+        }
     }
 }

@@ -54,21 +54,22 @@ public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
 
                 setSpeedBonus(currentOrganism.calculateSpeedBonus());
 
-                AOsInUse = Math.round((float) currentOrganism.consumeAOs(data.requiredCount) * (100 - data.dangerLevel) / 100F);
+                AOsInUse = Math
+                    .round((float) currentOrganism.consumeAOs(data.requiredCount) * (100 - data.dangerLevel) / 100F);
                 return super.validateRecipe(recipe);
             }
-
-            @Override
-            public ProcessingLogic clear() {
-                ArtificialOrganism currentOrganism = getAO();
-                if (currentOrganism != null) {
-                    currentOrganism.increaseSentience(1);
-                    currentOrganism.replenishAOs(AOsInUse);
-                    AOsInUse = 0;
-                }
-                return super.clear();
-            }
         };
+    }
+
+    @Override
+    public void onRecipeEnd() {
+        ArtificialOrganism currentOrganism = getAO();
+        if (currentOrganism != null) {
+            currentOrganism.increaseSentience(10);
+            currentOrganism.replenishAOs(AOsInUse);
+            AOsInUse = 0;
+        }
+        super.onRecipeEnd();
     }
 
     protected ArtificialOrganism getAO() {
