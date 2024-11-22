@@ -1,5 +1,6 @@
 package gregtech.api.recipe;
 
+import static bartworks.util.BWRecipes.computeSieverts;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
@@ -1238,7 +1239,8 @@ public final class RecipeMaps {
                 b -> BartWorksRecipeMaps.bacterialVatRecipes.doAdd(
                     b.copy()
                         .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
-                        .metadata(SIEVERTS, (int) GTUtility.getTier(b.getEUt())))));
+                        .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
+                        .eut(b.getEUt()))));
         RecipeMaps.implosionRecipes.addDownstream(
             IRecipeMap.newRecipeMap(
                 b -> BartWorksRecipeMaps.electricImplosionCompressorRecipes.doAdd(
