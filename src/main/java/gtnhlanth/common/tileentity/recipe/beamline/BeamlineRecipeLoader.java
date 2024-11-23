@@ -180,7 +180,6 @@ public class BeamlineRecipeLoader {
             60,
             1,
             (int) TierEU.RECIPE_LuV);
-        
 
         BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
             new ItemStack(Items.chicken, 1),
