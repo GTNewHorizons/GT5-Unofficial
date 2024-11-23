@@ -1008,6 +1008,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * Gets the pollution produced per second by this multiblock, default to 0. Override this with its actual value in
      * the code of the multiblock.
+     *
+     * This returns the unmodified raw pollution value, not the one after muffler discounts.
      */
     public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
