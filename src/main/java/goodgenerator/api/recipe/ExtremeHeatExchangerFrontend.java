@@ -42,22 +42,21 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
         @Override
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             FluidStack[] Inputs = recipeInfo.recipe.mFluidInputs;
-            FluidStack[] Outputs = recipeInfo.recipe.mFluidOutputs;
-            int denseMultiplier = 1;
-            if (Inputs[0].getUnlocalizedName()
-                .contains("plasma")) {
-                denseMultiplier = 1000;
-            }
             int threshold = recipeInfo.recipe.mSpecialValue;
-            return Arrays.asList(
-                StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
-                    + GTUtility.formatNumbers(Inputs[0].amount)
-                    + " L/s",
-                StatCollector.translateToLocal("value.extreme_heat_exchanger.1"),
-                GTUtility.formatNumbers(Outputs[0].amount / 160 * denseMultiplier) + " L/s",
-                StatCollector.translateToLocal("value.extreme_heat_exchanger.2"),
-                GTUtility.formatNumbers(Outputs[1].amount / 160 * denseMultiplier) + " L/s",
-                StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " " + threshold + " L/s");
+            String[] description = new String[4];
+            description[0] = StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
+                + GTUtility.formatNumbers(Inputs[0].amount)
+                + " L/s";
+            description[1] = StatCollector.translateToLocal("value.extreme_heat_exchanger.1");
+            description[2] = GTUtility.formatNumbers(Inputs[1].amount) + " L/s";
+            if (!Inputs[0].getUnlocalizedName()
+                .contains("plasma")) {
+                description[3] = StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " "
+                    + threshold
+                    + " L/s";
+
+            }
+            return Arrays.asList(description);
         }
     }
 }

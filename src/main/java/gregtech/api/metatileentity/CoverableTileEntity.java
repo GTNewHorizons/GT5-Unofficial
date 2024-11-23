@@ -91,7 +91,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected void writeCoverNBT(NBTTagCompound aNBT, boolean isDrop) {
         final NBTTagList tList = new NBTTagList();
-        final int[] coverSides = new int[] { 0, 0, 0, 0, 0, 0 };
 
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             final CoverInfo coverInfo = getCoverInfoAtSide(side);
@@ -107,6 +106,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (tList.tagCount() > 0) {
             aNBT.setTag(GTValues.NBT.COVERS, tList);
             // Backwards compat, in case of a revert... for now
+            final int[] coverSides = new int[] { 0, 0, 0, 0, 0, 0 };
             aNBT.setIntArray("mCoverSides", coverSides);
         }
 
