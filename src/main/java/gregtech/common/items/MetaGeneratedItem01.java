@@ -460,7 +460,6 @@ import static gregtech.common.items.IDMetaItem01.ZPM4;
 import static gregtech.common.items.IDMetaItem01.ZPM5;
 import static gregtech.common.items.IDMetaItem01.ZPM6;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1691,49 +1690,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
-
-        GTModHandler.addCraftingRecipe(
-            ItemList.Electric_Motor_LV.get(1L),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.IronMagnetic), 'R',
-                OrePrefixes.stick.get(Materials.AnyIron), 'W', OrePrefixes.wireGt01.get(Materials.AnyCopper), 'C',
-                OrePrefixes.cableGt01.get(Materials.Tin) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Electric_Motor_LV.get(1L),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.SteelMagnetic), 'R',
-                OrePrefixes.stick.get(Materials.Steel), 'W', OrePrefixes.wireGt01.get(Materials.AnyCopper), 'C',
-                OrePrefixes.cableGt01.get(Materials.Tin) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Electric_Motor_MV.get(1L),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.SteelMagnetic), 'R',
-                OrePrefixes.stick.get(Materials.Aluminium), 'W', OrePrefixes.wireGt02.get(Materials.Cupronickel), 'C',
-                OrePrefixes.cableGt01.get(Materials.AnyCopper) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Electric_Motor_HV.get(1L),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.SteelMagnetic), 'R',
-                OrePrefixes.stick.get(Materials.StainlessSteel), 'W', OrePrefixes.wireGt04.get(Materials.Electrum), 'C',
-                OrePrefixes.cableGt02.get(Materials.Silver) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Electric_Motor_EV.get(1L),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.NeodymiumMagnetic), 'R',
-                OrePrefixes.stick.get(Materials.Titanium), 'W', OrePrefixes.wireGt04.get(Materials.BlackSteel), 'C',
-                OrePrefixes.cableGt02.get(Materials.Aluminium) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Electric_Motor_IV.get(1L),
-            GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.get(Materials.NeodymiumMagnetic), 'R',
-                OrePrefixes.stick.get(Materials.TungstenSteel), 'W', OrePrefixes.wireGt04.get(Materials.Graphene), 'C',
-                OrePrefixes.cableGt02.get(Materials.Tungsten) });
 
         ItemList.ElectronicsLump.set(
             addItem(
@@ -3554,15 +3510,16 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
     }
 
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
-        Collection<GTRecipe> fusionRecipes = RecipeMaps.fusionRecipes.getAllRecipes();
-        if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) { // Materials has a plasma fluid
-            for (GTRecipe recipe : fusionRecipes) { // Loop through fusion recipes
-                if (recipe.getFluidOutput(0) != null) { // Make sure fluid output can't be null (not sure if possible)
+        // Materials has a plasma fluid
+        if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) {
+            if (aMaterial.mHasPlasma) return true;
+            // Loop through fusion recipes
+            for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
+                // Make sure fluid output can't be null (not sure if possible)
+                if (recipe.getFluidOutput(0) != null) {
+                    // Fusion recipe output matches current plasma cell fluid
                     if (recipe.getFluidOutput(0)
-                        .isFluidEqual(aMaterial.getPlasma(1L))) return true; // Fusion recipe
-                                                                             // output matches
-                                                                             // current plasma
-                                                                             // cell fluid
+                        .isFluidEqual(aMaterial.getPlasma(1L))) return true;
                 }
             }
         }

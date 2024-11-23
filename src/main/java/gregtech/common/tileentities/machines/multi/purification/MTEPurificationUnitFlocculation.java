@@ -330,13 +330,13 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addCasingInfoExactlyColored(
                 "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
-                16,
+                30,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
-                30,
+                16,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(

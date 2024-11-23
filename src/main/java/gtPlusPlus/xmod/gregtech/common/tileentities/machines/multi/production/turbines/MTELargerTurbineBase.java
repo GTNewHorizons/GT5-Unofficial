@@ -41,7 +41,6 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
@@ -49,7 +48,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.ModBlocks;
@@ -121,7 +119,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected int storedFluid = 0;
     protected int counter = 0;
     protected boolean looseFit = false;
-    protected double mufflerReduction = 1;
     protected float[] flowMultipliers = new float[] { 1, 1, 1 };
 
     public ITexture frontFace = new GTPPRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
@@ -152,13 +149,11 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .addInfo("Right-click with screwdriver to enable loose fit")
             .addInfo("Optimal flow will increase or decrease depending on fitting")
             .addInfo("Loose fit increases flow in exchange for efficiency");
-        if (getTurbineType().contains("Steam")) {
-            tt.addInfo("XL Steam Turbines can use Loose Mode with either Slow or Fast Mode");
-        }
         if (getTurbineType().equals("Plasma")) {
             tt.addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
                 .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
         }
+        tt.addTecTechHatchInfo();
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
             .addController("Top Middle")
@@ -189,14 +184,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             return false;
         }
         return getPollutionPerSecond(null) > 0;
-    }
-
-    public final double getMufflerReduction() {
-        double totalReduction = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            totalReduction += ((double) tHatch.calculatePollutionReduction(100)) / 100;
-        }
-        return totalReduction / 4;
     }
 
     @Override
@@ -232,7 +219,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                     + mOutputHatches.size());
             return false;
         }
-        mufflerReduction = getMufflerReduction();
         return aStructure;
     }
 
@@ -562,8 +548,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     @Override
     public String[] getExtraInfoData() {
-        int mPollutionReduction = (int) (100 * mufflerReduction);
-
         String tRunning = mMaxProgresstime > 0
             ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
                 + EnumChatFormatting.RESET
@@ -643,32 +627,13 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             StatCollector.translateToLocal("GT5U.turbine.dmg") + ": " + aTurbineDamage,
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mPollutionReduction)
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %" };
     }
 
     @Override
     public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
-    public boolean polluteEnvironment(int aPollutionLevel) {
-        if (this.requiresMufflers()) {
-            mPollution += aPollutionLevel * getPollutionMultiplier() * mufflerReduction;
-            for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-                if (mPollution >= 10000) {
-                    if (GTMod.gregtechproxy.mPollution) {
-                        Pollution.addPollution(this.getBaseMetaTileEntity(), 10000);
-                        mPollution -= 10000;
-                    }
-                } else {
-                    break;
-                }
-            }
-            return mPollution < 10000;
-        }
         return true;
     }
 
@@ -841,10 +806,6 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     public int getMaintenanceThreshold() {
-        return 1;
-    }
-
-    public int getPollutionMultiplier() {
         return 1;
     }
 

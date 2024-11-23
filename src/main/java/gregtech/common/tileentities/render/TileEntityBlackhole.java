@@ -5,8 +5,11 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityBlackhole extends TileEntity {
+
+    private AxisAlignedBB boundingBox;
 
     // Should run from 0 to 1, >.5 starts showing changes
     private float stability = 1;
@@ -64,6 +67,15 @@ public class TileEntityBlackhole extends TileEntity {
             this.scaling = scaling;
             updateToClient();
         }
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        if (boundingBox == null) {
+            boundingBox = AxisAlignedBB
+                .getBoundingBox(xCoord - 10, yCoord - 10, zCoord - 10, xCoord + 10, yCoord + 10, zCoord + 10);
+        }
+        return boundingBox;
     }
 
     public long getStartTime() {
