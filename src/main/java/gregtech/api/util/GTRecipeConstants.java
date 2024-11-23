@@ -26,6 +26,7 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
+import gregtech.api.util.recipe.SolarFactoryRecipeData;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
@@ -105,6 +106,12 @@ public class GTRecipeConstants {
      * For Microwave.
      */
     public static final RecipeMetadataKey<Boolean> ON_FIRE = SimpleRecipeMetadataKey.create(Boolean.class, "on_fire");
+
+    /**
+     * Solar Factory recipe data containing minimum wafer tier and count
+     */
+    public static final RecipeMetadataKey<SolarFactoryRecipeData> SF_DATA = SimpleRecipeMetadataKey
+        .create(SolarFactoryRecipeData.class, "solar_factory_wafer_tier");
 
     /**
      * Nano Forge Tier.

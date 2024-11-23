@@ -8,11 +8,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GTRecipeConstants.SF_DATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.copyAmount;
 import static gregtech.api.util.GTUtility.copyAmountUnsafe;
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.BLUE;
+import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
 
 import java.util.List;
 
@@ -51,15 +53,14 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.recipe.metadata.SolarFactoryKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.recipe.SolarFactoryRecipeData;
 
-// TODO:
-// fix bugs if i find them
-// get staffix to make sf recipes cuz she asked if she could :3
+// TODO: fix bugs if i find them
+// TODO: Bug: Freaky stocking bus
 
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
@@ -84,8 +85,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         minimumTierForRecipe = 0;
     }
 
-    // Left side of the pair is a valid wafer for input, right side is compared to the specialvalue to validate recipe
-    // and then used in the output multiplier formula
+    // Left side represents the wafers to look for, right side represents their tier.
     public static ImmutableList<Pair<ItemStack, Integer>> validWafers = ImmutableList.of(
         Pair.of(ItemList.Circuit_Silicon_Wafer.get(1), 1),
         Pair.of(ItemList.Circuit_Silicon_Wafer2.get(1), 2),
@@ -215,20 +215,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         return new ItemStack[] { copyAmountUnsafe(outputSize, currentOutput) };
     }
 
-    // Looks through the inputs and overrides our variables if wafers are found. This is called in validateRecipe.
-    protected void findWafer(GTRecipe recipe, List<Pair<ItemStack, Integer>> waferList) {
-        for (ItemStack items : getStoredInputs()) {
-            for (Pair<ItemStack, Integer> pair : waferList) {
-                if (items.isItemEqual(pair.getLeft())) {
-                    foundWaferStack = items;
-                    foundWaferTier = pair.getRight();
-                    waferAmountInRecipe = recipe.mSpecialValue;
-                    break;
-                }
-            }
-        }
-    }
-
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
@@ -262,14 +248,34 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            private void findWafer(List<Pair<ItemStack, Integer>> waferList) {
+                ItemStack[] items;
+                if (isInputSeparationEnabled()) {
+                    items = inputItems;
+                } else items = getStoredInputs().toArray(new ItemStack[0]);
+
+                for (ItemStack stored : items) {
+                    for (Pair<ItemStack, Integer> pair : waferList) {
+                        if (stored.isItemEqual(pair.getLeft())) {
+                            foundWaferStack = stored;
+                            foundWaferTier = pair.getRight();
+                            break;
+                        }
+                    }
+                }
+            }
+
             @NotNull
             @Override
             public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 // No metadata means no wafers used in the recipe, so return successful since this method is called only
                 // when input matching is already successful.
-                minimumTierForRecipe = recipe.getMetadataOrDefault(SolarFactoryKey.INSTANCE, 0);
+                minimumTierForRecipe = recipe.getMetadataOrDefault(SF_DATA, new SolarFactoryRecipeData(0, 0))
+                    .getMinimumWaferTier();
+                waferAmountInRecipe = recipe.getMetadataOrDefault(SF_DATA, new SolarFactoryRecipeData(0, 0))
+                    .getMinimumWaferCount();
                 if (minimumTierForRecipe == 0) return CheckRecipeResultRegistry.SUCCESSFUL;
-                findWafer(recipe, validWafers);
+                findWafer(validWafers);
                 if (foundWaferStack == null) {
                     return SimpleCheckRecipeResult.ofFailure("no_wafer");
                 }
@@ -392,4 +398,8 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         return true;
     }
 
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
 }

@@ -74,7 +74,6 @@ import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
-import gregtech.api.recipe.metadata.SolarFactoryKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -840,9 +839,6 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> solarFactoryRecipes = RecipeMapBuilder.of("gt.recipe.solarfactory")
         .maxIO(9, 1, 1, 0)
         .minInputs(1, 0)
-        .neiRecipeComparator(
-            Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(SolarFactoryKey.INSTANCE, 0))
-                .thenComparing(GTRecipe::compareTo))
         .build();
     public static final RecipeMap<RecipeMapBackend> wiremillRecipes = RecipeMapBuilder.of("gt.recipe.wiremill")
         .maxIO(2, 1, 0, 0)
