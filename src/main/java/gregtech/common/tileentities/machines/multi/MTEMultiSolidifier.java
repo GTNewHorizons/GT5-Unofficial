@@ -75,8 +75,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     private static final String MS_RIGHT_MID = "rightmid";
     private static final String MS_END = "end";
 
-    private static final int BASE_PARALLELS = 6;
-    private static final int PARALLELS_PER_WIDTH = 2;
+    private static final int BASE_PARALLELS = 2;
+    private static final int PARALLELS_PER_WIDTH = 3;
     private static final double DECAY_RATE = 0.025;
 
     private byte glassTier = 0;
@@ -282,7 +282,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             }
         }
 
-        return casingAmount >= (91 + width * 20) && mMaintenanceHatches.size() == 1;
+        return casingAmount >= (91 + width * 20);
     }
 
     @Override
