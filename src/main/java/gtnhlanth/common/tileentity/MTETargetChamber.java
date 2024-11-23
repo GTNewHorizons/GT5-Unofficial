@@ -343,12 +343,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         }
 
-        /*
-         * if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, false, batchAmount, new FluidStack[] {},
-         * tItemsWithFocusItemArray))
-         * return false;
-         */
-
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
@@ -372,9 +366,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         for (MTEHatchInputBeamline in : this.mInputBeamline) {
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
-            // if (in.q == null) return new BeamInformation(10, 10, Particle.PHOTON.ordinal(), 90); // temporary
-            // for
-            // testing purposes
 
             return in.q.getContent();
         }

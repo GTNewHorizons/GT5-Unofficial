@@ -163,30 +163,7 @@ public class BeamlineRecipeLoader {
                 1,
                 (int) TierEU.RECIPE_LuV);
 
-            /*
-             * if (!Arrays.asList(MaskList.CPU.getForbiddenWafers()).contains(wafer)) {
-             * BeamlineRecipeAdder.instance.addTargetChamberRecipe( wafer.get(1), GT_Utility.copyAmountUnsafe((int)
-             * Math.pow(2, index + 2), ItemList.Circuit_Wafer_CPU.get(1)), //Varies new
-             * ItemStack(LanthItemList.maskMap.get(MaskList.CPU), 0), // Varies 0, 10 * (int) Math.pow(2, index - 1), //
-             * Varies 1, //Varies 10000000, //Varies 50, //Varies 1, 1920 ); } /* PPIC
-             */
-
-            /*
-             * if (!Arrays.asList(MaskList.PPIC.getForbiddenWafers()).contains(wafer)) {
-             * GTLog.out.print("Adding recipe for PPIC with " + wafer.get(1).getUnlocalizedName() + " amount: " + 40 *
-             * (int) Math.pow(2, index - 1)); BeamlineRecipeAdder.instance.addTargetChamberRecipe( wafer.get(1),
-             * ItemList.Circuit_Wafer_PPIC.get((int) Math.pow(2, index + 2)), //Varies new
-             * ItemStack(LanthItemList.maskMap.get(MaskList.PPIC), 0), // Varies 0, 40 * (int) Math.pow(2, index - 1),
-             * // Varies 1, //Varies 10000000, //Varies 50, //Varies 1, 1920 ); }
-             */
-
         }
-        /*
-         * BeamlineRecipeAdder2.instance.addTargetChamberRecipe( new ItemStack(Items.coal, 1), new
-         * ItemStack(Items.diamond, 1), null, 1, 20, 100, 1000, 60, 1, 1920);
-         * BeamlineRecipeAdder2.instance.addTargetChamberRecipe( new ItemStack(Items.coal, 1), new
-         * ItemStack(Items.cooked_chicken, 1), null, 1, 20, 1, 10, 60, 1, 1920);
-         */
 
         /* LuAG */
 
@@ -203,20 +180,7 @@ public class BeamlineRecipeLoader {
             60,
             1,
             (int) TierEU.RECIPE_LuV);
-
-        /*
-         * BeamlineRecipeAdder2.instance.addTargetChamberRecipe( // TODO Test recipe for subticking
-         * new ItemStack(Items.coal, 1),
-         * new ItemStack(Items.diamond),
-         * new ItemStack(LanthItemList.maskMap.get(MaskList.RAM), 0),
-         * Particle.PHOTON.ordinal(),
-         * 1,
-         * 0.5f,
-         * 200,
-         * 20,
-         * 1,
-         * (int) TierEU.RECIPE_LuV);
-         */
+        
 
         BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
             new ItemStack(Items.chicken, 1),

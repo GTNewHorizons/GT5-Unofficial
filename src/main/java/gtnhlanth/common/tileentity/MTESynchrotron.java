@@ -897,7 +897,6 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         for (MTEHatchInputBeamline in : this.mInputBeamline) {
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
-            // if (in.q == null) return new BeamInformation(10000, 10, 0, 90); // TODO temporary for testing purposes
 
             return in.q.getContent();
         }
@@ -913,10 +912,6 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         return (float) (Math.sqrt(mEU) / 1500);
     }
 
-    /*
-     * private static float getTemperatureFactor(int temperature) { float factor = (float) Math.pow(1.11, 0.18 *
-     * temperature); return factor; }
-     */
     private static double calculateOutputParticleEnergy(long voltage, double inputParticleEnergy, int antennaTier) {
 
         /*

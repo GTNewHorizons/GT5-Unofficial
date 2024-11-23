@@ -23,9 +23,6 @@ public class ItemPhotolithographicMask extends Item implements ICanFocus {
         this.setTextureName(Tags.MODID + ":photomask/" + name);
     }
 
-    /*
-     * @Override public String getUnlocalizedName() { return "item.photomask." + this.name; }
-     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {

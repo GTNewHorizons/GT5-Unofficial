@@ -2031,8 +2031,6 @@ public class WerkstoffMaterialPool implements Runnable {
 
     private static void addSubTags() {
 
-        // WerkstoffMaterialPool.PTMEGElastomer.add(SubTag.BOUNCY, SubTag.STRETCHY);
-
     }
 
     @Override

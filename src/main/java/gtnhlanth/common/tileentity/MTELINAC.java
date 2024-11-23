@@ -315,9 +315,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
             : (int) (-this.getMaxInputAmps() * GTValues.VP[(int) this.getInputVoltageTier()]));
 
-        // mEUt = (int) (-this.getMaxInputVoltage() / GTValues.V[(int) this.getInputVoltageTier()]
-        // * GTValues.VP[(int) this.getInputVoltageTier()]);
-
         // Particle stays the same with this multiblock
         outputParticle = particleId;
 
@@ -346,9 +343,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         // 1A of full power if one energy hatch, 4A if two
         long voltage = (this.mEnergyHatches.size() == 1) ? this.getMaxInputVoltage() : this.getMaxInputPower();
-        // voltageFactor = calculateVoltageFactor(voltage);
-
-        // machineEnergy = Math.max(-((60) / this.length) * voltageFactor + 60_000, 2000); // Minimum of 2000keV
 
         machineEnergy = (float) Math.max(length / 4 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
 
@@ -356,13 +350,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .getEnergy();
 
         inputEnergy = Math.min(inputEnergy, 7500); // Does not scale past 7500 keV, prevents double LINAC issue
-        /*
-         * outputEnergy = Math.min(
-         * (1 + inputEnergy / Particle.getParticleFromId(outputParticle)
-         * .maxSourceEnergy()) * machineEnergy,
-         * 120_000); // TODO more complex calculation than just
-         * // addition
-         */
 
         outputEnergy = (float) Math.pow(
             10,
@@ -417,7 +404,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     @Override
     public void stopMachine() {
 
-        // GTLog.out.print("Machine stopped");
         outputFocus = 0;
         outputEnergy = 0;
         outputParticle = 0;
@@ -573,7 +559,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                                                                // Will it matter? No :boubs_glasses:
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
-            // if (in.q == null) return new BeamInformation(10000, 10, 0, 90); // temporary for testing purposes
 
             return in.q.getContent();
         }
@@ -583,13 +568,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     private static float calculateTemperatureFactor(int fluidTemp) {
         return (float) Math.pow(1.1, 0.2 * fluidTemp);
     }
-
-    /*
-     * private static float calculateVoltageFactor(long voltage) {
-     * float factor = (float) Math.pow(1.00009, -(0.1 * voltage - 114000));
-     * return factor;
-     * }
-     */
 
     @Override
     public String[] getStructureDescription(ItemStack arg0) {
@@ -627,8 +605,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             length += 2;
         }
 
-        // if (!checkPiece(STRUCTURE_PIECE_END, 3, 6, -length)) return false;
-
         // Likely off by one or two, not visible to player however so doesn't particularly matter
         length += 8;
 
@@ -650,9 +626,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         for (int i = -8; i > -lLength - 1; i -= 2) {
-
-            // GTLog.out.print("Building inner piece! i = " + i);
-
             buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 3, 6, i);
         }
 
