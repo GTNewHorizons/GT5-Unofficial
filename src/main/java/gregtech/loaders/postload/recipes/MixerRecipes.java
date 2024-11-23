@@ -72,7 +72,6 @@ public class MixerRecipes implements Runnable {
             .eut(8)
             .addTo(mixerRecipes);
 
-
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1),
@@ -82,7 +81,6 @@ public class MixerRecipes implements Runnable {
             .duration(5 * SECONDS)
             .eut(8)
             .addTo(mixerRecipes);
-
 
         GTValues.RA.stdBuilder()
             .itemInputs(
