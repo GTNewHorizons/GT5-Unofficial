@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -61,11 +62,13 @@ public class GodforgeUpgradeCostFrontend extends RecipeMapFrontend {
     @Override
     protected void drawSpecialInfo(RecipeDisplayInfo recipeInfo) {
         String upgradeName = recipeInfo.recipe.getMetadataOrDefault(FOG_UPGRADE_NAME_SHORT, "");
+        int width = Minecraft.getMinecraft().fontRenderer.getStringWidth(upgradeName);
+        if (width % 2 == 1) width -= 1;
+        int xOffset = 18 - width / 2 - 1;
         recipeInfo.drawText(" ", 83, -76);
         recipeInfo.drawText(
-            "" + EnumChatFormatting.BLUE + EnumChatFormatting.UNDERLINE + EnumChatFormatting.BOLD + upgradeName,
-            112,
+            EnumChatFormatting.BLUE.toString() + EnumChatFormatting.UNDERLINE + EnumChatFormatting.BOLD + upgradeName,
+            110 + xOffset,
             0);
     }
-
 }
