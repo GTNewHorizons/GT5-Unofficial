@@ -291,4 +291,9 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     public List<ItemStack> getItemsForHoloGlasses() {
         return getMaster() != null ? getMaster().getItemsForHoloGlasses() : null;
     }
+
+    @Override
+    public List<ItemStack[]> getPatternsInputs() {
+        return getMaster() != null ? getMaster().getPatternsInputs() : null;
+    }
 }

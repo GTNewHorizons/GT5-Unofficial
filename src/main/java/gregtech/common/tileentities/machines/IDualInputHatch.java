@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
@@ -18,4 +19,6 @@ public interface IDualInputHatch {
     Optional<IDualInputInventory> getFirstNonEmptyInventory();
 
     boolean supportsFluids();
+
+    List<ItemStack[]> getPatternsInputs();
 }

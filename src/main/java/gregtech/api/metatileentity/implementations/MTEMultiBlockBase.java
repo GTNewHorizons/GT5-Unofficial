@@ -42,6 +42,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 
+import com.glodblock.github.common.item.ItemFluidDrop;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -140,6 +141,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+    protected ArrayList<GTRecipe> cribsCustomRecipeMap = null;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -872,6 +874,35 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return true;
     }
 
+    public ArrayList<GTRecipe> getCribsCustomRecipeMap() {
+        ArrayList<GTRecipe> recipeList = new ArrayList<>();
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            List<ItemStack[]> temp = dualInputHatch.getPatternsInputs();
+            for (ItemStack[] t : temp) {
+                if (t == null) {
+                    recipeList.add(null);
+                    continue;
+                }
+                ArrayList<FluidStack> inputF = new ArrayList<>();
+                ArrayList<ItemStack> inputI = new ArrayList<>();
+                for (ItemStack tt : t) {
+                    if (tt.getItem() instanceof ItemFluidDrop) {
+                        FluidStack fluidStack = ItemFluidDrop.getFluidStack(tt);
+                        if (fluidStack != null) {
+                            inputF.add(fluidStack);
+                        }
+                    } else {
+                        inputI.add(tt);
+                    }
+                }
+                GTRecipe recipe = processingLogic
+                    .getCribsMatch(inputI.toArray(new ItemStack[0]), inputF.toArray(new FluidStack[0]));
+                recipeList.add(recipe);
+            }
+        }
+        return recipeList;
+    }
+
     /**
      * Iterates over hatches and tries to find recipe. Assume {@link #processingLogic} is already set up for use.
      * If return value is successful, inputs are consumed.
@@ -881,21 +912,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
         // check crafting input hatches first
         if (supportsCraftingMEBuffer()) {
+            if (cribsCustomRecipeMap == null) {
+                cribsCustomRecipeMap = getCribsCustomRecipeMap();
+            }
+            int n = 0;
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                    IDualInputInventory slot = it.next();
-                    processingLogic.setInputItems(slot.getItemInputs());
-                    processingLogic.setInputFluids(slot.getFluidInputs());
-                    CheckRecipeResult foundResult = processingLogic.process();
-                    if (foundResult.wasSuccessful()) {
-                        return foundResult;
-                    }
-                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                        // Recipe failed in interesting way, so remember that and continue searching
-                        result = foundResult;
+                    GTRecipe recipe = cribsCustomRecipeMap.get(n);
+                    n++;
+                    if (recipe != null) {
+                        IDualInputInventory slot = it.next();
+                        processingLogic.setInputItems(slot.getItemInputs());
+                        processingLogic.setInputFluids(slot.getFluidInputs());
+                        return processingLogic.processCribs(recipe);
                     }
                 }
             }
+            return result;
         }
 
         processingLogic.setInputFluids(getStoredFluids());

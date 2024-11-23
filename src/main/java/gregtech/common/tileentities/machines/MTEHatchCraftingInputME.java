@@ -1054,4 +1054,33 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
         return list;
     }
+
+    @Override
+    public List<ItemStack[]> getPatternsInputs() {
+        List<IAEItemStack[]> list = new ArrayList<>();
+        for (PatternSlot slot : internalInventory) {
+            if (slot == null) {
+                list.add(null);
+                continue;
+            }
+            IAEItemStack[] inputs = slot.getPatternDetails()
+                .getInputs();
+            list.add(inputs);
+        }
+        List<ItemStack[]> itemList = new ArrayList<>();
+        ItemStack[] sharedItems = getSharedItems();
+        for (IAEItemStack[] t : list) {
+            if (t == null) {
+                itemList.add(null);
+                continue;
+            }
+            ItemStack[] inputI = sharedItems;
+            for (IAEItemStack y : t) {
+                if (y == null) continue;
+                inputI = ArrayUtils.addAll(inputI, y.getItemStack());
+            }
+            itemList.add(inputI);
+        }
+        return itemList;
+    }
 }

@@ -1,5 +1,6 @@
 package gregtech.api.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -29,6 +30,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
+    protected ArrayList<GTRecipe> cribsCustomRecipeMap;
 
     public ProcessingLogic() {}
 
@@ -60,6 +62,11 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
 
     public ProcessingLogic setSpecialSlotItem(ItemStack specialSlotItem) {
         this.specialSlotItem = specialSlotItem;
+        return getThis();
+    }
+
+    public ProcessingLogic setCribsCustomRecipeMap(ArrayList<GTRecipe> cribsCustomRecipeMap) {
+        this.cribsCustomRecipeMap = cribsCustomRecipeMap;
         return getThis();
     }
 
@@ -95,6 +102,12 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     /**
      * Executes the recipe check: Find recipe from recipemap, Calculate parallel, overclock and outputs.
      */
+
+    @Nonnull
+    public CheckRecipeResult processCribs(GTRecipe recipe) {
+        return validateAndCalculateRecipe(recipe).checkRecipeResult;
+    }
+
     @Nonnull
     public CheckRecipeResult process() {
         RecipeMap<?> recipeMap = preProcess();
@@ -136,6 +149,26 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return checkRecipeResult;
     }
 
+    public GTRecipe getCribsMatch(ItemStack[] iI, FluidStack[] iF) {
+        RecipeMap<?> recipeMap = preProcess();
+        inputItems = iI;
+        inputFluids = iF;
+        if (inputItems == null) {
+            inputItems = new ItemStack[0];
+        }
+        if (inputFluids == null) {
+            inputFluids = new FluidStack[0];
+        }
+
+        Stream<GTRecipe> matchedRecipes = findRecipeMatches(recipeMap);
+        Iterable<GTRecipe> recipeIterable = matchedRecipes::iterator;
+        CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NO_RECIPE;
+        for (GTRecipe matchedRecipe : recipeIterable) {
+            return matchedRecipe;
+        }
+        return null;
+    }
+
     /**
      * Checks if supplied recipe is valid for process. This involves voltage check, output full check. If successful,
      * additionally performs input consumption, output calculation with parallel, and overclock calculation.
@@ -143,7 +176,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
      * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
-    private CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+    public CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
         CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
             return CalculationResult.ofFailure(result);
