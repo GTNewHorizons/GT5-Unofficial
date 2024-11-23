@@ -154,14 +154,9 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         return false;
     }
-    /*
-     * protected OverclockDescriber createOverclockDescriber() { return new EUNoTotalOverclockDescriber((byte) 4, 1); }
-     */
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-
-        // GTLog.out.print("In checkRecipe");
 
         // No input particle, so no input quantities
 
@@ -172,7 +167,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         ItemStack[] tItems = this.getStoredInputs()
             .toArray(new ItemStack[0]);
-        // GTLog.out.print(Arrays.toString(tItems));
+
         long tVoltageMaxTier = this.getMaxInputVoltage(); // Used to keep old math the same
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
