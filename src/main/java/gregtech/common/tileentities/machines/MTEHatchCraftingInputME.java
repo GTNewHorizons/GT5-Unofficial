@@ -759,8 +759,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .setPlayClickSound(true)
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_X2)
                 .addTooltip(StatCollector.translateToLocal("gui.tooltips.appliedenergistics2.DoublePatterns"))
-                .setSize(16, 5)
-                .setPos(170, 4));;
+                .setSize(16, 16)
+                .setPos(-18, 10));;
     }
 
     @Override
