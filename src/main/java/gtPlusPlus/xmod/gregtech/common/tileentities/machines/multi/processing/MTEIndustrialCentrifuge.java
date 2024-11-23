@@ -10,12 +10,15 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -30,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
@@ -48,6 +52,10 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialCentrifuge> STRUCTURE_DEFINITION = null;
     // public static double recipesComplete = 0;
+    // client side stuff
+    // mMachine got overwritten by StructureLib extended facing query response
+    // so we use a separate field for this
+    protected boolean mFormed;
 
     public MTEIndustrialCentrifuge(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -124,6 +132,18 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     }
 
     @Override
+    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
+        boolean f = super.checkStructure(aForceReset, aBaseMetaTileEntity);
+        if (f && getBaseMetaTileEntity().isServerSide()) {
+            // while is this a client side field, blockrenderer will reuse the server world for client side rendering
+            // so we must set it as well...
+            mFormed = true;
+            return true;
+        }
+        return f;
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
@@ -132,15 +152,27 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     @Override
     protected IIconContainer getActiveOverlay() {
         if (usingAnimations()) {
-            return frontFaceActive;
+            return LARGETURBINE_NEW_ACTIVE5;
         } else {
-            return frontFace;
+            return getInactiveOverlay();
         }
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return frontFace;
+        return LARGETURBINE_NEW5;
+    }
+
+    @Override
+    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
+        if (!mFormed) return false;
+
+        IIconContainer[] tTextures;
+        if (getBaseMetaTileEntity().isActive() && !usingAnimations()) tTextures = TURBINE_NEW_ACTIVE;
+        else tTextures = TURBINE_NEW;
+        GTUtilityClient
+            .renderTurbineOverlay(aWorld, aX, aY, aZ, aRenderer, getExtendedFacing(), getCasingBlock(), tTextures);
+        return false;
     }
 
     @Override
@@ -222,5 +254,16 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     public boolean usingAnimations() {
         // Logger.INFO("Is animated? "+this.mIsAnimated);
         return this.mIsAnimated;
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        mFormed = (aValue & 0x1) != 0;
+
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) ((mMachine ? 1 : 0));
     }
 }
