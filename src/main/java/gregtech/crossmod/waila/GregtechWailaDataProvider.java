@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -31,7 +32,13 @@ public class GregtechWailaDataProvider implements IWailaDataProvider {
         IWailaConfigHandler config) {
         final TileEntity tile = accessor.getTileEntity();
         if (tile instanceof IGregtechWailaProvider) {
-            ((IGregtechWailaProvider) tile).getWailaBody(itemStack, currenttip, accessor, config);
+            try {
+                ((IGregtechWailaProvider) tile).getWailaBody(itemStack, currenttip, accessor, config);
+            } catch (Throwable t) {
+                // waila doesn't print a useful stacktrace, so catch the error and rethrow it
+                GTMod.GT_FML_LOGGER.error("Could not call getWailaBody on " + tile, t);
+                throw t;
+            }
         }
 
         return currenttip;
@@ -47,7 +54,12 @@ public class GregtechWailaDataProvider implements IWailaDataProvider {
     public NBTTagCompound getNBTData(final EntityPlayerMP player, final TileEntity tile, final NBTTagCompound tag,
         final World world, int x, int y, int z) {
         if (tile instanceof IGregtechWailaProvider) {
-            ((IGregtechWailaProvider) tile).getWailaNBTData(player, tile, tag, world, x, y, z);
+            try {
+                ((IGregtechWailaProvider) tile).getWailaNBTData(player, tile, tag, world, x, y, z);
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Could not call getWailaNBTData on " + tile, t);
+                throw t;
+            }
         }
 
         return tag;
