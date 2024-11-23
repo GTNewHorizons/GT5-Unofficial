@@ -15,10 +15,12 @@ package bartworks.common.loaders;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.bacterialVatRecipes;
 import static bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
+import static bartworks.util.BWRecipes.computeSieverts;
 import static gregtech.api.enums.Mods.CropsPlusPlus;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.SIEVERTS;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -130,6 +132,7 @@ public class BioRecipeLoader {
                     .special(BioItemList.getPetriDish(BioCultureLoader.CommonYeast))
                     .fluidInputs(new FluidStack(fluidStack, 100))
                     .fluidOutputs(FluidRegistry.getFluidStack("potion.ghp", 1))
+                    .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
                     .duration(17 * SECONDS + 10 * TICKS)
                     .eut(TierEU.RECIPE_EV)
                     .noOptimize()
@@ -141,6 +144,7 @@ public class BioRecipeLoader {
                 .special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
                 .fluidInputs(new FluidStack(fluidStack, 100))
                 .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12))
+                .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .noOptimize()
@@ -154,6 +158,7 @@ public class BioRecipeLoader {
                 .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
                 .fluidInputs(new FluidStack(fluidStack, 100))
                 .fluidOutputs(FluidRegistry.getFluidStack("potion.beer", 5))
+                .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .noOptimize()
@@ -164,6 +169,7 @@ public class BioRecipeLoader {
                 .special(BioItemList.getPetriDish(BioCultureLoader.BeerYeast))
                 .fluidInputs(new FluidStack(fluidStack, 100))
                 .fluidOutputs(FluidRegistry.getFluidStack("potion.darkbeer", 10))
+                .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .noOptimize()
@@ -178,6 +184,7 @@ public class BioRecipeLoader {
             .special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
             .fluidInputs(FluidRegistry.getFluidStack("potion.grapejuice", 100))
             .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12))
+            .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .noOptimize()
@@ -187,6 +194,7 @@ public class BioRecipeLoader {
             .special(BioItemList.getPetriDish(BioCultureLoader.anaerobicOil))
             .fluidInputs(Materials.FermentedBiomass.getFluid(10000))
             .fluidOutputs(new FluidStack(FluidLoader.fulvicAcid, 1000))
+            .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
             .duration(2 * MINUTES + 17 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .noOptimize()
