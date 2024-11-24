@@ -72,33 +72,11 @@ import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE6;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE7;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE8;
 import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_TU_ACTIVE9;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE1;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE1_ACTIVE;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE2;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE2_ACTIVE;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE3;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE3_ACTIVE;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE4;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE4_ACTIVE;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE5;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE5_ACTIVE;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE6;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE6_ACTIVE;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE7;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE7_ACTIVE;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE8;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE8_ACTIVE;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE9;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.OVERLAY_SC_TURBINE9_ACTIVE;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaSpecialMultiCasings;
 
 public class LargeTurbineTextureHandler {
@@ -150,7 +128,6 @@ public class LargeTurbineTextureHandler {
         LARGETURBINE_TU_ACTIVE2.getIcon(), LARGETURBINE_TU_ACTIVE3.getIcon(), LARGETURBINE_TU_ACTIVE4.getIcon(),
         LARGETURBINE_TU_ACTIVE5.getIcon(), LARGETURBINE_TU_ACTIVE6.getIcon(), LARGETURBINE_TU_ACTIVE7.getIcon(),
         LARGETURBINE_TU_ACTIVE8.getIcon(), LARGETURBINE_TU_ACTIVE9.getIcon(), };
-
 
     public static IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
         final ForgeDirection side, final GregtechMetaSpecialMultiCasings i) {

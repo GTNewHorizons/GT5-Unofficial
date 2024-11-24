@@ -1,21 +1,16 @@
 package gtPlusPlus.core.network.packet;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.network.handler.AbstractClientMessageHandler;
-import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.network.handler.AbstractClientMessageHandler;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
+import io.netty.buffer.ByteBuf;
 
 public class PacketTurbineHatchUpdate extends AbstractClientMessageHandler<PacketTurbineHatchUpdate>
     implements AbstractPacket {
@@ -115,7 +110,8 @@ public class PacketTurbineHatchUpdate extends AbstractClientMessageHandler<Packe
 
     @Override
     public IMessage handleClientMessage(EntityPlayer player, PacketTurbineHatchUpdate message, MessageContext ctx) {
-        TileEntity te = player.getEntityWorld().getTileEntity(message.x, message.y, message.z);
+        TileEntity te = player.getEntityWorld()
+            .getTileEntity(message.x, message.y, message.z);
         if (!(te instanceof BaseMetaTileEntity mteHost)) return null;
         IMetaTileEntity mte = mteHost.getMetaTileEntity();
         if (!(mte instanceof MTEHatchTurbine hatch)) return null;
