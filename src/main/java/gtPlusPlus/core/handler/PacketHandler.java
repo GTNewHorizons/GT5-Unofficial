@@ -2,6 +2,7 @@ package gtPlusPlus.core.handler;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
+import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -22,6 +23,7 @@ public class PacketHandler {
     public static void init() {
         registerMessage(PacketVolumetricFlaskGui.class, PacketVolumetricFlaskGui.class);
         registerMessage(PacketVolumetricFlaskGui2.class, PacketVolumetricFlaskGui2.class);
+        registerMessage(PacketTurbineHatchUpdate.class, PacketTurbineHatchUpdate.class);
     }
 
     /**

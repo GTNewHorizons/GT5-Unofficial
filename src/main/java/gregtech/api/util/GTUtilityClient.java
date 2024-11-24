@@ -69,38 +69,35 @@ public class GTUtilityClient {
         if (tDirection == ForgeDirection.NORTH || tDirection == ForgeDirection.EAST) aRenderer.field_152631_f = true;
 
         for (int i = 0; i < 9; i++) {
-            if (i != 4) {
-                // do not draw ourselves again.
-                tExtendedFacing.getWorldOffset(tABCCoord, tXYZOffset);
-                // since structure check passed, we can assume it is turbine casing
-                int tX = tXYZOffset[0] + aX;
-                int tY = tXYZOffset[1] + aY;
-                int tZ = tXYZOffset[2] + aZ;
-                Block tBlock;
-                if (tBlockOverride == null) {
-                    tBlock = aWorld.getBlock(aX + tDirection.offsetX, tY + tDirection.offsetY, aZ + tDirection.offsetZ);
-                } else {
-                    tBlock = tBlockOverride;
-                }
-                // we skip the occlusion test, as we always require a working turbine to have a block of air before it
-                // so the front face cannot be occluded whatsoever in the most cases.
-                Tessellator.instance.setBrightness(
-                    tBlock.getMixedBrightnessForBlock(
-                        aWorld,
-                        aX + tDirection.offsetX,
-                        tY + tDirection.offsetY,
-                        aZ + tDirection.offsetZ));
-                tLighting.setupLighting(tBlock, tX, tY, tZ, tDirection)
-                    .setupColor(tDirection, Dyes._NULL.mRGBa);
-                GTRenderUtil.renderBlockIcon(
-                    aRenderer,
-                    tBlock,
-                    tX + tDirection.offsetX * 0.001,
-                    tY + tDirection.offsetY * 0.001,
-                    tZ + tDirection.offsetZ * 0.001,
-                    tTextures[i].getIcon(),
-                    tDirection);
+            tExtendedFacing.getWorldOffset(tABCCoord, tXYZOffset);
+            // since structure check passed, we can assume it is turbine casing
+            int tX = tXYZOffset[0] + aX;
+            int tY = tXYZOffset[1] + aY;
+            int tZ = tXYZOffset[2] + aZ;
+            Block tBlock;
+            if (tBlockOverride == null) {
+                tBlock = aWorld.getBlock(aX + tDirection.offsetX, tY + tDirection.offsetY, aZ + tDirection.offsetZ);
+            } else {
+                tBlock = tBlockOverride;
             }
+            // we skip the occlusion test, as we always require a working turbine to have a block of air before it
+            // so the front face cannot be occluded whatsoever in the most cases.
+            Tessellator.instance.setBrightness(
+                tBlock.getMixedBrightnessForBlock(
+                    aWorld,
+                    aX + tDirection.offsetX,
+                    tY + tDirection.offsetY,
+                    aZ + tDirection.offsetZ));
+            tLighting.setupLighting(tBlock, tX, tY, tZ, tDirection)
+                .setupColor(tDirection, Dyes._NULL.mRGBa);
+            GTRenderUtil.renderBlockIcon(
+                aRenderer,
+                tBlock,
+                tX + tDirection.offsetX * 0.001,
+                tY + tDirection.offsetY * 0.001,
+                tZ + tDirection.offsetZ * 0.001,
+                tTextures[i].getIcon(),
+                tDirection);
             if (++tABCCoord[0] == 2) {
                 tABCCoord[0] = -1;
                 tABCCoord[1]++;

@@ -193,6 +193,17 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     @Override
+    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
+        boolean f = super.checkStructure(aForceReset, aBaseMetaTileEntity);
+        if (f) {
+            for (MTEHatchTurbine tHatch : mTurbineRotorHatches) {
+                tHatch.sendUpdate();
+            }
+        }
+        return f;
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         // we do not check for casing count here. the bare minimal is 372 but we only require 360
         boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);

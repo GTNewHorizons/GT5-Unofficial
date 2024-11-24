@@ -168,7 +168,7 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
         if (!mFormed) return false;
 
         IIconContainer[] tTextures;
-        if (getBaseMetaTileEntity().isActive() && !usingAnimations()) tTextures = TURBINE_NEW_ACTIVE;
+        if (getBaseMetaTileEntity().isActive() && usingAnimations()) tTextures = TURBINE_NEW_ACTIVE;
         else tTextures = TURBINE_NEW;
         GTUtilityClient
             .renderTurbineOverlay(aWorld, aX, aY, aZ, aRenderer, getExtendedFacing(), getCasingBlock(), tTextures);
