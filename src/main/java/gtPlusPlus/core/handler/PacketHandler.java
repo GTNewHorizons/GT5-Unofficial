@@ -2,7 +2,6 @@ package gtPlusPlus.core.handler;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -11,6 +10,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import gtPlusPlus.core.network.handler.AbstractClientMessageHandler;
+import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import gtPlusPlus.core.network.packet.PacketVolumetricFlaskGui;
 import gtPlusPlus.core.network.packet.PacketVolumetricFlaskGui2;
 

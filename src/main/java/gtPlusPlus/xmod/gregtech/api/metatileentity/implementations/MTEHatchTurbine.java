@@ -1,11 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtilityClient;
-import gtPlusPlus.core.handler.PacketHandler;
-import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -24,23 +21,25 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.GTItemStack;
-import gregtech.api.objects.GTRenderedTexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtilityClient;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
+import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
-
-import static gregtech.api.enums.Textures.BlockIcons.*;
 
 @SuppressWarnings("deprecation")
 public class MTEHatchTurbine extends MTEHatch {
@@ -79,14 +78,13 @@ public class MTEHatchTurbine extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] {aBaseTexture, TextureFactory.of(LARGETURBINE_NEW_ACTIVE5)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(LARGETURBINE_NEW_ACTIVE5) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        if (hasTurbine())
-            return new ITexture[] {aBaseTexture, TextureFactory.of(LARGETURBINE_NEW_EMPTY5)};
-        return new ITexture[] {aBaseTexture, TextureFactory.of(LARGETURBINE_NEW5)};
+        if (hasTurbine()) return new ITexture[] { aBaseTexture, TextureFactory.of(LARGETURBINE_NEW_EMPTY5) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(LARGETURBINE_NEW5) };
     }
 
     public int getEU() {
@@ -242,8 +240,7 @@ public class MTEHatchTurbine extends MTEHatch {
         if (this.mHasController && this.mControllerLocation != null) {
             BlockPos p = mControllerLocation;
             // Logger.INFO(p.getLocationString());
-            IGregTechTileEntity tTileEntity = getBaseMetaTileEntity()
-                .getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
+            IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
             if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBase) {
                 return (MTELargerTurbineBase) tTileEntity.getMetaTileEntity();
             } else {
@@ -297,8 +294,15 @@ public class MTEHatchTurbine extends MTEHatch {
         if (getBaseMetaTileEntity().isActive()) tTextures = getTurbineTextureActive();
         else if (hasTurbine()) tTextures = getTurbineTextureFull();
         else tTextures = getTurbineTextureEmpty();
-        GTUtilityClient
-            .renderTurbineOverlay(aWorld, aX, aY, aZ, aRenderer, ExtendedFacing.of(getBaseMetaTileEntity().getFrontFacing()), null, tTextures);
+        GTUtilityClient.renderTurbineOverlay(
+            aWorld,
+            aX,
+            aY,
+            aZ,
+            aRenderer,
+            ExtendedFacing.of(getBaseMetaTileEntity().getFrontFacing()),
+            null,
+            tTextures);
         return false;
     }
 
@@ -348,10 +352,7 @@ public class MTEHatchTurbine extends MTEHatch {
             PlayerUtils.messagePlayer(aPlayer, "Using Animations? " + usingAnimations());
             PlayerUtils.messagePlayer(aPlayer, "Has Controller? " + this.mHasController);
             if (mHasController) {
-                PlayerUtils.messagePlayer(
-                    aPlayer,
-                    "Controller Location: " + mControllerLocation
-                        .getLocationString());
+                PlayerUtils.messagePlayer(aPlayer, "Controller Location: " + mControllerLocation.getLocationString());
                 PlayerUtils.messagePlayer(aPlayer, "Controller Active? " + this.isControllerActive());
             }
             PlayerUtils.messagePlayer(
@@ -449,21 +450,17 @@ public class MTEHatchTurbine extends MTEHatch {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         SlotWidget slot = new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBase::isValidTurbine);
-        if (getBaseMetaTileEntity().isServerSide())
-            slot.setChangeListener(this::sendUpdate);
+        if (getBaseMetaTileEntity().isServerSide()) slot.setChangeListener(this::sendUpdate);
         builder.widget(
-            slot
-                .setAccess(false, true)
+            slot.setAccess(false, true)
                 .setPos(79, 34));
     }
 
     public void receiveUpdate(PacketTurbineHatchUpdate message) {
         mHasTurbine = message.isHasTurbine();
         mFormed = message.isFormed();
-        if (message.getController() != null)
-            clearController();
-        else
-            setController(message.getController());
+        if (message.getController() != null) clearController();
+        else setController(message.getController());
         getBaseMetaTileEntity().issueTextureUpdate();
     }
 
@@ -475,7 +472,9 @@ public class MTEHatchTurbine extends MTEHatch {
         message.setFormed(mHasController && getController().mMachine);
         message.setHasTurbine(hasTurbine());
         message.setController(mControllerLocation);
-        PacketHandler.sendToAllAround(message, getBaseMetaTileEntity().getWorld().provider.dimensionId,
+        PacketHandler.sendToAllAround(
+            message,
+            getBaseMetaTileEntity().getWorld().provider.dimensionId,
             getBaseMetaTileEntity().getXCoord(),
             getBaseMetaTileEntity().getYCoord(),
             getBaseMetaTileEntity().getZCoord(),
