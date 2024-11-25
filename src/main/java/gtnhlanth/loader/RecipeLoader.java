@@ -3805,8 +3805,8 @@ public class RecipeLoader {
             int[] oreDict = OreDictionary.getOreIDs(input);
             for (int oreDictID : oreDict) {
                 final String oreName = OreDictionary.getOreName(oreDictID);
-                if (!(oreName.startsWith("dust") && (!oreName.contains("Dephosphated")))) {
-                    continue;
+                if (!oreName.startsWith("dust") || oreName.contains("Dephosphated") || oreName.startsWith("dustMAR")) {
+                    break;
                 }
                 GTRecipe tRecipe = recipe.copy();
                 boolean modified = false;
