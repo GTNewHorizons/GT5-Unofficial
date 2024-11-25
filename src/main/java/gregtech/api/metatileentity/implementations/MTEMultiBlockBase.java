@@ -39,6 +39,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 
@@ -884,7 +885,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
                     IDualInputInventory slot = it.next();
-                    processingLogic.setInputItems(slot.getItemInputs());
+                    // Reverse order of input items for consistent behavior with standard input buses.
+                    ItemStack[] inputItems = slot.getItemInputs();
+                    ArrayUtils.reverse(inputItems);
+                    processingLogic.setInputItems(inputItems);
                     processingLogic.setInputFluids(slot.getFluidInputs());
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
