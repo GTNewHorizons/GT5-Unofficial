@@ -16,8 +16,6 @@ import static gregtech.api.util.GTUtility.copyAmountUnsafe;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -60,7 +58,6 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
 
 // TODO: fix bugs if i find them
-// TODO: Bug: Freaky stocking bus
 
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
@@ -248,16 +245,11 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            private void findWafer(List<Pair<ItemStack, Integer>> waferList) {
-                ItemStack[] items;
-                if (isInputSeparationEnabled()) {
-                    items = inputItems;
-                } else items = getStoredInputs().toArray(new ItemStack[0]);
-
-                for (ItemStack stored : items) {
-                    for (Pair<ItemStack, Integer> pair : waferList) {
-                        if (stored.isItemEqual(pair.getLeft())) {
-                            foundWaferStack = stored;
+            private void findWaferStack() {
+                for (ItemStack items : inputItems) {
+                    for (Pair<ItemStack, Integer> pair : validWafers) {
+                        if (items.isItemEqual(pair.getLeft())) {
+                            foundWaferStack = items;
                             foundWaferTier = pair.getRight();
                             break;
                         }
@@ -275,7 +267,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 waferAmountInRecipe = recipe.getMetadataOrDefault(SF_DATA, new SolarFactoryRecipeData(0, 0))
                     .getMinimumWaferCount();
                 if (minimumTierForRecipe == 0) return CheckRecipeResultRegistry.SUCCESSFUL;
-                findWafer(validWafers);
+                findWaferStack();
                 if (foundWaferStack == null) {
                     return SimpleCheckRecipeResult.ofFailure("no_wafer");
                 }
