@@ -11,13 +11,13 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -35,6 +35,7 @@ import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
+import gregtech.common.items.matterManipulator.NBTState.Transform;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink.UplinkState;
 import io.netty.buffer.ByteBuf;
@@ -279,8 +280,32 @@ enum Messages {
     })),
     ResetArray(server(simple((player, stack, manipulator, state) -> {
         state.config.arraySpan = null;
+        player.inventoryContainer.detectAndSendChanges();
     }))),
-    SetTransform(server(enumPacket(ExtendedFacing.values(), (state, transform) -> state.config.transform = transform))),
+    ResetTransform(server(intPacket((player, stack, manipulator, state, value) -> {
+        state.config.transform = new Transform();
+        player.inventoryContainer.detectAndSendChanges();
+    }))),
+    ToggleTransformFlip(server(intPacket((player, stack, manipulator, state, value) -> {
+        if (state.config.transform == null) state.config.transform = new Transform();
+
+        if ((value & Transform.FLIP_X) != 0) state.config.transform.flipX ^= true;
+        if ((value & Transform.FLIP_Y) != 0) state.config.transform.flipY ^= true;
+        if ((value & Transform.FLIP_Z) != 0) state.config.transform.flipZ ^= true;
+        player.inventoryContainer.detectAndSendChanges();
+    }))),
+    RotateTransform(server(intPacket((player, stack, manipulator, state, value) -> {
+        if (state.config.transform == null) state.config.transform = new Transform();
+
+        int dir = value & 0xFF;
+
+        if (dir < 0 || dir >= ForgeDirection.VALID_DIRECTIONS.length) return;
+
+        int amount = ((value >> 8) & 0xFF) != 0 ? 1 : -1;
+
+        state.config.transform.rotate(ForgeDirection.VALID_DIRECTIONS[dir], amount);
+        player.inventoryContainer.detectAndSendChanges();
+    }))),
 
     ;
 
@@ -338,10 +363,10 @@ enum Messages {
 
     @SuppressWarnings("unchecked")
     public void handle(EntityPlayer player, SimplePacket packet) {
-        if (GTValues.D1) {
-            GTMod.GT_FML_LOGGER
-                .info("Handling packet: " + this + "; " + packet + "; " + player + "; " + NetworkUtils.isClient());
-        }
+        // if (GTValues.D1) {
+        GTMod.GT_FML_LOGGER
+            .info("Handling packet: " + this + "; " + packet + "; " + player + "; " + NetworkUtils.isClient());
+        // }
         ((ISimplePacketHandler<SimplePacket>) handler).handle(player, packet);
     }
 
@@ -439,6 +464,17 @@ enum Messages {
             IntPacket message = new IntPacket(super.message);
             message.value = buffer.readInt();
             return message;
+        }
+
+        @Override
+        public String toString() {
+            return "IntPacket [message=" + message
+                + ", value="
+                + value
+                + " (0b"
+                + Integer.toBinaryString(value)
+                + ")"
+                + "]";
         }
     }
 
@@ -663,6 +699,7 @@ enum Messages {
                     setter.set(player, held, manipulator, state, packet.value);
 
                     ItemMatterManipulator.setState(held, state);
+                    System.out.println("state: " + (state));
                 }
             }
 

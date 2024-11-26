@@ -3,6 +3,9 @@ package gregtech.common.items.matterManipulator;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import java.lang.invoke.MethodHandle;
 import java.util.ArrayList;
@@ -32,7 +35,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -53,16 +55,20 @@ import org.spongepowered.libraries.com.google.common.collect.MapMaker;
 import com.google.gson.JsonElement;
 import com.gtnewhorizon.gtnhlib.util.AboveHotbarHUD;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
 import com.gtnewhorizons.modularui.api.UIInfos;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.Column;
+import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.gtnewhorizons.modularui.common.widget.Row;
 import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
 
@@ -87,12 +93,13 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.matterManipulator.NBTState.BlockRemoveMode;
 import gregtech.common.items.matterManipulator.NBTState.BlockSelectMode;
 import gregtech.common.items.matterManipulator.NBTState.Config;
+import gregtech.common.items.matterManipulator.NBTState.Config.VoxelAABB;
 import gregtech.common.items.matterManipulator.NBTState.Location;
 import gregtech.common.items.matterManipulator.NBTState.PendingAction;
 import gregtech.common.items.matterManipulator.NBTState.PendingBlock;
 import gregtech.common.items.matterManipulator.NBTState.PlaceMode;
 import gregtech.common.items.matterManipulator.NBTState.Shape;
-import gregtech.common.items.matterManipulator.NBTState.Config.VoxelAABB;
+import gregtech.common.items.matterManipulator.NBTState.Transform;
 import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
 
@@ -103,8 +110,6 @@ public class ItemMatterManipulator extends Item
 
     @SideOnly(Side.CLIENT)
     private MatterManipulatorRenderer renderer;
-
-    private boolean openTransformWindow = false;
 
     public ItemMatterManipulator(ManipulatorTier tier) {
         String name = "itemMatterManipulator" + tier.tier;
@@ -878,7 +883,8 @@ public class ItemMatterManipulator extends Item
             return;
         }
 
-        state.config.arraySpan = Config.getArrayMult(world, state.config.coordA, state.config.coordB, state.config.coordC, lookingAt);
+        state.config.arraySpan = state.config
+            .getArrayMult(world, state.config.coordA, state.config.coordB, state.config.coordC, lookingAt);
     }
 
     /**
@@ -908,12 +914,12 @@ public class ItemMatterManipulator extends Item
 
     @Override
     public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
-        int ticksUsed = Integer.MAX_VALUE - count;
+        if (!player.worldObj.isRemote) {
+            int ticksUsed = Integer.MAX_VALUE - count;
 
-        if (ticksUsed == 1) {
-            if (!player.worldObj.isRemote) {
-                NBTState state = getState(stack);
+            NBTState state = getState(stack);
 
+            if (ticksUsed == 1) {
                 switch (state.config.placeMode) {
                     case GEOMETRY:
                     case COPYING:
@@ -928,17 +934,18 @@ public class ItemMatterManipulator extends Item
                     }
                 }
             }
-        }
 
-        if (ticksUsed >= 10 && (ticksUsed % tier.placeTicks) == 0 && !player.worldObj.isRemote) {
-            try {
-                PENDING_BUILDS.get(player)
-                    .tryPlaceBlocks(stack, player);
-            } catch (Throwable t) {
-                GTMod.GT_FML_LOGGER.error("Could not place blocks", t);
-                GTUtility.sendErrorToPlayer(
-                    player,
-                    EnumChatFormatting.RED + "Could not place blocks due to a crash. Check the logs for more info.");
+            if (ticksUsed >= 10 && (ticksUsed % tier.placeTicks) == 0) {
+                try {
+                    PENDING_BUILDS.get(player)
+                        .tryPlaceBlocks(stack, player);
+                } catch (Throwable t) {
+                    GTMod.GT_FML_LOGGER.error("Could not place blocks", t);
+                    GTUtility.sendErrorToPlayer(
+                        player,
+                        EnumChatFormatting.RED
+                            + "Could not place blocks due to a crash. Check the logs for more info.");
+                }
             }
         }
     }
@@ -1032,7 +1039,7 @@ public class ItemMatterManipulator extends Item
             .pipe(builder -> {
                 switch (initialState.config.placeMode) {
                     case GEOMETRY -> addGeometryOptions(builder, buildContext, heldStack, initialState);
-                    case COPYING -> addCopyingOptions(builder, buildContext, heldStack);
+                    case COPYING -> addCopyingOptions(builder, buildContext, heldStack, initialState);
                     case MOVING -> addMovingOptions(builder, buildContext, heldStack);
                     case EXCHANGING -> addExchangingOptions(builder, buildContext, heldStack);
                     case CABLES -> addCableOptions(builder, buildContext, heldStack);
@@ -1205,7 +1212,7 @@ public class ItemMatterManipulator extends Item
             .done();
     }
 
-    private void addCopyingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
+    private void addCopyingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack, NBTState initialState) {
         builder
             .option()
                 .label("Mark Copy")
@@ -1269,8 +1276,12 @@ public class ItemMatterManipulator extends Item
             .done()
             .option()
                 .label("Edit Transform")
-                .onClicked(() -> {
-                    openTransformWindow = true;
+                .onClicked((menu, option, mouseButton, doubleClicked) -> {
+                    UIBuildContext buildContext2 = new UIBuildContext(buildContext.getPlayer());
+                    ModularWindow window = createTransformWindow(buildContext2, heldStack, initialState);
+                    GuiScreen screen = new TransparentModularGui(
+                            new ModularUIContainer(new ModularUIContext(buildContext2, null, true), window));
+                    FMLCommonHandler.instance().showGuiScreen(screen);
                 })
             .done()
             .option()
@@ -1279,6 +1290,15 @@ public class ItemMatterManipulator extends Item
                     Messages.MarkPaste.sendToServer();
                 })
             .done();
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static class TransparentModularGui extends ModularGui {
+        public TransparentModularGui(ModularUIContainer container) {
+            super(container);
+        }
+
+        public void drawDefaultBackground() {}
     }
 
     private void addMovingOptions(RadialMenuBuilder builder, UIBuildContext buildContext, ItemStack heldStack) {
@@ -1394,37 +1414,108 @@ public class ItemMatterManipulator extends Item
 
     // spotless:on
 
-    public ModularWindow createTransformWindow(UIBuildContext buildContext) {
-        ItemStack heldStack = buildContext.getPlayer().getHeldItem();
-        NBTState initialState = getState(heldStack);
+    private static Widget padding(int width, int height) {
+        return new Row().setSize(width, height);
+    }
 
+    public ModularWindow createTransformWindow(UIBuildContext buildContext, ItemStack heldStack,
+        NBTState initialState) {
         buildContext.setShowNEI(false);
 
         ModularWindow.Builder builder = ModularWindow.builder(new Size(0, 0));
 
-        builder.widget(new Column().widgets(
-            new Row().widgets(
-                new VanillaButtonWidget()
-                    .setDisplayString("Rotate X-")
-                    .setOnClick((t, u) -> {
-                        ExtendedFacing x = ExtendedFacing.DOWN_CLOCKWISE_BOTH;
-                    })
-                    .setSize(40, 18),
-                new VanillaButtonWidget()
-                    .setDisplayString("Rotate X+")
-                    .setSize(40, 18)
-            )
-        ));
+        builder.bindPlayerInventory(buildContext.getPlayer(), 0, -9001);
 
-        return builder.build();
-    }
+        if (NetworkUtils.isClient()) {
+            builder.widget(
+                new Row().widgets(
+                    padding(10, 10),
+                    new Column().setAlignment(MainAxisAlignment.CENTER)
+                        .widgets(
+                            new Row().widgets(
+                                new VanillaButtonWidget().setDisplayString("Rotate X-")
+                                    .setOnClick((t, u) -> { Transform.sendRotate(EAST, false); })
+                                    .setSynced(false, false)
+                                    .setSize(62, 18),
+                                padding(6, 6),
+                                new VanillaButtonWidget().setDisplayString("Rotate X+")
+                                    .setOnClick((t, u) -> { Transform.sendRotate(EAST, true); })
+                                    .setSynced(false, false)
+                                    .setSize(62, 18)),
+                            padding(10, 10),
+                            new Row().widgets(
+                                new VanillaButtonWidget().setDisplayString("Rotate Y-")
+                                    .setOnClick((t, u) -> { Transform.sendRotate(UP, false); })
+                                    .setSynced(false, false)
+                                    .setSize(62, 18),
+                                padding(6, 6),
+                                new VanillaButtonWidget().setDisplayString("Rotate Y+")
+                                    .setOnClick((t, u) -> { Transform.sendRotate(UP, true); })
+                                    .setSynced(false, false)
+                                    .setSize(62, 18)),
+                            padding(10, 10),
+                            new Row().widgets(
+                                new VanillaButtonWidget().setDisplayString("Rotate Z-")
+                                    .setOnClick((t, u) -> { Transform.sendRotate(SOUTH, false); })
+                                    .setSynced(false, false)
+                                    .setSize(62, 18),
+                                padding(6, 6),
+                                new VanillaButtonWidget().setDisplayString("Rotate Z+")
+                                    .setOnClick((t, u) -> { Transform.sendRotate(SOUTH, true); })
+                                    .setSynced(false, false)
+                                    .setSize(62, 18)),
+                            padding(10, 10),
+                            new Row().widgets(
+                                new VanillaButtonWidget().setDisplayString("Flip X")
+                                    .setOnClick(
+                                        (t, u) -> { Messages.ToggleTransformFlip.sendToServer(Transform.FLIP_X); })
+                                    .setSynced(false, false)
+                                    .setSize(40, 18),
+                                padding(5, 5),
+                                new VanillaButtonWidget().setDisplayString("Flip Y")
+                                    .setOnClick(
+                                        (t, u) -> { Messages.ToggleTransformFlip.sendToServer(Transform.FLIP_Y); })
+                                    .setSynced(false, false)
+                                    .setSize(40, 18),
+                                padding(5, 5),
+                                new VanillaButtonWidget().setDisplayString("Flip Z")
+                                    .setOnClick(
+                                        (t, u) -> { Messages.ToggleTransformFlip.sendToServer(Transform.FLIP_Z); })
+                                    .setSynced(false, false)
+                                    .setSize(40, 18)),
+                            padding(10, 10),
+                            new Row().widgets(DynamicTextWidget.dynamicString(() -> {
+                                NBTState currState = getState(
+                                    buildContext.getPlayer()
+                                        .getHeldItem());
 
-    private static class TransparentModularGui extends ModularGui {
-        public TransparentModularGui(ModularUIContainer container) {
-            super(container);
+                                Transform t = currState.getTransform();
+
+                                ArrayList<String> flips = new ArrayList<>();
+
+                                if (t.flipX) flips.add("X");
+                                if (t.flipY) flips.add("Y");
+                                if (t.flipZ) flips.add("Z");
+
+                                String[] names = { "Down", "Up", "North", "South", "West", "East" };
+
+                                return String.format(
+                                    "Flip: %s\nUp: %s\nForward: %s",
+                                    flips.isEmpty() ? "None" : String.join(", ", flips),
+                                    names[t.up.ordinal()],
+                                    names[t.forward.ordinal()]);
+                            })
+                                .setSynced(false)
+                                .setTextAlignment(Alignment.TopLeft)
+                                .setDefaultColor(EnumChatFormatting.BLACK)
+                                .setSize(90, 18 * 3),
+                                new VanillaButtonWidget().setDisplayString("Reset")
+                                    .setOnClick((t, u) -> { Messages.ResetTransform.sendToServer(); })
+                                    .setSynced(false, false)
+                                    .setSize(40, 18)))));
         }
 
-        public void drawDefaultBackground() {}
+        return builder.build();
     }
 
     // #endregion
@@ -1437,16 +1528,6 @@ public class ItemMatterManipulator extends Item
     @SideOnly(Side.CLIENT)
     public void renderSelection(RenderWorldLastEvent event) {
         try {
-            if (openTransformWindow) {
-                openTransformWindow = false;
-
-                UIBuildContext buildContext = new UIBuildContext(Minecraft.getMinecraft().thePlayer);
-                ModularWindow window = createTransformWindow(buildContext);
-                TransparentModularGui screen = new TransparentModularGui(
-                        new ModularUIContainer(new ModularUIContext(buildContext, null, true), window));
-                FMLCommonHandler.instance().showGuiScreen(screen);
-            }
-
             renderer.renderSelection(event);
         } catch (Throwable t) {
             GTMod.GT_FML_LOGGER.error("Could not render matter manipulator preview", t);
@@ -1675,9 +1756,7 @@ public class ItemMatterManipulator extends Item
 
                 BoxRenderer.INSTANCE.start(event.partialTicks);
 
-                BoxRenderer.INSTANCE.drawAround(
-                    aabb.toBoundingBox(),
-                    new Vector3f(0.15f, 0.6f, 0.75f));
+                BoxRenderer.INSTANCE.drawAround(aabb.toBoundingBox(), new Vector3f(0.15f, 0.6f, 0.75f));
 
                 BoxRenderer.INSTANCE.finish();
 
@@ -1693,11 +1772,8 @@ public class ItemMatterManipulator extends Item
                     analysisCache.removeIf(b -> b == null || b.getBlock() == Blocks.air);
                     analysisCache.sort(Comparator.comparingInt((PendingBlock b) -> b.renderOrder));
 
-                    AboveHotbarHUD.renderTextAboveHotbar(
-                        aabb.describe(),
-                        (int) (ANALYSIS_INTERVAL_MS * 20 / 1000),
-                        false,
-                        false);
+                    AboveHotbarHUD
+                        .renderTextAboveHotbar(aabb.describe(), (int) (ANALYSIS_INTERVAL_MS * 20 / 1000), false, false);
                 }
 
                 if (needsHintDraw) {
@@ -1742,7 +1818,8 @@ public class ItemMatterManipulator extends Item
                         drawRulers(player, new Location(player.worldObj, lookingAt), false, event.partialTicks);
 
                         if (paste != null && paste.isInWorld(player.worldObj)) {
-                            state.config.arraySpan = Config.getArrayMult(player.worldObj, sourceA, sourceB, paste, lookingAt);
+                            state.config.arraySpan = state.config
+                                .getArrayMult(player.worldObj, sourceA, sourceB, paste, lookingAt);
                         }
 
                         break;
@@ -1784,8 +1861,11 @@ public class ItemMatterManipulator extends Item
 
                 pasteDeltas.moveOrigin(paste.toVec());
 
-                BoxRenderer.INSTANCE
-                    .drawAround(pasteDeltas.toBoundingBox(), new Vector3f(0.75f, 0.5f, 0.15f));
+                if (state.config.transform != null) {
+                    state.config.transform.apply(pasteDeltas);
+                }
+
+                BoxRenderer.INSTANCE.drawAround(pasteDeltas.toBoundingBox(), new Vector3f(0.75f, 0.5f, 0.15f));
 
                 Location playerLocation = new Location(
                     player.getEntityWorld(),

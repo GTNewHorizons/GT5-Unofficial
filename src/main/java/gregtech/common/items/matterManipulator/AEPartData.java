@@ -264,7 +264,7 @@ public class AEPartData {
 
         if (mAEPatterns != null) {
             for (IItemProvider item : mAEPatterns.mItems) {
-                item.getStack(context, true);
+                if (item != null) item.getStack(context, true);
             }
         }
 

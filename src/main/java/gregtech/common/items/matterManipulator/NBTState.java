@@ -2,6 +2,12 @@ package gregtech.common.items.matterManipulator;
 
 import static gregtech.api.util.GTUtility.ceilDiv2;
 import static gregtech.api.util.GTUtility.signum;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,6 +34,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.gson.Gson;
@@ -63,6 +71,7 @@ import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.Lazy;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.items.matterManipulator.BlockAnalyzer.RegionAnalysis;
+import gregtech.common.items.matterManipulator.NBTState.Config.VoxelAABB;
 import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 
 /**
@@ -216,6 +225,11 @@ class NBTState {
         return uplink != null;
     }
 
+    public Transform getTransform() {
+        if (config.transform == null) config.transform = new Transform();
+        return config.transform;
+    }
+
     // #region Pending blocks
 
     /**
@@ -244,35 +258,105 @@ class NBTState {
         RegionAnalysis analysis = BlockAnalyzer
             .analyzeRegion(world, coordA, coordB, config.placeMode == PlaceMode.COPYING ? true : false);
 
-        for (PendingBlock block : analysis.blocks) {
-            block.x += coordC.x;
-            block.y += coordC.y;
-            block.z += coordC.z;
-        }
+        if (config.placeMode == PlaceMode.COPYING) {
+            Transform t = getTransform();
 
-        if (config.arraySpan != null) {
-            int sx = config.arraySpan.x;
-            int sy = config.arraySpan.y;
-            int sz = config.arraySpan.z;
+            t.cacheRotation();
 
-            List<PendingBlock> base = new ArrayList<>(analysis.blocks);
+            // apply rotation
+            for (PendingBlock block : analysis.blocks) {
+                Vector3i v = t.apply(block.toVec());
 
-            for (int y = 0; y < sy; y++) {
-                for (int z = 0; z < sz; z++) {
-                    for (int x = 0; x < sx; x++) {
-                        int dx = x * (analysis.deltas.x + (analysis.deltas.x < 0 ? -1 : 1));
-                        int dy = y * (analysis.deltas.y + (analysis.deltas.y < 0 ? -1 : 1));
-                        int dz = z * (analysis.deltas.z + (analysis.deltas.z < 0 ? -1 : 1));
+                block.x = v.x;
+                block.y = v.y;
+                block.z = v.z;
 
-                        for (PendingBlock original : base) {
-                            PendingBlock dup = original.clone();
-                            dup.x += dx;
-                            dup.y += dy;
-                            dup.z += dz;
-                            analysis.blocks.add(dup);
+                TileAnalysisResult d = block.tileData;
+
+                if (d != null) {
+                    d.mGTFront = t.apply(d.mGTFront);
+                    d.mGTMainFacing = t.apply(d.mGTMainFacing);
+                    d.mGTFacing = t.apply(d.mGTFacing);
+                    d.mAEUp = t.apply(d.mAEUp);
+                    d.mAEForward = t.apply(d.mAEForward);
+                    d.mDirection = t.apply(d.mDirection);
+
+                    if (d.mCovers != null) {
+                        CoverData[] coversOut = new CoverData[d.mCovers.length];
+
+                        for (int i = 0; i < coversOut.length; i++) {
+                            coversOut[t.apply(ForgeDirection.VALID_DIRECTIONS[i])
+                                .ordinal()] = d.mCovers[i];
+                        }
+
+                        d.mCovers = coversOut;
+                    }
+
+                    if (d.mAEParts != null) {
+                        AEPartData[] partsOut = new AEPartData[TileAnalysisResult.ALL_DIRECTIONS.length];
+
+                        int unknown = ForgeDirection.UNKNOWN.ordinal();
+
+                        for (int i = 0; i < partsOut.length; i++) {
+                            if (i == unknown) {
+                                partsOut[unknown] = d.mAEParts[unknown];
+                            } else {
+                                partsOut[t.apply(TileAnalysisResult.ALL_DIRECTIONS[i])
+                                    .ordinal()] = d.mAEParts[i];
+                            }
+                        }
+
+                        d.mAEParts = partsOut;
+                    }
+                }
+            }
+
+            // offset to the correct location (needs to be after rotating)
+            for (PendingBlock block : analysis.blocks) {
+                block.x += coordC.x;
+                block.y += coordC.y;
+                block.z += coordC.z;
+            }
+
+            // copy the blocks (arraying)
+            if (config.arraySpan != null) {
+                int sx = config.arraySpan.x;
+                int sy = config.arraySpan.y;
+                int sz = config.arraySpan.z;
+
+                List<PendingBlock> base = new ArrayList<>(analysis.blocks);
+
+                for (int y = 0; y < sy; y++) {
+                    for (int z = 0; z < sz; z++) {
+                        for (int x = 0; x < sx; x++) {
+                            int dx = x * (analysis.deltas.x + (analysis.deltas.x < 0 ? -1 : 1));
+                            int dy = y * (analysis.deltas.y + (analysis.deltas.y < 0 ? -1 : 1));
+                            int dz = z * (analysis.deltas.z + (analysis.deltas.z < 0 ? -1 : 1));
+
+                            Vector3i d = new Vector3i(dx, dy, dz);
+
+                            t.apply(d);
+
+                            for (PendingBlock original : base) {
+                                PendingBlock dup = original.clone();
+                                dup.x += d.x;
+                                dup.y += d.y;
+                                dup.z += d.z;
+                                analysis.blocks.add(dup);
+                            }
                         }
                     }
                 }
+            }
+
+            analysis.deltas = t.apply(analysis.deltas);
+
+            t.uncacheRotation();
+        } else {
+            for (PendingBlock block : analysis.blocks) {
+                block.x += coordC.x;
+                block.y += coordC.y;
+                block.z += coordC.z;
             }
         }
 
@@ -813,8 +897,7 @@ class NBTState {
         /** These blocks are what gets placed when exchanging */
         public JsonElement replaceWith;
 
-        /** The rotation & flip, if any */
-        public ExtendedFacing transform;
+        public Transform transform;
         /** The array size in repetitions */
         public Vector3i arraySpan;
 
@@ -897,6 +980,7 @@ class NBTState {
         }
 
         public static class VoxelAABB {
+
             public Vector3i origin, bounds;
 
             public VoxelAABB() {
@@ -920,14 +1004,17 @@ class NBTState {
             public VoxelAABB union(Vector3i v) {
                 Vector3i min = min(), max = max();
 
-                origin.set(v).min(min);
-                bounds.set(v).max(max);
+                origin.set(v)
+                    .min(min);
+                bounds.set(v)
+                    .max(max);
 
                 return this;
             }
 
             public VoxelAABB moveOrigin(Vector3i newOrigin) {
-                bounds.sub(origin).add(newOrigin);
+                bounds.sub(origin)
+                    .add(newOrigin);
                 origin.set(newOrigin);
 
                 return this;
@@ -986,17 +1073,28 @@ class NBTState {
             }
         }
 
-        public static Vector3i getArrayMult(World world, Location sourceA, Location sourceB, Location dest, Vector3i lookingAt) {
+        public Vector3i getArrayMult(World world, Location sourceA, Location sourceB, Location dest,
+            Vector3i lookingAt) {
             if (!Location.areCompatible(sourceA, sourceB)) return new Vector3i(1);
             if (dest == null || dest.worldId != world.provider.dimensionId) return new Vector3i(1);
 
             VoxelAABB copy = new VoxelAABB(sourceA.toVec(), sourceB.toVec());
-            VoxelAABB paste = copy.clone().moveOrigin(dest.toVec());
+            VoxelAABB paste = copy.clone()
+                .moveOrigin(dest.toVec());
 
             Vector3i array = new Vector3i(lookingAt).sub(dest.toVec());
             Vector3i span = paste.size();
 
-            Vector3i delta = sourceB.toVec().sub(sourceA.toVec());
+            Vector3i delta = sourceB.toVec()
+                .sub(sourceA.toVec());
+
+            if (transform != null) {
+                Vector3f v2 = new Vector3f(array).mulTransposeDirection(new Matrix4f(transform.getRotation()).invert());
+
+                array.x = Math.round(v2.x);
+                array.y = Math.round(v2.y);
+                array.z = Math.round(v2.z);
+            }
 
             array.x *= delta.x < 0 ? -1 : 1;
             array.y *= delta.y < 0 ? -1 : 1;
@@ -1110,6 +1208,207 @@ class NBTState {
                 if (other.arraySpan != null) return false;
             } else if (!arraySpan.equals(other.arraySpan)) return false;
             return true;
+        }
+    }
+
+    /**
+     * Represents the rotation and flipping.
+     */
+    static class Transform {
+
+        public boolean flipX, flipY, flipZ;
+        public ForgeDirection forward = ExtendedFacing.DEFAULT.getRelativeForwardInWorld(), up = ForgeDirection.UP;
+
+        public transient Matrix4f rotation;
+
+        public static final int FLIP_X = 0b1, FLIP_Y = 0b10, FLIP_Z = 0b100, FORWARD_MASK = 0b111000, FORWARD_SHIFT = 3,
+            UP_MASK = 0b111000000, UP_SHIFT = 6;
+
+        public static void sendRotate(ForgeDirection dir, boolean positive) {
+            Messages.RotateTransform.sendToServer((dir.ordinal() & 0xFF) | (positive ? 1 : 0) << 8);
+        }
+
+        public Matrix4f getRotation() {
+            if (rotation != null) return rotation;
+
+            Matrix4f flip = new Matrix4f();
+            flip.scale(flipX ? -1 : 1, flipY ? -1 : 1, flipZ ? -1 : 1);
+
+            Matrix4f rot = new Matrix4f().lookAlong(v(forward), v(up));
+
+            return rot.mul(flip);
+        }
+
+        public void cacheRotation() {
+            rotation = getRotation();
+        }
+
+        public void uncacheRotation() {
+            rotation = null;
+        }
+
+        public ExtendedFacing apply(ExtendedFacing facing) {
+            if (facing == null) return null;
+
+            return transform(facing, getRotation());
+        }
+
+        public ForgeDirection apply(ForgeDirection dir) {
+            if (dir == null) return null;
+
+            return vprime(v(dir).mulTransposeDirection(getRotation()));
+        }
+
+        public Vector3i apply(Vector3i v) {
+            Vector3f v2 = new Vector3f(v).mulTransposeDirection(getRotation());
+
+            v.x = Math.round(v2.x);
+            v.y = Math.round(v2.y);
+            v.z = Math.round(v2.z);
+
+            return v;
+        }
+
+        public VoxelAABB apply(VoxelAABB bb) {
+            Vector3i deltas = new Vector3i(
+                bb.bounds.x - bb.origin.x,
+                bb.bounds.y - bb.origin.y,
+                bb.bounds.z - bb.origin.z);
+
+            apply(deltas);
+
+            bb.bounds.x = deltas.x + bb.origin.x;
+            bb.bounds.y = deltas.y + bb.origin.y;
+            bb.bounds.z = deltas.z + bb.origin.z;
+
+            return bb;
+        }
+
+        /**
+         * Rotates this transform.
+         * 
+         * @param dir    The axis to rotate around
+         * @param amount The amount to rotate (1 = 90 degrees)
+         */
+        public void rotate(ForgeDirection dir, int amount) {
+            rotation = null;
+            Matrix4f rot = new Matrix4f().rotate((float) (Math.PI / 2 * amount), v(dir));
+
+            up = transform(up, rot);
+            forward = transform(forward, rot);
+        }
+
+        @Override
+        public String toString() {
+            return "Transform [flipX=" + flipX
+                + ", flipY="
+                + flipY
+                + ", flipZ="
+                + flipZ
+                + ", forward="
+                + forward
+                + ", up="
+                + up
+                + "]";
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + (flipX ? 1231 : 1237);
+            result = prime * result + (flipY ? 1231 : 1237);
+            result = prime * result + (flipZ ? 1231 : 1237);
+            result = prime * result + ((forward == null) ? 0 : forward.hashCode());
+            result = prime * result + ((up == null) ? 0 : up.hashCode());
+            result = prime * result + ((rotation == null) ? 0 : rotation.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
+            Transform other = (Transform) obj;
+            if (flipX != other.flipX) return false;
+            if (flipY != other.flipY) return false;
+            if (flipZ != other.flipZ) return false;
+            if (forward != other.forward) return false;
+            if (up != other.up) return false;
+            if (rotation == null) {
+                if (other.rotation != null) return false;
+            } else if (!rotation.equals(other.rotation)) return false;
+            return true;
+        }
+
+        private static Vector3f v(ForgeDirection dir) {
+            return new Vector3f(dir.offsetX, dir.offsetY, dir.offsetZ);
+        }
+
+        private static ForgeDirection vprime(Vector3f dir) {
+            return switch (dir.maxComponent()) {
+                case 0 -> dir.x > 0 ? EAST : WEST;
+                case 1 -> dir.y > 0 ? UP : DOWN;
+                case 2 -> dir.z > 0 ? SOUTH : NORTH;
+                default -> throw new AssertionError();
+            };
+        }
+
+        /** Unused, but potentially useful */
+        public static Matrix4f fromFacing(ExtendedFacing facing) {
+            Matrix4f dir = switch (facing.getDirection()) {
+                case UP -> new Matrix4f().lookAlong(v(UP), v(NORTH));
+                case DOWN -> new Matrix4f().lookAlong(v(DOWN), v(NORTH));
+                case NORTH -> new Matrix4f().lookAlong(v(NORTH), v(UP));
+                case SOUTH -> new Matrix4f().lookAlong(v(SOUTH), v(UP));
+                case EAST -> new Matrix4f().lookAlong(v(EAST), v(UP));
+                case WEST -> new Matrix4f().lookAlong(v(WEST), v(UP));
+                default -> throw new AssertionError();
+            };
+
+            Matrix4f rot = switch (facing.getRotation()) {
+                case CLOCKWISE -> new Matrix4f().rotate((float) (Math.PI / 2), v(NORTH));
+                case COUNTER_CLOCKWISE -> new Matrix4f().rotate((float) (-Math.PI / 2), v(NORTH));
+                case NORMAL -> new Matrix4f();
+                case UPSIDE_DOWN -> new Matrix4f().rotate((float) (Math.PI), v(NORTH));
+            };
+
+            Matrix4f flip = new Matrix4f();
+
+            if (facing.getFlip()
+                .isHorizontallyFlipped()) {
+                flip.scale(-1, 1, 1);
+            }
+
+            if (facing.getFlip()
+                .isVerticallyFliped()) {
+                flip.scale(1, -1, 1);
+            }
+
+            return rot.mul(flip)
+                .mul(dir);
+        }
+
+        public static ForgeDirection transform(ForgeDirection dir, Matrix4f transform) {
+            return vprime(v(dir).mulTransposeDirection(transform));
+        }
+
+        public static ExtendedFacing transform(ExtendedFacing facing, Matrix4f transform) {
+            ForgeDirection forward = transform(facing.getRelativeForwardInWorld(), transform);
+            ForgeDirection left = transform(facing.getRelativeLeftInWorld(), transform);
+            ForgeDirection down = transform(facing.getRelativeDownInWorld(), transform);
+
+            for (ExtendedFacing candidate : ExtendedFacing.getAllWith(forward)) {
+                if (candidate.getRelativeLeftInWorld() != left) continue;
+                if (candidate.getRelativeDownInWorld() != down) continue;
+                if (candidate.getFlip()
+                    .isBothFlipped()) continue;
+
+                return candidate;
+            }
+
+            return null;
         }
     }
 
@@ -1249,7 +1548,7 @@ class NBTState {
             setBlock(block, meta);
         }
 
-        private PendingBlock() { }
+        private PendingBlock() {}
 
         /**
          * Clears this block's block but not its position.

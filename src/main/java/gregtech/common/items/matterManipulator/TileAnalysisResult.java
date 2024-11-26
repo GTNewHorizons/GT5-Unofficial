@@ -103,7 +103,7 @@ public class TileAnalysisResult {
     private static final short GT_MULTI_INPUT_SEPARATION = (short) (0b1 << counter++);
     private static final short GT_MULTI_RECIPE_LOCK = (short) (0b1 << counter++);
 
-    private static final ForgeDirection[] ALL_DIRECTIONS = ForgeDirection.values();
+    public static final ForgeDirection[] ALL_DIRECTIONS = ForgeDirection.values();
 
     public TileAnalysisResult() {
 
@@ -347,8 +347,13 @@ public class TileAnalysisResult {
                 IAlignment alignment = provider.getAlignment();
 
                 if (mGTFacing != null && alignment != null) {
-                    gte.setFrontFacing(mGTFacing.getDirection());
-                    alignment.setExtendedFacing(mGTFacing);
+
+                    if (alignment.isNewExtendedFacingValid(mGTFacing)) {
+                        gte.setFrontFacing(mGTFacing.getDirection());
+                        alignment.toolSetExtendedFacing(mGTFacing);
+                    } else {
+                        ctx.error("could not set direction to '" + mGTFacing.getLocalizedName() + "'");
+                    }
                 }
             } else {
                 if (mGTFront != null) {

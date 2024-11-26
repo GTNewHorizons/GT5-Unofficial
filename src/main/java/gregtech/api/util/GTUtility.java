@@ -56,8 +56,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.joml.Vector3i;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -116,6 +114,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;

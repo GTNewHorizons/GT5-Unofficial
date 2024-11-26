@@ -1220,14 +1220,19 @@ public enum OrePrefixes {
     public static Pair<OrePrefixes, String> detectPrefix(String oredictName) {
         for (OrePrefixes prefix : values()) {
             if (oredictName.startsWith(prefix.name())) {
-                return Pair.of(prefix, oredictName.substring(prefix.name().length()));
+                return Pair.of(
+                    prefix,
+                    oredictName.substring(
+                        prefix.name()
+                            .length()));
             }
         }
 
         return null;
     }
 
-    private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>>> PREFIX_CACHE = ThreadLocal.withInitial(Object2ObjectLinkedOpenHashMap::new);
+    private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>>> PREFIX_CACHE = ThreadLocal
+        .withInitial(Object2ObjectLinkedOpenHashMap::new);
 
     public static ImmutableList<Pair<OrePrefixes, String>> detectPrefix(ItemStack stack) {
         Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>> cache = PREFIX_CACHE.get();
