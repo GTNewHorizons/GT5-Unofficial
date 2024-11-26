@@ -41,6 +41,8 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
+import codechicken.nei.recipe.GuiCraftingRecipe;
+import codechicken.nei.recipe.GuiUsageRecipe;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.modularui.IControllerWithOptionalFeatures;
@@ -738,7 +740,18 @@ public class ForgeOfGodsUI {
             new SlotWidget(handler, 0).setAccess(false, false)
                 .setRenderStackSize(false)
                 .disableInteraction()
-                .setBackground(GTUITextures.BUTTON_STANDARD_PRESSED));
+                .setBackground(GTUITextures.BUTTON_STANDARD_PRESSED))
+            .addChild(new ButtonWidget().setOnClick((clickData, w) -> {
+                if (widget.isClient()) {
+                    if (clickData.mouseButton == 0) {
+                        GuiCraftingRecipe.openRecipeGui("item", handlerStack.copy());
+                    } else if (clickData.mouseButton == 1) {
+                        GuiUsageRecipe.openRecipeGui("item", handlerStack.copy());
+                    }
+                }
+            })
+                .setSize(16, 16)
+                .setPos(1, 1));
 
         // Progress text
         widget.addChild(new DynamicTextWidget(() -> {
