@@ -2933,19 +2933,19 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_Chest_Basic.ID,
                 "Basic Item Holder",
-                "Hold a few item for use within machine GUI",
+                "Holds 9 item for use within machine GUI (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         ItemList.Cover_Chest_Good.set(
             addItem(
                 Cover_Chest_Good.ID,
                 "Good Item Holder",
-                "Hold a few item for use within machine GUI",
+                "Holds 12 item for use within machine GUI (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         ItemList.Cover_Chest_Advanced.set(
             addItem(
                 Cover_Chest_Advanced.ID,
                 "Advanced Item Holder",
-                "Hold a few item for use within machine GUI",
+                "Holds 15 item for use within machine GUI (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
 
         ItemList.Cover_Screen.set(
