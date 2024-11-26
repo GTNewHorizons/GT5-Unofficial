@@ -304,7 +304,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembling Line, AAL")
+        tt.addMachineType("Assembling Line")
             .addInfo("Built exactly the same as standard Assembling Line")
             .addInfo("Assembling Line with item pipelining")
             .addInfo("All fluids are however consumed at start")
