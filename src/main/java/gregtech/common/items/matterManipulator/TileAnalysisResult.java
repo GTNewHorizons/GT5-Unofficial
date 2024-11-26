@@ -53,6 +53,7 @@ import gregtech.common.items.matterManipulator.BlockAnalyzer.IBlockApplyContext;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 /**
  * Stores all data needed to reconstruct a tile entity
@@ -75,6 +76,7 @@ public class TileAnalysisResult {
     public int mGTMode = 0;
     public JsonElement mGTData = null;
     public long mGTMEBusCapacity = 0;
+    public double[] mTTParams = null;
 
     public AEColor mAEColour = null;
     public ForgeDirection mAEUp = null, mAEForward = null;
@@ -247,6 +249,10 @@ public class TileAnalysisResult {
                 NBTTagCompound tag = new NBTTagCompound();
                 mte.setItemNBT(tag);
                 mGTMEBusCapacity = tag.getLong("baseCapacity");
+            }
+
+            if (mte instanceof TTMultiblockBase tt && tt.parametrization.hasInputs()) {
+                mTTParams = tt.parametrization.getInputs();
             }
         }
 
@@ -479,6 +485,10 @@ public class TileAnalysisResult {
                     // Probably an NPE, but we're catching Throwable just to be safe
                     GTMod.GT_FML_LOGGER.error("Could not paste IDataCopyable's data", t);
                 }
+            }
+
+            if (mTTParams != null && mTTParams.length == 20 && mte instanceof TTMultiblockBase tt) {
+                tt.parametrization.setInputs(mTTParams);
             }
         }
 
