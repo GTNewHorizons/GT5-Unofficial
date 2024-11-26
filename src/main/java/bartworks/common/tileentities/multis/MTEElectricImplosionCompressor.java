@@ -261,7 +261,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Implosion Compressor")
+        tt.addMachineType("Implosion Compressor, EIC")
             .addInfo("Explosions are fun")
             .addInfo("Uses electricity instead of Explosives")
             .addInfo("Can parallel up to 4^(Tier - 1)")

@@ -156,7 +156,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Circuit Assembler")
+        tt.addMachineType("Circuit Assembler, CAL")
             .addInfo("Change Mode with Screwdriver")
             .addInfo("Does not lose efficiency when overclocked")
             .addSeparator()

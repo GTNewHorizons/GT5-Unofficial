@@ -69,7 +69,7 @@ public class MTEBrickedBlastFurnace extends MTEPrimitiveBlastFurnace implements 
     protected MultiblockTooltipBuilder getTooltip() {
         if (tooltipBuilder == null) {
             tooltipBuilder = new MultiblockTooltipBuilder();
-            tooltipBuilder.addMachineType("Blast Furnace")
+            tooltipBuilder.addMachineType("Blast Furnace, BBF")
                 .addInfo("Usable for Steel and general Pyrometallurgy")
                 .addInfo("Has a useful interface, unlike other gregtech multis")
                 .addPollutionAmount(GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond)

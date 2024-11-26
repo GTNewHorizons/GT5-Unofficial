@@ -347,7 +347,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.name")) // Machine Type: Quantum
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.machinetype")) // Machine Type: Quantum
                                                                                               // Computer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.0")) // Controller block of
                                                                                            // the Quantum Computer

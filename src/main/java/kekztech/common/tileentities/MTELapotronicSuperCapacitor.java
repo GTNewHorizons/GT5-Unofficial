@@ -408,7 +408,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Energy Storage")
+        tt.addMachineType("Energy Storage, LSC")
             .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
             .addInfo(
                 "Capped at " + EnumChatFormatting.RED

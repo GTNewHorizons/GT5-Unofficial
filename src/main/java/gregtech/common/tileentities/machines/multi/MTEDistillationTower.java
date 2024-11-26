@@ -132,7 +132,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery")
+        tt.addMachineType("Distillery, DT")
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
