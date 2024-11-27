@@ -2639,16 +2639,9 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
 
             builder.widget(
-                new MultiChildWidget()
-                    .addChild(
-                        new ButtonWidget()
-                            .setOnClick(
-                                (clickData, widget) -> {
-                                    if (clickData.mouseButton == 0) {} else if (clickData.mouseButton == 1) {}
-                                })
-                            .setSize(53, 30)
-                            .addTooltip(translateToLocal("gt.blockmachines.multimachine.FOG.clickstat"))
-                            .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                new MultiChildWidget().addChild(
+                    new ButtonWidget().setOnClick((clickData, widget) -> {})
+                        .setSize(53, 30))
                     .addChild(
                         new DynamicTextWidget(() -> new Text(relevantInfo)).setScale(1f)
                             .setDefaultColor(EnumChatFormatting.GREEN)
