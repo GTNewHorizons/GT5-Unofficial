@@ -40,6 +40,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
+import com.glodblock.github.common.item.ItemFluidDrop;
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -91,6 +92,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -187,7 +189,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         public boolean isItemEmpty() {
             updateSlotItems();
-            return itemInventory.isEmpty() && sharedItemGetter.getSharedItem().length == 0;
+            return itemInventory.isEmpty() && isFluidEmpty();
         }
 
         public boolean isFluidEmpty() {
@@ -977,6 +979,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         } catch (GridAccessException ignored) {
             return false;
         }
+        superCribsRecipeList = null;
         return true;
     }
 
@@ -1055,32 +1058,55 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         return list;
     }
 
+    public static class recipeInputs {
+
+        public ItemStack[] inputItems;
+        public FluidStack[] inputFluid;
+    }
+
+    ArrayList<GTRecipe> superCribsRecipeList = new ArrayList<>();
+
     @Override
-    public List<ItemStack[]> getPatternsInputs() {
-        List<IAEItemStack[]> list = new ArrayList<>();
+    public List<recipeInputs> getPatternsInputs() {
+        ItemStack[] sharedItems = getSharedItems();
+        List<recipeInputs> recipeInputsList = new ArrayList<>();
         for (PatternSlot slot : internalInventory) {
             if (slot == null) {
-                list.add(null);
+                recipeInputsList.add(null);
                 continue;
             }
-            IAEItemStack[] inputs = slot.getPatternDetails()
-                .getInputs();
-            list.add(inputs);
-        }
-        List<ItemStack[]> itemList = new ArrayList<>();
-        ItemStack[] sharedItems = getSharedItems();
-        for (IAEItemStack[] t : list) {
-            if (t == null) {
-                itemList.add(null);
-                continue;
+
+            recipeInputs inputsSuper = new recipeInputs();
+
+            ItemStack[] inputItems = sharedItems;
+            FluidStack[] inputFluids = new FluidStack[0];
+
+            for (IAEItemStack singleInput : slot.getPatternDetails()
+                .getInputs()) {
+                if (singleInput == null) continue;
+                ItemStack singleInputItemStack = singleInput.getItemStack();
+                if (singleInputItemStack.getItem() instanceof ItemFluidDrop) {
+                    FluidStack fluidStack = ItemFluidDrop.getFluidStack(singleInputItemStack);
+                    if (fluidStack != null) inputFluids = ArrayUtils.addAll(inputFluids, fluidStack);
+                } else {
+                    inputItems = ArrayUtils.addAll(inputItems, singleInputItemStack);
+                }
             }
-            ItemStack[] inputI = sharedItems;
-            for (IAEItemStack y : t) {
-                if (y == null) continue;
-                inputI = ArrayUtils.addAll(inputI, y.getItemStack());
-            }
-            itemList.add(inputI);
+
+            inputsSuper.inputItems = inputItems;
+            inputsSuper.inputFluid = inputFluids;
+            recipeInputsList.add(inputsSuper);
         }
-        return itemList;
+        return recipeInputsList;
+    }
+
+    @Override
+    public void setSuperCribsRecipeList(ArrayList<GTRecipe> rList) {
+        superCribsRecipeList = rList;
+    }
+
+    @Override
+    public ArrayList<GTRecipe> getSuperCribsRecipeList() {
+        return superCribsRecipeList;
     }
 }

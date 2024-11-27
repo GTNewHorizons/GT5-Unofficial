@@ -39,10 +39,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 
-import com.glodblock.github.common.item.ItemFluidDrop;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -141,7 +141,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
-    protected ArrayList<GTRecipe> cribsCustomRecipeMap = null;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -874,33 +873,21 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return true;
     }
 
-    public ArrayList<GTRecipe> getCribsCustomRecipeMap() {
-        ArrayList<GTRecipe> recipeList = new ArrayList<>();
+    public void setSuperCribsRecipeList() {
         for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-            List<ItemStack[]> temp = dualInputHatch.getPatternsInputs();
-            for (ItemStack[] t : temp) {
+            ArrayList<GTRecipe> recipeList = new ArrayList<>();
+            List<MTEHatchCraftingInputME.recipeInputs> temp = dualInputHatch.getPatternsInputs();
+            if (temp == null) return;
+            for (MTEHatchCraftingInputME.recipeInputs t : temp) {
                 if (t == null) {
                     recipeList.add(null);
                     continue;
                 }
-                ArrayList<FluidStack> inputF = new ArrayList<>();
-                ArrayList<ItemStack> inputI = new ArrayList<>();
-                for (ItemStack tt : t) {
-                    if (tt.getItem() instanceof ItemFluidDrop) {
-                        FluidStack fluidStack = ItemFluidDrop.getFluidStack(tt);
-                        if (fluidStack != null) {
-                            inputF.add(fluidStack);
-                        }
-                    } else {
-                        inputI.add(tt);
-                    }
-                }
-                GTRecipe recipe = processingLogic
-                    .getCribsMatch(inputI.toArray(new ItemStack[0]), inputF.toArray(new FluidStack[0]));
+                GTRecipe recipe = processingLogic.getCribsMatch(t.inputItems, t.inputFluid);
                 recipeList.add(recipe);
             }
+            dualInputHatch.setSuperCribsRecipeList(recipeList);
         }
-        return recipeList;
     }
 
     /**
@@ -912,23 +899,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
         // check crafting input hatches first
         if (supportsCraftingMEBuffer()) {
-            if (cribsCustomRecipeMap == null) {
-                cribsCustomRecipeMap = getCribsCustomRecipeMap();
-            }
-            int n = 0;
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                ArrayList<GTRecipe> cribsCustomRecipeMap = dualInputHatch.getSuperCribsRecipeList();
+                if (cribsCustomRecipeMap == null) {
+                    setSuperCribsRecipeList();
+                    continue;
+                }
+                int n = 0;
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
                     GTRecipe recipe = cribsCustomRecipeMap.get(n);
+                    IDualInputInventory slot = it.next();
                     n++;
                     if (recipe != null) {
-                        IDualInputInventory slot = it.next();
-                        processingLogic.setInputItems(slot.getItemInputs());
-                        processingLogic.setInputFluids(slot.getFluidInputs());
+                        ItemStack[] items = slot.getItemInputs();
+                        FluidStack[] fluids = slot.getFluidInputs();
+                        if (items == null && fluids == null) continue;
+                        if (items.length == 0 && fluids.length == 0) continue;
+                        processingLogic.setInputItems(items);
+                        processingLogic.setInputFluids(fluids);
                         return processingLogic.processCribs(recipe);
                     }
                 }
             }
-            return result;
         }
 
         processingLogic.setInputFluids(getStoredFluids());
