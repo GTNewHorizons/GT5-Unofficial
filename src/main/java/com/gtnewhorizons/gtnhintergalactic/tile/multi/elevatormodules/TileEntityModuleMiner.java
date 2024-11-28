@@ -829,6 +829,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
@@ -837,7 +838,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOtherStructurePart(
+                            GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
+                            GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                            1)
                     .toolTipFinisher();
             return tt;
         }
@@ -922,6 +926,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
@@ -930,7 +935,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOtherStructurePart(
+                            GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
+                            GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                            1)
                     .toolTipFinisher();
             return tt;
         }
@@ -1015,6 +1023,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.desc2"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
@@ -1023,7 +1032,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                    .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOtherStructurePart(
+                            GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
+                            GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                            1)
                     .toolTipFinisher();
             return tt;
         }
