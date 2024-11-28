@@ -11,9 +11,9 @@ import net.minecraft.network.PacketBuffer;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.utils.Color;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
+import com.gtnewhorizons.modularui.api.math.Color;
 
 import tectech.thing.gui.TecTechUITextures;
 
@@ -29,6 +29,7 @@ public class ForgeOfGodsStarColor {
     public static final int DEFAULT_GREEN = 204;
     public static final int DEFAULT_BLUE = 255;
     public static final float DEFAULT_GAMMA = 3.0f;
+    public static final int DEFAULT_CYCLE_SPEED = 1;
 
     public static final ForgeOfGodsStarColor DEFAULT = new ForgeOfGodsStarColor("Default")
         .addColor(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE, DEFAULT_GAMMA)
@@ -43,15 +44,29 @@ public class ForgeOfGodsStarColor {
         .setCustomDrawable(TecTechUITextures.PICTURE_RAINBOW_SQUARE)
         .registerPreset();
 
-    public static final ForgeOfGodsStarColor CLOUD_PICK = new ForgeOfGodsStarColor("Cloud's Pick")
-        .addColor(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE, DEFAULT_GAMMA) // todo @cloud
+    public static final ForgeOfGodsStarColor CLOUDS_PICK = new ForgeOfGodsStarColor("Cloud's Pick")
+        .addColor(255, 255, 0, 0.8f)
+        .addColor(0, 0, 0, 0)
+        .addColor(0, 255, 255, 0.4f)
+        .addColor(0, 0, 0, 0)
+        .setCycleSpeed(1)
+        .setCustomDrawable(
+            new Rectangle()
+                .setColor(Color.rgb(255, 255, 0), Color.rgb(0, 0, 0), Color.rgb(0, 0, 0), Color.rgb(0, 255, 255)))
         .registerPreset();
 
-    public static final ForgeOfGodsStarColor MAYA_PICK = new ForgeOfGodsStarColor("Maya's Pick")
-        .addColor(91, 206, 250, 3.0f)
-        .addColor(245, 169, 184, 3.0f)
+    public static final ForgeOfGodsStarColor MAYAS_PICK = new ForgeOfGodsStarColor("Maya's Pick")
+        .addColor(0, 0, 0, 0.0f)
+        .addColor(109, 201, 225, 1.0f)
         .addColor(255, 255, 255, 3.0f)
+        .addColor(255, 172, 210, 1.0f)
         .setCycleSpeed(1)
+        .setCustomDrawable(
+            new Rectangle().setColor(
+                Color.rgb(255, 172, 210),
+                Color.rgb(255, 255, 255),
+                Color.rgb(0, 0, 0),
+                Color.rgb(109, 201, 225)))
         .registerPreset();
 
     public static List<ForgeOfGodsStarColor> getDefaultColors() {
@@ -68,7 +83,7 @@ public class ForgeOfGodsStarColor {
 
     // Star render settings
     private final List<StarColorSetting> settings = new ArrayList<>();
-    private int cycleSpeed = 1;
+    private int cycleSpeed = DEFAULT_CYCLE_SPEED;
 
     protected ForgeOfGodsStarColor(String name) {
         this(name, LATEST_VERSION);
