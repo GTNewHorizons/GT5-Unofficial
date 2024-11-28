@@ -132,7 +132,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
             && !this.mInputBusses.isEmpty()
             && !this.mEssentiaOutputHatches.isEmpty()) {
-            this.mParallel =  (len + 1) * Math.pow(2, this.pTier);
+            this.mParallel = (len + 1) * Math.pow(2, this.pTier);
             return true;
         }
         return false;
