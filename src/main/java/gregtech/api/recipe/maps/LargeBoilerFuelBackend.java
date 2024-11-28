@@ -8,10 +8,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import gregtech.api.GregTechAPI;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTModHandler;
@@ -19,8 +17,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerTitanium;
-import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteel;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 @ParametersAreNonnullByDefault
@@ -71,13 +67,10 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         if (fuelItemStack == null) {
             return null;
         }
+
         // only fuels with a burn time larger than the bronze boilers' eu/t should be considered
         if (GTModHandler.getFuelValue(fuelItemStack) < MTELargeBoilerBronze.EUT_GENERATED) {
-            System.out.println("Tried to add boiler recipe for item with too low burn time: " + fuelItemStack.getDisplayName());
             return null;
-        }
-        else {
-            System.out.println("Adding boiler recipe for item: " + fuelItemStack.getDisplayName() + " with burn time " + GTModHandler.getFuelValue(fuelItemStack));
         }
 
         if (!addedGeneralDesc) {
@@ -105,11 +98,17 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
             .eut(0)
             .specialValue(GTModHandler.getFuelValue(fuelItemStack) / 1600)
             .build()
-            .map(r -> addRecipe(r, ((double) GTModHandler.getFuelValue(fuelItemStack)) / 1600, isAllowedInSteelBoiler, isHighTierAllowed))
+            .map(
+                r -> addRecipe(
+                    r,
+                    ((double) GTModHandler.getFuelValue(fuelItemStack)) / 1600,
+                    isAllowedInSteelBoiler,
+                    isHighTierAllowed))
             .orElse(null);
     }
 
-    private GTRecipe addRecipe(GTRecipe recipe, double baseBurnTime, boolean isAllowedInSteelBoiler, boolean isHighTierAllowed) {
+    private GTRecipe addRecipe(GTRecipe recipe, double baseBurnTime, boolean isAllowedInSteelBoiler,
+        boolean isHighTierAllowed) {
         // Some recipes will have a burn time like 15.9999999 and % always rounds down
         double floatErrorCorrection = 0.0001;
 
@@ -127,7 +126,8 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
             String.format("Bronze Boiler: %.4f", bronzeBurnTime),
             "Steel Boiler: " + (isAllowedInSteelBoiler ? String.format("%.4f", steelBurnTime) : "Not allowed"),
             "Titanium Boiler: " + (isHighTierAllowed ? String.format("%.4f", titaniumBurnTime) : "Not allowed"),
-            "Tungstenst. Boiler: " + (isHighTierAllowed ? String.format("%.4f", tungstensteelBurnTime) : "Not allowed"));
+            "Tungstenst. Boiler: "
+                + (isHighTierAllowed ? String.format("%.4f", tungstensteelBurnTime) : "Not allowed"));
 
         return compileRecipe(recipe);
     }
