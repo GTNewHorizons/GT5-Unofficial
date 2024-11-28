@@ -9,12 +9,4 @@ public class SolarFactoryRecipeData {
         this.minimumWaferTier = minimumWaferTier;
         this.minimumWaferCount = minimumWaferCount;
     }
-
-    public int getMinimumWaferTier() {
-        return minimumWaferTier;
-    }
-
-    public int getMinimumWaferCount() {
-        return minimumWaferCount;
-    }
 }

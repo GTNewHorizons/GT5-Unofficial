@@ -8,7 +8,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
-import static gregtech.api.util.GTRecipeConstants.SF_DATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.copyAmount;
@@ -53,6 +52,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
@@ -260,12 +260,10 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             @NotNull
             @Override
             public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                // No metadata means no wafers used in the recipe, so return successful since this method is called only
-                // when input matching is already successful.
-                minimumTierForRecipe = recipe.getMetadataOrDefault(SF_DATA, new SolarFactoryRecipeData(0, 0))
-                    .getMinimumWaferTier();
-                waferAmountInRecipe = recipe.getMetadataOrDefault(SF_DATA, new SolarFactoryRecipeData(0, 0))
-                    .getMinimumWaferCount();
+                SolarFactoryRecipeData data = recipe.getMetadata(GTRecipeConstants.SOLAR_FACTORY_WAFER_DATA);
+                if (data == null) return CheckRecipeResultRegistry.NO_RECIPE;
+                minimumTierForRecipe = data.minimumWaferTier;
+                waferAmountInRecipe = data.minimumWaferCount;
                 if (minimumTierForRecipe == 0) return CheckRecipeResultRegistry.SUCCESSFUL;
                 findWaferStack();
                 if (foundWaferStack == null) {
