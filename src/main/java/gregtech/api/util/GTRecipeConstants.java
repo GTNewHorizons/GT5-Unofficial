@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -515,8 +514,6 @@ public class GTRecipeConstants {
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(tRecipe);
         AssemblyLineUtils.addRecipeToCache(tRecipe);
 
-        ItemStack writesDataStick = ItemList.Tool_DataStick.getWithName(1L, "Writes Research result");
-        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(writesDataStick, tRecipe, false);
         Collection<GTRecipe> ret = new ArrayList<>(3);
         ret.addAll(
             GTValues.RA.stdBuilder()
@@ -531,8 +528,6 @@ public class GTRecipeConstants {
                 .fake()
                 .addTo(scannerFakeRecipes));
 
-        ItemStack readsDataStick = ItemList.Tool_DataStick.getWithName(1L, "Reads Research result");
-        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(readsDataStick, tRecipe, false);
         ret.add(
             RecipeMaps.assemblylineVisualRecipes.addFakeRecipe(
                 false,
