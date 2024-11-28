@@ -80,9 +80,12 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
                 .specialValue(1)
                 .setNEIDesc(
                     "Not all solid fuels are listed.",
-                    "Any item that burns in a",
-                    "vanilla furnace will burn in",
-                    "a Large Bronze or Steel Boiler.")
+                    "Any burnable item with a burn",
+                    "time of at least " + MTELargeBoilerBronze.EUT_GENERATED
+                        + " / "
+                        + MTELargeBoilerSteel.EUT_GENERATED,
+                    "will burn in a Large Bronze",
+                    "/ Steel Boiler, respectively.")
                 .build()
                 .map(this::compileRecipe);
             addedGeneralDesc = true;
