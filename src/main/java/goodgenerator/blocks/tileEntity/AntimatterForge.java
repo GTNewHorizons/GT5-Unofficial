@@ -781,7 +781,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(this.guiAntimatterChange)
                 + EnumChatFormatting.RESET
-                + " EU/t" };
+                + " L" };
     }
 
     private long getAntimatterAmount() {
