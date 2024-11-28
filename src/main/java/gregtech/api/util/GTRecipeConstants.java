@@ -130,6 +130,12 @@ public class GTRecipeConstants {
         .create(Boolean.class, "fog_plasma_multistep");
 
     /**
+     * FOG Shortened upgrade name.
+     */
+    public static final RecipeMetadataKey<String> FOG_UPGRADE_NAME_SHORT = SimpleRecipeMetadataKey
+        .create(String.class, "fog_plasma_upgrade_name_short");
+
+    /**
      * DEFC Casing tier.
      */
     public static final RecipeMetadataKey<Integer> DEFC_CASING_TIER = SimpleRecipeMetadataKey
