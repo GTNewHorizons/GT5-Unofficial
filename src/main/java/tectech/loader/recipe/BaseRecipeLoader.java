@@ -46,5 +46,6 @@ public class BaseRecipeLoader {
         } else {
             Godforge.runDevEnvironmentRecipes();
         }
+        Godforge.addFakeUpgradeCostRecipes();
     }
 }
