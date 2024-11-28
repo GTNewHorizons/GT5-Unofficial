@@ -10,18 +10,18 @@ import io.netty.buffer.ByteBuf;
 /**
  * Used to transfer Block Events in a much better fashion
  */
-public class GTPacketBlockEvent extends GTPacketNew {
+public class GTPacketBlockEvent extends GTPacket {
 
     private int mX, mZ;
     private short mY;
     private byte mID, mValue;
 
     public GTPacketBlockEvent() {
-        super(true);
+        super();
     }
 
     public GTPacketBlockEvent(int aX, short aY, int aZ, byte aID, byte aValue) {
-        super(false);
+        super();
         mX = aX;
         mY = aY;
         mZ = aZ;
@@ -39,7 +39,7 @@ public class GTPacketBlockEvent extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketBlockEvent(
             aData.readInt(),
             aData.readShort(),

@@ -45,7 +45,6 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
@@ -98,8 +97,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Large Rocket Engine")
-            .addInfo("Generating Power from Rocket Fuels - Supports TecTech Multi-Amp Dynamos!")
+            .addInfo("Generating Power from Rocket Fuels")
             .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
             .addInfo("Produces as much energy as you put fuel in, with optional boosting")
             .addInfo("This multi doesn't accept fluids if not enabled - enable it first!")
@@ -115,7 +113,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
             .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
             .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 3, 10, false)
             .addController("Front Center")
             .addCasingInfoMin(mCasingName, 64, false)
@@ -126,14 +124,14 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addMaintenanceHatch("Any Block Touching Inconel Reinforced Casing", 1)
             .addDynamoHatch("Top center line", 2)
             .addMufflerHatch("Back Center", 3)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<MTELargeRocketEngine> getStructureDefinition() {
-        if (this.STRUCTURE_DEFINITION == null) {
-            this.STRUCTURE_DEFINITION = StructureDefinition.<MTELargeRocketEngine>builder()
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTELargeRocketEngine>builder()
                 .addShape(
                     this.mName,
                     transpose(
@@ -161,7 +159,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                 .addElement('M', Muffler.newAny(getCasingTextureIndex(), 3))
                 .build();
         }
-        return this.STRUCTURE_DEFINITION;
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -182,7 +180,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         this.mAllDynamoHatches.clear();
         this.mAirIntakes.clear();
         return checkPiece(this.mName, 1, 1, 0) && this.mCasing >= 64 - 48
-            && this.mAirIntakes.size() >= 1
+            && !this.mAirIntakes.isEmpty()
             && checkHatch();
     }
 
@@ -270,7 +268,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         // reset fuel ticks in case it does not reset when it stops
         if (this.freeFuelTicks != 0 && this.mProgresstime == 0 && this.mEfficiency == 0) this.freeFuelTicks = 0;
 
-        if (tFluids.size() > 0 && getRecipeMap() != null) {
+        if (!tFluids.isEmpty() && getRecipeMap() != null) {
             if (this.mRuntime % 72 == 0) {
                 if (!consumeCO2()) {
                     this.freeFuelTicks = 0;
@@ -375,7 +373,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         if (aEU <= 0) {
             return true;
         }
-        if (this.mAllDynamoHatches.size() > 0) {
+        if (!this.mAllDynamoHatches.isEmpty()) {
             return addEnergyOutputMultipleDynamos(aEU, true);
         }
         return false;

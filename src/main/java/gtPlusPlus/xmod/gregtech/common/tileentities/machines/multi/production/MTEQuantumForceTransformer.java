@@ -53,6 +53,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -243,10 +244,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Quantum Force Transformer")
-            .addInfo("Controller Block for the Quantum Force Transformer")
             .addInfo("Allows Complex chemical lines to be performed instantly in one step")
             .addInfo("Every recipe requires a catalyst, each catalyst adds 1 parallel and lasts forever")
-            .addInfo("Accepts TecTech Energy and Laser Hatches")
             .addInfo("All inputs go on the bottom, all outputs go on the top")
             .addInfo("Put a circuit in the controller to specify the focused output")
             .addInfo("Check NEI to see the order of outputs, and which circuit number you need.")
@@ -260,8 +259,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Casing functions:")
             .addInfo("Pulse Manipulators: Recipe Tier Allowed (check NEI for the tier of each recipe)")
             .addInfo("Shielding Cores: Focusing Tier (equal to or higher than recipe tier to allow focus)")
+            .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(15, 21, 15, true)
             .addController("Bottom Center")
             .addCasingInfoMin("Bulk Production Frame", 80, false)
@@ -286,12 +285,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     + "Right"
                     + EnumChatFormatting.GRAY
                     + " side of Controller")
-            .toolTipFinisher(
-                GTValues.AuthorBlueWeabo + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GREEN
-                    + " + Steelux"
-                    + EnumChatFormatting.RESET
-                    + " - [GT++]");
+            .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
     }
 
@@ -935,5 +929,23 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_QUANTUM_FORCE_TRANSFORMER_LOOP;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
+        return true;
     }
 }

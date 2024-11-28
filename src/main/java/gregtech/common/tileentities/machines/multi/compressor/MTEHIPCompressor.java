@@ -93,7 +93,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         .addElement('F', ofCoil(MTEHIPCompressor::setCoilLevel, MTEHIPCompressor::getCoilLevel))
         .addElement(
             'G',
-            buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus)
+            buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
                 .dot(2)
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 5))))
@@ -199,7 +199,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Compressor")
-            .addInfo("Controller Block for the Hot Isostatic Pressurization Unit")
             .addInfo("HIP Unit heats up while running")
             .addInfo(
                 "When it reaches maximum heat, it becomes " + EnumChatFormatting.DARK_RED
@@ -264,22 +263,21 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
-            .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
-            .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
-            .addCasingInfoMin("Compressor Pipe Casing", 45, false)
+            .addCasingInfoMin("Compressor Pipe Casing", 60, false)
             .addCasingInfoExactly("Coolant Duct", 12, false)
             .addCasingInfoExactly("Heating Duct", 12, false)
             .addCasingInfoExactly("EV+ Glass", 22, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 20, false)
             .addCasingInfoExactly("Coil", 30, true)
+            .addOtherStructurePart("Heat Sensor Hatch", "Any Electric Compressor Casing", 1)
             .addInputBus("Pipe Casings on Side", 2)
+            .addInputHatch("Pipe Casings on Side", 2)
             .addOutputBus("Pipe Casings on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }
 
@@ -368,7 +366,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 doingHIP = false;
-                setSpeedBonus(1F / 1.25F);
+                setSpeedBonus(1F / 3.5F);
                 setEuModifier(0.75F);
 
                 if (cooling) {

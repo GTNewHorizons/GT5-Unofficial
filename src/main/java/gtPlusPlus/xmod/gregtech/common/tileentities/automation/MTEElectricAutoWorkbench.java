@@ -391,7 +391,9 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
                             tTempStack.stackSize = 1;
                             tRecipe[0] = tTempStack;
                             tOutput = GTOreDictUnificator.get(true, tTempStack);
-                            if (tOutput != null && GTUtility.areStacksEqual(tOutput, tTempStack)) tOutput = null;
+                            if (GTUtility.areStacksEqual(tOutput, tTempStack)) {
+                                tOutput = null;
+                            }
                             if (tOutput == null) {
                                 tRecipe[0] = null;
                                 if (mInventory[18] == null) {
@@ -552,7 +554,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank implements IAddGregte
 
                     mInventory[28] = GTUtility.copy(tOutput);
                     ArrayList<ItemStack> tList = recipeContent(tRecipe), tContent = benchContent();
-                    if (tList.size() > 0 && tContent.size() > 0) {
+                    if (!tList.isEmpty() && !tContent.isEmpty()) {
 
                         boolean success = (mMode == 6 || mMode == 7 || mInventory[17] == null);
                         for (byte i = 0; i < tList.size() && success; i++) {

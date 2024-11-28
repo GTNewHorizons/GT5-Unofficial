@@ -131,18 +131,16 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembling Line")
-            .addInfo("Controller block for the Assembling Line")
+        tt.addMachineType("Assembly Line")
             .addInfo("Used to make complex machine parts (LuV+)")
             .addInfo("Does not make Assembler items")
             .addInfo("Recipe tier is at most Energy Hatch tier + 1.")
-            .addSeparator()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
                 "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
             .addStructureInfo(
-                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembling Line Casing, Reinforced Glass")
+                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembly Line Casing, Reinforced Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
             .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
             .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
@@ -153,7 +151,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addInputHatch("Any layer 1 casing", 3)
             .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
             .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -351,7 +349,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 batchMultiplierMax = Math
                     .min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
             }
-            int finalParallel = (int) (batchMultiplierMax * maxParallelBeforeBatchMode);
+            int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
             lEUt = calculator.getConsumption();
             mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);

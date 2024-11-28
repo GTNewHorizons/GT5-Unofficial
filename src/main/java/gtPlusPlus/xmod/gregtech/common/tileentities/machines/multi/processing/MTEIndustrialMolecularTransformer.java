@@ -26,10 +26,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -65,7 +64,6 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
             .addInfo("Changes the structure of items to produce new ones")
             .addInfo("Maximum 1x of each bus/hatch.")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(7, 7, 7, false)
             .addController("Top Center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 40, false)
@@ -80,7 +78,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
             .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
             .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
             .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -225,7 +223,7 @@ public class MTEIndustrialMolecularTransformer extends GTPPMultiBlockBase<MTEInd
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiMolecularTransformer;
+        return PollutionConfig.pollutionPerSecondMultiMolecularTransformer;
     }
 
     @Override

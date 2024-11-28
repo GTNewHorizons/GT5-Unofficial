@@ -47,13 +47,12 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -86,10 +85,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Large Grinding Machine")
             .addInfo("Grind ores.")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
@@ -102,7 +99,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -256,9 +253,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         if (!aEntities.isEmpty()) {
             for (EntityLivingBase aFoundEntity : aEntities) {
                 if (aFoundEntity instanceof EntityPlayer aPlayer) {
-                    if (PlayerUtils.isCreative(aPlayer) || !PlayerUtils.canTakeDamage(aPlayer)) {
-                        continue;
-                    } else {
+                    if (!PlayerUtils.isCreative(aPlayer) && PlayerUtils.canTakeDamage(aPlayer)) {
                         if (aFoundEntity.getHealth() > 0) {
                             EntityUtils.doDamage(aFoundEntity, mIsaMillDamageSource, getPlayerDamageValue(aPlayer, 10));
                             if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
@@ -401,7 +396,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIsaMill;
+        return PollutionConfig.pollutionPerSecondMultiIsaMill;
     }
 
     @Override

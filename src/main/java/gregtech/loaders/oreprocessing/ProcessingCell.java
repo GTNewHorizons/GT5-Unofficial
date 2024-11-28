@@ -60,7 +60,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .metadata(FUEL_TYPE, aMaterial.mFuelType)
                             .addTo(GTRecipeConstants.Fuel);
                     }
-                    if (!((aMaterial.mMaterialList.size() > 0) && ((aMaterial.mExtraData & 0x3) != 0))) {
+                    if (!((!aMaterial.mMaterialList.isEmpty()) && ((aMaterial.mExtraData & 0x3) != 0))) {
                         break;
                     }
 

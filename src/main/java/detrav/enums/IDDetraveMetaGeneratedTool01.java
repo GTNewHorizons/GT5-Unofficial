@@ -19,7 +19,7 @@ public enum IDDetraveMetaGeneratedTool01 {
 
     public final int ID;
 
-    private IDDetraveMetaGeneratedTool01(int ID) {
+    IDDetraveMetaGeneratedTool01(int ID) {
         this.ID = ID;
     }
 }

@@ -33,7 +33,7 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
     public static void registerSpecialRenderer(ItemList item, IItemRenderer renderer) {
         specialRenderers.put(
             new RendererKey(
-                Item.getIdFromItem(item.getItem()),
+                item.getItem(),
                 (short) item.getInternalStack_unsafe()
                     .getItemDamage()),
             renderer);
@@ -67,7 +67,7 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
 
     private IItemRenderer getRendererForItemStack(ItemStack aStack) {
         final short aMetaData = (short) aStack.getItemDamage();
-        final RendererKey key = new RendererKey(Item.getIdFromItem(aStack.getItem()), aMetaData);
+        final RendererKey key = new RendererKey(aStack.getItem(), aMetaData);
 
         if (specialRenderers.containsKey(key)) {
             return specialRenderers.get(key);
@@ -97,11 +97,11 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
     @SuppressWarnings("ClassCanBeRecord")
     private static class RendererKey {
 
-        private final int id;
+        private final Item item;
         private final short metadata;
 
-        private RendererKey(final int id, final short metadata) {
-            this.id = id;
+        private RendererKey(final Item item, final short metadata) {
+            this.item = item;
             this.metadata = metadata;
         }
 
@@ -110,12 +110,12 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             final RendererKey that = (RendererKey) o;
-            return id == that.id && metadata == that.metadata;
+            return item == that.item && metadata == that.metadata;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(id, metadata);
+            return Objects.hashCode(item, metadata);
         }
     }
 }

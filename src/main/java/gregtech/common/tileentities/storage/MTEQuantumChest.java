@@ -40,6 +40,7 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         mInvData = new NBTTagList();
+        boolean hasInvData = false;
         for (int i = 0; i < 3; i++) {
             if (mInventory[i] != null) {
                 NBTTagCompound tNBT = new NBTTagCompound();
@@ -51,12 +52,13 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
                     tNBT.setTag("tag", mInventory[i].getTagCompound());
                 }
                 mInvData.appendTag(tNBT);
+                hasInvData = true;
             }
         }
         if (mItemStack != null) aNBT.setTag("mItemStack", getItemStack().writeToNBT(new NBTTagCompound()));
-        aNBT.setTag("Inventory", mInvData);
-        aNBT.setInteger("mItemCount", getItemCount());
-        aNBT.setBoolean("mVoidOverflow", mVoidOverflow);
+        if (hasInvData) aNBT.setTag("Inventory", mInvData);
+        if (getItemCount() > 0) aNBT.setInteger("mItemCount", getItemCount());
+        if (mVoidOverflow) aNBT.setBoolean("mVoidOverflow", true);
 
         super.setItemNBT(aNBT);
     }

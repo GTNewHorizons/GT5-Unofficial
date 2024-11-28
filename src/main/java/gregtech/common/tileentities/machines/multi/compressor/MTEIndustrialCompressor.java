@@ -11,7 +11,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRES
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +61,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             //spotless:on
         .addElement(
             'C',
-            buildHatchAdder(MTEIndustrialCompressor.class).atLeast(InputBus, OutputBus)
+            buildHatchAdder(MTEIndustrialCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
                 .dot(1)
                 .buildAndChain(
@@ -144,22 +143,20 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Compressor")
-            .addInfo("Controller Block for the Large Electric Compressor")
             .addInfo("100% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 90% of the EU/t normally required")
             .addInfo("Gains 2 parallels per voltage tier")
-            .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
-            .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 45, false)
             .addCasingInfoExactly("EV+ Glass", 6, false)
             .addInputBus("Pipe Casings on Side", 2)
+            .addInputHatch("Pipe Casings on Side", 2)
             .addOutputBus("Pipe Casings on Side", 2)
             .addEnergyHatch("Any Electric Compressor Casing", 1)
             .addMaintenanceHatch("Any Electric Compressor Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
         return tt;
     }
 

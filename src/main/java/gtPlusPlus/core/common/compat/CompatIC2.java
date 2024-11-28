@@ -10,8 +10,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class CompatIC2 {
 
-    private static ItemStack itemCropnalyzer = ItemUtils.simpleMetaStack("IC2:itemCropnalyzer", 0, 1);
-    private static ItemStack itemSolarHelmet = ItemUtils.simpleMetaStack("IC2:itemSolarHelmet", 0, 1);
+    private static final ItemStack itemCropnalyzer = ItemUtils.simpleMetaStack("IC2:itemCropnalyzer", 0, 1);
+    private static final ItemStack itemSolarHelmet = ItemUtils.simpleMetaStack("IC2:itemSolarHelmet", 0, 1);
 
     public static ShapedRecipeObject Cropnalyzer = new ShapedRecipeObject(
         "ore:cableGt02Copper",

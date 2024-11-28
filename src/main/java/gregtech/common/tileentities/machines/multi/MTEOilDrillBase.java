@@ -43,6 +43,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -119,13 +121,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Pump")
-            .addInfo("Controller Block for the Oil/Gas/Fluid Drilling Rig " + (tierSuffix != null ? tierSuffix : ""))
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .addInfo("Use a Screwdriver to configure range")
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
             .addInfo("If total circuit # is greater than output amount it will halt. If it worked right.") // doesn't
             // work
-            .addSeparator()
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -135,7 +135,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .addMaintenanceHatch("Any base casing", 1)
             .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
             .addOutputHatch("Any base casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -485,5 +485,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     public boolean supportsVoidProtection() {
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_OIL_DRILL_LOOP;
     }
 }

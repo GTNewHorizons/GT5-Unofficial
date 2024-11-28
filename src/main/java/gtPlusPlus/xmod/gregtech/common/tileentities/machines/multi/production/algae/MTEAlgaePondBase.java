@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -27,7 +28,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -44,21 +48,23 @@ import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ReflectionUtil;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderAlgaeFarm;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
+
+    // TODO add a NEI handler for this machine
 
     private int mLevel = -1;
     private int mCasing;
@@ -93,14 +99,12 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Grows Algae!")
-            .addInfo("Controller Block for the Algae Farm")
             .addInfo("Provide compost to boost production by one tier")
             .addInfo("Does not require power or maintenance")
             .addInfo("All Machine Casings must be the same tier, this dictates machine speed.")
             .addInfo("Requires one Input Hatch that matches the tier of the Casings")
             .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Machine Casings", 64, true)
@@ -108,7 +112,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -181,8 +185,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
         if (checkPiece(mName, 4, 2, 0) && mCasing >= 64
             && checkMeta > 0
-            && mInputHatches.size() >= 1
-            && mOutputBusses.size() >= 1) {
+            && !mInputHatches.isEmpty()
+            && !mOutputBusses.isEmpty()) {
             mLevel = checkMeta - 1;
             for (MTEHatchInput inputHatch : mInputHatches) {
                 if (inputHatch.mTier < mLevel) {
@@ -310,7 +314,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiAlgaePond;
+        return PollutionConfig.pollutionPerSecondMultiAlgaePond;
     }
 
     @Override
@@ -334,8 +338,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             @Nonnull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                return GTStreamUtil
-                    .ofNullable(RecipeLoaderAlgaeFarm.getTieredRecipeFromCache(mLevel, isUsingCompost(inputItems)));
+                return GTStreamUtil.ofNullable(getTieredRecipe(mLevel, inputItems));
             }
 
             @NotNull
@@ -348,18 +351,6 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             }
         }.setEuModifier(0F)
             .setMaxParallelSupplier(this::getMaxParallelRecipes);
-    }
-
-    private boolean isUsingCompost(ItemStack[] aItemInputs) {
-        ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1);
-        for (ItemStack i : aItemInputs) {
-            if (GTUtility.areStacksEqual(aCompost, i)) {
-                if (i.stackSize >= RecipeLoaderAlgaeFarm.compostForTier(mLevel)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private int getCasingTier() {
@@ -389,5 +380,146 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_ALGAE_LOOP;
+    }
+
+    private static GTRecipe getTieredRecipe(int aTier, ItemStack[] aItemInputs) {
+        return generateBaseRecipe(aTier, isUsingCompost(aItemInputs, aTier));
+    }
+
+    private static boolean isUsingCompost(ItemStack[] aItemInputs, int aTier) {
+        ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, 1);
+        final int compostForTier = compostForTier(aTier);
+        int compostFound = 0;
+        for (ItemStack i : aItemInputs) {
+            if (GTUtility.areStacksEqual(aCompost, i)) {
+                compostFound += i.stackSize;
+                if (compostFound >= compostForTier) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static int compostForTier(int aTier) {
+        return aTier > 1 ? (int) Math.min(64, Math.pow(2, aTier - 1)) : 1;
+    }
+
+    private static GTRecipe generateBaseRecipe(int aTier, boolean isUsingCompost) {
+
+        if (aTier < 0) return null; // Type Safety
+
+        final ItemStack[] aInputs;
+        if (isUsingCompost) {
+            // Make it use 4 compost per tier if we have some available
+            // Compost consumption maxes out at 1 stack per cycle
+            ItemStack aCompost = ItemUtils.getSimpleStack(AgriculturalChem.mCompost, compostForTier(aTier));
+            aInputs = new ItemStack[] { aCompost };
+            // Boost Tier by one if using compost, so it gets a speed boost
+            aTier++;
+        } else {
+            aInputs = new ItemStack[] {};
+        }
+
+        ItemStack[] aOutputs = getOutputsForTier(aTier);
+        GTRecipe tRecipe = new GTRecipe(
+            false,
+            aInputs,
+            aOutputs,
+            null,
+            new int[] {},
+            new FluidStack[] { GTValues.NF },
+            new FluidStack[] { GTValues.NF },
+            getRecipeDuration(aTier),
+            0,
+            0);
+        tRecipe.mSpecialValue = tRecipe.hashCode();
+        return tRecipe;
+    }
+
+    private static final int[] aDurations = new int[] { 2000, 1800, 1600, 1400, 1200, 1000, 512, 256, 128, 64, 32, 16,
+        8, 4, 2, 1 };
+
+    private static int getRecipeDuration(int aTier) {
+        final float randFloat = GTPPCore.RANDOM.nextFloat();
+        float randMult;
+        if (randFloat < 0.96237624) randMult = 1f;
+        else if (randFloat < 0.9912871) randMult = 2f;
+        else randMult = 3f;
+        return (int) (aDurations[aTier] * randMult / 2);
+    }
+
+    private static ItemStack[] getOutputsForTier(int aTier) {
+        ArrayList<ItemStack> outputList = new ArrayList<>();
+
+        if (aTier >= 0) {
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 2));
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
+            if (MathUtils.randInt(0, 10) > 9) {
+                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+            }
+        }
+        if (aTier >= 1) {
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mAlgaeBiosmass, 4));
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+            if (MathUtils.randInt(0, 10) > 9) {
+                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
+            }
+        }
+        if (aTier >= 2) {
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 2));
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 3));
+            if (MathUtils.randInt(0, 10) > 9) {
+                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 8));
+            }
+        }
+        if (aTier >= 3) {
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 4));
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 1));
+            if (MathUtils.randInt(0, 10) > 9) {
+                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
+            }
+        }
+        if (aTier >= 4) {
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 2));
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 3));
+            if (MathUtils.randInt(0, 10) > 9) {
+                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
+            }
+        }
+        if (aTier >= 5) {
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 4));
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 2));
+            if (MathUtils.randInt(0, 10) > 9) {
+                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 4));
+            }
+        }
+        if (aTier >= 6) {
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 4));
+            outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 2));
+            if (MathUtils.randInt(0, 10) > 9) {
+                outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 8));
+            }
+            // Iterate a special loop at higher tiers to provide more Red/Gold Algae.
+            for (int i = 0; i < 20; i++) {
+                if (aTier >= (6 + i)) {
+                    int aMulti = i + 1;
+                    outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, aMulti * 4));
+                    outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, aMulti * 3));
+                    outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, aMulti * 2));
+                    outputList.add(ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, aMulti));
+                } else {
+                    break;
+                }
+            }
+        }
+
+        return outputList.toArray(new ItemStack[0]);
     }
 }

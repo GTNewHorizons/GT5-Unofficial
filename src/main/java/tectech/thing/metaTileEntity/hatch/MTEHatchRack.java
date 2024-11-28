@@ -12,13 +12,10 @@ import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -40,6 +37,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.GTRenderedTexture;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.gui.TecTechUITextures;
@@ -167,11 +165,8 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
-            clientLocale = "en_US";
+        if (aPlayer instanceof EntityPlayerMPAccessor) {
+            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
         // if(aBaseMetaTileEntity.isActive())
         // aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
@@ -195,7 +190,6 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
             if (tickingComponents) {
                 if (this.heat > comp.maxHeat) {
                     mInventory[i] = null;
-                    continue;
                 } else if (comp.subZero || this.heat >= 0) {
                     heat += (1f + comp.coolConstant * this.heat / 100000f)
                         * (comp.heatConstant > 0 ? comp.heatConstant * overclock * overvolt * overvolt : -10f);

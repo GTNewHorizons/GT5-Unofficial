@@ -57,7 +57,7 @@ public class RecipeGenRecycling implements Runnable {
             OrePrefixes.plate, OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple,
             OrePrefixes.plateQuadruple, OrePrefixes.plateQuintuple, OrePrefixes.stick, OrePrefixes.stickLong,
             OrePrefixes.bolt, OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.rotor, OrePrefixes.gearGt,
-            OrePrefixes.gearGtSmall, OrePrefixes.gear, OrePrefixes.block, OrePrefixes.cableGt01, OrePrefixes.cableGt02,
+            OrePrefixes.gearGtSmall, OrePrefixes.block, OrePrefixes.cableGt01, OrePrefixes.cableGt02,
             OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12, OrePrefixes.wireFine,
             OrePrefixes.wireGt01, OrePrefixes.wireGt02, OrePrefixes.wireGt04, OrePrefixes.wireGt08,
             OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.foil, OrePrefixes.frameGt, OrePrefixes.pipeHuge,
@@ -86,7 +86,7 @@ public class RecipeGenRecycling implements Runnable {
                     .getDisplayName());
             validCounter++;
         }
-        Pair<OrePrefixes, ItemStack> temp3[] = new Pair[validCounter];
+        Pair<OrePrefixes, ItemStack>[] temp3 = new Pair[validCounter];
         int temp4 = 0;
         for (Pair<OrePrefixes, ItemStack> r : mValidPairs) {
             if (r == null) {
@@ -250,8 +250,10 @@ public class RecipeGenRecycling implements Runnable {
         }
         return GTUtility.copyAmount(
             aAmount,
-            new Object[] { GTOreDictUnificator.getName2StackMap()
-                .get(aName.toString()), getFirstOre(aName, aAmount), aReplacement });
+            GTOreDictUnificator.getName2StackMap()
+                .get(aName.toString()),
+            getFirstOre(aName, aAmount),
+            aReplacement);
     }
 
     public static ItemStack getFirstOre(final Object aName, final long aAmount) {
@@ -320,7 +322,6 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {
-        String mTemp = oredictName;
 
         // Banned Materials and replacements for GT5.8 compat.
 
@@ -329,7 +330,7 @@ public class RecipeGenRecycling implements Runnable {
             return ItemUtils.getSimpleStack(Items.clay_ball, amount);
         }
 
-        final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
+        final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
         if (!oreDictList.isEmpty()) {
             final ItemStack returnValue = oreDictList.get(0)
                 .copy();

@@ -960,7 +960,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                             && mMetaTileEntity.allowCoverOnSide(coverSide, new GTItemStack(tCurrentItem))) {
 
                             setCoverItemAtSide(coverSide, tCurrentItem);
-                            coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, side);
+                            coverBehavior.onPlayerAttach(aPlayer, tCurrentItem, this, coverSide);
 
                             mMetaTileEntity.markDirty();
                             if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;

@@ -19,7 +19,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -29,9 +32,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -63,12 +65,10 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Industrial Thermal Centrifuge")
             .addInfo("150% faster than using single block machines of the same voltage")
             .addInfo("Only uses 80% of the EU/t normally required")
             .addInfo("Processes eight items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 2, 3, false)
             .addController("Front Center")
             .addCasingInfoMin("Thermal Processing Casings/Noise Hazard Sign Blocks", 8, false)
@@ -77,7 +77,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
             .addEnergyHatch("Bottom Casing", 1)
             .addMaintenanceHatch("Bottom Casing", 1)
             .addMufflerHatch("Bottom Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -162,7 +162,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialThermalCentrifuge;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialThermalCentrifuge;
     }
 
     @Override
@@ -180,5 +180,11 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
 
     public byte getCasingTextureIndex() {
         return (byte) TAE.GTPP_INDEX(16);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_THERMAL_CENTRIFUGE_LOOP;
     }
 }

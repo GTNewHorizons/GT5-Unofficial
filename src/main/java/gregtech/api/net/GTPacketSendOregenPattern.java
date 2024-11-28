@@ -9,16 +9,16 @@ import gregtech.common.GTWorldgenerator;
 import gregtech.common.GTWorldgenerator.OregenPattern;
 import io.netty.buffer.ByteBuf;
 
-public class GTPacketSendOregenPattern extends GTPacketNew {
+public class GTPacketSendOregenPattern extends GTPacket {
 
     protected OregenPattern pattern = OregenPattern.AXISSYMMETRICAL;
 
     public GTPacketSendOregenPattern() {
-        super(true);
+        super();
     }
 
     public GTPacketSendOregenPattern(OregenPattern pattern) {
-        super(false);
+        super();
         this.pattern = pattern;
     }
 
@@ -28,18 +28,17 @@ public class GTPacketSendOregenPattern extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         int ordinal = aData.readInt();
         // make sure we get valid data:
         if (ordinal >= 0 && ordinal < OregenPattern.values().length) {
             return new GTPacketSendOregenPattern(OregenPattern.values()[ordinal]);
         }
         // invalid data, default to AXISSYMMETRICAL:
-        GTLog.err.println(
-            String.format(
-                "Received invalid data! Received %d but value must be between 0 and %d! Default (0) will be used.",
-                ordinal,
-                OregenPattern.values().length - 1));
+        GTLog.err.printf(
+            "Received invalid data! Received %d but value must be between 0 and %d! Default (0) will be used.%n",
+            ordinal,
+            OregenPattern.values().length - 1);
         return new GTPacketSendOregenPattern();
     }
 

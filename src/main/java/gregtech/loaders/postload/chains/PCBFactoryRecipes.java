@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
+import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
@@ -77,10 +78,7 @@ public class PCBFactoryRecipes {
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                CELESTIAL_TUNGSTEN.getFrameBox(1),
-                Materials.get("Quantum")
-                    .getPlates(6))
+            .itemInputs(CELESTIAL_TUNGSTEN.getFrameBox(1), QUANTUM.getPlate(6))
             .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

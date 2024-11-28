@@ -4,7 +4,7 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -133,13 +133,6 @@ public class FluidExtractorRecipes implements Runnable {
             .outputChances(10000)
             .fluidOutputs(Materials.Water.getFluid(100L))
             .duration(1 * SECONDS + 12 * TICKS)
-            .eut(4)
-            .addTo(fluidExtractionRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 3))
-            .fluidOutputs(Materials.Mercury.getFluid(1000L))
-            .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
@@ -535,6 +528,41 @@ public class FluidExtractorRecipes implements Runnable {
             .outputChances(1000)
             .fluidOutputs(Materials.Lava.getFluid(800L))
             .duration(12 * SECONDS + 16 * TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 0))
+            .fluidOutputs(Materials.Iron.getMolten(16))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 1))
+            .fluidOutputs(Materials.Gold.getMolten(16))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 2))
+            .fluidOutputs(Materials.Copper.getMolten(16))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 3))
+            .fluidOutputs(Materials.Tin.getMolten(16))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(fluidExtractionRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 4))
+            .fluidOutputs(Materials.Aluminium.getMolten(16))
+            .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
 

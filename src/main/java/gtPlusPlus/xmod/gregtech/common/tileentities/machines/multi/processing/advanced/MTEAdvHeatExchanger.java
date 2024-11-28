@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -35,10 +36,11 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -103,7 +105,6 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the XL Heat Exchanger")
             .addInfo("More complicated than a Fusion Reactor. Seriously")
             .addInfo("But you know this by now, right?")
             .addInfo("Works as fast as 32 Large Heat Exchangers")
@@ -115,7 +116,6 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             .addInfo("Lava: 32,000 L/s, maximum 64,000 L/s, max output 5,120,000 SH Steam/s")
             .addInfo("A circuit in the controller lowers the SH Steam threshold and efficiency")
             .addInfo("3.75% reduction and 1.5% efficiency loss per circuit config over 1")
-            .addSeparator()
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front bottom")
             .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
@@ -125,7 +125,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             .addInputHatch("Distilled water, any bottom layer casing", 1)
             .addOutputHatch("Cold fluid, top center", 3)
             .addOutputHatch("Steam/SH Steam, any bottom layer casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -168,9 +168,18 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-        if (mInputHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.SUCCESSFUL;
+        FluidStack hotFluid = null;
+        if (mInputHotFluidHatch instanceof MTEHatchInputME inputME) {
+            FluidStack[] fluids = inputME.getStoredFluids();
+            if (fluids.length > 0) {
+                hotFluid = fluids[0];
+            }
+        } else {
+            hotFluid = mInputHotFluidHatch.getFluid();
+        }
+        if (hotFluid == null) return CheckRecipeResultRegistry.SUCCESSFUL;
 
-        int fluidAmountToConsume = mInputHotFluidHatch.getFluidAmount(); // how much fluid is in hatch
+        int fluidAmountToConsume = hotFluid.amount; // how much fluid is in hatch
 
         // The XL LHE works as fast as 32 regular LHEs. These are the comments from the original LHE,
         // with changes where the values needed to change for the 32x speed multiplier
@@ -193,9 +202,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
         efficiency -= penalty;
 
-        var coolant = LHECoolantRegistry.getCoolant(
-            mInputHotFluidHatch.getFluid()
-                .getFluid());
+        var coolant = LHECoolantRegistry.getCoolant(hotFluid.getFluid());
 
         if (coolant == null) {
             superheated_threshold = 0;
@@ -210,8 +217,9 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
         // Don't consume too much hot fluid per second, maximum is 2x SH threshold.
         fluidAmountToConsume = Math.min(fluidAmountToConsume, superheated_threshold * 2);
-
-        mInputHotFluidHatch.drain(fluidAmountToConsume, true);
+        // the 3-arg drain will work on both normal hatch and ME hatch
+        mInputHotFluidHatch
+            .drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), fluidAmountToConsume), true);
         mOutputColdFluidHatch.fill(coolant.getColdFluid(fluidAmountToConsume), true);
 
         this.mMaxProgresstime = 20;
@@ -242,6 +250,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                 // 1:160 ratio with distilled water consumption
 
                 FluidStack distilledStack = GTModHandler.getDistilledWater(distilledConsumed);
+                startRecipeProcessing();
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
@@ -255,6 +264,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     GTLog.exp.println(this.mName + " had no more Distilled water!");
                     explodeMultiblock(); // Generate crater
                 }
+                endRecipeProcessing();
             }
             return true;
         }
@@ -392,5 +402,21 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             sFrame = BlockBaseModular.getMaterialBlock(MaterialsAlloy.TALONITE, BlockTypes.FRAME);
         }
         return sFrame;
+    }
+
+    @Override
+    public void startRecipeProcessing() {
+        super.startRecipeProcessing();
+        if (mInputHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mInputHotFluidHatch.isValid()) {
+            aware.startRecipeProcessing();
+        }
+    }
+
+    @Override
+    public void endRecipeProcessing() {
+        super.endRecipeProcessing();
+        if (mInputHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mInputHotFluidHatch.isValid()) {
+            aware.endRecipeProcessing(this);
+        }
     }
 }

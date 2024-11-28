@@ -323,9 +323,7 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
 
     @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
+        aBaseMetaTileEntity.isClientSide();
         return true;
     }
 
@@ -449,18 +447,14 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
-    private Map<String, UUID> mWirelessChargingMap = new HashMap<>();
-    private Map<String, UUID> mLocalChargingMap = new HashMap<>();
+    private final Map<String, UUID> mWirelessChargingMap = new HashMap<>();
+    private final Map<String, UUID> mLocalChargingMap = new HashMap<>();
 
     private boolean isValidPlayer(EntityPlayer aPlayer) {
         BaseMetaTileEntity aTile = (BaseMetaTileEntity) this.getBaseMetaTileEntity();
         if (mLocked || (aTile != null && aTile.privateAccess())) {
-            if (aPlayer.getUniqueID()
-                .equals(getBaseMetaTileEntity().getOwnerUuid())) {
-                return true;
-            } else {
-                return false;
-            }
+            return aPlayer.getUniqueID()
+                .equals(getBaseMetaTileEntity().getOwnerUuid());
         }
         return true;
     }
@@ -579,11 +573,10 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
         int[] objectArray1 = new int[] { objectA.xPos, objectA.yPos, objectA.zPos };
         int[] objectArray2 = new int[] { objectB.xPos, objectB.yPos, objectB.zPos };
 
-        final double distance = Math.sqrt(
+        return Math.sqrt(
             (objectArray2[0] - objectArray1[0]) * (objectArray2[0] - objectArray1[0])
                 + (objectArray2[1] - objectArray1[1]) * (objectArray2[1] - objectArray1[1])
                 + (objectArray2[2] - objectArray1[2]) * (objectArray2[2] - objectArray1[2]));
-        return distance;
     }
 
     @Override
@@ -636,7 +629,7 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
             for (String name : this.getLocalMap()
                 .keySet()) {
-                PlayerUtils.messagePlayer(aPlayer, "" + name);
+                PlayerUtils.messagePlayer(aPlayer, name);
             }
 
         } else {
@@ -644,7 +637,7 @@ public class MTEWirelessCharger extends GTPPMetaTileEntity {
             PlayerUtils.messagePlayer(aPlayer, "Players with access:");
             for (String name : this.getLongRangeMap()
                 .keySet()) {
-                PlayerUtils.messagePlayer(aPlayer, "" + name);
+                PlayerUtils.messagePlayer(aPlayer, name);
             }
         }
 

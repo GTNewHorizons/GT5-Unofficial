@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.multis;
 
 import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
-import static bartworks.util.BWTooltipReference.MULTIBLOCK_ADDED_BY_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -93,13 +92,13 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
                 2))
         .addElement('t', ofBlock(BW_BLOCKS[2], 1))
         .addElement('f', ofBlock(BW_BLOCKS[2], 0))
-        .addElement('T', new IStructureElementNoPlacement<MTEManualTrafo>() {
+        .addElement('T', new IStructureElementNoPlacement<>() {
 
             @Override
             public boolean check(MTEManualTrafo te, World world, int x, int y, int z) {
                 if (world.isAirBlock(x, y, z)) return true;
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                if (tileEntity == null || !(tileEntity instanceof IGregTechTileEntity)) return true;
+                if (!(tileEntity instanceof IGregTechTileEntity)) return true;
                 IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
                 if (mte instanceof MTEHatchDynamo || mte instanceof MTEHatchEnergy) {
                     int intier = te.mEnergyHatches.get(0).mTier;
@@ -129,13 +128,11 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Transformer")
-            .addInfo("Controller block for the Manual Trafo")
             .addInfo("Operates in 4 diffrent modes:")
             .addInfo("Mode 1: Circuit 0 in controller: Direct-Upstep")
             .addInfo("Mode 2: Circuit 1 in controller: Direct-Downstep")
             .addInfo("Mode 3: Circuit 2 in controller: Tapped-Upstep (currently disabled)")
             .addInfo("Mode 4: Circuit 2 in controller: Tapped-Downstep (currently disabled)")
-            .addSeparator()
             .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false)
             .addController("Front bottom center")
             .addCasingInfoMin("MV Machine Casing", 0, false)
@@ -144,11 +141,12 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
             .addMaintenanceHatch("Any bottom layer casing", 1)
             .addEnergyHatch("Any bottom layer casing", 1)
             .addDynamoHatch("Any top layer casing", 2)
-            .addStructureInfo("---------TAPPED MODE---------")
+            .addStructureInfo("")
+            .addStructureInfo("Tapped Mode :")
             .addEnergyHatch("Touching Transformer-Winding Blocks", 3)
             .addDynamoHatch("Touching Transformer-Winding Blocks", 3)
             .addStructureInfo("Hatches touching Transformer-Winding Blocks must be tiered from bottom to top")
-            .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -208,7 +206,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
 
     @Override
     public long getInputTier() {
-        if (this.mEnergyHatches.size() > 0) return GTUtility.getTier(
+        if (!this.mEnergyHatches.isEmpty()) return GTUtility.getTier(
             this.mEnergyHatches.get(0)
                 .getBaseMetaTileEntity()
                 .getInputVoltage());
@@ -217,7 +215,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
 
     @Override
     public long getOutputTier() {
-        if (this.mDynamoHatches.size() > 0) return GTUtility.getTier(
+        if (!this.mDynamoHatches.isEmpty()) return GTUtility.getTier(
             this.mDynamoHatches.get(0)
                 .getBaseMetaTileEntity()
                 .getOutputVoltage());
@@ -253,7 +251,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
         this.upstep = this.mode % 2 == 0;
         boolean tapmode = this.mode > 1;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || this.mEnergyHatches.size() == 0) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || this.mEnergyHatches.isEmpty()) return false;
 
         byte intier = this.mEnergyHatches.get(0).mTier;
         for (MTEHatchEnergy in : this.mEnergyHatches) if (in.mTier != intier) return false;
@@ -268,7 +266,7 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
         if (!this.checkPiece(STRUCTURE_PIECE_TOP, 1, mHeight, 0)) return false;
         this.mTiers = mHeight - 1;
 
-        if (this.mDynamoHatches.size() == 0 || this.mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
+        if (this.mDynamoHatches.isEmpty() || this.mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
 
         byte outtier = this.mDynamoHatches.get(0).mTier;
         for (MTEHatchDynamo out : this.mDynamoHatches) {

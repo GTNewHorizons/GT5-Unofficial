@@ -196,10 +196,7 @@ public class MaterialUtils {
     }
 
     public static boolean hasValidRGBA(final short[] rgba) {
-        if (rgba == null || rgba.length < 3 || rgba.length > 4) {
-            return false;
-        }
-        return true;
+        return rgba != null && rgba.length >= 3 && rgba.length <= 4;
     }
 
     public static int getTierOfMaterial(final double aMeltingPoint) {

@@ -97,9 +97,8 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                     + "EU worth of fuel with up to 100% efficiency each second")
             .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
             .addInfo("Steam production requires the SOFC to heat up completely first")
-            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
+            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Superheated Steam")
             .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
-            .addSeparator()
             .beginStructureBlock(3, 3, 5, false)
             .addController("Front center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 12, false)
@@ -110,7 +109,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addInputHatch("Fuel, any casing")
             .addInputHatch("Oxygen, any casing")
             .addOutputHatch("Superheated Steam, any casing")
-            .toolTipFinisher("KekzTech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -159,7 +158,8 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                 if ((liquid = GTUtility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null
                     && hatchFluid.isFluidEqual(liquid)) {
 
-                    liquid.amount = (EU_PER_TICK * 20) / aFuel.mSpecialValue / Math.max(1, aFuel.mSpecialValue / 1000);
+                    liquid.amount = (int) ((EU_PER_TICK * 20)
+                        / (aFuel.mSpecialValue * Math.max(1, (float) aFuel.mSpecialValue / 1000)));
 
                     if (super.depleteInput(liquid)) {
 
@@ -171,7 +171,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
 
                         super.mEUt = EU_PER_TICK;
                         super.mMaxProgresstime = 20;
-                        super.mEfficiencyIncrease = 80;
+                        super.mEfficiencyIncrease = 200;
                         if (super.mEfficiency == getMaxEfficiency(null)) {
                             super.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC));
                         }

@@ -743,23 +743,23 @@ public class GregtechConduits {
         Logger.WARNING(
             "Generated pipeTiny from " + materialName
                 + "? "
-                + ((ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 1) != null) ? true : false));
+                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 1) != null));
         Logger.WARNING(
             "Generated pipeSmall from " + materialName
                 + "? "
-                + ((ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1) != null) ? true : false));
+                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 1) != null));
         Logger.WARNING(
             "Generated pipeNormal from " + materialName
                 + "? "
-                + ((ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1) != null) ? true : false));
+                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 1) != null));
         Logger.WARNING(
             "Generated pipeLarge from " + materialName
                 + "? "
-                + ((ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1) != null) ? true : false));
+                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1) != null));
         Logger.WARNING(
             "Generated pipeHuge from " + materialName
                 + "? "
-                + ((ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1) != null) ? true : false));
+                + (ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1) != null));
 
         int eut = (int) (8 * vMulti);
 
@@ -877,8 +877,7 @@ public class GregtechConduits {
         String tName = aName.toString();
         if (GTUtility.isStringInvalid(tName)) return false;
         ArrayList<ItemStack> tList = GTOreDictUnificator.getOres(tName);
-        for (ItemStack itemStack : tList)
-            if (GTUtility.areStacksEqual((ItemStack) itemStack, aStack, true)) return false;
+        for (ItemStack itemStack : tList) if (GTUtility.areStacksEqual(itemStack, aStack, true)) return false;
         OreDictionary.registerOre(tName, GTUtility.copyAmount(1L, new Object[] { aStack }));
         return true;
     }

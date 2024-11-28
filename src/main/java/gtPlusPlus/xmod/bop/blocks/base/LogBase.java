@@ -31,17 +31,9 @@ public abstract class LogBase extends BlockLog {
         String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Log";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(
-            ItemUtils.getSimpleStack(this),
-            "log" + Utils.sanitizeString(blockNameLocalized),
-            true);
         ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "logWood", true);
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         Blocks.fire.setFireInfo(this, 20, 100);
-    }
-
-    private void setVanillaVariable(Object toSet, Object value) {
-        toSet = value;
     }
 
     /**
@@ -78,8 +70,8 @@ public abstract class LogBase extends BlockLog {
             this.textureTop[i] = iIcon
                 .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
         }
-
-        setVanillaVariable(this.field_150167_a, this.textureSide);
-        setVanillaVariable(this.field_150166_b, this.textureTop);
+        // TODO uncomment the line below, I don't want to do it now in case it causes a crash
+        // this.field_150167_a = this.textureSide;
+        // this.field_150166_b = this.textureTop;
     }
 }

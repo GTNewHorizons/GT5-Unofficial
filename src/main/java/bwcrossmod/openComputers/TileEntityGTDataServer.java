@@ -45,7 +45,7 @@ public class TileEntityGTDataServer extends TileEntity
 
     private final BiMap<Long, GTNBTDataBase> OrbDataBase = HashBiMap.create();
 
-    private ItemStack[] mItems = new ItemStack[2];
+    private final ItemStack[] mItems = new ItemStack[2];
     private byte TickTimer;
 
     @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
@@ -77,7 +76,7 @@ public class TinkersDryingRecipe {
                 .removeTag("frypanKill");
             if (input.getTagCompound()
                 .hasNoTags()) {
-                input.setTagCompound((NBTTagCompound) null);
+                input.setTagCompound(null);
             }
         }
         return ItemStack.areItemStacksEqual(this.input, input);

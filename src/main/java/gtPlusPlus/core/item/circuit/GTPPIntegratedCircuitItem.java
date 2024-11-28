@@ -72,16 +72,11 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
         try {
             aList.add("Configuration == " + aStack.getItemDamage());
             aList.add(
-                GTLanguageManager.addStringLocalization(
-                    new StringBuilder().append(getUnlocalizedName())
-                        .append(".tooltip.0")
-                        .toString(),
-                    "Right click to reconfigure"));
+                GTLanguageManager
+                    .addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
             aList.add(
                 GTLanguageManager.addStringLocalization(
-                    new StringBuilder().append(getUnlocalizedName())
-                        .append(".tooltip.1")
-                        .toString(),
+                    getUnlocalizedName() + ".tooltip.1",
                     "Needs a screwdriver or circuit programming tool"));
         } catch (Throwable t) {
             t.printStackTrace();

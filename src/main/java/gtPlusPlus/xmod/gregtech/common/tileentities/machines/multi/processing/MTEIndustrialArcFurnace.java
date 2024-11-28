@@ -33,6 +33,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -43,9 +45,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -86,13 +87,11 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for Industrial Arc Furnace")
             .addInfo("250% faster than using single block machines of the same voltage")
             .addInfo("Processes 8 * voltage tier * W items")
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .addController("Top center")
             .addStructureInfo("Size: nxnx3 [WxHxL] (Hollow)")
             .addStructureInfo("n can be 3, 5 or 7")
@@ -104,7 +103,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -213,11 +212,6 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
-    protected SoundResource getProcessStartSound() {
-        return SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP;
-    }
-
-    @Override
     protected IIconContainer getActiveOverlay() {
         return TexturesGtBlock.oMCDIndustrialArcFurnaceActive;
     }
@@ -266,7 +260,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialArcFurnace;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialArcFurnace;
     }
 
     @Override
@@ -356,5 +350,11 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("GT5U.GTPP_MULTI_ARC_FURNACE.mode." + (tag.getBoolean("mode") ? 1 : 0))
                 + EnumChatFormatting.RESET);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_ARC_FURNACE_LOOP;
     }
 }

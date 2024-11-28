@@ -215,6 +215,7 @@ import bartworks.common.tileentities.tiered.MTEEnergyDistributor;
 import bartworks.common.tileentities.tiered.MTEGiantOutputHatch;
 import bartworks.common.tileentities.tiered.MTEHumongousInputHatch;
 import bartworks.system.material.WerkstoffLoader;
+import bartworks.system.material.processingLoaders.LoadItemContainers;
 import bwcrossmod.galacticgreg.MTEVoidMiners;
 import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserBox;
 import bwcrossmod.tectech.tileentites.tiered.MTELowPowerLaserDynamo;
@@ -534,7 +535,7 @@ public class ItemRegistry {
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[1],
             +1).getStackForm(1L);
 
-        ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, 1, "DEHP", "Deep Earth Heating Pump")
+        ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);
         ItemRegistry.megaMachines[0] = new MTEMegaBlastFurnace(
             MegaBlastFurnace.ID,
@@ -648,5 +649,7 @@ public class ItemRegistry {
                     amps).getStackForm(1L);
             }
         }
+
+        LoadItemContainers.run();
     }
 }

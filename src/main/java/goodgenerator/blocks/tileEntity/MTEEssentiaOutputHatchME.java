@@ -25,7 +25,7 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
 
     private AENetworkProxy gridProxy = null;
     private IMEEssentiaMonitor monitor = null;
-    private MachineSource asMachineSource = new MachineSource(this);
+    private final MachineSource asMachineSource = new MachineSource(this);
 
     @Override
     public void updateEntity() {

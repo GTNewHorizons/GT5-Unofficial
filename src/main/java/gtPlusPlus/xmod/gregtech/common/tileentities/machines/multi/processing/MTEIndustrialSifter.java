@@ -22,6 +22,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -31,9 +34,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -64,12 +66,10 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Industrial Sifter")
             .addInfo("400% faster than single-block machines of the same voltage")
             .addInfo("Only uses 75% of the EU/t normally required")
             .addInfo("Processes four items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(5, 3, 5, false)
             .addController("Bottom Center")
             .addCasingInfoMin("Sieve Grate", 18, false)
@@ -81,7 +81,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -194,7 +194,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialSifter;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialSifter;
     }
 
     @Override
@@ -205,5 +205,11 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
     @Override
     public boolean isOverclockerUpgradable() {
         return true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_SIFTER_LOOP;
     }
 }

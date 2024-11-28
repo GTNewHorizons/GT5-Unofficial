@@ -31,7 +31,7 @@ import tectech.util.CommonValues;
 public class MTEPipeEnergyMirror extends MTEPipeEnergy {
 
     private static Textures.BlockIcons.CustomIcon EMpipe;
-    private ForgeDirection[] connectedSides = { null, null };
+    private final ForgeDirection[] connectedSides = { null, null };
     private ForgeDirection chainedFrontFacing = null;
 
     private boolean active;

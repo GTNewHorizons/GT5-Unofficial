@@ -32,6 +32,7 @@ public class TileEntityLaser extends TileEntity {
         compound.setDouble("rotAxisY", rotAxisY);
         compound.setDouble("rotAxisZ", rotAxisZ);
         compound.setDouble("rotationAngle", rotationAngle);
+        compound.setBoolean("realism", realism);
     }
 
     @Override
@@ -45,6 +46,7 @@ public class TileEntityLaser extends TileEntity {
         rotAxisY = compound.getDouble("rotAxisY");
         rotAxisZ = compound.getDouble("rotAxisZ");
         rotationAngle = compound.getDouble("rotationAngle");
+        realism = compound.getBoolean("realism");
     }
 
     public void setColors(float red, float green, float blue) {
@@ -102,6 +104,11 @@ public class TileEntityLaser extends TileEntity {
 
     public void setShouldRender(boolean shouldRender) {
         this.shouldRender = shouldRender;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    public void toggleRealism() {
+        realism = !realism;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

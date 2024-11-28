@@ -62,6 +62,8 @@ import gregtech.common.GTClient;
 import gregtech.common.covers.CoverInfo;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.thing.metaTileEntity.pipe.MTEPipeData;
+import tectech.thing.metaTileEntity.pipe.MTEPipeEnergy;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -1081,6 +1083,28 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
     }
 
     @Override
+    public void onBlockDestroyed() {
+        final IGregTechTileEntity meta = getBaseMetaTileEntity();
+
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
+
+            if (iGregTechTileEntity != null) {
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy neighbor) {
+                    neighbor.mConnections &= ~side.getOpposite().flag;
+                    neighbor.connectionCount--;
+                }
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
+                    neighbor.mConnections &= ~side.getOpposite().flag;
+                    neighbor.connectionCount--;
+                }
+            }
+        }
+
+        IMetaTileEntity.super.onBlockDestroyed();
+    }
+
+    @Override
     public void onColorChangeServer(byte aColor) {
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
         final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
@@ -1089,6 +1113,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, ICleanroomRecei
             final TileEntity tTileEntity = meta.getTileEntityAtSide(side);
             if (tTileEntity instanceof BaseMetaPipeEntity pipe) {
                 pipe.onNeighborBlockChange(aX, aY, aZ);
+            }
+
+            final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
+            if (iGregTechTileEntity != null) {
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeEnergy pipe) pipe.updateNetwork(true);
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
             }
         }
     }

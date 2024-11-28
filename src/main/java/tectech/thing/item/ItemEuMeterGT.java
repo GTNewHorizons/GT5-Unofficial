@@ -17,14 +17,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTUtility;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.util.CommonValues;
@@ -49,18 +48,21 @@ public class ItemEuMeterGT extends Item {
             return aPlayer instanceof EntityPlayerMP;
         }
         if (aPlayer instanceof EntityPlayerMP && !aPlayer.isSneaking() && tTileEntity instanceof IGregTechTileEntity) {
-            String clientLocale;
-            try {
-                EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-                clientLocale = (String) FieldUtils.readField(player, "translator", true);
-            } catch (Exception e) {
+            final String clientLocale;
+            if (aPlayer instanceof EntityPlayerMPAccessor) {
+                clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
+            } else {
                 clientLocale = "en_US";
             }
 
             if (tTileEntity instanceof BaseMetaTileEntity) {
                 GTUtility.sendChatToPlayer(
                     aPlayer,
-                    EnumChatFormatting.AQUA + "----- X:"
+                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.STRIKETHROUGH
+                        + "-----"
+                        + EnumChatFormatting.RESET
+                        + EnumChatFormatting.AQUA
+                        + " X:"
                         + aX
                         + " Y:"
                         + aY
@@ -70,7 +72,9 @@ public class ItemEuMeterGT extends Item {
                         + aWorld.provider.dimensionId
                         + " S:"
                         + ordinalSide
-                        + " -----");
+                        + " "
+                        + EnumChatFormatting.STRIKETHROUGH
+                        + "-----");
                 GTUtility.sendChatToPlayer(
                     aPlayer,
                     translateToLocalFormatted("tt.keyphrase.Stored_energy", clientLocale) + ": "

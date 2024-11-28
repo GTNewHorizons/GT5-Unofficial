@@ -357,6 +357,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
      * @param progressTime Current progress time
      */
     public void startCycle(int cycleTime, int progressTime) {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        startRecipeProcessing();
         // Important to calculate this before depleting inputs, otherwise we may get issues with boost items
         // disappearing.
         this.currentRecipeChance = this.calculateBoostedSuccessChance();
@@ -384,33 +386,38 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             fluidOutputs[i] = this.currentRecipe.mFluidOutputs[i].copy();
             fluidOutputs[i].amount *= effectiveParallel;
         }
-        this.mOutputFluids = fluidOutputs;
-        this.mOutputItems = this.currentRecipe.mOutputs;
-        // Set this value, so it can be displayed in Waila. Note that the logic for the units is
-        // specifically overridden so setting this value does not actually drain power.
-        // Instead, power is drained by the main purification plant controller.
-        this.lEUt = -this.getActualPowerUsage();
-    }
 
-    public void addRecipeOutputs() {
-        ThreadLocalRandom random = ThreadLocalRandom.current();
-        this.addFluidOutputs(mOutputFluids);
-        // If this recipe has random item outputs, roll on it and add outputs
+        ItemStack[] itemOutputs = new ItemStack[this.currentRecipe.mOutputs.length];
+
+        // If this recipe has random item outputs, roll on it and add to outputs
         if (this.currentRecipe.mChances != null) {
             // Roll on each output individually
             for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
                 // Recipes store probabilities as a value ranging from 1-10000
                 int roll = random.nextInt(10000);
                 if (roll <= this.currentRecipe.mChances[i]) {
-                    this.addOutput(this.currentRecipe.mOutputs[i]);
+                    itemOutputs[i] = this.currentRecipe.mOutputs[i].copy();
                 }
             }
         } else {
             // Guaranteed item output
             for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
-                this.addOutput(this.currentRecipe.mOutputs[i]);
+                itemOutputs[i] = this.currentRecipe.mOutputs[i].copy();
             }
         }
+
+        this.mOutputFluids = fluidOutputs;
+        this.mOutputItems = itemOutputs;
+        // Set this value, so it can be displayed in Waila. Note that the logic for the units is
+        // specifically overridden so setting this value does not actually drain power.
+        // Instead, power is drained by the main purification plant controller.
+        this.lEUt = -this.getActualPowerUsage();
+        endRecipeProcessing();
+    }
+
+    public void addRecipeOutputs() {
+        this.addFluidOutputs(mOutputFluids);
+        this.addItemOutputs(mOutputItems);
     }
 
     public void endCycle() {
@@ -429,6 +436,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         }
 
         // Reset recipe values for next iteration
+        checkRecipeResult = CheckRecipeResultRegistry.CYCLE_IDLE;
         this.mMaxProgresstime = 0;
         this.mProgresstime = 0;
         this.lEUt = 0;
@@ -614,9 +622,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) {
-            return false;
-        }
 
         // Right-clicking could be a data stick linking action, so try this first.
         if (tryLinkDataStick(aPlayer)) {

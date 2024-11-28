@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -151,16 +152,18 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .eut(16)
                 .addTo(latheRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(werkstoff.get(foil, 4))
-                .duration(
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 1L,
-                        1L))
-                .eut(24)
-                .addTo(benderRecipes);
+            if (werkstoff != WerkstoffLoader.Fluorophlogopite) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
+                    .itemOutputs(werkstoff.get(foil, 4))
+                    .duration(
+                        (int) Math.max(
+                            werkstoff.getStats()
+                                .getMass(),
+                            1L))
+                    .eut(24)
+                    .addTo(benderRecipes);
+            }
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(10))

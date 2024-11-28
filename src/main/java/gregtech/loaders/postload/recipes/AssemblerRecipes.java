@@ -245,60 +245,17 @@ public class AssemblerRecipes implements Runnable {
                 .eut(256)
                 .addTo(assemblerRecipes);
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                    GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
-                .eut(2)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                    GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
-                .eut(2)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                    GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
-                .eut(2)
-                .addTo(assemblerRecipes);
+            // Muffler Upgrades
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
                     GTUtility.getIntegratedCircuit(1))
                 .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
-                .eut(2)
+                .duration(5 * SECONDS)
+                .eut(30)
                 .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 2L),
-                    GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
-                .eut(2)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 2L),
-                    GTUtility.getIntegratedCircuit(1))
-                .itemOutputs(ItemList.Upgrade_Muffler.get(1L))
-                .duration(1 * MINUTES + 20 * SECONDS)
-                .eut(2)
-                .addTo(assemblerRecipes);
+
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L),
@@ -621,16 +578,6 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.SeedOil.getFluid(50L))
             .duration(16 * TICKS)
             .eut(8)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1))
-            .itemOutputs(ItemList.Block_Plascrete.get(1))
-            .fluidInputs(Materials.Concrete.getMolten(144))
-            .duration(10 * SECONDS)
-            .eut(48)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -2596,7 +2543,8 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
+                GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Casing_FrostProof.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
@@ -3607,7 +3555,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_UV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Americium, 2),
                 ItemList.Field_Generator_UV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Longasssuperconductornameforuhvwire, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUHV, 2),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2))
             .itemOutputs(ItemList.Generator_Plasma_UV.get(1))
             .duration(5 * SECONDS)
@@ -4781,6 +4729,170 @@ public class AssemblerRecipes implements Runnable {
                 .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
+                .addTo(assemblerRecipes);
+        }
+    }
+
+    // Pipe Casings
+    {
+        // Fluid Pipe
+        {
+            // Bronze
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Pipe_Bronze.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Steel
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Pipe_Steel.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Titanium
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Pipe_Titanium.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // TungstenSteel
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Pipe_TungstenSteel.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // PTFE
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Polytetrafluoroethylene, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Polytetrafluoroethylene, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Pipe_Polytetrafluoroethylene.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // PBI
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Polybenzimidazole, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Polybenzimidazole, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Pipe_Polybenzimidazole.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+        }
+        // Item Pipe
+        {
+            // Tin
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Tin, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tin, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Tin.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Brass
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Brass, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Brass, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Brass.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Electrum
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Electrum, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Electrum, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Electrum, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Electrum.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Platinum
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Platinum, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Platinum, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Platinum, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Platinum.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Osmium
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Osmium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Osmium.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // Quantium
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Quantium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Quantium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Quantium, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Quantium.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // FluxedElectrum
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ElectrumFlux, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.ElectrumFlux, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.ElectrumFlux, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Fluxed_Electrum.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+            // BlackPlutonium
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.BlackPlutonium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 1),
+                    GTUtility.getIntegratedCircuit(12))
+                .itemOutputs(ItemList.Casing_Item_Pipe_Black_Plutonium.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
         }
     }

@@ -20,7 +20,7 @@ public class SeekingOggCodec extends CodecJOrbis {
     public static final String EXTENSION = "gt5oggseek";
 
     private volatile boolean fullyInitialized = false;
-    private volatile SoundBuffer nextBuffer = null;
+    private final SoundBuffer nextBuffer = null;
 
     /**
      * Encodes the given millisecond seek amount into a URL/resource name suffix that can be appended to the sound path

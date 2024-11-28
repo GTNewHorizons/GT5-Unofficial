@@ -80,7 +80,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                     : tIngot;
         ItemStack tDust = GTOreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
         ItemStack tCleaned = GTOreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
-        ItemStack tCrushed = GTOreDictUnificator.get(OrePrefixes.crushed, tMaterial, (long) aMaterial.mOreMultiplier);
+        ItemStack tCrushed = GTOreDictUnificator.get(OrePrefixes.crushed, tMaterial, aMaterial.mOreMultiplier);
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
@@ -88,7 +88,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 OrePrefixes.dustImpure,
                 tMaterial,
                 GTUtility.copyAmount(aMaterial.mOreMultiplier, tCleaned, tDust, tGem),
-                (long) aMaterial.mOreMultiplier);
+                aMaterial.mOreMultiplier);
         }
 
         for (Materials tMat : aMaterial.mOreByProducts) {
@@ -124,7 +124,8 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                        .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .metadata(COIL_HEAT, 1500)
@@ -135,7 +136,8 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                        .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .metadata(COIL_HEAT, 1500)
@@ -149,7 +151,8 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                        .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .metadata(COIL_HEAT, 1500)
@@ -160,7 +163,8 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quicklime, aMultiplier))
                         .itemOutputs(
                             GTUtility.mul(2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
+                        .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .metadata(COIL_HEAT, 1500)

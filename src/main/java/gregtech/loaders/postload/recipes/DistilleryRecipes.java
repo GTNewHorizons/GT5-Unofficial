@@ -89,14 +89,6 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(Materials.Biomass.getFluid(40L))
-            .fluidOutputs(Materials.Ethanol.getFluid(12L))
-            .duration(16 * TICKS)
-            .eut(24)
-            .addTo(distilleryRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(Materials.Biomass.getFluid(40L))
             .fluidOutputs(Materials.Water.getFluid(12L))
@@ -278,14 +270,6 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
-            .fluidInputs(Materials.WoodTar.getFluid(200))
-            .fluidOutputs(Materials.Dimethylbenzene.getFluid(30))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
-            .addTo(distilleryRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(Materials.CharcoalByproducts.getGas(200))
             .fluidOutputs(Materials.Dimethylbenzene.getFluid(20))
             .duration(5 * SECONDS)
@@ -462,6 +446,19 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
+            .fluidInputs(Materials.WoodTar.getFluid(1000))
+            .fluidOutputs(
+                Materials.Creosote.getFluid(250),
+                Materials.Phenol.getFluid(100),
+                Materials.Benzene.getFluid(400),
+                Materials.Toluene.getFluid(100),
+                MaterialsKevlar.IVDimethylbenzene.getFluid(150))
+            .duration(2 * SECONDS)
+            .eut(256)
+            .addTo(distillationTowerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(3))
             .itemOutputs(Materials.Charcoal.getDustSmall(1))
             .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
             .fluidOutputs(
@@ -607,16 +604,6 @@ public class DistilleryRecipes implements Runnable {
     }
 
     public void universalDistillationTowerRecipes() {
-        addUniversalDistillationRecipewithCircuit(
-            Materials.WoodTar.getFluid(1000),
-            new ItemStack[] { GTUtility.getIntegratedCircuit(3) },
-            new FluidStack[] { Materials.Creosote.getFluid(250), Materials.Phenol.getFluid(100),
-                Materials.Benzene.getFluid(400), Materials.Toluene.getFluid(100),
-                MaterialsKevlar.IVDimethylbenzene.getFluid(150) },
-            GTValues.NI,
-            40,
-            256);
-
         addUniversalDistillationRecipewithCircuit(
             Materials.CharcoalByproducts.getGas(1000),
             new ItemStack[] { GTUtility.getIntegratedCircuit(1) },
