@@ -1647,7 +1647,7 @@ public class MTERecipeLoader implements Runnable {
             3);
 
         GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_IV_PlasmaArcFurnace.get(1),
+            ItemList.Machine_EV_PlasmaArcFurnace.get(1),
             bitsd,
             new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
                 MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
@@ -2192,11 +2192,6 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Casing_Turbine3.get(1L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.TungstenSteel), 'F',
-                ItemList.Casing_Turbine });
-        GTModHandler.addCraftingRecipe(
-            ItemList.Casing_TurbineGasAdvanced.get(1L),
-            bits,
-            new Object[] { "PhP", "PFP", aTextPlateWrench, 'P', OrePrefixes.plate.get(Materials.HSSS), 'F',
                 ItemList.Casing_Turbine });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_Bronze.get(1L),
@@ -3472,13 +3467,6 @@ public class MTERecipeLoader implements Runnable {
                 OrePrefixes.circuit.get(Materials.ZPM), 'W', OrePrefixes.wireGt04.get(Materials.Naquadah), 'U',
                 OrePrefixes.stick.get(Materials.Americium) });
 
-        GTModHandler.addCraftingRecipe(
-            ItemList.Processing_Array.get(1L),
-            bitsd,
-            new Object[] { "CTC", "FMF", "CBC", 'M', ItemList.Hull_EV, 'B',
-                OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.IV), 'F',
-                ItemList.Robot_Arm_EV, 'T', ItemList.Energy_LapotronicOrb });
-
         ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
         GTModHandler.addCraftingRecipe(
             ItemList.Distillation_Tower.get(1L),
@@ -3499,12 +3487,6 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_EV, 'B',
                 OrePrefixes.pipeLarge.get(Materials.StainlessSteel), 'C', OrePrefixes.circuit.get(Materials.EV), 'P',
                 OrePrefixes.gearGt.get(Materials.StainlessSteel) });
-        GTModHandler.addCraftingRecipe(
-            ItemList.LargeAdvancedGasTurbine.get(1L),
-            bitsd,
-            new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_IV, 'B',
-                OrePrefixes.pipeLarge.get(Materials.TungstenSteel), 'C', OrePrefixes.circuit.get(Materials.LuV), 'P',
-                OrePrefixes.gearGt.get(Materials.HSSG) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Pump_LV.get(1L),

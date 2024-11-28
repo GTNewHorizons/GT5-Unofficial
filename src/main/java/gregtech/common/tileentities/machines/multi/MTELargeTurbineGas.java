@@ -57,8 +57,6 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Turbine")
             .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Warning: Will be capped at 8192 EU/t in a future update")
-            .addInfo("See the Advanced Large Gas Turbine as the next, uncapped, option")
             // .addInfo("The excess fuel that gets consumed will be voided!")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, true)

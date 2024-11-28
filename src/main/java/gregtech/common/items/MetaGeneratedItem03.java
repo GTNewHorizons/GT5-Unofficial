@@ -1157,13 +1157,13 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 {
             addItem(
                 Quark_Creation_Catalyst_Bottom.ID,
                 "Bottom-Quark Releasing Catalyst",
-                "Can release top-quarks into environment to reshape matter",
+                "Can release bottom-quarks into environment to reshape matter",
                 SubTag.NO_UNIFICATION));
         ItemList.Quark_Creation_Catalyst_Top.set(
             addItem(
                 Quark_Creation_Catalyst_Top.ID,
                 "Top-Quark Releasing Catalyst",
-                "Can release bottom-quarks into environment to reshape matter",
+                "Can release top-quarks into environment to reshape matter",
                 SubTag.NO_UNIFICATION));
         ItemList.Quark_Creation_Catalyst_Unaligned.set(
             addItem(

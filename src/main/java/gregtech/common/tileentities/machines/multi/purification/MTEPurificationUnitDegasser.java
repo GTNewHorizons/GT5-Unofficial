@@ -474,7 +474,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             .addCasingInfoExactlyColored(
                 "Bedrockium Frame Box",
                 EnumChatFormatting.GRAY,
-                126,
+                124,
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front center")
@@ -670,7 +670,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             FluidStack waterOutput = currentRecipe.mFluidOutputs[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
-                (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
+                (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
             this.addOutput(bonusOutput);
         }
     }
@@ -768,7 +768,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Current control signal: " + EnumChatFormatting.YELLOW + controlSignal.toString());
+        info.add("Current control signal (binary): 0b" + EnumChatFormatting.YELLOW + controlSignal.toString());
         info.add("Current output multiplier: " + EnumChatFormatting.YELLOW + outputMultiplier);
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(
