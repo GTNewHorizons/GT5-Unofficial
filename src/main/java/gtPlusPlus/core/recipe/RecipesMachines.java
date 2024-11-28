@@ -840,7 +840,6 @@ public class RecipesMachines {
     private static void distillus() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(19),
                 ItemList.Distillation_Tower.get(2),
                 GregtechItemList.GTPP_Casing_IV.get(16),
                 CI.getTieredComponent(OrePrefixes.circuit, 6, 8))

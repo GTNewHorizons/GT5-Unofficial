@@ -47,6 +47,7 @@ public class MultiblockTooltipBuilder {
     private static final String COLON = ": ";
     private static final String SEPARATOR = ", ";
     private static final String TT_machineType = StatCollector.translateToLocal("GT5U.MBTT.MachineType");
+    private static final String TT_Parallels = StatCollector.translateToLocal("GT5U.MBTT.Parallels");
     private static final String TT_dimensions = StatCollector.translateToLocal("GT5U.MBTT.Dimensions");
     private static final String TT_hollow = StatCollector.translateToLocal("GT5U.MBTT.Hollow");
     private static final String TT_structure = StatCollector.translateToLocal("GT5U.MBTT.Structure");
@@ -61,6 +62,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_inputhatch = StatCollector.translateToLocal("GT5U.MBTT.InputHatch");
     private static final String TT_outputbus = StatCollector.translateToLocal("GT5U.MBTT.OutputBus");
     private static final String TT_outputhatch = StatCollector.translateToLocal("GT5U.MBTT.OutputHatch");
+    private static final String TT_tectechhatch = StatCollector.translateToLocal("GT5U.MBTT.TecTechHatch");
     private static final String TT_causes = StatCollector.translateToLocal("GT5U.MBTT.Causes");
     private static final String TT_pps = StatCollector.translateToLocal("GT5U.MBTT.PPS");
     private static final String TT_hold = StatCollector.translateToLocal("GT5U.MBTT.Hold");
@@ -117,6 +119,18 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Add a line for static parallel count
+     * Processes up to {parallels} recipes at once
+     *
+     * @param parallels Maximum parallels
+     * @returnInstance this method was called on.
+     */
+    public MultiblockTooltipBuilder addParallelInfo(Integer parallels) {
+        iLines.add(String.format(TT_Parallels, parallels));
+        return this;
+    }
+
+    /**
      * Add a number of basic lines of information about this structure
      *
      * @param infoStrings The lines to be added.
@@ -131,7 +145,6 @@ public class MultiblockTooltipBuilder {
      * Add a separator line
      *
      * @return Instance this method was called on.
-     * @see #addStructureSeparator()
      */
     public MultiblockTooltipBuilder addSeparator() {
         return addSeparator(EnumChatFormatting.GRAY, 41);
@@ -549,6 +562,17 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * Supports TecTech Multi-Amp and Laser Hatches!
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addTecTechHatchInfo() {
+        iLines.add(EnumChatFormatting.BLUE + TT_tectechhatch);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * (indent)Maintenance Hatch: info
      *
      * @param info Positional information.
@@ -718,18 +742,6 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
         sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
-        return this;
-    }
-
-    /**
-     * Add a separator line like this, to the structural hint:<br>
-     * -----------------------------------------
-     *
-     * @return Instance this method was called on.
-     * @see #addSeparator()
-     */
-    public MultiblockTooltipBuilder addStructureSeparator() {
-        sLines.add(TAB + "-----------------------------------------");
         return this;
     }
 

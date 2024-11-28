@@ -259,8 +259,10 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillery")
+            .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
+            .addTecTechHatchInfo()
             .beginVariableStructureBlock(15, 15, 16, 56, 15, 15, true)
             .addController("Front bottom")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "15 x h - 5 (minimum)")
@@ -417,9 +419,9 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
-        for (int i = 0; i < mOutputFluids2.length && i < this.mOutputHatchesByLayer.size(); i++) {
-            FluidStack tStack = mOutputFluids2[i].copy();
+    protected void addFluidOutputs(FluidStack[] outputFluids) {
+        for (int i = 0; i < outputFluids.length && i < this.mOutputHatchesByLayer.size(); i++) {
+            FluidStack tStack = outputFluids[i].copy();
             if (!dumpFluid(this.mOutputHatchesByLayer.get(i), tStack, true))
                 dumpFluid(this.mOutputHatchesByLayer.get(i), tStack, false);
         }

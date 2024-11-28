@@ -18,6 +18,7 @@ GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class 
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
+GT5U.MBTT.Parallels=Processes up to %d recipes at once
 GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
@@ -32,6 +33,7 @@ GT5U.MBTT.InputBus=Input Bus
 GT5U.MBTT.InputHatch=Input Hatch
 GT5U.MBTT.OutputBus=Output Bus
 GT5U.MBTT.OutputHatch=Output Hatch
+GT5U.MBTT.TecTechHatch=Supports TecTech Multi-Amp and Laser Hatches!
 GT5U.MBTT.Causes=Causes
 GT5U.MBTT.PPS=pollution per second
 GT5U.MBTT.Hold=Hold
@@ -101,6 +103,8 @@ GT5U.coil.UXV=Hypogen
 GT5U.coil.MAX=Eternal
 
 GT5U.MS.multismelting=Multi smelting
+
+gt.casing.tiertooltip=Casing Tier: %s
 
 # Machine types
 gt.recipe.alloysmelter=Alloy Smelter
@@ -362,6 +366,8 @@ GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
 GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Failed to load Multiblock Hatch Configuration
+GT5U.DEHP.mode.0=Direct Steam
+GT5U.DEHP.mode.1=Coolant Heating
 GT5U.machines.oreprocessor1=§eRunning Mode:
 GT5U.machines.oreprocessor2=§cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
@@ -514,6 +520,7 @@ GT5U.gui.text.crash=§4Machine turned off due to crash. Refer to the log for mor
 GT5U.gui.text.no_fuel=§7No valid fuel found
 GT5U.gui.text.no_turbine=§7No valid turbine found
 GT5U.gui.text.no_lubricant=§7No lubricant found
+GT5U.gui.text.cycle_idle=§6Waiting for cycle to start
 GT5U.gui.text.fuel_quality_too_high=§7Fuel quality too high to run without boost
 GT5U.gui.text.no_data_sticks=§7No Data Sticks found
 GT5U.gui.text.bio_upgrade_missing=§7Recipe needs Bio Upgrade to start
@@ -526,6 +533,7 @@ GT5U.gui.text.machine_mismatch=§7Machine doesn't match to locked recipe
 GT5U.gui.text.high_gravity=§7Recipe needs low gravity
 GT5U.gui.text.no_mining_pipe=§7Missing Mining Pipe
 GT5U.gui.text.drilling=§aDrilling
+GT5U.gui.text.circulating_fluid=§aCirculating Fluid
 GT5U.gui.text.deploying_pipe=§aDeploying mining pipe
 GT5U.gui.text.extracting_pipe=§aExtracting pipe
 GT5U.gui.text.retracting_pipe=§aRetracting pipe
@@ -627,13 +635,20 @@ GT5U.item.tank.locked_to=Content locked to %s
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
+gt.behaviour.paintspray.infinite.gui.shake_toggle=Allow/disallow color iteration
 
 gt.behaviour.paintspray.infinite.tooltip.infinite=Infinite uses
 gt.behaviour.paintspray.infinite.tooltip.more_info=Hold SHIFT for more information
+gt.behaviour.paintspray.infinite.tooltip.locked=Locked
+gt.behaviour.paintspray.infinite.tooltip.preventing_shake=Left click action disabled
+
 gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
 gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
 gt.behaviour.paintspray.infinite.tooltip.lock=Sneak Middle Click: Lock or unlock spray can
 gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
+gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s-Middle Click: Allow/prevent left click action
+gt.behaviour.paintspray.infinite.tooltip.ctrl_pc=Ctrl
+gt.behaviour.paintspray.infinite.tooltip.ctrl_mac=Command
 
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
@@ -1460,9 +1475,9 @@ for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
 for.bees.species.dragonblood=Dragonblood
 
-for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Diddy & Noila
+for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Aditya & Noila
 
-for.bees.authority.machinist=Diddy & Noila
+for.bees.authority.machinist=Aditya & Noila
 
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension

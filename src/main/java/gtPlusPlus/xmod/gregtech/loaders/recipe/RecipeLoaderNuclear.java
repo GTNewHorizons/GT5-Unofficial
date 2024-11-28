@@ -564,7 +564,7 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().NEON.getPlasma(), 144),
-                Materials.Bedrockium.getMolten(144))
+                new FluidStack(MaterialsAlloy.ARCANITE.getFluid(), 2))
             .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 1000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
@@ -593,7 +593,7 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 144),
-                new FluidStack(MaterialsAlloy.TITANSTEEL.getFluid(), 8))
+                new FluidStack(MaterialsAlloy.TITANSTEEL.getFluid(), 2))
             .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 1000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
