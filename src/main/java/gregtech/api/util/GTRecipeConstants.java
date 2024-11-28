@@ -522,7 +522,7 @@ public class GTRecipeConstants {
             GTValues.RA.stdBuilder()
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
-                .special(writesDataStick)
+                .special(tRecipe.newDataStickForNEI("Writes Research result"))
                 .duration(aResearchTime)
                 .eut(TierEU.RECIPE_LV)
                 .specialValue(-201) // means it's scanned
@@ -538,7 +538,7 @@ public class GTRecipeConstants {
                 false,
                 r.mInputs,
                 new ItemStack[] { aOutput },
-                new ItemStack[] { readsDataStick },
+                new ItemStack[] { tRecipe.newDataStickForNEI("Reads Research result") },
                 r.mFluidInputs,
                 null,
                 r.mDuration,
@@ -698,7 +698,6 @@ public class GTRecipeConstants {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(NKE_RANGE);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(PRECISE_ASSEMBLER_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COAL_CASING_TIER);
-        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COMPRESSION_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RESEARCH_STATION_DATA);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(SIEVERTS);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DECAY_TICKS);
