@@ -19,11 +19,18 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,26 +39,42 @@ import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
-public abstract class MTEVoidMinerBase extends MTEDrillerBase {
+public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T> {
 
     private VoidMinerUtility.DropMap dropMap = null;
     private VoidMinerUtility.DropMap extraDropMap = null;
+    protected int casingTextureIndex;
     private float totalWeight;
     private int multiplier = 1;
 
     protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
+
+    /**
+     * @Deprecated Use {@link VoidMinerUtility#addBlockToDimensionList}
+     */
+    @Deprecated
+    public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
+        VoidMinerUtility.addBlockToDimensionList(dimId, block, meta, weight);
+    }
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -76,39 +99,31 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
     }
 
     @Override
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        setElectricityStats();
+        if (working()) {
+            return SimpleCheckRecipeResult.ofSuccess("charging");
+        } else {
+            return SimpleCheckRecipeResult.ofFailure("maming");
+        }
+    }
+
     protected int getMinTier() {
         return this.TIER_MULTIPLIER + 5; // min tier = LuV
     }
 
-    @Override
-    protected boolean checkHatches() {
-        return true;
-    }
-
-    @Override
     protected void setElectricityStats() {
-        try {
-            this.mEUt = this.isPickingPipes ? 60 : Math.toIntExact(GTValues.V[this.getMinTier()]);
-        } catch (ArithmeticException e) {
-            e.printStackTrace();
-            this.mEUt = Integer.MAX_VALUE - 7;
-        }
+        this.mEUt = -Math.abs(Math.toIntExact(GTValues.V[this.getMinTier()]));
         this.mOutputItems = new ItemStack[0];
         this.mProgresstime = 0;
-        this.mMaxProgresstime = calculateMaxProgressTime(0);
+        this.mMaxProgresstime = 10;
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
     }
 
-    @Override
-    public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
-        return 10;
-    }
-
-    @Override
-    protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
-        int yHead, int oldYHead) {
+    protected boolean working() {
         // if the dropMap has never been initialised or if the dropMap is empty
         if (this.dropMap == null || this.totalWeight == 0) this.calculateDropMap();
 
@@ -124,28 +139,26 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        String casings = this.getCasingBlockItem()
-            .get(0)
-            .getDisplayName();
-
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Miner")
             .addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t")
             .addInfo(
-                "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs")
+                "Can be supplied with 2L/s of Neon(x4), Krypton(x8), Xenon(x16) or Oganesson(x64) for higher outputs.")
             .addInfo(
                 "Will output " + 2 * this.TIER_MULTIPLIER
                     + " Ores per Second depending on the Dimension it is build in")
             .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
             .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-            .addInfo("Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED + "VOIDED")
+            .addInfo(
+                "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
+                    + "VOIDED"
+                    + EnumChatFormatting.RESET
+                    + ".")
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(
-                this.getFrameMaterial().mName + " Frame Boxes",
-                "Each pillar's side and 1x3x1 on top")
+            .addOtherStructurePart("a","form the 3x1x3 Base")
+            .addOtherStructurePart("a","1x3x1 pillar above the center of the base (2 minimum total)")
+            .addOtherStructurePart(" Frame Boxes", "Each pillar's side and 1x3x1 on top")
             .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
             .addMaintenanceHatch("Any base casing")
             .addInputBus("Mining Pipes or Ores, optional, any base casing")
@@ -155,7 +168,6 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
         return tt;
     }
 
-    @Override
     protected List<IHatchElement<? super MTEDrillerBase>> getAllowedHatches() {
         return ImmutableList.of(InputHatch, InputBus, OutputBus, Maintenance, Energy);
     }
@@ -194,7 +206,7 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
             for (int i = 0; i < VoidMinerUtility.NOBLE_GASSES.length; i++) {
                 FluidStack ng = VoidMinerUtility.NOBLE_GASSES[i];
                 if (ng.isFluidEqual(s)) {
-                    this.multiplier = this.TIER_MULTIPLIER * VoidMinerUtility.NOBLE_GASSES_MULTIPLIER[i];
+                    this.multiplier = this.TIER_MULTIPLIER * VoidMinerUtility.NOBEL_GASSES_MULTIPLIER[i];
                     return s;
                 }
             }
@@ -291,9 +303,60 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         this.mBlacklist = !this.mBlacklist;
         GTUtility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection == facingDirection) {
+            if (active) return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ORE_DRILL)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ORE_DRILL_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
+    }
+    
+    protected boolean checkHatches() {
+        return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty()
+            && !mOutputBusses.isEmpty()
+            && !mEnergyHatches.isEmpty();
+    }
+
+    @Override
+    public int getMaxEfficiency(ItemStack aStack) {
+        return 10000;
+    }
+
+    @Override
+    public boolean isCorrectMachinePart(ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public int getDamageToComponent(ItemStack aStack) {
+        return 0;
+    }
+
+    @Override
+    public boolean explodesOnComponentBreak(ItemStack aStack) {
+        return false;
     }
 }
