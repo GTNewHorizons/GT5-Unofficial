@@ -884,5 +884,26 @@ public class AssemblyLineRecipes implements Runnable {
             .eut(TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);
 
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Cover_SolarPanel.get(1))
+            .metadata(RESEARCH_TIME, 2 * HOURS)
+            .itemInputs(
+                ItemList.Hull_LuV.get(2),
+                ItemList.AssemblingMachineLuV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueAlloy, 4),
+                ItemList.Robot_Arm_LuV.get(8),
+                ItemList.Electric_Motor_LuV.get(4),
+                ItemList.Electric_Piston_LuV.get(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.ZPM), 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 8))
+            .itemOutputs(ItemList.SolarFactory.get(1))
+            .fluidInputs(
+                new FluidStack(solderIndalloy, 2880),
+                Materials.Lubricant.getFluid(1440),
+                Materials.Electrotine.getMolten(720))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(AssemblyLine);
+
     }
 }

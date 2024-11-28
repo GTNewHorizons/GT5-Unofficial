@@ -58,6 +58,7 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
 
 // TODO: fix bugs if i find them
+// TODO: move controller recipe in AssemblyLineRecipes into coremod
 
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
@@ -260,19 +261,23 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             @NotNull
             @Override
             public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                SolarFactoryRecipeData data = recipe.getMetadata(GTRecipeConstants.SOLAR_FACTORY_WAFER_DATA);
+                SolarFactoryRecipeData data = recipe
+                    .getMetadataOrDefault(GTRecipeConstants.SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(0, 0));
                 if (data == null) return CheckRecipeResultRegistry.NO_RECIPE;
                 minimumTierForRecipe = data.minimumWaferTier;
                 waferAmountInRecipe = data.minimumWaferCount;
                 if (minimumTierForRecipe == 0) return CheckRecipeResultRegistry.SUCCESSFUL;
                 findWaferStack();
                 if (foundWaferStack == null) {
+                    clearVars();
                     return SimpleCheckRecipeResult.ofFailure("no_wafer");
                 }
                 if (minimumTierForRecipe > foundWaferTier) {
+                    clearVars();
                     return SimpleCheckRecipeResult.ofFailure("low_wafer_tier");
                 }
                 if (waferAmountInRecipe > foundWaferStack.stackSize) {
+                    clearVars();
                     return SimpleCheckRecipeResult.ofFailure("not_enough_wafer");
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -315,7 +320,6 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("Parallels are based on Precise Casing Tier")
             .addInfo("MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
             .addInfo("Supports " + TT + " energy hatches")
-            .addSeparator()
             .beginStructureBlock(7, 10, 9, true)
             .addStructureInfo(BLUE + "Imprecise Unit Casings cannot be used")
             .addStructureInfo(BLUE + "26 " + DARK_AQUA + "Precise Electronic Unit Casing")

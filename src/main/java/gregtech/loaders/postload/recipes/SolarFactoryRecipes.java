@@ -25,7 +25,7 @@ import gregtech.api.util.recipe.SolarFactoryRecipeData;
 // Recipe metadata values represent the minimum tier and the amount of wafers respectively.
 // Metadata is only required on the hidden recipes.
 
-// If the recipe you are making doesn't use a wafer, just make it like a normal recipe, no metadata needed
+// If the recipe you are making doesn't use a wafer, just make it without any metadata.
 public class SolarFactoryRecipes implements Runnable {
 
     private final Fluid solderIndalloy;
