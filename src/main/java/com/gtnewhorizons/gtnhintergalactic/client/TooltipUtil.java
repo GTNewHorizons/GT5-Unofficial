@@ -4,10 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 
 import java.util.function.Supplier;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.SimpleReloadableResourceManager;
-
-import com.gtnewhorizons.gtnhintergalactic.client.lore.LoreHandler;
+import com.gtnewhorizon.gtnhlib.client.tooltip.LoreHandler;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
@@ -23,8 +20,6 @@ public class TooltipUtil {
      * Initialize the tooltip utilities
      */
     public static void postInit() {
-        ((SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
-                .registerReloadListener(new LoreHandler());
         LoreHandler.registerLoreHolder(TileEntityPlanetaryGasSiphon.class);
         LoreHandler.registerLoreHolder(TileEntitySpaceElevator.class);
 
