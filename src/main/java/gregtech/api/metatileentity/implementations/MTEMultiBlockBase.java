@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.LongConsumer;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -2695,7 +2696,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             || (mOutputItems != null && mOutputItems.length > 0)))
                 .widget(
                     new FakeSyncWidget.ListSyncer<>(
-                        () -> mOutputFluids != null ? Arrays.asList(mOutputFluids) : Collections.emptyList(),
+                        () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
+                            .map(fluidStack -> new FluidStack(fluidStack, fluidStack.amount) {
+
+                                @Override
+                                public boolean isFluidEqual(FluidStack other) {
+                                    return super.isFluidEqual(other) && amount == other.amount;
+                                }
+                            })
+                            .collect(Collectors.toList()) : Collections.emptyList(),
                         val -> mOutputFluids = val.toArray(new FluidStack[0]),
                         NetworkUtils::writeFluidStack,
                         NetworkUtils::readFluidStack))
