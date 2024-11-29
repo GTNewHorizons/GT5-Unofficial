@@ -971,7 +971,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Spacetime Manipulator, EoH")
+        tt.addMachineType("Spacetime Manipulator, EOH")
             .addInfo("Creates a pocket of spacetime that is bigger on the inside using transdimensional")
             .addInfo("engineering. Certified Time Lord regulation compliant. This multi uses too much EU")
             .addInfo("to be handled with conventional means. All EU requirements are handled directly by")
