@@ -11,8 +11,6 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +52,7 @@ public class MTEMoltenModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (recipe.mSpecialValue > getHeat()) {
                     return CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
                 }
@@ -70,9 +68,9 @@ public class MTEMoltenModule extends MTEBaseModule {
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            @Nonnull
+            @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setHeatOC(true)
@@ -85,7 +83,7 @@ public class MTEMoltenModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
+            protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
                 }
