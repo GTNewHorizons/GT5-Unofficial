@@ -322,12 +322,11 @@ public final class RecipeMaps {
         // NEI Catalyst search requires recipes to be sorted by voltage tier. Therefore, we first sort by voltage tier,
         // then by water tier, then the default comparator.
         .neiRecipeComparator(
-            (a, b) ->
-                Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mEUt)
-                    .thenComparing(
-                        Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
+            (a, b) -> Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mEUt)
+                .thenComparing(
+                    Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
                         .thenComparing(GTRecipe::compareTo))
-                    .compare(a, b))
+                .compare(a, b))
         .build();
     public static final RecipeMap<RecipeMapBackend> mixerRecipes = RecipeMapBuilder.of("gt.recipe.mixer")
         .maxIO(9, 4, 1, 1)
