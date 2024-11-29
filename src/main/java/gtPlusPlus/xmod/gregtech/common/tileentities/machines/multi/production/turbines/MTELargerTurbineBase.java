@@ -153,6 +153,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             tt.addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
                 .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
         }
+        else if (getTurbineType().contains("Steam")) {
+            tt.addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow");
+        }
         tt.addTecTechHatchInfo();
         tt.addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 9, 7, false)
@@ -611,9 +614,12 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 + " EU",
             StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow))
+                + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow)
+                    / (getTurbineType().contains("Steam") ?//Checks if turbine is type steam, and if using dense steam, divides optimal flow
+                    (getStoredFluids().get(0).getUnlocalizedName().contains("dense") ? 1000 : 1) : 1))
                 + EnumChatFormatting.RESET
-                + " L/s"
+                + " L/"
+                + (getTurbineType().equals("Plasma") ? 's' : 't') //based on turbine type changes flow timing
                 + EnumChatFormatting.YELLOW
                 + " ("
                 + (isLooseMode() ? StatCollector.translateToLocal("GT5U.turbine.loose")

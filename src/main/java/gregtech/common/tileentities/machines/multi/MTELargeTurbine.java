@@ -435,7 +435,8 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(GTUtility.safeInt((long) realOptFlow))
                 + EnumChatFormatting.RESET
-                + " L/t"
+                + " L/"
+                + (this.mMaxProgresstime == 1 ? 't' : 's') //based on processing time uses ticks or seconds (for plasma)
                 + /* 4 */ EnumChatFormatting.YELLOW
                 + " ("
                 + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
