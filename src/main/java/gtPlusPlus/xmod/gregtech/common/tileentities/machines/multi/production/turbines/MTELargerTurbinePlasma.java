@@ -285,4 +285,9 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
     protected String getCasingName() {
         return "Reinforced Plasma Turbine Casing";
     }
+
+    @Override
+    protected boolean isDenseSteam() {
+        return false;
+    }
 }

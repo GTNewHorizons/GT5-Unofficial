@@ -139,6 +139,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     protected abstract String getCasingName();
 
+    protected abstract boolean isDenseSteam();
+
     protected abstract boolean requiresOutputHatch();
 
     @Override
@@ -611,14 +613,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
-            StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                + EnumChatFormatting.YELLOW
-                //Checks if turbine is type steam, and if using dense steam, divides optimal flow
-                + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow) / (getTurbineType().contains("Steam") ?
-                    (getStoredFluids().get(0)
-                        .getUnlocalizedName()
-                        .contains("dense") ? 1000 : 1)
-                    : 1))
+            StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
+            // Divides optimal flow by 1000 if it's a dense steam
+                + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
                 + EnumChatFormatting.RESET
                 + " L/"
                 + (getTurbineType().equals("Plasma") ? 's' : 't') // based on turbine type changes flow timing
