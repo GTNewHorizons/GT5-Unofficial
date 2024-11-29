@@ -130,11 +130,17 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        return new MultiblockTooltipBuilder().addMachineType(getMachineType())
             .addInfo("Heavy Industry, now right at your doorstep!")
-            .addInfo("Please read the user manual for more information on construction and usage")
+            .addInfo("Plant tier is determined by casing tier")
+            .addInfo("Hatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers")
+            .addInfo("Higher tier coils increases processing speed : T1 = 50%, T2 = 100%, T3 = 150%...")
+            .addInfo("Higher tier pipe casing boosts parallel and reduces catalyst consumption :")
+            .addInfo("+2 parallel per tier, +20% chance of not damaging catalyst per tier")
+            .addInfo("Any catalyst must be placed in the catalyst housing")
+            .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
             .addController("Bottom Center")
+            .addOtherStructurePart("Catalyst Housing", "Bottom Casing")
             .addStructureHint("Catalyst Housing", 1)
             .addInputBus("Bottom Casing", 1)
             .addOutputBus("Bottom Casing", 1)
@@ -147,7 +153,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addSubChannelUsage("coil", "heating coil blocks")
             .addSubChannelUsage("pipe", "pipe casing blocks")
             .toolTipFinisher();
-        return tt;
     }
 
     public void setMachineMeta(int meta) {
