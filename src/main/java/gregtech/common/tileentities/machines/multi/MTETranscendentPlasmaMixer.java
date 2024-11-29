@@ -31,6 +31,7 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -89,7 +90,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addElement(
             'B',
-            buildHatchAdder(MTETranscendentPlasmaMixer.class).atLeast(InputHatch, OutputHatch, InputBus, Maintenance)
+            buildHatchAdder(MTETranscendentPlasmaMixer.class).atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1, Maintenance, 0))
                 .casingIndex(DIM_INJECTION_CASING)
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
