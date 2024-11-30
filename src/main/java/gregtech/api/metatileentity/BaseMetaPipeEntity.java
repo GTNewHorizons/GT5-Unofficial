@@ -296,7 +296,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     private void sendClientData() {
         if (mSendClientData) {
-            if (mMetaTileEntity != null && mMetaTileEntity instanceof ITemporaryTE) {
+            if (mMetaTileEntity instanceof ITemporaryTE) {
                 NW.sendPacketToAllPlayersInRange(
                     worldObj,
                     new GTPacketCreateTE(
@@ -320,31 +320,32 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                         oColor = mColor),
                     xCoord,
                     zCoord);
-            }
-            NW.sendPacketToAllPlayersInRange(
-                worldObj,
-                new GTPacketTileEntity(
+            } else {
+                NW.sendPacketToAllPlayersInRange(
+                    worldObj,
+                    new GTPacketTileEntity(
+                        xCoord,
+                        (short) yCoord,
+                        zCoord,
+                        mID,
+                        getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.EAST).getCoverID(),
+                        oTextureData = mConnections,
+                        oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
+                        oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
+                            | ((mSidedRedstone[2] > 0) ? 4 : 0)
+                            | ((mSidedRedstone[3] > 0) ? 8 : 0)
+                            | ((mSidedRedstone[4] > 0) ? 16 : 0)
+                            | ((mSidedRedstone[5] > 0) ? 32 : 0)),
+                        oColor = mColor),
                     xCoord,
-                    (short) yCoord,
-                    zCoord,
-                    mID,
-                    getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.EAST).getCoverID(),
-                    oTextureData = mConnections,
-                    oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
-                    oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
-                        | ((mSidedRedstone[2] > 0) ? 4 : 0)
-                        | ((mSidedRedstone[3] > 0) ? 8 : 0)
-                        | ((mSidedRedstone[4] > 0) ? 16 : 0)
-                        | ((mSidedRedstone[5] > 0) ? 32 : 0)),
-                    oColor = mColor),
-                xCoord,
-                zCoord);
-            mSendClientData = false;
+                    zCoord);
+                mSendClientData = false;
+            }
         }
         sendCoverDataIfNeeded();
     }

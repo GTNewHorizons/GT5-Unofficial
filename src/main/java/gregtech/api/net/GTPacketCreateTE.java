@@ -142,6 +142,43 @@ public class GTPacketCreateTE extends GTPacket {
                 } catch (Exception e) {
                     GTMod.GT_FML_LOGGER.error("Exception creating Tile Entity at ({}, {}, {})", mX, mY, mZ);
                 }
+            } else {
+                try {
+                    if (tileEntity instanceof BaseMetaTileEntity)
+                        ((BaseMetaTileEntity) tileEntity).receiveMetaTileEntityData(
+                            mID,
+                            mC0,
+                            mC1,
+                            mC2,
+                            mC3,
+                            mC4,
+                            mC5,
+                            mTexture,
+                            mTexturePage,
+                            mUpdate,
+                            mRedstone,
+                            mColor);
+                    else if (tileEntity instanceof BaseMetaPipeEntity)
+                        ((BaseMetaPipeEntity) tileEntity).receiveMetaTileEntityData(
+                            mID,
+                            mC0,
+                            mC1,
+                            mC2,
+                            mC3,
+                            mC4,
+                            mC5,
+                            mTexture,
+                            mUpdate,
+                            mRedstone,
+                            mColor);
+                } catch (Exception e) {
+                    GTMod.GT_FML_LOGGER.error(
+                        "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
+                        tileEntity,
+                        mX,
+                        mY,
+                        mZ);
+                }
             }
         }
     }
