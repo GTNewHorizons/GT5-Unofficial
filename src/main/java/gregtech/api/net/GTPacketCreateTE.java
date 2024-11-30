@@ -1,29 +1,30 @@
 package gregtech.api.net;
 
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.GTMod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import org.jetbrains.annotations.NotNull;
 
-public class GTPacketCreateTE extends GTPacket
-{
+public class GTPacketCreateTE extends GTPacket {
 
     private int mX, mZ, mC0, mC1, mC2, mC3, mC4, mC5;
     private short mY, mID, mRID;
     private byte mTexture, mTexturePage, mUpdate, mRedstone, mColor;
 
-    public GTPacketCreateTE()
-    {
+    public GTPacketCreateTE() {
         super();
     }
 
     public GTPacketCreateTE(int aX, short aY, int aZ, short aRID, short aID, int aC0, int aC1, int aC2, int aC3,
-                            int aC4, int aC5, byte aTexture, byte aTexturePage, byte aUpdate, byte aRedstone, byte aColor) {
+        int aC4, int aC5, byte aTexture, byte aTexturePage, byte aUpdate, byte aRedstone, byte aColor) {
         super();
         mX = aX;
         mY = aY;
@@ -44,7 +45,7 @@ public class GTPacketCreateTE extends GTPacket
     }
 
     public GTPacketCreateTE(int aX, short aY, int aZ, short aID, int aC0, int aC1, int aC2, int aC3, int aC4, int aC5,
-                            byte aTexture, byte aTexturePage, byte aUpdate, byte aRedstone, byte aColor) {
+        byte aTexture, byte aTexturePage, byte aUpdate, byte aRedstone, byte aColor) {
         this(
             aX,
             aY,
@@ -65,9 +66,10 @@ public class GTPacketCreateTE extends GTPacket
     }
 
     public GTPacketCreateTE(int aX, short aY, int aZ, short aID, int aC0, int aC1, int aC2, int aC3, int aC4, int aC5,
-                            byte aTexture, byte aUpdate, byte aRedstone, byte aColor) {
+        byte aTexture, byte aUpdate, byte aRedstone, byte aColor) {
         this(aX, aY, aZ, (short) 0, aID, aC0, aC1, aC2, aC3, aC4, aC5, aTexture, (byte) 0, aUpdate, aRedstone, aColor);
     }
+
     @Override
     public byte getPacketID() {
         return GTPacketTypes.CREATE_TILE_ENTITY.id;
@@ -124,28 +126,21 @@ public class GTPacketCreateTE extends GTPacket
     @Override
     public void process(IBlockAccess world) {
         if (world == null) return;
-        if (world instanceof WorldClient)
-        {
+        if (world instanceof WorldClient) {
             final TileEntity tileEntity = world.getTileEntity(mX, mY, mZ);
-            if (tileEntity == null)
-            {
+            if (tileEntity == null) {
                 try {
                     if (mTexturePage != 0) // It's a MetaTileEntity
                     {
                         BaseMetaTileEntity newTileEntity = getBaseMetaTileEntity();
-                        ((WorldClient) world).setTileEntity(mX,mY,mZ, newTileEntity);
-                    }
-                    else // Otherwise it's a MetaPipeEntity
+                        ((WorldClient) world).setTileEntity(mX, mY, mZ, newTileEntity);
+                    } else // Otherwise it's a MetaPipeEntity
                     {
                         BaseMetaPipeEntity newTileEntity = getBaseMetaPipeEntity();
-                        ((WorldClient) world).setTileEntity(mX,mY,mZ, newTileEntity);
+                        ((WorldClient) world).setTileEntity(mX, mY, mZ, newTileEntity);
                     }
                 } catch (Exception e) {
-                    GTMod.GT_FML_LOGGER.error(
-                        "Exception creating Tile Entity at ({}, {}, {})",
-                        mX,
-                        mY,
-                        mZ);
+                    GTMod.GT_FML_LOGGER.error("Exception creating Tile Entity at ({}, {}, {})", mX, mY, mZ);
                 }
             }
         }
@@ -154,18 +149,8 @@ public class GTPacketCreateTE extends GTPacket
     @NotNull
     private BaseMetaPipeEntity getBaseMetaPipeEntity() {
         BaseMetaPipeEntity newTileEntity = new BaseMetaPipeEntity();
-        newTileEntity.receiveMetaTileEntityData(
-            mID,
-            mC0,
-            mC1,
-            mC2,
-            mC3,
-            mC4,
-            mC5,
-            mTexture,
-            mUpdate,
-            mRedstone,
-            mColor);
+        newTileEntity
+            .receiveMetaTileEntityData(mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
         return newTileEntity;
     }
 

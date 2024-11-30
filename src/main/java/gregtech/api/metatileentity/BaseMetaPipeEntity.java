@@ -9,8 +9,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import gregtech.api.metatileentity.implementations.MTEFrame;
-import gregtech.api.net.GTPacketCreateTE;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,12 +32,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
+import gregtech.api.interfaces.ITemporaryTE;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
+import gregtech.api.net.GTPacketCreateTE;
 import gregtech.api.net.GTPacketTileEntity;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.CoverBehaviorBase;
@@ -296,8 +296,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     private void sendClientData() {
         if (mSendClientData) {
-            if (mMetaTileEntity != null && mMetaTileEntity instanceof MTEFrame)
-            {
+            if (mMetaTileEntity != null && mMetaTileEntity instanceof ITemporaryTE) {
                 NW.sendPacketToAllPlayersInRange(
                     worldObj,
                     new GTPacketCreateTE(

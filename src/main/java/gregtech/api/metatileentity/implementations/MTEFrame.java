@@ -1,8 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.net.GTPacketCreateTE;
-import gregtech.api.net.GTPacketTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -10,6 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ITemporaryTE;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -17,9 +15,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 
-import static gregtech.api.enums.GTValues.NW;
-
-public class MTEFrame extends MetaPipeEntity {
+public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
     private static final String localizedDescFormat = GTLanguageManager
         .addStringLocalization("gt.blockmachines.gt_frame.desc.format", "Just something you can put covers on.");
@@ -116,42 +112,6 @@ public class MTEFrame extends MetaPipeEntity {
     public void disconnect(ForgeDirection side) {
         /* Do nothing */
     }
-
-//    @Override
-//    public void onFirstTick(IGregTechTileEntity tileEntity) {
-//        if (tileEntity instanceof BaseMetaPipeEntity baseMetaPipeEntity)
-//        {
-//            NW.sendToAll(
-//                new GTPacketCreateTE(
-//                    baseMetaPipeEntity.getXCoord(),
-//                    baseMetaPipeEntity.getYCoord(),
-//                    baseMetaPipeEntity.getZCoord(),
-//                    (short) baseMetaPipeEntity.getMetaTileID(),
-//                    baseMetaPipeEntity.getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
-//                    baseMetaPipeEntity.getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
-//                    baseMetaPipeEntity.getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
-//                    baseMetaPipeEntity.getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
-//                    baseMetaPipeEntity.getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
-//                    baseMetaPipeEntity.getCoverInfoAtSide(ForgeDirection.EAST).getCoverID(),
-//                    mConnections,
-//                    getUpdateData(),
-//                    (byte) (((baseMetaPipeEntity.mSidedRedstone[0] > 0) ? 1 : 0) | ((baseMetaPipeEntity.mSidedRedstone[1] > 0) ? 2 : 0)
-//                        | ((baseMetaPipeEntity.mSidedRedstone[2] > 0) ? 4 : 0)
-//                        | ((baseMetaPipeEntity.mSidedRedstone[3] > 0) ? 8 : 0)
-//                        | ((baseMetaPipeEntity.mSidedRedstone[4] > 0) ? 16 : 0)
-//                        | ((baseMetaPipeEntity.mSidedRedstone[5] > 0) ? 32 : 0)),
-//                    baseMetaPipeEntity.getColorization()));
-//        }
-//
-//
-////        aBaseMetaTileEntity.issueClientUpdate();
-////
-////        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-////            if (aBaseMetaTileEntity.getCoverInfoAtSide(side).isValid()) {
-////                aBaseMetaTileEntity.getCoverInfoAtSide(side).setNeedsUpdate(true);
-////            }
-////        }
-//    }
 
     @Override
     public boolean isMachineBlockUpdateRecursive() {
