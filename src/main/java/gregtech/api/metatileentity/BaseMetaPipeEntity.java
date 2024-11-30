@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import gregtech.api.metatileentity.implementations.MTEFrame;
+import gregtech.api.net.GTPacketCreateTE;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -294,6 +296,32 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     private void sendClientData() {
         if (mSendClientData) {
+            if (mMetaTileEntity != null && mMetaTileEntity instanceof MTEFrame)
+            {
+                NW.sendPacketToAllPlayersInRange(
+                    worldObj,
+                    new GTPacketCreateTE(
+                        xCoord,
+                        (short) yCoord,
+                        zCoord,
+                        mID,
+                        getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.EAST).getCoverID(),
+                        oTextureData = mConnections,
+                        oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
+                        oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
+                            | ((mSidedRedstone[2] > 0) ? 4 : 0)
+                            | ((mSidedRedstone[3] > 0) ? 8 : 0)
+                            | ((mSidedRedstone[4] > 0) ? 16 : 0)
+                            | ((mSidedRedstone[5] > 0) ? 32 : 0)),
+                        oColor = mColor),
+                    xCoord,
+                    zCoord);
+            }
             NW.sendPacketToAllPlayersInRange(
                 worldObj,
                 new GTPacketTileEntity(

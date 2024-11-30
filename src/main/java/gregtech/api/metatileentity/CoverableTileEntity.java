@@ -81,7 +81,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     protected final CoverInfo[] coverInfos = new CoverInfo[] { null, null, null, null, null, null };
     private byte validCoversMask;
 
-    protected byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
+    public byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
     protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
 
