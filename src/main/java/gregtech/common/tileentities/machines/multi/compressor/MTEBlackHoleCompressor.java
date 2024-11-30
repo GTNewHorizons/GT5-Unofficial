@@ -320,7 +320,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 EnumChatFormatting.LIGHT_PURPLE
                     + "No longer requires heat management to perform superdense compression")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
-            .addInfo(EnumChatFormatting.BLUE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
             .addSeparator()
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
@@ -340,7 +339,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
             .addInfo("Once the black hole becomes unstable, it will void recipes and eventually close itself!")
             .addSeparator()
-            .addInfo("Running recipes in the machine will slow the decay rate by " + EnumChatFormatting.RED + "25%")
             .addInfo(
                 "The decay can be " + EnumChatFormatting.BOLD
                     + "halted"
@@ -363,6 +361,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " to close the black hole")
             .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one")
             .addSeparator()
+            .addInfo(EnumChatFormatting.WHITE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
             .addInfo("400% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 70% of the EU/t normally required")
             .addInfo("Gains 8 parallels per voltage tier")
@@ -498,6 +497,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                             blackHoleStatus = 1;
                             blackHoleStability = 100;
                             catalyzingCostModifier = 1;
+                            catalyzingCounter = 0;
                             if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
                             collapseTimer = 40;
                             return;
@@ -608,11 +608,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
         if (blackHoleStability >= 0) {
-
-            // If the machine is running, reduce stability loss by 25%
-            if (this.maxProgresstime() != 0) {
-                stabilityDecrease = 0.75F;
-            }
 
             // Search all hatches for catalyst fluid
             // If found enough, drain it and reduce stability loss to 0

@@ -89,7 +89,7 @@ public class MTEAdvImplosionCompressor extends GTPPMultiBlockBase<MTEAdvImplosio
                     ofChain(
                         buildHatchAdder(MTEAdvImplosionCompressor.class)
                             .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                            .casingIndex(48)
+                            .casingIndex(getCasingTextureId())
                             .dot(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(sBlockCasings4, 0))))

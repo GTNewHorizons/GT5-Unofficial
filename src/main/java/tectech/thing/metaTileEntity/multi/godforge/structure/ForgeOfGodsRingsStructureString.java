@@ -1,4 +1,4 @@
-package tectech.thing.metaTileEntity.multi.godforge;
+package tectech.thing.metaTileEntity.multi.godforge.structure;
 
 import static tectech.util.TTUtility.replaceLetters;
 

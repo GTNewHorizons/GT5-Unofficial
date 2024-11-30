@@ -45,6 +45,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -81,8 +82,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 .addElement(
                     'h',
                     lazy(
-                        t -> buildHatchAdder(MTELargeTurbine.class)
-                            .atLeast(Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler)
+                        t -> buildHatchAdder(MTELargeTurbine.class).atLeast(t.getHatchElements())
                             .casingIndex(t.getCasingTextureIndex())
                             .dot(2)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
@@ -142,6 +142,25 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public boolean isRotationChangeAllowed() {
         return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected IHatchElement<? super MTELargeTurbine>[] getHatchElements() {
+        if (getPollutionPerTick(null) == 0)
+            return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus };
+        return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler };
+    }
+
+    @Override
+    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
+        boolean f = super.checkStructure(aForceReset, aBaseMetaTileEntity);
+        if (f && getBaseMetaTileEntity().isServerSide()) {
+            // while is this a client side field, blockrenderer will reuse the server world for client side rendering
+            // so we must set it as well...
+            mFormed = true;
+            return true;
+        }
+        return f;
     }
 
     @Override
@@ -252,11 +271,13 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("turbineFitting", looseFit);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        looseFit = aNBT.getBoolean("turbineFitting");
     }
 
     @Override
