@@ -4,7 +4,6 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -189,7 +188,8 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(side);
 
-            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
+            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor
+                && neighbor.isConnectedAtSide(side.getOpposite())) {
                 neighbor.mConnections &= ~side.getOpposite().flag;
                 neighbor.connectionCount--;
             }
@@ -221,37 +221,6 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
-    }
-
-    @Override
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ, ItemStack aTool) {
-        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-
-        if (this.isConnectedAtSide(wrenchingSide)) {
-            this.mConnections &= ~wrenchingSide.flag;
-            this.connectionCount--;
-
-            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(wrenchingSide);
-
-            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
-                neighbor.mConnections &= ~wrenchingSide.getOpposite().flag;
-                neighbor.connectionCount--;
-            }
-
-        } else {
-            this.mConnections |= wrenchingSide.flag;
-            this.connectionCount++;
-
-            IGregTechTileEntity gregTechTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(wrenchingSide);
-
-            if (gregTechTileEntity != null && gregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
-                neighbor.mConnections |= wrenchingSide.getOpposite().flag;
-                neighbor.connectionCount--;
-            }
-        }
-
-        return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
