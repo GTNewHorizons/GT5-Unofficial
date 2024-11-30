@@ -253,11 +253,13 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("turbineFitting", looseFit);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        looseFit = aNBT.getBoolean("turbineFitting");
     }
 
     @Override
