@@ -816,6 +816,7 @@ public class RecipeLoader {
 
                 for (ItemStack lens : OreDictionary.getOres("craftingLens" + lensColour.mName.replace(" ", ""))) {
 
+                    if (lens == null) continue;
                     if (mask == MaskList.LCC) {
 
                         GTValues.RA.stdBuilder()
