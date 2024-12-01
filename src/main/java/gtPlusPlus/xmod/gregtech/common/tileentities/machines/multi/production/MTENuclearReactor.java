@@ -47,6 +47,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -259,7 +260,8 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         if (checkPiece(mName, 3, 3, 0) && mCasing >= 27) {
-            if ((mOutputHatches.size() >= 3 || canDumpFluidToME()) && !mInputHatches.isEmpty()
+            if ((mOutputHatches.size() >= 3 || mOutputHatches.stream()
+                .anyMatch(h -> h instanceof MTEHatchOutputME)) && !mInputHatches.isEmpty()
                 && mDynamoHatches.size() == 4
                 && mMufflerHatches.size() == 4) {
                 this.turnCasingActive(false);
