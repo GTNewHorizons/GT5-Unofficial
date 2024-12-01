@@ -48,7 +48,7 @@ import gtPlusPlus.core.material.Particle;
 public class PurifiedWaterRecipes {
 
     static final PurificationPlantBaseChanceKey BASE_CHANCE = PurificationPlantBaseChanceKey.INSTANCE;
-    public static int extraBaryonicOutput = 500;
+    public static final int extraBaryonicOutput = 500;
 
     public static void run() {
         final int duration = MTEPurificationPlant.CYCLE_TIME_TICKS;
