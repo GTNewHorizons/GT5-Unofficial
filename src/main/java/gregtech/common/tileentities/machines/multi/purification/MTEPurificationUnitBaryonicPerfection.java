@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
+import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -311,7 +312,9 @@ public class MTEPurificationUnitBaryonicPerfection
                     + CATALYST_BASE_COST
                     + "L"
                     + EnumChatFormatting.WHITE
-                    + " Molten Infinity")
+                    + " Molten Infinity"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addInfo("For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled.")
             .addSeparator()
             .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe.")
@@ -321,8 +324,20 @@ public class MTEPurificationUnitBaryonicPerfection
                     + BARYONIC_MATTER_OUTPUT
                     + "L "
                     + EnumChatFormatting.WHITE
-                    + "Stabilised Baryonic Matter")
-            .addInfo("At the end of the recipe, all incorrectly inserted catalysts are returned in the output bus.")
+                    + "Stabilised Baryonic Matter"
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addInfo(
+                "At the end of a successful recipe, outputs additional "
+                    + EnumChatFormatting.RED
+                    + PurifiedWaterRecipes.extraBaryonicOutput
+                    + "L "
+                    + EnumChatFormatting.WHITE
+                    + "Stabilised Baryonic Matter"
+                    + EnumChatFormatting.GRAY
+                    + " per parallel."
+            )
+            .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus.")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
