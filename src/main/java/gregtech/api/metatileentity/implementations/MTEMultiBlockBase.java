@@ -2013,16 +2013,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (totalOutputs > 0) {
                 currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
                 for (int i = 0; i < min(3, outputItemLength); i++) {
-                    currentTip
-                        .add("  " + tag.getString("outputItem" + i) + " x " + tag.getInteger("outputItemCount" + i));
+                    currentTip.add(
+                        "  " + tag.getString("outputItem" + i)
+                            + " x "
+                            + formatNumbers(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
                     currentTip.add(
-                        "  " + tag.getString("outputFluid" + i) + " x " + tag.getInteger("outputFluidCount" + i) + "L");
+                        "  " + tag.getString("outputFluid" + i)
+                            + " x "
+                            + formatNumbers(tag.getInteger("outputFluidCount" + i))
+                            + "L");
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
-                        StatCollector.translateToLocalFormatted("GT5U.waila.producing.andmore", (totalOutputs - 3)));
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.producing.andmore",
+                            formatNumbers((totalOutputs - 3))));
                 }
             }
         }
