@@ -161,6 +161,16 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     /**
+     * Get the available fluid space, up to max int.
+     */
+    @Override
+    public int getAvailableSpace() {
+        long availableSpace = getCacheCapacity() - getCachedAmount();
+        if (availableSpace > Integer.MAX_VALUE) availableSpace = Integer.MAX_VALUE;
+        return (int) availableSpace;
+    }
+
+    /**
      * Attempt to store fluid in connected ME network. Returns how much fluid is accepted (if the network was down e.g.)
      *
      * @param aFluid input fluid

@@ -62,4 +62,9 @@ public class OutputHatchWrapper implements IFluidStore {
     public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
         return outputHatch.canStoreFluid(fluidStack) && filter.test(fluidStack);
     }
+
+    @Override
+    public int getAvailableSpace() {
+        return outputHatch.getAvailableSpace();
+    }
 }
