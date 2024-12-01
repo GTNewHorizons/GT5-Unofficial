@@ -139,6 +139,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
 
     protected abstract String getCasingName();
 
+    protected abstract boolean isDenseSteam();
+
     protected abstract boolean requiresOutputHatch();
 
     @Override
@@ -152,6 +154,8 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         if (getTurbineType().equals("Plasma")) {
             tt.addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
                 .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)");
+        } else if (getTurbineType().contains("Steam")) {
+            tt.addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow");
         }
         tt.addTecTechHatchInfo();
         tt.addPollutionAmount(getPollutionPerSecond(null))
@@ -609,11 +613,12 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
-            StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow))
+            StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
+            // Divides optimal flow by 1000 if it's a dense steam
+                + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
                 + EnumChatFormatting.RESET
-                + " L/s"
+                + " L/"
+                + (getTurbineType().equals("Plasma") ? 's' : 't') // based on turbine type changes flow timing
                 + EnumChatFormatting.YELLOW
                 + " ("
                 + (isLooseMode() ? StatCollector.translateToLocal("GT5U.turbine.loose")
