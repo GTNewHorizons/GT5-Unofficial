@@ -746,7 +746,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (coverItem == null) return Collections.emptyList();
         final boolean coverHasGUI = coverInfo.hasCoverGUI();
 
-        final List<String> tooltip = coverItem.getTooltip(Minecraft.getMinecraft().thePlayer, true);
+        final Minecraft mc = Minecraft.getMinecraft();
+        final List<String> tooltip = coverItem.getTooltip(mc.thePlayer, mc.gameSettings.advancedItemTooltips);
         final ImmutableList.Builder<String> builder = ImmutableList.builder();
         builder.add(
             (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
