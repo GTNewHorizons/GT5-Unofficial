@@ -304,7 +304,7 @@ public class ForgeOfGodsUI {
                     .setPos(7, 140)
                     .setSize(150, 15))
             .widget(
-                TextWidget.dynamicText(() -> inversionInfoText(inversionGetter.get()))
+                TextWidget.dynamicText(() -> inversionHeaderText(inversionGetter.get()))
                     .setDefaultColor(EnumChatFormatting.WHITE)
                     .setTextAlignment(Alignment.CenterLeft)
                     .setPos(7, 155)
