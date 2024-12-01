@@ -2973,9 +2973,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             while (gravitonShardsAvailable >= 64) {
                 addOutput(GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 64));
                 gravitonShardsAvailable -= 64;
+                gravitonShardsSpent += 64;
             }
             addOutput(
                 GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, gravitonShardsAvailable));
+            gravitonShardsSpent += gravitonShardsAvailable;
             gravitonShardsAvailable = 0;
         }
     }
