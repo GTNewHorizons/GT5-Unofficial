@@ -3352,20 +3352,28 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                     + "which influences all of its functions,")
             .addInfo(
                 "such as " + EnumChatFormatting.GOLD
-                    + "unlocking new module types, increasing heat levels "
+                    + "unlocking new module types"
+                    + EnumChatFormatting.GRAY
+                    + ", "
+                    + EnumChatFormatting.GOLD
+                    + "increasing heat levels "
                     + EnumChatFormatting.GRAY
                     + "and "
                     + EnumChatFormatting.GOLD
                     + "granting")
             .addInfo(
-                EnumChatFormatting.GOLD + "various processing speed bonuses. "
+                EnumChatFormatting.GOLD + "various processing speed bonuses"
+                    + EnumChatFormatting.GRAY
+                    + ". "
                     + EnumChatFormatting.GRAY
                     + "These upgrades can be unlocked by reaching")
             .addInfo("certain milestones and/or spending materials.")
             .addSeparator(EnumChatFormatting.AQUA, 73)
             .addInfo(
                 EnumChatFormatting.GREEN
-                    + "Clicking on the logo in the controller gui opens an extensive information window,")
+                    + "Clicking on the logo in the controller gui opens an extensive information window"
+                    + EnumChatFormatting.GRAY
+                    + ",")
             .addInfo("explaining everything there is to know about this multiblock.")
             .beginStructureBlock(127, 29, 186, false)
             .addStructureInfo(
