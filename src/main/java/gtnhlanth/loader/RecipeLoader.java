@@ -817,16 +817,33 @@ public class RecipeLoader {
                 for (ItemStack lens : OreDictionary.getOres("craftingLens" + lensColour.mName.replace(" ", ""))) {
 
                     if (lens == null) continue;
+                    if (mask == MaskList.LCC) {
 
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
-                            GTUtility.copyAmount(0, lens))
-                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
-                        .requiresCleanRoom()
-                        .duration(120 * SECONDS)
-                        .eut(mask.getEngraverEUt())
-                        .addTo(WaferEngravingRecipes);
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(
+                                new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
+                                GTUtility.copyAmount(0, lens))
+                            .fluidInputs(
+                                // damage * 4 (chips per recipe) * 50 (L per chip normally) * 3 / 4 (75% of the cost)
+                                Materials.BioMediumSterilized.getFluid((mask.getDamage() + 1) * 4L * 50 * 3 / 4))
+                            .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
+                            .requiresCleanRoom()
+                            .duration(120 * SECONDS)
+                            .eut(mask.getEngraverEUt())
+                            .addTo(WaferEngravingRecipes);
+
+                    } else {
+
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(
+                                new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
+                                GTUtility.copyAmount(0, lens))
+                            .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
+                            .requiresCleanRoom()
+                            .duration(120 * SECONDS)
+                            .eut(mask.getEngraverEUt())
+                            .addTo(WaferEngravingRecipes);
+                    }
 
                 }
             }
