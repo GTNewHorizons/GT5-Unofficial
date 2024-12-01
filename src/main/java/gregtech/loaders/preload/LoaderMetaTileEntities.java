@@ -1001,7 +1001,6 @@ import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
-import gregtech.common.tileentities.machines.MTEMMUplinkMEHatch;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
@@ -1052,7 +1051,6 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineGasAdvanced;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
-import gregtech.common.tileentities.machines.multi.MTEMMUplink;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -1631,10 +1629,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
-                .getStackForm(1));
-
-        ItemList.MatterManipulatorUplink.set(
-            new MTEMMUplink(MATTER_MANIPULATOR_UPLINK.ID, "multimachine.mmuplink", "Matter Manipulator Quantum Uplink")
                 .getStackForm(1));
     }
 
@@ -10761,12 +10755,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 CRAFTING_INPUT_SLAVE.ID,
                 "hatch.crafting_input.proxy",
                 "Crafting Input Proxy").getStackForm(1L));
-
-        ItemList.Hatch_MatterManipulatorUplink_ME.set(
-            new MTEMMUplinkMEHatch(
-                HATCH_MATTER_MANIPULATOR_UPLINK_ME.ID,
-                "hatch.mmuplink.me",
-                "Quantum Uplink ME Connector Hatch").getStackForm(1L));
     }
 
     private static void registerMagHatch() {
