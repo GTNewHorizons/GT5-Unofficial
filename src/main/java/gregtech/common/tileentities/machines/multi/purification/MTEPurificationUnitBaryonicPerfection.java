@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
-import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -53,6 +52,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
 
 public class MTEPurificationUnitBaryonicPerfection
     extends MTEPurificationUnitBase<MTEPurificationUnitBaryonicPerfection> implements ISurvivalConstructable {
@@ -328,15 +328,13 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.GRAY
                     + ".")
             .addInfo(
-                "At the end of a successful recipe, outputs additional "
-                    + EnumChatFormatting.RED
+                "At the end of a successful recipe, outputs additional " + EnumChatFormatting.RED
                     + PurifiedWaterRecipes.extraBaryonicOutput
                     + "L "
                     + EnumChatFormatting.WHITE
                     + "Stabilised Baryonic Matter"
                     + EnumChatFormatting.GRAY
-                    + " per parallel."
-            )
+                    + " per parallel.")
             .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus.")
             .addSeparator()
             .addInfo(
