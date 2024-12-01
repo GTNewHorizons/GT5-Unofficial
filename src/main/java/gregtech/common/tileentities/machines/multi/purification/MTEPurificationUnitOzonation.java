@@ -187,14 +187,18 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     + MAX_OZONE_GAS_FOR_EXPLOSION
                     + "L "
                     + EnumChatFormatting.WHITE
-                    + "Ozone Gas.")
+                    + "Ozone Gas"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addInfo(
                 "Receives a " + EnumChatFormatting.RED
                     + "20%"
                     + EnumChatFormatting.GRAY
                     + " bonus to success chance for every doubling of "
                     + EnumChatFormatting.WHITE
-                    + "Ozone Gas.")
+                    + "Ozone Gas"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
