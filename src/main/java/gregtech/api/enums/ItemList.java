@@ -2569,33 +2569,6 @@ public enum ItemList implements IItemContainer {
     ResearchCompleter, // Populated in EMT
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,
-    MatterManipulatorHologram,
-    MatterManipulatorPowerCore0,
-    MatterManipulatorComputerCore0,
-    MatterManipulatorTeleporterCore0,
-    MatterManipulatorFrame0,
-    MatterManipulatorLens0,
-    MatterManipulatorPowerCore1,
-    MatterManipulatorComputerCore1,
-    MatterManipulatorTeleporterCore1,
-    MatterManipulatorFrame1,
-    MatterManipulatorLens1,
-    MatterManipulatorPowerCore2,
-    MatterManipulatorComputerCore2,
-    MatterManipulatorTeleporterCore2,
-    MatterManipulatorFrame2,
-    MatterManipulatorLens2,
-    MatterManipulatorPowerCore3,
-    MatterManipulatorComputerCore3,
-    MatterManipulatorTeleporterCore3,
-    MatterManipulatorFrame3,
-    MatterManipulatorLens3,
-    MatterManipulatorAEDownlink,
-    MatterManipulatorQuantumDownlink,
-    MatterManipulator0,
-    MatterManipulator1,
-    MatterManipulator2,
-    MatterManipulator3,
     // semicolon after the comment to reduce merge conflicts
     ;
 

@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -91,7 +92,6 @@ import gregtech.common.items.ItemWirelessHeadphones;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
-import gregtech.common.items.MetaGeneratedItem04;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -161,7 +161,6 @@ public class LoaderGTBlockFluid implements Runnable {
         new MetaGeneratedItem01();
         new MetaGeneratedItem02();
         new MetaGeneratedItem03();
-        new MetaGeneratedItem04();
         // GT_MetaGenerated_Item_98 is initialized in GTProxy.onPostLoad() because we need to wait for fluids to be
         // registered.
         // Pre-initialization needs to happen before then, though, because the cell icons get deleted at some point
@@ -2114,5 +2113,14 @@ public class LoaderGTBlockFluid implements Runnable {
             .set(new ItemTierDrone("tierdDrone1", "Drone (Level 2)", "Dual Turbo High-Ejection Medium Aircraft", 2));
         ItemList.TierdDrone2
             .set(new ItemTierDrone("tierdDrone2", "Drone (Level 3)", "Single Engine Anti-Gravity Large Aircraft", 3));
+
+        GameRegistry.registerItem(new Item().setUnlocalizedName("itemMatterManipulator0"), "itemMatterManipulator0");
+        GameRegistry.registerItem(new Item().setUnlocalizedName("itemMatterManipulator1"), "itemMatterManipulator1");
+        GameRegistry.registerItem(new Item().setUnlocalizedName("itemMatterManipulator2"), "itemMatterManipulator2");
+        GameRegistry.registerItem(new Item().setUnlocalizedName("itemMatterManipulator3"), "itemMatterManipulator3");
+        GameRegistry.registerItem(
+            new Item().setUnlocalizedName("gt.metaitem.04")
+                .setHasSubtypes(true),
+            "gt.metaitem.04");
     }
 }
