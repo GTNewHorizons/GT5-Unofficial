@@ -282,10 +282,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     .initDefaultModes(aStack.getTagCompound());
                 final ForgeDirection oppositeSide = side.getOpposite();
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
-                    if (!tTileEntity.getAirAtSide(oppositeSide)) {
-                        // If we're connectable, try connecting to whatever we're up against if it exists
-                        connectable.connect(oppositeSide);
-                    }
+                    // If we're connectable, try connecting to whatever we're up against
+                    connectable.connect(oppositeSide);
                 } else if (aPlayer != null && aPlayer.isSneaking()) {
                     // If we're being placed against something that is connectable, try telling it to connect to us
                     final IGregTechTileEntity aTileEntity = tTileEntity.getIGregTechTileEntityAtSide(oppositeSide);
