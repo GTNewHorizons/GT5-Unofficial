@@ -129,7 +129,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
         .addElement('g', ofGlassTieredMixed((byte) 4, (byte) 127, 5))
-        .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casings
+        .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembly line casings
         .addElement(
             'b',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputHatch, Maintenance)
@@ -178,7 +178,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
             .addStructureInfo(
                 "Layer 2 - " + getColoredTierNameFromTier((byte) 4)
-                    + "+ Tier Glass, Assembling Line Casing, "
+                    + "+ Tier Glass, Assembly Line Casing, "
                     + getColoredTierNameFromTier((byte) 4)
                     + "+ Tier Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing")
