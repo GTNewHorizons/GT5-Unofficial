@@ -109,6 +109,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
@@ -1321,6 +1322,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 continue;
             }
             if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
+
+            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
+                if (!tMEHatch.canAcceptFluid()) continue;
+            }
+
             int tAmount = tHatch.fill(copiedFluidStack, false);
             if (tAmount >= copiedFluidStack.amount) {
                 boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
@@ -2282,6 +2288,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (MTEHatch tHatch : validMTEList(mOutputBusses)) {
             if (tHatch instanceof MTEHatchOutputBusME) {
                 if ((((MTEHatchOutputBusME) tHatch).canAcceptItem())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canDumpFluidToME() {
+        for (IFluidStore tHatch : getFluidOutputSlots(new FluidStack[0])) {
+            if (tHatch instanceof MTEHatchOutputME) {
+                if ((((MTEHatchOutputME) tHatch).canAcceptFluid())) {
                     return true;
                 }
             }

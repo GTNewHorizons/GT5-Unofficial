@@ -915,6 +915,11 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
+    public boolean canDumpFluidToME() {
+        return false;
+    }
+
+    @Override
     public boolean supportsInputSeparation() {
         return true;
     }
