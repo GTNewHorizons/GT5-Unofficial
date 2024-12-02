@@ -59,7 +59,7 @@ public class TileEntityForgeOfGods extends TileEntity {
 
     @Override
     public double getMaxRenderDistanceSquared() {
-        return 51200;
+        return Double.MAX_VALUE;
     }
 
     public void setStarRadius(float size) {
