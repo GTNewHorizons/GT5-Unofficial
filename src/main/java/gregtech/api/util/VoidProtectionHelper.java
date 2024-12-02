@@ -214,7 +214,7 @@ public class VoidProtectionHelper {
                 return;
             }
         }
-        if (protectExcessFluid && fluidOutputs.length > 0) {
+        if (protectExcessFluid && fluidOutputs.length > 0 && !machine.canDumpFluidToME()) {
             maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
             if (maxParallel <= 0) {
                 isFluidFull = true;
@@ -255,7 +255,7 @@ public class VoidProtectionHelper {
         }
 
         for (IFluidStore tHatch : hatches) {
-            int tSpaceLeft = tHatch.getAvailableSpace();
+            int tSpaceLeft = tHatch.getCapacity() - tHatch.getFluidAmount();
 
             // check if hatch filled
             if (tSpaceLeft <= 0) continue;
@@ -289,7 +289,7 @@ public class VoidProtectionHelper {
             ParallelStackInfo<FluidStack> tParallel = aParallelQueue.poll();
             assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
             Integer tCraftSize = tFluidOutputMap.get(tParallel.stack);
-            int tSpaceLeft = tHatch.getAvailableSpace();
+            int tSpaceLeft = tHatch.getCapacity();
             tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
             tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
             aParallelQueue.add(tParallel);

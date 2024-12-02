@@ -53,6 +53,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -432,6 +433,15 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                 }
             }
         }
+    }
+
+    @Override
+    public boolean canDumpFluidToME() {
+        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
+        return this.mOutputHatchesByLayer.stream()
+            .allMatch(
+                tLayerOutputHatches -> tLayerOutputHatches.stream()
+                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
     }
 
     @Override
