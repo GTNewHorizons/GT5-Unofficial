@@ -79,11 +79,4 @@ public interface IVoidable {
      *         as this might be called every tick and cause lag.
      */
     boolean canDumpItemToME();
-
-    /**
-     * @return If this machine has ability to dump fluid outputs to ME network.
-     *         This doesn't need to check if it can actually dump to ME,
-     *         as this might be called every tick and cause lag.
-     */
-    boolean canDumpFluidToME();
 }
