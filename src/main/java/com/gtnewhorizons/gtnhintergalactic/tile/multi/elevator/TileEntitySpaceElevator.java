@@ -1,5 +1,6 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
@@ -27,8 +28,8 @@ import com.gtnewhorizon.gtnhlib.client.tooltip.LoreHolder;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
@@ -51,9 +52,11 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import blockrenderer6343.client.world.ClientFakePlayer;
 import galaxyspace.core.register.GSBlocks;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -233,12 +236,14 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             .addElement('F', StructureUtility.ofBlock(IGBlocks.SpaceElevatorCasing, 2)) // Internal Structure
             .addElement(
                 'C',
-                StructureUtility.ofBlocksTiered(
-                    ElevatorUtil.motorTierConverter(),
-                    ElevatorUtil.getMotorTiers(),
-                    0,
-                    TileEntitySpaceElevator::setMotorTier,
-                    TileEntitySpaceElevator::getMotorTier)) // Motors
+                withChannel(
+                    "motor",
+                    StructureUtility.ofBlocksTiered(
+                        ElevatorUtil.motorTierConverter(),
+                        ElevatorUtil.getMotorTiers(),
+                        0,
+                        TileEntitySpaceElevator::setMotorTier,
+                        TileEntitySpaceElevator::getMotorTier))) // Motors
             .addElement('A', StructureUtility.ofBlock(GSBlocks.DysonSwarmBlocks, 9)) // Concrete
             .addElement('D', StructureUtility.ofBlock(IGBlocks.SpaceElevatorCasing, 0)) // Base Casing
             .addElement(
@@ -397,46 +402,60 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
         }
     }
 
-    /**
-     * Construct the structure of the Space Elevator in survival
-     *
-     * @param stackSize     Hologram projector item stack
-     * @param elementBudget Max at once placeable blocks
-     * @param source        Source of the building material
-     * @param actor         Player that is constructing
-     * @return Number of placed blocks
-     */
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (mMachine) {
-            return -1;
-        } else {
-            int consumedBudget = survivialBuildPiece(
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (Mods.BlockRenderer6343.isModLoaded() && env.getActor() instanceof ClientFakePlayer) {
+            int built = survivialBuildPiece(
                     STRUCTURE_PIECE_MAIN,
                     stackSize,
                     STRUCTURE_PIECE_MAIN_HOR_OFFSET,
                     STRUCTURE_PIECE_MAIN_VERT_OFFSET,
                     STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
                     elementBudget,
-                    source,
-                    actor,
+                    env,
                     false,
                     true);
-            if (isExtensionEnabled) {
-                consumedBudget += survivialBuildPiece(
+            if (built >= 0) return built;
+            if (stackSize.stackSize > 1) {
+                built = survivialBuildPiece(
                         STRUCTURE_PIECE_EXTENDED,
                         stackSize,
                         STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
                         STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
                         STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
                         elementBudget,
-                        source,
-                        actor,
+                        env,
                         false,
                         true);
             }
-            return consumedBudget;
+            return built;
         }
+
+        if (mMachine) return -1;
+
+        int consumedBudget = survivialBuildPiece(
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                STRUCTURE_PIECE_MAIN_HOR_OFFSET,
+                STRUCTURE_PIECE_MAIN_VERT_OFFSET,
+                STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
+                elementBudget,
+                env,
+                false,
+                true);
+        if (isExtensionEnabled) {
+            consumedBudget += survivialBuildPiece(
+                    STRUCTURE_PIECE_EXTENDED,
+                    stackSize,
+                    STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
+                    STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
+                    STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
+                    elementBudget,
+                    env,
+                    false,
+                    true);
+        }
+        return consumedBudget;
     }
 
     /**
