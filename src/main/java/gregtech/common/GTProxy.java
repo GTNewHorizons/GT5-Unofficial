@@ -612,10 +612,15 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
     public boolean crashOnNullRecipeInput = false;
 
     public enum OreDropSystem {
+        /** Will always drop the block version. */
         Block,
+        /** Will drop the dimension-specific block version, or stone. */
         PerDimBlock,
+        /** Will always drop the stone block version. */
         UnifiedBlock,
+        /** Drops raw ore, and is affected by fortune. */
         FortuneItem,
+        /** Drops raw ore, and is not affected by fortune. */
         Item
     }
 
