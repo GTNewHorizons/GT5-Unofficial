@@ -58,7 +58,7 @@ dependencies {
 
     compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.54:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta23:api') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta24:api') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.39:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.8.22:dev") { transitive = false }
