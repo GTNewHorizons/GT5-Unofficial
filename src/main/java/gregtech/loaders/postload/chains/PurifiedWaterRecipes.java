@@ -48,6 +48,7 @@ import gtPlusPlus.core.material.Particle;
 public class PurifiedWaterRecipes {
 
     static final PurificationPlantBaseChanceKey BASE_CHANCE = PurificationPlantBaseChanceKey.INSTANCE;
+    public static final int extraBaryonicOutput = 500;
 
     public static void run() {
         final int duration = MTEPurificationPlant.CYCLE_TIME_TICKS;
@@ -302,7 +303,9 @@ public class PurifiedWaterRecipes {
         // real recipe
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1000L))
-            .fluidOutputs(Materials.Grade8PurifiedWater.getFluid(900L), Materials.StableBaryonicMatter.getFluid(500))
+            .fluidOutputs(
+                Materials.Grade8PurifiedWater.getFluid(900L),
+                Materials.StableBaryonicMatter.getFluid(extraBaryonicOutput))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Unaligned.get(2L), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(10000, 100)
             .ignoreCollision()
