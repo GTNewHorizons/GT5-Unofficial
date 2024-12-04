@@ -526,17 +526,12 @@ public enum SmallOres {
         .ore(Materials.DeepIron)
         .enableInDim(Mercury)),
 
-    Redgarnet(new SmallOreBuilder().name("ore.small.redgarnet")
-        .heightRange(5, 35)
-        .amount(2)
-        .ore(Materials.GarnetRed)
-        .enableInDim(Horus)),
-
     Chargedcertus(new SmallOreBuilder().name("ore.small.chargedcertus")
         .heightRange(5, 115)
         .amount(4)
         .ore(Materials.CertusQuartzCharged)
-        .enableInDim(Horus)),;
+        .enableInDim(Horus)),
+    ;
     // spotless : on
 
     public final SmallOreBuilder smallOreBuilder;

@@ -1,7 +1,7 @@
 package gregtech.common;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
@@ -14,7 +14,8 @@ public class SmallOreBuilder {
     public static final String TWILIGHT_FOREST = "Twilight Forest";
     public String smallOreName;
     public boolean enabledByDefault = true;
-    public Map<String, Boolean> dimsEnabled = new HashMap<>();
+    /** {full dimension name: enabled} */
+    public Set<String> dimsEnabled = new HashSet<>();
     public int minY, maxY, amount;
     public Materials ore;
 
@@ -30,14 +31,14 @@ public class SmallOreBuilder {
 
     public SmallOreBuilder enableInDim(DimensionDef... dims) {
         for (DimensionDef dim : dims) {
-            this.dimsEnabled.put(dim.modDimensionDef.getDimensionName(), true);
+            this.dimsEnabled.add(dim.modDimensionDef.getDimensionName());
         }
         return this;
     }
 
     public SmallOreBuilder enableInDim(String... dims) {
         for (String dim : dims) {
-            this.dimsEnabled.put(dim, true);
+            this.dimsEnabled.add(dim);
         }
         return this;
     }

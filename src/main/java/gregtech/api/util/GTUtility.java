@@ -124,6 +124,8 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 
+import bartworks.system.material.BWMetaGeneratedOres;
+import bartworks.system.material.BWMetaGeneratedSmallOres;
 import buildcraft.api.transport.IPipeTile;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.transport.IItemDuct;
@@ -167,8 +169,10 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.blocks.BlockOres2;
 import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.pollution.Pollution;
+import gtPlusPlus.core.block.base.BlockBaseOre;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -2336,6 +2340,18 @@ public class GTUtility {
         return false;
     }
 
+    public static <T> int indexOf(T[] array, T value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == value) return i;
+        }
+
+        return -1;
+    }
+
+    public static <T> boolean contains(T[] array, T value) {
+        return indexOf(array, value) != -1;
+    }
+
     /**
      * Note: use {@link ArrayExt#withoutNulls(Object[], IntFunction)} if you want an array as a result.
      */
@@ -4327,16 +4343,13 @@ public class GTUtility {
             && GTOreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
-    public static final ImmutableSet<String> ORE_BLOCK_CLASSES = ImmutableSet.of(
-        "bartworks.system.material.BWMetaGeneratedOres",
-        "bartworks.system.material.BWMetaGeneratedSmallOres",
-        "gtPlusPlus.core.block.base.BlockBaseOre");
+    public static boolean isOre(Block block, int meta) {
+        if (block instanceof BlockOres2) return true;
+        if (block instanceof BWMetaGeneratedOres) return true;
+        if (block instanceof BWMetaGeneratedSmallOres) return true;
+        if (block instanceof BlockBaseOre) return true;
 
-    public static boolean isOre(Block aBlock, int aMeta) {
-        return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))
-            || ORE_BLOCK_CLASSES.contains(
-                aBlock.getClass()
-                    .getName());
+        return isOre(new ItemStack(block, 1, meta));
     }
 
     public static boolean isOre(ItemStack aStack) {

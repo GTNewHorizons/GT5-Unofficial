@@ -1,8 +1,8 @@
 package galacticgreg;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -22,7 +22,7 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
 
     private long mProfilingStart;
     private long mProfilingEnd;
-    private final Map<String, Boolean> allowedDims;
+    private final Set<String> allowedDims;
 
     public WorldgenOreSmallSpace(SmallOreBuilder ore) {
         super(ore.smallOreName, GalacticGreg.smallOreWorldgenList, ore.enabledByDefault);
@@ -32,18 +32,15 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
         mAmount = (short) Math.max(1, ore.amount);
         mMeta = (short) ore.ore.mMetaItemSubID;
 
-        allowedDims = new HashMap<>();
+        allowedDims = new HashSet<>();
         for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
             if (!mc.isModLoaded()) continue;
 
             for (ModDimensionDef mdd : mc.getDimensionList()) {
-                String tDimIdentifier = mdd.getDimIdentifier();
-                if (allowedDims.containsKey(tDimIdentifier)) GalacticGreg.Logger.error(
-                    "Found 2 Dimensions with the same Identifier: %s Dimension will not generate Ores",
-                    tDimIdentifier);
-                else {
-                    boolean tFlag = ore.dimsEnabled.getOrDefault(mdd.getDimensionName(), false);
-                    allowedDims.put(tDimIdentifier, tFlag);
+                String dimId = mdd.getDimIdentifier();
+
+                if (ore.dimsEnabled.contains(dimId)) {
+                    allowedDims.add(dimId);
                 }
             }
         }
@@ -58,7 +55,7 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
      * @return
      */
     public boolean isEnabledForDim(ModDimensionDef pDimensionDef) {
-        return allowedDims.getOrDefault(pDimensionDef.getDimIdentifier(), false);
+        return allowedDims.contains(pDimensionDef.getDimIdentifier());
     }
 
     @Override

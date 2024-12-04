@@ -365,9 +365,9 @@ public class EyeOfHarmonyRecipe {
 
         // Iterate over small ores in dimension and add them, kinda hacky but works and is close enough.
         if (smallOreDimWrapper != null) {
-            smallOreDimWrapper.oreVeinToProbabilityInDimension.forEach(
+            smallOreDimWrapper.oreVeinProbabilities.forEach(
                 (veinInfo,
-                    probability) -> processHelper(outputMap, veinInfo.getOreMaterial(), mainMultiplier, probability));
+                    probability) -> processHelper(outputMap, veinInfo.material, mainMultiplier, probability));
         }
 
         ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();

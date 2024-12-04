@@ -33,6 +33,8 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
+import gregtech.common.blocks.BlockOres2;
+import gregtech.common.blocks.BlockOres2.StoneType;
 
 public class VoidMinerUtility {
 
@@ -65,7 +67,7 @@ public class VoidMinerUtility {
             if (isBWOres) {
                 addDrop(WerkstoffLoader.BWOres, meta, weight);
             } else {
-                addDrop(GregTechAPI.sBlockOres1, meta, weight);
+                addDrop(GregTechAPI.sBlockOres2, meta, weight);
             }
         }
 
@@ -177,7 +179,7 @@ public class VoidMinerUtility {
         Predicate<WorldgenGTOreSmallPieces> smallOresPredicate = makeSmallOresPredicate(dimId);
         WorldgenGTOreSmallPieces.sList.stream()
             .filter(gt_worldgen -> gt_worldgen.mEnabled && smallOresPredicate.test(gt_worldgen))
-            .forEach(element -> dropMap.addDrop(element.mMeta, element.mAmount, false));
+            .forEach(element -> dropMap.addDrop(BlockOres2.getMeta(StoneType.Stone, element.mMaterial.mMetaItemSubID, true, true), element.mAmount, false));
         return dropMap;
     }
 

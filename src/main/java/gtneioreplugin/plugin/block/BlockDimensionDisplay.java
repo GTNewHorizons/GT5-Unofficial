@@ -41,6 +41,7 @@ public class BlockDimensionDisplay extends Block {
         this.icons[5] = iconRegister.registerIcon("gtneioreplugin:" + dimension + "_right");
     }
 
+    /** Gets the abbreviated dimension name for this block. */
     public String getDimension() {
         return this.dimension;
     }

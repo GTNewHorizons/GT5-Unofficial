@@ -18,7 +18,7 @@ public class CSVMaker implements Runnable {
 
     public void runSmallOres() {
         try {
-            Iterator<Map.Entry<String, GT5OreSmallHelper.OreSmallWrapper>> it = GT5OreSmallHelper.mapOreSmallWrapper
+            Iterator<Map.Entry<String, GT5OreSmallHelper.OreSmallWrapper>> it = GT5OreSmallHelper.SMALL_ORES_BY_NAME
                 .entrySet()
                 .iterator();
             List<SmallOre> SmallOreVeins = new ArrayList<>();
@@ -28,13 +28,11 @@ public class CSVMaker implements Runnable {
                 Map.Entry<String, GT5OreSmallHelper.OreSmallWrapper> pair = it.next();
                 GT5OreSmallHelper.OreSmallWrapper oreLayer = pair.getValue();
 
-                Map<String, Boolean> Dims = GT5OreSmallHelper.bufferedDims.get(oreLayer);
-
                 oremix.setOreName(oreLayer.oreGenName);
-                oremix.setOreMeta(oreLayer.oreMeta);
+                oremix.setOreMeta(oreLayer.material.mMetaItemSubID);
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setAmount(oreLayer.amountPerChunk);
-                oremix.setDims(Dims);
+                oremix.setDims(oreLayer.enabledDims);
 
                 SmallOreVeins.add(oremix);
 
@@ -78,21 +76,21 @@ public class CSVMaker implements Runnable {
                 Map<String, Boolean> Dims = GT5OreLayerHelper.bufferedDims.get(pair.getValue());
                 OreLayerWrapper oreLayer = pair.getValue();
                 oremix.setOreMixName(oreLayer.veinName);
-                oremix.setPrimary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.Meta[0]));
-                oremix.setSecondary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.Meta[1]));
-                oremix.setInbetween(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.Meta[2]));
-                oremix.setSporadic(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.Meta[3]));
+                oremix.setPrimary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.ores[0], false));
+                oremix.setSecondary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.ores[1], false));
+                oremix.setInbetween(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.ores[2], false));
+                oremix.setSporadic(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.ores[3], false));
                 oremix.setSize(oreLayer.size);
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setDensity(oreLayer.density);
                 oremix.setWeight(oreLayer.randomWeight);
                 oremix.setOreMixIDs(
-                    Integer.toString(oreLayer.Meta[0]) + "|"
-                        + Integer.toString(oreLayer.Meta[1])
+                    Integer.toString(oreLayer.ores[0].mMetaItemSubID) + "|"
+                        + Integer.toString(oreLayer.ores[1].mMetaItemSubID)
                         + "|"
-                        + Integer.toString(oreLayer.Meta[2])
+                        + Integer.toString(oreLayer.ores[2].mMetaItemSubID)
                         + "|"
-                        + Integer.toString(oreLayer.Meta[3]));
+                        + Integer.toString(oreLayer.ores[3].mMetaItemSubID));
                 oremix.setDims(Dims);
                 OreVeins.add(oremix);
 

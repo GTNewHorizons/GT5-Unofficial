@@ -9,7 +9,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -17,8 +16,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.blocks.BlockOres2;
+import gregtech.common.blocks.BlockOres2.StoneType;
 
 public class WorldgenStone extends GTWorldgen {
 
@@ -209,8 +208,9 @@ public class WorldgenStone extends GTWorldgen {
                 int sZ = Math.max(tMinZ, aChunkZ + 8);
                 int nZ = Math.min(tMaxZ, aChunkZ + 8 + 16);
 
-                if (debugStones) GTLog.out.println(
-                    mWorldGenName + " tX="
+                if (debugStones) {
+                    GTLog.out.println(
+                        mWorldGenName + " tX="
                         + tX
                         + " tY="
                         + tY
@@ -236,6 +236,7 @@ public class WorldgenStone extends GTWorldgen {
                         + sZ
                         + " nZ="
                         + nZ);
+                }
 
                 double rightHandSide = realSize * realSize + 1; // Precalc the right hand side
                 for (int iY = tMinY; iY < tMaxY; iY++) { // Do placement from the bottom up layer up. Maybe better on
@@ -261,18 +262,14 @@ public class WorldgenStone extends GTWorldgen {
                             if (leftHandSize <= rightHandSide) {
                                 // Yay! We can actually place a block now. (this part copied from original code)
                                 Block tTargetedBlock = aWorld.getBlock(iX, iY, iZ);
-                                if (tTargetedBlock instanceof BlockOresAbstract) {
-                                    TileEntity tTileEntity = aWorld.getTileEntity(iX, iY, iZ);
-                                    if ((tTileEntity instanceof TileEntityOres)) {
-                                        if (tTargetedBlock != GregTechAPI.sBlockOres1) {
-                                            ((TileEntityOres) tTileEntity).convertOreBlock(aWorld, iX, iY, iZ);
-                                        }
-                                        ((TileEntityOres) tTileEntity)
-                                            .overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
+                                if (tTargetedBlock == GregTechAPI.sBlockOres2) {
+                                    StoneType stoneType = StoneType.fromHypotheticalWorldBlock(aWorld, iX, iY, iZ, mBlock, mBlockMeta);
+
+                                    if (stoneType != null) {
+                                        BlockOres2.setExistingOreStoneType(aWorld, iX, iY, iZ, stoneType);
                                     }
-                                } else if (((this.mAllowToGenerateinVoid) && (aWorld.getBlock(iX, iY, iZ)
-                                    .isAir(aWorld, iX, iY, iZ)))
-                                    || ((tTargetedBlock != null) && ((tTargetedBlock
+                                } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(iX, iY, iZ))
+                                    || (tTargetedBlock != null && ((tTargetedBlock
                                         .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stone))
                                         || (tTargetedBlock
                                             .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stained_hardened_clay))

@@ -10,6 +10,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
+import gregtech.api.enums.Materials;
+import gregtech.common.blocks.BlockOres2;
+import gregtech.common.blocks.ItemOres2;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreLayerHelper;
@@ -22,23 +25,26 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
             for (OreLayerWrapper oreVein : getAllVeins()) {
-                addVeinWithLayers(oreVein, 7);
+                addVeinWithLayers(oreVein);
             }
-        } else super.loadCraftingRecipes(outputId, results);
+        } else {
+            super.loadCraftingRecipes(outputId, results);
+        }
     }
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        if (stack.getUnlocalizedName()
-            .startsWith("gt.blockores")) {
-            loadMatchingVeins((short) (stack.getItemDamage() % 1000));
-        } else super.loadCraftingRecipes(stack);
+        if (stack.getItem() instanceof ItemOres2) {
+            loadMatchingVeins(BlockOres2.getMaterial(stack.getItemDamage()));
+        } else {
+            super.loadCraftingRecipes(stack);
+        }
     }
 
-    private void loadMatchingVeins(short oreId) {
+    private void loadMatchingVeins(Materials ore) {
         for (OreLayerWrapper oreVein : getAllVeins()) {
-            if (oreVein.containsOre(oreId)) {
-                addVeinWithLayers(oreVein, getMaximumMaterialIndex(oreId, false));
+            if (oreVein.containsOre(ore)) {
+                addVeinWithLayers(oreVein);
             }
         }
     }
@@ -51,21 +57,20 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         }
 
         for (OreLayerWrapper oreVein : getAllVeins()) {
-            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.veinName))
-                .contains(dimension)) {
-                addVeinWithLayers(oreVein, getMaximumMaterialIndex((short) (stack.getItemDamage() % 1000), false));
+            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.veinName)).contains(dimension)) {
+                addVeinWithLayers(oreVein);
             }
         }
     }
 
-    private void addVeinWithLayers(OreLayerWrapper oreVein, int maximumMaterialIndex) {
+    private void addVeinWithLayers(OreLayerWrapper oreVein) {
         this.arecipes.add(
             new CachedVeinStatRecipe(
                 oreVein.veinName,
-                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_PRIMARY),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_SECONDARY),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_BETWEEN),
-                oreVein.getVeinLayerOre(maximumMaterialIndex, OreVeinLayer.VEIN_SPORADIC)));
+                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_PRIMARY),
+                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_SECONDARY),
+                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_BETWEEN),
+                oreVein.getVeinLayerOre(OreVeinLayer.VEIN_SPORADIC)));
     }
 
     private Collection<OreLayerWrapper> getAllVeins() {
@@ -108,7 +113,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     private static void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
         drawLine(
             OreVeinLayer.getOreVeinLayerName(veinLayer),
-            getGTOreLocalizedName(oreLayer.Meta[veinLayer]),
+            getGTOreLocalizedName(oreLayer.ores[veinLayer], false),
             2,
             height);
     }

@@ -208,20 +208,6 @@ public class DimensionHelper {
         return enabledDims;
     }
 
-    public static Map<String, Boolean> getDims(GT5OreSmallHelper.OreSmallWrapper ore) {
-        Map<String, Boolean> enabledDims = new HashMap<>();
-        Map<String, Boolean> origNames = ore.allowedDimWithOrigNames;
-
-        for (String dimName : origNames.keySet()) {
-            String abbr = getDimAbbreviatedName(dimName);
-            if (!origNames.getOrDefault(dimName, false)) {
-                continue;
-            }
-            enabledDims.put(abbr, true);
-        }
-        return enabledDims;
-    }
-
     public static String getDimAbbreviatedName(String dimName) {
         String abbreviatedName;
         switch (dimName) {

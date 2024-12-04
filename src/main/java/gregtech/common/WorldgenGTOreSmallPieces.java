@@ -13,16 +13,17 @@ import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.blocks.BlockOres2;
 
 public class WorldgenGTOreSmallPieces extends GTWorldgen {
 
     public final short mMinY;
     public final short mMaxY;
     public final short mAmount;
-    public final short mMeta;
+    public final Materials mMaterial;
     public final boolean mOverworld;
     public final boolean mNether;
     public final boolean mEnd;
@@ -30,9 +31,9 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
     public final String mBiome;
     public static ArrayList<WorldgenGTOreSmallPieces> sList = new ArrayList<>();
 
-    public Class[] mAllowedProviders;
+    public Class<?>[] mAllowedProviders;
     public String[] blackListedProviders;
-    public static Class tfProviderClass;
+    public static Class<?> tfProviderClass;
 
     static {
         try {
@@ -42,20 +43,20 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
 
     public WorldgenGTOreSmallPieces(SmallOreBuilder ore) {
         super(ore.smallOreName, GregTechAPI.sWorldgenList, ore.enabledByDefault);
-        this.mOverworld = ore.dimsEnabled.getOrDefault(SmallOreBuilder.OW, false);
-        this.mNether = ore.dimsEnabled.getOrDefault(SmallOreBuilder.NETHER, false);
-        this.mEnd = ore.dimsEnabled.getOrDefault(SmallOreBuilder.THE_END, false);
-        this.twilightForest = ore.dimsEnabled.getOrDefault(SmallOreBuilder.TWILIGHT_FOREST, false);
+        this.mOverworld = ore.dimsEnabled.contains(SmallOreBuilder.OW);
+        this.mNether = ore.dimsEnabled.contains(SmallOreBuilder.NETHER);
+        this.mEnd = ore.dimsEnabled.contains(SmallOreBuilder.THE_END);
+        this.twilightForest = ore.dimsEnabled.contains(SmallOreBuilder.TWILIGHT_FOREST);
 
         this.mMinY = (short) ore.minY;
         this.mMaxY = (short) Math.max(this.mMinY + 1, ore.maxY);
         this.mAmount = (short) Math.max(1, ore.amount);
-        this.mMeta = (short) ore.ore.mMetaItemSubID;
+        this.mMaterial = ore.ore;
         this.mBiome = "None";
 
         if (this.mEnabled) sList.add(this);
 
-        List<Class> allowedProviders = new ArrayList<>();
+        List<Class<?>> allowedProviders = new ArrayList<>();
         if (this.mNether) {
             allowedProviders.add(WorldProviderHell.class);
         }
@@ -87,21 +88,17 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
             return false;
         }
         int count = 0;
-        // For optimal performance, this should be done upstream. Meh
-        String tDimensionName = aWorld.provider.getDimensionName();
-        boolean isUnderdark = tDimensionName.equals("Underdark");
 
-        if (this.mMeta > 0) {
+        if (this.mMaterial != null) {
             int j = Math.max(1, this.mAmount / 2 + aRandom.nextInt(this.mAmount) / 2);
             for (int i = 0; i < j; i++) {
-                TileEntityOres.setOreBlock(
+                BlockOres2.setOreForWorldGen(
                     aWorld,
                     aChunkX + 8 + aRandom.nextInt(16),
                     this.mMinY + aRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
                     aChunkZ + 8 + aRandom.nextInt(16),
-                    this.mMeta,
-                    true,
-                    isUnderdark);
+                    mMaterial,
+                    true);
                 count++;
             }
         }

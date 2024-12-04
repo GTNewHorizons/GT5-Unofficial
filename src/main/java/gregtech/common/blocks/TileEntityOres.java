@@ -26,6 +26,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockOres2.StoneType;
 
 public class TileEntityOres extends TileEntity implements IAllSidedTexturedTileEntity {
 
@@ -293,7 +294,20 @@ public class TileEntityOres extends TileEntity implements IAllSidedTexturedTileE
 
     @Override
     public boolean canUpdate() {
-        return false;
+        return true;
+    }
+
+    private boolean recursed = false;
+
+    @Override
+    public void updateEntity() {
+        if (!recursed) {
+            recursed = true;
+
+            int meta = BlockOres2.getMeta(StoneType.STONE_TYPES.get(mMetaData % 16000 / 1000), mMetaData % 1000, mMetaData >= 16000, mNatural);
+    
+            worldObj.setBlock(xCoord, yCoord, zCoord, GregTechAPI.sBlockOres2, meta, 3);
+        }
     }
 
     public ArrayList<ItemStack> getDrops(Block aDroppedOre, int aFortune) {

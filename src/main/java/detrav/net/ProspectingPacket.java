@@ -25,6 +25,8 @@ import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.common.blocks.BlockOres2;
+import gregtech.common.blocks.BlockOres2.StoneType;
 
 /**
  * Created by wital_000 on 20.03.2016.
@@ -66,7 +68,7 @@ public class ProspectingPacket extends DetravPacket {
                         Materials tMaterial = GregTechAPI.sGeneratedMaterials[meta % 1000];
                         rgba = tMaterial.getRGBA();
                         name = tMaterial.getLocalizedNameForItem(
-                            GTLanguageManager.getTranslation("gt.blockores." + meta + ".name"));
+                            GTLanguageManager.getTranslation("gt.blockores2." + BlockOres2.getMeta(StoneType.Stone, meta % 1000, false, false) + ".name"));
                     } else {
                         final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) (meta * -1), null);
                         String translated = GTLanguageManager.getTranslation("bw.blocktype.ore");

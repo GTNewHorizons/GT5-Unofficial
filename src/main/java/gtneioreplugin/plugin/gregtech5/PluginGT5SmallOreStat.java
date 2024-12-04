@@ -1,24 +1,23 @@
 package gtneioreplugin.plugin.gregtech5;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.blocks.BlockOres2;
+import gregtech.common.blocks.ItemOres2;
+import gregtech.common.blocks.BlockOres2.StoneType;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
-import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
 import gtneioreplugin.util.GT5OreSmallHelper.OreSmallWrapper;
 
 public class PluginGT5SmallOreStat extends PluginGT5Base {
-
-    private static final int SMALL_ORE_BASE_META = 16000;
 
     @Override
     public void drawExtras(int recipe) {
@@ -33,7 +32,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
     }
 
     private void drawSmallOreName(OreSmallWrapper oreSmall) {
-        String oreName = getGTOreLocalizedName((short) (oreSmall.oreMeta + SMALL_ORE_BASE_META));
+        String oreName = getGTOreLocalizedName(oreSmall.material, true);
         drawLine("gtnop.gui.nei.oreName", oreName, 2, 18);
     }
 
@@ -46,7 +45,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
 
     private OreSmallWrapper getSmallOre(int recipe) {
         CachedOreSmallRecipe crecipe = (CachedOreSmallRecipe) this.arecipes.get(recipe);
-        return GT5OreSmallHelper.mapOreSmallWrapper.get(crecipe.oreGenName);
+        return GT5OreSmallHelper.SMALL_ORES_BY_NAME.get(crecipe.oreGenName);
     }
 
     public int getRestrictBiomeOffset() {
@@ -56,67 +55,64 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId()))
-            for (ItemStack stack : GT5OreSmallHelper.oreSmallList) loadCraftingRecipes(stack);
+            for (ItemStack stack : GT5OreSmallHelper.SMALL_ORE_LIST) loadCraftingRecipes(stack);
         else super.loadCraftingRecipes(outputId, results);
     }
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        if (stack.getUnlocalizedName()
-            .startsWith("gt.blockores")) {
-            short oreMeta = (short) (stack.getItemDamage() % 1000);
-            loadSmallOre(oreMeta, getMaximumMaterialIndex(oreMeta, true));
-        } else if (GT5OreSmallHelper.mapOreDropUnlocalizedNameToOreMeta.containsKey(stack.getUnlocalizedName())) {
-            short oreMeta = GT5OreSmallHelper.mapOreDropUnlocalizedNameToOreMeta.get(stack.getUnlocalizedName());
-            loadSmallOre(oreMeta, 7);
-        } else super.loadCraftingRecipes(stack);
+        if (stack.getItem() instanceof ItemOres2) {
+            loadSmallOre(BlockOres2.getMaterial(stack.getItemDamage()));
+        } else if (GT5OreSmallHelper.ORE_DROP_TO_MAT.containsKey(stack.getUnlocalizedName())) {
+            loadSmallOre(GT5OreSmallHelper.ORE_DROP_TO_MAT.get(stack.getUnlocalizedName()));
+        } else {
+            super.loadCraftingRecipes(stack);
+        }
     }
 
     @Override
     public void loadUsageRecipes(ItemStack stack) {
-        String dimension = ItemDimensionDisplay.getDimension(stack);
-        if (dimension == null) {
-            return;
-        }
+        String abbr = ItemDimensionDisplay.getDimension(stack);
+        if (abbr == null) return;
 
-        for (OreSmallWrapper oreVein : GT5OreSmallHelper.mapOreSmallWrapper.values()) {
-            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.oreGenName))
-                .contains(dimension)) {
-                addSmallOre(oreVein, 7);
-            }
+        for (OreSmallWrapper oreVein : GT5OreSmallHelper.SMALL_ORES_BY_DIM.get(abbr).smallOres) {
+            addSmallOre(oreVein);
         }
     }
 
-    private void loadSmallOre(short oreMeta, int maximumIndex) {
-        OreSmallWrapper smallOre = getSmallOre(oreMeta);
+    private void loadSmallOre(Materials material) {
+        OreSmallWrapper smallOre = getSmallOre(material);
         if (smallOre != null) {
-            addSmallOre(smallOre, maximumIndex);
+            addSmallOre(smallOre);
         }
     }
 
-    private OreSmallWrapper getSmallOre(short oreMeta) {
-        for (OreSmallWrapper oreSmallWorldGen : GT5OreSmallHelper.mapOreSmallWrapper.values()) {
-            if (oreSmallWorldGen.oreMeta == oreMeta) {
+    private OreSmallWrapper getSmallOre(Materials material) {
+        for (OreSmallWrapper oreSmallWorldGen : GT5OreSmallHelper.SMALL_ORES_BY_NAME.values()) {
+            if (oreSmallWorldGen.material == material) {
                 return oreSmallWorldGen;
             }
         }
         return null;
     }
 
-    private void addSmallOre(OreSmallWrapper smallOre, int maximumIndex) {
+    private void addSmallOre(OreSmallWrapper smallOre) {
         this.arecipes.add(
             new CachedOreSmallRecipe(
                 smallOre.oreGenName,
-                smallOre.getMaterialDrops(maximumIndex),
-                getStoneDusts(maximumIndex),
-                GT5OreSmallHelper.mapOreMetaToOreDrops.get(smallOre.oreMeta)));
+                smallOre.getMaterialDrops(),
+                getStoneDusts(),
+                GT5OreSmallHelper.ORE_MAT_TO_DROPS.get(smallOre.material)));
     }
 
-    private List<ItemStack> getStoneDusts(int maximumIndex) {
-        List<ItemStack> materialDustStackList = new ArrayList<>();
-        for (int i = 0; i < maximumIndex; i++) materialDustStackList
-            .add(GTOreDictUnificator.get(OrePrefixes.dust, GT5OreSmallHelper.getDroppedDusts()[i], 1L));
-        return materialDustStackList;
+    private List<ItemStack> getStoneDusts() {
+        List<ItemStack> stoneDusts = new ArrayList<>();
+
+        for (StoneType stoneType : StoneType.STONE_TYPES) {
+            stoneDusts.add(GTOreDictUnificator.get(OrePrefixes.dust, stoneType.material, 1));
+        }
+
+        return stoneDusts;
     }
 
     @Override
@@ -127,19 +123,6 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
     @Override
     public String getRecipeName() {
         return I18n.format("gtnop.gui.smallOreStat.name");
-    }
-
-    private String[] getDimNameArrayFromVeinName(String veinName) {
-        OreSmallWrapper oreSmall = GT5OreSmallHelper.mapOreSmallWrapper.get(veinName);
-        String[] dims = GT5OreSmallHelper.bufferedDims.get(oreSmall)
-            .keySet()
-            .toArray(new String[0]);
-        Arrays.sort(
-            dims,
-            Comparator.comparingInt(
-                s -> Arrays.asList(DimensionHelper.DimNameDisplayed)
-                    .indexOf(s)));
-        return dims;
     }
 
     public class CachedOreSmallRecipe extends CachedRecipe {
@@ -172,8 +155,11 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
             int count = 0;
             int itemsPerLine = 9;
             int itemSize = 18;
-            for (String dim : getDimNameArrayFromVeinName(this.oreGenName)) {
-                ItemStack item = ItemDimensionDisplay.getItem(dim);
+            
+            OreSmallWrapper wrapper = GT5OreSmallHelper.SMALL_ORES_BY_NAME.get(this.oreGenName);
+
+            for (String abbrDimName : wrapper.enabledDims) {
+                ItemStack item = ItemDimensionDisplay.getItem(abbrDimName);
                 if (item != null) {
                     int xPos = x + itemSize * (count % itemsPerLine);
                     int yPos = y + itemSize * (count / itemsPerLine);

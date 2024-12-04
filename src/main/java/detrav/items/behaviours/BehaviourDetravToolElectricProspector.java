@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -26,11 +25,9 @@ import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.UndergroundOil;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.blocks.BlockOres2;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -83,22 +80,11 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                             case 0, 1 -> {
                                 final Block tBlock = c.getBlock(x, y, z);
                                 short tMetaID = (short) c.getBlockMetadata(x, y, z);
-                                if (tBlock instanceof BlockOresAbstract) {
-                                    TileEntity tTileEntity = c.getTileEntityUnsafe(x, y, z);
-                                    if ((tTileEntity instanceof TileEntityOres)
-                                        && ((TileEntityOres) tTileEntity).mNatural) {
-                                        tMetaID = ((TileEntityOres) tTileEntity).getMetaData();
-                                        try {
-                                            String name = GTLanguageManager
-                                                .getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
-                                            if (data != 1 && name.startsWith(small_ore_keyword)) continue;
-                                            packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
-                                        } catch (Exception e) {
-                                            String name = tBlock.getUnlocalizedName() + ".";
-                                            if (data != 1 && name.contains(".small.")) continue;
-                                            packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
-                                        }
-                                    }
+                                if (tBlock instanceof BlockOres2) {
+                                    if (!BlockOres2.isNatural(tMetaID)) continue;
+                                    if (data != 1 && BlockOres2.isSmallOre(tMetaID)) continue;
+
+                                    packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
                                 } else if (GTppHelper.isGTppBlock(tBlock)) {
                                     packet.addBlock(
                                         c.xPosition * 16 + x,

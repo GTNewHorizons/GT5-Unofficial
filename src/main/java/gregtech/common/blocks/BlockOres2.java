@@ -20,6 +20,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTProxy.OreDropSystem;
@@ -295,6 +296,20 @@ public class BlockOres2 extends GTGenericBlock implements IBlockOre, IBlockWithT
         return true;
     }
 
+    public static boolean setExistingOreStoneType(World world, int x, int y, int z, StoneType newStoneType) {
+        if (world.getBlock(x, y, z) != GregTechAPI.sBlockOres2) return false;
+
+        int meta = world.getBlockMetadata(x, y, z);
+
+        int matId = getMaterialId(meta);
+        boolean small = isSmallOre(meta);
+        boolean natural = isNatural(meta);
+
+        world.setBlock(x, y, z, GregTechAPI.sBlockOres2, getMeta(newStoneType, matId, small, natural), 3);
+
+        return true;
+    }
+
     public static boolean isSmallOre(int meta) {
         return meta >= SMALL_ORE_META_OFFSET;
     }
@@ -422,6 +437,14 @@ public class BlockOres2 extends GTGenericBlock implements IBlockOre, IBlockWithT
         boolean isNatural = isNatural(metadata);
 
         return getDrops(world.rand, GTMod.gregtechproxy.oreDropSystem, this, metadata, silktouch, isNatural ? fortune : 0);
+    }
+
+    public static List<ItemStack> getPotentialDrops(Materials material, boolean small) {
+        if (small) {
+            return SmallOreDrops.getDropList(material);
+        } else {
+            return getBigOreDrops(null, OreDropSystem.Item, GregTechAPI.sBlockOres2, StoneType.Stone, material, false, 0);
+        }
     }
 
     public static ArrayList<ItemStack> getDrops(Random random, OreDropSystem oreDropMode, Block oreBlock, int meta, boolean silktouch, int fortune) {

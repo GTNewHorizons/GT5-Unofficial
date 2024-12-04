@@ -47,6 +47,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.LockedWhileActiveButton;
+import gregtech.api.interfaces.IBlockOre;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.objects.GTChunkManager;
@@ -537,21 +538,12 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     private Collection<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
-        final int blockMeta = getBaseMetaTileEntity().getMetaID(posX, posY, posZ);
+        final int blockMeta = getBaseMetaTileEntity().getWorld().getBlockMetadata(posX, posY, posZ);
+        if (oreBlock instanceof IBlockOre machineMinable) {
+            return machineMinable.getDropsForMachine(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, false, mTier + 3);
+        }
         if (oreBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, posX, posY, posZ, blockMeta)) {
             return Collections.singleton(new ItemStack(oreBlock, 1, blockMeta));
-        }
-        if (oreBlock instanceof BlockOresAbstract) {
-            TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(posX, posY, posZ);
-            if (tTileEntity instanceof TileEntityOres tTileEntityOres) {
-                if (tTileEntityOres.mMetaData >= 16000) {
-                    // Small ore
-                    return oreBlock
-                        .getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, mTier + 3);
-                } else {
-                    return tTileEntityOres.getSilkTouchDrops(oreBlock);
-                }
-            }
         }
         // Regular ore
         return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, 0);
