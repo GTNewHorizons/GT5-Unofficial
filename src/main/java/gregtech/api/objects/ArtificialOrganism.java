@@ -147,21 +147,21 @@ public class ArtificialOrganism {
 
     public enum Trait {
 
-        Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, "Photosynthetic"),
-        HiveMind(Item.getItemFromBlock(Blocks.red_mushroom), 5, 5, 5, "Hive Mind"),
-        Laborer(Items.beef, 3, 8, 5, "Laborer"),
-        Decaying(Items.rotten_flesh, 10, 10, 10, "Decaying");
+        Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, 1),
+        HiveMind(Item.getItemFromBlock(Blocks.red_mushroom), 5, 5, 5, 2),
+        Laborer(Items.beef, 3, 8, 5, 3),
+        Decaying(Items.rotten_flesh, 10, 10, 10, 4);
 
         public final Item cultureItem;
         public final int baseInt, baseStr, baseRep;
-        public final String name;
+        public final int id;
 
-        Trait(Item cultureItem, int baseInt, int baseStr, int baseRep, String name) {
+        Trait(Item cultureItem, int baseInt, int baseStr, int baseRep, int id) {
             this.cultureItem = cultureItem;
             this.baseInt = baseInt;
             this.baseStr = baseStr;
             this.baseRep = baseRep;
-            this.name = name;
+            this.id = id;
         }
     }
 }

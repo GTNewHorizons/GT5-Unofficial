@@ -23,6 +23,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -34,6 +36,7 @@ import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -49,7 +52,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -273,8 +275,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return false;
     }
 
-    private void createNewAOs() {
-        currentSpecies = new ArtificialOrganism();
+    private void createNewAOs(Trait trait) {
+        currentSpecies = new ArtificialOrganism(trait.baseInt, trait.baseStr, trait.baseRep, 100, 0);
         if (bioHatch != null) bioHatch.currentSpecies = currentSpecies;
     }
 
@@ -287,7 +289,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     // UI Pit of Doom
 
+    protected ItemStackHandler inputSlotHandler = new ItemStackHandler(1);
     private static final int TRAIT_WINDOW_ID = 9;
+
+    Trait activeTraitWindow;
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -300,8 +305,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         screenElements.setSynced(false)
             .setSpace(0)
             .setPos(34, 7);
-        screenElements.widget(new TextWidget("Current Species: ").setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+        screenElements.widget(new TextWidget("Current Species: ").setDefaultColor(COLOR_TEXT_WHITE.get()));
         screenElements.widget(
             new DynamicTextWidget(() -> new Text("Intelligence: " + intelligence)).setSynced(false)
                 .setDefaultColor(COLOR_TEXT_WHITE.get()))
@@ -318,10 +322,9 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 new DynamicTextWidget(() -> new Text("Sentience: " + sentience)).setSynced(false)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> sentience, val -> sentience = val));
-        screenElements.setEnabled(widget -> currentSpecies != null);
+        // screenElements.setEnabled(widget -> currentSpecies != null);
 
         builder.widget(createPurgeButton(builder));
-        builder.widget(createBuildAOsButton(builder));
         builder.widget(createSentienceBar(builder));
         builder.widget(createTraitWindowButton(builder, Trait.Photosynthetic, new Pos2d(4, 4)));
         builder.widget(createTraitWindowButton(builder, Trait.HiveMind, new Pos2d(4, 20)));
@@ -339,34 +342,53 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             .setTexture(GTUITextures.PROGRESSBAR_SENTIENCE, 64)
             .setSynced(true, false)
             .setSize(16, 64)
-            .setPos(170, 120);
+            .setPos(173, 120);
     }
 
     private ModularWindow createTraitWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(190, 85)
+        ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight())
             .setDraggable(false);
 
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(20, -49)
+                .setPos(24, 4)
                 .setSize(170, 85))
-            .widget(createTraitItemWidget(ItemList.IC2_Plantball.get(1)).setPos(95, 0));
+            .widget(createTraitItemWidget(new ItemStack(activeTraitWindow.cultureItem, 1)).setPos(95, 50))
+            .widget(createBuildAOsButton().setPos(95, 66))
+            .widget(
+                new DynamicPositionedColumn().setSynced(false)
+                    .setSpace(0)
+                    .setPos(34, 7));
+
+        final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+        screenElements.setSynced(false)
+            .setSpace(0)
+            .setPos(34, 7);
+        screenElements.widget(
+            new TextWidget(
+                EnumChatFormatting.UNDERLINE
+                    + StatCollector.translateToLocal("GT5U.artificialorganisms.traitname" + activeTraitWindow.id))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setTextAlignment(Alignment.Center));
+        screenElements.widget(
+            new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.traitdesc" + activeTraitWindow.id))
+                .setDefaultColor(COLOR_TEXT_WHITE.get()));
+        builder.widget(screenElements);
 
         return builder.build();
     }
 
     private ButtonWidget createTraitWindowButton(IWidgetBuilder<?> builder, Trait trait, Pos2d pos) {
-        Widget button = new ButtonWidget()
-            .setOnClick(
-                (clickData, widget) -> {
-                    if (!widget.isClient()) widget.getContext()
-                        .openSyncedWindow(TRAIT_WINDOW_ID);
-                })
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            activeTraitWindow = trait;
+            if (!widget.isClient()) widget.getContext()
+                .openSyncedWindow(TRAIT_WINDOW_ID);
+        })
             .setPlayClickSound(supportsVoidProtection())
             .setBackground(
                 () -> new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
                     new ItemDrawable(new ItemStack(trait.cultureItem)) })
-            .addTooltip(trait.name)
+            .addTooltip(StatCollector.translateToLocal("GT5U.artificialorganisms.traitname" + trait.id))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(pos)
             .setSize(16, 16);
@@ -374,7 +396,13 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     private ButtonWidget createPurgeButton(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> currentSpecies = null)
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            intelligence = 0;
+            strength = 0;
+            count = 0;
+            sentience = 0;
+            currentSpecies = null;
+        })
             .setPlayClickSound(supportsVoidProtection())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
@@ -392,8 +420,17 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return (ButtonWidget) button;
     }
 
-    private ButtonWidget createBuildAOsButton(IWidgetBuilder<?> builder) {
-        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> createNewAOs())
+    private ButtonWidget createBuildAOsButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                ItemStack inputItem = inputSlotHandler.getStackInSlot(0);
+                if (inputItem == null) return;
+                if (inputItem.getItem() == activeTraitWindow.cultureItem) {
+                    inputItem.stackSize -= 1;
+                    createNewAOs(activeTraitWindow);
+                }
+            }
+        })
             .setPlayClickSound(supportsVoidProtection())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
@@ -404,19 +441,17 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 }
                 return ret.toArray(new IDrawable[0]);
             })
-            .addTooltip("Create default pop")
+            .addTooltip("Create Population")
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(getBatchModeButtonPos())
             .setSize(16, 16);
         return (ButtonWidget) button;
     }
 
     public Widget createTraitItemWidget(final ItemStack costStack) {
         // Item slot
-        ItemStackHandler handler = new ItemStackHandler(1);
         ItemStack handlerStack = costStack.copy();
         handlerStack.stackSize = 1;
-        return new SlotWidget(handler, 0).setAccess(true, true)
+        return new SlotWidget(inputSlotHandler, 0).setAccess(true, true)
             .setFilter((stack) -> stack.getItem() == costStack.getItem())
             .setRenderStackSize(false)
             .setPos(26, 91)
