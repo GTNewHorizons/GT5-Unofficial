@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -253,8 +254,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             cacheNeedsRecreation = !tankInfoCache[0].fluid.isFluidEqual(mFluid);
         }
         if (cacheNeedsRecreation) {
-            final FluidStack storedFluid = mFluid.copy();
-            storedFluid.amount = fluidSize;
+            final FluidStack storedFluid = GTUtility.copyAmount(fluidSize, mFluid);
             tankInfoCache[0] = new FluidTankInfo(storedFluid, tankCapacity);
         } else if (mFluid != null) {
             tankInfoCache[0].fluid.amount = fluidSize;
