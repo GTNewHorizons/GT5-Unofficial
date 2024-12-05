@@ -44,7 +44,7 @@ public class LatheRecipes implements Runnable {
             .itemOutputs(
                 WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.stickLong, 1),
                 WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 1))
-            .duration((200 * SECONDS))
+            .duration((100 * SECONDS))
             .eut(16)
             .addTo(latheRecipes);
     }
