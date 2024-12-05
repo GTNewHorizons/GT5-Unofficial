@@ -76,9 +76,9 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
              */
 
             // Process Dust
-            if (componentMap.size() > 0 && componentMap.size() <= 6) {
-                ItemStack mInternalOutputs[] = new ItemStack[6];
-                int mChances[] = new int[6];
+            if (!componentMap.isEmpty() && componentMap.size() <= 6) {
+                ItemStack[] mInternalOutputs = new ItemStack[6];
+                int[] mChances = new int[6];
                 int mCellCount = 0;
 
                 int mTotalCount = 0;
@@ -168,9 +168,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 internalOutputs.removeIf(Objects::isNull);
 
                 int[] chances = new int[internalOutputs.size()];
-                for (int i = 0; i < internalOutputs.size(); i++) {
-                    chances[i] = mChances[i];
-                }
+                System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
 
                 ItemStack[] inputs;
                 if (emptyCell == null) {
@@ -195,8 +193,8 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                     "[Issue][Electrolyzer] " + material.getLocalizedName()
                         + " is composed of over 6 materials, so an electrolyzer recipe for processing cannot be generated. Trying to create one for the Dehydrator instead.");
 
-                ItemStack mInternalOutputs[] = new ItemStack[9];
-                int mChances[] = new int[9];
+                ItemStack[] mInternalOutputs = new ItemStack[9];
+                int[] mChances = new int[9];
                 int mCellCount = 0;
 
                 int mTotalCount = 0;
@@ -284,9 +282,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 List<ItemStack> internalOutputs = new ArrayList<>(Arrays.asList(mInternalOutputs));
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
-                for (int i = 0; i < internalOutputs.size(); i++) {
-                    chances[i] = mChances[i];
-                }
+                System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
 
                 ItemStack[] inputs;
                 if (emptyCell == null) {

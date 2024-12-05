@@ -20,7 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Controller logic for Fluid inventories
- * 
+ *
  * @author BlueWeabo
  */
 public class ControllerFluidLogic {
@@ -54,7 +54,7 @@ public class ControllerFluidLogic {
     @Nullable
     private Pair<UUID, FluidInventoryLogic> checkIfInventoryExistsAsUnallocated(
         @Nonnull FluidInventoryLogic inventory) {
-        if (unallocatedInventories.size() == 0) {
+        if (unallocatedInventories.isEmpty()) {
             return null;
         }
         return unallocatedInventories.stream()

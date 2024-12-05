@@ -56,11 +56,11 @@ public class GT5OreSmallHelper {
         }
 
         for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
-            if (!worldGen.mWorldGenName.startsWith("ore.small.") || !(worldGen instanceof WorldgenGTOreSmallPieces)) {
+            if (!worldGen.mWorldGenName.startsWith("ore.small.")
+                || !(worldGen instanceof WorldgenGTOreSmallPieces worldGenSmallPieces)) {
                 continue;
             }
 
-            WorldgenGTOreSmallPieces worldGenSmallPieces = (WorldgenGTOreSmallPieces) worldGen;
             meta = worldGenSmallPieces.mMeta;
             if (meta < 0) break;
             material = GregTechAPI.sGeneratedMaterials[meta];

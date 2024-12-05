@@ -38,7 +38,7 @@ public class MTEHatchSuperBusInput extends MTEHatchInputBus {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Item Input for Multiblocks", "" + getSlots(this.mTier) + " Slots",
+        return new String[] { "Item Input for Multiblocks", getSlots(this.mTier) + " Slots",
             GTPPCore.GT_Tooltip.get() };
     }
 

@@ -10,8 +10,8 @@ import gtnhlanth.Tags;
 
 public class ItemPhotolithographicMask extends Item implements ICanFocus {
 
-    private String name;
-    private String descSpectrum;
+    private final String name;
+    private final String descSpectrum;
 
     public ItemPhotolithographicMask(String name, int maxDamage, String descSpectrum) {
         super();
@@ -23,15 +23,16 @@ public class ItemPhotolithographicMask extends Item implements ICanFocus {
         this.setTextureName(Tags.MODID + ":photomask/" + name);
     }
 
-    /*
-     * @Override public String getUnlocalizedName() { return "item.photomask." + this.name; }
-     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 
         if (!this.descSpectrum.isEmpty())
             list.add("Suitable for the " + this.descSpectrum + " segment of the electromagnetic spectrum and lower");
+
+        if (this.getMaxDamage() > 0) // Not a precursor.
+            list.add("Max Uses: " + (this.getMaxDamage() + 1)); // maximum uses = max damage + 1 in general, as
+                                                                // 0-durability masks still function
 
     }
 

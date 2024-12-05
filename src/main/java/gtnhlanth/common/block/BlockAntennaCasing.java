@@ -2,7 +2,7 @@ package gtnhlanth.common.block;
 
 public class BlockAntennaCasing extends BlockCasing {
 
-    private int antennaTier;
+    private final int antennaTier;
 
     public BlockAntennaCasing(int tier) {
         super("antenna_t" + tier);

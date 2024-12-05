@@ -112,7 +112,7 @@ public class ItemRadioactiveCellIC extends ItemRadioactiveCell implements IReact
                 checkHeatAcceptor(reactor, x, y - 1, heatAcceptors);
                 checkHeatAcceptor(reactor, x, y + 1, heatAcceptors);
                 heat = Math.round(heat * sHeat);
-                while ((heatAcceptors.size() > 0) && (heat > 0)) {
+                while ((!heatAcceptors.isEmpty()) && (heat > 0)) {
 
                     int dheat = heat / heatAcceptors.size();
                     heat -= dheat;

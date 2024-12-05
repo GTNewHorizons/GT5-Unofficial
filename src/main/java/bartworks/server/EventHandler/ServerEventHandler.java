@@ -19,14 +19,14 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.API.SideReference;
-import bartworks.MainMod;
-import bartworks.common.net.OreDictCachePacket;
-import bartworks.common.net.ServerJoinedPacket;
+import bartworks.common.net.PacketOreDictCache;
+import bartworks.common.net.PacketServerJoined;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.oredict.OreDictHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -36,9 +36,8 @@ public class ServerEventHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
         if (event == null || !(event.entity instanceof EntityPlayerMP) || !SideReference.Side.Server) return;
-        MainMod.BW_Network_instance
-            .sendToPlayer(new OreDictCachePacket(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
-        MainMod.BW_Network_instance.sendToPlayer(new ServerJoinedPacket(null), (EntityPlayerMP) event.entity);
+        GTValues.NW.sendToPlayer(new PacketOreDictCache(OreDictHandler.getNonBWCache()), (EntityPlayerMP) event.entity);
+        GTValues.NW.sendToPlayer(new PacketServerJoined(null), (EntityPlayerMP) event.entity);
     }
 
     // FMLCommonHandler.instance().bus()

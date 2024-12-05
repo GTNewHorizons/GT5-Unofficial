@@ -20,31 +20,15 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.objects.GTRenderedTexture;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGregtechLogo {
 
     protected int SLOT_FILTER = 0;
-
-    @Override
-    public void onConfigLoad() {
-        super.onConfigLoad();
-        try {
-            int a1 = GTMod.gregtechproxy.mPollutionSmogLimit;
-            if (a1 > 0) {
-                mPollutionSmogLimit = a1;
-            }
-        } catch (Throwable t) {
-            mPollutionSmogLimit = 500000;
-        }
-    }
-
-    private int mPollutionSmogLimit = 500000;
 
     public MTEHatchMufflerAdvanced(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 1, new String[] { "" });
@@ -100,18 +84,21 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
     }
 
     @Override
-    public boolean polluteEnvironment(MetaTileEntity parentTileEntity) {
+    public boolean polluteEnvironment(MetaTileEntity parentTileEntity, int pollutionAmount) {
         if (!airCheck()) return false; // Muffler obstructed.
-
-        int emission = 10000;
-        if (damageAirFilter(parentTileEntity)) {
+        if (pollutionAmount < 10000 && pollutionAmount <= parentTileEntity.getBaseMetaTileEntity()
+            .getRandomNumber(10000)) {
+            // If we are venting less than the maximum amount of pollution, damage filter with a lower chance.
+            // This happens if a multiblock has more than one muffler.
+            pollutionAmount = calculatePollutionReduction(pollutionAmount, true);
+        } else if (damageAirFilter(parentTileEntity)) {
             // damageAirFilter already checks that we have a valid filter.
-            emission = calculatePollutionReduction(emission, true);
+            pollutionAmount = calculatePollutionReduction(pollutionAmount, true);
         } else {
             // Revert to reduction of the basic muffler.
-            emission = super.calculatePollutionReduction(emission);
+            pollutionAmount = super.calculatePollutionReduction(pollutionAmount);
         }
-        Pollution.addPollution(getBaseMetaTileEntity(), emission);
+        Pollution.addPollution(getBaseMetaTileEntity(), pollutionAmount);
         return true;
     }
 
@@ -271,8 +258,8 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         boolean chk1 = ran1 * 100.0F < (float) this.calculatePollutionReduction(100);
         boolean chk2;
         boolean chk3;
-        int aPollutionAmount = PollutionUtils.getPollution(getBaseMetaTileEntity());
-        if (aPollutionAmount >= mPollutionSmogLimit) {
+        int aPollutionAmount = Pollution.getPollution(getBaseMetaTileEntity());
+        if (aPollutionAmount >= GTMod.gregtechproxy.mPollutionSmogLimit) {
             ran2 = GTPPCore.RANDOM.nextFloat();
             ran3 = GTPPCore.RANDOM.nextFloat();
             chk2 = ran2 * 100.0F < (float) this.calculatePollutionReduction(100);
@@ -299,8 +286,8 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         float zSpd;
         if (aDir.offsetY == -1) {
             float temp = GTPPCore.RANDOM.nextFloat() * 2.0F * GTPPCore.PI;
-            xSpd = (float) Math.sin((double) temp) * 0.1F;
-            zSpd = (float) Math.cos((double) temp) * 0.1F;
+            xSpd = (float) Math.sin(temp) * 0.1F;
+            zSpd = (float) Math.cos(temp) * 0.1F;
         } else {
             xSpd = (float) aDir.offsetX * (0.1F + 0.2F * GTPPCore.RANDOM.nextFloat());
             zSpd = (float) aDir.offsetZ * (0.1F + 0.2F * GTPPCore.RANDOM.nextFloat());
@@ -309,34 +296,34 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
         if (chk1) {
             aWorld.spawnParticle(
                 name,
-                (double) (xPos + ran1 * 0.5F),
-                (double) (yPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) (zPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) xSpd,
-                (double) ySpd,
-                (double) zSpd);
+                xPos + ran1 * 0.5F,
+                yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
         }
 
         if (chk2) {
             aWorld.spawnParticle(
                 name,
-                (double) (xPos + ran2 * 0.5F),
-                (double) (yPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) (zPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) xSpd,
-                (double) ySpd,
-                (double) zSpd);
+                xPos + ran2 * 0.5F,
+                yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
         }
 
         if (chk3) {
             aWorld.spawnParticle(
                 name,
-                (double) (xPos + ran3 * 0.5F),
-                (double) (yPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) (zPos + GTPPCore.RANDOM.nextFloat() * 0.5F),
-                (double) xSpd,
-                (double) ySpd,
-                (double) zSpd);
+                xPos + ran3 * 0.5F,
+                yPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                zPos + GTPPCore.RANDOM.nextFloat() * 0.5F,
+                xSpd,
+                ySpd,
+                zSpd);
         }
     }
 

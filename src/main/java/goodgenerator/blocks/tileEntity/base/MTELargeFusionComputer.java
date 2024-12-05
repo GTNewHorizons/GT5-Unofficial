@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -64,6 +63,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
@@ -77,7 +77,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     public GTRecipe mLastRecipe;
     public int para;
     protected OverclockDescriber overclockDescriber;
-    private static final ClassValue<IStructureDefinition<MTELargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<MTELargeFusionComputer>>() {
+    private static final ClassValue<IStructureDefinition<MTELargeFusionComputer>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<MTELargeFusionComputer> computeValue(Class<?> type) {
@@ -295,7 +295,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
             if (mStartUpCheck < 0) {
                 if (mMachine) {
                     if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
-                        criticalStopMachine();
+                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     }
 
                     long energyLimit = getSingleHatchPower();
@@ -326,6 +326,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
+                            mLastWorkingTick = mTotalRunTime;
                             para = 0;
                             if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe();
                         }
@@ -339,7 +340,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                                         < this.mLastRecipe.mSpecialValue + this.lEUt) {
                                         mMaxProgresstime = 0;
                                         turnCasingActive(false);
-                                        criticalStopMachine();
+                                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                                     }
                                     getBaseMetaTileEntity()
                                         .decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue + this.lEUt, false);
@@ -348,17 +349,17 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
                         }
                     }
-                } else {
+                } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                     turnCasingActive(false);
                     this.mLastRecipe = null;
-                    stopMachine();
+                    stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
             aBaseMetaTileEntity
                 .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
         } else {
-            soundMagic(getActivitySoundLoop());
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -570,8 +571,8 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
     @Override

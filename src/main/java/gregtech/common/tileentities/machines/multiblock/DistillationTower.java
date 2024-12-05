@@ -32,7 +32,7 @@ public class DistillationTower extends StackableController<DistillationTower, Di
     private static final Vec3Impl STRUCTURE_OFFSET_MEGA_STACK = new Vec3Impl(0, 3, 0);
     private static final String STACKABLE_MIDDLE_1 = "STACKABLE_MIDDLE_1";
     private static final String STACKABLE_MIDDLE_2 = "STACKABLE_MIDDLE_2";
-    private boolean isMega = true;
+    private final boolean isMega = true;
 
     @Override
     public short getCasingRegistryID() {
@@ -48,13 +48,10 @@ public class DistillationTower extends StackableController<DistillationTower, Di
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillation Tower")
-            .addInfo("Controller block for the Distillation Tower")
             .addInfo("Can be specialised to be a mega structure")
-            .addInfo(GTValues.Authorminecraft7771)
-            .addSeparator()
             .beginStructureBlock(5, 3, 3, false)
             .addController("Front center")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher(GTValues.Authorminecraft7771);
         return tt;
     }
 

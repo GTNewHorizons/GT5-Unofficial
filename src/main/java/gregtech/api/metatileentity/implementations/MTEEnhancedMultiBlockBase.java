@@ -54,7 +54,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
         if (mExtendedFacing != newExtendedFacing) {
-            if (mMachine) stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
+            if (mMachine && isAllowedToWork()) stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
             mExtendedFacing = newExtendedFacing;
             final IGregTechTileEntity base = getBaseMetaTileEntity();
             mMachine = false;
@@ -164,7 +164,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      * current {@link #getAlignmentLimits()}, this method will be called to retrieve a corrected version. This method
      * is currently only intended to be used as a mean to migrate alignment limits, so if you never change the alignment
      * limit then you can probably just use the default implementation.
-     *
+     * <p>
      * The returned new facing must be able to pass the test of {@link #isNewExtendedFacingValid(ExtendedFacing)}
      */
     protected ExtendedFacing getCorrectedAlignment(ExtendedFacing aOldFacing) {

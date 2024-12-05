@@ -71,7 +71,7 @@ public class GT5OreLayerHelper {
 
     public static class OreLayerWrapper {
 
-        public final String veinName, worldGenHeightRange;
+        public final String veinName, worldGenHeightRange, localizedName;
         public final short[] Meta = new short[4];
         public final short randomWeight, size, density;
         public final Map<String, Boolean> allowedDimWithOrigNames;
@@ -83,6 +83,7 @@ public class GT5OreLayerHelper {
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
+            this.localizedName = mix.localizedName;
             this.Meta[0] = (short) mix.primary.mMetaItemSubID;
             this.Meta[1] = (short) mix.secondary.mMetaItemSubID;
             this.Meta[2] = (short) mix.between.mMetaItemSubID;

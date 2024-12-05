@@ -20,7 +20,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.maps.FuelBackend;
@@ -42,14 +41,12 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Combustion Generator")
-            .addInfo("Controller block for the Extreme Combustion Engine")
             .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
             .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
             .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
             .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
             .addInfo("You need to wait for it to reach 300% to output full power")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front center")
             .addCasingInfoRange("Robust Tungstensteel Machine Casing", 16, 22, false)
@@ -62,7 +59,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
             .addInputHatch("HOG, next to a Gear Box", 1)
             .addInputHatch("Lubricant, next to a Gear Box", 1)
             .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -174,11 +171,6 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-        }
-
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
@@ -230,7 +222,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
                 + " %",
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + mPollutionReduction
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %" };
     }

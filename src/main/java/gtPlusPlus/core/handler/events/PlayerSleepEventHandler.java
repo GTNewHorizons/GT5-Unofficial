@@ -11,7 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.mixin.interfaces.PotionExt;
+import gregtech.mixin.interfaces.accessors.PotionAccessor;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class PlayerSleepEventHandler {
@@ -43,7 +43,7 @@ public class PlayerSleepEventHandler {
         final List<Integer> potionToRemove = new ArrayList<>();
         for (PotionEffect potionEffect : player.getActivePotionEffects()) {
             final Potion potion = Potion.potionTypes[potionEffect.getPotionID()];
-            if (potion instanceof PotionExt && ((PotionExt) potion).gt5u$isBadEffect()) {
+            if (potion instanceof PotionAccessor && ((PotionAccessor) potion).gt5u$isBadEffect()) {
                 potionToRemove.add(potion.id);
             }
         }

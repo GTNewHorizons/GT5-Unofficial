@@ -7,6 +7,7 @@ import java.nio.FloatBuffer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 
@@ -36,7 +37,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
     private static IModelCustomExt blackholeModel;
     private static ResourceLocation blackholeTexture;
-    private static float modelScale = .5f;
+    private static final float modelScale = .5f;
 
     private ShaderProgram laserProgram;
     private static int u_LaserCameraPosition = -1, u_LaserColor = -1, u_LaserModelMatrix = -1;
@@ -118,10 +119,21 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
     }
 
     private void renderBlackHole(TileEntityBlackhole tile, double x, double y, double z, float timer) {
-
         blackholeProgram.use();
         bindTexture(blackholeTexture);
         GL20.glUniform1f(u_Stability, tile.getStability());
+
+        float startTime = tile.getStartTime();
+        float scaleF = timer - startTime;
+        // If this is false we're shrinking, so subtract from 40 to translate to reversed scaling
+        if (!tile.getScaling()) {
+            scaleF = 40 - scaleF;
+        }
+        scaleF = MathHelper.clamp_float(scaleF / 40, 0, 1) * modelScale;
+        // Smootherstep function to make it scale nicer
+        scaleF = scaleF * scaleF * scaleF * (scaleF * (6.0f * scaleF - 15.0f) + 10.0f);
+        GL20.glUniform1f(u_Scale, scaleF);
+
         modelMatrixStack.clear();
 
         float xLocal = ((float) x + .5f);
@@ -206,7 +218,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
                 y,
                 z,
                 tile.getWorldObj()
-                    .getWorldTime() + timeSinceLastTick);
+                    .getTotalWorldTime() + timeSinceLastTick);
         }
 
         renderBlackHole(
@@ -215,7 +227,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
             y,
             z,
             tile.getWorldObj()
-                .getWorldTime() + timeSinceLastTick);
+                .getTotalWorldTime() + timeSinceLastTick);
 
     }
 

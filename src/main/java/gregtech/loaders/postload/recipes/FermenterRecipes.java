@@ -67,13 +67,6 @@ public class FermenterRecipes implements Runnable {
             .addTo(fermentingRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(getFluidStack("potion.reedwater", 50))
-            .fluidOutputs(getFluidStack("potion.rum", 25))
-            .duration(51 * SECONDS + 4 * TICKS)
-            .eut(2)
-            .addTo(fermentingRecipes);
-
-        GTValues.RA.stdBuilder()
             .fluidInputs(getFluidStack("potion.rum", 50))
             .fluidOutputs(getFluidStack("potion.piratebrew", 10))
             .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
@@ -138,20 +131,6 @@ public class FermenterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(getFluidStack("potion.goldencider", 75))
-            .fluidOutputs(getFluidStack("potion.vinegar", 50))
-            .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
-            .eut(2)
-            .addTo(fermentingRecipes);
-
-        GTValues.RA.stdBuilder()
-            .fluidInputs(getFluidStack("potion.rum", 75))
-            .fluidOutputs(getFluidStack("potion.vinegar", 50))
-            .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
-            .eut(2)
-            .addTo(fermentingRecipes);
-
-        GTValues.RA.stdBuilder()
-            .fluidInputs(getFluidStack("potion.wine", 75))
             .fluidOutputs(getFluidStack("potion.vinegar", 50))
             .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
             .eut(2)

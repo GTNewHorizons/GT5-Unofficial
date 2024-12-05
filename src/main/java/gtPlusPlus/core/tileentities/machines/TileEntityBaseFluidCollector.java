@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
-import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
@@ -33,7 +32,6 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
     private boolean needsUpdate = false;
     private int updateTimer = 0;
     private long internalTickCounter = 0;
-    private BlockPos internalBlockLocation;
 
     public TileEntityBaseFluidCollector(int aInvSlotCount, int aTankCapcity) {
         super(aInvSlotCount);
@@ -73,17 +71,15 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
                 fluid = null;
             }
 
-            if (this != null) {
-                FluidEvent.fireEvent(
-                    new FluidEvent.FluidDrainingEvent(
-                        fluid,
-                        this.getWorldObj(),
-                        this.xCoord,
-                        this.yCoord,
-                        this.zCoord,
-                        this.tank,
-                        0));
-            }
+            FluidEvent.fireEvent(
+                new FluidEvent.FluidDrainingEvent(
+                    fluid,
+                    this.getWorldObj(),
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    this.tank,
+                    0));
         }
         return stack;
     }
@@ -160,39 +156,25 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
             return;
         }
         if (internalTickCounter % getBaseTickRate() == 0) {
-            if (internalBlockLocation == null) {
-                internalBlockLocation = new BlockPos(this);
-            }
-            BlockPos p = internalBlockLocation;
-            if (p != null) {
-                if (p.world != null) {
-                    World w = this.worldObj;
-                    if (w == null) {
-                        return;
-                    }
-                    Chunk c = w.getChunkFromBlockCoords(p.xPos, p.zPos);
-                    if (c != null) {
-                        if (c.isChunkLoaded) {
-                            int startX = p.xPos - 2;
-                            int startY = p.yPos;
-                            int startZ = p.zPos - 2;
-                            int endX = p.xPos + 3;
-                            int endY = p.yPos + 5;
-                            int endZ = p.zPos + 3;
-                            AxisAlignedBB box = AxisAlignedBB.getBoundingBox(startX, startY, startZ, endX, endY, endZ);
-                            if (box != null) {
-                                for (Class c2 : aThingsToLookFor()) {
-                                    tickEntityType(w, box, c2);
-                                }
-                            } else {
-                                return;
-                            }
+            final World w = this.getWorldObj();
+            if (w != null) {
+                Chunk c = w.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+                if (c != null) {
+                    if (c.isChunkLoaded) {
+                        int startX = this.xCoord - 2;
+                        int startY = this.yCoord;
+                        int startZ = this.zCoord - 2;
+                        int endX = this.xCoord + 3;
+                        int endY = this.yCoord + 5;
+                        int endZ = this.zCoord + 3;
+                        AxisAlignedBB box = AxisAlignedBB.getBoundingBox(startX, startY, startZ, endX, endY, endZ);
+                        for (Class c2 : aThingsToLookFor()) {
+                            tickEntityType(w, box, c2);
                         }
                     }
                 }
             }
         }
-
         internalTickCounter++;
     }
 

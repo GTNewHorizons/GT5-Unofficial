@@ -31,8 +31,7 @@ public class CoverToggleVisual extends CoverBehavior {
             BlockPos aPos = new BlockPos(
                 aEntity.getIGregTechTileEntity(aEntity.getXCoord(), aEntity.getYCoord(), aEntity.getZCoord()));
 
-            String s = aEntity.getInventoryName() + "." + aPos.getUniqueIdentifier() + side.name();
-            return s;
+            return aEntity.getInventoryName() + "." + aPos.getUniqueIdentifier() + side.name();
         } catch (Throwable t) {}
         XSTR x = new XSTR();
         return "ERROR." + x.getSeed() + x.hashCode() + x.nextDouble() + ".ID";
@@ -168,10 +167,10 @@ public class CoverToggleVisual extends CoverBehavior {
     public static boolean getConnectionState(String aKey) {
         Integer b = sConnectionStateForEntityMap.get(aKey);
         // Logger.INFO("Get State: "+b+" | "+aKey);
-        return b != null ? b == VALUE_ON : false;
+        return b != null && b == VALUE_ON;
     }
 
-    public static final boolean getCoverConnections(final ItemStack aStack) {
+    public static boolean getCoverConnections(final ItemStack aStack) {
         NBTTagCompound aNBT = aStack.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("CustomCoverMeta");

@@ -1,6 +1,5 @@
 package gregtech.api.net;
 
-import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
@@ -11,20 +10,20 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import io.netty.buffer.ByteBuf;
 
-public class GTPacketTileEntity extends GTPacketNew {
+public class GTPacketTileEntity extends GTPacket {
 
     private int mX, mZ, mC0, mC1, mC2, mC3, mC4, mC5;
     private short mY, mID, mRID;
     private byte mTexture, mTexturePage, mUpdate, mRedstone, mColor;
 
     public GTPacketTileEntity() {
-        super(true);
+        super();
     }
 
     // For multi tiles
     public GTPacketTileEntity(int aX, short aY, int aZ, short aRID, short aID, int aC0, int aC1, int aC2, int aC3,
         int aC4, int aC5, byte aTexture, byte aTexturePage, byte aUpdate, byte aRedstone, byte aColor) {
-        super(false);
+        super();
         mX = aX;
         mY = aY;
         mZ = aZ;
@@ -95,7 +94,7 @@ public class GTPacketTileEntity extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketTileEntity(
             // Coords
             aData.readInt(),
@@ -124,7 +123,6 @@ public class GTPacketTileEntity extends GTPacketNew {
         if (aWorld == null) return;
         final TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
         try {
-            final Block tBlock;
             if (tTileEntity instanceof BaseMetaTileEntity) ((BaseMetaTileEntity) tTileEntity).receiveMetaTileEntityData(
                 mID,
                 mC0,

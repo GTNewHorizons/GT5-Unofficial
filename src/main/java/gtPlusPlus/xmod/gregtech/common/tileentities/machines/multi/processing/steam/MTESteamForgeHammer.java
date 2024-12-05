@@ -5,7 +5,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.GregTechAPI.sBlockCasings2;
-import static gregtech.api.enums.GTValues.AuthorEvgenWarGold;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -21,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -285,8 +284,8 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.RANDOM_ANVIL_USE.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.RANDOM_ANVIL_USE;
     }
 
     @Override
@@ -321,12 +320,10 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Steam Presser")
             .addInfo("25% faster than using single block steam machines of the same pressure")
             .addInfo("Only consumes steam at 62.5% of the L/s normally required")
             .addInfo("Processes up to 8 items at once")
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .addSeparator()
             .beginStructureBlock(6, 5, 5, false)
             .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -352,8 +349,7 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
                     + " Steel Block"
                     + EnumChatFormatting.RED
                     + " from GregTech")
-            .addStructureInfo("")
-            .toolTipFinisher(AuthorEvgenWarGold);
+            .toolTipFinisher(GTValues.AuthorEvgenWarGold);
         return tt;
     }
 

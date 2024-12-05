@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.compressor;
 
-import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -19,6 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_UNS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +45,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -69,7 +70,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -77,6 +77,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.items.MetaGeneratedItem01;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -314,13 +315,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Compressor/Advanced Neutronium Compressor")
-            .addInfo("Controller Block for the Pseudostable Black Hole Containment Field")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things")
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE
                     + "No longer requires heat management to perform superdense compression")
             .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
-            .addInfo(EnumChatFormatting.BLUE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
             .addSeparator()
             .addInfo(
                 "Insert a " + EnumChatFormatting.WHITE
@@ -338,9 +337,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + EnumChatFormatting.GRAY
                     + " until it reaches 0")
             .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
-            .addInfo("Once the black hole becomes unstable, it will void all inputs for recipes which require it")
+            .addInfo("Once the black hole becomes unstable, it will void recipes and eventually close itself!")
             .addSeparator()
-            .addInfo("Running recipes in the machine will slow the decay rate by " + EnumChatFormatting.RED + "25%")
             .addInfo(
                 "The decay can be " + EnumChatFormatting.BOLD
                     + "halted"
@@ -363,11 +361,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " to close the black hole")
             .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one")
             .addSeparator()
-            .addInfo(
-                "Recipes not utilizing the black hole have their lengths " + EnumChatFormatting.RED
-                    + "doubled"
-                    + EnumChatFormatting.GRAY
-                    + " if it becomes unstable")
+            .addInfo(EnumChatFormatting.WHITE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
             .addInfo("400% faster than singleblock machines of the same voltage")
             .addInfo("Only uses 70% of the EU/t normally required")
             .addInfo("Gains 8 parallels per voltage tier")
@@ -377,13 +371,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " parallels when stability is BELOW "
                     + EnumChatFormatting.RED
                     + "50/20")
-            .addInfo("Accepts " + TT + " energy hatches")
+            .addTecTechHatchInfo()
             .addInfo(
                 EnumChatFormatting.RED
                     + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier.")
-            .addInfo(AuthorFourIsTheNumber + EnumChatFormatting.RESET + " & " + Ollie)
-            .addInfo("Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade")
-            .addSeparator()
             .beginStructureBlock(35, 33, 35, false)
             .addCasingInfoMin("Background Radiation Absorbent Casing", 950, false)
             .addCasingInfoExactly("Extreme Density Space-Bending Casing", 3667, false)
@@ -394,7 +385,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addOutputBus("Any Radiation Absorbent Casing", 1)
             .addInputHatch("Any Radiation Absorbent Casing", 1)
             .addEnergyHatch("Any Radiation Absorbent Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorFourIsTheNumber, Ollie, "BucketBrigade");
         return tt;
     }
 
@@ -424,9 +415,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         spacetimeHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
-        if (mCasingAmount < 950) return false;
-
-        return true;
+        return mCasingAmount >= 950;
     }
 
     @Override
@@ -485,38 +474,44 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         // Loop through all items and look for the Activation and Deactivation Catalysts
         // Deactivation resets stability to 100 and catalyzing cost to 1
 
-        // Has to do this "start/endRecipeProcessing" nonsense, or it doesn't work with stocking bus.
-        for (MTEHatchInputBus bus : mInputBusses) {
-            ItemStack[] inv = bus.getRealInventory();
-            if (inv != null) {
-                for (int i = 0; i < inv.length; i++) {
-                    ItemStack inputItem = inv[i];
-                    if (inputItem != null) {
-                        if (inputItem.getItem() instanceof MetaGeneratedItem01) {
-                            if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
-                                startRecipeProcessing();
-                                bus.decrStackSize(i, 1);
-                                endRecipeProcessing();
-                                blackHoleStatus = 2;
-                                createRenderBlock();
-                                return;
-                            } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
-                                startRecipeProcessing();
-                                bus.decrStackSize(i, 1);
-                                endRecipeProcessing();
-                                inputItem.stackSize -= 1;
-                                blackHoleStatus = 1;
-                                blackHoleStability = 100;
-                                catalyzingCostModifier = 1;
-                                rendererTileEntity = null;
-                                destroyRenderBlock();
-                                return;
+        for (MTEHatchInputBus bus : filterValidMTEs(mInputBusses)) {
+            for (int i = 0; i < bus.getSizeInventory(); i++) {
+                ItemStack inputItem = bus.getStackInSlot(i);
+                if (inputItem != null) {
+                    if (inputItem.getItem() instanceof MetaGeneratedItem01) {
+                        if (inputItem.getItemDamage() == 32418 && (blackHoleStatus == 1)) {
+                            bus.decrStackSize(i, 1);
+                            if (bus instanceof IRecipeProcessingAwareHatch aware) {
+                                setResultIfFailure(aware.endRecipeProcessing(this));
+                                aware.startRecipeProcessing();
                             }
+                            blackHoleStatus = 2;
+                            createRenderBlock();
+                            return;
+                        } else if (inputItem.getItemDamage() == 32419 && !(blackHoleStatus == 1)) {
+                            bus.decrStackSize(i, 1);
+                            if (bus instanceof IRecipeProcessingAwareHatch aware) {
+                                setResultIfFailure(aware.endRecipeProcessing(this));
+                                aware.startRecipeProcessing();
+                            }
+                            blackHoleStatus = 1;
+                            blackHoleStability = 100;
+                            catalyzingCostModifier = 1;
+                            catalyzingCounter = 0;
+                            if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
+                            collapseTimer = 40;
+                            return;
                         }
                     }
                 }
             }
         }
+    }
+
+    @Override
+    protected void setupProcessingLogic(ProcessingLogic logic) {
+        super.setupProcessingLogic(logic);
+        searchAndDecrementCatalysts();
     }
 
     @Override
@@ -526,12 +521,17 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                searchAndDecrementCatalysts();
-
-                RecipeMap<?> realMap = (getModeFromCircuit(inputItems) == MACHINEMODE_COMPRESSOR)
-                    ? RecipeMaps.compressorRecipes
-                    : RecipeMaps.neutroniumCompressorRecipes;
-                return super.findRecipeMatches(realMap);
+                switch (getModeFromCircuit(inputItems)) {
+                    case MACHINEMODE_COMPRESSOR -> {
+                        return super.findRecipeMatches(RecipeMaps.compressorRecipes);
+                    }
+                    case MACHINEMODE_BLACKHOLE -> {
+                        return super.findRecipeMatches(RecipeMaps.neutroniumCompressorRecipes);
+                    }
+                    default -> {
+                        return super.findRecipeMatches(null);
+                    }
+                }
             }
 
             @NotNull
@@ -540,48 +540,30 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 // Limit ocs up to hatch tier
                 int ocs = GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt);
                 if (ocs < 0) ocs = 0;
-                return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setSpeedBoost(speedBoost)
-                    .setEUtDiscount(euModifier)
-                    .setAmperageOC(amperageOC)
-                    .setDurationDecreasePerOC(overClockTimeReduction)
-                    .setEUtIncreasePerOC(overClockPowerIncrease)
-                    .setParallel(getMaxParallelRecipes())
-                    .limitOverclockCount(ocs);
+                return super.createOverclockCalculator(recipe).limitOverclockCount(ocs);
             }
 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-
-                // Default speed bonus
-                setSpeedBonus(0.2F);
                 if (blackHoleStatus == 1) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
-
-                // If the recipe doesn't require black hole, but it is unstable, incur a 0.5x speed penalty
-                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) == 0 && (blackHoleStatus == 3)) {
-                    setSpeedBonus(5F);
-                }
 
                 // Cap recipes to energy hatch + 1
                 if (GTUtility.getTier(getAverageInputVoltage()) < GTUtility.getTier(recipe.mEUt) - 1)
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 return super.validateRecipe(recipe);
             }
-
-            @Nonnull
-            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
-                // If recipe needs a black hole and one is active but unstable, continuously void items
-                if ((blackHoleStatus == 3) && recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0) {
-                    return CheckRecipeResultRegistry.UNSTABLE_BLACK_HOLE;
-                }
-                return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
         }.setMaxParallelSupplier(this::getMaxParallelRecipes)
-            .setEuModifier(0.7F);
+            .setEuModifier(0.7F)
+            .setSpeedBonus(0.2F);
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        if (mExoticEnergyHatches.isEmpty()) {
+            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
+            logic.setAvailableAmperage(1L);
+        } else super.setProcessingLogicPower(logic);
     }
 
     @Override
@@ -595,50 +577,77 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         return super.onRunningTick(aStack);
     }
 
+    // Asynchronous timer to destroy render block after collapse animation is done playing.
+    // This might not sync perfectly to the renderer but this is very low stakes
+    private int collapseTimer = -1;
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        if (collapseTimer != -1) {
+            if (collapseTimer == 0) {
+                destroyRenderBlock();
+            }
+            collapseTimer--;
+        }
+
+        // Skip all the drain logic for clientside, just play sounds
         if (!aBaseMetaTileEntity.isServerSide()) {
             playBlackHoleSounds();
+            return;
         }
-        if (aTick % 20 == 0) {
-            if (blackHoleStatus == 2) {
-                if (blackHoleStability >= 0) {
-                    float stabilityDecrease = 1F;
-                    // If the machine is running, reduce stability loss by 25%
-                    if (this.maxProgresstime() != 0) {
-                        stabilityDecrease = 0.75F;
-                    }
 
-                    // Search all hatches for catalyst fluid
-                    // If found enough, drain it and reduce stability loss to 0
-                    // Every 30 drains, double the cost
-                    FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+        // Run stability checks once per second if a black hole is open
+        if (blackHoleStatus == 1 || aTick % 20 != 0) return;
 
-                    boolean didDrain = false;
-                    for (MTEHatchInput hatch : spacetimeHatches) {
-                        if (drain(hatch, totalCost, false)) {
-                            drain(hatch, totalCost, true);
-                            catalyzingCounter += 1;
-                            stabilityDecrease = 0;
-                            if (catalyzingCounter >= 30) {
-                                catalyzingCostModifier *= 2;
-                                catalyzingCounter = 0;
-                            }
-                            didDrain = true;
-                            break;
-                        }
+        // Base 1 loss
+        float stabilityDecrease = 1F;
+
+        boolean didDrain = false;
+
+        // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
+        if (blackHoleStability >= 0) {
+
+            // Search all hatches for catalyst fluid
+            // If found enough, drain it and reduce stability loss to 0
+            // Every 30 drains, double the cost
+            FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+
+            for (MTEHatchInput hatch : spacetimeHatches) {
+                if (drain(hatch, totalCost, false)) {
+                    drain(hatch, totalCost, true);
+                    catalyzingCounter += 1;
+                    stabilityDecrease = 0;
+                    if (catalyzingCounter >= 30) {
+                        // Hidden cap at 1B per tick so we don't integer overflow
+                        if (catalyzingCostModifier <= 1000000000) catalyzingCostModifier *= 2;
+                        catalyzingCounter = 0;
                     }
-                    if (shouldRender) {
-                        if (rendererTileEntity == null) createRenderBlock();
-                        rendererTileEntity.toggleLaser(didDrain);
-                        rendererTileEntity.setStability(blackHoleStability / 100F);
-                    }
-                    if (blackHoleStability >= 0) blackHoleStability -= stabilityDecrease;
-                    else blackHoleStability = 0;
-                } else blackHoleStatus = 3;
+                    didDrain = true;
+                    break;
+                }
+            }
+        } else blackHoleStatus = 3;
+
+        if (shouldRender) {
+            if (rendererTileEntity != null || createRenderBlock()) {
+                rendererTileEntity.toggleLaser(didDrain);
+                rendererTileEntity.setStability(Math.max(0, blackHoleStability / 100F));
             }
         }
+
+        blackHoleStability -= stabilityDecrease;
+
+        // Close black hole and reset if it has been unstable for 15 minutes or more
+        if (blackHoleStability <= -900) {
+            blackHoleStatus = 1;
+            blackHoleStability = 100;
+            catalyzingCostModifier = 1;
+            rendererTileEntity = null;
+            destroyRenderBlock();
+        }
+
     }
 
     public int getMaxParallelRecipes() {
@@ -695,6 +704,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d != ForgeDirection.UP && d != ForgeDirection.DOWN;
+    }
+
+    @Override
     public void onBlockDestroyed() {
         destroyRenderBlock();
         super.onBlockDestroyed();
@@ -708,8 +722,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private boolean shouldRender = true;
     private TileEntityBlackhole rendererTileEntity = null;
 
-    private void createRenderBlock() {
-        if (!shouldRender) return;
+    // Returns true if render was actually created
+    private boolean createRenderBlock() {
+        if (!shouldRender || !mMachine) return false;
         IGregTechTileEntity base = this.getBaseMetaTileEntity();
         ForgeDirection opposite = getDirection().getOpposite();
         int x = 7 * opposite.offsetX;
@@ -723,7 +738,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         rendererTileEntity = (TileEntityBlackhole) base.getWorld()
             .getTileEntity(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z);
 
+        rendererTileEntity.startScaleChange(true);
         rendererTileEntity.setStability(blackHoleStability / 100F);
+        return true;
     }
 
     private void destroyRenderBlock() {

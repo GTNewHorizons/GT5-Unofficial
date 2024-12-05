@@ -91,7 +91,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     }
 
     private static void drawVeinName(OreLayerWrapper oreLayer) {
-        drawVeinNameLine(I18n.format(oreLayer.veinName) + " ");
+        drawVeinNameLine(oreLayer.localizedName + " ");
     }
 
     private static void drawVeinNameLine(String veinName) {

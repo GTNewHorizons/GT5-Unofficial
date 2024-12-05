@@ -39,9 +39,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemifluidGenerator>
@@ -67,14 +66,12 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Large Semifluid Generator")
             .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run.")
             .addInfo("Supply 80L of Oxygen per second to boost output (optional).")
             .addInfo("Default: Produces 2048EU/t at 100% efficiency")
             .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front Center")
             .addCasingInfoMin("Stable Titanium Machine Casing", 16, false)
@@ -84,7 +81,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
             .addDynamoHatch("Back Center", 2)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -298,7 +295,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiLargeSemiFluidGenerator;
+        return PollutionConfig.pollutionPerSecondMultiLargeSemiFluidGenerator;
     }
 
     @Override

@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import io.netty.buffer.ByteBuf;
+
 public class ThaumSpark implements Serializable {
 
     // This works regardless of if TC is loaded
@@ -22,6 +24,16 @@ public class ThaumSpark implements Serializable {
         this.zR = zR;
 
         this.wID = wID;
+    }
+
+    public ThaumSpark(ByteBuf buf) {
+        this.x = buf.readInt();
+        this.y = buf.readInt();
+        this.z = buf.readInt();
+        this.xR = buf.readByte();
+        this.yR = buf.readByte();
+        this.zR = buf.readByte();
+        this.wID = buf.readInt();
     }
 
     public ThaumSpark(Vec3Impl origin, Vec3Impl target, int wID) {
@@ -53,5 +65,15 @@ public class ThaumSpark implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(x, y, z, wID, xR, yR, zR);
+    }
+
+    public void writeToBuf(ByteBuf buf) {
+        buf.writeInt(x);
+        buf.writeInt(y);
+        buf.writeInt(z);
+        buf.writeByte(xR);
+        buf.writeByte(yR);
+        buf.writeByte(zR);
+        buf.writeInt(wID);
     }
 }

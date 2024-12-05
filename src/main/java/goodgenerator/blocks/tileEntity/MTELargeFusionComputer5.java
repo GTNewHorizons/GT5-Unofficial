@@ -1,6 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
 import net.minecraft.block.Block;
@@ -44,7 +43,6 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("Galaxy Collapse.")
-            .addInfo("Controller block for the Compact Fusion Reactor MK-V.")
             .addInfo(
                 EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
@@ -68,20 +66,11 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .addInfo("Startup < 640,000,000 EU: 192x Parallel")
             .addInfo("Startup < 1,200,000,000 EU: 128x Parallel")
             .addInfo("Startup >= 1,200,000,000 EU: 64x Parallel")
-            .addInfo(
-                "Support" + EnumChatFormatting.BLUE
-                    + " Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.GRAY
-                    + " Energy/Laser Hatches!")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
-            .addCasingInfo("Fusion Machine Casing MK IV", 1664)
-            .addCasingInfo("Compact Fusion Coil MK-II Finaltype", 560)
-            .addCasingInfo("Infinity Frame Box", 128)
-            .addCasingInfo("Cosmic Neutronium Reinforced Borosilicate Glass Block", 63)
+            .addTecTechHatchInfo()
+            .addCasingInfoMin("Fusion Machine Casing MK IV", 1664, false)
+            .addCasingInfoMin("Compact Fusion Coil MK-II Finaltype", 560, false)
+            .addCasingInfoMin("Infinity Frame Box", 128, false)
+            .addCasingInfoMin("Cosmic Neutronium Reinforced Borosilicate Glass Block", 63, false)
             .addEnergyHatch("1-32, Hint block with dot 2", 2)
             .addInputHatch("1-16, Hint block with dot 1", 1)
             .addOutputHatch("1-16, Hint block with dot 1", 1)
@@ -90,7 +79,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
                 "ALL Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) hatchTier())
                     + EnumChatFormatting.GRAY
                     + " or better")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

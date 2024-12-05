@@ -104,14 +104,12 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
+        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.extremelyUnstableNaquadah, 8000, 122880, 7000, false);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.zircaloy2, 500, 480, 2800, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.zircaloy2, 513, 480, 2800, false);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.zircaloy4, 500, 480, 2800, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.zircaloy4, 513, 480, 2800, false);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.incoloy903, 1200, 1920, 3700, true);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.adamantiumAlloy, 2500, 1920, 5500, true);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.marM200, 200, 7680, 5000, true);
-        CrackRecipeAdder.reAddBlastRecipe(GGMaterial.marM200, 220, 7680, 5000, false);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.signalium, 1600, 30720, 4000, true);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.lumiium, 1600, 30720, 4000, true);
         CrackRecipeAdder.reAddBlastRecipe(GGMaterial.artheriumSn, 500, 122880, 6500, true);
@@ -451,7 +449,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T8.get(1))
-            .metadata(RESEARCH_TIME, 180 * HOURS)
+            .metadata(RESEARCH_TIME, 18 * HOURS)
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UHV.get(8),
@@ -472,7 +470,7 @@ public class RecipeLoader2 {
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemRefer.Fluid_Storage_Core_T9.get(1))
-            .metadata(RESEARCH_TIME, 360 * HOURS)
+            .metadata(RESEARCH_TIME, 36 * HOURS)
             .itemInputs(
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 64L, 6),
                 ItemList.Electric_Pump_UEV.get(8),
@@ -855,8 +853,8 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
 
-        if (OreDictionary.getOres("fuelCoke")
-            .size() > 0) {
+        if (!OreDictionary.getOres("fuelCoke")
+            .isEmpty()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     OreDictionary.getOres("fuelCoke")
@@ -1066,19 +1064,19 @@ public class RecipeLoader2 {
             .addTo(assemblerRecipes);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
-            FluidRegistry.getFluidStack("lava", 20000),
-            FluidRegistry.getFluidStack("ic2pahoehoelava", 20000),
-            FluidRegistry.getFluidStack("ic2distilledwater", 20000),
-            FluidRegistry.getFluidStack("steam", 3200000),
-            FluidRegistry.getFluidStack("ic2superheatedsteam", 1600000),
-            10000);
+            FluidRegistry.getFluidStack("lava", 160000),
+            FluidRegistry.getFluidStack("ic2pahoehoelava", 160000),
+            FluidRegistry.getFluidStack("ic2distilledwater", 80000),
+            FluidRegistry.getFluidStack("ic2superheatedsteam", 12800000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 12800000),
+            80000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
             FluidRegistry.getFluidStack("ic2hotcoolant", 16000),
             FluidRegistry.getFluidStack("ic2coolant", 16000),
             FluidRegistry.getFluidStack("ic2distilledwater", 20000),
             FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 32000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 3200000),
             8000);
 
         MyRecipeAdder.instance.addExtremeHeatExchangerRecipe(
@@ -1086,7 +1084,7 @@ public class RecipeLoader2 {
             FluidRegistry.getFluidStack("molten.solarsaltcold", 3200),
             FluidRegistry.getFluidStack("ic2distilledwater", 20000),
             FluidRegistry.getFluidStack("ic2superheatedsteam", 3200000),
-            FluidRegistry.getFluidStack("supercriticalsteam", 32000),
+            FluidRegistry.getFluidStack("supercriticalsteam", 3200000),
             1600);
 
         GTValues.RA.stdBuilder()
@@ -1334,6 +1332,7 @@ public class RecipeLoader2 {
                     GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Osmiridium, 2),
                     GGMaterial.marM200.get(OrePrefixes.plateDouble, 2),
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1),
+
                     MaterialsElements.getInstance().RUTHENIUM.getBolt(32),
                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Platinum, 8))
                 .fluidInputs(GGMaterial.zircaloy4.getMolten(576))

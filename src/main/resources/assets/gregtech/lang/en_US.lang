@@ -16,8 +16,9 @@ GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s�
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 
 # Multiblock Tooltip Builder Keywords
-# Context can be found in the class gregtech.api.util.GT_Multiblock_Tooltip_Builder
+# Context can be found in the class gregtech.api.util.MultiblockTooltipBuilder
 GT5U.MBTT.MachineType=Machine Type
+GT5U.MBTT.Parallels=Processes up to %d recipes at once
 GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
@@ -32,6 +33,7 @@ GT5U.MBTT.InputBus=Input Bus
 GT5U.MBTT.InputHatch=Input Hatch
 GT5U.MBTT.OutputBus=Output Bus
 GT5U.MBTT.OutputHatch=Output Hatch
+GT5U.MBTT.TecTechHatch=Supports TecTech Multi-Amp and Laser Hatches!
 GT5U.MBTT.Causes=Causes
 GT5U.MBTT.PPS=pollution per second
 GT5U.MBTT.Hold=Hold
@@ -39,6 +41,9 @@ GT5U.MBTT.Display=to display structure guidelines
 GT5U.MBTT.StructureHint=Some blocks have multiple candidates or can use any tier
 GT5U.MBTT.Mod=Added by
 GT5U.MBTT.Air=Mandatory Air
+GT5U.MBTT.Structure.Complex=Structure is too complex!
+GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
+GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
 
 GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
 
@@ -98,6 +103,8 @@ GT5U.coil.UXV=Hypogen
 GT5U.coil.MAX=Eternal
 
 GT5U.MS.multismelting=Multi smelting
+
+gt.casing.tiertooltip=Casing Tier: %s
 
 # Machine types
 gt.recipe.alloysmelter=Alloy Smelter
@@ -359,6 +366,8 @@ GT5U.MULTI_MACHINE_CHANGE=Now running in %s mode
 GT5U.MULTI_MACHINE_CONFIG.SAVE=Saved Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD=Loaded Multiblock Hatch Configuration
 GT5U.MULTI_MACHINE_CONFIG.LOAD.FAIL=Failed to load Multiblock Hatch Configuration
+GT5U.DEHP.mode.0=Direct Steam
+GT5U.DEHP.mode.1=Coolant Heating
 GT5U.machines.oreprocessor1=§eRunning Mode:
 GT5U.machines.oreprocessor2=§cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
@@ -511,6 +520,7 @@ GT5U.gui.text.crash=§4Machine turned off due to crash. Refer to the log for mor
 GT5U.gui.text.no_fuel=§7No valid fuel found
 GT5U.gui.text.no_turbine=§7No valid turbine found
 GT5U.gui.text.no_lubricant=§7No lubricant found
+GT5U.gui.text.cycle_idle=§6Waiting for cycle to start
 GT5U.gui.text.fuel_quality_too_high=§7Fuel quality too high to run without boost
 GT5U.gui.text.no_data_sticks=§7No Data Sticks found
 GT5U.gui.text.bio_upgrade_missing=§7Recipe needs Bio Upgrade to start
@@ -523,6 +533,7 @@ GT5U.gui.text.machine_mismatch=§7Machine doesn't match to locked recipe
 GT5U.gui.text.high_gravity=§7Recipe needs low gravity
 GT5U.gui.text.no_mining_pipe=§7Missing Mining Pipe
 GT5U.gui.text.drilling=§aDrilling
+GT5U.gui.text.circulating_fluid=§aCirculating Fluid
 GT5U.gui.text.deploying_pipe=§aDeploying mining pipe
 GT5U.gui.text.extracting_pipe=§aExtracting pipe
 GT5U.gui.text.retracting_pipe=§aRetracting pipe
@@ -532,7 +543,6 @@ GT5U.gui.text.drill_generic_finished=§7Mining pipes have been retracted
 GT5U.gui.text.drill_retract_pipes_finished=§7Operation aborted
 GT5U.gui.text.backfiller_no_concrete=§7No liquid concrete
 GT5U.gui.text.no_black_hole=§7Requires an active black hole
-GT5U.gui.text.unstable_black_hole=§7Black hole is unstable
 GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.backfiller_working=§aPouring concrete
 GT5U.gui.text.backfiller_current_area=§7Filling at y-level: §a%s
@@ -604,6 +614,7 @@ GT5U.gui.config.machine_stats.machines=Machines
 GT5U.gui.config.machine_stats.microwave_energy_transmitter=Microwave Energy Transmitter
 GT5U.gui.config.machine_stats.mass_fabricator=Mass Fabricator
 GT5U.gui.config.machine_stats.teleporter=Teleporter
+GT5U.gui.config.machine_stats.cleanroom=Cleanroom
 GT5U.gui.config.worldgen=Worldgen
 GT5U.gui.config.worldgen.end_asteroids=End Asteroids
 GT5U.gui.config.worldgen.general=General
@@ -624,13 +635,20 @@ GT5U.item.tank.locked_to=Content locked to %s
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak middle-click to unlock.
 gt.behaviour.paintspray.infinite.gui.solvent=Solvent
+gt.behaviour.paintspray.infinite.gui.shake_toggle=Allow/disallow color iteration
 
 gt.behaviour.paintspray.infinite.tooltip.infinite=Infinite uses
 gt.behaviour.paintspray.infinite.tooltip.more_info=Hold SHIFT for more information
+gt.behaviour.paintspray.infinite.tooltip.locked=Locked
+gt.behaviour.paintspray.infinite.tooltip.preventing_shake=Left click action disabled
+
 gt.behaviour.paintspray.infinite.tooltip.switch=Left Click: Change color (sneak to reverse direction)
 gt.behaviour.paintspray.infinite.tooltip.pick=Middle Click block: Copy color to spray can
 gt.behaviour.paintspray.infinite.tooltip.lock=Sneak Middle Click: Lock or unlock spray can
 gt.behaviour.paintspray.infinite.tooltip.gui=Middle Click: Open color choice GUI
+gt.behaviour.paintspray.infinite.tooltip.prevent_shake=%s-Middle Click: Allow/prevent left click action
+gt.behaviour.paintspray.infinite.tooltip.ctrl_pc=Ctrl
+gt.behaviour.paintspray.infinite.tooltip.ctrl_mac=Command
 
 GT5U.hatch.disableFilter.true=Input Filter §cOff§r
 GT5U.hatch.disableFilter.false=Input Filter §aOn§r
@@ -657,7 +675,7 @@ GT5U.multiblock.efficiency=Efficiency
 GT5U.multiblock.problems=Problems
 GT5U.multiblock.mei=Max Energy Income
 GT5U.multiblock.maxtier=Max Tier
-GT5U.multiblock.usage=Probably uses
+GT5U.multiblock.usage=Currently uses
 GT5U.multiblock.parallelism=Max Parallel
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
@@ -763,10 +781,10 @@ GT5U.waila.cover.current_facing=Current Facing
 GT5U.waila.energy.stored=Stored: §a%s§r EU / §e%s§r EU
 GT5U.waila.energy.avg_in_with_amperage=Average Input: §a%s§r EU/t (%sA %s)
 GT5U.waila.energy.avg_out_with_amperage=Average Output: §c%s§r EU/t (%sA %s)
-GT5U.waila.energy.use=Probably uses: §e%s§r EU/t (%s)
-GT5U.waila.energy.use_with_amperage=Probably uses: §e%s§r EU/t (%sA %s)
-GT5U.waila.energy.produce=Probably generates: §a%s§r EU/t (%s)
-GT5U.waila.energy.produce_with_amperage=Probably generates: §a%s§r EU/t (%sA %s)
+GT5U.waila.energy.use=Currently uses: §e%s§r EU/t (%s)
+GT5U.waila.energy.use_with_amperage=Currently uses: §e%s§r EU/t (%sA %s)
+GT5U.waila.energy.produce=Currently generates: §a%s§r EU/t (%s)
+GT5U.waila.energy.produce_with_amperage=Currently generates: §a%s§r EU/t (%sA %s)
 GT5U.waila.stocking_bus.auto_pull.enabled=Auto-Pull from ME: Enabled
 GT5U.waila.stocking_bus.auto_pull.disabled=Auto-Pull from ME: Disabled
 GT5U.waila.stocking_bus.min_stack_size=Minimum Stack Size: %s
@@ -1457,9 +1475,9 @@ for.bees.species.nethershard=Nether Shard
 for.bees.species.endshard=Ender Shard
 for.bees.species.dragonblood=Dragonblood
 
-for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Diddy & Noila
+for.description.machinist=The Machinist Queen, born from the synergy of active machinery and roaring fire. It manufactures essential components needed to build and expand an apiarists empire.||Aditya & Noila
 
-for.bees.authority.machinist=Diddy & Noila
+for.bees.authority.machinist=Aditya & Noila
 
 for.mutation.condition.biomeid=Required Biome
 for.mutation.condition.dim=Required Dimension
@@ -1692,8 +1710,8 @@ GTPP.multiblock.progress=Progress
 GTPP.multiblock.efficiency=Efficiency
 GTPP.multiblock.problems=Problems
 GTPP.multiblock.mei=Max Energy Income
-GTPP.multiblock.usage=Probably uses
-GTPP.multiblock.generation=Probably generates
+GTPP.multiblock.usage=Currently uses
+GTPP.multiblock.generation=Currently generates
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
@@ -1701,7 +1719,7 @@ GTPP.multiblock.multimachine.fluid=Fluid Mode. Does fermenter (circuit 20), flui
 GTPP.multiblock.multimachine.misc=Misc. Mode. Does precision laser engraver (circuit 20), autoclave (circuit 21) and fluid solidifier (circuit 22).
 
 
-GTPP.waila.steam.use=Probably uses: §e%s§r L/s Steam
+GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount

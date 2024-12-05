@@ -8,8 +8,8 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 public class TextButtonWidget extends MultiChildWidget {
 
-    private ButtonWidget mButton;
-    private TextWidget mText;
+    private final ButtonWidget mButton;
+    private final TextWidget mText;
 
     private int leftMargin;
 

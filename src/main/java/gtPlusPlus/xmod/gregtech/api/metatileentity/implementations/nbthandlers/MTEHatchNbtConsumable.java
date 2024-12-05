@@ -211,7 +211,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGreg
                 // Then Move stack to Usage slots
                 for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
                     if (mInventory[i] == null) {
-                        if ((aFoundMatching && aAllowMultiOfSameTypeInUsageSlots) || !aFoundMatching) {
+                        if (!aFoundMatching || aAllowMultiOfSameTypeInUsageSlots) {
                             mInventory[i] = aStackToMove;
                             aDidSet = true;
                             Logger.INFO("Moving new stack to usage slots.");

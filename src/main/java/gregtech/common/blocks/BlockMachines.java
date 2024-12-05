@@ -140,7 +140,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         if (GTRendererBlock.INSTANCE == null) {
             return super.getRenderType();
         }
-        return GTRendererBlock.INSTANCE.mRenderID;
+        return GTRendererBlock.mRenderID;
     }
 
     @Override

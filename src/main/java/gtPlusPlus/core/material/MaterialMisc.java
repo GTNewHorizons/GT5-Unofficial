@@ -21,7 +21,6 @@ public final class MaterialMisc {
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(STRONTIUM_HYDROXIDE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(CYANOACETIC_ACID, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(SODIUM_CYANIDE, false);
-        MaterialUtils.generateSpecialDustAndAssignToAMaterial(CALCIUM_CHLORIDE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE, false);
         MaterialUtils.generateSpecialDustAndAssignToAMaterial(COPPER_SULFATE_HYDRATED, false);
         WATER.registerComponentForMaterial(FluidUtils.getWater(1000));
@@ -446,21 +445,6 @@ public final class MaterialMisc {
         new MaterialStack(MaterialsElements.getInstance().SODIUM, 1),
         new MaterialStack(MaterialsElements.getInstance().CARBON, 1),
         new MaterialStack(MaterialsElements.getInstance().NITROGEN, 1));
-
-    public static final Material CALCIUM_CHLORIDE = new Material(
-        "Calcium Chloride",
-        MaterialState.SOLID, // State
-        new short[] { 180, 190, 255 }, // Material Colour
-        563, // Melting Point in C
-        1496, // Boiling Point in C
-        -1, // Protons
-        -1,
-        false, // Uses Blast furnace?
-        "CaCl2",
-        0,
-        false,
-        new MaterialStack(MaterialsElements.getInstance().CALCIUM, 1),
-        new MaterialStack(MaterialsElements.getInstance().CHLORINE, 2));
 
     public static final Material CYANOACETIC_ACID = new Material(
         "Cyanoacetic Acid",

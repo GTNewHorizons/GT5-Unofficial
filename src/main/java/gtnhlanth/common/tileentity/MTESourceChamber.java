@@ -12,7 +12,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
     private static final IStructureDefinition<MTESourceChamber> STRUCTURE_DEFINITION;
 
-    private ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
 
@@ -125,11 +124,8 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Particle Source")
-            .addInfo("Controller block for the Source Chamber")
             .addInfo("Output energy scales with EU/t up to the point shown in the recipe")
-            .addInfo(BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 56, false)
@@ -140,7 +136,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addMaintenanceHatch(addDotText(3))
             .addInputBus(addDotText(1))
             .addOutputBus(addDotText(2))
-            .toolTipFinisher("GTNH: Lanthanides");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -158,14 +154,9 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         return false;
     }
-    /*
-     * protected OverclockDescriber createOverclockDescriber() { return new EUNoTotalOverclockDescriber((byte) 4, 1); }
-     */
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-
-        // GTLog.out.print("In checkRecipe");
 
         // No input particle, so no input quantities
 
@@ -176,7 +167,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         ItemStack[] tItems = this.getStoredInputs()
             .toArray(new ItemStack[0]);
-        // GTLog.out.print(Arrays.toString(tItems));
+
         long tVoltageMaxTier = this.getMaxInputVoltage(); // Used to keep old math the same
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
 
@@ -316,7 +307,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
-                + Float.toString(mEfficiency / 100.0F)
+                + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")

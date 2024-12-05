@@ -787,7 +787,7 @@ public class RecipeLoader {
                     GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 8),
                     GTOreDictUnificator.get(OrePrefixes.pipeMedium, MaterialsUEVplus.SpaceTime, 16),
                     ItemList.Circuit_Wafer_PPIC.get(64),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1))
+                    new Object[] { OrePrefixes.circuit.get(Materials.UXV), 1L })
                 .fluidInputs(
                     GGMaterial.metastableOganesson.getMolten(1000),
                     MaterialsUEVplus.TranscendentMetal.getMolten(9216),
@@ -1269,16 +1269,6 @@ public class RecipeLoader {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 4600)
-            .addTo(blastFurnaceRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GGMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 1),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(GGMaterial.extremelyUnstableNaquadah.get(OrePrefixes.ingotHot))
-            .duration(6 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .metadata(COIL_HEAT, 7000)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
