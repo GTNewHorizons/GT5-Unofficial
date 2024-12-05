@@ -558,25 +558,6 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_TECH_B = new CustomIcon("metro/TEXTURE_TECH_B");
     public static final CustomIcon TEXTURE_TECH_C = new CustomIcon("metro/TEXTURE_TECH_C");
 
-    private static final CustomIcon GT8_1_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE1");
-    private static final CustomIcon GT8_1 = new CustomIcon("iconsets/LARGECENTRIFUGE1");
-    private static final CustomIcon GT8_2_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE2");
-    private static final CustomIcon GT8_2 = new CustomIcon("iconsets/LARGECENTRIFUGE2");
-    private static final CustomIcon GT8_3_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE3");
-    private static final CustomIcon GT8_3 = new CustomIcon("iconsets/LARGECENTRIFUGE3");
-    private static final CustomIcon GT8_4_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE4");
-    private static final CustomIcon GT8_4 = new CustomIcon("iconsets/LARGECENTRIFUGE4");
-    private static final CustomIcon GT8_5_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
-    private static final CustomIcon GT8_5 = new CustomIcon("iconsets/LARGECENTRIFUGE5");
-    private static final CustomIcon GT8_6_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE6");
-    private static final CustomIcon GT8_6 = new CustomIcon("iconsets/LARGECENTRIFUGE6");
-    private static final CustomIcon GT8_7_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE7");
-    private static final CustomIcon GT8_7 = new CustomIcon("iconsets/LARGECENTRIFUGE7");
-    private static final CustomIcon GT8_8_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE8");
-    private static final CustomIcon GT8_8 = new CustomIcon("iconsets/LARGECENTRIFUGE8");
-    private static final CustomIcon GT8_9_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE9");
-    private static final CustomIcon GT8_9 = new CustomIcon("iconsets/LARGECENTRIFUGE9");
-
     public static final CustomIcon TEXTURE_TECH_PANEL_D = new CustomIcon("metro/TEXTURE_TECH_PANEL_D");
     public static final CustomIcon TEXTURE_TECH_PANEL_H = new CustomIcon("metro/TEXTURE_TECH_PANEL_H");
 
@@ -609,9 +590,4 @@ public class TexturesGtBlock {
         TEXTURE_CASING_TIERED_IV, TEXTURE_CASING_TIERED_LuV, TEXTURE_CASING_TIERED_ZPM, TEXTURE_CASING_TIERED_UV,
         TEXTURE_CASING_TIERED_MAX };
 
-    public static IIconContainer[] CENTRIFUGE = new IIconContainer[] { GT8_1, GT8_2, GT8_3, GT8_4, GT8_5, GT8_6, GT8_7,
-        GT8_8, GT8_9 };
-
-    public static IIconContainer[] CENTRIFUGEACTIVE = new IIconContainer[] { GT8_1_Active, GT8_2_Active, GT8_3_Active,
-        GT8_4_Active, GT8_5_Active, GT8_6_Active, GT8_7_Active, GT8_8_Active, GT8_9_Active };
 }
