@@ -13,9 +13,13 @@ import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.UniversalSingularities;
+import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.util.GTRecipeConstants;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -48,6 +52,17 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     .addTo(electricImplosionCompressorRecipes);
             }
         }
+
+        //Manual Add due to werkstoff material system disconnected from autogeneration
+        GTValues.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 4))
+            .itemOutputs(
+                WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gem, 3),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
+            .duration(1 * TICKS)
+            .eut(TierEU.RECIPE_UEV)
+            .noOptimize()
+            .addTo(electricImplosionCompressorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(highDensityPlutoniumNugget, 5))
