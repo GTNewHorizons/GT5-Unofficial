@@ -26,7 +26,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -165,6 +164,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
+    public ItemStack[] getSharedItems() {
+        return getMaster() != null ? getMaster().getSharedItems() : new ItemStack[0];
+    }
+
+    @Override
     public boolean justUpdated() {
         return getMaster() != null && getMaster().justUpdated();
     }
@@ -294,17 +298,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public List<MTEHatchCraftingInputME.recipeInputs> getPatternsInputs() {
-        return getMaster() != null ? getMaster().getPatternsInputs() : null;
-    }
-
-    @Override
-    public void setSuperCribsRecipeList(ArrayList<GTRecipe> rList) {
-
-    }
-
-    @Override
-    public ArrayList<GTRecipe> getSuperCribsRecipeList() {
-        return getMaster() != null ? getMaster().superCribsRecipeList : null;
+    public void resetRecipes() {
+        if (getMaster() != null) getMaster().resetRecipes();
     }
 }

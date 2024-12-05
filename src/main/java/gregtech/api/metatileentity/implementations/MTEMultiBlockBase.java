@@ -873,20 +873,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return true;
     }
 
-    public void setSuperCribsRecipeList() {
+    public void resetCribsRecipes() {
         for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-            ArrayList<GTRecipe> recipeList = new ArrayList<>();
-            List<MTEHatchCraftingInputME.recipeInputs> temp = dualInputHatch.getPatternsInputs();
-            if (temp == null) return;
-            for (MTEHatchCraftingInputME.recipeInputs t : temp) {
-                if (t == null) {
-                    recipeList.add(null);
-                    continue;
-                }
-                GTRecipe recipe = processingLogic.getCribsMatch(t.inputItems, t.inputFluid);
-                recipeList.add(recipe);
-            }
-            dualInputHatch.setSuperCribsRecipeList(recipeList);
+            dualInputHatch.resetRecipes();
         }
     }
 
@@ -899,25 +888,40 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
         // check crafting input hatches first
         if (supportsCraftingMEBuffer()) {
+            RecipeMap<?> recipeMap = getRecipeMap();
+            if (recipeMap == null) return result;
+            int recipeMapHash = recipeMap.hashCode();
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                ArrayList<GTRecipe> cribsCustomRecipeMap = dualInputHatch.getSuperCribsRecipeList();
-                if (cribsCustomRecipeMap == null) {
-                    setSuperCribsRecipeList();
-                    continue;
-                }
-                int n = 0;
+                ItemStack[] sharedItems = dualInputHatch.getSharedItems();
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                    GTRecipe recipe = cribsCustomRecipeMap.get(n);
                     IDualInputInventory slot = it.next();
-                    n++;
-                    if (recipe != null) {
-                        ItemStack[] items = slot.getItemInputs();
-                        FluidStack[] fluids = slot.getFluidInputs();
-                        if (items == null && fluids == null) continue;
-                        if (items.length == 0 && fluids.length == 0) continue;
-                        processingLogic.setInputItems(items);
-                        processingLogic.setInputFluids(fluids);
-                        return processingLogic.processCribs(recipe);
+                    GTRecipe recipe = slot.getPatternRecipe();
+                    if (recipe == null) {
+                        MTEHatchCraftingInputME.PatternSlot.recipeInputs t = slot.getPatternInputs();
+                        GTRecipe slotRecipe = processingLogic.getRecipeByInputs(t.inputItems, t.inputFluid);
+                        if (slotRecipe != null) slot.setPatternRecipe(slotRecipe, recipeMapHash);
+                        continue;
+                    }
+
+                    if (slot.getPatternRecipeMapHash() != recipeMapHash) continue;
+
+                    ItemStack[] items = slot.getItemInputs();
+                    FluidStack[] fluids = slot.getFluidInputs();
+
+                    if (items.length == 0 && fluids.length == 0) continue;
+
+                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, items));
+                    processingLogic.setInputFluids(fluids);
+                    processingLogic.setProcessCribs(true);
+                    processingLogic.setCribsRecipe(recipe);
+
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
                     }
                 }
             }

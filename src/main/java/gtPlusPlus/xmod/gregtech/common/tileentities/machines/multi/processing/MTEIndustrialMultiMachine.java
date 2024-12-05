@@ -33,6 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -392,11 +393,33 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
             // check crafting input hatches first
             if (supportsCraftingMEBuffer()) {
+                RecipeMap<?> recipeMap = getRecipeMap();
+                if (recipeMap == null) return result;
+                int recipeMapHash = recipeMap.hashCode();
                 for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                    ItemStack[] sharedItems = dualInputHatch.getSharedItems();
                     for (var it = dualInputHatch.inventories(); it.hasNext();) {
                         IDualInputInventory slot = it.next();
-                        processingLogic.setInputItems(slot.getItemInputs());
-                        processingLogic.setInputFluids(slot.getFluidInputs());
+                        GTRecipe recipe = slot.getPatternRecipe();
+                        if (recipe == null) {
+                            MTEHatchCraftingInputME.PatternSlot.recipeInputs t = slot.getPatternInputs();
+                            GTRecipe slotRecipe = processingLogic.getRecipeByInputs(t.inputItems, t.inputFluid);
+                            if (slotRecipe != null) slot.setPatternRecipe(slotRecipe, recipeMapHash);
+                            continue;
+                        }
+
+                        if (slot.getPatternRecipeMapHash() != recipeMapHash) continue;
+
+                        ItemStack[] items = slot.getItemInputs();
+                        FluidStack[] fluids = slot.getFluidInputs();
+
+                        if (items.length == 0 && fluids.length == 0) continue;
+
+                        processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, items));
+                        processingLogic.setInputFluids(fluids);
+                        processingLogic.setProcessCribs(true);
+                        processingLogic.setCribsRecipe(recipe);
+
                         CheckRecipeResult foundResult = processingLogic.process();
                         if (foundResult.wasSuccessful()) {
                             return foundResult;

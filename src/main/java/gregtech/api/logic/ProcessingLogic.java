@@ -31,6 +31,8 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
     protected ArrayList<GTRecipe> cribsCustomRecipeMap;
+    protected boolean processCribs;
+    protected GTRecipe cribsRecipe;
 
     public ProcessingLogic() {}
 
@@ -65,9 +67,12 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return getThis();
     }
 
-    public ProcessingLogic setCribsCustomRecipeMap(ArrayList<GTRecipe> cribsCustomRecipeMap) {
-        this.cribsCustomRecipeMap = cribsCustomRecipeMap;
-        return getThis();
+    public void setProcessCribs(boolean bool) {
+        this.processCribs = bool;
+    }
+
+    public void setCribsRecipe(GTRecipe recipe) {
+        this.cribsRecipe = recipe;
     }
 
     /**
@@ -92,6 +97,8 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         this.calculatedEut = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
+        this.processCribs = false;
+        this.cribsRecipe = null;
         return getThis();
     }
 
@@ -104,11 +111,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
      */
 
     @Nonnull
-    public CheckRecipeResult processCribs(GTRecipe recipe) {
-        return validateAndCalculateRecipe(recipe).checkRecipeResult;
-    }
-
-    @Nonnull
     public CheckRecipeResult process() {
         RecipeMap<?> recipeMap = preProcess();
 
@@ -117,6 +119,13 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         }
         if (inputFluids == null) {
             inputFluids = new FluidStack[0];
+        }
+
+        if (processCribs) {
+            if (cribsRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
+                return validateAndCalculateRecipe(cribsRecipe).checkRecipeResult;
+            }
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
@@ -149,24 +158,13 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return checkRecipeResult;
     }
 
-    public GTRecipe getCribsMatch(ItemStack[] iI, FluidStack[] iF) {
-        RecipeMap<?> recipeMap = preProcess();
-        inputItems = iI;
-        inputFluids = iF;
-        if (inputItems == null) {
-            inputItems = new ItemStack[0];
-        }
-        if (inputFluids == null) {
-            inputFluids = new FluidStack[0];
-        }
-
-        Stream<GTRecipe> matchedRecipes = findRecipeMatches(recipeMap);
-        Iterable<GTRecipe> recipeIterable = matchedRecipes::iterator;
-        CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NO_RECIPE;
-        for (GTRecipe matchedRecipe : recipeIterable) {
-            return matchedRecipe;
-        }
-        return null;
+    public GTRecipe getRecipeByInputs(ItemStack[] iI, FluidStack[] iF) {
+        return preProcess().findRecipeQuery()
+            .items(iI)
+            .fluids(iF)
+            .specialSlot(specialSlotItem)
+            .cachedRecipe(lastRecipe)
+            .find();
     }
 
     /**
@@ -176,7 +174,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
      * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
-    public CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+    private CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
         CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
             return CalculationResult.ofFailure(result);

@@ -1,13 +1,9 @@
 package gregtech.common.tileentities.machines;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
-
-import gregtech.api.util.GTRecipe;
 
 public interface IDualInputHatch {
 
@@ -23,9 +19,7 @@ public interface IDualInputHatch {
 
     boolean supportsFluids();
 
-    List<MTEHatchCraftingInputME.recipeInputs> getPatternsInputs();
+    ItemStack[] getSharedItems();
 
-    void setSuperCribsRecipeList(ArrayList<GTRecipe> rList);
-
-    ArrayList<GTRecipe> getSuperCribsRecipeList();
+    void resetRecipes();
 }

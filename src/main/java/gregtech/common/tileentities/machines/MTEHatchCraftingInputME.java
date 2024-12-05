@@ -110,11 +110,19 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             ItemStack[] getSharedItem();
         }
 
+        public static class recipeInputs {
+
+            public ItemStack[] inputItems;
+            public FluidStack[] inputFluid;
+        }
+
         private final ItemStack pattern;
         private final ICraftingPatternDetails patternDetails;
         private final List<ItemStack> itemInventory;
         private final List<FluidStack> fluidInventory;
         private final SharedItemGetter sharedItemGetter;
+        private GTRecipe patternRecipe;
+        private int patternRecipeMapHash;
 
         public PatternSlot(ItemStack pattern, World world, SharedItemGetter getter) {
             this.pattern = pattern;
@@ -123,6 +131,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
             this.sharedItemGetter = getter;
+            this.patternRecipe = null;
+            this.patternRecipeMapHash = 0;
         }
 
         public PatternSlot(ItemStack pattern, NBTTagCompound nbt, World world, SharedItemGetter getter) {
@@ -132,6 +142,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
             this.sharedItemGetter = getter;
+            this.patternRecipe = null;
+            this.patternRecipeMapHash = 0;
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
                 NBTTagCompound tagItemStack = inv.getCompoundTagAt(i);
@@ -204,7 +216,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         @Override
         public ItemStack[] getItemInputs() {
             if (isItemEmpty()) return new ItemStack[0];
-            return ArrayUtils.addAll(itemInventory.toArray(new ItemStack[0]), sharedItemGetter.getSharedItem());
+            return itemInventory.toArray(new ItemStack[0]);
         }
 
         @Override
@@ -215,6 +227,42 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         public ICraftingPatternDetails getPatternDetails() {
             return patternDetails;
+        }
+
+        public recipeInputs getPatternInputs() {
+            recipeInputs inputsSuper = new recipeInputs();
+
+            ItemStack[] inputItems = sharedItemGetter.getSharedItem();
+            FluidStack[] inputFluids = new FluidStack[0];
+
+            for (IAEItemStack singleInput : this.getPatternDetails()
+                .getInputs()) {
+                if (singleInput == null) continue;
+                ItemStack singleInputItemStack = singleInput.getItemStack();
+                if (singleInputItemStack.getItem() instanceof ItemFluidDrop) {
+                    FluidStack fluidStack = ItemFluidDrop.getFluidStack(singleInputItemStack);
+                    if (fluidStack != null) inputFluids = ArrayUtils.addAll(inputFluids, fluidStack);
+                } else {
+                    inputItems = ArrayUtils.addAll(inputItems, singleInputItemStack);
+                }
+            }
+
+            inputsSuper.inputItems = inputItems;
+            inputsSuper.inputFluid = inputFluids;
+            return inputsSuper;
+        }
+
+        public void setPatternRecipe(GTRecipe recipe, int hash) {
+            patternRecipe = recipe;
+            patternRecipeMapHash = hash;
+        }
+
+        public GTRecipe getPatternRecipe() {
+            return patternRecipe;
+        }
+
+        public int getPatternRecipeMapHash() {
+            return patternRecipeMapHash;
         }
 
         public void refund(AENetworkProxy proxy, BaseActionSource src) throws GridAccessException {
@@ -773,6 +821,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             if (originalPattern.hasChanged(newItem, world)) {
                 try {
                     originalPattern.refund(getProxy(), getRequest());
+                    originalPattern.setPatternRecipe(null, 0);
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
                 needPatternSync = true;
@@ -791,6 +840,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         needPatternSync = true;
     }
 
+    @Override
     public ItemStack[] getSharedItems() {
         ItemStack[] sharedItems = new ItemStack[SLOT_MANUAL_SIZE + 1];
         sharedItems[0] = mInventory[SLOT_CIRCUIT];
@@ -979,7 +1029,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         } catch (GridAccessException ignored) {
             return false;
         }
-        superCribsRecipeList = null;
         return true;
     }
 
@@ -1058,55 +1107,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         return list;
     }
 
-    public static class recipeInputs {
-
-        public ItemStack[] inputItems;
-        public FluidStack[] inputFluid;
-    }
-
-    ArrayList<GTRecipe> superCribsRecipeList = new ArrayList<>();
-
     @Override
-    public List<recipeInputs> getPatternsInputs() {
-        ItemStack[] sharedItems = getSharedItems();
-        List<recipeInputs> recipeInputsList = new ArrayList<>();
+    public void resetRecipes() {
         for (PatternSlot slot : internalInventory) {
-            if (slot == null) {
-                recipeInputsList.add(null);
-                continue;
-            }
-
-            recipeInputs inputsSuper = new recipeInputs();
-
-            ItemStack[] inputItems = sharedItems;
-            FluidStack[] inputFluids = new FluidStack[0];
-
-            for (IAEItemStack singleInput : slot.getPatternDetails()
-                .getInputs()) {
-                if (singleInput == null) continue;
-                ItemStack singleInputItemStack = singleInput.getItemStack();
-                if (singleInputItemStack.getItem() instanceof ItemFluidDrop) {
-                    FluidStack fluidStack = ItemFluidDrop.getFluidStack(singleInputItemStack);
-                    if (fluidStack != null) inputFluids = ArrayUtils.addAll(inputFluids, fluidStack);
-                } else {
-                    inputItems = ArrayUtils.addAll(inputItems, singleInputItemStack);
-                }
-            }
-
-            inputsSuper.inputItems = inputItems;
-            inputsSuper.inputFluid = inputFluids;
-            recipeInputsList.add(inputsSuper);
+            if (slot == null) continue;
+            slot.setPatternRecipe(null, 0);
         }
-        return recipeInputsList;
-    }
-
-    @Override
-    public void setSuperCribsRecipeList(ArrayList<GTRecipe> rList) {
-        superCribsRecipeList = rList;
-    }
-
-    @Override
-    public ArrayList<GTRecipe> getSuperCribsRecipeList() {
-        return superCribsRecipeList;
     }
 }
