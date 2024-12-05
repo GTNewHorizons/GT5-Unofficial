@@ -3,7 +3,6 @@ package gtnhlanth.common.tileentity.recipe.beamline;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -180,30 +179,5 @@ public class BeamlineRecipeLoader {
             60,
             1,
             (int) TierEU.RECIPE_LuV);
-
-        BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
-            new ItemStack(Items.chicken, 1),
-            new ItemStack(Items.cooked_chicken),
-            null,
-            Particle.PHOTON.ordinal(),
-            400,
-            5,
-            20,
-            80,
-            1,
-            7864320);
-
-        BeamlineRecipeAdder2.instance.addTargetChamberRecipe(
-            new ItemStack(Items.chicken, 1),
-            new ItemStack(Items.egg),
-            null,
-            Particle.PHOTON.ordinal(),
-            400,
-            21,
-            600,
-            80,
-            1,
-            7864320);
-
     }
 }
