@@ -1522,6 +1522,7 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_EvolutionChamber,
     Machine_Multi_AOAssembler,
+    Machine_Multi_AOBioLab,
     Bio_Pipe,
     Bio_Hatch_Input,
     Bio_Hatch_Output,

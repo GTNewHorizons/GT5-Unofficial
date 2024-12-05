@@ -764,6 +764,7 @@ public enum MetaTileEntityIDs {
     BIO_HATCH_INPUT(4002),
     BIO_HATCH_OUTPUT(4003),
     AO_ASSEMBLER(4004),
+    AO_BIOLAB(4005),
     DraconicEvolutionFusionCrafterController(5001),
     CHEST_BUFFER_ULV(9230),
     CHEST_BUFFER_LV(9231),

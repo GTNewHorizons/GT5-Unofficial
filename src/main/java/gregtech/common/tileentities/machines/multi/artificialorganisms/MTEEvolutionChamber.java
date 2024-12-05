@@ -36,7 +36,6 @@ import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -276,7 +275,13 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     private void createNewAOs(Trait trait) {
-        currentSpecies = new ArtificialOrganism(trait.baseInt, trait.baseStr, trait.baseRep, 100, 0);
+        currentSpecies = new ArtificialOrganism(
+            trait.baseInt,
+            trait.baseStr,
+            trait.baseRep,
+            (trait == Trait.Decaying ? maxAOs : 100),
+            0);
+        currentSpecies.addTrait(trait);
         if (bioHatch != null) bioHatch.currentSpecies = currentSpecies;
     }
 
@@ -354,11 +359,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 .setPos(24, 4)
                 .setSize(170, 85))
             .widget(createTraitItemWidget(new ItemStack(activeTraitWindow.cultureItem, 1)).setPos(95, 50))
-            .widget(createBuildAOsButton().setPos(95, 66))
-            .widget(
-                new DynamicPositionedColumn().setSynced(false)
-                    .setSpace(0)
-                    .setPos(34, 7));
+            .widget(createBuildAOsButton().setPos(95, 66));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         screenElements.setSynced(false)
@@ -368,8 +369,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             new TextWidget(
                 EnumChatFormatting.UNDERLINE
                     + StatCollector.translateToLocal("GT5U.artificialorganisms.traitname" + activeTraitWindow.id))
-                        .setDefaultColor(COLOR_TEXT_WHITE.get())
-                        .setTextAlignment(Alignment.Center));
+                        .setDefaultColor(COLOR_TEXT_WHITE.get()));
         screenElements.widget(
             new TextWidget(StatCollector.translateToLocal("GT5U.artificialorganisms.traitdesc" + activeTraitWindow.id))
                 .setDefaultColor(COLOR_TEXT_WHITE.get()));

@@ -1079,6 +1079,7 @@ import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEAdvancedBioLab;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioPipe;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEBioSynthesizer;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEEvolutionChamber;
@@ -1652,8 +1653,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchBioInput(BIO_HATCH_INPUT.ID, "hatch.bioinput", "Bio Hatch (Input)", 8).getStackForm(1));
         ItemList.Bio_Hatch_Output.set(
             new MTEHatchBioOutput(BIO_HATCH_OUTPUT.ID, "hatch.biooutput", "Bio Hatch (Output)", 8).getStackForm(1));
-        ItemList.Machine_Multi_AOAssembler.set(
-            new MTEBioSynthesizer(AO_ASSEMBLER.ID, "multimachine.aoassembler", "AO Assembling Unit").getStackForm(1));
+        ItemList.Machine_Multi_AOAssembler
+            .set(new MTEBioSynthesizer(AO_ASSEMBLER.ID, "multimachine.aoassembler", "Bio Synthesizer").getStackForm(1));
+        ItemList.Machine_Multi_AOBioLab
+            .set(new MTEAdvancedBioLab(AO_BIOLAB.ID, "multimachine.aobiolab", "Advanced Bio Lab").getStackForm(1));
     }
 
     private static void registerSteamMachines() {

@@ -11,7 +11,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -43,7 +42,11 @@ public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
                 AORecipeData data = recipe.getMetadata(GTRecipeConstants.AO_DATA);
-                if (data == null) return CheckRecipeResultRegistry.NO_RECIPE;
+                // If there is no AO data on this recipe, skip AO logic. Multiblocks like the bio lab use
+                // recipemaps with no AO data and should implement their own logic.
+                if (data == null) {
+                    return super.validateRecipe(recipe);
+                }
 
                 ArtificialOrganism currentOrganism = getAO();
                 if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
@@ -54,11 +57,20 @@ public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
 
                 setSpeedBonus(currentOrganism.calculateSpeedBonus());
 
+                doAORecipeModifiers(recipe);
+
                 AOsInUse = Math
                     .round((float) currentOrganism.consumeAOs(data.requiredCount) * (100 - data.dangerLevel) / 100F);
                 return super.validateRecipe(recipe);
             }
         };
+    }
+
+    /**
+     * Called during validateRecipe so AO multis can easily do modifications to the recipe.
+     */
+    public void doAORecipeModifiers(@NotNull GTRecipe recipe) {
+
     }
 
     @Override

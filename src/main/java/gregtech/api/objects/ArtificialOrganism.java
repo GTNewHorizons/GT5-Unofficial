@@ -115,6 +115,13 @@ public class ArtificialOrganism {
         return count;
     }
 
+    public void addTrait(Trait trait) {
+        switch (trait) {
+            case Decaying -> decaying = true;
+            case Immortal -> immortal = true;
+        }
+    }
+
     /**
      * Default AO for testing.
      */
@@ -150,7 +157,8 @@ public class ArtificialOrganism {
         Photosynthetic(ItemList.IC2_Plantball.getItem(), 6, 3, 1, 1),
         HiveMind(Item.getItemFromBlock(Blocks.red_mushroom), 5, 5, 5, 2),
         Laborer(Items.beef, 3, 8, 5, 3),
-        Decaying(Items.rotten_flesh, 10, 10, 10, 4);
+        Decaying(Items.rotten_flesh, 10, 10, 10, 4),
+        Immortal(Items.nether_star, 10, 10, 10, 5);
 
         public final Item cultureItem;
         public final int baseInt, baseStr, baseRep;
