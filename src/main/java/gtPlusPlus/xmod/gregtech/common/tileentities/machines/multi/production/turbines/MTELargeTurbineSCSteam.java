@@ -132,10 +132,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
             tEU = MathUtils
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         }
-        if (isUsingDenseSteam) {
-            return tEU;
-        }
-        return tEU * 100L;
+        return tEU;
     }
 
     @Override
