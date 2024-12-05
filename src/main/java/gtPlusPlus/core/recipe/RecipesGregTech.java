@@ -718,6 +718,7 @@ public class RecipesGregTech {
                 MaterialsElements.getInstance().BARIUM.getDust(2),
                 MaterialsElements.getInstance().CALCIUM.getDust(2),
                 MaterialsElements.getInstance().COPPER.getDust(3))
+            .fluidInputs(Materials.Oxygen.getGas(8000), Materials.Mercury.getFluid(1000))
             .fluidOutputs(MaterialsAlloy.HG1223.getFluidStack(16 * 144))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
