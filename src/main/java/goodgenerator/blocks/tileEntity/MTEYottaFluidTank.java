@@ -9,7 +9,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,6 +56,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
