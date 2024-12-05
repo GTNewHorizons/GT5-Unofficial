@@ -70,7 +70,6 @@ public final class LanthItemList {
 
     public static final Block COOLANT_DELIVERY_CASING = new BlockCasing("coolant_delivery");
 
-    // public static final Block ANTENNA_CASING_T1 = new Casing("antenna_t1");
     public static final Block ANTENNA_CASING_T1 = new BlockAntennaCasing(1);
     public static final Block ANTENNA_CASING_T2 = new BlockAntennaCasing(2);
 

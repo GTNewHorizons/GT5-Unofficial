@@ -714,8 +714,8 @@ gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or high power casing
 gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or computer casing
 gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
-gt.blockmachines.multimachine.em.databank.desc.1=Used to supply Assembling Lines with more Data Sticks
-gt.blockmachines.multimachine.em.databank.desc.2=and give multiple Assembling Lines access to the same Data Stick
+gt.blockmachines.multimachine.em.databank.desc.1=Used to supply Assembly Lines with more Data Sticks
+gt.blockmachines.multimachine.em.databank.desc.2=and give multiple Assembly Lines access to the same Data Stick
 gt.blockmachines.multimachine.em.databank.desc.3=Use screwdriver to toggle wireless mode
 
 gt.blockmachines.multimachine.em.junction.name=Matter Junction
@@ -765,7 +765,7 @@ gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elementa
 gt.blockmachines.multimachine.em.research.type=Research Station, Scanner
 gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
-gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembling Line Recipes
+gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembly Line Recipes
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
 gt.blockmachines.multimachine.em.research.desc.4=Use screwdriver to change mode
@@ -990,7 +990,7 @@ fog.upgrade.text.0=Unlocks the base functionality of the Forge of the Gods, mean
 fog.upgrade.text.1=Unlocks a recipe time reduction multiplier based on the current heat the multi is running at. This bonus is calculated via following formula: Multiplier = 1 / (Heat^0.01)
 fog.upgrade.text.2=Increases fuel efficiency by multiplying the actual fuel consumption by 0.8
 fog.upgrade.text.3=Multiplies the maximum fuel consumption by 1.2
-fog.upgrade.text.4=Increases the base processing voltage of the multi by: Stellar Fuel Units/sec * 10^8 EU/t
+fog.upgrade.text.4=Increases the base processing voltage of all modules by: Stellar Fuel Units/sec * 10^8 EU/t
 fog.upgrade.text.5=Unlocks the Helioflux Melting Core module.
 fog.upgrade.text.6=Unlocks a multiplier to maximum parallel based on fuel consumption rate. This bonus is calculated via this formula: Multiplier = 1 + (Stellar Fuel Units/sec) / 15
 fog.upgrade.text.7=Unlocks the Heliothermal Plasma Fabricator module and basic element -> plasma processing (1 step plasmas, T3 fusion maximum).
@@ -998,15 +998,15 @@ fog.upgrade.text.8=Unlocks a configuration window for maximum battery size and i
 fog.upgrade.text.9=Increases maximum fuel consumption by 1 Stellar Fuel Unit/sec for every purchased upgrade.
 fog.upgrade.text.10=Adds a x2 multiplier to maximum parallel.
 fog.upgrade.text.11=Unlocks the Heliofusion Exoticizer module and quark gluon plasma creation. At this point this module is not affected by any other multipliers or bonuses from other upgrades.
-fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Heat = log1.12(Stellar Fuel Units/sec) * 1000 + 12601
+fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Power Forge Heat = log1.12(Stellar Fuel Units/sec) * 1000 + 12601, Melting Core Heat = log1.18(Stellar Fuel Units/sec) * 1000 + 12601
 fog.upgrade.text.13=Improves the formula of SA to: Multiplier = 1 + (Stellar Fuel Units/sec) / 5
 fog.upgrade.text.14=Improves the OC formula from 4/2 OCs to 4/2.3 OCs.
 fog.upgrade.text.15=Allows the Heliothermal Plasma Fabricator to process multi step plasmas. Tier restriction still applies.
 fog.upgrade.text.16=Allows the Helioflare Power Forge to receive the full benefits of the Helioflux Melting Core upgrade path.
 fog.upgrade.text.17=Increases the cap of EBF heat bonuses to 30,000K.
 fog.upgrade.text.18=Unlocks a multiplier to maximum parallel based on current heat. This bonus is calculated via this formula: Multiplier = 1 + Heat / 15000
-fog.upgrade.text.19=Improves the EBF energy reduction heat bonus from 5% to 8% and adds an energy discount based on the fill level of the internal battery. This bonus is calculated via this formula: Discount = (Current fill level / Max Capacity - 0.5)^2 * (-0.6) + 0.15
-fog.upgrade.text.20=EBF heat bonuses are granted above 30,000K, but the heat value used in heat bonus calculations is determined by this formula: Actual Heat = 30000 + (Current Heat - 30000)^0.85
+fog.upgrade.text.19=Improves the EBF energy reduction heat bonus from 5% to 8% and adds an energy discount based on the fill level of the internal battery. This bonus is calculated via the formula: Discount = (Current fill level / Max Capacity - 0.5)^2 * (-0.6) + 0.15, multiplied by 2/3 for modules other than the Plasma Fabricator
+fog.upgrade.text.20=EBF heat bonuses are granted above 30,000K, but the heat value used in heat bonus calculations is determined by this formula: Power Forge Heat = 30000 + (Current Heat - 30000)^0.85, Melting Core Heat = 30000 + (Current Heat - 30000)^0.8
 fog.upgrade.text.21=Unlocks a multiplier to maximum parallel based on total amount of purchased upgrades. This bonus is calculated via this formula: Multiplier = 1 + Upgrade Amount / 5
 fog.upgrade.text.22=Improves IGCC based on current maximum parallel. Improved Formula: Multiplier = (1 / Heat^0.01) / (Parallel^0.02)
 fog.upgrade.text.23=Multiplies maximum processing voltage by 4 per active ring, applies after other bonuses.
@@ -1021,9 +1021,10 @@ fog.upgrade.text.30=Unlocks Magmatter production in the Heliofusion Exoticizer, 
 fog.debug.resetbutton.text=Reset
 fog.debug.resetbutton.tooltip=Resets all upgrades to zero
 fog.debug.unlockall.text=Unlock all upgrades
-fog.debug.gravitonshardsetter.tooltip=Set the amount of availabe graviton shards
+fog.debug.gravitonshardsetter.tooltip=Set the amount of available graviton shards
 
 fog.button.fuelconfig.tooltip=Fuel Configuration Menu
+fog.button.upgradetree.tooltip=Path of Celestial Transcendence
 fog.button.furnacemode.tooltip.01=Blast Mode
 fog.button.furnacemode.tooltip.02=Furnace Mode
 fog.button.magmattermode.tooltip.01=Quark-Gluon Plasma Mode
@@ -1041,11 +1042,19 @@ fog.button.materialrequirements.tooltip.clickhere=Click to open material inserti
 fog.button.ejection.tooltip=Toggle Graviton Shard Ejection
 fog.button.formatting.tooltip=Toggle Number Formatting
 fog.button.exoticinputs.tooltip=Click to display expected inputs
+fog.button.possibleexoticinputs.tooltip=Click to display all possible inputs
 fog.button.reciperefresh.tooltip=Click to reset recipe
 fog.button.refreshtimer.tooltip=Reset ready in
 fog.button.seconds=Seconds
 fog.button.thanks.tooltip=List of Contributors
 fog.button.color.tooltip=Cosmetics Menu
+fog.button.statistics.tooltip=Stats Overview
+fog.text.tooltip.heat=Heat value used for checking if a recipe can run
+fog.text.tooltip.effectiveheat=Heat value used for calculating bonuses
+fog.text.tooltip.parallel=Maximum parallel amount
+fog.text.tooltip.speedbonus=Multiplier for base recipe time, making it shorter
+fog.text.tooltip.energydiscount=Multiplier for base energy usage, reducing it
+fog.text.tooltip.ocdivisor=Divisor for recipe time reduction per overclock (does not affect perfect OCs)
 
 
 achievement.gt.blockmachines.multimachine.em.forge_of_gods=Forge of the Gods
@@ -1088,6 +1097,8 @@ gt.blockmachines.multimachine.FOG.milestoneinfo=View Milestone Progress
 gt.blockmachines.multimachine.FOG.inversionactive=Inversion Active
 gt.blockmachines.multimachine.FOG.inversion=Inversion
 gt.blockmachines.multimachine.FOG.expectedinputs=Expected Inputs
+gt.blockmachines.multimachine.FOG.possibleinputsqgp=Possible Input Materials for QGP
+gt.blockmachines.multimachine.FOG.possibleinputsmagmatter=Possible Input Materials for Magmatter
 gt.blockmachines.multimachine.FOG.inversioninfotext=Once all milestones of the Forge reach tier 7,  inversion activates. This uncaps the maximum tier of all milestones and allows to scale infinitely. The scaling of each milestone changes from exponential to linear, but the granted graviton shard amount keeps increasing. The amount of progress needed for each subsequent milestone is as much as needed for the 7th tier of each milestone. The Composition milestone is once again an exception, as that continues to scale by 1 each tier, with it's own formula for calculating progress. Each module type is given a value, ranging from 1 for the Helioflare Power Forge to 5 for the Heliofusion Exoticizer in magmatter mode, then the amount of each module present is substracted by 1 and multiplied by its value. These values are added up and divided by 5, this is the final milestone tier on top of the base 7.
 gt.blockmachines.multimachine.FOG.powermilestone=Charge
 gt.blockmachines.multimachine.FOG.recipemilestone=Conversion
@@ -1098,7 +1109,7 @@ gt.blockmachines.multimachine.FOG.recipes=Recipes Processed
 gt.blockmachines.multimachine.FOG.fuelconsumed=Fuel Units Consumed
 gt.blockmachines.multimachine.FOG.extensions=Extensions Built
 gt.blockmachines.multimachine.FOG.shardgain=Graviton Shards gained
-gt.blockmachines.multimachine.FOG.consumeUpgradeMats=Click to consume upgrade materials, supply §4exact§r stacksizes
+gt.blockmachines.multimachine.FOG.consumeUpgradeMats=Click to consume upgrade materials
 gt.blockmachines.multimachine.FOG.clickhere=Confused? Click here for some general info
 gt.blockmachines.multimachine.FOG.introduction=§NIntroduction
 gt.blockmachines.multimachine.FOG.introductioninfotext=There's a lot going on in the Forge of the Gods, which can be quite confusing at first. This menu aims to explain everything that is happening and all the capabilities/mechanics of the forge.
@@ -1126,6 +1137,17 @@ gt.blockmachines.multimachine.FOG.bucket=BucketBrigade
 gt.blockmachines.multimachine.FOG.playtesting=Playtesting
 gt.blockmachines.multimachine.FOG.misi=Misi
 gt.blockmachines.multimachine.FOG.thanks=A huge thank you to these incredible people for helping to make this a reality! -Cloud
+gt.blockmachines.multimachine.FOG.modulestats=Module Statistics
+gt.blockmachines.multimachine.FOG.powerforge=Power Forge
+gt.blockmachines.multimachine.FOG.meltingcore=Melting Core
+gt.blockmachines.multimachine.FOG.plasmafab=Plasma Fabricator
+gt.blockmachines.multimachine.FOG.exoticizer=Exoticizer
+gt.blockmachines.multimachine.FOG.heat=Heat
+gt.blockmachines.multimachine.FOG.effectiveheat=Effective Heat
+gt.blockmachines.multimachine.FOG.speedbonus=Speed Bonus
+gt.blockmachines.multimachine.FOG.energydiscount=Energy Discount
+gt.blockmachines.multimachine.FOG.ocdivisor=OC Divisor
+gt.blockmachines.multimachine.FOG.clickstat=Click to view value breakdown
 
 gt.blockmachines.multimachine.FOG.hint.0=1 - Classic Hatches or Transcendentally Amplified Magnetic Confinement Casing
 gt.blockmachines.multimachine.FOG.hint.1=2 - Module Controllers or Singularity Reinforced Stellar Shielding Casing
@@ -1317,6 +1339,7 @@ gt.recipe.researchStation=Research Station
 gt.recipe.fog_plasma=Heliothermal Plasma Fabricator
 gt.recipe.fog_exotic=Heliofusion Exoticizer
 gt.recipe.fog_molten=Helioflux Melting Core
+gt.recipe.upgrade_costs=Godforge Upgrades
 
 
 # NEI
