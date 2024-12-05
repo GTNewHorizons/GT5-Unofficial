@@ -13,13 +13,10 @@ import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.UniversalSingularities;
-import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.util.GTRecipeConstants;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -29,6 +26,7 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class ElectricImplosionCompressorRecipes implements Runnable {
 
@@ -53,7 +51,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             }
         }
 
-        //Manual Add due to werkstoff material system disconnected from autogeneration
+        // Manual Add due to werkstoff material system disconnected from autogeneration
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 4))
             .itemOutputs(

@@ -3,11 +3,9 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTModHandler.getRecipeOutputNoOreDict;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -16,6 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class LatheRecipes implements Runnable {
 
