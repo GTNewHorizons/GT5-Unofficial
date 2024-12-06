@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 
 public class ArrayUtils {
@@ -21,13 +23,13 @@ public class ArrayUtils {
         return newArray;
     }
 
-    public static Object[] removeNulls(final Object[] v) {
+    public static Object[] removeNulls(@Nonnull final Object[] v) {
         List<Object> list = new ArrayList<>(Arrays.asList(v));
         list.removeAll(Collections.singleton(null));
         return list.toArray(new Object[0]);
     }
 
-    public static ItemStack[] removeNulls(final ItemStack[] v) {
+    public static ItemStack[] removeNulls(@Nonnull final ItemStack[] v) {
         List<ItemStack> list = new ArrayList<>(Arrays.asList(v));
         list.removeAll(Collections.singleton((ItemStack) null));
         return list.toArray(new ItemStack[0]);

@@ -56,6 +56,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
@@ -253,8 +254,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             cacheNeedsRecreation = !tankInfoCache[0].fluid.isFluidEqual(mFluid);
         }
         if (cacheNeedsRecreation) {
-            final FluidStack storedFluid = mFluid.copy();
-            storedFluid.amount = fluidSize;
+            final FluidStack storedFluid = GTUtility.copyAmount(fluidSize, mFluid);
             tankInfoCache[0] = new FluidTankInfo(storedFluid, tankCapacity);
         } else if (mFluid != null) {
             tankInfoCache[0].fluid.amount = fluidSize;

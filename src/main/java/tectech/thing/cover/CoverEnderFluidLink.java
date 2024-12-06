@@ -1,6 +1,5 @@
 package tectech.thing.cover;
 
-import java.util.Objects;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +24,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import tectech.mechanics.enderStorage.EnderLinkTag;
 import tectech.mechanics.enderStorage.EnderWorldSavedData;
 
@@ -61,6 +61,14 @@ public class CoverEnderFluidLink extends CoverBehavior {
             EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag((IFluidHandler) aTileEntity);
 
             if (tag != null) {
+                boolean shouldBePrivate = testBit(aCoverVariable, PUBLIC_PRIVATE_MASK);
+                boolean isPrivate = tag.getUUID() != null;
+
+                if (shouldBePrivate != isPrivate) {
+                    tag = new EnderLinkTag(tag.getFrequency(), shouldBePrivate ? getOwner(aTileEntity) : null);
+                    EnderWorldSavedData.bindEnderLinkTag(teTank, tag);
+                }
+
                 IFluidHandler enderTank = EnderWorldSavedData.getEnderFluidContainer(tag);
 
                 if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
@@ -71,6 +79,16 @@ public class CoverEnderFluidLink extends CoverBehavior {
             }
         }
         return aCoverVariable;
+    }
+
+    private static UUID getOwner(Object te) {
+        if (te instanceof IGregTechTileEntity igte) {
+            return igte.getOwnerUuid();
+        } else if (te instanceof TileEntityBase teb) {
+            return teb.getOwnerUUID();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -156,7 +174,6 @@ public class CoverEnderFluidLink extends CoverBehavior {
             super(buildContext);
         }
 
-        @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             TextFieldWidget frequencyField = new TextFieldWidget();
@@ -175,8 +192,7 @@ public class CoverEnderFluidLink extends CoverBehavior {
 
                         if (testBit(convert(getCoverData()), PUBLIC_PRIVATE_MASK)) {
                             uuid = getUUID();
-                            if (!(tank instanceof IGregTechTileEntity gte)) return;
-                            if (!uuid.equals(gte.getOwnerUuid())) return;
+                            if (!uuid.equals(getOwner(tank))) return;
                         }
 
                         EnderWorldSavedData.bindEnderLinkTag(tank, new EnderLinkTag(val, uuid));
@@ -233,30 +249,9 @@ public class CoverEnderFluidLink extends CoverBehavior {
 
         private int getNewCoverVariable(int id, int coverVariable) {
             switch (id) {
-                case PUBLIC_BUTTON_ID: {
-                    if (getUIBuildContext().getTile() instanceof IGregTechTileEntity gte) {
-                        EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(gte);
-
-                        if (tag != null) {
-                            EnderWorldSavedData.bindEnderLinkTag(gte, new EnderLinkTag(tag.getFrequency(), null));
-                        }
-                    }
-
+                case PUBLIC_BUTTON_ID:
+                case PRIVATE_BUTTON_ID:
                     return toggleBit(coverVariable, PUBLIC_PRIVATE_MASK);
-                }
-                case PRIVATE_BUTTON_ID: {
-                    if (getUIBuildContext().getTile() instanceof IGregTechTileEntity gte) {
-                        EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag(gte);
-
-                        UUID player = getUUID();
-
-                        if ((gte.getOwnerUuid() == null || Objects.equals(player, gte.getOwnerUuid())) && tag != null) {
-                            EnderWorldSavedData.bindEnderLinkTag(gte, new EnderLinkTag(tag.getFrequency(), player));
-                        }
-                    }
-
-                    return toggleBit(coverVariable, PUBLIC_PRIVATE_MASK);
-                }
                 case IMPORT_BUTTON_ID:
                 case EXPORT_BUTTON_ID:
                     return toggleBit(coverVariable, IMPORT_EXPORT_MASK);

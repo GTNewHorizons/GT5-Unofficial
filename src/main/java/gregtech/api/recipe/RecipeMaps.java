@@ -1,5 +1,6 @@
 package gregtech.api.recipe;
 
+import static bartworks.util.BWRecipes.computeSieverts;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
@@ -318,9 +319,13 @@ public final class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index != 0 ? GTUITextures.OVERLAY_SLOT_LENS : null)
         // Add a simple ordering so lower tier purified water is displayed first, otherwise it gets really confusing
+        // NEI Catalyst search requires recipes to be sorted by voltage tier. Therefore, we first sort by voltage tier,
+        // then by water tier, then the default comparator.
         .neiRecipeComparator(
-            (a, b) -> Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
-                .thenComparing(GTRecipe::compareTo)
+            (a, b) -> Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mEUt)
+                .thenComparing(
+                    Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
+                        .thenComparing(GTRecipe::compareTo))
                 .compare(a, b))
         .build();
     public static final RecipeMap<RecipeMapBackend> mixerRecipes = RecipeMapBuilder.of("gt.recipe.mixer")
@@ -1238,7 +1243,8 @@ public final class RecipeMaps {
                 b -> BartWorksRecipeMaps.bacterialVatRecipes.doAdd(
                     b.copy()
                         .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
-                        .metadata(SIEVERTS, (int) GTUtility.getTier(b.getEUt())))));
+                        .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
+                        .eut(b.getEUt()))));
         RecipeMaps.implosionRecipes.addDownstream(
             IRecipeMap.newRecipeMap(
                 b -> BartWorksRecipeMaps.electricImplosionCompressorRecipes.doAdd(
