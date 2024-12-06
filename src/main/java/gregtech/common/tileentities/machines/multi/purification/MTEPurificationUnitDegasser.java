@@ -411,7 +411,9 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "If this bit is on, you must insert " + EnumChatFormatting.RED
                     + "4608L "
                     + EnumChatFormatting.WHITE
-                    + "Molten Neutronium")
+                    + "Molten Neutronium"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD

@@ -9,7 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -118,7 +117,8 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
         if (isUsingDenseSteam) {
             addOutput(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
         } else {
-            addOutput(GTModHandler.getSteam(totalFlow * 100));
+            addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
+
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
@@ -132,10 +132,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
             tEU = MathUtils
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         }
-        if (isUsingDenseSteam) {
-            return tEU;
-        }
-        return tEU * 100L;
+        return tEU;
     }
 
     @Override
@@ -156,5 +153,10 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
     @Override
     protected String getCasingName() {
         return "Reinforced SC Turbine Casing";
+    }
+
+    @Override
+    protected boolean isDenseSteam() {
+        return isUsingDenseSteam;
     }
 }
