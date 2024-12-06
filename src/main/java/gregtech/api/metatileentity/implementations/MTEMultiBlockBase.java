@@ -879,6 +879,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
     }
 
+    public RecipeMap<?>[] getRecipeMaps() {
+        return null;
+    }
+
+    public boolean checkRecipeHash(RecipeMap<?> map, RecipeMap<?>[] maps, int hash) {
+        if (map != null && map.hashCode() == hash) {
+            return false;
+        } else if (maps != null) {
+            for (RecipeMap<?> tempMap : maps) {
+                if (tempMap.hashCode() == hash) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     /**
      * Iterates over hatches and tries to find recipe. Assume {@link #processingLogic} is already set up for use.
      * If return value is successful, inputs are consumed.
@@ -888,22 +905,35 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
         // check crafting input hatches first
         if (supportsCraftingMEBuffer()) {
-            RecipeMap<?> recipeMap = getRecipeMap();
-            if (recipeMap == null) return result;
-            int recipeMapHash = recipeMap.hashCode();
+
+            RecipeMap<?> map = getRecipeMap();
+            RecipeMap<?>[] maps = getRecipeMaps();
+
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
                 ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
                     IDualInputInventory slot = it.next();
                     GTRecipe recipe = slot.getPatternRecipe();
+                    int recipeMapHash = slot.getPatternRecipeMapHash();
+
                     if (recipe == null) {
-                        MTEHatchCraftingInputME.PatternSlot.recipeInputs t = slot.getPatternInputs();
-                        GTRecipe slotRecipe = processingLogic.getRecipeByInputs(t.inputItems, t.inputFluid);
-                        if (slotRecipe != null) slot.setPatternRecipe(slotRecipe, recipeMapHash);
-                        continue;
+                        MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot.getPatternInputs();
+                        GTRecipe slotRecipe = processingLogic
+                            .getRecipeByInputs(tempRecipeInputs.inputItems, tempRecipeInputs.inputFluid);
+                        int tempRecipeMapHash = processingLogic.getCribsRecipeMapHash();
+
+                        if (slotRecipe != null) {
+                            slot.setPatternRecipe(slotRecipe, tempRecipeMapHash);
+                        } else {
+                            continue;
+                        }
+
+                        recipe = slotRecipe;
+                        recipeMapHash = tempRecipeMapHash;
                     }
 
-                    if (slot.getPatternRecipeMapHash() != recipeMapHash) continue;
+                    if (checkRecipeHash(map, maps, recipeMapHash)) continue;
 
                     ItemStack[] items = slot.getItemInputs();
                     FluidStack[] fluids = slot.getFluidInputs();
@@ -2384,6 +2414,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void setMachineMode(int index) {
         machineMode = index;
+        resetCribsRecipes();
     }
 
     @Override

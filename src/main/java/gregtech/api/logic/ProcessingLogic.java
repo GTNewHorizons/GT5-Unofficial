@@ -1,6 +1,5 @@
 package gregtech.api.logic;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -30,9 +29,9 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
-    protected ArrayList<GTRecipe> cribsCustomRecipeMap;
     protected boolean processCribs;
     protected GTRecipe cribsRecipe;
+    protected int cribsRecipeMapHash;
 
     public ProcessingLogic() {}
 
@@ -73,6 +72,10 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
 
     public void setCribsRecipe(GTRecipe recipe) {
         this.cribsRecipe = recipe;
+    }
+
+    public int getCribsRecipeMapHash() {
+        return cribsRecipeMapHash;
     }
 
     /**
@@ -159,7 +162,9 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     }
 
     public GTRecipe getRecipeByInputs(ItemStack[] iI, FluidStack[] iF) {
-        return preProcess().findRecipeQuery()
+        RecipeMap<?> map = preProcess();
+        cribsRecipeMapHash = map.hashCode();
+        return map.findRecipeQuery()
             .items(iI)
             .fluids(iF)
             .specialSlot(specialSlotItem)

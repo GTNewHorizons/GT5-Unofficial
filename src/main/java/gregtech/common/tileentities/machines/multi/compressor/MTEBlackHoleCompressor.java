@@ -515,6 +515,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
+    public RecipeMap<?>[] getRecipeMaps() {
+        return new RecipeMap[] { RecipeMaps.compressorRecipes, RecipeMaps.neutroniumCompressorRecipes };
+    }
+
+    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -532,6 +537,29 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                         return super.findRecipeMatches(null);
                     }
                 }
+            }
+
+            @Override
+            public GTRecipe getRecipeByInputs(ItemStack[] iI, FluidStack[] iF) {
+                RecipeMap<?> map;
+                switch (getModeFromCircuit(iI)) {
+                    case MACHINEMODE_COMPRESSOR -> {
+                        map = RecipeMaps.compressorRecipes;
+                    }
+                    case MACHINEMODE_BLACKHOLE -> {
+                        map = RecipeMaps.neutroniumCompressorRecipes;
+                    }
+                    default -> {
+                        return null;
+                    }
+                }
+                cribsRecipeMapHash = map.hashCode();
+                return map.findRecipeQuery()
+                    .items(iI)
+                    .fluids(iF)
+                    .specialSlot(specialSlotItem)
+                    .cachedRecipe(lastRecipe)
+                    .find();
             }
 
             @NotNull
