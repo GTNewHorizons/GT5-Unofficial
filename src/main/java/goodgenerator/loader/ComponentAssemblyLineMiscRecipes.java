@@ -443,7 +443,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 16),
                 GTUtility.getIntegratedCircuit(16))
             .fluidInputs(Materials.SolderingAlloy.getMolten(72L))
             .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 13))
