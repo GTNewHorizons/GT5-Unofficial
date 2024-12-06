@@ -430,22 +430,36 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
         // check crafting input hatches first
         if (supportsCraftingMEBuffer()) {
-            RecipeMap<?> recipeMap = getRecipeMap();
-            if (recipeMap == null) return result;
-            int recipeMapHash = recipeMap.hashCode();
+
+            RecipeMap<?> map = getRecipeMap();
+            RecipeMap<?>[] maps = getRecipeMaps();
+
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
                 ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
                     IDualInputInventory slot = it.next();
                     GTRecipe recipe = slot.getPatternRecipe();
-                    if (recipe == null) {
-                        MTEHatchCraftingInputME.PatternSlot.recipeInputs t = slot.getPatternInputs();
-                        GTRecipe slotRecipe = processingLogic.getRecipeByInputs(t.inputItems, t.inputFluid);
-                        if (slotRecipe != null) slot.setPatternRecipe(slotRecipe, recipeMapHash);
-                        continue;
+                    int recipeMapHash = slot.getPatternRecipeMapHash();
+
+                    if (recipe == null) { // set recipe
+                        MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot.getPatternInputs();
+                        GTRecipe slotRecipe = processingLogic
+                            .getRecipeByInputs(tempRecipeInputs.inputItems, tempRecipeInputs.inputFluid);
+                        int tempRecipeMapHash = processingLogic.getCribsRecipeMapHash();
+
+                        if (slotRecipe != null) {
+                            slot.setPatternRecipe(slotRecipe, tempRecipeMapHash);
+                        } else {
+                            continue;
+                        }
+
+                        recipe = slotRecipe;
+                        recipeMapHash = tempRecipeMapHash;
                     }
 
-                    if (slot.getPatternRecipeMapHash() != recipeMapHash) continue;
+                    if (checkRecipeHash(map, maps, recipeMapHash)) continue; // make sure that this machine able to
+                                                                             // process recipe
 
                     ItemStack[] items = slot.getItemInputs();
                     FluidStack[] fluids = slot.getFluidInputs();
@@ -454,7 +468,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
                     processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, items));
                     processingLogic.setInputFluids(fluids);
-                    processingLogic.setProcessCribs(true);
                     processingLogic.setCribsRecipe(recipe);
 
                     CheckRecipeResult foundResult = processingLogic.process();

@@ -29,7 +29,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
-    protected boolean processCribs;
     protected GTRecipe cribsRecipe;
     protected int cribsRecipeMapHash;
 
@@ -66,10 +65,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return getThis();
     }
 
-    public void setProcessCribs(boolean bool) {
-        this.processCribs = bool;
-    }
-
     public void setCribsRecipe(GTRecipe recipe) {
         this.cribsRecipe = recipe;
     }
@@ -100,7 +95,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         this.calculatedEut = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
-        this.processCribs = false;
         this.cribsRecipe = null;
         return getThis();
     }
@@ -124,7 +118,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             inputFluids = new FluidStack[0];
         }
 
-        if (processCribs) {
+        if (cribsRecipe != null) {
             if (cribsRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
                 return validateAndCalculateRecipe(cribsRecipe).checkRecipeResult;
             }
