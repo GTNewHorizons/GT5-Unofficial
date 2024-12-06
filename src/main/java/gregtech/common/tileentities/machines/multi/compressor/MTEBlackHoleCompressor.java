@@ -540,9 +540,9 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             }
 
             @Override
-            public GTRecipe getRecipeByInputs(ItemStack[] iI, FluidStack[] iF) {
+            public GTRecipe getRecipeByInputs(ItemStack[] inItems, FluidStack[] inFluids) {
                 RecipeMap<?> map;
-                switch (getModeFromCircuit(iI)) {
+                switch (getModeFromCircuit(inItems)) {
                     case MACHINEMODE_COMPRESSOR -> {
                         map = RecipeMaps.compressorRecipes;
                     }
@@ -555,8 +555,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 }
                 cribsRecipeMapHash = map.hashCode();
                 return map.findRecipeQuery()
-                    .items(iI)
-                    .fluids(iF)
+                    .items(inItems)
+                    .fluids(inFluids)
                     .specialSlot(specialSlotItem)
                     .cachedRecipe(lastRecipe)
                     .find();

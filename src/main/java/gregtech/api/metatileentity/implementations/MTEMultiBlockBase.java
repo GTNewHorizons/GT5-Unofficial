@@ -882,7 +882,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public RecipeMap<?>[] getRecipeMaps() {
         return null;
     }
-
+    //check if this machine working in same recipe map/maps
     public boolean checkRecipeHash(RecipeMap<?> map, RecipeMap<?>[] maps, int hash) {
         if (map != null && map.hashCode() == hash) {
             return false;
@@ -917,7 +917,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     GTRecipe recipe = slot.getPatternRecipe();
                     int recipeMapHash = slot.getPatternRecipeMapHash();
 
-                    if (recipe == null) {
+                    if (recipe == null) { //set recipe
                         MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot.getPatternInputs();
                         GTRecipe slotRecipe = processingLogic
                             .getRecipeByInputs(tempRecipeInputs.inputItems, tempRecipeInputs.inputFluid);
@@ -933,7 +933,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         recipeMapHash = tempRecipeMapHash;
                     }
 
-                    if (checkRecipeHash(map, maps, recipeMapHash)) continue;
+                    if (checkRecipeHash(map, maps, recipeMapHash)) continue; //make sure that this machine able to process recipe
 
                     ItemStack[] items = slot.getItemInputs();
                     FluidStack[] fluids = slot.getFluidInputs();

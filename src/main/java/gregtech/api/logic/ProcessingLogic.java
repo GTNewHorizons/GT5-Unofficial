@@ -161,12 +161,12 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return checkRecipeResult;
     }
 
-    public GTRecipe getRecipeByInputs(ItemStack[] iI, FluidStack[] iF) {
+    public GTRecipe getRecipeByInputs(ItemStack[] inItems, FluidStack[] inFluids) {
         RecipeMap<?> map = preProcess();
         cribsRecipeMapHash = map.hashCode();
         return map.findRecipeQuery()
-            .items(iI)
-            .fluids(iF)
+            .items(inItems)
+            .fluids(inFluids)
             .specialSlot(specialSlotItem)
             .cachedRecipe(lastRecipe)
             .find();
