@@ -40,11 +40,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.KeyboardUtil;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -752,8 +751,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     .setPos(170, 10)
                     .setSize(16, 16))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                int val = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? 1 : 0;
-                if (Mouse.isButtonDown(1)) val |= 0b10;
+                int val = KeyboardUtil.isShiftKeyDown() ? 1 : 0;
+                if (clickData.mouseButton == 1) val |= 0b10;
                 doublePatterns(val);
             })
                 .setPlayClickSound(true)
