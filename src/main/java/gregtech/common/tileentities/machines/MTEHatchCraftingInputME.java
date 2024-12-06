@@ -201,7 +201,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         public boolean isItemEmpty() {
             updateSlotItems();
-            return itemInventory.isEmpty() && isFluidEmpty();
+            return itemInventory.isEmpty();
         }
 
         public boolean isFluidEmpty() {
