@@ -119,7 +119,7 @@ public class BWTileEntityMetaGeneratedSmallOre extends BWTileEntityMetaGenerated
     }
 
     @Override
-    protected Block GetProperBlock() {
+    protected Block getProperBlock() {
         return WerkstoffLoader.BWSmallOres;
     }
 }

@@ -1573,8 +1573,8 @@ public class WerkstoffLoader {
     public static HashMap<OrePrefixes, BWMetaGeneratedItems> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
     public static HashBiMap<Werkstoff, Fluid> molten = HashBiMap.create();
-    public static Block BWOres;
-    public static Block BWSmallOres;
+    public static Block BWOres, BWOresNatural;
+    public static Block BWSmallOres, BWSmallOresNatural;
     public static Block BWBlocks;
     public static Block BWBlockCasings;
     public static Block BWBlockCasingsAdvanced;
@@ -1940,11 +1940,23 @@ public class WerkstoffLoader {
         WerkstoffLoader.BWOres = new BWMetaGeneratedOres(
             Material.rock,
             BWTileEntityMetaGeneratedOre.class,
-            "bw.blockores");
+            "bw.blockores",
+            false);
+        WerkstoffLoader.BWOresNatural = new BWMetaGeneratedOres(
+            Material.rock,
+            BWTileEntityMetaGeneratedOre.class,
+            "bw.blockores.natural",
+            true);
         WerkstoffLoader.BWSmallOres = new BWMetaGeneratedSmallOres(
             Material.rock,
             BWTileEntityMetaGeneratedSmallOre.class,
-            "bw.blockoresSmall");
+            "bw.blockoresSmall",
+            false);
+        WerkstoffLoader.BWSmallOresNatural = new BWMetaGeneratedSmallOres(
+            Material.rock,
+            BWTileEntityMetaGeneratedSmallOre.class,
+            "bw.blockoresSmall.natural",
+            true);
         WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(
             Material.iron,
             BWTileEntityMetaGeneratedWerkstoffBlock.class,
@@ -1961,7 +1973,9 @@ public class WerkstoffLoader {
             OrePrefixes.blockCasingAdvanced);
 
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BWItemMetaGeneratedBlock.class, "bw.blockores.01");
+        GameRegistry.registerBlock(WerkstoffLoader.BWOresNatural, BWItemMetaGeneratedBlock.class, "bw.blockores.natural.01");
         GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BWItemMetaGeneratedBlock.class, "bw.blockores.02");
+        GameRegistry.registerBlock(WerkstoffLoader.BWSmallOresNatural, BWItemMetaGeneratedBlock.class, "bw.blockores.natural.02");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BWItemMetaGeneratedBlock.class, "bw.werkstoffblocks.01");
         GameRegistry.registerBlock(
             WerkstoffLoader.BWBlockCasings,

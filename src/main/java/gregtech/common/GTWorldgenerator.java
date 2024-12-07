@@ -29,12 +29,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.StoneType;
 import gregtech.api.net.GTPacketSendOregenPattern;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
-import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.config.Worldgen;
+import gregtech.common.ores.OreManager;
 
 public class GTWorldgenerator implements IWorldGenerator {
 
@@ -278,7 +279,7 @@ public class GTWorldgenerator implements IWorldGenerator {
         // oremixes, ie ore.mix.diamond, to check how many appear in the list.
         // - For more complex work, import file into Excel, and sort based on oremix
         // column. Drag select the oremix names, in the bottom right will be how many
-        // entries to add in a seperate tab to calculate %ages.
+        // entries to add in a separate tab to calculate %ages.
         //
         // When using the ore weights, discount or remove the high altitude veins since
         // their high weight are offset by their rareness. I usually just use zero for them.
@@ -304,7 +305,6 @@ public class GTWorldgenerator implements IWorldGenerator {
             // this oreseed.
             XSTR oreveinRNG = new XSTR(oreveinSeed);
             int oreveinPercentageRoll = oreveinRNG.nextInt(100); // Roll the dice, see if we get an orevein here at all
-            int noOrePlacedCount = 0;
             String tDimensionName = "";
             if (debugOrevein) {
                 tDimensionName = this.mWorld.provider.getDimensionName();
@@ -352,7 +352,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                                     // a unique height each pass through here.
                                     int placementResult = tWorldGen.executeWorldgenChunkified(
                                         this.mWorld,
-                                        new XSTR(oreveinSeed ^ (tWorldGen.mPrimaryMeta)),
+                                        new XSTR(oreveinSeed ^ (tWorldGen.mPrimary.hashCode())),
                                         this.mBiome,
                                         this.mDimensionType,
                                         this.mX * 16,
@@ -471,7 +471,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 if (debugOrevein) GTLog.out
                     .print(" Valid oreveinSeed=" + oreveinSeed + " validOreveins.size()=" + validOreveins.size() + " ");
                 WorldgenGTOreLayer tWorldGen = validOreveins.get(oreveinSeed);
-                oreveinRNG.setSeed(oreveinSeed ^ (tWorldGen.mPrimaryMeta)); // Reset RNG to only be based on oreseed X/Z
+                oreveinRNG.setSeed(oreveinSeed ^ (tWorldGen.mPrimary.hashCode())); // Reset RNG to only be based on oreseed X/Z
                                                                             // and type of vein
                 int placementResult = tWorldGen.executeWorldgenChunkified(
                     this.mWorld,
@@ -559,10 +559,7 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             // Asteroid Worldgen
             int tDimensionType = this.mWorld.provider.dimensionId;
-            // String tDimensionName = this.mWorld.provider.getDimensionName();
-            // if (((tDimensionType == 1) && endAsteroids && ((mEndAsteroidProbability <= 1) ||
-            // (aRandom.nextInt(mEndAsteroidProbability) == 0))) || ((tDimensionName.equals("Asteroids")) && gcAsteroids
-            // && ((mGCAsteroidProbability <= 1) || (aRandom.nextInt(mGCAsteroidProbability) == 0)))) {
+            
             if ((tDimensionType == 1 /* the end */) && endAsteroids) {
                 XSTR random = new XSTR(
                     mWorld.getSeed() + mX * mX * 91777L + mZ * mZ * 137413L + mX * mZ * 1853L + mX * 3L + mZ * 17L);
@@ -589,26 +586,19 @@ public class GTWorldgenerator implements IWorldGenerator {
         }
 
         private void generateAsteroid(World world, Random random, int chunkX, int chunkZ) {
-            short primaryMeta = 0;
-            short secondaryMeta = 0;
-            short betweenMeta = 0;
-            short sporadicMeta = 0;
-            if ((WorldgenGTOreLayer.sWeight > 0) && (!WorldgenGTOreLayer.sList.isEmpty())) {
-                boolean temp = true;
+            WorldgenGTOreLayer selectedOreLayer = null;
+
+            if (WorldgenGTOreLayer.sWeight > 0 && !WorldgenGTOreLayer.sList.isEmpty()) {
                 int tRandomWeight;
-                for (int i = 0; (i < oreveinAttempts) && (temp); i++) {
+                outer: for (int i = 0; i < oreveinAttempts; i++) {
                     tRandomWeight = random.nextInt(WorldgenGTOreLayer.sWeight);
                     for (WorldgenGTOreLayer tWorldGen : WorldgenGTOreLayer.sList) {
                         tRandomWeight -= tWorldGen.mWeight;
                         if (tRandomWeight <= 0) {
                             try {
-                                if (tWorldGen.mEndAsteroid) {
-                                    primaryMeta = tWorldGen.mPrimaryMeta;
-                                    secondaryMeta = tWorldGen.mSecondaryMeta;
-                                    betweenMeta = tWorldGen.mBetweenMeta;
-                                    sporadicMeta = tWorldGen.mSporadicMeta;
-                                    temp = false;
-                                    break;
+                                if (tWorldGen.mAllowedDimensions.contains("EndAsteroid")) {
+                                    selectedOreLayer = tWorldGen;
+                                    break outer;
                                 }
                             } catch (Throwable e) {
                                 e.printStackTrace(GTLog.err);
@@ -617,14 +607,16 @@ public class GTWorldgenerator implements IWorldGenerator {
                     }
                 }
             }
-            // if(GT_Values.D1)GT_FML_LOGGER.info("do asteroid gen: "+this.mX+" "+this.mZ);
+
+            // should never happen, but let's be safe
+            if (selectedOreLayer == null) return;
+
             int tX = chunkX * 16 + random.nextInt(16);
             int tY = 50 + random.nextInt(200 - 50);
             int tZ = chunkZ * 16 + random.nextInt(16);
             mSize = endMinSize + random.nextInt(endMaxSize - endMinSize + 1);
 
-            if ((world.getBlock(tX, tY, tZ)
-                .isAir(world, tX, tY, tZ))) {
+            if (world.isAirBlock(tX, tY, tZ)) {
                 float randomRadian = random.nextFloat() * (float) Math.PI;
                 double xBase = tX + 8 + MathHelper.sin(randomRadian) * mSize / 8.0F;
                 double xFactor = tX + 8 - MathHelper.sin(randomRadian) * mSize / 8.0F;
@@ -634,43 +626,50 @@ public class GTWorldgenerator implements IWorldGenerator {
                 double yFactor = tY + random.nextInt(3) - 2;
 
                 for (int i = 0; i <= mSize; i++) {
+                    double randomDistance = random.nextDouble() * mSize / 16.0D;
+
+                    double halfLength = ((MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance + 1.0D) / 2.0;
+                    double halfHeight = ((MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance + 1.0D) / 2.0;
+
                     double xCenter = xBase + (xFactor - xBase) * i / mSize;
                     double yCenter = yBase + (yFactor - yBase) * i / mSize;
                     double zCenter = zBase + (zFactor - zBase) * i / mSize;
-                    double randomDistance = random.nextDouble() * mSize / 16.0D;
-                    double halfLength = (MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance + 1.0D;
-                    double halfHeight = (MathHelper.sin(i * (float) Math.PI / mSize) + 1.0F) * randomDistance + 1.0D;
-                    int tMinX = MathHelper.floor_double(xCenter - halfLength / 2.0D);
-                    int tMinY = MathHelper.floor_double(yCenter - halfHeight / 2.0D);
-                    int tMinZ = MathHelper.floor_double(zCenter - halfLength / 2.0D);
-                    int tMaxX = MathHelper.floor_double(xCenter + halfLength / 2.0D);
-                    int tMaxY = MathHelper.floor_double(yCenter + halfHeight / 2.0D);
-                    int tMaxZ = MathHelper.floor_double(zCenter + halfLength / 2.0D);
+
+                    int tMinX = MathHelper.floor_double(xCenter - halfLength);
+                    int tMinY = MathHelper.floor_double(yCenter - halfHeight);
+                    int tMinZ = MathHelper.floor_double(zCenter - halfLength);
+                    int tMaxX = MathHelper.floor_double(xCenter + halfLength);
+                    int tMaxY = MathHelper.floor_double(yCenter + halfHeight);
+                    int tMaxZ = MathHelper.floor_double(zCenter + halfLength);
 
                     for (int eX = tMinX; eX <= tMaxX; eX++) {
-                        double xChance = (eX + 0.5D - xCenter) / (halfLength / 2.0D);
+
+                        double xChance = (eX + 0.5D - xCenter) / halfLength;
                         if (xChance * xChance < 1.0D) {
                             for (int eY = tMinY; eY <= tMaxY; eY++) {
-                                double yChance = (eY + 0.5D - yCenter) / (halfHeight / 2.0D);
+
+                                double yChance = (eY + 0.5D - yCenter) / halfHeight;
                                 if (xChance * xChance + yChance * yChance < 1.0D) {
                                     for (int eZ = tMinZ; eZ <= tMaxZ; eZ++) {
-                                        double zChance = (eZ + 0.5D - zCenter) / (halfLength / 2.0D);
+
+                                        double zChance = (eZ + 0.5D - zCenter) / halfLength;
                                         if (xChance * xChance + yChance * yChance + zChance * zChance >= 1.0D) {
                                             continue;
                                         }
-                                        if (!world.getBlock(tX, tY, tZ)
-                                            .isAir(world, tX, tY, tZ)) {
+
+                                        if (!world.isAirBlock(tX, tY, tZ)) {
                                             continue;
                                         }
+
                                         int ranOre = random.nextInt(50);
                                         if (ranOre < 3) {
-                                            TileEntityOres.setOreBlock(world, eX, eY, eZ, primaryMeta, false);
+                                            OreManager.setOreForWorldGen(world, eX, eY, eZ, StoneType.Endstone, selectedOreLayer.mPrimary, false);
                                         } else if (ranOre < 6) {
-                                            TileEntityOres.setOreBlock(world, eX, eY, eZ, secondaryMeta, false);
+                                            OreManager.setOreForWorldGen(world, eX, eY, eZ, StoneType.Endstone, selectedOreLayer.mSecondary, false);
                                         } else if (ranOre < 8) {
-                                            TileEntityOres.setOreBlock(world, eX, eY, eZ, betweenMeta, false);
+                                            OreManager.setOreForWorldGen(world, eX, eY, eZ, StoneType.Endstone, selectedOreLayer.mBetween, false);
                                         } else if (ranOre < 10) {
-                                            TileEntityOres.setOreBlock(world, eX, eY, eZ, sporadicMeta, false);
+                                            OreManager.setOreForWorldGen(world, eX, eY, eZ, StoneType.Endstone, selectedOreLayer.mSporadic, false);
                                         } else {
                                             world.setBlock(eX, eY, eZ, Blocks.end_stone, 0, 0);
                                         }

@@ -26,9 +26,11 @@ import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
+import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
 import gregtech.nei.dumper.MaterialDumper;
@@ -36,6 +38,7 @@ import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
+import net.minecraft.item.ItemStack;
 
 public class NEIGTConfig implements IConfigureNEI {
 
@@ -76,6 +79,7 @@ public class NEIGTConfig implements IConfigureNEI {
         registerCatalysts();
         registerItemEntries();
         registerDumpers();
+        hideItems();
         sIsAdded = true;
     }
 
@@ -119,6 +123,16 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addOption(new InputSeparationSupportDumper());
         API.addOption(new BatchModeSupportDumper());
         API.addOption(new RecipeLockingSupportDumper());
+    }
+
+    private void hideItems() {
+        for (BlockOresAbstract ore : GTOreAdapter.INSTANCE.ores) {
+            if (ore.isExtraneous()) {
+                for (int i = 0; i < 16; i++) {
+                    API.hideItem(new ItemStack(ore, i));
+                }
+            }
+        }
     }
 
     @SubscribeEvent

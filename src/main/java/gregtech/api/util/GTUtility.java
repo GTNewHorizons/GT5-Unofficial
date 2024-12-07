@@ -117,7 +117,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -169,8 +168,8 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.blocks.BlockOres2;
 import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import ic2.api.recipe.IRecipeInput;
@@ -2340,7 +2339,7 @@ public class GTUtility {
         return false;
     }
 
-    public static <T> int indexOf(T[] array, T value) {
+    public static <A, B> int indexOf(A[] array, B value) {
         for (int i = 0; i < array.length; i++) {
             if (array[i] == value) return i;
         }
@@ -2348,8 +2347,16 @@ public class GTUtility {
         return -1;
     }
 
-    public static <T> boolean contains(T[] array, T value) {
+    public static <A, B> boolean contains(A[] array, B value) {
         return indexOf(array, value) != -1;
+    }
+
+    public static <T> T getIndexSafe(T[] array, int index) {
+        return index < 0 || index >= array.length ? null : array[index];
+    }
+
+    public static <T> T getIndexSafe(List<T> list, int index) {
+        return index < 0 || index >= list.size() ? null : list.get(index);
     }
 
     /**
@@ -4343,11 +4350,8 @@ public class GTUtility {
             && GTOreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
-    public static boolean isOre(Block block, int meta) {
-        if (block instanceof BlockOres2) return true;
-        if (block instanceof BWMetaGeneratedOres) return true;
-        if (block instanceof BWMetaGeneratedSmallOres) return true;
-        if (block instanceof BlockBaseOre) return true;
+    public static boolean isMinable(Block block, int meta) {
+        if (OreManager.isOre(block, meta)) return true;
 
         return isOre(new ItemStack(block, 1, meta));
     }
@@ -4358,8 +4362,7 @@ public class GTUtility {
             return sOreTable.get(tItem);
         }
         for (int id : OreDictionary.getOreIDs(aStack)) {
-            if (OreDictionary.getOreName(id)
-                .startsWith("ore")) {
+            if (OreDictionary.getOreName(id).startsWith("ore")) {
                 sOreTable.put(tItem, true);
                 return true;
             }
@@ -4527,6 +4530,10 @@ public class GTUtility {
 
     public static int clamp(int val, int lo, int hi) {
         return MathHelper.clamp_int(val, lo, hi);
+    }
+
+    public static float clamp(float val, float lo, float hi) {
+        return val < lo ? lo : val > hi ? hi : val;
     }
 
     public static long min(long first, long... rest) {

@@ -10,15 +10,17 @@ import net.minecraft.world.chunk.IChunkProvider;
 import galacticgreg.api.ModContainer;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.registry.GalacticGregRegistry;
+import gregtech.api.interfaces.IMaterial;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.SmallOreBuilder;
+import gregtech.common.ores.OreManager;
 
 public class WorldgenOreSmallSpace extends GTWorldgen {
 
     public final short mMinY;
     public final short mMaxY;
     public final short mAmount;
-    public final short mMeta;
+    public final IMaterial mMaterial;
 
     private long mProfilingStart;
     private long mProfilingEnd;
@@ -30,7 +32,7 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
         mMinY = (short) ore.minY;
         mMaxY = (short) Math.max(this.mMinY + 1, ore.maxY);
         mAmount = (short) Math.max(1, ore.amount);
-        mMeta = (short) ore.ore.mMetaItemSubID;
+        mMaterial = ore.ore;
 
         allowedDims = new HashSet<>();
         for (ModContainer mc : GalacticGregRegistry.getModContainers()) {
@@ -78,16 +80,17 @@ public class WorldgenOreSmallSpace extends GTWorldgen {
         if (GalacticGreg.GalacticConfig.ProfileOreGen) mProfilingStart = System.currentTimeMillis();
         // ---------------------------
 
-        if (this.mMeta > 0) {
+        if (mMaterial != null) {
             int i = 0;
             for (int j = Math.max(1, this.mAmount / 2 + pRandom.nextInt(this.mAmount) / 2); i < j; i++) {
-                TileEntitySpaceOres.setOuterSpaceOreBlock(
-                    tMDD,
+                OreManager.setOreForWorldGen(
                     pWorld,
                     pChunkX + pRandom.nextInt(16),
                     this.mMinY + pRandom.nextInt(Math.max(1, this.mMaxY - this.mMinY)),
                     pChunkZ + pRandom.nextInt(16),
-                    this.mMeta + 16000);
+                    null,
+                    mMaterial,
+                    true);
             }
         }
         // ---------------------------

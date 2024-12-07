@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,66 +15,41 @@ import gregtech.api.enums.Materials;
 
 public class ItemOres extends ItemBlock {
 
+    public final BlockOresAbstract blockOre;
+
     public ItemOres(Block block) {
         super(block);
         setMaxDamage(0);
         setHasSubtypes(true);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
+
+        blockOre = (BlockOresAbstract) block;
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
-        int ordinalSide, float hitX, float hitY, float hitZ) {
-        return false;
+    public String getUnlocalizedName(ItemStack stack) {
+        int metadata = stack.getItemDamage();
+
+        int matId = blockOre.getMaterialIndex(metadata);
+        boolean small = blockOre.isSmallOre(metadata);
+
+        return this.field_150939_a.getUnlocalizedName() + "." + (matId + (small ? BlockOresAbstract.SMALL_ORE_META_OFFSET : 0));
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack aStack) {
-        return this.field_150939_a.getUnlocalizedName() + "." + getDamage(aStack);
+    public int getMetadata(int meta) {
+        return meta;
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
-        if (this.field_150939_a instanceof BlockOresAbstract) {
-            aName = Materials.getLocalizedNameForItem(aName, aStack.getItemDamage() % 1000);
-        }
-        return aName;
+    public String getItemStackDisplayName(ItemStack stack) {
+        String aName = super.getItemStackDisplayName(stack);
+        return Materials.getLocalizedNameForItem(aName, blockOre.getMaterialIndex(stack.getItemDamage()));
     }
 
     @Override
-    public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int ordinalSide, float hitX, float hitY, float hitZ, int aMeta) {
-        short tDamage = (short) getDamage(aStack);
-        if (tDamage > 0) {
-            if (!aWorld.setBlock(
-                aX,
-                aY,
-                aZ,
-                this.field_150939_a,
-                TileEntityOres.getHarvestData(
-                    tDamage,
-                    ((BlockOresAbstract) field_150939_a).getBaseBlockHarvestLevel(aMeta % 16000 / 1000)),
-                3)) {
-                return false;
-            }
-            TileEntityOres tTileEntity = (TileEntityOres) aWorld.getTileEntity(aX, aY, aZ);
-            tTileEntity.mMetaData = tDamage;
-            tTileEntity.mNatural = false;
-        } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3)) {
-            return false;
-        }
-        if (aWorld.getBlock(aX, aY, aZ) == this.field_150939_a) {
-            this.field_150939_a.onBlockPlacedBy(aWorld, aX, aY, aZ, aPlayer, aStack);
-            this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, tDamage);
-        }
-        return true;
-    }
-
-    @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        String formula = StatCollector
-            .translateToLocal(field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
-        if (!StringUtils.isBlank(formula)) aList.add(formula);
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> desc, boolean advancedTooltips) {
+        String formula = StatCollector.translateToLocal(getUnlocalizedName(stack) + ".tooltip");
+        if (!StringUtils.isBlank(formula)) desc.add(formula);
     }
 }

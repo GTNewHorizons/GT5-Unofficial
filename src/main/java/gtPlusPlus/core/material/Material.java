@@ -12,6 +12,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -20,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.interfaces.IMaterial;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
@@ -33,7 +35,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 
-public class Material {
+public class Material implements IMaterial {
 
     public static final Set<Material> mMaterialMap = new HashSet<>();
     public static HashMap<String, Material> mMaterialCache = new HashMap<>();
@@ -836,11 +838,34 @@ public class Material {
         return Materials.Gold.mIconSet;
     }
 
+    @Override
     public final String getLocalizedName() {
         if (this.localizedName != null) {
             return this.localizedName;
         }
         return "ERROR BAD LOCALIZED NAME";
+    }
+
+    @Override
+    public int getId() {
+        ItemStack dust = getDust(1);
+
+        if (dust != null) return Item.getIdFromItem(dust.getItem());
+
+        ItemStack ingot = getIngot(1);
+
+        if (ingot != null) return Item.getIdFromItem(ingot.getItem());
+
+        ItemStack ore = getOre(1);
+
+        if (ore != null) return Item.getIdFromItem(ore.getItem());
+
+        return 0;
+    }
+
+    @Override
+    public String getInternalName() {
+        return getUnlocalizedName();
     }
 
     public final String getUnlocalizedName() {
@@ -868,6 +893,7 @@ public class Material {
         return new short[] { 255, 0, 0 };
     }
 
+    @Override
     public final short[] getRGBA() {
         if (this.RGBA != null) {
             if (this.RGBA.length == 4) {

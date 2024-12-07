@@ -4,6 +4,7 @@ import java.io.File;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,9 +18,13 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Version;
+import gregtech.api.enums.Materials;
+import gregtech.common.ores.GTOreAdapter;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.NEIPluginConfig;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.CSVMaker;
@@ -49,10 +54,18 @@ public class GTNEIOrePlugin {
     public static File instanceDir;
     public static final CreativeTabs creativeTab = new CreativeTabs(MODID) {
 
+        @SideOnly(Side.CLIENT)
+        public ItemStack getIconItemStack() {
+            try (OreInfo<Materials> info = OreInfo.getNewInfo()) {
+                info.material = Materials.Manyullyn;
+                
+                return OreManager.getStack(info, 1);
+            }
+        };
+
         @Override
         public Item getTabIconItem() {
-            return GameRegistry.makeItemStack("gregtech:gt.blockores", 386, 1, null)
-                .getItem();
+            return Item.getItemFromBlock(GTOreAdapter.INSTANCE.ores1);
         }
     };
 

@@ -14,9 +14,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -24,6 +26,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -47,7 +50,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.LockedWhileActiveButton;
-import gregtech.api.interfaces.IBlockOre;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.objects.GTChunkManager;
@@ -58,8 +60,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.ores.OreManager;
 import gregtech.crossmod.visualprospecting.VisualProspectingDatabase;
 
 public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements IMetricsExporter {
@@ -224,54 +225,50 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     private boolean processOreList(boolean simulate) {
+        List<ChunkPosition> oreBlockPositions = simulate ? copyOreBlockPositions(this.oreBlockPositions) : this.oreBlockPositions;
+
         ChunkPosition oreBlockPos = null;
-        List<ChunkPosition> oreBlockPositions = simulate ? copyOreBlockPositions(this.oreBlockPositions)
-            : this.oreBlockPositions;
-        int x = 0, y = 0, z = 0;
         Block oreBlock = null;
         int oreBlockMetadata = 0;
 
-        while ((oreBlock == null || !GTUtility.isOre(oreBlock, oreBlockMetadata)) && !oreBlockPositions.isEmpty()) {
+        World world = getBaseMetaTileEntity().getWorld();
+
+        while ((oreBlock == null || !GTUtility.isMinable(oreBlock, oreBlockMetadata)) && !oreBlockPositions.isEmpty()) {
             oreBlockPos = oreBlockPositions.remove(0);
-            x = oreBlockPos.chunkPosX;
-            y = oreBlockPos.chunkPosY;
-            z = oreBlockPos.chunkPosZ;
-            if (GTUtility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), x, y, z, true))
-                oreBlock = getBaseMetaTileEntity().getBlock(x, y, z);
-            oreBlockMetadata = getBaseMetaTileEntity().getWorld()
-                .getBlockMetadata(x, y, z);
+            int x = oreBlockPos.chunkPosX;
+            int y = oreBlockPos.chunkPosY;
+            int z = oreBlockPos.chunkPosZ;
+            if (GTUtility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), x, y, z, true)) {
+                oreBlock = world.getBlock(x, y, z);
+                oreBlockMetadata = world.getBlockMetadata(x, y, z);
+            }
         }
+
+        if (oreBlock == null) return false;
+        Objects.requireNonNull(oreBlockPos);
 
         if (!tryConsumeDrillingFluid(simulate)) {
             oreBlockPositions.add(0, oreBlockPos);
             setRuntimeFailureReason(CheckRecipeResultRegistry.NO_DRILLING_FLUID);
             return false;
         }
-        if (oreBlock != null && GTUtility.isOre(oreBlock, oreBlockMetadata)) {
-            short metaData = 0;
-            TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(x, y, z);
-            if (tTileEntity instanceof TileEntityOres) {
-                metaData = ((TileEntityOres) tTileEntity).mMetaData;
-            }
 
-            Collection<ItemStack> oreBlockDrops = getBlockDrops(oreBlock, x, y, z);
-            ItemStack cobble = GTUtility.getCobbleForOre(oreBlock, metaData);
-            if (!simulate) {
-                if (replaceWithCobblestone) {
-                    getBaseMetaTileEntity().getWorld()
-                        .setBlock(x, y, z, Block.getBlockFromItem(cobble.getItem()), cobble.getItemDamage(), 3);
-                } else {
-                    getBaseMetaTileEntity().getWorld()
-                        .setBlockToAir(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
-                }
-            }
+        if (GTUtility.isMinable(oreBlock, oreBlockMetadata) || OreManager.isOre(oreBlock, oreBlockMetadata)) {
+            int x = oreBlockPos.chunkPosX;
+            int y = oreBlockPos.chunkPosY;
+            int z = oreBlockPos.chunkPosZ;
+
+            List<ItemStack> oreBlockDrops = OreManager.mineBlock(world, x, y, z, mTier + 3, simulate, replaceWithCobblestone);
+
             ItemStack[] toOutput = getOutputByDrops(oreBlockDrops);
             if (simulate && !canOutputAll(toOutput)) {
                 setRuntimeFailureReason(CheckRecipeResultRegistry.ITEM_OUTPUT_FULL);
                 return false;
             }
+
             mOutputItems = toOutput;
         }
+
         return true;
     }
 
@@ -537,18 +534,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         return itemStack;
     }
 
-    private Collection<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
-        final int blockMeta = getBaseMetaTileEntity().getWorld().getBlockMetadata(posX, posY, posZ);
-        if (oreBlock instanceof IBlockOre machineMinable) {
-            return machineMinable.getDropsForMachine(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, false, mTier + 3);
-        }
-        if (oreBlock.canSilkHarvest(getBaseMetaTileEntity().getWorld(), null, posX, posY, posZ, blockMeta)) {
-            return Collections.singleton(new ItemStack(oreBlock, 1, blockMeta));
-        }
-        // Regular ore
-        return oreBlock.getDrops(getBaseMetaTileEntity().getWorld(), posX, posY, posZ, blockMeta, 0);
-    }
-
     private boolean tryConsumeDrillingFluid(boolean simulate) {
         return depleteInput(new FluidStack(ItemList.sDrillingFluid, 2000), simulate);
     }
@@ -585,12 +570,9 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         Block block = getBaseMetaTileEntity().getBlock(x, y, z);
         int blockMeta = getBaseMetaTileEntity().getMetaID(x, y, z);
         ChunkPosition blockPos = new ChunkPosition(x, y, z);
+        
         if (!oreBlockPositions.contains(blockPos)) {
-            if (block instanceof BlockOresAbstract) {
-                TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntity(x, y, z);
-                if (tTileEntity instanceof TileEntityOres && ((TileEntityOres) tTileEntity).mNatural)
-                    oreBlockPositions.add(blockPos);
-            } else if (GTUtility.isOre(block, blockMeta)) oreBlockPositions.add(blockPos);
+            if (GTUtility.isMinable(block, blockMeta)) oreBlockPositions.add(blockPos);
         }
     }
 

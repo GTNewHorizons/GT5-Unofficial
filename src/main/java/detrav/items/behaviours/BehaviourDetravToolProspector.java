@@ -29,15 +29,16 @@ import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.UndergroundOil;
-import gregtech.common.blocks.BlockOres2;
 import gregtech.common.items.behaviors.BehaviourNone;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
 
 /**
@@ -67,7 +68,10 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
         if (aWorld.isRemote) return false;
 
-        if (aWorld.getBlock(aX, aY, aZ) == Blocks.bedrock) {
+        Block block = aWorld.getBlock(aX, aY, aZ);
+        int meta = aWorld.getBlockMetadata(aX, aY, aZ);
+
+        if (block == Blocks.bedrock) {
             if (!aWorld.isRemote && aRandom.nextInt(100) < chance) {
                 FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
                 addChatMassageByValue(aPlayer, fStack.amount / 2, "a Fluid");
@@ -85,14 +89,13 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             }
             return true;
         }
-        if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock
-            || aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.ground
-            || aWorld.getBlock(aX, aY, aZ) == GregTechAPI.sBlockOres2) {
-            if (!aWorld.isRemote) {
-                prospectChunks(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
-            }
+
+        if (block.getMaterial() == Material.rock || block.getMaterial() == Material.ground || GTUtility.isMinable(block, meta)) {
+            prospectChunks(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
+
             return true;
         }
+
         return false;
     }
 
@@ -105,7 +108,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         ores = new HashMap<>();
 
         int range = aItem.getHarvestLevel(aStack, "") / 2 + (aStack.getItemDamage() / 4);
-        if ((range % 2) == 0) {
+        if (range % 2 == 0) {
             range += 1; // kinda not needed here, divide takes it out, but we put it back in with the range+1 in the
                         // loop
         }
@@ -116,11 +119,11 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 EnumChatFormatting.GOLD + GTLanguageManager.sEnglishFile
                     .get("LanguageFile", "gt.scanner.prospecting", "Prospecting at ")
                     .getString() + EnumChatFormatting.BLUE + "(" + bX + ", " + bZ + ")"));
-        for (int x = -(range); x < (range + 1); ++x) {
-            aX = bX + (x * 16);
-            for (int z = -(range); z < (range + 1); ++z) {
+        for (int x = -range; x < range + 1; ++x) {
+            aX = bX + x * 16;
+            for (int z = -range; z < range + 1; ++z) {
 
-                aZ = bZ + (z * 16);
+                aZ = bZ + z * 16;
                 int dist = x * x + z * z;
 
                 for (distTextIndex = 0; distTextIndex < DISTANCEINTS.length; distTextIndex++) {
@@ -128,6 +131,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                         break;
                     }
                 }
+
                 if (DetravScannerMod.DEBUG_ENABLED) {
                     aPlayer.addChatMessage(
                         new ChatComponentText(
@@ -141,6 +145,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                             + (aZ + 16)
                             + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex)));
                 }
+
                 processOreProspecting(
                     (DetravMetaGeneratedTool01) aItem,
                     aStack,
@@ -263,13 +268,16 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
         int meta = world.getBlockMetadata(x, y, z);
 
         ItemStack blockStack = new ItemStack(block, 1, meta);
-        ItemData itemData = GTOreDictUnificator.getAssociation(blockStack);
 
-        if (block instanceof BlockOres2) {
+        if (OreManager.isOre(block, meta)) {
             addOreToHashMap(blockStack.getDisplayName(), aPlayer);
             if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
             return;
-        } else if (itemData != null) {
+        }
+        
+        ItemData itemData = GTOreDictUnificator.getAssociation(blockStack);
+        
+        if (itemData != null) {
             try {
                 String name = itemData.toString();
                 addChatMassageByValue(aPlayer, -1, name);
@@ -278,10 +286,14 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             } catch (Exception e) {
                 addChatMassageByValue(aPlayer, -1, "ERROR, lol ^_^");
             }
-        } else if (aRandom.nextInt(100) < chance) {
+
+            return;
+        }
+        
+        if (aRandom.nextInt(100) < chance) {
             final int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack)
                 .intValue();
-            final String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
+
             for (int cx = 0; cx < 16; cx++) {
                 for (int cz = 0; cz < 16; cz++) {
                     int ySize = chunk.getHeightValue(cx, cz);
@@ -290,27 +302,28 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                         Block tBlock = chunk.getBlock(cx, cy, cz);
                         short tMetaID = (short) chunk.getBlockMetadata(cx, cy, cz);
 
-                        if (tBlock instanceof BlockOres2) {
-                            if (!BlockOres2.isNatural(tMetaID)) continue;
-                            if (data != 1 && BlockOres2.isSmallOre(tMetaID)) continue;
+                        var p = OreManager.getOreInfo(tBlock, tMetaID);
 
-                            ItemStack blockStack2 = new ItemStack(tBlock, 1, tMetaID);
-                            addOreToHashMap(blockStack2.getDisplayName(), aPlayer);
+                        if (p != null) {
+                            try (OreInfo<?> info = p.right()) {
+                                if (!info.isNatural) continue;
+                                if (data != DetravMetaGeneratedTool01.MODE_ALL_ORES && info.isSmall) continue;
+                            
+                                ItemStack blockStack2 = new ItemStack(tBlock, 1, tMetaID);
+                                addOreToHashMap(blockStack2.getDisplayName(), aPlayer);
+                            }
                         } else if (GTppHelper.isGTppBlock(tBlock)) {
                             String name = GTppHelper.getGTppVeinName(tBlock);
                             if (!name.isEmpty()) addOreToHashMap(name, aPlayer);
                         } else if (BartWorksHelper.isOre(tBlock)) {
-                            if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
-                            final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(
-                                (short) ((BartWorksHelper.getMetaFromBlock(chunk, cx, cy, cz, tBlock)) * -1),
-                                null);
+                            if (data != DetravMetaGeneratedTool01.MODE_ALL_ORES && BartWorksHelper.isSmallOre(tBlock)) continue;
+                            final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) ((BartWorksHelper.getMetaFromBlock(chunk, cx, cy, cz, tBlock)) * -1), null);
                             String type = BartWorksHelper.isSmallOre(tBlock) ? "oreSmall" : "ore";
                             String translated = GTLanguageManager.getTranslation("bw.blocktype." + type);
                             addOreToHashMap(translated.replace("%material", werkstoff.getLocalizedName()), aPlayer);
-                        } else if (data == 1) {
+                        } else if (data == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
                             itemData = GTOreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                            if ((itemData != null) && (itemData.mPrefix.toString()
-                                .startsWith("ore"))) {
+                            if (itemData != null && itemData.mPrefix.toString().startsWith("ore")) {
                                 try {
                                     try {
                                         tMetaID = (short) itemData.mMaterial.mMaterial.mMetaItemSubID;
@@ -332,24 +345,17 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
 
             return;
-        } else {
-            if (DetravScannerMod.DEBUG_ENABLED)
-                aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
-            badluck++;
-            if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts / 4);
         }
-        // addChatMassageByValue(aPlayer,0,null);
+
+        if (DetravScannerMod.DEBUG_ENABLED)
+            aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
+        badluck++;
+        if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts / 4);
     }
 
     void addOreToHashMap(String orename, EntityPlayer aPlayer) {
-        String oreDistance = orename + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex); // orename
-                                                                                                                         // +
-                                                                                                                         // the
-                                                                                                                         // textual
-                                                                                                                         // distance
-                                                                                                                         // of
-                                                                                                                         // the
-                                                                                                                         // ore
+        // orename + the textual distance of the ore
+        String oreDistance = orename + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex);
         if (!ores.containsKey(oreDistance)) {
             if (DetravScannerMod.DEBUG_ENABLED) aPlayer
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + " Adding to oremap " + oreDistance));

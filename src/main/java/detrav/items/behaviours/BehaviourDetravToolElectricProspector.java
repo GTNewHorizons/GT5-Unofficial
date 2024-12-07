@@ -1,5 +1,8 @@
 package detrav.items.behaviours;
 
+import static detrav.items.DetravMetaGeneratedTool01.MODE_ALL_ORES;
+import static detrav.items.DetravMetaGeneratedTool01.MODE_BIG_ORES;
+import static detrav.items.DetravMetaGeneratedTool01.MODE_FLUIDS;
 import static gregtech.api.enums.Mods.VisualProspecting;
 
 import java.util.ArrayList;
@@ -21,13 +24,11 @@ import com.sinthoras.visualprospecting.VisualProspecting_API;
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.net.DetravNetwork;
 import detrav.net.ProspectingPacket;
-import detrav.utils.BartWorksHelper;
-import detrav.utils.GTppHelper;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.api.objects.ItemData;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.UndergroundOil;
-import gregtech.common.blocks.BlockOres2;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
+import gregtech.common.pollution.Pollution;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -71,85 +72,57 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                 (int) aPlayer.posZ,
                 size,
                 data);
-            final String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
-            for (Chunk c : chunks) {
-                for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
-                    final int ySize = c.getHeightValue(x, z);
-                    for (int y = 1; y < ySize; y++) {
-                        switch (data) {
-                            case 0, 1 -> {
-                                final Block tBlock = c.getBlock(x, y, z);
-                                short tMetaID = (short) c.getBlockMetadata(x, y, z);
-                                if (tBlock instanceof BlockOres2) {
-                                    if (!BlockOres2.isNatural(tMetaID)) continue;
-                                    if (data != 1 && BlockOres2.isSmallOre(tMetaID)) continue;
 
-                                    packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
-                                } else if (GTppHelper.isGTppBlock(tBlock)) {
-                                    packet.addBlock(
-                                        c.xPosition * 16 + x,
-                                        y,
-                                        c.zPosition * 16 + z,
-                                        GTppHelper.getMetaFromBlock(tBlock));
-                                } else if (BartWorksHelper.isOre(tBlock)) {
-                                    if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
-                                    packet.addBlock(
-                                        c.xPosition * 16 + x,
-                                        y,
-                                        c.zPosition * 16 + z,
-                                        BartWorksHelper.getMetaFromBlock(c, x, y, z, tBlock));
-                                } else if (data == 1) {
-                                    ItemData tAssotiation = GTOreDictUnificator
-                                        .getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                                    if ((tAssotiation != null) && (tAssotiation.mPrefix.toString()
-                                        .startsWith("ore"))) {
-                                        packet.addBlock(
-                                            c.xPosition * 16 + x,
-                                            y,
-                                            c.zPosition * 16 + z,
-                                            (short) tAssotiation.mMaterial.mMaterial.mMetaItemSubID);
+            switch (data) {
+                case MODE_BIG_ORES, MODE_ALL_ORES -> {
+                    for (Chunk c : chunks) {
+                        for (int x = 0; x < 16; x++) {
+                            for (int z = 0; z < 16; z++) {
+                                final int height = c.getHeightValue(x, z);
+
+                                for (int y = 1; y < height; y++) {
+                                    Block block = c.getBlock(x, y, z);
+                                    int meta = c.getBlockMetadata(x, y, z);
+
+                                    if (OreManager.getStoneType(block, meta) != null) continue;
+
+                                    var p = OreManager.getOreInfo(block, meta);
+
+                                    if (p != null) {
+                                        try (OreInfo<?> info = p.right()) {
+                                            if (!info.isNatural) continue;
+                                            if (data != MODE_ALL_ORES && info.isSmall) continue;
+        
+                                            packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, block, meta);
+                                            continue;
+                                        }
                                     }
                                 }
                             }
-                            case 2 -> {
-                                if ((x == 0) || (z == 0)) { // Skip doing the locations with the grid on them.
-                                    break;
-                                }
-                                FluidStack fStack = UndergroundOil.undergroundOil(
-                                    aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z),
-                                    -1);
-                                if (fStack.amount > 0) {
-                                    packet.addBlock(
-                                        c.xPosition * 16 + x,
-                                        1,
-                                        c.zPosition * 16 + z,
-                                        (short) fStack.getFluidID());
-                                    packet
-                                        .addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) fStack.amount);
-                                }
-                            }
-                            case 3 -> {
-                                float polution = (float) getPollution(
-                                    aWorld,
-                                    c.xPosition * 16 + x,
-                                    c.zPosition * 16 + z);
-                                polution /= 2000000;
-                                polution *= -0xFF;
-                                if (polution > 0xFF) polution = 0xFF;
-                                polution = 0xFF - polution;
-                                packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) polution);
-                            }
                         }
-                        if (data > 1) break;
+                    }
+                }
+                case MODE_FLUIDS -> {
+                    for (Chunk c : chunks) {
+                        FluidStack fluid = UndergroundOil.undergroundOil(c, -1);
+
+                        packet.addFluid(c.xPosition, c.zPosition, fluid);
+                    }
+                }
+                case DetravMetaGeneratedTool01.MODE_POLLUTION -> {
+                    for (Chunk c : chunks) {
+                        int pollution = Pollution.getPollution(c);
+
+                        packet.addPollution(c.xPosition, c.zPosition, pollution);
                     }
                 }
             }
-            packet.level = aItem.getHarvestLevel(aStack, "");
+
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
             if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, this.mCosts * chunks.size());
 
             if (VisualProspecting.isModLoaded()) {
-                if (data == 0 || data == 1) {
+                if (data == MODE_BIG_ORES || data == MODE_ALL_ORES) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                         (EntityPlayerMP) aPlayer,
                         VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
@@ -158,7 +131,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                             (int) aPlayer.posZ,
                             size * 16),
                         new ArrayList<>());
-                } else if (data == 2) {
+                } else if (data == MODE_FLUIDS) {
                     VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
                         (EntityPlayerMP) aPlayer,
                         new ArrayList<>(),
@@ -209,8 +182,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             return true;
         }
         if (!aWorld.isRemote) {
-            int polution = getPollution(aWorld, aX, aZ);
-            addChatMassageByValue(aPlayer, polution, "Pollution");
+            addChatMassageByValue(aPlayer, getPollution(aWorld, aX, aZ), "Pollution");
         }
         return true;
     }

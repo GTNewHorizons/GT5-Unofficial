@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -12,9 +13,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidBlock;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.IMaterial;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.ItemData;
@@ -23,8 +24,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockOres2;
-import gregtech.common.blocks.BlockOres2.StoneType;
+import gregtech.common.ores.OreManager;
 
 public class BehaviourProspecting extends BehaviourNone {
 
@@ -62,16 +62,14 @@ public class BehaviourProspecting extends BehaviourNone {
 
         int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
 
-        if (aBlock instanceof BlockOres2) {
-            final Materials tMaterial = BlockOres2.getMaterial(aMeta);
-            if (tMaterial != null && tMaterial != Materials._NULL) {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    GTUtility.trans("100", "This is ") + tMaterial.mDefaultLocalName
-                        + GTUtility.trans("101", " Ore."));
-                GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
-                return true;
-            }
+        IMaterial mat = OreManager.getMaterial(aBlock, aMeta);
+        if (mat != null) {
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                GTUtility.trans("100", "This is ") + mat.getLocalizedName()
+                    + GTUtility.trans("101", " Ore."));
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
+            return true;
         }
 
         Materials oreMat = getOreMaterial(aBlock, aMeta);
@@ -85,11 +83,7 @@ public class BehaviourProspecting extends BehaviourNone {
             return true;
         }
 
-        StoneType stoneType = StoneType.fromWorldBlock(aWorld, aX, aY, aZ);
-
-        if (stoneType != null
-            || aBlock == GregTechAPI.sBlockOres1
-            || aBlock == GregTechAPI.sBlockOres2) {
+        if (aBlock.getMaterial() == Material.rock || aBlock.getMaterial() == Material.ground || OreManager.isOre(aBlock, aMeta)) {
             if (!GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) return false;
 
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
@@ -134,15 +128,13 @@ public class BehaviourProspecting extends BehaviourNone {
                 Block tBlock = aWorld.getBlock(tX, tY, tZ);
                 int tMeta = aWorld.getBlockMetadata(tX, tY, tZ);
 
-                if (tBlock instanceof BlockOres2) {
-                    final Materials tMaterial = BlockOres2.getMaterial(tMeta);
-                    if (tMaterial != null && tMaterial != Materials._NULL) {
-                        GTUtility.sendChatToPlayer(
-                            aPlayer,
-                            GTUtility.trans("106", "Found traces of ") + tMaterial.mDefaultLocalName
-                                + GTUtility.trans("101", " Ore."));
-                        return true;
-                    }
+                mat = OreManager.getMaterial(tBlock, tMeta);
+                if (mat != null) {
+                    GTUtility.sendChatToPlayer(
+                        aPlayer,
+                        GTUtility.trans("106", "Found traces of ") + mat.getLocalizedName()
+                            + GTUtility.trans("101", " Ore."));
+                    return true;
                 }
 
                 oreMat = getOreMaterial(tBlock, tMeta);

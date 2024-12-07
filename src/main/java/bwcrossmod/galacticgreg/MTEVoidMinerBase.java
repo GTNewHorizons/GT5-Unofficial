@@ -24,15 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.gen.ChunkProviderServer;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.GTValues;
@@ -42,6 +33,12 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 public abstract class MTEVoidMinerBase extends MTEDrillerBase {
 
@@ -53,14 +50,6 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
     protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
-
-    /**
-     * @Deprecated Use {@link VoidMinerUtility#addBlockToDimensionList}
-     */
-    @Deprecated
-    public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
-        VoidMinerUtility.addBlockToDimensionList(dimId, block, meta, weight);
-    }
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -236,47 +225,14 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
     }
 
     /**
-     * Handles the ores added manually with {@link VoidMinerUtility#addMaterialToDimensionList}
-     *
-     * @param id the specified dim id
-     */
-    private void handleExtraDrops(int id) {
-        if (VoidMinerUtility.extraDropsDimMap.containsKey(id)) {
-            extraDropMap = VoidMinerUtility.extraDropsDimMap.get(id);
-        }
-    }
-
-    /**
-     * Gets the DropMap of the dim for the specified dim id
-     *
-     * @param id the dim number
-     */
-    private void handleModDimDef(int id) {
-        if (VoidMinerUtility.dropMapsByDimId.containsKey(id)) {
-            this.dropMap = VoidMinerUtility.dropMapsByDimId.get(id);
-        } else {
-            String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity()
-                .getWorld()
-                .getChunkProvider()).currentChunkProvider.getClass()
-                    .getName();
-
-            if (VoidMinerUtility.dropMapsByChunkProviderName.containsKey(chunkProviderName)) {
-                this.dropMap = VoidMinerUtility.dropMapsByChunkProviderName.get(chunkProviderName);
-            }
-        }
-    }
-
-    /**
      * Computes first the ores related to the dim the VM is in, then the ores added manually, then it computes the
      * totalWeight for normalisation
      */
     private void calculateDropMap() {
-        this.dropMap = new VoidMinerUtility.DropMap();
-        this.extraDropMap = new VoidMinerUtility.DropMap();
-        int id = this.getBaseMetaTileEntity()
-            .getWorld().provider.dimensionId;
-        this.handleModDimDef(id);
-        this.handleExtraDrops(id);
+        String dimName = this.getBaseMetaTileEntity().getWorld().provider.getDimensionName();
+        this.dropMap = VoidMinerUtility.dropMapsByDimName.getOrDefault(dimName, new VoidMinerUtility.DropMap());
+        this.extraDropMap = VoidMinerUtility.extraDropsByDimName.getOrDefault(dimName, new VoidMinerUtility.DropMap());
+
         this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
     }
 
@@ -288,14 +244,25 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
             .stream()
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
+
         final ItemStack output = this.nextOre();
         output.stackSize = multiplier;
-        if (inputOres.isEmpty() || this.mBlacklist && inputOres.stream()
-            .noneMatch(is -> GTUtility.areStacksEqual(is, output))
-            || !this.mBlacklist && inputOres.stream()
-                .anyMatch(is -> GTUtility.areStacksEqual(is, output)))
+
+        boolean matchesFilter = contains(inputOres, output);
+
+        if (inputOres.isEmpty() || (this.mBlacklist ? !matchesFilter : matchesFilter)) {
             this.addOutput(output);
+        }
+
         this.updateSlots();
+    }
+
+    private static boolean contains(List<ItemStack> list, ItemStack stack) {
+        for (ItemStack cursor : list) {
+            if (GTUtility.areStacksEqual(cursor, stack)) return true;
+        }
+
+        return false;
     }
 
     @Override

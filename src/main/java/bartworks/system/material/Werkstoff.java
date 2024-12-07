@@ -53,12 +53,13 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import thaumcraft.api.aspects.Aspect;
 
-public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
+public class Werkstoff implements IColorModulationContainer, ISubTagContainer, IMaterial {
 
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
@@ -499,6 +500,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         return this.defaultName;
     }
 
+    @Override
     public String getLocalizedName() {
         return GTLanguageManager.addStringLocalization(
             String.format("bw.werkstoff.%05d.name", this.mID),
@@ -527,6 +529,16 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     public short getmID() {
         return this.mID;
+    }
+
+    @Override
+    public int getId() {
+        return mID;
+    }
+
+    @Override
+    public String getInternalName() {
+        return getVarName();
     }
 
     public short getMixCircuit() {

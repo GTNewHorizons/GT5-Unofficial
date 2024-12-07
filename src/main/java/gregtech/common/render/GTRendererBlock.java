@@ -55,8 +55,6 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMachines;
-import gregtech.common.blocks.BlockOresAbstract;
-import gregtech.common.blocks.TileEntityOres;
 
 @ThreadSafeISBRH(perThread = true)
 public class GTRendererBlock implements ISimpleBlockRenderingHandler {
@@ -544,8 +542,6 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         }
     }
 
-    final TileEntityOres tTileEntity = new TileEntityOres();
-
     @Override
     public void renderInventoryBlock(Block aBlock, int aMeta, int aModelID, RenderBlocks aRenderer) {
         aRenderer.enableAO = false;
@@ -554,20 +550,7 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         // spotless:off
-        if (aBlock instanceof BlockOresAbstract) {
-            tTileEntity.mMetaData = ((short) aMeta);
-
-            aBlock.setBlockBoundsForItemRender();
-            aRenderer.setRenderBoundsFromBlock(aBlock);
-
-            ITexture[] texture = tTileEntity.getTexture(aBlock);
-            renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-            renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, texture, true);
-        } else if (aMeta > 0 && (aMeta < GregTechAPI.METATILEENTITIES.length) && aBlock instanceof BlockMachines && (GregTechAPI.METATILEENTITIES[aMeta] != null) && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
+        if (aMeta > 0 && (aMeta < GregTechAPI.METATILEENTITIES.length) && aBlock instanceof BlockMachines && (GregTechAPI.METATILEENTITIES[aMeta] != null) && (!GregTechAPI.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
             renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
         } else if (aBlock instanceof IBlockWithTextures texturedBlock) {
             ITexture[][] texture = texturedBlock.getTextures(aMeta);

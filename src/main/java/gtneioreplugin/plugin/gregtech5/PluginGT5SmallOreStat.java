@@ -7,12 +7,11 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.common.blocks.BlockOres2;
-import gregtech.common.blocks.ItemOres2;
-import gregtech.common.blocks.BlockOres2.StoneType;
+import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IMaterial;
+import gregtech.common.ores.IOreAdapter;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.GT5OreSmallHelper;
 import gtneioreplugin.util.GT5OreSmallHelper.OreSmallWrapper;
@@ -39,7 +38,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
     private void drawSmallOreInfo(OreSmallWrapper oreSmall) {
         drawLine("gtnop.gui.nei.genHeight", oreSmall.worldGenHeightRange, 2, 31);
         drawLine("gtnop.gui.nei.amount", String.valueOf(oreSmall.amountPerChunk), 2, 44);
-        drawLine("gtnop.gui.nei.chanceDrops", "", 2, 83 + getRestrictBiomeOffset());
+        drawLine("gtnop.gui.nei.chanceDrops", "", 2, 70);
         drawLine("gtnop.gui.nei.worldNames", "", 2, 100);
     }
 
@@ -48,23 +47,27 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         return GT5OreSmallHelper.SMALL_ORES_BY_NAME.get(crecipe.oreGenName);
     }
 
-    public int getRestrictBiomeOffset() {
-        return GT5OreSmallHelper.restrictBiomeSupport ? 0 : -13;
-    }
-
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
-        if (outputId.equals(getOutputId()))
-            for (ItemStack stack : GT5OreSmallHelper.SMALL_ORE_LIST) loadCraftingRecipes(stack);
-        else super.loadCraftingRecipes(outputId, results);
+        if (outputId.equals(getOutputId())) {
+            for (ItemStack stack : GT5OreSmallHelper.SMALL_ORE_LIST) {
+                loadCraftingRecipes(stack);
+            }
+        } else {
+            super.loadCraftingRecipes(outputId, results);
+        }
     }
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        if (stack.getItem() instanceof ItemOres2) {
-            loadSmallOre(BlockOres2.getMaterial(stack.getItemDamage()));
-        } else if (GT5OreSmallHelper.ORE_DROP_TO_MAT.containsKey(stack.getUnlocalizedName())) {
-            loadSmallOre(GT5OreSmallHelper.ORE_DROP_TO_MAT.get(stack.getUnlocalizedName()));
+        IMaterial mat = OreManager.getMaterial(stack);
+
+        if (mat == null) {
+            mat = GT5OreSmallHelper.ORE_DROP_TO_MAT.get(stack.getUnlocalizedName());
+        }
+
+        if (mat != null) {
+            loadSmallOre(mat);
         } else {
             super.loadCraftingRecipes(stack);
         }
@@ -80,14 +83,14 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         }
     }
 
-    private void loadSmallOre(Materials material) {
+    private void loadSmallOre(IMaterial material) {
         OreSmallWrapper smallOre = getSmallOre(material);
         if (smallOre != null) {
             addSmallOre(smallOre);
         }
     }
 
-    private OreSmallWrapper getSmallOre(Materials material) {
+    private OreSmallWrapper getSmallOre(IMaterial material) {
         for (OreSmallWrapper oreSmallWorldGen : GT5OreSmallHelper.SMALL_ORES_BY_NAME.values()) {
             if (oreSmallWorldGen.material == material) {
                 return oreSmallWorldGen;
@@ -97,22 +100,32 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
     }
 
     private void addSmallOre(OreSmallWrapper smallOre) {
+
+        List<ItemStack> ores = smallOre.getOreVariants();
+        List<ItemStack> dusts = new ArrayList<>();
+
+        try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+            info.material = smallOre.material;
+            info.isSmall = true;
+
+            IOreAdapter<?> adapter = OreManager.getAdapter(info);
+
+            for (StoneType stoneType : StoneType.STONE_TYPES) {
+                info.stoneType = stoneType;
+
+                if (adapter.supports(info)) {
+                    ores.add(adapter.getStack(info, 1));
+                    dusts.add(stoneType.getDust(true, 1));
+                }
+            }
+        }
+
         this.arecipes.add(
             new CachedOreSmallRecipe(
                 smallOre.oreGenName,
-                smallOre.getMaterialDrops(),
-                getStoneDusts(),
+                ores,
+                dusts,
                 GT5OreSmallHelper.ORE_MAT_TO_DROPS.get(smallOre.material)));
-    }
-
-    private List<ItemStack> getStoneDusts() {
-        List<ItemStack> stoneDusts = new ArrayList<>();
-
-        for (StoneType stoneType : StoneType.STONE_TYPES) {
-            stoneDusts.add(GTOreDictUnificator.get(OrePrefixes.dust, stoneType.material, 1));
-        }
-
-        return stoneDusts;
     }
 
     @Override
@@ -140,11 +153,12 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
             this.positionedStackMaterialDust = new PositionedStack(
                 materialDustStackList,
                 43,
-                79 + getRestrictBiomeOffset());
+                66);
             List<PositionedStack> positionedDropStackList = new ArrayList<>();
             int i = 1;
-            for (ItemStack stackDrop : dropStackList) positionedDropStackList.add(
-                new PositionedStack(stackDrop, 43 + 20 * (i % 4), 79 + 16 * ((i++) / 4) + getRestrictBiomeOffset()));
+            for (ItemStack stackDrop : dropStackList) {
+                positionedDropStackList.add(new PositionedStack(stackDrop, 43 + 20 * (i % 4), 66 + 16 * ((i++) / 4)));
+            }
             this.positionedDropStackList = positionedDropStackList;
             setDimensionDisplayItems();
         }

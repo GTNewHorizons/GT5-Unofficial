@@ -2,30 +2,22 @@ package gtPlusPlus.everglades;
 
 import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
 
-import net.minecraft.block.Block;
 import net.minecraftforge.common.DimensionManager;
 
-import bwcrossmod.galacticgreg.MTEVoidMinerBase;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.lib.GTPPCore.Everglades;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.everglades.biome.BiomeEverglades;
 import gtPlusPlus.everglades.block.DarkWorldContentLoader;
 import gtPlusPlus.everglades.dimension.DimensionEverglades;
-import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Base;
-import gtPlusPlus.everglades.gen.gt.WorldGen_GT_Ore_Layer;
-import gtPlusPlus.everglades.gen.gt.WorldGen_Ores;
 
 @Mod(
     modid = Mods.Names.G_T_PLUS_PLUS_EVERGLADES,
@@ -64,10 +56,8 @@ public class GTPPEverglades {
         Logger.INFO("Begin resource allocation for " + GTPlusPlusEverglades.ID + " V" + Everglades.VERSION);
 
         // Load World and Biome
-        GameRegistry.registerWorldGenerator(new WorldGen_GT_Base(), Short.MAX_VALUE);
         getEvergladesBiome().load();
         Everglades_Dimension.load();
-        addToVoidMinerDrops();
     }
 
     public static synchronized void GenerateOreMaterials() {
@@ -127,28 +117,8 @@ public class GTPPEverglades {
         /*
          * Set World Generation Values
          */
-        WorldGen_Ores.generateValidOreVeins();
-        WorldGen_GT_Base.oreveinPercentage = 64;
-        WorldGen_GT_Base.oreveinAttempts = 16;
-        WorldGen_GT_Base.oreveinMaxPlacementAttempts = 4;
-        if (ASMConfiguration.debug.debugMode || GTPPCore.DEVENV) {
-            WorldGen_GT_Base.debugWorldGen = true;
-        }
+        // WorldGen_GT_Base.oreveinPercentage = 64;
         DarkWorldContentLoader.run();
-    }
-
-    public void addToVoidMinerDrops() {
-        for (WorldGen_GT_Ore_Layer t : WorldGen_Ores.validOreveins.values()) {
-            addVMDrop(t.mPrimaryMeta, 0, t.mWeight);
-            addVMDrop(t.mSecondaryMeta, 0, t.mWeight);
-            addVMDrop(t.mBetweenMeta, 0, t.mWeight / 8f);
-            addVMDrop(t.mSporadicMeta, 0, t.mWeight / 8f);
-        }
-    }
-
-    public void addVMDrop(Block block, int meta, float weight) {
-        MTEVoidMinerBase
-            .addBlockToDimensionList(gtPlusPlus.core.config.Configuration.worldgen.EVERGLADES_ID, block, meta, weight);
     }
 
     @EventHandler

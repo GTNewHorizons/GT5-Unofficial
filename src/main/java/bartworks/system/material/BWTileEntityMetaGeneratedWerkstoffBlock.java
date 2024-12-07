@@ -43,7 +43,7 @@ public class BWTileEntityMetaGeneratedWerkstoffBlock extends TileEntityMetaGener
     }
 
     @Override
-    protected Block GetProperBlock() {
+    protected Block getProperBlock() {
         return WerkstoffLoader.BWBlocks;
     }
 }

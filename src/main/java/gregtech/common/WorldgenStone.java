@@ -13,11 +13,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
-import gregtech.common.blocks.BlockOres2;
-import gregtech.common.blocks.BlockOres2.StoneType;
+import gregtech.common.ores.OreManager;
 
 public class WorldgenStone extends GTWorldgen {
 
@@ -127,6 +127,8 @@ public class WorldgenStone extends GTWorldgen {
                 }
             }
         }
+
+        IStoneType stoneType = OreManager.getStoneType(mBlock, mBlockMeta);
 
         boolean result = !stones.isEmpty();
         // Now process each oreseed vs this requested chunk
@@ -262,26 +264,26 @@ public class WorldgenStone extends GTWorldgen {
                             if (leftHandSize <= rightHandSide) {
                                 // Yay! We can actually place a block now. (this part copied from original code)
                                 Block tTargetedBlock = aWorld.getBlock(iX, iY, iZ);
-                                if (tTargetedBlock == GregTechAPI.sBlockOres2) {
-                                    StoneType stoneType = StoneType.fromHypotheticalWorldBlock(aWorld, iX, iY, iZ, mBlock, mBlockMeta);
 
-                                    if (stoneType != null) {
-                                        BlockOres2.setExistingOreStoneType(aWorld, iX, iY, iZ, stoneType);
-                                    }
-                                } else if ((this.mAllowToGenerateinVoid && aWorld.isAirBlock(iX, iY, iZ))
-                                    || (tTargetedBlock != null && ((tTargetedBlock
-                                        .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stone))
-                                        || (tTargetedBlock
-                                            .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stained_hardened_clay))
-                                        || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.cobblestone))
-                                        || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.end_stone))
-                                        || (tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.netherrack))
-                                        || (tTargetedBlock
-                                            .isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockGranites))
-                                        || (tTargetedBlock
-                                            .isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockStones))))) {
-                                                aWorld.setBlock(iX, iY, iZ, this.mBlock, this.mBlockMeta, 0);
-                                            }
+                                if (OreManager.setExistingOreStoneType(aWorld, iX, iY, iZ, stoneType)) {
+                                    continue;
+                                }
+
+                                if (!this.mAllowToGenerateinVoid && aWorld.isAirBlock(iX, iY, iZ)) continue;
+
+                                if (tTargetedBlock == null) continue;
+
+                                // spotless:off
+                                if (    tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stone) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stained_hardened_clay) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.cobblestone) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.end_stone) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.netherrack) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockGranites) ||
+                                        tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockStones)) {
+                                    aWorld.setBlock(iX, iY, iZ, this.mBlock, this.mBlockMeta, 0);
+                                }
+                                // spotless:on
                             }
                         }
                     }

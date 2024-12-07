@@ -13,21 +13,21 @@ import com.google.common.collect.MultimapBuilder;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SmallOres;
+import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IMaterial;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
-import gregtech.common.blocks.BlockOres2;
-import gregtech.common.blocks.BlockOres2.StoneType;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 
 public class GT5OreSmallHelper {
 
-    public static boolean restrictBiomeSupport = false;
     public static final List<ItemStack> SMALL_ORE_LIST = new ArrayList<>();
     public static final HashMap<String, OreSmallWrapper> SMALL_ORES_BY_NAME = new HashMap<>();
-    public static final HashMap<String, Materials> ORE_DROP_TO_MAT = new HashMap<>();
-    public static final HashMap<Materials, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
+    public static final HashMap<String, IMaterial> ORE_DROP_TO_MAT = new HashMap<>();
+    public static final HashMap<IMaterial, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
     /** {abbr dim name: wrapper} */
     public static final HashMap<String, SmallOreDimensionWrapper> SMALL_ORES_BY_DIM = new HashMap<>();
 
@@ -40,11 +40,13 @@ public class GT5OreSmallHelper {
 
         Multimap<String, OreSmallWrapper> oreSpawning = MultimapBuilder.hashKeys().arrayListValues().build();
 
+        OreInfo<IMaterial> info = OreInfo.getNewInfo();
+
         for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
             if (!worldGen.mWorldGenName.startsWith("ore.small.")) continue;
             if (!(worldGen instanceof WorldgenGTOreSmallPieces smallOreWorldGen)) continue;
 
-            Materials material = smallOreWorldGen.mMaterial;
+            IMaterial material = smallOreWorldGen.mMaterial;
 
             OreSmallWrapper wrapper = new OreSmallWrapper(smallOreDefMap.get(smallOreWorldGen.mWorldGenName));
             SMALL_ORES_BY_NAME.put(worldGen.mWorldGenName, wrapper);
@@ -57,7 +59,11 @@ public class GT5OreSmallHelper {
                 oreSpawning.put(abbrDimName, wrapper);
             }
 
-            List<ItemStack> stackList = BlockOres2.getPotentialDrops(material, true);
+            info.stoneType = null;
+            info.material = material;
+            info.isSmall = true;
+
+            List<ItemStack> stackList = OreManager.getPotentialDrops(info);
 
             ORE_MAT_TO_DROPS.put(material, stackList);
 
@@ -65,10 +71,11 @@ public class GT5OreSmallHelper {
                 ORE_DROP_TO_MAT.put(stack.getUnlocalizedName(), material);
             }
 
-            for (StoneType stoneType : StoneType.STONE_TYPES) {
-                SMALL_ORE_LIST.add(BlockOres2.getStack(stoneType, material, true, true, 1));
-            }
+            info.stoneType = null;
+            SMALL_ORE_LIST.add(OreManager.getStack(info, 1));
         }
+
+        info.release();
 
         for (String abbrDimName : oreSpawning.keySet()) {
             SMALL_ORES_BY_DIM.put(abbrDimName, new SmallOreDimensionWrapper());
@@ -85,7 +92,7 @@ public class GT5OreSmallHelper {
 
         public final SmallOreBuilder builder;
         public final String oreGenName;
-        public final Materials material;
+        public final IMaterial material;
         public final String worldGenHeightRange;
         public final short amountPerChunk;
 
@@ -114,11 +121,17 @@ public class GT5OreSmallHelper {
             }
         }
 
-        public List<ItemStack> getMaterialDrops() {
+        public List<ItemStack> getOreVariants() {
             List<ItemStack> oreVariants = new ArrayList<>();
 
-            for (StoneType stoneType : StoneType.STONE_TYPES) {
-                oreVariants.add(BlockOres2.getStack(stoneType, material, true, false, 1));
+            try(OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+                info.material = material;
+                info.isSmall = true;
+
+                for (StoneType stoneType : StoneType.VISUAL_STONE_TYPES) {
+                    info.stoneType = stoneType;
+                    oreVariants.add(OreManager.getStack(info, 1));
+                }
             }
 
             return oreVariants;

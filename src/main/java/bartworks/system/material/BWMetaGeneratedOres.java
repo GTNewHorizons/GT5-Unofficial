@@ -13,10 +13,9 @@
 
 package bartworks.system.material;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -29,19 +28,22 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-
-import bartworks.util.MathUtils;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
+import gregtech.common.ores.BWOreAdapter;
+import gregtech.common.ores.OreInfo;
 
 public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
 
-    public BWMetaGeneratedOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName) {
+    public final boolean isNatural;
+
+    public BWMetaGeneratedOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, boolean natural) {
         super(p_i45386_1_, tileEntity, blockName);
         this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
             "bw.blocktype." + OrePrefixes.ore,
             OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+        this.isNatural = natural;
     }
 
     @Override
@@ -50,34 +52,6 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
             if (!w.hasItemType(OrePrefixes.ore) || (w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
             GTModHandler.addValuableOre(this, w.getmID(), 1);
         }
-    }
-
-    public static boolean setOreBlock(World aWorld, int aX, int aY, int aZ, int aMetaData, boolean air, Block block,
-        int[] aBlockMeta) {
-        if (!air) {
-            aY = MathUtils.clamp(aY, 1, aWorld.getActualHeight());
-        }
-
-        Block tBlock = aWorld.getBlock(aX, aY, aZ);
-        Block tOreBlock = WerkstoffLoader.BWOres;
-        if (aMetaData < 0 || tBlock == Blocks.air && !air
-            || Block.getIdFromBlock(tBlock) != Block.getIdFromBlock(block)) {
-            return false;
-        }
-        final int aaY = aY;
-        if (Arrays.stream(aBlockMeta)
-            .noneMatch(e -> e == aWorld.getBlockMetadata(aX, aaY, aZ))) {
-            return false;
-        }
-
-        aWorld.setBlock(aX, aY, aZ, tOreBlock, aMetaData, 0);
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof BWTileEntityMetaGeneratedOre metaTE) {
-            metaTE.mMetaData = (short) aMetaData;
-            metaTE.mNatural = true;
-        }
-
-        return true;
     }
 
     @Override
@@ -102,32 +76,25 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
-        for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
-            if (tMaterial != null && tMaterial.hasItemType(OrePrefixes.ore)
-                && (tMaterial.getGenerationFeatures().blacklist & 0x8) == 0) {
-                aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
+        if (!isNatural) {
+            for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
+                if (tMaterial != null && tMaterial.hasItemType(OrePrefixes.ore)
+                    && (tMaterial.getGenerationFeatures().blacklist & 0x8) == 0) {
+                    aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
+                }
             }
         }
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, int x, int y, int z, int meta) {
-        if (EnchantmentHelper.getSilkTouchModifier(player)) {
-            BWTileEntityMetaGeneratedOre.shouldSilkTouch = true;
-            super.harvestBlock(worldIn, player, x, y, z, meta);
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        EntityPlayer harvester = this.harvesters.get();
 
-            if (BWTileEntityMetaGeneratedOre.shouldSilkTouch) {
-                BWTileEntityMetaGeneratedOre.shouldSilkTouch = false;
-            }
-            return;
-        }
+        boolean doFortune = !(harvester instanceof FakePlayer);
+        boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
 
-        if (!(player instanceof FakePlayer)) {
-            BWTileEntityMetaGeneratedOre.shouldFortune = true;
-        }
-        super.harvestBlock(worldIn, player, x, y, z, meta);
-        if (BWTileEntityMetaGeneratedOre.shouldFortune) {
-            BWTileEntityMetaGeneratedOre.shouldFortune = false;
+        try (OreInfo<Werkstoff> info = BWOreAdapter.INSTANCE.getOreInfo(this, metadata);) {
+            return (ArrayList<ItemStack>) BWOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
         }
     }
 }

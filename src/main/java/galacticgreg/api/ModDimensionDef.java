@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IStoneType;
 import net.minecraft.block.Block;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -415,8 +417,8 @@ public class ModDimensionDef {
      *
      * @param pMaterial
      */
-    public void addAsteroidMaterial(GTOreTypes pMaterial) {
-        addAsteroidMaterial(new AsteroidBlockComb(pMaterial));
+    public void addAsteroidMaterial(IStoneType stoneType) {
+        addAsteroidMaterial(new AsteroidBlockComb(stoneType));
     }
 
     /**

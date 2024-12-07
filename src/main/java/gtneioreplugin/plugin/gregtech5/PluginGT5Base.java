@@ -1,25 +1,24 @@
 package gtneioreplugin.plugin.gregtech5;
 
 import net.minecraft.client.resources.I18n;
-
 import codechicken.lib.gui.GuiDraw;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
-import gregtech.common.blocks.BlockOres2;
-import gregtech.common.blocks.BlockOres2.StoneType;
+import gregtech.api.interfaces.IMaterial;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.PluginBase;
 
 public abstract class PluginGT5Base extends PluginBase {
 
-    public static String getGTOreLocalizedName(Materials ore, boolean small) {
+    protected static String getGTOreLocalizedName(IMaterial ore, boolean small) {
         if (ore == Materials.DraconiumAwakened) return "Aw. Draconium Ore";
 
-        String name = GTLanguageManager.getTranslation(getGTOreUnlocalizedName(ore, small));
-        return ore.getLocalizedNameForItem(name);
-    }
+        try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+            info.material = ore;
+            info.isSmall = small;
 
-    protected static String getGTOreUnlocalizedName(Materials ore, boolean small) {
-        return "gt.blockores2." + BlockOres2.getMeta(StoneType.Stone, ore.mMetaItemSubID, small, false) + ".name";
+            return OreManager.getLocalizedName(info);
+        }
     }
 
     static void drawLine(String lineKey, String value, int x, int y) {

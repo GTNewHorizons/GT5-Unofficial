@@ -7,7 +7,11 @@ import galacticgreg.api.ModDimensionDef;
 
 public enum DimensionDef {
 
-    EndAsteroids(new ModDimensionDef(DimNames.ENDASTEROIDS, ChunkProviderEnd.class, Enums.DimensionType.Asteroid)),
+    EndAsteroids(new ModDimensionDef(
+        DimNames.ENDASTEROIDS,
+        ChunkProviderEnd.class,
+        Enums.DimensionType.Asteroid)),
+
     Moon(new ModDimensionDef(
         DimNames.MOON,
         "micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon",
@@ -179,7 +183,13 @@ public enum DimensionDef {
 
     public static class DimNames {
 
+        public static final String OW = "Overworld";
+        public static final String NETHER = "Nether";
+        public static final String THE_END = "TheEnd";
         public static final String ENDASTEROIDS = "EndAsteroids";
+        public static final String TWILIGHT_FOREST = "Twilight Forest";
+        public static final String EVERGLADES = "dimensionDarkWorld";
+        
         public static final String MOON = "Moon";
         public static final String MARS = "Mars";
         public static final String ASTEROIDS = "Asteroids";

@@ -1,5 +1,10 @@
 package gtneioreplugin.util;
 
+import static galacticgreg.api.enums.DimensionDef.DimNames.OW;
+import static galacticgreg.api.enums.DimensionDef.DimNames.NETHER;
+import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
+import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
+import static galacticgreg.api.enums.DimensionDef.DimNames.EVERGLADES;
 import static galacticgreg.api.enums.DimensionDef.DimNames.ANUBIS;
 import static galacticgreg.api.enums.DimensionDef.DimNames.ASTEROIDS;
 import static galacticgreg.api.enums.DimensionDef.DimNames.BARNARDC;
@@ -41,19 +46,19 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.VENUS;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.util.StatCollector;
 
-import gregtech.common.OreMixBuilder;
 import gtneioreplugin.Config;
 
 public class DimensionHelper {
 
     public static final String[] DimName = {
         // Non GC dimensions in progression order instead of alphabetical
-        "Overworld", "Nether", "Twilight", "TheEnd", "EndAsteroid",
+        "Overworld", "Nether", "Twilight", "TheEnd", "EndAsteroid", "dimensionDarkWorld",
         // T1
         "GalacticraftCore_Moon",
         // T2
@@ -95,6 +100,7 @@ public class DimensionHelper {
         "TF", // Twilight
         "ED", // TheEnd because En = Encalus
         "EA", // EndAsteroid
+        "Eg", // Everglades
         // T1
         "Mo", // GalacticraftCore_Moon
         // T2
@@ -194,16 +200,16 @@ public class DimensionHelper {
         return dims;
     }
 
-    public static Map<String, Boolean> getDims(GT5OreLayerHelper.OreLayerWrapper oreLayer) {
-        Map<String, Boolean> enabledDims = new HashMap<>();
-        Map<String, Boolean> origNames = oreLayer.allowedDimWithOrigNames;
+    public static Set<String> getDims(GT5OreLayerHelper.OreLayerWrapper oreLayer) {
+        Set<String> enabledDims = new HashSet<>();
+        Set<String> origNames = oreLayer.allowedDimWithOrigNames;
 
-        for (String dimName : origNames.keySet()) {
+        for (String dimName : origNames) {
             String abbr = getDimAbbreviatedName(dimName);
-            if (!origNames.getOrDefault(dimName, false)) {
+            if (!origNames.contains(dimName)) {
                 continue;
             }
-            enabledDims.put(abbr, true);
+            enabledDims.add(abbr);
         }
         return enabledDims;
     }
@@ -211,11 +217,12 @@ public class DimensionHelper {
     public static String getDimAbbreviatedName(String dimName) {
         String abbreviatedName;
         switch (dimName) {
-            case (OreMixBuilder.OW) -> abbreviatedName = "Ow"; // Overworld
-            case OreMixBuilder.NETHER -> abbreviatedName = "Ne"; // Nether
-            case OreMixBuilder.TWILIGHT_FOREST -> abbreviatedName = "TF"; // Twilight
-            case OreMixBuilder.THE_END -> abbreviatedName = "ED"; // TheEnd because En = Encalus
+            case OW -> abbreviatedName = "Ow"; // Overworld
+            case NETHER -> abbreviatedName = "Ne"; // Nether
+            case TWILIGHT_FOREST -> abbreviatedName = "TF"; // Twilight
+            case THE_END -> abbreviatedName = "ED"; // TheEnd because En = Encalus
             case ENDASTEROIDS -> abbreviatedName = "EA"; // EndAsteroid
+            case EVERGLADES -> abbreviatedName = "Eg";
             // T1
             case MOON -> abbreviatedName = "Mo"; // GalacticraftCore_Moon
             // T2
@@ -273,10 +280,10 @@ public class DimensionHelper {
     public static String getFullName(String dimName) {
 
         return switch (dimName) {
-            case "Ow" -> (OreMixBuilder.OW); // Overworld
-            case "Ne" -> OreMixBuilder.NETHER; // Nether
-            case "TF" -> OreMixBuilder.TWILIGHT_FOREST; // Twilight
-            case "ED" -> OreMixBuilder.THE_END; // TheEnd because En = Encalus
+            case "Ow" -> OW; // Overworld
+            case "Ne" -> NETHER; // Nether
+            case "TF" -> TWILIGHT_FOREST; // Twilight
+            case "ED" -> THE_END; // TheEnd because En = Encalus
             case "EA" -> ENDASTEROIDS; // EndAsteroid
             // T1
             case "Mo" -> MOON; // GalacticraftCore_Moon

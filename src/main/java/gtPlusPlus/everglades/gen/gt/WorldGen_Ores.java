@@ -246,30 +246,5 @@ public class WorldGen_Ores {
         MaterialsElements.STANDALONE.RUNITE,
         MaterialsElements.STANDALONE.RUNITE,
         MaterialsElements.STANDALONE.RUNITE);
-    public static Hashtable<Long, WorldGen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
 
-    static long ID = 0;
-
-    public static void generateValidOreVeins() {
-        validOreveins.put(ID++, BaseVein);
-        validOreveins.put(ID++, Vein1);
-        validOreveins.put(ID++, Vein2);
-        validOreveins.put(ID++, Vein3);
-        validOreveins.put(ID++, Vein4);
-        validOreveins.put(ID++, Vein5);
-        validOreveins.put(ID++, Vein6);
-        validOreveins.put(ID++, Vein7);
-        validOreveins.put(ID++, Vein8);
-        validOreveins.put(ID++, Vein9);
-        validOreveins.put(ID++, Vein10);
-        validOreveins.put(ID++, Vein11);
-        validOreveins.put(ID++, Vein12);
-        validOreveins.put(ID++, Vein13);
-        validOreveins.put(ID++, Vein14);
-        validOreveins.put(ID++, Vein15);
-        validOreveins.put(ID++, Vein16);
-        validOreveins.put(ID++, Vein17);
-        validOreveins.put(ID++, Vein18);
-        validOreveins.put(ID++, Vein19);
-    }
 }

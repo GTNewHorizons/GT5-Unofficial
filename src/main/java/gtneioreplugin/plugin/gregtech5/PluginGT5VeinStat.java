@@ -10,9 +10,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.Materials;
-import gregtech.common.blocks.BlockOres2;
-import gregtech.common.blocks.ItemOres2;
+import gregtech.api.interfaces.IMaterial;
+import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
 import gtneioreplugin.util.GT5OreLayerHelper;
@@ -34,14 +33,15 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        if (stack.getItem() instanceof ItemOres2) {
-            loadMatchingVeins(BlockOres2.getMaterial(stack.getItemDamage()));
+        IMaterial mat = OreManager.getMaterial(stack);
+        if (mat != null) {
+            loadMatchingVeins(mat);
         } else {
             super.loadCraftingRecipes(stack);
         }
     }
 
-    private void loadMatchingVeins(Materials ore) {
+    private void loadMatchingVeins(IMaterial ore) {
         for (OreLayerWrapper oreVein : getAllVeins()) {
             if (oreVein.containsOre(ore)) {
                 addVeinWithLayers(oreVein);
@@ -135,14 +135,8 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
-        String[] dims = (GT5OreLayerHelper.bufferedDims.get(oreLayer)
-            .keySet()
-            .toArray(new String[0]));
-        Arrays.sort(
-            dims,
-            Comparator.comparingInt(
-                s -> Arrays.asList(DimensionHelper.DimNameDisplayed)
-                    .indexOf(s)));
+        String[] dims = GT5OreLayerHelper.bufferedDims.get(oreLayer).toArray(new String[0]);
+        Arrays.sort(dims, Comparator.comparingInt(s -> Arrays.asList(DimensionHelper.DimNameDisplayed).indexOf(s)));
         return dims;
     }
 

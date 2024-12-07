@@ -4,28 +4,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreMixes;
+import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.common.OreMixBuilder;
-import gregtech.common.blocks.BlockOres2;
-import gregtech.common.blocks.BlockOres2.StoneType;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 
 public class GT5OreLayerHelper {
 
-    private static final int DIMENSION_COUNT = 33;
-    public static final Integer[] weightPerWorld = new Integer[DIMENSION_COUNT];
-    public static final Integer[] DimIDs = new Integer[DIMENSION_COUNT];
     public static final HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<>();
-    public static final HashMap<OreLayerWrapper, Map<String, Boolean>> bufferedDims = new HashMap<>();
+    public static final HashMap<OreLayerWrapper, Set<String>> bufferedDims = new HashMap<>();
     public static final HashMap<String, NormalOreDimensionWrapper> dimToOreWrapper = new HashMap<>();
 
     public static void init() {
-        Arrays.fill(weightPerWorld, 0);
-        Arrays.fill(DimIDs, 0);
         for (OreMixes mix : OreMixes.values()) {
             mapOreLayerWrapper.put(mix.oreMixBuilder.oreMixName, new OreLayerWrapper(mix.oreMixBuilder));
         }
@@ -39,7 +37,7 @@ public class GT5OreLayerHelper {
         // Get dims as "Ow,Ne,Ma" etc.
         bufferedDims.forEach((veinInfo, dims) -> {
 
-            for (String dim : dims.keySet()) {
+            for (String dim : dims) {
                 NormalOreDimensionWrapper dimensionOres = dimToOreWrapper
                     .getOrDefault(dim, new NormalOreDimensionWrapper());
                 dimensionOres.internalDimOreList.add(veinInfo);
@@ -58,14 +56,14 @@ public class GT5OreLayerHelper {
     public static class OreLayerWrapper {
 
         public final String veinName, worldGenHeightRange, localizedName;
-        public final Materials[] ores = new Materials[4];
+        public final IMaterial[] ores = new IMaterial[4];
         public final short randomWeight, size, density;
-        public final Map<String, Boolean> allowedDimWithOrigNames;
+        public final Set<String> allowedDimWithOrigNames;
 
-        public final Materials mPrimaryVeinMaterial;
-        public final Materials mSecondaryMaterial;
-        public final Materials mBetweenMaterial;
-        public final Materials mSporadicMaterial;
+        public final IMaterial mPrimaryVeinMaterial;
+        public final IMaterial mSecondaryMaterial;
+        public final IMaterial mBetweenMaterial;
+        public final IMaterial mSporadicMaterial;
 
         public OreLayerWrapper(OreMixBuilder mix) {
             this.veinName = mix.oreMixName;
@@ -90,17 +88,22 @@ public class GT5OreLayerHelper {
 
         public List<ItemStack> getVeinLayerOre(int veinLayer) {
             List<ItemStack> stackList = new ArrayList<>();
-            for (StoneType stoneType : StoneType.STONE_TYPES) {
+            for (StoneType stoneType : StoneType.VISUAL_STONE_TYPES) {
                 stackList.add(getLayerOre(veinLayer, stoneType));
             }
             return stackList;
         }
 
-        public ItemStack getLayerOre(int veinLayer, StoneType stoneType) {
-            return BlockOres2.getStack(stoneType, ores[veinLayer], false, false, 1);
+        public ItemStack getLayerOre(int veinLayer, IStoneType stoneType) {
+            try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+                info.material = ores[veinLayer];
+                info.stoneType = stoneType;
+
+                return Objects.requireNonNull(OreManager.getStack(info, 1), "getLayerOre: " + veinLayer + ", " + stoneType + ", " + Arrays.toString(ores));
+            }
         }
 
-        public boolean containsOre(Materials material) {
+        public boolean containsOre(IMaterial material) {
             return ores[OreVeinLayer.VEIN_PRIMARY] == material
                 || ores[OreVeinLayer.VEIN_SECONDARY] == material
                 || ores[OreVeinLayer.VEIN_BETWEEN] == material

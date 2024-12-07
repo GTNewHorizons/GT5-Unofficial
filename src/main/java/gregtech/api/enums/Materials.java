@@ -29,6 +29,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
@@ -47,7 +48,7 @@ import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.materials.MaterialsInit1;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
-public class Materials implements IColorModulationContainer, ISubTagContainer {
+public class Materials implements IColorModulationContainer, ISubTagContainer, IMaterial {
 
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     private static final Map<String, Materials> MATERIALS_MAP = new LinkedHashMap<>();
@@ -3051,6 +3052,21 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     @Override
     public String toString() {
         return this.mName;
+    }
+
+    @Override
+    public String getLocalizedName() {
+        return mLocalizedName;
+    }
+
+    @Override
+    public int getId() {
+        return mMetaItemSubID;
+    }
+
+    @Override
+    public String getInternalName() {
+        return mName;
     }
 
     public String getDefaultLocalizedNameForItem(String aFormat) {

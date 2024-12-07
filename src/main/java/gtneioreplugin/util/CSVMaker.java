@@ -7,10 +7,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import gtneioreplugin.Config;
 import gtneioreplugin.GTNEIOrePlugin;
-import gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat;
 import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 
 // todo: yeet any opencsv usage.
@@ -29,7 +29,7 @@ public class CSVMaker implements Runnable {
                 GT5OreSmallHelper.OreSmallWrapper oreLayer = pair.getValue();
 
                 oremix.setOreName(oreLayer.oreGenName);
-                oremix.setOreMeta(oreLayer.material.mMetaItemSubID);
+                oremix.setOreMaterial(oreLayer.material.getInternalName());
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setAmount(oreLayer.amountPerChunk);
                 oremix.setDims(oreLayer.enabledDims);
@@ -73,24 +73,24 @@ public class CSVMaker implements Runnable {
                 Oremix oremix = new Oremix();
 
                 Map.Entry<String, OreLayerWrapper> pair = it.next();
-                Map<String, Boolean> Dims = GT5OreLayerHelper.bufferedDims.get(pair.getValue());
+                Set<String> Dims = GT5OreLayerHelper.bufferedDims.get(pair.getValue());
                 OreLayerWrapper oreLayer = pair.getValue();
                 oremix.setOreMixName(oreLayer.veinName);
-                oremix.setPrimary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.ores[0], false));
-                oremix.setSecondary(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.ores[1], false));
-                oremix.setInbetween(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.ores[2], false));
-                oremix.setSporadic(PluginGT5VeinStat.getGTOreLocalizedName(oreLayer.ores[3], false));
+                oremix.setPrimary(oreLayer.ores[0].getInternalName());
+                oremix.setSecondary(oreLayer.ores[1].getInternalName());
+                oremix.setInbetween(oreLayer.ores[2].getInternalName());
+                oremix.setSporadic(oreLayer.ores[3].getInternalName());
                 oremix.setSize(oreLayer.size);
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setDensity(oreLayer.density);
                 oremix.setWeight(oreLayer.randomWeight);
                 oremix.setOreMixIDs(
-                    Integer.toString(oreLayer.ores[0].mMetaItemSubID) + "|"
-                        + Integer.toString(oreLayer.ores[1].mMetaItemSubID)
+                    oreLayer.ores[0].getInternalName() + "|"
+                        + oreLayer.ores[1].getInternalName()
                         + "|"
-                        + Integer.toString(oreLayer.ores[2].mMetaItemSubID)
+                        + oreLayer.ores[2].getInternalName()
                         + "|"
-                        + Integer.toString(oreLayer.ores[3].mMetaItemSubID));
+                        + oreLayer.ores[3].getInternalName());
                 oremix.setDims(Dims);
                 OreVeins.add(oremix);
 
