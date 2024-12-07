@@ -69,6 +69,27 @@ public class Pulverizer implements Runnable {
                 .addTo(maceratorRecipes);
         }
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.quartz_block, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 4))
+            .duration(19 * SECONDS + 12 * TICKS)
+            .eut(4)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.quartz_block, 1, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 4))
+            .duration(19 * SECONDS + 12 * TICKS)
+            .eut(4)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.quartz_block, 1, 2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 4))
+            .duration(19 * SECONDS + 12 * TICKS)
+            .eut(4)
+            .addTo(maceratorRecipes);
+
         // marbe dust( stone dust
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Marble, 1))
