@@ -2701,7 +2701,11 @@ public enum GTBeeDefinition implements IBeeDefinition {
             case GREGTECH -> "gregtech.effect" + name;
             default -> "forestry.effect" + name;
         };
-        return (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
+        IAlleleBeeEffect allele = (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
+        if (allele == null) {
+            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee effect: " + s);
+        }
+        return allele;
     }
 
     static IAlleleFlowers getFlowers(byte modid, String name) {
@@ -2712,7 +2716,11 @@ public enum GTBeeDefinition implements IBeeDefinition {
             case GREGTECH -> "gregtech.flower" + name;
             default -> "forestry.flowers" + name;
         };
-        return (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
+        IAlleleFlowers allele = (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
+        if (allele == null) {
+            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee flower: " + s);
+        }
+        return allele;
     }
 
     private static IAlleleBeeSpecies getSpecies(byte modid, String name) {
@@ -2725,6 +2733,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         };
         IAlleleBeeSpecies ret = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
         if (ret == null) {
+            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee species: " + s);
             ret = NAQUADRIA.species;
         }
 
