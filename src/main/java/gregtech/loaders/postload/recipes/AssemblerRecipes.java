@@ -2571,7 +2571,8 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1),
+                GTUtility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Casing_StableTitanium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
