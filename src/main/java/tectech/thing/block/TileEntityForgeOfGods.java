@@ -25,6 +25,7 @@ public class TileEntityForgeOfGods extends TileEntity {
     private float rotationSpeed = 10;
     private int ringCount = 1;
     private float rotAngle = 0, rotAxisX = 1, rotAxisY = 0, rotAxisZ = 0;
+    private AxisAlignedBB renderBoundingBox;
 
     private ForgeOfGodsStarColor starColor = ForgeOfGodsStarColor.DEFAULT;
 
@@ -51,15 +52,33 @@ public class TileEntityForgeOfGods extends TileEntity {
     private static final String STAR_COLOR_TAG = NBT_TAG + "STAR_COLOR";
 
     public static final float BACK_PLATE_DISTANCE = -121.5f, BACK_PLATE_RADIUS = 13f;
+    private static final double RING_RADIUS = 63;
+    private static final double BEAM_LENGTH = 59;
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
+        if (renderBoundingBox == null) {
+            double x = this.xCoord;
+            double y = this.yCoord;
+            double z = this.zCoord;
+
+            // This could possibly be made smaller by figuring out the beam direction,
+            // but since this is not always known (set dynamically by the MTE), this
+            // currently just bounds as if the beam is in all 4 directions.
+            renderBoundingBox = AxisAlignedBB.getBoundingBox(
+                x - RING_RADIUS - BEAM_LENGTH,
+                y - RING_RADIUS - BEAM_LENGTH,
+                z - RING_RADIUS - BEAM_LENGTH,
+                x + RING_RADIUS + BEAM_LENGTH + 1,
+                y + RING_RADIUS + BEAM_LENGTH + 1,
+                z + RING_RADIUS + BEAM_LENGTH + 1);
+        }
+        return renderBoundingBox;
     }
 
     @Override
     public double getMaxRenderDistanceSquared() {
-        return 51200;
+        return Double.MAX_VALUE;
     }
 
     public void setStarRadius(float size) {
@@ -200,7 +219,7 @@ public class TileEntityForgeOfGods extends TileEntity {
                 cycleStep = 0;
             } else {
                 // update interp values to the next set, reset cycleStep then interpolate
-                cycleStep = -255;
+                cycleStep -= 255;
                 cycleStarColors();
                 interpolateColors();
             }

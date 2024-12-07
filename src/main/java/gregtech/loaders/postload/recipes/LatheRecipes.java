@@ -14,6 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class LatheRecipes implements Runnable {
 
@@ -35,6 +36,15 @@ public class LatheRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(8)
+            .addTo(latheRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.gemFlawless, 1))
+            .itemOutputs(
+                WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.stickLong, 1),
+                WerkstoffMaterialPool.LanthanumHexaboride.get(OrePrefixes.dust, 1))
+            .duration((100 * SECONDS))
+            .eut(16)
             .addTo(latheRecipes);
     }
 }

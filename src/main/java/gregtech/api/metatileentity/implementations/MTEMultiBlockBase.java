@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.LongConsumer;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -1008,6 +1009,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * Gets the pollution produced per second by this multiblock, default to 0. Override this with its actual value in
      * the code of the multiblock.
+     *
+     * This returns the unmodified raw pollution value, not the one after muffler discounts.
      */
     public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
@@ -1319,6 +1322,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 continue;
             }
             if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
+
+            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
+                if (!tMEHatch.canAcceptFluid()) continue;
+            }
+
             int tAmount = tHatch.fill(copiedFluidStack, false);
             if (tAmount >= copiedFluidStack.amount) {
                 boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
@@ -2507,12 +2515,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         };
 
         int lines = 0;
-        int MAX_LINES = 5;
+        int MAX_LINES = 10;
 
         if (mOutputItems != null) {
             HashMap<String, Long> nameToAmount = new HashMap<>();
             for (var item : mOutputItems) {
-                if (item == null) continue;
+                if (item == null || item.stackSize <= 0) continue;
                 nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
             }
             for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
@@ -2535,7 +2543,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (mOutputFluids != null) {
             HashMap<String, Long> nameToAmount = new HashMap<>();
             for (var fluid : mOutputFluids) {
-                if (fluid == null) continue;
+                if (fluid == null || fluid.amount <= 0) continue;
                 nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
             }
             for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
@@ -2693,7 +2701,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             || (mOutputItems != null && mOutputItems.length > 0)))
                 .widget(
                     new FakeSyncWidget.ListSyncer<>(
-                        () -> mOutputFluids != null ? Arrays.asList(mOutputFluids) : Collections.emptyList(),
+                        () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
+                            .map(fluidStack -> {
+                                if (fluidStack == null) return null;
+                                return new FluidStack(fluidStack, fluidStack.amount) {
+
+                                    @Override
+                                    public boolean isFluidEqual(FluidStack other) {
+                                        return super.isFluidEqual(other) && amount == other.amount;
+                                    }
+                                };
+                            })
+                            .collect(Collectors.toList()) : Collections.emptyList(),
                         val -> mOutputFluids = val.toArray(new FluidStack[0]),
                         NetworkUtils::writeFluidStack,
                         NetworkUtils::readFluidStack))

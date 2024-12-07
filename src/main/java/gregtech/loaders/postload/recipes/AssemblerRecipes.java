@@ -1472,29 +1472,41 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
+        final ItemStack certusQuartzSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 0);
+        NBTTagCompound certusQuartzTag = new NBTTagCompound();
+        certusQuartzTag.setInteger("progress", 0);
+        certusQuartzSeed.setTagCompound(certusQuartzTag);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 1),
                 new ItemStack(Blocks.sand, 1, 32767))
-            .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 0))
+            .itemOutputs(certusQuartzSeed)
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(8)
             .addTo(assemblerRecipes);
 
+        final ItemStack netherQuartzSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 600);
+        NBTTagCompound netherQuartzTag = new NBTTagCompound();
+        netherQuartzTag.setInteger("progress", 600);
+        netherQuartzSeed.setTagCompound(netherQuartzTag);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1),
                 new ItemStack(Blocks.sand, 1, 32767))
-            .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 600))
+            .itemOutputs(netherQuartzSeed)
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(8)
             .addTo(assemblerRecipes);
 
+        final ItemStack fluixSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 1200);
+        NBTTagCompound fluixTag = new NBTTagCompound();
+        fluixTag.setInteger("progress", 1200);
+        fluixSeed.setTagCompound(fluixTag);
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Fluix, 1),
                 new ItemStack(Blocks.sand, 1, 32767))
-            .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 1200))
+            .itemOutputs(fluixSeed)
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(8)
             .addTo(assemblerRecipes);
