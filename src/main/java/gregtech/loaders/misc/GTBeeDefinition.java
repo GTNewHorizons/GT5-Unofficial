@@ -2704,6 +2704,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         IAlleleBeeEffect allele = (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
         if (allele == null) {
             GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee effect: " + s);
+            allele = GTAlleleEffect.FORESTRY_BASE_EFFECT;
         }
         return allele;
     }
