@@ -96,7 +96,7 @@ public class ToolKnife extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.KNIFE : Textures.ItemIcons.HANDLE_SWORD;
+        return aIsToolHead ? Textures.ItemIcons.KNIFE : null;
     }
 
     @Override
