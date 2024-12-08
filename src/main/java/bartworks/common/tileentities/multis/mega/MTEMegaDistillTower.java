@@ -56,6 +56,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 
 public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower> implements ISurvivalConstructable {
 
@@ -257,7 +258,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery")
+        tt.addMachineType("Distillery, MDT")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo("Fluids are only put out at the correct height")
             .addInfo("The correct height equals the slot number in the NEI recipe")
@@ -389,6 +390,32 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setMaxParallel(Configuration.Multiblocks.megaMachinesMax);
+    }
+
+    @Override
+    public boolean canDumpFluidToME() {
+
+        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
+        for (List<MTEHatchOutput> tLayerOutputHatches : this.mOutputHatchesByLayer) {
+
+            boolean foundMEHatch = false;
+
+            for (IFluidStore tHatch : tLayerOutputHatches) {
+                if (tHatch instanceof MTEHatchOutputME tMEHatch) {
+                    if (tMEHatch.canAcceptFluid()) {
+                        foundMEHatch = true;
+                        break;
+                    }
+                }
+            }
+
+            // Exit if we didn't find a valid hatch on this layer.
+            if (!foundMEHatch) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
