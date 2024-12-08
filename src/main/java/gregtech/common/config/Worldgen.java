@@ -19,17 +19,17 @@ public class Worldgen {
     public static class EndAsteroids {
 
         @Config.Comment("The maximum size for the end asteroids.")
-        @Config.DefaultInt(200)
+        @Config.DefaultInt(30)
         @Config.RequiresMcRestart
         public int EndAsteroidMaxSize;
 
         @Config.Comment("The minimum size for the end asteroids.")
-        @Config.DefaultInt(200)
+        @Config.DefaultInt(15)
         @Config.RequiresMcRestart
         public int EndAsteroidMinSize;
 
         @Config.Comment("The probability weight to generate end asteroids.")
-        @Config.DefaultInt(300)
+        @Config.DefaultInt(25)
         @Config.RequiresMcRestart
         public int EndAsteroidProbability;
 

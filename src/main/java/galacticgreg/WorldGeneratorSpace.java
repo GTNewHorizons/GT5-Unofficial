@@ -1,5 +1,9 @@
 package galacticgreg;
 
+import static gregtech.api.enums.GTValues.profileWorldGen;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
@@ -24,6 +28,8 @@ import galacticgreg.api.StructureInformation;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.objects.XSTR;
@@ -39,9 +45,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
     private long mProfilingEnd;
 
     private static boolean generateEndAsteroids = true;
-    private static int mEndAsteroidProbability = 300;
-    private static int mEndAsteroidMinSize = 50;
-    private static int mEndAsteroidMaxSize = 200;
+    private static int mEndAsteroidProbability;
+    private static int mEndAsteroidMinSize;
+    private static int mEndAsteroidMaxSize;
 
     public WorldGeneratorSpace() {
         GameRegistry.registerWorldGenerator(this, Integer.MAX_VALUE);
@@ -91,7 +97,13 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                     pWorld.getSeed() + cX * cX * 91777L + cZ * cZ * 137413L + cX * cZ * 1853L + cX * 3L + cZ * 17L);
 
                 if (mEndAsteroidProbability <= 1 || random.nextInt(mEndAsteroidProbability) == 0) {
+                    long pre = System.nanoTime();
                     generateEndAsteroid(tDimDef, pWorld, random, cX, cZ);
+                    long post = System.nanoTime();
+
+                    if (GTValues.profileWorldGen) {
+                        GTMod.GT_FML_LOGGER.info("Generated asteroid in " + (post - pre)/1e6 + "ms");
+                    }
                 }
             } else if (tDimDef.getRandomAsteroidMaterial() == null) {
                 GalacticGreg.Logger.error(
@@ -125,7 +137,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         if (dimAsteroidConfig.Probability <= 1 || pRandom.nextInt(dimAsteroidConfig.Probability) == 0) {
             GalacticGreg.Logger.trace("Generating asteroid NOW");
             // ---------------------------
-            if (GalacticGreg.GalacticConfig.ProfileOreGen) mProfilingStart = System.currentTimeMillis();
+            if (GalacticGreg.GalacticConfig.ProfileOreGen || profileWorldGen) mProfilingStart = System.currentTimeMillis();
             // -----------------------------
 
             AsteroidBlockComb asteroidStone = pDimensionDef.getRandomAsteroidMaterial();
@@ -355,12 +367,12 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             }
             // ---------------------------
             // OreGen profiler stuff
-            if (GalacticGreg.GalacticConfig.ProfileOreGen) {
+            if (GalacticGreg.GalacticConfig.ProfileOreGen || profileWorldGen) {
                 try {
                     mProfilingEnd = System.currentTimeMillis();
                     long tTotalTime = mProfilingEnd - mProfilingStart;
                     GalacticGreg.Profiler.AddTimeToList(pDimensionDef, tTotalTime);
-                    GalacticGreg.Logger.debug(
+                    GalacticGreg.Logger.info(
                         "Done with Asteroid-Worldgen in DimensionType %s. Generation took %d ms",
                         pDimensionDef.getDimensionName(),
                         tTotalTime);
@@ -436,11 +448,13 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         return false;
     }
 
-    private void generateEndAsteroid(ModDimensionDef tDimDef, World world, Random random, int chunkX, int chunkZ) {
+    private void generateEndAsteroid(ModDimensionDef tDimDef, World world, Random random2, int chunkX, int chunkZ) {
+        XSTR random = new XSTR(random2.nextLong());
+
         int tX = chunkX * 16 + random.nextInt(16);
-        int tY = 50 + random.nextInt(200 - 50);
+        int tY = 50 + random.nextInt(100 - 50);
         int tZ = chunkZ * 16 + random.nextInt(16);
-        int asteroidSize = mEndAsteroidMinSize + random.nextInt(mEndAsteroidMaxSize - mEndAsteroidMinSize + 1);
+        int asteroidSize = (mEndAsteroidMinSize + random.nextInt(mEndAsteroidMaxSize - mEndAsteroidMinSize + 1)) / 2;
 
         WorldgenGTOreLayer selectedOreLayer = WorldgenQuery.veins()
             .inDimension(tDimDef)
@@ -450,68 +464,132 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         if (selectedOreLayer == null) return;
 
         if (world.isAirBlock(tX, tY, tZ)) {
-            float randomRadian = random.nextFloat() * (float) Math.PI;
-            double xBase = tX + 8 + MathHelper.sin(randomRadian) * asteroidSize / 8.0F;
-            double xFactor = tX + 8 - MathHelper.sin(randomRadian) * asteroidSize / 8.0F;
-            double zBase = tZ + 8 + MathHelper.cos(randomRadian) * asteroidSize / 8.0F;
-            double zFactor = tZ + 8 - MathHelper.cos(randomRadian) * asteroidSize / 8.0F;
-            double yBase = tY + random.nextInt(3) - 2;
-            double yFactor = tY + random.nextInt(3) - 2;
 
-            for (int i = 0; i <= asteroidSize; i++) {
-                double randomDistance = random.nextDouble() * asteroidSize / 16.0D;
+            List<Ellipsoid> positive = new ArrayList<>();
+            List<Ellipsoid> negative = new ArrayList<>();
 
-                double halfLength = ((MathHelper.sin(i * (float) Math.PI / asteroidSize) + 1.0F) * randomDistance + 1.0D) / 2.0;
-                double halfHeight = ((MathHelper.sin(i * (float) Math.PI / asteroidSize) + 1.0F) * randomDistance + 1.0D) / 2.0;
+            {
+                int radius = random.nextInt(asteroidSize);
+                positive.add(new Ellipsoid(0, 0, 0, radius));
 
-                double xCenter = xBase + (xFactor - xBase) * i / asteroidSize;
-                double yCenter = yBase + (yFactor - yBase) * i / asteroidSize;
-                double zCenter = zBase + (zFactor - zBase) * i / asteroidSize;
+                int k = random.nextInt(2);
+                for (int i = 0; i < k; i++) {
+                    negative.add(new Ellipsoid(
+                        radius * (random.nextFloat() * 2 - 1),
+                        radius * (random.nextFloat() * 2 - 1),
+                        radius * (random.nextFloat() * 2 - 1),
+                        radius * (random.nextFloat() * 0.25f + 0.6f)));
+                }
 
-                int tMinX = MathHelper.floor_double(xCenter - halfLength);
-                int tMinY = MathHelper.floor_double(yCenter - halfHeight);
-                int tMinZ = MathHelper.floor_double(zCenter - halfLength);
-                int tMaxX = MathHelper.floor_double(xCenter + halfLength);
-                int tMaxY = MathHelper.floor_double(yCenter + halfHeight);
-                int tMaxZ = MathHelper.floor_double(zCenter + halfLength);
+                k = random.nextInt(2);
+                for (int i = 0; i < k; i++) {
+                    positive.add(new Ellipsoid(
+                        radius * (random.nextFloat() * 2 - 1),
+                        radius * (random.nextFloat() * 2 - 1),
+                        radius * (random.nextFloat() * 2 - 1),
+                        radius * (random.nextFloat() * 0.25f + 0.6f)));
+                }
+            }
 
-                for (int eX = tMinX; eX <= tMaxX; eX++) {
+            for (int x = -asteroidSize * 2; x < asteroidSize * 2; x++) {
+                for (int z = -asteroidSize * 2; z < asteroidSize * 2; z++) {
+                    y: for (int y = -asteroidSize * 2; y < asteroidSize * 2; y++) {
 
-                    double xChance = (eX + 0.5D - xCenter) / halfLength;
-                    if (xChance * xChance < 1.0D) {
-                        for (int eY = tMinY; eY <= tMaxY; eY++) {
+                        if (y + tY < 0) continue;
+                        if (y + tY >= 255) continue;
 
-                            double yChance = (eY + 0.5D - yCenter) / halfHeight;
-                            if (xChance * xChance + yChance * yChance < 1.0D) {
-                                for (int eZ = tMinZ; eZ <= tMaxZ; eZ++) {
-
-                                    double zChance = (eZ + 0.5D - zCenter) / halfLength;
-                                    if (xChance * xChance + yChance * yChance + zChance * zChance >= 1.0D) {
-                                        continue;
-                                    }
-
-                                    if (!world.isAirBlock(tX, tY, tZ)) {
-                                        continue;
-                                    }
-
-                                    int ranOre = random.nextInt(50);
-                                    if (ranOre < 3) {
-                                        OreManager.setOreForWorldGen(world, eX, eY, eZ, StoneType.Endstone, selectedOreLayer.mPrimary, false);
-                                    } else if (ranOre < 6) {
-                                        OreManager.setOreForWorldGen(world, eX, eY, eZ, StoneType.Endstone, selectedOreLayer.mSecondary, false);
-                                    } else if (ranOre < 8) {
-                                        OreManager.setOreForWorldGen(world, eX, eY, eZ, StoneType.Endstone, selectedOreLayer.mBetween, false);
-                                    } else if (ranOre < 10) {
-                                        OreManager.setOreForWorldGen(world, eX, eY, eZ, StoneType.Endstone, selectedOreLayer.mSporadic, false);
-                                    } else {
-                                        world.setBlock(eX, eY, eZ, Blocks.end_stone, 0, 0);
-                                    }
-                                }
+                        for (Ellipsoid e : negative) {
+                            if (e.contains(random, x, y, z)) {
+                                continue y;
                             }
+                        }
+
+                        boolean place = false;
+
+                        for (Ellipsoid e : positive) {
+                            if (e.contains(random, x, y, z)) {
+                                place = true;
+                                break;
+                            }
+                        }
+
+                        if (!place) continue;
+
+                        if (!world.isAirBlock(tX + x, tY + y, tZ + z)) {
+                            continue;
+                        }
+
+                        int ranOre = random.nextInt(50);
+                        if (ranOre < 3) {
+                            OreManager.setOreForWorldGen(
+                                world,
+                                tX + x,
+                                tY + y,
+                                tZ + z,
+                                StoneType.Endstone,
+                                selectedOreLayer.mPrimary,
+                                false);
+                        } else if (ranOre < 6) {
+                            OreManager.setOreForWorldGen(
+                                world,
+                                tX + x,
+                                tY + y,
+                                tZ + z,
+                                StoneType.Endstone,
+                                selectedOreLayer.mSecondary,
+                                false);
+                        } else if (ranOre < 8) {
+                            OreManager.setOreForWorldGen(
+                                world,
+                                tX + x,
+                                tY + y,
+                                tZ + z,
+                                StoneType.Endstone,
+                                selectedOreLayer.mBetween,
+                                false);
+                        } else if (ranOre < 10) {
+                            OreManager.setOreForWorldGen(
+                                world,
+                                tX + x,
+                                tY + y,
+                                tZ + z,
+                                StoneType.Endstone,
+                                selectedOreLayer.mSporadic,
+                                false);
+                        } else {
+                            world.setBlock(tX + x, tY + y, tZ + z, Blocks.end_stone, 0, 3);
                         }
                     }
                 }
             }
+        }
+    }
+
+    private static class Ellipsoid {
+        public float x, y, z, r;
+
+        public Ellipsoid(float x, float y, float z, float size) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            r = 1 / size;
+        }
+
+        public boolean contains(Random rng, float dx, float dy, float dz) {
+            float distX = (dx - x) * r;
+            float distY = (dy - y) * r;
+            float distZ = (dz - z) * r;
+
+            float dist = distX * distX + distY * distY + distZ * distZ;
+
+            if (dist > 1) return false;
+
+            if (dist > 0.8) {
+                float f = rng.nextFloat();
+                dist += f * 0.4;
+            }
+
+            return dist < 1;
         }
     }
 }
