@@ -27,7 +27,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .getDisplayName();
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Pump")
+        tt.addMachineType("Pump, FDP")
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
