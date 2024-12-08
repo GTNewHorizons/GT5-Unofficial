@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.GTUtility.min;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
@@ -40,6 +41,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 
@@ -885,7 +887,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
                     IDualInputInventory slot = it.next();
-                    processingLogic.setInputItems(slot.getItemInputs());
+                    // Reverse order of input items for consistent behavior with standard input buses.
+                    ItemStack[] inputItems = slot.getItemInputs();
+                    ArrayUtils.reverse(inputItems);
+                    processingLogic.setInputItems(inputItems);
                     processingLogic.setInputFluids(slot.getFluidInputs());
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
@@ -2011,6 +2016,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
                 }
             }
+
+            int outputItemLength = tag.getInteger("outputItemLength");
+            int outputFluidLength = tag.getInteger("outputFluidLength");
+            int totalOutputs = outputItemLength + outputFluidLength;
+            if (totalOutputs > 0) {
+                currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
+                for (int i = 0; i < min(3, outputItemLength); i++) {
+                    currentTip.add(
+                        "  " + tag.getString("outputItem" + i)
+                            + " x "
+                            + formatNumbers(tag.getInteger("outputItemCount" + i)));
+                }
+                for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
+                    currentTip.add(
+                        "  " + tag.getString("outputFluid" + i)
+                            + " x "
+                            + formatNumbers(tag.getInteger("outputFluidCount" + i))
+                            + "L");
+                }
+                if (totalOutputs > 3) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.producing.andmore",
+                            formatNumbers((totalOutputs - 3))));
+                }
+            }
         }
         currentTip
             .add(GTWaila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
@@ -2037,6 +2068,21 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         tag.setInteger("progress", mProgresstime);
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+
+        if (mOutputItems != null) {
+            tag.setInteger("outputItemLength", mOutputItems.length);
+            for (int i = 0; i < mOutputItems.length; i++) {
+                tag.setString("outputItem" + i, mOutputItems[i].getDisplayName());
+                tag.setInteger("outputItemCount" + i, mOutputItems[i].stackSize);
+            }
+        }
+        if (mOutputFluids != null) {
+            tag.setInteger("outputFluidLength", mOutputFluids.length);
+            for (int i = 0; i < mOutputFluids.length; i++) {
+                tag.setString("outputFluid" + i, mOutputFluids[i].getLocalizedName());
+                tag.setInteger("outputFluidCount" + i, mOutputFluids[i].amount);
+            }
+        }
 
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
