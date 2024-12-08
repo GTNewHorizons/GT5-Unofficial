@@ -33,7 +33,7 @@ public class IGRecipeMaps {
             .neiRecipeComparator(
                     Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mSpecialValue)
                             .thenComparing(GTRecipe::compareTo))
-            .neiTransferRect(88, 8, 18, 72).neiTransferRect(124, 8, 18, 72).useCustomFilterForNEI()
+            .disableOptimize().neiTransferRect(88, 8, 18, 72).neiTransferRect(124, 8, 18, 72).useCustomFilterForNEI()
             .frontend(SpaceAssemblerFrontend::new).build();
     /** Recipe map for recipes in the Space Mining Module */
     public static final RecipeMap<RecipeMapBackend> spaceMiningRecipes = RecipeMapBuilder.of("gt.recipe.spaceMining")
