@@ -193,4 +193,9 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
     protected String getCasingName() {
         return "Reinforced Gas Turbine Casing";
     }
+
+    @Override
+    protected boolean isDenseSteam() {
+        return false;
+    }
 }

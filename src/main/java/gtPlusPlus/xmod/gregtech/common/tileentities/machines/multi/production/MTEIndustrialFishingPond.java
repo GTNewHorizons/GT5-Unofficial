@@ -222,6 +222,10 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
         setModeFromInputStacks(tItemInputs);
 
         ItemStack[] mFishOutput = generateLoot();
+        if (mFishOutput == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
         mFishOutput = removeNulls(mFishOutput);
         GTRecipe g = new GTRecipe(
             true,
