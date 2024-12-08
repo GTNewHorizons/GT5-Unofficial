@@ -319,9 +319,13 @@ public final class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index != 0 ? GTUITextures.OVERLAY_SLOT_LENS : null)
         // Add a simple ordering so lower tier purified water is displayed first, otherwise it gets really confusing
+        // NEI Catalyst search requires recipes to be sorted by voltage tier. Therefore, we first sort by voltage tier,
+        // then by water tier, then the default comparator.
         .neiRecipeComparator(
-            (a, b) -> Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
-                .thenComparing(GTRecipe::compareTo)
+            (a, b) -> Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mEUt)
+                .thenComparing(
+                    Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
+                        .thenComparing(GTRecipe::compareTo))
                 .compare(a, b))
         .build();
     public static final RecipeMap<RecipeMapBackend> mixerRecipes = RecipeMapBuilder.of("gt.recipe.mixer")

@@ -179,7 +179,10 @@ public class GTRecipeRegistrator {
             || aData.mMaterial.mAmount <= 0
             || GTUtility.getFluidForFilledItem(aStack, false) != null
             || aData.mMaterial.mMaterial.mSubTags.contains(SubTag.NO_RECIPES)) return;
-        registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null);
+        // Prevents registering a quartz block -> 9x quartz dust recipe
+        if (!GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), aStack)) {
+            registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null);
+        }
         if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
             registerReverseSmelting(
                 GTUtility.copyAmount(1, aStack),
