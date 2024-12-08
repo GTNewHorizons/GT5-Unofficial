@@ -187,7 +187,7 @@ public class AdditionalRecipes {
                     .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
                     .special(BioItemList.mBioLabParts[3])
                     .duration(25 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
+                    .eut(TierEU.RECIPE_EV)
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);
