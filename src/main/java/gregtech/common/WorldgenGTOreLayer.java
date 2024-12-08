@@ -51,6 +51,14 @@ public class WorldgenGTOreLayer extends GTWorldgen {
     public final String aTextWorldgen = "worldgen.";
 
     public Class[] mAllowedProviders;
+    public String[] blackListedProviders;
+    public static Class tfProviderClass;
+
+    static {
+        try {
+            tfProviderClass = Class.forName("twilightforest.world.WorldProviderTwilightForest");
+        } catch (ClassNotFoundException ignored) {}
+    }
 
     public WorldgenGTOreLayer(OreMixBuilder mix) {
         super(mix.oreMixName, sList, mix.enabledByDefault);
@@ -87,6 +95,13 @@ public class WorldgenGTOreLayer extends GTWorldgen {
 
         if (this.mOverworld) {
             allowedProviders.add(WorldProviderSurface.class);
+            if (!this.twilightForest) {
+                blackListedProviders = new String[] { "twilightforest.world.WorldProviderTwilightForest" };
+            }
+        }
+
+        if (tfProviderClass != null && this.twilightForest) {
+            allowedProviders.add(tfProviderClass);
         }
 
         if (this.mEnd) {
@@ -104,7 +119,7 @@ public class WorldgenGTOreLayer extends GTWorldgen {
             return ORE_PLACED;
         }
 
-        if (!isGenerationAllowed(aWorld, mAllowedProviders)) {
+        if (!isGenerationAllowed(aWorld, blackListedProviders, mAllowedProviders)) {
             // The following code can be used for debugging, but it spams in logs
             // if (debugOrevein) { GTLog.out.println( "Wrong dimension" ); }
             return WRONG_DIMENSION;

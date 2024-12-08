@@ -38,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -63,9 +64,10 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     private static int CASING_TEXTURE_ID;
     private static final String mCasingName = "Vacuum Casing";
     private HeatingCoilLevel mHeatingCapacity;
-    private boolean mDehydratorMode = false;
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialDehydrator> STRUCTURE_DEFINITION = null;
+    private static final int MACHINEMODE_VACUUMFURNACE = 0;
+    private static final int MACHINEMODE_DEHYDRATOR = 1;
 
     public MTEIndustrialDehydrator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -165,7 +167,8 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mDehydratorMode ? GTPPRecipeMaps.chemicalDehydratorNonCellRecipes : GTPPRecipeMaps.vacuumFurnaceRecipes;
+        return (machineMode == MACHINEMODE_VACUUMFURNACE) ? GTPPRecipeMaps.vacuumFurnaceRecipes
+            : GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
     }
 
     @Nonnull
@@ -191,7 +194,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
 
     @Override
     public String getMachineType() {
-        return "Vacuum Furnace / Dehydrator";
+        return "Vacuum Furnace, Dehydrator";
     }
 
     @Override
@@ -225,22 +228,36 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
 
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mDehydratorMode = !mDehydratorMode;
-        String aMode = mDehydratorMode ? "Dehydrator" : "Vacuum Furnace";
-        PlayerUtils.messagePlayer(aPlayer, "Mode: " + aMode);
-        mLastRecipe = null;
+        setMachineMode(nextMachineMode());
+        PlayerUtils.messagePlayer(
+            aPlayer,
+            String.format(StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"), getMachineModeName()));
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("mDehydratorMode", mDehydratorMode);
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_STEAM);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode." + machineMode);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        // Migrates old NBT tag to the new one
+        if (aNBT.hasKey("mDehydratorMode")) {
+            machineMode = aNBT.getBoolean("mDehydratorMode") ? MACHINEMODE_DEHYDRATOR : MACHINEMODE_VACUUMFURNACE;
+        }
         super.loadNBTData(aNBT);
-        mDehydratorMode = aNBT.getBoolean("mDehydratorMode");
     }
 
     public HeatingCoilLevel getCoilLevel() {
@@ -255,7 +272,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setBoolean("mode", mDehydratorMode);
+        tag.setInteger("mode", machineMode);
     }
 
     @Override
@@ -266,8 +283,9 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
         currentTip.add(
             StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
                 + EnumChatFormatting.WHITE
-                + StatCollector
-                    .translateToLocal("GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode." + (tag.getBoolean("mode") ? 1 : 0))
+                + StatCollector.translateToLocal(
+                    "GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode."
+                        + (tag.getBoolean("mode") ? MACHINEMODE_DEHYDRATOR : MACHINEMODE_VACUUMFURNACE))
                 + EnumChatFormatting.RESET);
     }
 }

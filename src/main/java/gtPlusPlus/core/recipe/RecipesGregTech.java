@@ -243,7 +243,6 @@ public class RecipesGregTech {
         // Adding Recipes for Casings
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(12),
                 CI.getTieredMachineCasing(aLaureniumTier - 1),
                 MaterialsAlloy.LAURENIUM.getPlate(8),
                 CI.getGear(aLaureniumTier, 2))
@@ -261,7 +260,6 @@ public class RecipesGregTech {
         // Adding Recipes for Casings
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(12),
                 CI.getTieredMachineCasing(aBotmiumTier - 1),
                 MaterialsAlloy.BOTMIUM.getPlate(8),
                 CI.getGear(aBotmiumTier, 2))
@@ -745,6 +743,7 @@ public class RecipesGregTech {
                 MaterialsElements.getInstance().BARIUM.getDust(2),
                 MaterialsElements.getInstance().CALCIUM.getDust(2),
                 MaterialsElements.getInstance().COPPER.getDust(3))
+            .fluidInputs(Materials.Oxygen.getGas(8000), Materials.Mercury.getFluid(1000))
             .fluidOutputs(MaterialsAlloy.HG1223.getFluidStack(16 * 144))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)

@@ -3,11 +3,13 @@ package tectech.thing.metaTileEntity.hatch;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Long.min;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
 import java.util.UUID;
@@ -22,6 +24,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTUtility;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.util.TTUtility;
 
@@ -54,7 +57,12 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti implements IWirel
             0,
             new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
                 GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-                AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud" },
+                AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                    + YELLOW
+                    + GTUtility.formatNumbers(aAmp * V[aTier])
+                    + GRAY
+                    + " EU/t" },
             aAmp);
         TTUtility.setTier(aTier, this);
     }

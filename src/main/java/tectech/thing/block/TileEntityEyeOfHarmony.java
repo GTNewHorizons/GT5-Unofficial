@@ -26,6 +26,11 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     private static final double EOH_STAR_FIELD_RADIUS = 13;
     private AxisAlignedBB boundingBox;
 
+    @Override
+    public double getMaxRenderDistanceSquared() {
+        return Double.MAX_VALUE;
+    }
+
     // Prevent culling when block is out of frame so model can remain active.
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
