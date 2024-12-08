@@ -271,7 +271,7 @@ public class CoverWirelessMaintenanceDetector
                         .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
             }
             controller.addFollower(
-                CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                CoverDataFollowerToggleButtonWidget.ofDisableable(),
                 coverData -> coverData.physical,
                 (coverData, state) -> {
                     coverData.physical = state;

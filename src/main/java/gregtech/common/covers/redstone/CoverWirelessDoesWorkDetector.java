@@ -269,7 +269,7 @@ public class CoverWirelessDoesWorkDetector
                         .addTooltip(GTUtility.trans("271", "Machine enabled"))
                         .setPos(spaceX * 2, spaceY * 2))
                 .addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.physical,
                     (coverData, state) -> {
                         coverData.physical = state;

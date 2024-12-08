@@ -208,7 +208,7 @@ public class CoverWirelessFluidDetector
                     .setPos(1, 2 + spaceY * 2)
                     .setSize(spaceX * 5 - 4, 12))
             .addFollower(
-                CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                CoverDataFollowerToggleButtonWidget.ofDisableable(),
                 coverData -> coverData.physical,
                 (coverData, state) -> {
                     coverData.physical = state;

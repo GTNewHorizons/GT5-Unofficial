@@ -262,7 +262,7 @@ public class CoverWirelessItemDetector
                         .setPos(1, 2 + spaceY * 3)
                         .setSize(spaceX * 4 - 8, 12))
                 .addFollower(
-                    CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
                     coverData -> coverData.physical,
                     (coverData, state) -> {
                         coverData.physical = state;
