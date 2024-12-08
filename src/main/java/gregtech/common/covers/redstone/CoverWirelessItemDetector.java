@@ -59,7 +59,11 @@ public class CoverWirelessItemDetector
         final long hash = hashCoverCoords(aTileEntity, side);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
-        aTileEntity.setOutputRedstoneSignal(side, signal);
+        if (aCoverVariable.physical) {
+            aTileEntity.setOutputRedstoneSignal(side, signal);
+        } else {
+            aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
+        }
 
         return aCoverVariable;
     }
@@ -86,23 +90,26 @@ public class CoverWirelessItemDetector
          * The special value {@code 0} means threshold check is disabled.
          */
         private int threshold;
+        private boolean physical;
 
-        public ItemTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, int slot) {
+        public ItemTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, int slot, boolean physical) {
             super(frequency, uuid, invert);
             this.threshold = threshold;
             this.slot = slot;
+            this.physical = physical;
         }
 
         public ItemTransmitterData() {
             super();
             this.threshold = 0;
             this.slot = -1;
+            this.physical = true;
         }
 
         @Nonnull
         @Override
         public ISerializableObject copy() {
-            return new ItemTransmitterData(frequency, uuid, invert, threshold, slot);
+            return new ItemTransmitterData(frequency, uuid, invert, threshold, slot, physical);
         }
 
         @Nonnull
@@ -111,6 +118,7 @@ public class CoverWirelessItemDetector
             NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
             tag.setInteger("threshold", threshold);
             tag.setInteger("slot", slot);
+            tag.setBoolean("physical", physical);
 
             return tag;
         }
@@ -120,6 +128,7 @@ public class CoverWirelessItemDetector
             super.writeToByteBuf(aBuf);
             aBuf.writeInt(threshold);
             aBuf.writeInt(slot);
+            aBuf.writeBoolean(physical);
         }
 
         @Override
@@ -129,6 +138,7 @@ public class CoverWirelessItemDetector
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             threshold = tag.getInteger("threshold");
             slot = tag.getInteger("slot");
+            physical = tag.getBoolean("physical");
         }
 
         @Nonnull
@@ -137,6 +147,7 @@ public class CoverWirelessItemDetector
             super.readFromPacket(aBuf, aPlayer);
             threshold = aBuf.readInt();
             slot = aBuf.readInt();
+            physical = aBuf.readBoolean();
 
             return this;
         }

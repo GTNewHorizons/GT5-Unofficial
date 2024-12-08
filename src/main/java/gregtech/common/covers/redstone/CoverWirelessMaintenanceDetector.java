@@ -133,21 +133,24 @@ public class CoverWirelessMaintenanceDetector
     public static class MaintenanceTransmitterData extends CoverAdvancedRedstoneTransmitterBase.TransmitterData {
 
         private MaintenanceMode mode;
+        private boolean physical;
 
-        public MaintenanceTransmitterData(int frequency, UUID uuid, boolean invert, MaintenanceMode mode) {
+        public MaintenanceTransmitterData(int frequency, UUID uuid, boolean invert, MaintenanceMode mode, boolean physical) {
             super(frequency, uuid, invert);
             this.mode = mode;
+            this.physical = physical;
         }
 
         public MaintenanceTransmitterData() {
             super();
             this.mode = MaintenanceMode.ONE_ISSUE;
+            this.physical = false;
         }
 
         @Nonnull
         @Override
         public ISerializableObject copy() {
-            return new MaintenanceTransmitterData(frequency, uuid, invert, mode);
+            return new MaintenanceTransmitterData(frequency, uuid, invert, mode, physical);
         }
 
         @Nonnull
@@ -155,6 +158,7 @@ public class CoverWirelessMaintenanceDetector
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
             tag.setInteger("mode", mode.ordinal());
+            tag.setBoolean("physical", physical);
 
             return tag;
         }
@@ -163,6 +167,7 @@ public class CoverWirelessMaintenanceDetector
         public void writeToByteBuf(ByteBuf aBuf) {
             super.writeToByteBuf(aBuf);
             aBuf.writeInt(mode.ordinal());
+            aBuf.writeBoolean(physical);
         }
 
         @Override
@@ -171,6 +176,7 @@ public class CoverWirelessMaintenanceDetector
 
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             mode = MaintenanceMode.values()[tag.getInteger("mode")];
+            physical = tag.getBoolean("physical");
         }
 
         @Nonnull
@@ -178,6 +184,7 @@ public class CoverWirelessMaintenanceDetector
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
             super.readFromPacket(aBuf, aPlayer);
             mode = MaintenanceMode.values()[aBuf.readInt()];
+            physical = aBuf.readBoolean();
 
             return this;
         }

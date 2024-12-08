@@ -76,7 +76,11 @@ public class CoverWirelessDoesWorkDetector
         final long hash = hashCoverCoords(aTileEntity, side);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
-        aTileEntity.setOutputRedstoneSignal(side, signal);
+        if (aCoverVariable.physical) {
+            aTileEntity.setOutputRedstoneSignal(side, signal);
+        } else {
+            aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
+        }
 
         return aCoverVariable;
     }
@@ -108,21 +112,24 @@ public class CoverWirelessDoesWorkDetector
     public static class ActivityTransmitterData extends CoverAdvancedRedstoneTransmitterBase.TransmitterData {
 
         private ActivityMode mode;
+        private boolean physical;
 
-        public ActivityTransmitterData(int frequency, UUID uuid, boolean invert, ActivityMode mode) {
+        public ActivityTransmitterData(int frequency, UUID uuid, boolean invert, ActivityMode mode, boolean physical) {
             super(frequency, uuid, invert);
             this.mode = mode;
+            this.physical = physical;
         }
 
         public ActivityTransmitterData() {
             super();
             this.mode = ActivityMode.MACHINE_IDLE;
+            this.physical = true;
         }
 
         @Nonnull
         @Override
         public ISerializableObject copy() {
-            return new ActivityTransmitterData(frequency, uuid, invert, mode);
+            return new ActivityTransmitterData(frequency, uuid, invert, mode, physical);
         }
 
         @Nonnull
@@ -130,6 +137,7 @@ public class CoverWirelessDoesWorkDetector
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
             tag.setInteger("mode", mode.ordinal());
+            tag.setBoolean("physical", physical);
 
             return tag;
         }
@@ -138,6 +146,7 @@ public class CoverWirelessDoesWorkDetector
         public void writeToByteBuf(ByteBuf aBuf) {
             super.writeToByteBuf(aBuf);
             aBuf.writeInt(mode.ordinal());
+            aBuf.writeBoolean(physical);
         }
 
         @Override
@@ -146,6 +155,7 @@ public class CoverWirelessDoesWorkDetector
 
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             mode = ActivityMode.values()[tag.getInteger("mode")];
+            physical = tag.getBoolean("physical");
         }
 
         @Nonnull
@@ -153,6 +163,7 @@ public class CoverWirelessDoesWorkDetector
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
             super.readFromPacket(aBuf, aPlayer);
             mode = ActivityMode.values()[aBuf.readInt()];
+            physical = aBuf.readBoolean();
 
             return this;
         }

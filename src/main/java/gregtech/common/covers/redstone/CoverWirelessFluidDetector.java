@@ -51,7 +51,11 @@ public class CoverWirelessFluidDetector
         final long hash = hashCoverCoords(aTileEntity, side);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
-        aTileEntity.setOutputRedstoneSignal(side, signal);
+        if (aCoverVariable.physical) {
+            aTileEntity.setOutputRedstoneSignal(side, signal);
+        } else {
+            aTileEntity.setOutputRedstoneSignal(side, (byte) 0);
+        }
 
         return aCoverVariable;
     }
@@ -72,10 +76,12 @@ public class CoverWirelessFluidDetector
 
         /** The special value {@code 0} means threshold check is disabled. */
         private int threshold;
+        private boolean physical;
 
-        public FluidTransmitterData(int frequency, UUID uuid, boolean invert, int threshold) {
+        public FluidTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, boolean physical) {
             super(frequency, uuid, invert);
             this.threshold = threshold;
+            this.physical = physical;
         }
 
         public FluidTransmitterData() {
@@ -86,7 +92,7 @@ public class CoverWirelessFluidDetector
         @Nonnull
         @Override
         public ISerializableObject copy() {
-            return new FluidTransmitterData(frequency, uuid, invert, threshold);
+            return new FluidTransmitterData(frequency, uuid, invert, threshold, physical);
         }
 
         @Nonnull
@@ -94,6 +100,7 @@ public class CoverWirelessFluidDetector
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = (NBTTagCompound) super.saveDataToNBT();
             tag.setInteger("threshold", threshold);
+            tag.setBoolean("physical", physical);
 
             return tag;
         }
@@ -102,6 +109,7 @@ public class CoverWirelessFluidDetector
         public void writeToByteBuf(ByteBuf aBuf) {
             super.writeToByteBuf(aBuf);
             aBuf.writeInt(threshold);
+            aBuf.writeBoolean(physical);
         }
 
         @Override
@@ -110,6 +118,7 @@ public class CoverWirelessFluidDetector
 
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             threshold = tag.getInteger("threshold");
+            physical = tag.getBoolean("physical");
         }
 
         @Nonnull
@@ -117,6 +126,7 @@ public class CoverWirelessFluidDetector
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
             super.readFromPacket(aBuf, aPlayer);
             threshold = aBuf.readInt();
+            physical = aBuf.readBoolean();
 
             return this;
         }
