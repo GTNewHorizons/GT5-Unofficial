@@ -3034,7 +3034,7 @@ public class Assembler implements Runnable {
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
-        // Uncertainty
+        // Uncertainty X
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.eM_Computer_Casing.get(1),
@@ -3043,21 +3043,6 @@ public class Assembler implements Runnable {
                 ItemList.Cover_Screen.get(1),
                 new ItemStack(Blocks.stone_button, 16),
                 GTUtility.getIntegratedCircuit(4))
-            .itemOutputs(CustomItemList.Uncertainty_Hatch.get(1))
-            .fluidInputs(Materials.Iridium.getMolten(2592))
-            .requiresCleanRoom()
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(assemblerRecipes);
-        // Uncertainty X
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                CustomItemList.eM_Computer_Casing.get(1),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 1),
-                CustomItemList.DATApipe.get(32),
-                ItemList.Cover_Screen.get(1),
-                new ItemStack(Blocks.stone_button, 16),
-                GTUtility.getIntegratedCircuit(5))
             .itemOutputs(CustomItemList.UncertaintyX_Hatch.get(1))
             .fluidInputs(Materials.Iridium.getMolten(2592))
             .requiresCleanRoom()

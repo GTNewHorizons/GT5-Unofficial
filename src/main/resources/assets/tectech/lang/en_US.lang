@@ -503,10 +503,11 @@ gt.blockmachines.hatch.param.tier.10.name=Parametrizer tXt
 gt.blockmachines.hatch.param.desc.0=For parametrization of Multiblocks
 gt.blockmachines.hatch.param.desc.1=E=mine*craft
 
-gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver
-gt.blockmachines.hatch.certain.tier.10.name=Uncertainty Resolver X
+gt.blockmachines.hatch.certain.tier.05.name=Uncertainty Resolver
+gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver X
 gt.blockmachines.hatch.certain.desc.0=Feeling certain, or not?
 gt.blockmachines.hatch.certain.desc.1=Schrödinger equation in a box
+gt.blockmachines.hatch.certain.desc.2=Deprecated! Use Uncertainty Resolver X
 
 gt.blockmachines.hatch.datain.tier.07.name=Optical Reception Connector
 gt.blockmachines.hatch.datain.desc.0=Quantum Data Input for Multiblocks
