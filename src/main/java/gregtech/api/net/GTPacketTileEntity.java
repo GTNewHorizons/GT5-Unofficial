@@ -1,6 +1,5 @@
 package gregtech.api.net;
 
-import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
@@ -124,7 +123,6 @@ public class GTPacketTileEntity extends GTPacket {
         if (aWorld == null) return;
         final TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
         try {
-            final Block tBlock;
             if (tTileEntity instanceof BaseMetaTileEntity) ((BaseMetaTileEntity) tTileEntity).receiveMetaTileEntityData(
                 mID,
                 mC0,
