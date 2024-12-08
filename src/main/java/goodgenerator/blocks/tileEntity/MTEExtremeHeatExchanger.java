@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -51,6 +50,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
 
 public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     implements IConstructable, ISurvivalConstructable {
@@ -203,38 +204,50 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger/Plasma Heat Exchanger")
-            .addInfo("Controller block for the Extreme Heat Exchanger.")
-            .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
-            .addInfo("Output SC Steam/SH Steam/Steam.")
-            .addInfo("Check NEI for more info.")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
+            .addInfo("Outputs SH steam by cooling hot fluids with distilled water.")
+            .addInfo("Supplying more hot fluid than the threshold causes overheating,")
+            .addInfo("producing SC steam instead.")
+            .addInfo("Plasma always produces SC steam.")
+            .addInfo("Maximum input and output values per second are shown in NEI.")
+            .addInfo("Actual output is proportional to the amount of hot fluid inserted.")
+            .addInfo("Explodes if it runs out of water.")
             .addController("Front bottom")
-            .addOtherStructurePart("Input Hatch", "distilled water", 1)
-            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
+            .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
+            .addCasingInfoExactly("EV+ Glass", 72, false)
+            .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
+            .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
+            .addOtherStructurePart("Input Hatch", "Distilled water", 1)
+            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam", 2)
             .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
             .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
-            .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
         tRunningRecipe = null;
-        if (mHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.SUCCESSFUL;
+        FluidStack hotFluid = null;
+        if (mHotFluidHatch instanceof MTEHatchInputME inputME) {
+            FluidStack[] fluids = inputME.getStoredFluids();
+            if (fluids.length > 0) {
+                hotFluid = fluids[0];
+            }
+        } else {
+            hotFluid = mHotFluidHatch.getFluid();
+        }
+        if (hotFluid == null) return CheckRecipeResultRegistry.SUCCESSFUL;
         ExtremeHeatExchangerRecipe tRecipe = (ExtremeHeatExchangerRecipe) GoodGeneratorRecipeMaps.extremeHeatExchangerFuels
             .getBackend()
-            .findFuel(mHotFluidHatch.getFluid());
+            .findFuel(hotFluid);
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         tRunningRecipe = tRecipe;
-        this.hotName = mHotFluidHatch.getFluid()
-            .getFluid()
+        this.hotName = hotFluid.getFluid()
             .getName();
         int tMaxConsume = tRecipe.getMaxHotFluidConsume();
         int transformed_threshold = tRecipe.mSpecialValue;
-        int tRealConsume = Math.min(tMaxConsume, mHotFluidHatch.getFluid().amount);
+        int tRealConsume = Math.min(tMaxConsume, hotFluid.amount);
         double penalty = 0.0d;
         double efficiency = 1d;
         int shs_reduction_per_config = 150;
@@ -255,7 +268,8 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
 
         this.mMaxProgresstime = 20;
         this.mEUt = (int) (tRecipe.getEUt() * efficiency * ((double) tRealConsume / (double) tMaxConsume));
-        mHotFluidHatch.drain(tRealConsume, true);
+        // the 3-arg drain will work on both normal hatch and ME hatch
+        mHotFluidHatch.drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), tRealConsume), true);
         mCooledFluidHatch.fill(new FluidStack(tRecipe.getCooledFluid(), tRealConsume), true);
         this.mEfficiencyIncrease = 160;
 
@@ -269,7 +283,10 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             int waterAmount = (int) (this.mEUt / getUnitSteamPower(tReadySteam.getName())) / 160;
             if (waterAmount < 0) return false;
             int steamToOutput;
-            if (depleteInput(GTModHandler.getDistilledWater(waterAmount))) {
+            startRecipeProcessing();
+            boolean isDepleteSuccess = depleteInput(GTModHandler.getDistilledWater(waterAmount));
+            endRecipeProcessing();
+            if (isDepleteSuccess) {
                 if (tRunningRecipe.mFluidInputs[0].getUnlocalizedName()
                     .contains("plasma")) {
                     steamToOutput = waterAmount * 160 / 1000;
@@ -290,9 +307,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     public double getUnitSteamPower(String steam) {
         return switch (steam) {
             case "steam" -> 0.5;
-            case "ic2superheatedsteam" -> 1;
-            case "supercriticalsteam" -> 100;
-            case "densesupercriticalsteam" -> 1;
+            case "ic2superheatedsteam", "supercriticalsteam", "densesupercriticalsteam" -> 1;
             default -> -1;
         };
     }
@@ -419,6 +434,22 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
 
         public IGTHatchAdder<? super MTEExtremeHeatExchanger> adder() {
             return adder;
+        }
+    }
+
+    @Override
+    public void startRecipeProcessing() {
+        super.startRecipeProcessing();
+        if (mHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mHotFluidHatch.isValid()) {
+            aware.startRecipeProcessing();
+        }
+    }
+
+    @Override
+    public void endRecipeProcessing() {
+        super.endRecipeProcessing();
+        if (mHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mHotFluidHatch.isValid()) {
+            aware.endRecipeProcessing(this);
         }
     }
 }

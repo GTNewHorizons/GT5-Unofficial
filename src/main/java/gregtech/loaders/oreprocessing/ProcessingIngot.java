@@ -40,6 +40,9 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        // Blacklist materials which are handled by Werkstoff loader
+        if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
+
         boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
         boolean aStretchy = aMaterial.contains(SubTag.STRETCHY);
         boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);

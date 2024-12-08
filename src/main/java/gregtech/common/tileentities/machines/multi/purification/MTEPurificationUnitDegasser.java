@@ -292,7 +292,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Residual Decontaminant Degasser Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo(
@@ -305,11 +304,9 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             .addInfo("Denote the lowest bit as bit 1, and the highest as bit 4.")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE + ""
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "Bit 1: "
                     + EnumChatFormatting.BLUE
-                    + ""
                     + EnumChatFormatting.BOLD
                     + "Ozone Sparging by Inert Gas")
             .addInfo(
@@ -351,11 +348,9 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "Xenon")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE + ""
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "Bit 2: "
                     + EnumChatFormatting.BLUE
-                    + ""
                     + EnumChatFormatting.BOLD
                     + "Superconductive Deionization")
             .addInfo(
@@ -390,7 +385,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.GRAY
                     + " / "
                     + EnumChatFormatting.DARK_BLUE
-                    + ""
                     + EnumChatFormatting.BOLD
                     + "UIV"
                     + EnumChatFormatting.GRAY
@@ -400,7 +394,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + EnumChatFormatting.GRAY
                     + " / "
                     + EnumChatFormatting.RED
-                    + ""
                     + EnumChatFormatting.BOLD
                     + "UMV"
                     + EnumChatFormatting.GRAY
@@ -409,25 +402,23 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "2x")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE + ""
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "Bit 3: "
                     + EnumChatFormatting.BLUE
-                    + ""
                     + EnumChatFormatting.BOLD
                     + "Gravitationally-Generated Differential Vacuum Extraction")
             .addInfo(
                 "If this bit is on, you must insert " + EnumChatFormatting.RED
                     + "4608L "
                     + EnumChatFormatting.WHITE
-                    + "Molten Neutronium")
+                    + "Molten Neutronium"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE + ""
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "Bit 4: "
                     + EnumChatFormatting.BLUE
-                    + ""
                     + EnumChatFormatting.BOLD
                     + "Seldonian Settlement Process")
             .addInfo(
@@ -437,11 +428,9 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     + "all other bits and do not insert anything.")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.WHITE + ""
-                    + EnumChatFormatting.BOLD
+                EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
                     + "No bits: "
                     + EnumChatFormatting.BLUE
-                    + ""
                     + EnumChatFormatting.BOLD
                     + "Machine Overload")
             .addInfo("In rare cases, the machine may overload and output no control signal at all.")
@@ -470,7 +459,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(17, 25, 17, false)
             .addCasingInfoRangeColored(
                 "Heat-Resistant Trinium Plated Casing",
@@ -488,7 +476,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             .addCasingInfoExactlyColored(
                 "Bedrockium Frame Box",
                 EnumChatFormatting.GRAY,
-                126,
+                124,
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front center")
@@ -498,7 +486,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "Degasser Control Hatch",
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
                 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -684,7 +672,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             FluidStack waterOutput = currentRecipe.mFluidOutputs[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
-                (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
+                (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
             this.addOutput(bonusOutput);
         }
     }
@@ -782,7 +770,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Current control signal: " + EnumChatFormatting.YELLOW + controlSignal.toString());
+        info.add("Current control signal (binary): 0b" + EnumChatFormatting.YELLOW + controlSignal.toString());
         info.add("Current output multiplier: " + EnumChatFormatting.YELLOW + outputMultiplier);
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(

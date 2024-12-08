@@ -34,7 +34,6 @@ import com.google.common.collect.HashBiMap;
 
 import bartworks.API.recipe.BWNBTDependantCraftingRecipe;
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.hooks.BWCoreStaticReplacementMethodes;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import bartworks.util.Pair;
@@ -48,6 +47,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.mixin.hooks.BWCoreStaticReplacementMethodes;
 
 public class CircuitImprintLoader {
 

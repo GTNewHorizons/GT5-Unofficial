@@ -336,9 +336,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
                         .getInventory()[0].stackSize < 64) {
                         int diff = 64 - this.getInventory()
                             .getInventory()[0].stackSize;
-                        if (aStack.stackSize <= diff) {
-                            return true;
-                        }
+                        return aStack.stackSize <= diff;
                     }
                 }
         return false;
@@ -346,12 +344,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean canExtractItem(final int aSlot, final ItemStack aStack, final int p_102008_3_) {
-        if (this.getInventory()
-            .getInventory()[1] == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return this.getInventory()
+            .getInventory()[1] != null;
     }
 
     public String getCustomName() {
@@ -369,7 +363,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean hasCustomInventoryName() {
-        return (this.mCustomName != null) && !this.mCustomName.equals("");
+        return (this.mCustomName != null) && !this.mCustomName.isEmpty();
     }
 
     @Override
@@ -404,17 +398,15 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
                 fluid = null;
             }
 
-            if (this != null) {
-                FluidEvent.fireEvent(
-                    new FluidEvent.FluidDrainingEvent(
-                        fluid,
-                        this.getWorldObj(),
-                        this.xCoord,
-                        this.yCoord,
-                        this.zCoord,
-                        this.mTank,
-                        0));
-            }
+            FluidEvent.fireEvent(
+                new FluidEvent.FluidDrainingEvent(
+                    fluid,
+                    this.getWorldObj(),
+                    this.xCoord,
+                    this.yCoord,
+                    this.zCoord,
+                    this.mTank,
+                    0));
         }
         updateTileEntity();
         return stack;
@@ -451,10 +443,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
     }
 
     public boolean hasFluidSpace() {
-        if (this.mTank.getFluidAmount() <= 1000) {
-            return true;
-        }
-        return false;
+        return this.mTank.getFluidAmount() <= 1000;
     }
 
     public boolean drainCell() {
@@ -464,7 +453,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
             return false;
         }
         aInput = aInput.copy();
-        if (aInput != null && (this.getStackInSlot(1) == null || this.getStackInSlot(1).stackSize < 64)) {
+        if (this.getStackInSlot(1) == null || this.getStackInSlot(1).stackSize < 64) {
             ArrayList<ItemStack> t1Cells = OreDictionary.getOres("cellFormaldehyde");
             ArrayList<ItemStack> t2Cells = OreDictionary.getOres("cellHydrogenCyanide");
             didFill = addFluid(t1Cells, aInput, FluidUtils.getWildcardFluidStack("formaldehyde", 1000));
@@ -496,11 +485,8 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
             if (GTUtility.areStacksEqual(a, aInput)) {
                 if (mTank.getFluid() == null || mTank.getFluid()
                     .isFluidEqual(aFluidForInput)) {
-                    boolean didFill = fill(ForgeDirection.UNKNOWN, aFluidForInput, true) > 0;
-                    return didFill;
+                    return fill(ForgeDirection.UNKNOWN, aFluidForInput, true) > 0;
                 }
-            } else {
-                continue;
             }
         }
         return false;

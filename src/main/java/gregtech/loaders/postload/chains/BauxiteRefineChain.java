@@ -157,7 +157,7 @@ public class BauxiteRefineChain {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(
-                Materials.Aluminiumhydroxide.getDust(3),
+                Materials.Aluminiumhydroxide.getDust(2),
                 Materials.Iron.getDust(1),
                 Materials.Vanadium.getDust(1),
                 Materials.Magnesium.getDust(1))
@@ -171,7 +171,7 @@ public class BauxiteRefineChain {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(
-                Materials.Aluminiumhydroxide.getDust(3),
+                Materials.Aluminiumhydroxide.getDust(2),
                 Materials.Iron.getDust(1),
                 Materials.Vanadium.getDust(1),
                 Materials.Manganese.getDust(1),
@@ -186,7 +186,7 @@ public class BauxiteRefineChain {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(
-                Materials.Aluminiumhydroxide.getDust(3),
+                Materials.Aluminiumhydroxide.getDust(2),
                 Materials.Chrome.getDust(1),
                 Materials.Iron.getDust(1),
                 Materials.Vanadium.getDust(1),

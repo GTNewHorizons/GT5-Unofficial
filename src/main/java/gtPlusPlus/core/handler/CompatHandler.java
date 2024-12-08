@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -25,8 +26,10 @@ import gtPlusPlus.core.common.compat.CompatThaumcraft;
 import gtPlusPlus.core.common.compat.CompatWitchery;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
+import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
+import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.recipe.RecipesGregTech;
 import gtPlusPlus.core.recipe.RecipesLaserEngraver;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
@@ -94,7 +97,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSemiFluidgenerator
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSimpleWasher;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSolarTower;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamMultis;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSuperChests;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThaumcraftDevices;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThreadedBuffers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
@@ -117,6 +119,14 @@ public class CompatHandler {
             GTOreDictUnificator.registerOre(
                 "bufferCore_" + GTValues.VN[i - 1],
                 new ItemStack(ItemUtils.getItemFromFQRN("miscutils:item.itemBufferCore" + i)));
+        }
+        for (Particle i : Particle.aMap) {
+            GTOreDictUnificator
+                .registerOre(OrePrefixes.particle + i.mParticleName.replace(" ", ""), Particle.getBaseParticle(i));
+        }
+
+        for (String i : IonParticles.ions) {
+            GTOreDictUnificator.registerOre(OrePrefixes.particle + i, Particle.getIon(i, 0));
         }
     }
 
@@ -161,7 +171,6 @@ public class CompatHandler {
         GregtechSemiFluidgenerators.run();
         GregtechWirelessChargers.run();
         GregtechIndustrialCuttingFactory.run();
-        GregtechSuperChests.run();
         GregtechIndustrialFishPond.run();
         GregtechIndustrialExtruder.run();
         GregtechIndustrialMultiMachine.run();

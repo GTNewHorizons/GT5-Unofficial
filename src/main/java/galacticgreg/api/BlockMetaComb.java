@@ -7,8 +7,8 @@ import net.minecraft.block.Block;
  */
 public class BlockMetaComb {
 
-    private int mMeta;
-    private Block mBlock;
+    private final int mMeta;
+    private final Block mBlock;
 
     /**
      * Creates a simple instance for a block that has no meta value

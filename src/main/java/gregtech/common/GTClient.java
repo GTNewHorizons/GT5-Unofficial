@@ -92,6 +92,8 @@ import gregtech.client.GTMouseEventHandler;
 import gregtech.client.SeekingOggCodec;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.pollution.Pollution;
+import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.render.BlackholeRenderer;
 import gregtech.common.render.DroneRender;
 import gregtech.common.render.FlaskRenderer;
@@ -101,7 +103,6 @@ import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.MultiTileRenderer;
-import gregtech.common.render.PollutionRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
@@ -670,6 +671,7 @@ public class GTClient extends GTProxy implements Runnable {
                         .forEach(CoverBehaviorBase::reloadColorOverride);
                 }
             });
+        Pollution.onPostInitClient();
     }
 
     @Override
@@ -1057,7 +1059,6 @@ public class GTClient extends GTProxy implements Runnable {
                 }
             }
             if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)
-                || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sScrewdriverList)
                 || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sHardHammerList)
                 || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftHammerList)
                 || GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWireCutterList)

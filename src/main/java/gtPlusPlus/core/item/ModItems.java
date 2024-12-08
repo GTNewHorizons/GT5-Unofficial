@@ -582,7 +582,7 @@ public final class ModItems {
         // LFTR Control Circuit
         itemCircuitLFTR = new CoreItem(
             "itemCircuitLFTR",
-            "" + EnumChatFormatting.GREEN + "Control Circuit",
+            EnumChatFormatting.GREEN + "Control Circuit",
             AddToCreativeTab.tabMisc,
             1,
             0,
@@ -874,16 +874,12 @@ public final class ModItems {
 
         // Small Springs
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.MARAGING250);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.NICHROME);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.STABALLOY);
-        MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.STEEL_BLACK);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.SMALLSPRING, MaterialsAlloy.BLACK_TITANIUM);
 
         // Fine Wire
         MaterialUtils
             .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.STANDALONE.WHITE_METAL);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.getInstance().PALLADIUM);
         MaterialUtils
             .generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsElements.getInstance().ZIRCONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(ComponentTypes.FINEWIRE, MaterialsAlloy.LEAGRISIUM);

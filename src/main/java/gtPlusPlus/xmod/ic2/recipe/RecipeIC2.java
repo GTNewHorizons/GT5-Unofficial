@@ -57,20 +57,20 @@ public class RecipeIC2 {
     public static String ring_T3 = "ringChrome";
     public static String ring_T4 = "ringOsmiridium";
 
-    private static ItemStack rotor_blade_T1 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_1.getItem());
-    private static ItemStack rotor_blade_T2 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_2.getItem());
-    private static ItemStack rotor_blade_T3 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_3.getItem());
-    private static ItemStack rotor_blade_T4 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_4.getItem());
+    private static final ItemStack rotor_blade_T1 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_1.getItem());
+    private static final ItemStack rotor_blade_T2 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_2.getItem());
+    private static final ItemStack rotor_blade_T3 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_3.getItem());
+    private static final ItemStack rotor_blade_T4 = ItemUtils.getSimpleStack(IC2Items.rotor_Blade_Material_4.getItem());
 
-    private static ItemStack shaft_T1 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_1.getItem());
-    private static ItemStack shaft_T2 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_2.getItem());
-    private static ItemStack shaft_T3 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_3.getItem());
-    private static ItemStack shaft_T4 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_4.getItem());
+    private static final ItemStack shaft_T1 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_1.getItem());
+    private static final ItemStack shaft_T2 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_2.getItem());
+    private static final ItemStack shaft_T3 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_3.getItem());
+    private static final ItemStack shaft_T4 = ItemUtils.getSimpleStack(IC2Items.shaft_Material_4.getItem());
 
-    private static ItemStack rotor_T1 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_1.getItem());
-    private static ItemStack rotor_T2 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_2.getItem());
-    private static ItemStack rotor_T3 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_3.getItem());
-    private static ItemStack rotor_T4 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_4.getItem());
+    private static final ItemStack rotor_T1 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_1.getItem());
+    private static final ItemStack rotor_T2 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_2.getItem());
+    private static final ItemStack rotor_T3 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_3.getItem());
+    private static final ItemStack rotor_T4 = ItemUtils.getSimpleStack(IC2Items.rotor_Material_4.getItem());
 
     private static boolean checkForEnderIO() {
         if (!EnderIO.isModLoaded()) {
@@ -151,23 +151,20 @@ public class RecipeIC2 {
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod,
-                Character.valueOf('X'), OrePrefixes.plate.get(Materials.DarkSteel), Character.valueOf('S'),
-                OrePrefixes.screw.get(Materials.DarkSteel) });
+            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
+                OrePrefixes.plate.get(Materials.DarkSteel), 'S', OrePrefixes.screw.get(Materials.DarkSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod,
-                Character.valueOf('X'), OrePrefixes.plate.get(Materials.TungstenSteel), Character.valueOf('S'),
-                OrePrefixes.screw.get(Materials.TungstenSteel) });
+            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
+                OrePrefixes.plate.get(Materials.TungstenSteel), 'S', OrePrefixes.screw.get(Materials.TungstenSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod,
-                Character.valueOf('X'), OrePrefixes.plate.get(Materials.Molybdenum), Character.valueOf('S'),
-                OrePrefixes.screw.get(Materials.Molybdenum) });
+            new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
+                OrePrefixes.plate.get(Materials.Molybdenum), 'S', OrePrefixes.screw.get(Materials.Molybdenum) });
         Logger.INFO("Added recipe item for GT5 Extruder: Shaft Shape");
 
         // Shaft Recipes

@@ -24,6 +24,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import tectech.mechanics.enderStorage.EnderLinkTag;
 import tectech.mechanics.enderStorage.EnderWorldSavedData;
 
@@ -45,28 +46,65 @@ public class CoverEnderFluidLink extends CoverBehavior {
         }
     }
 
-    private boolean testBit(int aCoverVariable, int bitMask) {
+    private static boolean testBit(int aCoverVariable, int bitMask) {
         return (aCoverVariable & bitMask) != 0;
     }
 
-    private int toggleBit(int aCoverVariable, int bitMask) {
+    private static int toggleBit(int aCoverVariable, int bitMask) {
         return (aCoverVariable ^ bitMask);
     }
 
     @Override
     public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
-        if ((aTileEntity instanceof IFluidHandler fluidHandlerSelf)) {
-            IFluidHandler fluidHandlerEnder = EnderWorldSavedData
-                .getEnderFluidContainer(EnderWorldSavedData.getEnderLinkTag((IFluidHandler) aTileEntity));
+        if ((aTileEntity instanceof IFluidHandler teTank)) {
+            EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag((IFluidHandler) aTileEntity);
 
-            if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
-                transferFluid(fluidHandlerEnder, ForgeDirection.UNKNOWN, fluidHandlerSelf, side, L_PER_TICK);
-            } else {
-                transferFluid(fluidHandlerSelf, side, fluidHandlerEnder, ForgeDirection.UNKNOWN, L_PER_TICK);
+            if (tag != null) {
+                boolean shouldBePrivate = testBit(aCoverVariable, PUBLIC_PRIVATE_MASK);
+                boolean isPrivate = tag.getUUID() != null;
+
+                if (shouldBePrivate != isPrivate) {
+                    tag = new EnderLinkTag(tag.getFrequency(), shouldBePrivate ? getOwner(aTileEntity) : null);
+                    EnderWorldSavedData.bindEnderLinkTag(teTank, tag);
+                }
+
+                IFluidHandler enderTank = EnderWorldSavedData.getEnderFluidContainer(tag);
+
+                if (testBit(aCoverVariable, IMPORT_EXPORT_MASK)) {
+                    transferFluid(enderTank, ForgeDirection.UNKNOWN, teTank, side, L_PER_TICK);
+                } else {
+                    transferFluid(teTank, side, enderTank, ForgeDirection.UNKNOWN, L_PER_TICK);
+                }
             }
         }
         return aCoverVariable;
+    }
+
+    private static UUID getOwner(Object te) {
+        if (te instanceof IGregTechTileEntity igte) {
+            return igte.getOwnerUuid();
+        } else if (te instanceof TileEntityBase teb) {
+            return teb.getOwnerUUID();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void onBaseTEDestroyed(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+        if (aTileEntity instanceof IFluidHandler fluidHandlerSelf) {
+            EnderWorldSavedData.unbindTank(fluidHandlerSelf);
+        }
+    }
+
+    @Override
+    public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+        boolean aForced) {
+        if (aTileEntity instanceof IFluidHandler fluidHandlerSelf) {
+            EnderWorldSavedData.unbindTank(fluidHandlerSelf);
+        }
+        return true;
     }
 
     @Override
@@ -136,30 +174,28 @@ public class CoverEnderFluidLink extends CoverBehavior {
             super(buildContext);
         }
 
-        @SuppressWarnings("PointlessArithmeticExpression")
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             TextFieldWidget frequencyField = new TextFieldWidget();
             builder.widget(frequencyField.setGetter(() -> {
                 ICoverable te = getUIBuildContext().getTile();
                 if (!frequencyField.isClient() && te instanceof IFluidHandler) {
-                    return EnderWorldSavedData.getEnderLinkTag((IFluidHandler) te)
-                        .getFrequency();
+                    EnderLinkTag tag = EnderWorldSavedData.getEnderLinkTag((IFluidHandler) te);
+
+                    return tag == null ? "" : tag.getFrequency();
                 }
                 return "";
             })
                 .setSetter(val -> {
-                    ICoverable te = getUIBuildContext().getTile();
-                    if (!frequencyField.isClient() && te instanceof IFluidHandler) {
-                        UUID uuid;
+                    if (!frequencyField.isClient() && getUIBuildContext().getTile() instanceof IFluidHandler tank) {
+                        UUID uuid = null;
+
                         if (testBit(convert(getCoverData()), PUBLIC_PRIVATE_MASK)) {
                             uuid = getUUID();
-                            if (!(te instanceof IGregTechTileEntity)) return;
-                            if (!uuid.equals(((IGregTechTileEntity) te).getOwnerUuid())) return;
-                        } else {
-                            uuid = null;
+                            if (!uuid.equals(getOwner(tank))) return;
                         }
-                        EnderWorldSavedData.bindEnderLinkTag((IFluidHandler) te, new EnderLinkTag(val, uuid));
+
+                        EnderWorldSavedData.bindEnderLinkTag(tank, new EnderLinkTag(val, uuid));
                     }
                 })
                 .setTextColor(Color.WHITE.dark(1))

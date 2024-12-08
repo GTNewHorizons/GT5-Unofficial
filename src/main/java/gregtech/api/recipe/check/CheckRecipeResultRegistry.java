@@ -113,13 +113,14 @@ public final class CheckRecipeResultRegistry {
      * Black Hole Compressor does not have an active black hole
      */
     public static final CheckRecipeResult NO_BLACK_HOLE = SimpleCheckRecipeResult.ofFailure("no_black_hole");
-    /**
-     * Black Hole Compressor became unstable
-     */
-    public static final CheckRecipeResult UNSTABLE_BLACK_HOLE = SimpleCheckRecipeResult
-        .ofFailure("unstable_black_hole");
 
     public static final CheckRecipeResult NO_SEE_SKY = SimpleCheckRecipeResult.ofFailure("no_see_sky");
+
+    /**
+     * Machine is waiting for the main controller to start the cycle.
+     */
+    @Nonnull
+    public static final CheckRecipeResult CYCLE_IDLE = SimpleCheckRecipeResult.ofSuccess("cycle_idle");
 
     /**
      * Cannot process recipe because the machine cannot handle required EUt.

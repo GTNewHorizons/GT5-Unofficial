@@ -25,13 +25,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -63,7 +61,7 @@ import gregtech.api.util.ValidationType;
 public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetricsExporter {
 
     private final ArrayList<Chunk> mOilFieldChunks = new ArrayList<>();
-    private int mOilId = 0;
+    private Fluid mOil = null;
     private int mOilFlow = 0;
 
     private int chunkRangeConfig = getRangeInChunks();
@@ -105,14 +103,12 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mOilId", mOilId);
         aNBT.setInteger("chunkRangeConfig", chunkRangeConfig);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mOilId = aNBT.getInteger("mOilId");
         if (aNBT.hasKey("chunkRangeConfig")) chunkRangeConfig = aNBT.getInteger("chunkRangeConfig");
     }
 
@@ -122,13 +118,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Pump")
-            .addInfo("Controller Block for the Oil/Gas/Fluid Drilling Rig " + (tierSuffix != null ? tierSuffix : ""))
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .addInfo("Use a Screwdriver to configure range")
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
             .addInfo("If total circuit # is greater than output amount it will halt. If it worked right.") // doesn't
             // work
-            .addSeparator()
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -138,7 +132,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .addMaintenanceHatch("Any base casing", 1)
             .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
             .addOutputHatch("Any base casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -238,16 +232,16 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     private boolean tryFillChunkList() {
         FluidStack tFluid, tOil;
-        if (mOilId <= 0) {
+        if (mOil == null) {
             tFluid = undergroundOilReadInformation(getBaseMetaTileEntity());
             if (tFluid == null) return false;
-            mOilId = tFluid.getFluidID();
+            mOil = tFluid.getFluid();
         }
         if (debugDriller) {
-            GTLog.out.println(" Driller on  fluid = " + mOilId);
+            GTLog.out.println(" Driller on  fluid = " + mOil == null ? null : mOil.getName());
         }
 
-        tOil = new FluidStack(FluidRegistry.getFluid(mOilId), 0);
+        tOil = new FluidStack(mOil, 0);
 
         if (mOilFieldChunks.isEmpty()) {
             Chunk tChunk = getBaseMetaTileEntity().getWorld()
@@ -303,7 +297,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
      * If vein is depleted, it returns a result with VALID and null fluid.
      */
     protected ValidationResult<FluidStack> tryPumpOil(float speed) {
-        if (mOilId <= 0) return null;
+        if (mOil == null) return null;
         if (debugDriller) {
             GTLog.out.println(" pump speed = " + speed);
         }
@@ -333,7 +327,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
 
         ArrayList<Chunk> emptyChunks = new ArrayList<>();
-        FluidStack returnOil = new FluidStack(FluidRegistry.getFluid(mOilId), 0);
+        FluidStack returnOil = new FluidStack(mOil, 0);
 
         for (Chunk tChunk : mOilFieldChunks) {
             FluidStack pumped = undergroundOil(tChunk, simulate ? -speed : speed);
@@ -433,9 +427,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @NotNull
     private String getFluidName() {
-        if (mOilId > 0) {
-            final Fluid fluid = FluidRegistry.getFluid(mOilId);
-            return fluid.getLocalizedName(new FluidStack(fluid, 0));
+        if (mOil != null) {
+            return mOil.getLocalizedName(new FluidStack(mOil, 0));
         }
         return "None";
     }
@@ -492,7 +485,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_OIL_DRILL_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_OIL_DRILL_LOOP;
     }
 }

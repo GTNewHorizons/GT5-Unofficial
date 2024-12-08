@@ -158,7 +158,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     protected void calculateTier() {
-        if (functionalCasings.size() == 0) {
+        if (functionalCasings.isEmpty()) {
             return;
         }
         double sum = 0;
@@ -915,11 +915,6 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-        return false;
-    }
-
-    @Override
     public boolean supportsInputSeparation() {
         return true;
     }
@@ -1018,10 +1013,7 @@ public abstract class Controller<C extends Controller<C, P>, P extends MuTEProce
 
     @Override
     public GTPacketMultiTileEntity getClientDataPacket() {
-        final GTPacketMultiTileEntity packet = super.getClientDataPacket();
-
-        return packet;
-
+        return super.getClientDataPacket();
     }
 
     @Override

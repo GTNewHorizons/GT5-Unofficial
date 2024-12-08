@@ -35,7 +35,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 
 public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISecondaryDescribable {
 
@@ -245,11 +245,9 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Charcoal Pile Igniter")
-            .addInfo("Controller for the Charcoal Pit")
             .addInfo("Converts Logs into Brittle Charcoal blocks")
             .addInfo("Will automatically start when valid")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
             .addStructureInfo("Can be up to 13x7x13 in size, including the dirt; shape doesn't matter")
             .addOtherStructurePart("Controller", "Top layer, directly touching a wood log")
@@ -259,7 +257,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
             .addStructureInfo("No air between logs allowed.")
             .addStructureInfo(
                 "All logs must be within 6 x/z of the controller, so it must be dead-center for a full 11x11 square of wood.")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

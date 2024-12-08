@@ -110,7 +110,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.interfaces.IRecipeMutableAccess;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.GTGenericItem;
@@ -123,6 +122,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 
@@ -191,7 +191,7 @@ public class PlatinumSludgeOverHaul {
             .fluidOutputs(FormicAcid.getFluidOrGas(2000))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
 
         // AquaRegia
         GTValues.RA.stdBuilder()
@@ -251,7 +251,7 @@ public class PlatinumSludgeOverHaul {
             .fluidOutputs(AmmoniumChloride.getFluidOrGas(1000))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(9))
@@ -1030,7 +1030,6 @@ public class PlatinumSludgeOverHaul {
         PlatinumSludgeOverHaul.runHelperrecipes();
     }
 
-    @SuppressWarnings("deprecation")
     private static void replaceHVCircuitMaterials() {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Redstone.getDust(1), Materials.Electrum.getDust(1), GTUtility.getIntegratedCircuit(1))

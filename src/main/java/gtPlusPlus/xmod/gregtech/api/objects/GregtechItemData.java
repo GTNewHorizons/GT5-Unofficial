@@ -51,9 +51,7 @@ public class GregtechItemData {
                 }
             }
             this.mByProducts = j > 0 ? new GregtechMaterialStack[j] : EMPTY_GT_MaterialStack_ARRAY;
-            for (int i = 0; i < this.mByProducts.length; i++) {
-                this.mByProducts[i] = tByProducts[i];
-            }
+            System.arraycopy(tByProducts, 0, this.mByProducts, 0, this.mByProducts.length);
         }
     }
 

@@ -127,7 +127,6 @@ import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.FluidState;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -1049,6 +1048,7 @@ public class WerkstoffLoader {
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
             .addMetalItems()
+            .addCraftingMetalWorkingItems()
             .enforceUnification(),
         64,
         TextureSet.SET_METALLIC
@@ -1236,6 +1236,7 @@ public class WerkstoffLoader {
             .onlyDust()
             .addMetalItems()
             .addMolten()
+            .addCraftingMetalWorkingItems()
             .enforceUnification(),
         78,
         TextureSet.SET_METALLIC);
@@ -1984,28 +1985,6 @@ public class WerkstoffLoader {
             }
         }
         addFakeItemDataToInWorldBlocksAndCleanUpFakeData();
-        addVanillaCasingsToGTOreDictUnificator();
-    }
-
-    public static void addVanillaCasingsToGTOreDictUnificator() {
-        GTOreDictUnificator
-            .addAssociation(OrePrefixes.blockCasing, Materials.Aluminium, ItemList.Casing_FrostProof.get(1L), false);
-        GTOreDictUnificator
-            .addAssociation(OrePrefixes.blockCasing, Materials.Nickel, ItemList.Casing_HeatProof.get(1L), false);
-        GTOreDictUnificator
-            .addAssociation(OrePrefixes.blockCasing, Materials.Lead, ItemList.Casing_RadiationProof.get(1L), false);
-        GTOreDictUnificator
-            .addAssociation(OrePrefixes.blockCasing, Materials.Steel, ItemList.Casing_SolidSteel.get(1L), false);
-        GTOreDictUnificator.addAssociation(
-            OrePrefixes.blockCasing,
-            Materials.TungstenSteel,
-            ItemList.Casing_RobustTungstenSteel.get(1L),
-            false);
-        GTOreDictUnificator.addAssociation(
-            OrePrefixes.blockCasing,
-            Materials.Polytetrafluoroethylene,
-            ItemList.Casing_Chemically_Inert.get(1L),
-            false);
     }
 
     /**

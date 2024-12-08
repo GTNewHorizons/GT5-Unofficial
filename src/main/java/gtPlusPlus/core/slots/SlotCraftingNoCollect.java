@@ -18,7 +18,7 @@ public class SlotCraftingNoCollect extends SlotCrafting {
     /** The craft matrix inventory linked to this result slot. */
     private final IInventory craftMatrix;
     /** The player that is using the GUI where this slot resides. */
-    private EntityPlayer thePlayer;
+    private final EntityPlayer thePlayer;
     /**
      * The number of items that have been crafted so far. Gets passed to ItemStack.onCrafting before being reset.
      */

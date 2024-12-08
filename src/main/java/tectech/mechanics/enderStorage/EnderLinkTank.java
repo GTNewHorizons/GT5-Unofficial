@@ -2,11 +2,14 @@ package tectech.mechanics.enderStorage;
 
 import java.io.Serializable;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.google.common.base.Objects;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 public class EnderLinkTank implements Serializable {
 
@@ -24,12 +27,24 @@ public class EnderLinkTank implements Serializable {
         D = tile.getWorldObj().provider.dimensionId;
     }
 
+    private EnderLinkTank(int x, int y, int z, int d) {
+        X = x;
+        Y = y;
+        Z = z;
+        D = d;
+    }
+
     public IFluidHandler getFluidHandler() {
-        IFluidHandler fluidHandler = null;
-        TileEntity tile = DimensionManager.getWorld(D)
-            .getTileEntity(X, Y, Z);
-        if (tile instanceof IFluidHandler) fluidHandler = (IFluidHandler) tile;
-        return fluidHandler;
+        World world = DimensionManager.getWorld(D);
+
+        if (world == null) return null;
+
+        TileEntity tile = world.getTileEntity(X, Y, Z);
+        if (tile instanceof IFluidHandler fluidHandler) {
+            return fluidHandler;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -43,5 +58,25 @@ public class EnderLinkTank implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(X, Y, Z, D);
+    }
+
+    public NBTTagCompound save() {
+        NBTTagCompound data = new NBTTagCompound();
+
+        data.setLong("coords", CoordinatePacker.pack(X, Y, Z));
+        data.setInteger("dim", D);
+
+        return data;
+    }
+
+    public static EnderLinkTank load(NBTTagCompound data) {
+        long coords = data.getLong("coords");
+        int dim = data.getInteger("dim");
+
+        return new EnderLinkTank(
+            CoordinatePacker.unpackX(coords),
+            CoordinatePacker.unpackY(coords),
+            CoordinatePacker.unpackZ(coords),
+            dim);
     }
 }

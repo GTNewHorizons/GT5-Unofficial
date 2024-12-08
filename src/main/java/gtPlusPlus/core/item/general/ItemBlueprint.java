@@ -124,12 +124,11 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
     }
 
     public ItemStack writeItemsToNBT(final ItemStack itemStack, final ItemStack[] craftingGrid) {
-        final ItemStack[] blueprint = craftingGrid;
         if (itemStack.hasTagCompound()) {
             final NBTTagCompound nbt = itemStack.getTagCompound();
             final NBTTagList list = new NBTTagList();
             for (int i = 0; i < INV_SIZE; i++) {
-                final ItemStack stack = blueprint[i];
+                final ItemStack stack = craftingGrid[i];
                 if (stack != null) {
                     final NBTTagCompound data = new NBTTagCompound();
                     stack.writeToNBT(data);
@@ -180,7 +179,6 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
 
                 if (output != null) {
                     this.setBlueprintName(stack, output.getDisplayName());
-                    hasBP = true;
                     return true;
                 }
                 return false;
@@ -227,20 +225,20 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
     public boolean createNBT(final ItemStack itemStack) {
         if (itemStack.hasTagCompound()) {
             if (!itemStack.stackTagCompound.getBoolean("mBlueprint") && !itemStack.stackTagCompound.getString("mName")
-                .equals("")) {
+                .isEmpty()) {
                 // No Blueprint and no name Set
                 Logger.WARNING("No Blueprint and no name Set");
                 return false;
             } else if (itemStack.stackTagCompound.getBoolean("mBlueprint")
                 && !itemStack.stackTagCompound.getString("mName")
-                    .equals("")) {
+                    .isEmpty()) {
                         // Has Blueprint but invalid name set
                         Logger.WARNING("Has Blueprint but invalid name set");
                         return false;
                     } else
                 if (!itemStack.stackTagCompound.getBoolean("mBlueprint")
                     && itemStack.stackTagCompound.getString("mName")
-                        .equals("")) {
+                        .isEmpty()) {
                             // Has no Blueprint, but strangely has a name
                             Logger.WARNING("Has no Blueprint, but strangely has a name");
                             return false;
@@ -289,9 +287,6 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                 // o = itemStack.stackTagCompound.getInteger(tagNBT);
                 break;
         }
-        if (o != null) {
-            return o;
-        }
-        return null;
+        return o;
     }
 }

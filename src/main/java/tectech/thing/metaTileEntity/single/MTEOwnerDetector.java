@@ -5,13 +5,10 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,6 +19,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTUtility;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.util.CommonValues;
 import tectech.util.TTUtility;
@@ -111,7 +109,7 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (uuid == null || uuid.length() == 0) {
+            if (uuid == null || uuid.isEmpty()) {
                 String name = aBaseMetaTileEntity.getOwnerName();
                 if (!("Player".equals(name))) {
                     uuid = TecTech.proxy.getUUID(name);
@@ -123,8 +121,8 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && aTick % 20 == CommonValues.RECIPE_AT) {
-            boolean detected = TecTech.proxy.isOnlineUUID(uuid) || (uuid != null && uuid.length() > 0
-                && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
+            boolean detected = TecTech.proxy.isOnlineUUID(uuid)
+                || (uuid != null && !uuid.isEmpty() && TecTech.proxy.isOnlineName(aBaseMetaTileEntity.getOwnerName()));
             aBaseMetaTileEntity.setActive(detected);
             aBaseMetaTileEntity.setGenericRedstoneOutput(detected);
             byte value = (byte) (detected ? 15 : 0);
@@ -136,11 +134,10 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        String clientLocale;
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
+        final String clientLocale;
+        if (aPlayer instanceof EntityPlayerMPAccessor) {
+            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
+        } else {
             clientLocale = "en_US";
         }
         interdimensional ^= true;

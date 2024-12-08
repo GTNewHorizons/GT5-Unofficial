@@ -20,45 +20,39 @@ public class WorkbenchCraftingHandler {
     private static final WorkbenchCraftingHandler instance = new WorkbenchCraftingHandler();
     private final List<IRecipe> recipes = new ArrayList<>();
 
-    public static final WorkbenchCraftingHandler getInstance() {
+    public static WorkbenchCraftingHandler getInstance() {
         return instance;
     }
 
     public WorkbenchCraftingHandler() {
 
         // just a example recipe so you know how to add them
-        this.addRecipe(
-            new ItemStack(Blocks.iron_block),
-            new Object[] { "###", "###", "###", Character.valueOf('#'), Items.iron_ingot });
+        this.addRecipe(new ItemStack(Blocks.iron_block), new Object[] { "###", "###", "###", '#', Items.iron_ingot });
 
         // another example Recipe, but shapeless
         this.addShapelessRecipe(new ItemStack(Items.cake), new Object[] { Items.stick });
     }
 
-    void addRecipe(final ItemStack par1ItemStack, final Object par2ArrayOfObj[]) {
-        String s = "";
+    void addRecipe(final ItemStack par1ItemStack, final Object[] par2ArrayOfObj) {
+        StringBuilder s = new StringBuilder();
         int i = 0;
         int j = 0;
         int k = 0;
 
         if (par2ArrayOfObj[i] instanceof String[]) {
-            final String as[] = (String[]) par2ArrayOfObj[i++];
+            final String[] as = (String[]) par2ArrayOfObj[i++];
 
             for (final String s2 : as) {
                 k++;
                 j = s2.length();
-                s = (new StringBuilder()).append(s)
-                    .append(s2)
-                    .toString();
+                s.append(s2);
             }
         } else {
             while (par2ArrayOfObj[i] instanceof String) {
                 final String s1 = (String) par2ArrayOfObj[i++];
                 k++;
                 j = s1.length();
-                s = (new StringBuilder()).append(s)
-                    .append(s1)
-                    .toString();
+                s.append(s1);
             }
         }
 
@@ -79,13 +73,13 @@ public class WorkbenchCraftingHandler {
             hashmap.put(character, itemstack);
         }
 
-        final ItemStack aitemstack[] = new ItemStack[j * k];
+        final ItemStack[] aitemstack = new ItemStack[j * k];
 
         for (int i1 = 0; i1 < (j * k); i1++) {
             final char c = s.charAt(i1);
 
-            if (hashmap.containsKey(Character.valueOf(c))) {
-                aitemstack[i1] = hashmap.get(Character.valueOf(c))
+            if (hashmap.containsKey(c)) {
+                aitemstack[i1] = hashmap.get(c)
                     .copy();
             } else {
                 aitemstack[i1] = null;
@@ -95,12 +89,10 @@ public class WorkbenchCraftingHandler {
         this.recipes.add(new ShapedRecipes(j, k, aitemstack, par1ItemStack));
     }
 
-    public void addShapelessRecipe(final ItemStack par1ItemStack, final Object par2ArrayOfObj[]) {
+    public void addShapelessRecipe(final ItemStack par1ItemStack, final Object[] par2ArrayOfObj) {
         final ArrayList<ItemStack> arraylist = new ArrayList<>();
-        final Object aobj[] = par2ArrayOfObj;
-        final int i = aobj.length;
 
-        for (final Object obj : aobj) {
+        for (final Object obj : par2ArrayOfObj) {
             if (obj instanceof ItemStack) {
                 arraylist.add(((ItemStack) obj).copy());
                 continue;

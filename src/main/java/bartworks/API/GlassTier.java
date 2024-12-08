@@ -33,6 +33,7 @@ public class GlassTier {
     }
 
     public static void addCustomGlass(@NotNull Block block, int meta, int tier) {
+        Objects.requireNonNull(block, "Glass block cannot be null");
         GlassTier.glasses.put(new BlockMetaPair(block, (byte) meta), tier);
     }
 

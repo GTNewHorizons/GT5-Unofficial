@@ -31,6 +31,14 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
     public static ArrayList<WorldgenGTOreSmallPieces> sList = new ArrayList<>();
 
     public Class[] mAllowedProviders;
+    public String[] blackListedProviders;
+    public static Class tfProviderClass;
+
+    static {
+        try {
+            tfProviderClass = Class.forName("twilightforest.world.WorldProviderTwilightForest");
+        } catch (ClassNotFoundException ignored) {}
+    }
 
     public WorldgenGTOreSmallPieces(SmallOreBuilder ore) {
         super(ore.smallOreName, GregTechAPI.sWorldgenList, ore.enabledByDefault);
@@ -54,12 +62,19 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
 
         if (this.mOverworld) {
             allowedProviders.add(WorldProviderSurface.class);
+            if (!this.twilightForest) {
+                blackListedProviders = new String[] { "twilightforest.world.WorldProviderTwilightForest" };
+            }
+        }
+
+        if (tfProviderClass != null && this.twilightForest) {
+            allowedProviders.add(tfProviderClass);
         }
 
         if (this.mEnd) {
             allowedProviders.add(WorldProviderEnd.class);
         }
-        mAllowedProviders = allowedProviders.toArray(new Class[allowedProviders.size()]);
+        mAllowedProviders = allowedProviders.toArray(new Class[0]);
     }
 
     @Override

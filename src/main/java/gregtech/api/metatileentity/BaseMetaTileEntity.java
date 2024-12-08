@@ -83,8 +83,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.Pollution;
 import gregtech.common.covers.CoverInfo;
+import gregtech.common.pollution.Pollution;
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -126,7 +126,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     private long mLastCheckTick = 0;
     private String mOwnerName = "";
     private UUID mOwnerUuid = GTUtility.defaultUuid;
-    private NBTTagCompound mRecipeStuff = new NBTTagCompound();
     private int cableUpdateDelay = 30;
 
     public BaseMetaTileEntity() {}
@@ -158,7 +157,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             nbt.setBoolean("mWorks", !mWorks);
             nbt.setBoolean("mInputDisabled", mInputDisabled);
             nbt.setBoolean("mOutputDisabled", mOutputDisabled);
-            nbt.setTag("GT.CraftingComponents", mRecipeStuff);
             nbt.setString("shutDownReasonID", getLastShutDownReason().getID());
             nbt.setTag("shutDownReason", getLastShutDownReason().writeToNBT(new NBTTagCompound()));
         } catch (Throwable e) {
@@ -215,7 +213,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
             mOtherUpgrades = (byte) (aNBT.getByte("mOtherUpgrades") + aNBT.getByte("mBatteries")
                 + aNBT.getByte("mLiBatteries"));
 
-            mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");
             final int nbtVersion = aNBT.getInteger("nbtVersion");
             readCoverNBT(aNBT);
             loadMetaTileNBT(aNBT);
@@ -1342,8 +1339,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
 
     public boolean playerOwnsThis(EntityPlayer aPlayer, boolean aCheckPrecicely) {
         if (!canAccessData()) return false;
-        if (aCheckPrecicely || privateAccess() || (mOwnerName.length() == 0))
-            if ((mOwnerName.length() == 0) && isServerSide()) {
+        if (aCheckPrecicely || privateAccess() || (mOwnerName.isEmpty()))
+            if ((mOwnerName.isEmpty()) && isServerSide()) {
                 setOwnerName(aPlayer.getDisplayName());
                 setOwnerUuid(aPlayer.getUniqueID());
             } else return !privateAccess() || aPlayer.getDisplayName()
@@ -1412,14 +1409,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                     }
                 }
             }
-            if (mRecipeStuff != null) {
-                for (int i = 0; i < 9; i++) {
-                    if (this.getRandomNumber(100) < 50) {
-                        dropItems(GTUtility.loadItem(mRecipeStuff, "Ingredient." + i));
-                    }
-                }
-            }
-
             Pollution.addPollution((TileEntity) this, GTMod.gregtechproxy.mPollutionOnExplosion);
             mMetaTileEntity.doExplosion(aAmount);
         }
@@ -1455,10 +1444,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
     public ArrayList<ItemStack> getDrops() {
         final ItemStack rStack = new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
         final NBTTagCompound tNBT = new NBTTagCompound();
-        if (mRecipeStuff != null && !mRecipeStuff.hasNoTags()) tNBT.setTag("GT.CraftingComponents", mRecipeStuff);
-        if (mMuffler) tNBT.setBoolean("mMuffler", mMuffler);
-        if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", mLockUpgrade);
-        if (mSteamConverter) tNBT.setBoolean("mSteamConverter", mSteamConverter);
+        if (mMuffler) tNBT.setBoolean("mMuffler", true);
+        if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", true);
+        if (mSteamConverter) tNBT.setBoolean("mSteamConverter", true);
         if (mColor > 0) tNBT.setByte("mColor", mColor);
         if (mOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", mOtherUpgrades);
 

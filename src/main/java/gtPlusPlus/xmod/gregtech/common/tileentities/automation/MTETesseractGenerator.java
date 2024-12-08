@@ -196,13 +196,10 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 .getOwnerName() != null
                 && !this.getBaseMetaTileEntity()
                     .getOwnerName()
-                    .equals("")) {
+                    .isEmpty()) {
                 if (this.getBaseMetaTileEntity()
                     .getOwnerName()
-                    .toLowerCase()
-                    .equals(
-                        aPlayer.getDisplayName()
-                            .toLowerCase())) {
+                    .equalsIgnoreCase(aPlayer.getDisplayName())) {
                     this.mOwner = PlayerUtils.getPlayersUUIDByName(
                         this.getBaseMetaTileEntity()
                             .getOwnerName());
@@ -684,8 +681,8 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 && (this.getBaseMetaTileEntity()
                     .decreaseStoredEnergyUnits(this.mNeededEnergy, false))) {
                 // Utils.LOG_WARNING("Can Work & Has Energy");
-                if ((getGeneratorEntity(Integer.valueOf(this.mFrequency)) == null)
-                    || (!getGeneratorEntity(Integer.valueOf(this.mFrequency)).isValidTesseractGenerator(null, true))) {
+                if ((getGeneratorEntity(this.mFrequency) == null)
+                    || (!getGeneratorEntity(this.mFrequency).isValidTesseractGenerator(null, true))) {
                     // Utils.LOG_WARNING("storing TE I think to mFreq map?");
                     TesseractHelper.setGeneratorOwnershipByPlayer(
                         PlayerUtils.getPlayerOnServerFromUUID(mOwner),
@@ -693,7 +690,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
                         this);
                 }
             } else {
-                if (getGeneratorEntity(Integer.valueOf(this.mFrequency)) == this) {
+                if (getGeneratorEntity(this.mFrequency) == this) {
                     Logger.WARNING("this gen == mFreq on map - do block update");
                     TesseractHelper.removeGenerator(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
                     this.getBaseMetaTileEntity()
@@ -701,7 +698,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
                 }
                 this.isWorking = 0;
             }
-            if (getGeneratorEntity(Integer.valueOf(this.mFrequency)) == this) {
+            if (getGeneratorEntity(this.mFrequency) == this) {
                 // Utils.LOG_WARNING("mFreq == this - do work related things");
                 if (this.isWorking < 20) {
                     this.isWorking = ((byte) (this.isWorking + 1));
@@ -789,21 +786,11 @@ public class MTETesseractGenerator extends MTEBasicTank {
     }
 
     private MTETesseractGenerator getGeneratorEntity() {
-        MTETesseractGenerator thisGenerator = TesseractHelper
-            .getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
-        if (thisGenerator != null) {
-            return thisGenerator;
-        }
-        return null;
+        return TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
     }
 
     private MTETesseractGenerator getGeneratorEntity(int frequency) {
-        MTETesseractGenerator thisGenerator = TesseractHelper
-            .getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), frequency);
-        if (thisGenerator != null) {
-            return thisGenerator;
-        }
-        return null;
+        return TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), frequency);
     }
 
     @Override
@@ -812,7 +799,7 @@ public class MTETesseractGenerator extends MTEBasicTank {
             .getOwnerName() != null
             && !this.getBaseMetaTileEntity()
                 .getOwnerName()
-                .equals("")) {
+                .isEmpty()) {
             this.mOwner = PlayerUtils.getPlayersUUIDByName(
                 this.getBaseMetaTileEntity()
                     .getOwnerName());

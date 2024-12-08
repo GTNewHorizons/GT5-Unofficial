@@ -102,20 +102,12 @@ public class ComplexParallelProcessingLogic<P extends ComplexParallelProcessingL
         calculatedEutValues = new long[maxComplexParallels];
         durations = new int[maxComplexParallels];
         progresses = new int[maxComplexParallels];
-        for (int i = 0; i < oldOutputItems.length; i++) {
-            outputItems[i] = oldOutputItems[i];
-        }
-        for (int i = 0; i < oldOutputFluids.length; i++) {
-            outputFluids[i] = oldOutputFluids[i];
-        }
-        for (int i = 0; i < oldCalculatedEutValues.length; i++) {
-            calculatedEutValues[i] = oldCalculatedEutValues[i];
-        }
+        System.arraycopy(oldOutputItems, 0, outputItems, 0, oldOutputItems.length);
+        System.arraycopy(oldOutputFluids, 0, outputFluids, 0, oldOutputFluids.length);
+        System.arraycopy(oldCalculatedEutValues, 0, calculatedEutValues, 0, oldCalculatedEutValues.length);
         for (int i = 0; i < oldDurations[i]; i++) {
             durations[i] = oldDurations[i];
         }
-        for (int i = 0; i < oldProgresses.length; i++) {
-            progresses[i] = oldProgresses[i];
-        }
+        System.arraycopy(oldProgresses, 0, progresses, 0, oldProgresses.length);
     }
 }

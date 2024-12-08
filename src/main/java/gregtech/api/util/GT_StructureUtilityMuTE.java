@@ -181,8 +181,7 @@ public class GT_StructureUtilityMuTE {
                     mIcons = new IIcon[6];
                     Arrays.fill(mIcons, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex].getIcon());
                 }
-                final short[] RGBA = DEFAULT;
-                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, RGBA);
+                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, DEFAULT);
                 return true;
             }
 
@@ -219,7 +218,7 @@ public class GT_StructureUtilityMuTE {
      */
     public static class MuTEStructureCasing {
 
-        private String registryName;
+        private final String registryName;
         private int registryId = GTValues.W;
         private final int defaultMeta;
         private final Integer[] validIds;

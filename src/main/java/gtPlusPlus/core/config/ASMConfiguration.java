@@ -11,7 +11,6 @@ import gregtech.api.enums.Mods;
 public class ASMConfiguration {
 
     public static Debug debug = new Debug();
-    public static General general = new General();
 
     // Debug
     @Config.Comment("Debug section")
@@ -27,14 +26,4 @@ public class ASMConfiguration {
 
     }
 
-    @Config.Comment("General section")
-    public static class General {
-        // General Features
-
-        @Config.Comment("Set to a value greater than 0 to reduce the ticks taken to delay between BGM tracks. Acceptable Values are 1-32767, where 0 is disabled. Vanilla Uses 12,000 & 24,000. 200 is 10s.")
-        @Config.DefaultInt(0)
-        @Config.RangeInt(min = 0, max = Short.MAX_VALUE)
-        public int enableWatchdogBGM;
-
-    }
 }
