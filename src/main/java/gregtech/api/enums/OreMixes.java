@@ -310,7 +310,7 @@ public enum OreMixes {
         .localize(Materials.Tungstate)),
 
     Sapphire(new OreMixBuilder().name("ore.mix.sapphire")
-        .heightRange(10, 40)
+        .heightRange(10, 25)
         .weight(60)
         .density(2)
         .size(16)
@@ -361,7 +361,7 @@ public enum OreMixes {
         .localize(Materials.Diamond)),
 
     Olivine(new OreMixBuilder().name("ore.mix.olivine")
-        .heightRange(10, 40)
+        .heightRange(10, 25)
         .weight(60)
         .density(2)
         .size(16)
@@ -466,7 +466,7 @@ public enum OreMixes {
         .sporadic(Materials.Titanium)),
 
     AquaIgnis(new OreMixBuilder().name("ore.mix.aquaignis")
-        .heightRange(5, 35)
+        .heightRange(5, 20)
         .weight(16)
         .density(2)
         .size(16)
@@ -478,7 +478,7 @@ public enum OreMixes {
         .localize(Materials.InfusedWater, Materials.InfusedFire, Materials.Amber)),
 
     TerraAer(new OreMixBuilder().name("ore.mix.terraaer")
-        .heightRange(5, 35)
+        .heightRange(5, 20)
         .weight(16)
         .density(2)
         .size(16)
@@ -491,7 +491,7 @@ public enum OreMixes {
         .localize(Materials.InfusedEarth, Materials.InfusedAir)),
 
     PerditioOrdo(new OreMixBuilder().name("ore.mix.perditioordo")
-        .heightRange(5, 35)
+        .heightRange(5, 20)
         .weight(16)
         .density(2)
         .size(16)
@@ -896,7 +896,7 @@ public enum OreMixes {
         .sporadic(Materials.MeteoricIron)),
 
     TFGalena(new OreMixBuilder().name("ore.mix.tfgalena")
-        .heightRange(5, 35)
+        .heightRange(5, 20)
         .weight(40)
         .density(4)
         .size(16)
