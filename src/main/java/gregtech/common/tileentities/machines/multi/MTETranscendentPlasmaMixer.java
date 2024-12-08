@@ -40,6 +40,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -89,7 +90,8 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addElement(
             'B',
-            buildHatchAdder(MTETranscendentPlasmaMixer.class).atLeast(InputHatch, OutputHatch, InputBus, Maintenance)
+            buildHatchAdder(MTETranscendentPlasmaMixer.class)
+                .atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1, Maintenance, 0))
                 .casingIndex(DIM_INJECTION_CASING)
                 .dot(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))

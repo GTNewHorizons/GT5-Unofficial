@@ -17,8 +17,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -70,7 +68,7 @@ public class MTESmeltingModule extends MTEBaseModule {
         return furnaceMode ? RecipeMaps.furnaceRecipes : RecipeMaps.blastFurnaceRecipes;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(RecipeMaps.blastFurnaceRecipes, RecipeMaps.furnaceRecipes);
@@ -89,7 +87,7 @@ public class MTESmeltingModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
                 if (recipe.mSpecialValue > getHeat()) {
                     return CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
@@ -108,7 +106,7 @@ public class MTESmeltingModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
+            protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
                 }
@@ -124,9 +122,9 @@ public class MTESmeltingModule extends MTEBaseModule {
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            @Nonnull
+            @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setHeatOC(true)

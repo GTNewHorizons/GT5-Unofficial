@@ -276,7 +276,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     public String[] getInfoData() {
         String[] info = super.getInfoData();
         info[4] = "Currently generates: " + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(this.getPowerFlow())
+            + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
             + EnumChatFormatting.RESET
             + " EU/t";
         info[6] = "Problems: " + EnumChatFormatting.RED

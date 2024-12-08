@@ -11,9 +11,10 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FOG_EXOTIC_TIER;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
+import static gregtech.api.util.GTRecipeConstants.FOG_UPGRADE_NAME_SHORT;
 import static tectech.recipe.TecTechRecipeMaps.godforgeExoticMatterRecipes;
 import static tectech.recipe.TecTechRecipeMaps.godforgePlasmaRecipes;
-import static tectech.util.GodforgeMath.getRandomIntInRange;
+import static tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath.getRandomIntInRange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
@@ -47,6 +50,7 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
+import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
 
 public class Godforge implements Runnable {
 
@@ -55,7 +59,6 @@ public class Godforge implements Runnable {
     public static final HashMap<ItemStack, Integer> exoticModulePlasmaItemMap = new HashMap<>();
     public static final HashMap<FluidStack, Integer> exoticModulePlasmaFluidMap = new HashMap<>();
     public static final HashMap<ItemStack, Integer> exoticModuleMagmatterItemMap = new HashMap<>();
-    public static final HashMap<Integer, ItemStack[]> godforgeUpgradeMats = new HashMap<>();
     public static final List<ItemStack> quarkGluonFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> quarkGluonItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterTimeFluidItemsForNEI = new ArrayList<>();
@@ -688,83 +691,154 @@ public class Godforge implements Runnable {
 
         // Godforge upgrade materials
         if (EternalSingularity.isModLoaded() && GalaxySpace.isModLoaded()) {
-            godforgeUpgradeMats.put(
-                0,
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
-                    ItemList.SuperconductorComposite.get(32),
-                    GGMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 8L), ItemList.Robot_Arm_UIV.get(64L),
-                    ItemList.Field_Generator_UEV.get(64L) });
+            ForgeOfGodsUpgrade.START.addExtraCost(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 64),
+                ItemList.SuperconductorComposite.get(32),
+                GGMaterial.metastableOganesson.get(OrePrefixes.gearGt, 16),
+                getModItem(EternalSingularity.ID, "eternal_singularity", 8L),
+                ItemList.Robot_Arm_UIV.get(64L),
+                ItemList.Field_Generator_UEV.get(64L));
 
-            godforgeUpgradeMats.put(
-                5,
-                new ItemStack[] { GregtechItemList.Mega_AlloyBlastSmelter.get(16L),
-                    ItemList.Casing_Coil_Hypogen.get(64L),
-                    CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(32L),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L),
-                    ItemRefer.Field_Restriction_Coil_T3.get(48), ItemList.Robot_Arm_UIV.get(64L),
-                    ItemList.Field_Generator_UEV.get(64L) });
+            ForgeOfGodsUpgrade.FDIM.addExtraCost(
+                GregtechItemList.Mega_AlloyBlastSmelter.get(16L),
+                ItemList.Casing_Coil_Hypogen.get(64L),
+                CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(32L),
+                getModItem(EternalSingularity.ID, "eternal_singularity", 16L),
+                ItemRefer.Field_Restriction_Coil_T3.get(48),
+                ItemList.Robot_Arm_UIV.get(64L),
+                ItemList.Field_Generator_UEV.get(64L));
 
-            godforgeUpgradeMats.put(
-                7,
-                new ItemStack[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(8),
-                    GregtechItemList.FusionComputer_UV3.get(8), GregtechItemList.Casing_Fusion_Internal2.get(64),
-                    getModItem(GalaxySpace.ID, "item.DysonSwarmParts", 64, 3), MaterialsAlloy.QUANTUM.getPlateDense(48),
-                    MaterialsElements.STANDALONE.RHUGNOR.getGear(32),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 16L), ItemList.Robot_Arm_UIV.get(64L),
-                    ItemList.Field_Generator_UEV.get(64L) });
+            ForgeOfGodsUpgrade.GPCI.addExtraCost(
+                CustomItemList.Godforge_StellarEnergySiphonCasing.get(8),
+                GregtechItemList.FusionComputer_UV3.get(8),
+                GregtechItemList.Casing_Fusion_Internal2.get(64),
+                getModItem(GalaxySpace.ID, "item.DysonSwarmParts", 64, 3),
+                MaterialsAlloy.QUANTUM.getPlateDense(48),
+                MaterialsElements.STANDALONE.RHUGNOR.getGear(32),
+                getModItem(EternalSingularity.ID, "eternal_singularity", 16L),
+                ItemList.Robot_Arm_UIV.get(64L),
+                ItemList.Field_Generator_UEV.get(64L));
 
-            godforgeUpgradeMats.put(
-                11,
-                new ItemStack[] { CustomItemList.Godforge_StellarEnergySiphonCasing.get(16),
-                    ItemRefer.Compact_Fusion_MK5.get(2), ItemRefer.Compact_Fusion_Coil_T4.get(64),
-                    CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(16),
-                    ItemList.Machine_Multi_TranscendentPlasmaMixer.get(4),
-                    MaterialsElements.STANDALONE.RHUGNOR.getGear(64),
-                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Ichorium, 64),
-                    getModItem(EternalSingularity.ID, "eternal_singularity", 32L), ItemList.Robot_Arm_UIV.get(64L),
-                    ItemList.Field_Generator_UEV.get(64L) });
+            ForgeOfGodsUpgrade.QGPIU.addExtraCost(
+                CustomItemList.Godforge_StellarEnergySiphonCasing.get(16),
+                ItemRefer.Compact_Fusion_MK5.get(2),
+                ItemRefer.Compact_Fusion_Coil_T4.get(64),
+                CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(16),
+                ItemList.Machine_Multi_TranscendentPlasmaMixer.get(4),
+                MaterialsElements.STANDALONE.RHUGNOR.getGear(64),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Ichorium, 64),
+                getModItem(EternalSingularity.ID, "eternal_singularity", 32L),
+                ItemList.Robot_Arm_UIV.get(64L),
+                ItemList.Field_Generator_UEV.get(64L));
 
-            godforgeUpgradeMats.put(
-                26,
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 64),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
-                    MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(64),
-                    MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(64),
-                    CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
-                    CustomItemList.EOH_Infinite_Energy_Casing.get(8), ItemList.ZPM6.get(2),
-                    ItemList.Field_Generator_UMV.get(32) });
+            ForgeOfGodsUpgrade.CD.addExtraCost(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
+                MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(64),
+                MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(64),
+                CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
+                CustomItemList.EOH_Infinite_Energy_Casing.get(8),
+                ItemList.ZPM6.get(2),
+                ItemList.Field_Generator_UMV.get(32));
 
-            godforgeUpgradeMats.put(
-                29,
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 64),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 64),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Eternity, 16),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 2),
-                    CustomItemList.EOH_Infinite_Energy_Casing.get(64),
-                    CustomItemList.StabilisationFieldGeneratorTier5.get(16), ItemList.ZPM6.get(6),
-                    ItemList.Field_Generator_UMV.get(64) });
+            ForgeOfGodsUpgrade.EE.addExtraCost(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.WhiteDwarfMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.BlackDwarfMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Eternity, 16),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 2),
+                CustomItemList.EOH_Infinite_Energy_Casing.get(64),
+                CustomItemList.StabilisationFieldGeneratorTier5.get(16),
+                ItemList.ZPM6.get(6),
+                ItemList.Field_Generator_UMV.get(64));
 
-            godforgeUpgradeMats.put(
-                30,
-                new ItemStack[] { CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(32),
-                    CustomItemList.Godforge_StellarEnergySiphonCasing.get(64),
-                    CustomItemList.StabilisationFieldGeneratorTier6.get(48),
-                    ItemList.Transdimensional_Alignment_Matrix.get(8), ItemList.ZPM6.get(16),
-                    ItemList.Robot_Arm_UMV.get(64), ItemList.Conveyor_Module_UMV.get(64) });
+            ForgeOfGodsUpgrade.END.addExtraCost(
+                CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(32),
+                CustomItemList.Godforge_StellarEnergySiphonCasing.get(64),
+                CustomItemList.StabilisationFieldGeneratorTier6.get(48),
+                ItemList.Transdimensional_Alignment_Matrix.get(8),
+                ItemList.ZPM6.get(16),
+                ItemList.Robot_Arm_UMV.get(64),
+                ItemList.Conveyor_Module_UMV.get(64));
         }
 
     }
 
     public static void runDevEnvironmentRecipes() {
         // put something in here to not crash the game in dev environment when opening the manual insertion window
-        godforgeUpgradeMats.put(0, new ItemStack[] { new ItemStack(Blocks.cobblestone, 4) });
-        godforgeUpgradeMats.put(5, new ItemStack[] { new ItemStack(Blocks.cobblestone, 8) });
-        godforgeUpgradeMats.put(7, new ItemStack[] { new ItemStack(Blocks.cobblestone, 12) });
-        godforgeUpgradeMats.put(11, new ItemStack[] { new ItemStack(Blocks.cobblestone, 16) });
-        godforgeUpgradeMats.put(26, new ItemStack[] { new ItemStack(Blocks.cobblestone, 32) });
-        godforgeUpgradeMats.put(29, new ItemStack[] { new ItemStack(Blocks.cobblestone, 48) });
-        godforgeUpgradeMats.put(30, new ItemStack[] { new ItemStack(Blocks.cobblestone, 64) });
+        ForgeOfGodsUpgrade.START.addExtraCost(
+            new ItemStack(Blocks.cobblestone, 4),
+            new ItemStack(Blocks.dirt, 12),
+            new ItemStack(Blocks.diamond_block, 8),
+            new ItemStack(Blocks.gold_block, 32));
+        ForgeOfGodsUpgrade.FDIM.addExtraCost(new ItemStack(Blocks.cobblestone, 8));
+        ForgeOfGodsUpgrade.GPCI.addExtraCost(new ItemStack(Blocks.cobblestone, 12));
+        ForgeOfGodsUpgrade.QGPIU.addExtraCost(new ItemStack(Blocks.cobblestone, 16));
+        ForgeOfGodsUpgrade.CD.addExtraCost(new ItemStack(Blocks.cobblestone, 32));
+        ForgeOfGodsUpgrade.EE.addExtraCost(new ItemStack(Blocks.cobblestone, 48));
+        ForgeOfGodsUpgrade.END.addExtraCost(new ItemStack(Blocks.cobblestone, 64));
+    }
+
+    public static void addFakeUpgradeCostRecipes() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.START.getExtraCost()))
+            .itemOutputs(
+                CustomItemList.Godforge_GravitonFlowModulatorTier1.get(1),
+                CustomItemList.Machine_Multi_SmeltingModule.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.START.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.FDIM.getExtraCost()))
+            .itemOutputs(CustomItemList.Machine_Multi_MoltenModule.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.FDIM.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.GPCI.getExtraCost()))
+            .itemOutputs(CustomItemList.Machine_Multi_PlasmaModule.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.GPCI.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.QGPIU.getExtraCost()))
+            .itemOutputs(CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(1))
+            .fluidOutputs(MaterialsUEVplus.QuarkGluonPlasma.getFluid(1000))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.QGPIU.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.CD.getExtraCost()))
+            .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.CD.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.EE.getExtraCost()))
+            .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.EE.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(ArrayUtils.addAll(ForgeOfGodsUpgrade.END.getExtraCost()))
+            .itemOutputs(MaterialsUEVplus.GravitonShard.getGems(1))
+            .fluidOutputs(MaterialsUEVplus.MagMatter.getMolten(576), Materials.Neutronium.getPlasma(1000))
+            .duration(1)
+            .eut(1)
+            .metadata(FOG_UPGRADE_NAME_SHORT, ForgeOfGodsUpgrade.END.getShortNameText())
+            .fake()
+            .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
     }
 
     public static void initMoltenModuleRecipes() {

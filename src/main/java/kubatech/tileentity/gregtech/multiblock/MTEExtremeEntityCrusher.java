@@ -262,7 +262,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         tt.addMachineType("Powered Spawner, EEC")
             .addInfo("Spawns and kills monsters for you.")
             .addInfo("You have to insert the powered spawner in the controller.")
-            .addInfo("Base energy usage: 2,000 EU/t")
+            .addInfo("Base energy usage: 1,920 EU/t")
             .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs.")
             .addInfo("Recipe time is based on mob health.")
             .addInfo("You can additionally put a weapon inside the GUI.")

@@ -87,6 +87,7 @@ import forestry.apiculture.genetics.Bee;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -101,6 +102,7 @@ import gregtech.common.bees.GTBeeMutation;
 import gregtech.common.items.CombType;
 import gregtech.common.items.DropType;
 import gregtech.common.items.PropolisType;
+import gregtech.loaders.misc.bees.GTAlleleEffect;
 import gregtech.loaders.misc.bees.GTFlowers;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
@@ -1719,7 +1721,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(COLD);
         beeSpecies.setHasEffect();
-    }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")), new Consumer<>() {
+    }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(FORESTRY, "Glacial")), new Consumer<>() {
 
         @Override
         public void accept(GTBeeDefinition dis) {
@@ -1736,7 +1738,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(ICY);
             beeSpecies.setHasEffect();
-        }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")), new Consumer<>() {
+        }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(FORESTRY, "Glacial")), new Consumer<>() {
 
             @Override
             public void accept(GTBeeDefinition dis) {
@@ -2701,7 +2703,12 @@ public enum GTBeeDefinition implements IBeeDefinition {
             case GREGTECH -> "gregtech.effect" + name;
             default -> "forestry.effect" + name;
         };
-        return (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
+        IAlleleBeeEffect allele = (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
+        if (allele == null) {
+            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee effect: " + s);
+            allele = GTAlleleEffect.FORESTRY_BASE_EFFECT;
+        }
+        return allele;
     }
 
     static IAlleleFlowers getFlowers(byte modid, String name) {
@@ -2712,7 +2719,11 @@ public enum GTBeeDefinition implements IBeeDefinition {
             case GREGTECH -> "gregtech.flower" + name;
             default -> "forestry.flowers" + name;
         };
-        return (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
+        IAlleleFlowers allele = (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
+        if (allele == null) {
+            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee flower: " + s);
+        }
+        return allele;
     }
 
     private static IAlleleBeeSpecies getSpecies(byte modid, String name) {
@@ -2725,6 +2736,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         };
         IAlleleBeeSpecies ret = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
         if (ret == null) {
+            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee species: " + s);
             ret = NAQUADRIA.species;
         }
 

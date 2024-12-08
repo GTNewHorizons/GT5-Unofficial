@@ -87,8 +87,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             .addInfo("Each maintenance issue lowers output efficiency by 10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant");
 
-        tt.addSeparator()
-            .beginStructureBlock(3, 7, 3, false)
+        tt.beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
