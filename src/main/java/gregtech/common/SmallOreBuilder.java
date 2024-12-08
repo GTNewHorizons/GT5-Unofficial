@@ -1,23 +1,27 @@
 package gregtech.common;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IStoneCategory;
 
 public class SmallOreBuilder {
 
     public static final String OW = "Overworld";
     public static final String NETHER = "Nether";
-    public static final String THE_END = "TheEnd";
+    public static final String THE_END = "The End";
     public static final String TWILIGHT_FOREST = "Twilight Forest";
     public String smallOreName;
     public boolean enabledByDefault = true;
-    /** {full dimension name: enabled} */
+    /** {full dimension name} */
     public Set<String> dimsEnabled = new HashSet<>();
     public int minY, maxY, amount;
     public IMaterial ore;
+    public Set<IStoneCategory> stoneCategories;
+    public boolean defaultStoneCategories = true;
 
     public SmallOreBuilder name(String name) {
         this.smallOreName = name;
@@ -56,6 +60,17 @@ public class SmallOreBuilder {
 
     public SmallOreBuilder ore(IMaterial ore) {
         this.ore = ore;
+        return this;
+    }
+
+    public SmallOreBuilder stoneType(IStoneCategory... stoneCategories) {
+        if (defaultStoneCategories) {
+            this.stoneCategories = new HashSet<>();
+            defaultStoneCategories = false;
+        }
+
+        this.stoneCategories.addAll(Arrays.asList(stoneCategories));
+
         return this;
     }
 }

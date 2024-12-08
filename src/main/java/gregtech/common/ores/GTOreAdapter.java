@@ -2,11 +2,9 @@ package gregtech.common.ores;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import gregtech.GTMod;
@@ -14,6 +12,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -26,9 +25,6 @@ import net.minecraft.item.ItemStack;
 public enum GTOreAdapter implements IOreAdapter<Materials> {
     INSTANCE;
 
-    /** Don't generate ores for these materials. */
-    public final static Set<Materials> DISABLED_ORES = new HashSet<>();
-    
     private final Map<StoneType, BlockOresAbstract> oreBlocksByStoneType = new EnumMap<>(StoneType.class);
 
     public BlockOresAbstract ores1, ores2, ores3, ores4, ores5, ores6;
@@ -88,6 +84,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         });
         ores6 = new BlockOresAbstract(7, new StoneType[] {
             StoneType.Anubis,
+            StoneType.PackedIce,
         });
 
         ores = new BlockOresAbstract[] { ores1, ores2, ores3, ores4, ores5, ores6 };
@@ -104,16 +101,15 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
 
     @Override
     public boolean supports(OreInfo<?> info) {
-        if (info.stoneType != null) {
-            if (!(info.stoneType instanceof StoneType stoneType)) return false;
-            if (!oreBlocksByStoneType.containsKey(stoneType)) return false;
-            if (!stoneType.isEnabled()) return false;
-        }
-
         if (!(info.material instanceof Materials gtMat)) return false;
-        if (gtMat.mMetaItemSubID < 0 || gtMat.mMetaItemSubID >= 1000) return false;
-        if ((gtMat.mTypes & 0x8) == 0) return false;
-        if (DISABLED_ORES.contains(gtMat)) return false;
+        if (!OrePrefixes.ore.doGenerateItem(gtMat)) return false;
+
+        IStoneType stoneType = info.stoneType == null ? gtMat.getValidStones().get(0) : info.stoneType;
+
+        if (!(stoneType instanceof StoneType stoneType2)) return false;
+        if (!oreBlocksByStoneType.containsKey(stoneType2)) return false;
+        if (!stoneType2.isEnabled()) return false;
+        if (!info.material.isValidForStone(stoneType2)) return false;
 
         return true;
     }
@@ -132,9 +128,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
 
         Materials mat = GregTechAPI.sGeneratedMaterials[matId];
 
-        if (mat.mMetaItemSubID < 0 || mat.mMetaItemSubID >= 1000) return null;
-        if ((mat.mTypes & 0x8) == 0) return null;
-        if (DISABLED_ORES.contains(mat)) return null;
+        if (!OrePrefixes.ore.doGenerateItem(mat)) return null;
 
         StoneType stoneType = GTUtility.getIndexSafe(oreBlock.stoneTypes, stoneId);
         if (!stoneType.isEnabled()) return null;
@@ -153,17 +147,15 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
     public ObjectIntPair<Block> getBlock(OreInfo<?> info) {
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
-        BlockOresAbstract oreBlock = oreBlocksByStoneType.get(info.stoneType);
-
-        if (oreBlock == null) return null;
         if (!(info.material instanceof Materials gtMat)) return null;
-        if (gtMat.mMetaItemSubID < 0 || gtMat.mMetaItemSubID >= 1000) return null;
-        if ((gtMat.mTypes & 0x8) == 0) return null;
-        if (DISABLED_ORES.contains(gtMat)) return null;
+        if (!OrePrefixes.ore.doGenerateItem(gtMat)) return null;
         
         if (!(info.stoneType instanceof StoneType stoneType)) return null;
         if (!stoneType.isEnabled()) return null;
 
+        BlockOresAbstract oreBlock = oreBlocksByStoneType.get(stoneType);
+
+        if (oreBlock == null) return null;
         int stoneIndex = oreBlock.stoneTypes.indexOf(stoneType);
         if (stoneIndex == -1) return null;
 

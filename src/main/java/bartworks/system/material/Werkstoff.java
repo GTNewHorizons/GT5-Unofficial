@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -49,11 +51,13 @@ import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
@@ -534,6 +538,16 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     @Override
     public int getId() {
         return mID;
+    }
+
+    @Override
+    public boolean isValidForStone(IStoneType stoneType) {
+        return stoneType == StoneType.Stone;
+    }
+
+    @Override
+    public ImmutableList<IStoneType> getValidStones() {
+        return StoneType.STONE_ONLY;
     }
 
     @Override

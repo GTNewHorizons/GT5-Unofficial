@@ -18,6 +18,8 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -31,6 +33,7 @@ import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IMaterialHandler;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
@@ -2522,6 +2525,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         Boron.add(SubTag.SMELTING_TO_FLUID);
 
         MaterialsUEVplus.TranscendentMetal.add(SubTag.BLACK_HOLE);
+
+        Hydrogen.add(SubTag.ICE_ORE);
+        Nitrogen.add(SubTag.ICE_ORE);
+        Oxygen.add(SubTag.ICE_ORE);
+        Methane.add(SubTag.ICE_ORE);
+        CarbonDioxide.add(SubTag.ICE_ORE);
+        SulfurDioxide.add(SubTag.ICE_ORE);
+        Ammonia.add(SubTag.ICE_ORE);
     }
 
     public static void init() {
@@ -3062,6 +3073,24 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     @Override
     public int getId() {
         return mMetaItemSubID;
+    }
+
+    @Override
+    public boolean isValidForStone(IStoneType stoneType) {
+        if (contains(SubTag.ICE_ORE)) {
+            return stoneType.getCategory() == StoneCategory.Ice;
+        } else {
+            return stoneType.getCategory() == StoneCategory.Stone;
+        }
+    }
+
+    @Override
+    public ImmutableList<IStoneType> getValidStones() {
+        if (contains(SubTag.ICE_ORE)) {
+            return StoneType.ICES;
+        } else {
+            return StoneType.STONES;
+        }
     }
 
     @Override

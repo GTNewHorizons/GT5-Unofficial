@@ -117,11 +117,9 @@ public class GalacticGregRegistry {
                     "ModID: [%s] DimName: [%s] ValidBlocks: [%d] Identifier: [%s] Generators: [%d]",
                     mc.getModName(),
                     md.getDimensionName(),
-                    md.getReplaceableBlocks()
-                        .size(),
+                    md.getReplaceableBlocks().size(),
                     md.getDimIdentifier(),
-                    md.getSpaceObjectGenerators()
-                        .size());
+                    md.getSpaceObjectGenerators().size());
 
                 // Register default generator if dimension is asteroid and no generator was added
                 if (md.getDimensionType() == DimensionType.Asteroid) {

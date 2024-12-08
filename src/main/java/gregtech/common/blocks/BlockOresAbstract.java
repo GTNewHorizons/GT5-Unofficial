@@ -12,6 +12,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
@@ -119,11 +120,20 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
             if (!GTOreAdapter.INSTANCE.supports(info)) continue;
 
             for (StoneType stoneType : stoneTypes) {
-                if (stoneType == null || stoneType.isExtraneous()) continue;
-
-                info.stoneType = stoneType;
-
-                list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                // if this material only has ice ore, we only want to show the ice variants
+                if (info.material.contains(SubTag.ICE_ORE)) {
+                    if (stoneType == StoneType.PackedIce) {
+                        info.stoneType = stoneType;
+        
+                        list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                    }
+                } else {
+                    if (stoneType == null || stoneType.isExtraneous()) continue;
+    
+                    info.stoneType = stoneType;
+    
+                    list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                }
             }
         }
 
@@ -132,6 +142,8 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
         for (int matId = 0; matId < 1000; matId++) {
             info.material = getMaterial(matId);
             info.stoneType = null;
+
+            if (info.material != null && info.material.contains(SubTag.ICE_ORE)) continue;
 
             if (!GTOreAdapter.INSTANCE.supports(info)) continue;
 
@@ -162,8 +174,16 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
         boolean doFortune = !(harvester instanceof FakePlayer);
         boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
 
-        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata);) {
-            return (ArrayList<ItemStack>) GTOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
+        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
+            if (info == null) return new ArrayList<>();
+
+            ArrayList<ItemStack> drops = (ArrayList<ItemStack>) GTOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
+
+            if (drops == null) return new ArrayList<>();
+
+            drops.remove(null);
+
+            return drops;
         }
     }
 
@@ -229,11 +249,17 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
     }
 
     public String getLocalizedNameFormat(Materials material) {
-        String base = switch (material.mName) {
-            case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
-            case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
-            default -> "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
-        };
+        String base;
+
+        if (material.contains(SubTag.ICE_ORE)) {
+            base = "%material Ice";
+        } else {
+            base = switch (material.mName) {
+                case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
+                case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
+                default -> "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
+            };
+        }
 
         if (GTLanguageManager.i18nPlaceholder) {
             return base;
@@ -271,6 +297,8 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
     @Override
     public int getHarvestLevel(int meta) {
         try(OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
+            if (info == null) return 0;
+
             int smallOreBonus = info.isSmall ? -1 : 0;
     
             int harvestLevel = GTMod.gregtechproxy.mChangeHarvestLevels ? GTMod.gregtechproxy.mHarvestLevel[info.material.mMetaItemSubID] : info.material.mToolQuality;

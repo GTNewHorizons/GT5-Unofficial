@@ -7,15 +7,21 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IStoneCategory;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
+import gregtech.common.worldgen.IWorldgenLayer;
 
-public class WorldgenGTOreSmallPieces extends GTWorldgen {
+public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLayer {
 
     public final short mMinY;
     public final short mMaxY;
@@ -23,6 +29,7 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
     public final IMaterial mMaterial;
     public final String mBiome;
     public final Set<String> mAllowedDimensions;
+    public final Set<IStoneCategory> mAllowedStone;
     public static ArrayList<WorldgenGTOreSmallPieces> sList = new ArrayList<>();
 
     public WorldgenGTOreSmallPieces(SmallOreBuilder ore) {
@@ -34,8 +41,79 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen {
         this.mMaterial = ore.ore;
         this.mBiome = "None";
         this.mAllowedDimensions = new HashSet<>(ore.dimsEnabled);
+        this.mAllowedStone = ore.stoneCategories == null ? null : new HashSet<>(ore.stoneCategories);
 
         if (this.mEnabled) sList.add(this);
+    }
+
+    @Override
+    public int getMinY() {
+        return mMinY;
+    }
+
+    @Override
+    public int getMaxY() {
+        return mMaxY;
+    }
+
+    @Override
+    public int getWeight() {
+        return mAmount;
+    }
+
+    @Override
+    public float getSize() {
+        return mAmount / 2;
+    }
+
+    @Override
+    public float getDensity() {
+        return GTUtility.clamp(mAmount / 64.0f, 0f, 1f);
+    }
+
+    @Override
+    public boolean canGenerateIn(String dimName) {
+        return mAllowedDimensions.contains(dimName);
+    }
+
+    @Override
+    public boolean canGenerateIn(IStoneType stoneType) {
+        return mAllowedStone != null && mAllowedStone.contains(stoneType.getCategory());
+    }
+
+    @Override
+    public boolean canGenerateIn(IStoneCategory stoneType) {
+        return mAllowedStone != null && mAllowedStone.contains(stoneType);
+    }
+
+    @Override
+    public boolean isStoneSpecific() {
+        return mAllowedStone != null;
+    }
+
+    @Override
+    public boolean contains(IMaterial material) {
+        return material == mMaterial;
+    }
+
+    @Override
+    public ImmutableList<IMaterial> getOres() {
+        return mMaterial == null ? ImmutableList.of() : ImmutableList.of(mMaterial);
+    }
+
+    @Override
+    public IMaterial getOre(float k) {
+        return mMaterial;
+    }
+
+    @Override
+    public String getName() {
+        return mWorldGenName;
+    }
+
+    @Override
+    public boolean generatesBigOre() {
+        return false;
     }
 
     @Override

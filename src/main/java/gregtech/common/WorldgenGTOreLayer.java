@@ -9,15 +9,21 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IStoneCategory;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
+import gregtech.common.worldgen.IWorldgenLayer;
 
-public class WorldgenGTOreLayer extends GTWorldgen {
+public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
     public static ArrayList<WorldgenGTOreLayer> sList = new ArrayList<>();
     public static int sWeight = 0;
@@ -33,6 +39,7 @@ public class WorldgenGTOreLayer extends GTWorldgen {
     public final String mRestrictBiome;
     /** {full dim name} */
     public final Set<String> mAllowedDimensions;
+    public final Set<IStoneCategory> mAllowedStone;
     public static final int WRONG_BIOME = 0;
     public static final int WRONG_DIMENSION = 1;
     public static final int NO_ORE_IN_BOTTOM_LAYER = 2;
@@ -58,11 +65,101 @@ public class WorldgenGTOreLayer extends GTWorldgen {
         this.mSecondary = mix.secondary;
         this.mBetween = mix.between;
         this.mSporadic = mix.sporadic;
+        this.mAllowedStone = mix.stoneCategories == null ? null : new HashSet<>(mix.stoneCategories);
         this.mRestrictBiome = "None";
 
         if (this.mEnabled) {
             sWeight += this.mWeight;
         }
+    }
+
+    @Override
+    public int getMinY() {
+        return mMinY;
+    }
+
+    @Override
+    public int getMaxY() {
+        return mMaxY;
+    }
+
+    @Override
+    public int getWeight() {
+        return mWeight;
+    }
+
+    @Override
+    public float getSize() {
+        return mSize / 2;
+    }
+
+    @Override
+    public float getDensity() {
+        return GTUtility.clamp(mDensity / 64.0f, 0f, 1f);
+    }
+
+    @Override
+    public boolean canGenerateIn(String dimName) {
+        return mAllowedDimensions.contains(dimName);
+    }
+
+    @Override
+    public boolean canGenerateIn(IStoneType stoneType) {
+        return mAllowedStone != null && mAllowedStone.contains(stoneType.getCategory());
+    }
+
+    @Override
+    public boolean canGenerateIn(IStoneCategory stoneType) {
+        return mAllowedStone != null && mAllowedStone.contains(stoneType);
+    }
+
+    @Override
+    public boolean isStoneSpecific() {
+        return mAllowedStone != null;
+    }
+
+    @Override
+    public boolean contains(IMaterial material) {
+        return mPrimary == material || mBetween == material || mSecondary == material || mSporadic == material;
+    }
+
+    @Override
+    public ImmutableList<IMaterial> getOres() {
+        ImmutableList.Builder<IMaterial> ores = ImmutableList.builder();
+
+        if (mPrimary != null) ores.add(mPrimary);
+        if (mBetween != null) ores.add(mBetween);
+        if (mSecondary != null) ores.add(mSecondary);
+        if (mSporadic != null) ores.add(mSporadic);
+
+        return ores.build();
+    }
+
+    @Override
+    public IMaterial getOre(float k) {
+        if (k < 1.0 / 7.0) {
+            return mSporadic;
+        }
+
+        if (k < 3.0 / 7.0) {
+            return mBetween;
+        }
+
+        if (k < 5.0 / 7.0) {
+            return mSecondary;
+        }
+
+        return mPrimary;
+    }
+
+    @Override
+    public String getName() {
+        return mWorldGenName;
+    }
+
+    @Override
+    public boolean generatesBigOre() {
+        return true;
     }
 
     @Override
@@ -240,10 +337,6 @@ public class WorldgenGTOreLayer extends GTWorldgen {
         }
         // Something (at least the bottom layer must have 1 block) must have been placed, return true
         return ORE_PLACED;
-    }
-
-    public boolean contains(IMaterial material) {
-        return mPrimary == material || mBetween == material || mSecondary == material || mSporadic == material;
     }
 
     private class LayerGenerator {

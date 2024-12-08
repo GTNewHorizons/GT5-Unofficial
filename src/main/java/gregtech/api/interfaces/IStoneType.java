@@ -12,6 +12,7 @@ public interface IStoneType {
     public boolean contains(Block block, int meta);
 
     public OrePrefixes getPrefix();
+    public IStoneCategory getCategory();
 
     public ItemStack getDust(boolean pure, int amount);
 

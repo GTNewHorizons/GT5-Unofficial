@@ -7,11 +7,12 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.ROSS128BA;
 import static galacticgreg.api.enums.DimensionDef.DimNames.NETHER;
 import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
 import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
+import static galacticgreg.api.enums.DimensionDef.DimNames.ASTEROIDS;
 import static galacticgreg.api.enums.DimensionDef.DimNames.EVERGLADES;
+import static galacticgreg.api.enums.DimensionDef.DimNames.KUIPERBELT;
 
 import bartworks.system.material.WerkstoffLoader;
 
-import galacticgreg.WorldgenOreLayerSpace;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.WorldgenGTOreLayer;
@@ -1010,6 +1011,54 @@ public enum OreMixes {
         .inBetween(Materials.Electrotine)
         .sporadic(Materials.Samarium)),
     
+    NitrogenIce(new OreMixBuilder().name("ore.mix.nitrogenice")
+        .heightRange(30, 180)
+        .weight(80)
+        .density(16)
+        .size(16)
+        .enableInDim(ASTEROIDS, KUIPERBELT)
+        .primary(Materials.Nitrogen)
+        .secondary(Materials.Nitrogen)
+        .inBetween(Materials.Ammonia)
+        .sporadic(Materials.Ammonia)
+        .stoneCategory(StoneCategory.Ice)),
+    
+    CarbonIce(new OreMixBuilder().name("ore.mix.carbonice")
+        .heightRange(30, 180)
+        .weight(40)
+        .density(16)
+        .size(12)
+        .enableInDim(ASTEROIDS, KUIPERBELT)
+        .primary(Materials.Methane)
+        .secondary(Materials.CarbonDioxide)
+        .inBetween(Materials.Carbon)
+        .sporadic(Materials.Carbon)
+        .stoneCategory(StoneCategory.Ice)),
+    
+    HHOIce(new OreMixBuilder().name("ore.mix.hhoice")
+        .heightRange(30, 180)
+        .weight(80)
+        .density(24)
+        .size(16)
+        .enableInDim(ASTEROIDS, KUIPERBELT)
+        .primary(Materials.Oxygen)
+        .secondary(Materials.Hydrogen)
+        .inBetween(Materials.Oxygen)
+        .sporadic(Materials.Hydrogen)
+        .stoneCategory(StoneCategory.Ice)),
+    
+    SulfurIce(new OreMixBuilder().name("ore.mix.sulfurice")
+        .heightRange(30, 180)
+        .weight(20)
+        .density(16)
+        .size(8)
+        .enableInDim(ASTEROIDS, KUIPERBELT)
+        .primary(Materials.SulfurDioxide)
+        .secondary(Materials.Oxygen)
+        .inBetween(Materials.Sulfur)
+        .sporadic(Materials.Oxygen)
+        .stoneCategory(StoneCategory.Ice)),
+    
     GTPP0(new OreMixBuilder().name("ore.mix.gtpp0")
         .heightRange(20, 40)
         .weight(1)
@@ -1457,9 +1506,5 @@ public enum OreMixes {
 
     public WorldgenGTOreLayer addGTOreLayer() {
         return new WorldgenGTOreLayer(this.oreMixBuilder);
-    }
-
-    public WorldgenOreLayerSpace addGaGregOreLayer() {
-        return new WorldgenOreLayerSpace(this.oreMixBuilder);
     }
 }

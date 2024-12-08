@@ -157,6 +157,7 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
             new ChatComponentText(StatCollector.translateToLocal("detrav.scanner.found.texts.6") + name + " " + value));
     }
 
+    @Override
     public boolean onItemUse(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
         int aZ, int aSide, float hitX, float hitY, float hitZ) {
         long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);

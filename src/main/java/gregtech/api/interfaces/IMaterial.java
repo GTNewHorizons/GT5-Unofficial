@@ -1,5 +1,7 @@
 package gregtech.api.interfaces;
 
+import com.google.common.collect.ImmutableList;
+
 public interface IMaterial {
     
     public String getLocalizedName();
@@ -10,4 +12,7 @@ public interface IMaterial {
 
     public short[] getRGBA();
 
+    public boolean isValidForStone(IStoneType stoneType);
+
+    public ImmutableList<IStoneType> getValidStones();
 }

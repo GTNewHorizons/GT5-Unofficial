@@ -6,7 +6,7 @@ import galacticgreg.api.enums.ModContainers;
 public enum Asteroids {
 
     // spotless : off
-    EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder().probability(200)
+    EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder().probability(100)
         .sizeRange(5, 15)
         .specialBlockChance(5)
         .oreSpawn(
@@ -20,7 +20,7 @@ public enum Asteroids {
                 .lootChestItemCount(10)
                 .lootChestTable(3)
                 .isLootItemCountRandomized(true))),
-    KuiperBelt(ModContainers.GalaxySpace, DimensionDef.KuiperBelt, new AsteroidPropertyBuilder().probability(200)
+    KuiperBelt(ModContainers.GalaxySpace, DimensionDef.KuiperBelt, new AsteroidPropertyBuilder().probability(100)
         .sizeRange(5, 15)
         .specialBlockChance(5)
         .oreSpawn(
@@ -34,7 +34,7 @@ public enum Asteroids {
                 .lootChestItemCount(10)
                 .lootChestTable(3)
                 .isLootItemCountRandomized(true))),
-    MehenBelt(ModContainers.AmunRa, DimensionDef.MehenBelt, new AsteroidPropertyBuilder().probability(200)
+    MehenBelt(ModContainers.AmunRa, DimensionDef.MehenBelt, new AsteroidPropertyBuilder().probability(100)
         .sizeRange(5, 15)
         .specialBlockChance(5)
         .oreSpawn(
@@ -48,7 +48,7 @@ public enum Asteroids {
                 .lootChestItemCount(10)
                 .lootChestTable(3)
                 .isLootItemCountRandomized(true))),
-    Asteroids(ModContainers.GalacticraftMars, DimensionDef.Asteroids, new AsteroidPropertyBuilder().probability(200)
+    Asteroids(ModContainers.GalacticraftMars, DimensionDef.Asteroids, new AsteroidPropertyBuilder().probability(100)
         .sizeRange(5, 15)
         .specialBlockChance(5)
         .oreSpawn(

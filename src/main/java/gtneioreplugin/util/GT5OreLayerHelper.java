@@ -8,9 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.OreMixes;
-import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.common.OreMixBuilder;
@@ -88,8 +86,10 @@ public class GT5OreLayerHelper {
 
         public List<ItemStack> getVeinLayerOre(int veinLayer) {
             List<ItemStack> stackList = new ArrayList<>();
-            for (StoneType stoneType : StoneType.VISUAL_STONE_TYPES) {
-                stackList.add(getLayerOre(veinLayer, stoneType));
+            for (IStoneType stoneType : ores[veinLayer].getValidStones()) {
+                if (!stoneType.isExtraneous()) {
+                    stackList.add(getLayerOre(veinLayer, stoneType));
+                }
             }
             return stackList;
         }

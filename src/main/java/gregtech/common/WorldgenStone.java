@@ -165,7 +165,7 @@ public class WorldgenStone extends GTWorldgen {
                 // 1 = full size, 1.333 = 75%, 2 = 50%, 4 = 25%
                 // (x * Sx)^2 + (y * Sy)^2 + (z * sZ)^2 <= (mSize)^2
 
-                // So, we setup the intial boundaries to be the size of the boulder plus a block in each direction
+                // So, we setup the initial boundaries to be the size of the boulder plus a block in each direction
                 int tMinX = tX - (int) (realSize / xSize - 1.0);
                 int tMaxX = tX + (int) (realSize / xSize + 2.0);
                 int tMinY = tY - (int) (realSize / ySize - 1.0);

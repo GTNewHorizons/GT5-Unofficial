@@ -408,6 +408,10 @@ public class GTValues {
      */
     public static boolean debugWorldGen = false;
     /**
+     * Debug parameter for world generation. Measures amount of time taken to generate oreveins, stone, etc.
+     */
+    public static boolean profileWorldGen = true;
+    /**
      * Debug parameter for orevein generation.
      */
     public static boolean debugOrevein = false;

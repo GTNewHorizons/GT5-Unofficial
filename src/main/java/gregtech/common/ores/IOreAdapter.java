@@ -39,7 +39,7 @@ public interface IOreAdapter<TMat extends IMaterial> {
             try(OreInfo<?> info2 = info.clone()) {
                 info2.stoneType = StoneType.Stone;
 
-                p = getBlock(info);
+                p = getBlock(info2);
 
                 if (p != null) {
                     return new ItemStack(p.left(), amount, p.rightInt());

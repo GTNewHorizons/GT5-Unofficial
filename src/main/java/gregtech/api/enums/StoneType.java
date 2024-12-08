@@ -18,6 +18,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
@@ -112,10 +113,18 @@ public enum StoneType implements IStoneType {
         .setCobble(GalacticraftAmunRa, "tile.baseBlockRock", 0)
         .setMainStone(GalacticraftAmunRa, "tile.baseBlockRock", 1)
         .setDust(Materials.Basalt)),
+    PackedIce(new StoneBuilder()
+        .setStoneNoCobble(Blocks.packed_ice, 0)
+        .setDust(Materials.Ice)
+        .setCategory(StoneCategory.Ice)),
     ;
 
     public static final ImmutableList<StoneType> STONE_TYPES = ImmutableList.copyOf(values());
     public static final ImmutableList<StoneType> VISUAL_STONE_TYPES = ImmutableList.copyOf(Arrays.stream(values()).filter(s -> s.builder.enabled && !s.isExtraneous()).toArray(StoneType[]::new));
+
+    public static final ImmutableList<IStoneType> STONE_ONLY = ImmutableList.of(StoneType.Stone);
+    public static final ImmutableList<IStoneType> STONES = ImmutableList.copyOf(StoneType.STONE_TYPES.stream().filter(s -> s.getCategory() == StoneCategory.Stone).toArray(StoneType[]::new));
+    public static final ImmutableList<IStoneType> ICES = ImmutableList.copyOf(StoneType.STONE_TYPES.stream().filter(s -> s.getCategory() == StoneCategory.Ice).toArray(StoneType[]::new));
 
     private final StoneBuilder builder;
 
@@ -131,6 +140,11 @@ public enum StoneType implements IStoneType {
     @Override
     public OrePrefixes getPrefix() {
         return builder.oreBlockPrefix;
+    }
+
+    @Override
+    public IStoneCategory getCategory() {
+        return builder.category;
     }
 
     @Override
@@ -212,7 +226,7 @@ public enum StoneType implements IStoneType {
 
     @Override
     public boolean isExtraneous() {
-        return this.ordinal() > Endstone.ordinal();
+        return this.ordinal() > Endstone.ordinal() && this != PackedIce;
     }
 
     @Override
@@ -262,6 +276,7 @@ public enum StoneType implements IStoneType {
         public OrePrefixes oreBlockPrefix = OrePrefixes.ore;
         public ItemStack pureDust = GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
         public ItemStack impureDust = GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1);
+        public StoneCategory category = StoneCategory.Stone;
 
         public static StoneBuilder galaxySpace(String name, int mainStone, int... extraStones) {
             return galaxySpace(name, "blocks", mainStone, extraStones);
@@ -368,11 +383,19 @@ public enum StoneType implements IStoneType {
             pureDust = mat.getDust(1);
             impureDust = GTOreDictUnificator.get(OrePrefixes.dustImpure, mat, 1);
 
+            if (impureDust == null) impureDust = pureDust;
+
             return this;
         }
 
         public StoneBuilder setPrefix(OrePrefixes prefix) {
             this.oreBlockPrefix = prefix;
+
+            return this;
+        }
+
+        public StoneBuilder setCategory(StoneCategory cat) {
+            this.category = cat;
 
             return this;
         }

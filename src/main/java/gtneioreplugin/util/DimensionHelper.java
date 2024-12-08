@@ -58,7 +58,7 @@ public class DimensionHelper {
 
     public static final String[] DimName = {
         // Non GC dimensions in progression order instead of alphabetical
-        "Overworld", "Nether", "Twilight", "TheEnd", "EndAsteroid", "dimensionDarkWorld",
+        "Overworld", "Nether", "Twilight", "The End", "EndAsteroid", "dimensionDarkWorld",
         // T1
         "GalacticraftCore_Moon",
         // T2
@@ -98,7 +98,7 @@ public class DimensionHelper {
         "Ow", // Overworld
         "Ne", // Nether
         "TF", // Twilight
-        "ED", // TheEnd because En = Encalus
+        "ED", // The End because En = Encalus
         "EA", // EndAsteroid
         "Eg", // Everglades
         // T1
@@ -220,7 +220,7 @@ public class DimensionHelper {
             case OW -> abbreviatedName = "Ow"; // Overworld
             case NETHER -> abbreviatedName = "Ne"; // Nether
             case TWILIGHT_FOREST -> abbreviatedName = "TF"; // Twilight
-            case THE_END -> abbreviatedName = "ED"; // TheEnd because En = Encalus
+            case THE_END -> abbreviatedName = "ED"; // The End because En = Encalus
             case ENDASTEROIDS -> abbreviatedName = "EA"; // EndAsteroid
             case EVERGLADES -> abbreviatedName = "Eg";
             // T1
@@ -283,7 +283,7 @@ public class DimensionHelper {
             case "Ow" -> OW; // Overworld
             case "Ne" -> NETHER; // Nether
             case "TF" -> TWILIGHT_FOREST; // Twilight
-            case "ED" -> THE_END; // TheEnd because En = Encalus
+            case "ED" -> THE_END; // The End because En = Encalus
             case "EA" -> ENDASTEROIDS; // EndAsteroid
             // T1
             case "Mo" -> MOON; // GalacticraftCore_Moon

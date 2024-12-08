@@ -190,9 +190,9 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         public List<PositionedStack> getOtherStacks() {
             List<PositionedStack> outputs = new ArrayList<>();
             positionedStackPrimary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            positionedStackSecondary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            positionedStackBetween.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
-            positionedStackSporadic.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);
+            positionedStackSecondary.setPermutationToRender((cycleticks / 20) % positionedStackSecondary.items.length);
+            positionedStackBetween.setPermutationToRender((cycleticks / 20) % positionedStackBetween.items.length);
+            positionedStackSporadic.setPermutationToRender((cycleticks / 20) % positionedStackSporadic.items.length);
             outputs.add(positionedStackPrimary);
             outputs.add(positionedStackSecondary);
             outputs.add(positionedStackBetween);

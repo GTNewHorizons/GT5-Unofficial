@@ -6,7 +6,9 @@ import java.util.Set;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IStoneCategory;
 
 public class OreMixBuilder {
 
@@ -17,6 +19,8 @@ public class OreMixBuilder {
     public int minY, maxY, weight, density, size;
     public IMaterial primary, secondary, between, sporadic, representative;
     public String localizedName;
+    public Set<IStoneCategory> stoneCategories = new HashSet<>(Arrays.asList(StoneCategory.Stone));
+    public boolean defaultStoneCategories = true;
 
     public OreMixBuilder name(String name) {
         this.oreMixName = name;
@@ -84,6 +88,17 @@ public class OreMixBuilder {
 
     public OreMixBuilder sporadic(IMaterial sporadic) {
         this.sporadic = sporadic;
+        return this;
+    }
+
+    public OreMixBuilder stoneCategory(IStoneCategory... stoneCategories) {
+        if (defaultStoneCategories) {
+            this.stoneCategories = new HashSet<>();
+            defaultStoneCategories = false;
+        }
+
+        this.stoneCategories.addAll(Arrays.asList(stoneCategories));
+
         return this;
     }
 

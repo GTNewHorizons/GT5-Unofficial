@@ -1,16 +1,44 @@
 package galacticgreg.api.enums;
 
+import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkProviderEnd;
+import net.minecraft.world.gen.ChunkProviderHell;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import galacticgreg.api.Enums;
 import galacticgreg.api.ModDimensionDef;
+import galacticgreg.api.Enums.DimensionType;
+import gtPlusPlus.everglades.chunk.ChunkProviderModded;
 
 public enum DimensionDef {
 
+    Overworld(new ModDimensionDef(
+        DimNames.OW,
+        "",
+        DimensionType.Planet)),
+    Nether(new ModDimensionDef(
+        DimNames.NETHER,
+        ChunkProviderHell.class,
+        DimensionType.Planet)),
+    TheEnd(new ModDimensionDef(
+        DimNames.THE_END,
+        ChunkProviderEnd.class,
+        DimensionType.Planet)),
     EndAsteroids(new ModDimensionDef(
         DimNames.ENDASTEROIDS,
         ChunkProviderEnd.class,
         Enums.DimensionType.Asteroid)),
+    TwilightForest(new ModDimensionDef(
+        DimNames.TWILIGHT_FOREST,
+        "",
+        DimensionType.Planet)),
+    Everglades(new ModDimensionDef(
+        DimNames.EVERGLADES,
+        ChunkProviderModded.class,
+        DimensionType.Planet)),
+
 
     Moon(new ModDimensionDef(
         DimNames.MOON,
@@ -181,11 +209,29 @@ public enum DimensionDef {
         "de.katzenpapst.amunra.world.mehen.MehenChunkProvider",
         Enums.DimensionType.Asteroid));
 
+    public final ModDimensionDef modDimensionDef;
+
+    DimensionDef(ModDimensionDef modDimDef) {
+        this.modDimensionDef = modDimDef;
+    }
+
+    private static final Map<String, ModDimensionDef> DEF_BY_WORLD_NAME = new HashMap<>();
+
+    static {
+        for (DimensionDef def : values()) {
+            DEF_BY_WORLD_NAME.put(def.modDimensionDef.getDimensionName(), def.modDimensionDef);
+        }
+    }
+
+    public static ModDimensionDef getDefForWorld(World world) {
+        return DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
+    }
+
     public static class DimNames {
 
         public static final String OW = "Overworld";
         public static final String NETHER = "Nether";
-        public static final String THE_END = "TheEnd";
+        public static final String THE_END = "The End";
         public static final String ENDASTEROIDS = "EndAsteroids";
         public static final String TWILIGHT_FOREST = "Twilight Forest";
         public static final String EVERGLADES = "dimensionDarkWorld";
@@ -228,11 +274,5 @@ public enum DimensionDef {
         public static final String MEHENBELT = "MehenBelt";
         public static final String DEEPDARK = "Underdark";
 
-    }
-
-    public final ModDimensionDef modDimensionDef;
-
-    DimensionDef(ModDimensionDef modDimDef) {
-        this.modDimensionDef = modDimDef;
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import gregtech.api.enums.StoneType;
+import galacticgreg.api.Enums.DimensionType;
 import gregtech.api.interfaces.IStoneType;
 import net.minecraft.block.Block;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -17,29 +17,91 @@ import net.minecraft.world.chunk.IChunkProvider;
 public class ModDimensionDef {
 
     private static final String STR_NOTDEFINED = "iiznotdefined";
-    private final String _mDimensionName;
-    private String _mInternalDimIdentifier;
-    private final String _mChunkProvider;
-    private Enums.AirReplaceRule _mDimAirSetting;
-    private final ArrayList<ModDBMDef> _mReplaceableBlocks;
-    private Enums.DimensionType _mDimensionType;
+    private final String dimensionName;
+    /** "modname_dimname" */
+    private String internalDimIdentifier;
+    private final String chunkProviderName;
+    private Enums.AirReplaceRule airReplaceSetting;
+    private final ArrayList<ModDBMDef> replaceableBlocks;
+    private DimensionType dimensionType;
 
-    private final List<ISpaceObjectGenerator> _mSpaceObjectsGenerators;
-    private final List<ISpaceObjectGenerator> _mSpaceStructureGenerators;
+    private final List<ISpaceObjectGenerator> spaceObjectGenerators;
+    private final List<ISpaceObjectGenerator> spaceStructureGenerators;
 
     // Special Planets config settings
-    private int _mGroundOreMaxY = 64;
-    private int _mFloatingAsteroidsMinY = 128;
+    private int groundOreMaxY = 64;
+    private int floatingAsteroidsMinY = 128;
     // ------
 
-    // Override for stonetype
-    private GTOreTypes _mStoneType;
-
     // Asteroid stuff
-    private final List<AsteroidBlockComb> _mValidAsteroidMaterials;
-    private final List<SpecialBlockComb> _mSpecialBlocksForAsteroids;
+    private final List<AsteroidBlockComb> validAsteroidMaterials;
+    private final List<SpecialBlockComb> specialBlocksForAsteroids;
 
-    private final Random _mRandom = new Random(System.currentTimeMillis());
+    private final Random random = new Random(System.currentTimeMillis());
+
+    /**
+     * Define a new dimension
+     *
+     * @param pDimensionName The human-readable. Spaces will be removed
+     * @param pChunkProvider The chunkprovider class that shall be observed for the oregen
+     */
+    public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
+        DimensionType pDimType) {
+        this(
+            pDimensionName,
+            pChunkProvider.getName(),
+            pDimType,
+            null);
+    }
+
+    /**
+     * Define a new dimension
+     *
+     * @param pDimensionName    The human-readable. Spaces will be removed
+     * @param pChunkProvider    The chunkprovider class that shall be observed for the oregen
+     * @param pBlockDefinitions The list of predefined blocks to be replaced by ores
+     */
+    public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
+        DimensionType pDimType, List<ModDBMDef> pBlockDefinitions) {
+        this(
+            pDimensionName,
+            pChunkProvider.getName(),
+            pDimType,
+            pBlockDefinitions);
+    }
+
+    /**
+     * Define a new dimension
+     *
+     * @param pDimensionName     The human-readable DimensionName. Spaces will be removed
+     * @param pChunkProviderName The human-readable, full-qualified classname for the chunkprovider
+     */
+    public ModDimensionDef(String pDimensionName, String pChunkProviderName, DimensionType pDimType) {
+        this(pDimensionName, pChunkProviderName, pDimType, null);
+    }
+
+    /**
+     * Define a new dimension
+     *
+     * @param pDimensionName     The human-readable DimensionName. Spaces will be removed
+     * @param pChunkProviderName The human-readable, full-qualified classname for the chunkprovider
+     * @param pBlockDefinitions  The list of predefined blocks to be replaced by ores
+     */
+    public ModDimensionDef(String pDimensionName, String pChunkProviderName, DimensionType pDimType,
+        List<ModDBMDef> pBlockDefinitions) {
+        internalDimIdentifier = STR_NOTDEFINED;
+        dimensionName = pDimensionName;
+        chunkProviderName = pChunkProviderName;
+        dimensionType = pDimType;
+
+        replaceableBlocks = new ArrayList<>();
+        if (pBlockDefinitions != null) replaceableBlocks.addAll(pBlockDefinitions);
+
+        validAsteroidMaterials = new ArrayList<>();
+        specialBlocksForAsteroids = new ArrayList<>();
+        spaceObjectGenerators = new ArrayList<>();
+        spaceStructureGenerators = new ArrayList<>();
+    }
 
     /**
      * Internal function
@@ -47,7 +109,7 @@ public class ModDimensionDef {
      * @return A list of possible asteroid-mixes that shall be generated
      */
     public List<AsteroidBlockComb> getValidAsteroidMaterials() {
-        return _mValidAsteroidMaterials;
+        return validAsteroidMaterials;
     }
 
     // =================================================
@@ -56,8 +118,8 @@ public class ModDimensionDef {
      * altered by the mod author which adds the dimension definition to his mod, but also provide the
      * modpack-author/serveradmin to change these values aswell
      */
-    public int getPreConfiguratedGroundOreMaxY() {
-        return _mGroundOreMaxY;
+    public int getPreConfiguredGroundOreMaxY() {
+        return groundOreMaxY;
     }
 
     /**
@@ -65,8 +127,8 @@ public class ModDimensionDef {
      * altered by the mod author which adds the dimension definition to his mod, but also provide the
      * modpack-author/serveradmin to change these values aswell
      */
-    public int getPreConfiguratedFloatingAsteroidMinY() {
-        return _mFloatingAsteroidsMinY;
+    public int getPreConfiguredFloatingAsteroidMinY() {
+        return floatingAsteroidsMinY;
     }
 
     /**
@@ -79,10 +141,10 @@ public class ModDimensionDef {
         Enums.SpaceObjectType tType = pSpaceObjectGenerator.getType();
         switch (tType) {
             case NonOreSchematic:
-                _mSpaceStructureGenerators.add(pSpaceObjectGenerator);
+                spaceStructureGenerators.add(pSpaceObjectGenerator);
                 break;
             case OreAsteroid:
-                _mSpaceObjectsGenerators.add(pSpaceObjectGenerator);
+                spaceObjectGenerators.add(pSpaceObjectGenerator);
                 break;
             default:
                 // GalacticGreg.Logger.error("registerSpaceObjectGenerator() found unhandled generator type %s. Please
@@ -101,10 +163,10 @@ public class ModDimensionDef {
         try {
             switch (pTargetType) {
                 case NonOreSchematic:
-                    tLst = _mSpaceStructureGenerators;
+                    tLst = spaceStructureGenerators;
                     break;
                 case OreAsteroid:
-                    tLst = _mSpaceObjectsGenerators;
+                    tLst = spaceObjectGenerators;
                     break;
                 default:
                     break;
@@ -112,7 +174,7 @@ public class ModDimensionDef {
 
             if (tLst != null) {
                 if (tLst.size() == 1) tGen = tLst.get(0);
-                else if (tLst.size() > 1) tGen = tLst.get(_mRandom.nextInt(tLst.size()));
+                else if (tLst.size() > 1) tGen = tLst.get(random.nextInt(tLst.size()));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,8 +197,8 @@ public class ModDimensionDef {
         if (pOregenMaxY >= pAsteroidMinY)
             throw new IllegalArgumentException("pOregenMaxY must be LOWER than pAsteroidMinY!");
 
-        _mFloatingAsteroidsMinY = pAsteroidMinY;
-        _mGroundOreMaxY = pOregenMaxY;
+        floatingAsteroidsMinY = pAsteroidMinY;
+        groundOreMaxY = pOregenMaxY;
     }
     // =================================================
 
@@ -146,11 +208,11 @@ public class ModDimensionDef {
      * @return A list of all special blocks that shall be used to generate the asteroids.
      */
     public List<SpecialBlockComb> getSpecialBlocksForAsteroids() {
-        return _mSpecialBlocksForAsteroids;
+        return specialBlocksForAsteroids;
     }
 
     public List<ISpaceObjectGenerator> getSpaceObjectGenerators() {
-        return _mSpaceObjectsGenerators;
+        return spaceObjectGenerators;
     }
 
     /**
@@ -158,8 +220,8 @@ public class ModDimensionDef {
      *
      * @return The type for this dimension
      */
-    public Enums.DimensionType getDimensionType() {
-        return _mDimensionType;
+    public DimensionType getDimensionType() {
+        return dimensionType;
     }
 
     /**
@@ -168,8 +230,8 @@ public class ModDimensionDef {
      *
      * @param pType The dimensiontype to be used
      */
-    public void setDimensionType(Enums.DimensionType pType) {
-        _mDimensionType = pType;
+    public void setDimensionType(DimensionType pType) {
+        dimensionType = pType;
     }
 
     /**
@@ -178,7 +240,7 @@ public class ModDimensionDef {
      * @return The configuration for AirBlocks
      */
     public Enums.AirReplaceRule getAirSetting() {
-        return _mDimAirSetting;
+        return airReplaceSetting;
     }
 
     /**
@@ -193,7 +255,7 @@ public class ModDimensionDef {
      * @param pSetting
      */
     public void setAirSetting(Enums.AirReplaceRule pSetting) {
-        _mDimAirSetting = pSetting;
+        airReplaceSetting = pSetting;
     }
 
     /**
@@ -202,29 +264,7 @@ public class ModDimensionDef {
      * @return The dimension identifier that is used internally to identify the dimension
      */
     public String getDimIdentifier() {
-        return _mInternalDimIdentifier;
-    }
-
-    /**
-     * Set a manual override for ores that shall be generated. This setting is ignored if getIsAsteroidDimension()
-     * returns true
-     * <p>
-     * For example, on GalactiCraft Mars, this value is set to GTOreTypes.RedGranite, because it matches the color
-     * better. If you don't set anything here, it will generate regular stone-ores.
-     *
-     * @param pStoneType
-     */
-    public void setStoneType(GTOreTypes pStoneType) {
-        _mStoneType = pStoneType;
-    }
-
-    /**
-     * Internal function
-     *
-     * @return The stone override for gregtech ores
-     */
-    public GTOreTypes getStoneType() {
-        return _mStoneType;
+        return internalDimIdentifier;
     }
 
     /**
@@ -233,7 +273,7 @@ public class ModDimensionDef {
      * @return The attached chunk-provider for this dimension
      */
     public String getChunkProviderName() {
-        return _mChunkProvider;
+        return chunkProviderName;
     }
 
     /**
@@ -244,10 +284,10 @@ public class ModDimensionDef {
      * @return
      */
     public boolean addBlockDefinition(ModDBMDef pBlockDef) {
-        if (_mReplaceableBlocks.contains(pBlockDef)) {
+        if (replaceableBlocks.contains(pBlockDef)) {
             return false;
         } else {
-            _mReplaceableBlocks.add(pBlockDef);
+            replaceableBlocks.add(pBlockDef);
             return true;
         }
     }
@@ -258,7 +298,7 @@ public class ModDimensionDef {
      * @return The DimensionName in a Human-readable format
      */
     public String getDimensionName() {
-        return _mDimensionName;
+        return dimensionName;
     }
 
     /**
@@ -267,73 +307,7 @@ public class ModDimensionDef {
      * @return A list of all defined Blocks that can be replaced while generating ores
      */
     public ArrayList<ModDBMDef> getReplaceableBlocks() {
-        return _mReplaceableBlocks;
-    }
-
-    /**
-     * Define a new dimension
-     *
-     * @param pDimensionName The human-readable. Spaces will be removed
-     * @param pChunkProvider The chunkprovider class that shall be observed for the oregen
-     */
-    public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
-        Enums.DimensionType pDimType) {
-        this(
-            pDimensionName,
-            pChunkProvider.toString()
-                .substring(6),
-            pDimType,
-            null);
-    }
-
-    /**
-     * Define a new dimension
-     *
-     * @param pDimensionName    The human-readable. Spaces will be removed
-     * @param pChunkProvider    The chunkprovider class that shall be observed for the oregen
-     * @param pBlockDefinitions The list of predefined blocks to be replaced by ores
-     */
-    public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
-        Enums.DimensionType pDimType, List<ModDBMDef> pBlockDefinitions) {
-        this(
-            pDimensionName,
-            pChunkProvider.toString()
-                .substring(6),
-            pDimType,
-            pBlockDefinitions);
-    }
-
-    /**
-     * Define a new dimension
-     *
-     * @param pDimensionName     The human-readable DimensionName. Spaces will be removed
-     * @param pChunkProviderName The human-readable, full-qualified classname for the chunkprovider
-     */
-    public ModDimensionDef(String pDimensionName, String pChunkProviderName, Enums.DimensionType pDimType) {
-        this(pDimensionName, pChunkProviderName, pDimType, null);
-    }
-
-    /**
-     * Define a new dimension
-     *
-     * @param pDimensionName     The human-readable DimensionName. Spaces will be removed
-     * @param pChunkProviderName The human-readable, full-qualified classname for the chunkprovider
-     * @param pBlockDefinitions  The list of predefined blocks to be replaced by ores
-     */
-    public ModDimensionDef(String pDimensionName, String pChunkProviderName, Enums.DimensionType pDimType,
-        List<ModDBMDef> pBlockDefinitions) {
-        _mInternalDimIdentifier = STR_NOTDEFINED;
-        _mDimensionName = pDimensionName;
-        _mChunkProvider = pChunkProviderName;
-        _mDimensionType = pDimType;
-
-        _mReplaceableBlocks = new ArrayList<>();
-        if (pBlockDefinitions != null) _mReplaceableBlocks.addAll(pBlockDefinitions);
-
-        _mValidAsteroidMaterials = new ArrayList<>();
-        _mSpecialBlocksForAsteroids = new ArrayList<>();
-        _mSpaceObjectsGenerators = new ArrayList<>();
-        _mSpaceStructureGenerators = new ArrayList<>();
+        return replaceableBlocks;
     }
 
     /**
@@ -343,8 +317,8 @@ public class ModDimensionDef {
      * Seriously, don't do it.
      */
     protected void setParentModName(String pModName) {
-        if (_mInternalDimIdentifier.equals(STR_NOTDEFINED)) {
-            _mInternalDimIdentifier = String.format("%s_%s", pModName, _mDimensionName);
+        if (internalDimIdentifier.equals(STR_NOTDEFINED)) {
+            internalDimIdentifier = String.format("%s_%s", pModName, dimensionName);
         }
 
         // Else Don't update, we're already set
@@ -363,7 +337,7 @@ public class ModDimensionDef {
     public Enums.ReplaceState getReplaceStateForBlock(Block pBlock, int pMeta) {
         Enums.ReplaceState tFlag = Enums.ReplaceState.Unknown;
 
-        for (ModDBMDef pDef : _mReplaceableBlocks) {
+        for (ModDBMDef pDef : replaceableBlocks) {
             Enums.ReplaceState tResult = pDef.blockEquals(pBlock, pMeta);
             if (tResult == Enums.ReplaceState.Unknown) continue;
 
@@ -388,11 +362,12 @@ public class ModDimensionDef {
      * @return
      */
     public AsteroidBlockComb getRandomAsteroidMaterial() {
-        if (_mValidAsteroidMaterials.isEmpty()) return null;
+        if (validAsteroidMaterials.isEmpty()) return null;
 
-        if (_mValidAsteroidMaterials.size() == 1) return _mValidAsteroidMaterials.get(0);
-        else {
-            return _mValidAsteroidMaterials.get(_mRandom.nextInt(_mValidAsteroidMaterials.size()));
+        if (validAsteroidMaterials.size() == 1) {
+            return validAsteroidMaterials.get(0);
+        } else {
+            return validAsteroidMaterials.get(random.nextInt(validAsteroidMaterials.size()));
         }
     }
 
@@ -404,11 +379,12 @@ public class ModDimensionDef {
      * @return
      */
     public SpecialBlockComb getRandomSpecialAsteroidBlock() {
-        if (_mSpecialBlocksForAsteroids.isEmpty()) return null;
+        if (specialBlocksForAsteroids.isEmpty()) return null;
 
-        if (_mSpecialBlocksForAsteroids.size() == 1) return _mSpecialBlocksForAsteroids.get(0);
-        else {
-            return _mSpecialBlocksForAsteroids.get(_mRandom.nextInt(_mSpecialBlocksForAsteroids.size()));
+        if (specialBlocksForAsteroids.size() == 1) {
+            return specialBlocksForAsteroids.get(0);
+        } else {
+            return specialBlocksForAsteroids.get(random.nextInt(specialBlocksForAsteroids.size()));
         }
     }
 
@@ -427,8 +403,8 @@ public class ModDimensionDef {
      * @param pBlockComb
      */
     public void addAsteroidMaterial(AsteroidBlockComb pBlockComb) {
-        if (!_mValidAsteroidMaterials.contains(pBlockComb)) {
-            _mValidAsteroidMaterials.add(pBlockComb);
+        if (!validAsteroidMaterials.contains(pBlockComb)) {
+            validAsteroidMaterials.add(pBlockComb);
         }
     }
 
@@ -440,8 +416,8 @@ public class ModDimensionDef {
      * @param pBlock Block-Meta Combination that shall be used
      */
     public void addSpecialAsteroidBlock(SpecialBlockComb pBlock) {
-        if (!_mSpecialBlocksForAsteroids.contains(pBlock)) {
-            _mSpecialBlocksForAsteroids.add(pBlock);
+        if (!specialBlocksForAsteroids.contains(pBlock)) {
+            specialBlocksForAsteroids.add(pBlock);
         }
     }
 
@@ -450,14 +426,8 @@ public class ModDimensionDef {
      * yourself
      */
     public void finalizeReplaceableBlocks(String pParentModName) {
-        for (ModDBMDef rpb : _mReplaceableBlocks) {
-            try {
-                rpb.updateBlockName(pParentModName);
-                if (_mStoneType == null) _mStoneType = GTOreTypes.NormalOres;
-            } catch (Exception e) {
-                // GalacticGreg.Logger.error("Unable to finalize replaceable block with modname for block %s. Dimension
-                // %s will probably have problems generating ores", rpb.getBlockName(), _mDimensionName);
-            }
+        for (ModDBMDef rpb : replaceableBlocks) {
+            rpb.updateBlockName(pParentModName);
         }
     }
 }

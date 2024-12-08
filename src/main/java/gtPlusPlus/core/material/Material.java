@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,8 +22,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
@@ -861,6 +865,16 @@ public class Material implements IMaterial {
         if (ore != null) return Item.getIdFromItem(ore.getItem());
 
         return 0;
+    }
+
+    @Override
+    public boolean isValidForStone(IStoneType stoneType) {
+        return stoneType == StoneType.Stone;
+    }
+
+    @Override
+    public ImmutableList<IStoneType> getValidStones() {
+        return StoneType.STONE_ONLY;
     }
 
     @Override
