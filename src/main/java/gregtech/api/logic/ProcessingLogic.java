@@ -29,6 +29,8 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
+    protected GTRecipe cribsRecipe;
+    protected int cribsRecipeMapHash;
 
     public ProcessingLogic() {}
 
@@ -63,6 +65,14 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return getThis();
     }
 
+    public void setCribsRecipe(GTRecipe recipe) {
+        this.cribsRecipe = recipe;
+    }
+
+    public int getCribsRecipeMapHash() {
+        return cribsRecipeMapHash;
+    }
+
     /**
      * Enables single recipe locking mode.
      */
@@ -85,6 +95,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         this.calculatedEut = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
+        this.cribsRecipe = null;
         return getThis();
     }
 
@@ -95,6 +106,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     /**
      * Executes the recipe check: Find recipe from recipemap, Calculate parallel, overclock and outputs.
      */
+
     @Nonnull
     public CheckRecipeResult process() {
         RecipeMap<?> recipeMap = preProcess();
@@ -104,6 +116,13 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         }
         if (inputFluids == null) {
             inputFluids = new FluidStack[0];
+        }
+
+        if (cribsRecipe != null) {
+            if (cribsRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
+                return validateAndCalculateRecipe(cribsRecipe).checkRecipeResult;
+            }
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
@@ -134,6 +153,17 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             }
         }
         return checkRecipeResult;
+    }
+
+    public GTRecipe getRecipeByInputs(ItemStack[] inItems, FluidStack[] inFluids) {
+        RecipeMap<?> map = preProcess();
+        cribsRecipeMapHash = map.hashCode();
+        return map.findRecipeQuery()
+            .items(inItems)
+            .fluids(inFluids)
+            .specialSlot(specialSlotItem)
+            .cachedRecipe(lastRecipe)
+            .find();
     }
 
     /**

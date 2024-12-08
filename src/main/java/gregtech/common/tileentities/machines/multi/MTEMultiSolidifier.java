@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -430,11 +431,46 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
         // check crafting input hatches first
         if (supportsCraftingMEBuffer()) {
+
+            RecipeMap<?> map = getRecipeMap();
+            RecipeMap<?>[] maps = getRecipeMaps();
+
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
                     IDualInputInventory slot = it.next();
-                    processingLogic.setInputItems(slot.getItemInputs());
-                    processingLogic.setInputFluids(slot.getFluidInputs());
+                    GTRecipe recipe = slot.getPatternRecipe();
+                    int recipeMapHash = slot.getPatternRecipeMapHash();
+
+                    if (recipe == null) { // set recipe
+                        MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot.getPatternInputs();
+                        GTRecipe slotRecipe = processingLogic
+                            .getRecipeByInputs(tempRecipeInputs.inputItems, tempRecipeInputs.inputFluid);
+                        int tempRecipeMapHash = processingLogic.getCribsRecipeMapHash();
+
+                        if (slotRecipe != null) {
+                            slot.setPatternRecipe(slotRecipe, tempRecipeMapHash);
+                        } else {
+                            continue;
+                        }
+
+                        recipe = slotRecipe;
+                        recipeMapHash = tempRecipeMapHash;
+                    }
+
+                    if (checkRecipeHash(map, maps, recipeMapHash)) continue; // make sure that this machine able to
+                                                                             // process recipe
+
+                    ItemStack[] items = slot.getItemInputs();
+                    FluidStack[] fluids = slot.getFluidInputs();
+
+                    if (items.length == 0 && fluids.length == 0) continue;
+
+                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, items));
+                    processingLogic.setInputFluids(fluids);
+                    processingLogic.setCribsRecipe(recipe);
+
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
                         return foundResult;
