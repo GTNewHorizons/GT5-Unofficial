@@ -5,9 +5,13 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -148,6 +152,11 @@ public class CoverWirelessFluidDetector
         }
 
         @Override
+        protected int getGUIHeight() {
+            return 123;
+        }
+
+        @Override
         protected int getFrequencyRow() {
             return 0;
         }
@@ -163,7 +172,23 @@ public class CoverWirelessFluidDetector
             super.addUIWidgets(builder);
             builder.widget(
                 new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
+                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+            .widget(
+                TextWidget.dynamicString(() -> {
+                    FluidTransmitterData coverData = getCoverData();
+                    if (coverData != null) {
+                        return getCoverData().physical ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                            : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
+                    } else {
+                        return "";
+                    }
+                })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                .setSize(spaceX * 10, 12)
+            );
         }
 
         @Override
@@ -180,7 +205,18 @@ public class CoverWirelessFluidDetector
                     .setScrollValues(1000, 144, 100000)
                     .setFocusOnGuiOpen(true)
                     .setPos(1, 2 + spaceY * 2)
-                    .setSize(spaceX * 5 - 4, 12));
+                    .setSize(spaceX * 5 - 4, 12))
+            .addFollower(
+                CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                coverData -> coverData.physical,
+                (coverData, state) -> {
+                    coverData.physical = state;
+                    return coverData;
+                },
+                    widget -> widget
+                        .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
+                        .setPos(0, 1 + spaceY * 3)
+            );
         }
 
         private void setMaxCapacity() {

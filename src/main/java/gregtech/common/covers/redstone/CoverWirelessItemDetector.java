@@ -5,11 +5,14 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -103,7 +106,7 @@ public class CoverWirelessItemDetector
             super();
             this.threshold = 0;
             this.slot = -1;
-            this.physical = true;
+            this.physical = false;
         }
 
         @Nonnull
@@ -184,6 +187,11 @@ public class CoverWirelessItemDetector
         }
 
         @Override
+        protected int getGUIHeight() {
+            return 143;
+        }
+
+        @Override
         protected int getFrequencyRow() {
             return 0;
         }
@@ -206,7 +214,22 @@ public class CoverWirelessItemDetector
                         .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
                 .widget(
                     new TextWidget(GTUtility.trans("254", "Detect Slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3));
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3))
+                .widget(TextWidget.dynamicString(() -> {
+                            ItemTransmitterData coverData = getCoverData();
+                            if (coverData != null) {
+                                return getCoverData().physical ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                                    : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
+                            } else {
+                                return "";
+                            }
+                        })
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setTextAlignment(Alignment.CenterLeft)
+                        .setPos(startX + spaceX, 5 + startY + spaceY * 4)
+                        .setSize(spaceX * 10, 12)
+                );
         }
 
         @Override
@@ -236,7 +259,18 @@ public class CoverWirelessItemDetector
                         .setScrollValues(1, 100, 10)
                         .setNumberFormat(numberFormatAll)
                         .setPos(1, 2 + spaceY * 3)
-                        .setSize(spaceX * 4 - 8, 12));
+                        .setSize(spaceX * 4 - 8, 12))
+                .addFollower(
+                    CoverDataFollowerToggleButtonWidget.ofRedstone(),
+                    coverData -> coverData.physical,
+                    (coverData, state) -> {
+                        coverData.physical = state;
+                        return coverData;
+                    },
+                    widget -> widget
+                        .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
+                        .setPos(0, 2 + spaceY * 4)
+                );
         }
 
         private void setMaxSlot() {
