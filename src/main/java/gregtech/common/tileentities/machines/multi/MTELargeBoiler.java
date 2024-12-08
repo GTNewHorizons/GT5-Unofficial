@@ -342,6 +342,16 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             if (this.mEfficiencyIncrease > 5000) {
                                 this.mEfficiencyIncrease = 0;
                                 this.mSuperEfficencyIncrease = 20;
+
+                                // Increase burntime by a small amount based on the initial burntime value.
+                                // Balanced to the approx 16 percent increase for 5x Compressed Coal Coke in the GT++
+                                // boiler line
+                                // Percentage increases on a base 9 log scale with a base of 1600 (coal / charcoal)
+                                double logScale = Math.log((float) GTModHandler.getFuelValue(tInput) / 1600)
+                                    / Math.log(9);
+                                double ratio = 1 + logScale * 0.025;
+
+                                this.mMaxProgresstime = (int) (this.mProgresstime * ratio);
                             }
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
