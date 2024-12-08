@@ -44,6 +44,11 @@ public class MockIVoidableMachine implements IVoidable {
     }
 
     @Override
+    public boolean canDumpFluidToME() {
+        return false;
+    }
+
+    @Override
     public VoidingMode getDefaultVoidingMode() {
         return VoidingMode.VOID_ALL;
     }

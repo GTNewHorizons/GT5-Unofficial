@@ -63,8 +63,7 @@ public class OutputHatchWrapper implements IFluidStore {
         return outputHatch.canStoreFluid(fluidStack) && filter.test(fluidStack);
     }
 
-    @Override
-    public int getAvailableSpace() {
-        return outputHatch.getAvailableSpace();
+    public MTEHatchOutput unwrap() {
+        return outputHatch;
     }
 }
