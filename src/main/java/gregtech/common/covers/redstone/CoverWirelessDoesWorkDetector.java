@@ -114,6 +114,7 @@ public class CoverWirelessDoesWorkDetector
     public static class ActivityTransmitterData extends CoverAdvancedRedstoneTransmitterBase.TransmitterData {
 
         private ActivityMode mode;
+        /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
         public ActivityTransmitterData(int frequency, UUID uuid, boolean invert, ActivityMode mode, boolean physical) {

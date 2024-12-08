@@ -80,6 +80,7 @@ public class CoverWirelessFluidDetector
 
         /** The special value {@code 0} means threshold check is disabled. */
         private int threshold;
+        /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
         public FluidTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, boolean physical) {

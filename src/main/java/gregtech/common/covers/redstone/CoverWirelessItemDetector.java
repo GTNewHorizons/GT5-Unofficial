@@ -93,6 +93,7 @@ public class CoverWirelessItemDetector
          * The special value {@code 0} means threshold check is disabled.
          */
         private int threshold;
+        /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
         public ItemTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, int slot, boolean physical) {
