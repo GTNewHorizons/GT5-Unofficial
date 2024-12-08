@@ -111,7 +111,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
     @Override
     public String getMachineType() {
-        return "Tree Farm";
+        return "Tree Farm, TGS";
     }
 
     @Override
