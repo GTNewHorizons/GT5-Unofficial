@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,7 +42,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -54,11 +52,10 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LightingHelper;
+import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.MetaGeneratedTool01;
-import gregtech.common.render.GTRenderUtil;
 
 public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELargeTurbine>
     implements ISurvivalConstructable {
@@ -194,57 +191,13 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
         if (!isNewStyleRendering() || !mFormed) return false;
-        int[] tABCCoord = new int[] { -1, -1, 0 };
-        int[] tXYZOffset = new int[3];
-        final ForgeDirection tFacing = getBaseMetaTileEntity().getFrontFacing();
-        final ExtendedFacing tExtendedFacing = getExtendedFacing();
-        final ForgeDirection tDirection = tExtendedFacing.getDirection();
-        final LightingHelper tLighting = new LightingHelper(aRenderer);
-
-        // for some reason +x and -z need this field set to true, but not any other sides
-        if (tFacing == ForgeDirection.NORTH || tFacing == ForgeDirection.EAST) aRenderer.field_152631_f = true;
-        final Block tBlock = getCasingBlock();
 
         IIconContainer[] tTextures;
         if (getBaseMetaTileEntity().isActive()) tTextures = getTurbineTextureActive();
         else if (hasTurbine()) tTextures = getTurbineTextureFull();
         else tTextures = getTurbineTextureEmpty();
-
-        assert tTextures != null && tTextures.length == tABCCoord.length;
-
-        for (int i = 0; i < 9; i++) {
-            if (i != 4) { // do not draw ourselves again.
-                tExtendedFacing.getWorldOffset(tABCCoord, tXYZOffset);
-                // since structure check passed, we can assume it is turbine casing
-                int tX = tXYZOffset[0] + aX;
-                int tY = tXYZOffset[1] + aY;
-                int tZ = tXYZOffset[2] + aZ;
-                // we skip the occlusion test, as we always require a working turbine to have a block of air before it
-                // so the front face cannot be occluded whatsoever in the most cases.
-                Tessellator.instance.setBrightness(
-                    tBlock.getMixedBrightnessForBlock(
-                        aWorld,
-                        aX + tDirection.offsetX,
-                        tY + tDirection.offsetY,
-                        aZ + tDirection.offsetZ));
-                tLighting.setupLighting(tBlock, tX, tY, tZ, tFacing)
-                    .setupColor(tFacing, Dyes._NULL.mRGBa);
-                GTRenderUtil.renderBlockIcon(
-                    aRenderer,
-                    tBlock,
-                    tX + tDirection.offsetX * 0.001,
-                    tY + tDirection.offsetY * 0.001,
-                    tZ + tDirection.offsetZ * 0.001,
-                    tTextures[i].getIcon(),
-                    tFacing);
-            }
-            if (++tABCCoord[0] == 2) {
-                tABCCoord[0] = -1;
-                tABCCoord[1]++;
-            }
-        }
-
-        aRenderer.field_152631_f = false;
+        GTUtilityClient
+            .renderTurbineOverlay(aWorld, aX, aY, aZ, aRenderer, getExtendedFacing(), getCasingBlock(), tTextures);
         return false;
     }
 

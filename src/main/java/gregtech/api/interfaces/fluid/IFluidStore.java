@@ -19,11 +19,4 @@ public interface IFluidStore extends IFluidTank {
      * @return Whether to allow given fluid to be inserted into this.
      */
     boolean canStoreFluid(@Nonnull FluidStack fluidStack);
-
-    /**
-     * @return The amount of fluid that can be stored in this.
-     */
-    default int getAvailableSpace() {
-        return getCapacity() - getFluidAmount();
-    }
 }
