@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -13,6 +12,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -142,7 +142,8 @@ public class CoverWirelessMaintenanceDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public MaintenanceTransmitterData(int frequency, UUID uuid, boolean invert, MaintenanceMode mode, boolean physical) {
+        public MaintenanceTransmitterData(int frequency, UUID uuid, boolean invert, MaintenanceMode mode,
+            boolean physical) {
             super(frequency, uuid, invert);
             this.mode = mode;
             this.physical = physical;
@@ -236,23 +237,21 @@ public class CoverWirelessMaintenanceDetector
                     new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
             }
-            builder.widget(
-                TextWidget.dynamicString(() -> {
-                        MaintenanceTransmitterData coverData = getCoverData();
-                        if (coverData != null) {
-                            return getCoverData().physical ?
-                                StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
-                                : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
-                        } else {
-                            return "";
-                        }
-                    })
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(startX + spaceX, 4 + startY + spaceY * 6)
-                    .setSize(spaceX * 10, 12)
-            );
+            builder.widget(TextWidget.dynamicString(() -> {
+                MaintenanceTransmitterData coverData = getCoverData();
+                if (coverData != null) {
+                    return getCoverData().physical
+                        ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                        : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
+                } else {
+                    return "";
+                }
+            })
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                .setTextAlignment(Alignment.CenterLeft)
+                .setPos(startX + spaceX, 4 + startY + spaceY * 6)
+                .setSize(spaceX * 10, 12));
         }
 
         @Override
@@ -279,8 +278,7 @@ public class CoverWirelessMaintenanceDetector
                 },
                 widget -> widget
                     .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
-                    .setPos(0, 1 + spaceY * 6)
-            );
+                    .setPos(0, 1 + spaceY * 6));
         }
     }
 }

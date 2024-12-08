@@ -5,9 +5,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +14,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -28,6 +26,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverLiquidMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
 public class CoverWirelessFluidDetector
@@ -171,25 +170,25 @@ public class CoverWirelessFluidDetector
         protected void addUIWidgets(ModularWindow.Builder builder) {
             setMaxCapacity();
             super.addUIWidgets(builder);
-            builder.widget(
-                new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
-            .widget(
-                TextWidget.dynamicString(() -> {
+            builder
+                .widget(
+                    new TextWidget(GTUtility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+                .widget(TextWidget.dynamicString(() -> {
                     FluidTransmitterData coverData = getCoverData();
                     if (coverData != null) {
-                        return getCoverData().physical ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                        return getCoverData().physical
+                            ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
                             : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
                     } else {
                         return "";
                     }
                 })
-                .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setTextAlignment(Alignment.CenterLeft)
-                .setPos(startX + spaceX, 4 + startY + spaceY * 3)
-                .setSize(spaceX * 10, 12)
-            );
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                    .setSize(spaceX * 10, 12));
         }
 
         @Override
@@ -207,17 +206,16 @@ public class CoverWirelessFluidDetector
                     .setFocusOnGuiOpen(true)
                     .setPos(1, 2 + spaceY * 2)
                     .setSize(spaceX * 5 - 4, 12))
-            .addFollower(
-                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                coverData -> coverData.physical,
-                (coverData, state) -> {
-                    coverData.physical = state;
-                    return coverData;
-                },
+                .addFollower(
+                    CoverDataFollowerToggleButtonWidget.ofDisableable(),
+                    coverData -> coverData.physical,
+                    (coverData, state) -> {
+                        coverData.physical = state;
+                        return coverData;
+                    },
                     widget -> widget
                         .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
-                        .setPos(0, 1 + spaceY * 3)
-            );
+                        .setPos(0, 1 + spaceY * 3));
         }
 
         private void setMaxCapacity() {

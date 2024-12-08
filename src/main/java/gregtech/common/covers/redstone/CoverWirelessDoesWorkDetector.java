@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,6 +11,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -217,21 +217,21 @@ public class CoverWirelessDoesWorkDetector
                 .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_GRAY.get())
                 .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2))
-            .widget(TextWidget.dynamicString(() -> {
+                .widget(TextWidget.dynamicString(() -> {
                     ActivityTransmitterData coverData = getCoverData();
                     if (coverData != null) {
-                        return getCoverData().physical ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                        return getCoverData().physical
+                            ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
                             : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
                     } else {
                         return "";
                     }
                 })
-                .setSynced(false)
-                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                .setTextAlignment(Alignment.CenterLeft)
-                .setPos(startX + spaceX, 4 + startY + spaceY * 3)
-                .setSize(spaceX * 10, 12)
-            );
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(startX + spaceX, 4 + startY + spaceY * 3)
+                    .setSize(spaceX * 10, 12));
         }
 
         @Override
@@ -277,8 +277,7 @@ public class CoverWirelessDoesWorkDetector
                     },
                     widget -> widget
                         .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
-                        .setPos(0, 1 + spaceY * 3)
-                );
+                        .setPos(0, 1 + spaceY * 3));
         }
     }
 

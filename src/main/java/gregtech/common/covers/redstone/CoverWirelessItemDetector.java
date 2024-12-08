@@ -5,8 +5,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -17,6 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
@@ -29,6 +28,7 @@ import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverItemMeter;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import gregtech.common.gui.modularui.widget.ItemWatcherSlotWidget;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import io.netty.buffer.ByteBuf;
@@ -96,7 +96,8 @@ public class CoverWirelessItemDetector
         /** Whether the wireless detector cover also sets the tiles sided Redstone output */
         private boolean physical;
 
-        public ItemTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, int slot, boolean physical) {
+        public ItemTransmitterData(int frequency, UUID uuid, boolean invert, int threshold, int slot,
+            boolean physical) {
             super(frequency, uuid, invert);
             this.threshold = threshold;
             this.slot = slot;
@@ -217,20 +218,20 @@ public class CoverWirelessItemDetector
                     new TextWidget(GTUtility.trans("254", "Detect Slot #")).setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3))
                 .widget(TextWidget.dynamicString(() -> {
-                            ItemTransmitterData coverData = getCoverData();
-                            if (coverData != null) {
-                                return getCoverData().physical ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
-                                    : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
-                            } else {
-                                return "";
-                            }
-                        })
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setTextAlignment(Alignment.CenterLeft)
-                        .setPos(startX + spaceX, 5 + startY + spaceY * 4)
-                        .setSize(spaceX * 10, 12)
-                );
+                    ItemTransmitterData coverData = getCoverData();
+                    if (coverData != null) {
+                        return getCoverData().physical
+                            ? StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.1")
+                            : StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.0");
+                    } else {
+                        return "";
+                    }
+                })
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setPos(startX + spaceX, 5 + startY + spaceY * 4)
+                    .setSize(spaceX * 10, 12));
         }
 
         @Override
@@ -270,8 +271,7 @@ public class CoverWirelessItemDetector
                     },
                     widget -> widget
                         .addTooltip(StatCollector.translateToLocal("gt.cover.wirelessdetector.redstone.tooltip"))
-                        .setPos(0, 2 + spaceY * 4)
-                );
+                        .setPos(0, 2 + spaceY * 4));
         }
 
         private void setMaxSlot() {
