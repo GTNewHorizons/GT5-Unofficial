@@ -135,7 +135,7 @@ import ic2.api.recipe.RecipeOutput;
     version = "MC1710",
     guiFactory = "gregtech.client.GTGuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
-        + " required-after:gtnhlib@[0.2.1,);"
+        + " required-after:gtnhlib@[0.5.22,);"
         + " required-after:modularui@[1.1.12,);"
         + " required-after:appliedenergistics2@[rv3-beta-258,);"
         + " after:dreamcraft;"

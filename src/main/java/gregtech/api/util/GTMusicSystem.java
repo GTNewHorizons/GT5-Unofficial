@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.stream.StreamSupport;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundEventAccessorComposite;
@@ -29,6 +31,7 @@ import org.joml.Vector4i;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.gtnewhorizon.gtnhlib.api.MusicRecordMetadataProvider;
 import com.jcraft.jorbis.VorbisFile;
 
 import baubles.api.BaublesApi;
@@ -442,27 +445,42 @@ public final class GTMusicSystem {
                 // Cursed hack because JOrbis does not support seeking in anything other than filesystem files.
                 // This is only a dev tool, so it can be a bit slow and use real files here.
                 final File tempFile = File.createTempFile("mcdecode", ".ogg");
+                final ArrayList<ResourceLocation> resources = new ArrayList<>();
                 for (final ItemRecord record : allRecords.values()) {
-                    try {
+                    resources.clear();
+                    if (record instanceof MusicRecordMetadataProvider mrmp) {
+                        StreamSupport.stream(
+                            mrmp.getMusicRecordVariants()
+                                .spliterator(),
+                            false)
+                            .map(mrmp::getMusicRecordResource)
+                            .filter(Objects::nonNull)
+                            .forEach(resources::add);
+                    } else {
                         final ResourceLocation res = record.getRecordResource(record.recordName);
-                        SoundEventAccessorComposite registryEntry = (SoundEventAccessorComposite) sm.getObject(res);
-                        if (registryEntry == null) {
-                            registryEntry = (SoundEventAccessorComposite) sm.getObject(
-                                new ResourceLocation(res.getResourceDomain(), "records." + res.getResourcePath()));
+                        resources
+                            .add(new ResourceLocation(res.getResourceDomain(), "records." + res.getResourcePath()));
+                    }
+                    for (final ResourceLocation res : resources) {
+                        try {
+                            SoundEventAccessorComposite registryEntry = (SoundEventAccessorComposite) sm.getObject(res);
+                            if (registryEntry == null) {
+                                registryEntry = (SoundEventAccessorComposite) sm.getObject(res);
+                            }
+                            final ResourceLocation realPath = registryEntry.func_148720_g()
+                                .getSoundPoolEntryLocation();
+                            try (final InputStream is = mc.getResourceManager()
+                                .getResource(realPath)
+                                .getInputStream(); final OutputStream os = FileUtils.openOutputStream(tempFile)) {
+                                IOUtils.copy(is, os);
+                                os.close();
+                                final VorbisFile vf = new VorbisFile(tempFile.getAbsolutePath());
+                                final float totalSeconds = vf.time_total(-1);
+                                json.soundDurationsMs.put(res.toString(), (int) Math.ceil(totalSeconds * 1000.0f));
+                            }
+                        } catch (Exception e) {
+                            GTMod.GT_FML_LOGGER.warn("Skipping {}: {}", record.recordName, res, e);
                         }
-                        final ResourceLocation realPath = registryEntry.func_148720_g()
-                            .getSoundPoolEntryLocation();
-                        try (final InputStream is = mc.getResourceManager()
-                            .getResource(realPath)
-                            .getInputStream(); final OutputStream os = FileUtils.openOutputStream(tempFile)) {
-                            IOUtils.copy(is, os);
-                            os.close();
-                            final VorbisFile vf = new VorbisFile(tempFile.getAbsolutePath());
-                            final float totalSeconds = vf.time_total(-1);
-                            json.soundDurationsMs.put(res.toString(), (int) Math.ceil(totalSeconds * 1000.0f));
-                        }
-                    } catch (Exception e) {
-                        GTMod.GT_FML_LOGGER.warn("Skipping {}", record.recordName, e);
                     }
                 }
                 GTMod.GT_FML_LOGGER.info(

@@ -27,6 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.joml.Vector4i;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.api.MusicRecordMetadataProvider;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -230,16 +231,21 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
             updateEmitterList();
         }
         if (doesSlotContainValidRecord(playbackSlot)
-            && mInventory[playbackSlot].getItem() instanceof ItemRecord record) {
-            final ResourceLocation resource = record.getRecordResource(record.recordName);
+            && mInventory[getInputSlot() + playbackSlot].getItem() instanceof ItemRecord record) {
+            final ResourceLocation resource, playPath;
+            if (record instanceof MusicRecordMetadataProvider mrmp) {
+                resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
+                playPath = resource;
+            } else {
+                resource = record.getRecordResource(record.recordName);
+                playPath = new ResourceLocation(resource.getResourceDomain(), "records." + resource.getResourcePath());
+            }
             currentlyPlaying = record;
             // Assume a safe disc duration of 500 seconds if not known in the registry
             discDurationMs = GTMusicSystem.getMusicRecordDurations()
                 .getOrDefault(resource, 500_000);
             discStartMs = System.currentTimeMillis() - discProgressMs;
-            musicSource.setRecord(
-                new ResourceLocation(resource.getResourceDomain(), "records." + resource.getResourcePath()),
-                discProgressMs);
+            musicSource.setRecord(playPath, discProgressMs);
         }
     }
 
@@ -318,10 +324,18 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                 stopCurrentSong(now);
             } else if (canStartPlaying
                 && mInventory[getInputSlot() + playbackSlot].getItem() instanceof ItemRecord record) {
-                    final ResourceLocation resource = record.getRecordResource(record.recordName);
+                    final ResourceLocation resource, playPath;
+                    if (record instanceof MusicRecordMetadataProvider mrmp) {
+                        resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
+                        playPath = resource;
+                    } else {
+                        resource = record.getRecordResource(record.recordName);
+                        playPath = new ResourceLocation(
+                            resource.getResourceDomain(),
+                            "records." + resource.getResourcePath());
+                    }
                     currentlyPlaying = record;
-                    musicSource.setRecord(
-                        new ResourceLocation(resource.getResourceDomain(), "records." + resource.getResourcePath()));
+                    musicSource.setRecord(playPath);
                     // Assume a safe disc duration of 500 seconds if not known in the registry
                     discDurationMs = GTMusicSystem.getMusicRecordDurations()
                         .getOrDefault(resource, 500_000);
