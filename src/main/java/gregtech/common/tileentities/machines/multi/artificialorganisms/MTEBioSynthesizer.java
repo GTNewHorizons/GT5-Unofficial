@@ -27,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.factory.artificialorganisms.MTEHatchBioInput;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,7 +39,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioInput;
 
 public class MTEBioSynthesizer extends MTEAOUnitBase<MTEBioSynthesizer> implements ISurvivalConstructable {
 

@@ -7,5 +7,7 @@ public class AOFactoryGrid extends StandardFactoryGrid<AOFactoryGrid, AOFactoryE
     public static final AOFactoryGrid INSTANCE = new AOFactoryGrid();
 
     @Override
-    protected AOFactoryNetwork createNetwork() { return new AOFactoryNetwork(); }
+    protected AOFactoryNetwork createNetwork() {
+        return new AOFactoryNetwork();
+    }
 }

@@ -5,6 +5,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.factory.artificialorganisms.MTEHatchBioInput;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -16,7 +17,6 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.recipe.AORecipeData;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioInput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>

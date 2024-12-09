@@ -1,6 +1,6 @@
-package gregtech.common.tileentities.machines.multi.artificialorganisms.hatches;
+package gregtech.api.factory.artificialorganisms;
 
-import java.util.HashSet;
+import java.util.Collection;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -10,11 +10,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.ArtificialOrganism;
-import gregtech.common.tileentities.machines.multi.artificialorganisms.util.IConnectsToBioPipe;
 
-public class MTEHatchBioInput extends MTEHatch implements IConnectsToBioPipe {
-
-    MTEHatchBioOutput networkOutput;
+public class MTEHatchBioInput extends MTEHatch implements AOFactoryElement {
 
     public MTEHatchBioInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Accepts Artificial Organisms");
@@ -45,28 +42,8 @@ public class MTEHatchBioInput extends MTEHatch implements IConnectsToBioPipe {
     }
 
     @Override
-    public boolean canConnect(ForgeDirection side) {
-        return isInputFacing(side);
-    }
-
-    @Override
     public boolean isSimpleMachine() {
         return true;
-    }
-
-    @Override
-    public HashSet<IConnectsToBioPipe> getConnected(MTEHatchBioOutput output, HashSet<IConnectsToBioPipe> connections) {
-        HashSet<IConnectsToBioPipe> c = new HashSet<>();
-        c.add(this);
-        networkOutput = output;
-        return c;
-        // connections.add(this);
-        // return connections;
-    }
-
-    @Override
-    public boolean isComponentsInputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -75,9 +52,26 @@ public class MTEHatchBioInput extends MTEHatch implements IConnectsToBioPipe {
     }
 
     public ArtificialOrganism getAO() {
-        if (networkOutput != null) {
-            return networkOutput.currentSpecies;
-        }
         return null;
+    }
+
+    @Override
+    public boolean canConnectOnSide(ForgeDirection side) {
+        return false;
+    }
+
+    @Override
+    public void getNeighbours(Collection<AOFactoryElement> neighbours) {
+
+    }
+
+    @Override
+    public AOFactoryNetwork getNetwork() {
+        return null;
+    }
+
+    @Override
+    public void setNetwork(AOFactoryNetwork network) {
+
     }
 }
