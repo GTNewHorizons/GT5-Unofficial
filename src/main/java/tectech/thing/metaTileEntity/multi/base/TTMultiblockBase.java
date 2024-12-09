@@ -991,6 +991,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     @Override
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (mTotalRunTime <= 0) getBaseMetaTileEntity().disableWorking();
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
         if (getBaseMetaTileEntity().isClientSide()) {
             StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
