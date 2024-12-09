@@ -105,8 +105,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private boolean balanced = false;
 
     // Holds one hour of ticks
-    private final long[] energyInput = new long[60 * 60 * 20];
-    private final long[] energyOutput = new long[60 * 60 * 20];
+    private final static int BUFFER_LEN = 60 * 60 * 20;
+    private final long[] energyInput = new long[BUFFER_LEN];
+    private final long[] energyOutput = new long[BUFFER_LEN];
     private int bufferPos = 0;
     private long averageInput5s = 0;
     private long averageOutput5s = 0;
@@ -789,28 +790,34 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         tBMTE.drainEnergyUnits(ForgeDirection.UNKNOWN, outputLastTick, 1L);
 
         // Pull off oldest I/O values
-        final long droppedInput = energyInput[bufferPos];
-        final long droppedOutput = energyOutput[bufferPos];
+        final int samples5m = 60 * 5 * 20;
+
+        final long droppedInput5s = energyInput[(bufferPos - DURATION_AVERAGE_TICKS) % BUFFER_LEN];
+        final long droppedInput5m = energyInput[(bufferPos - samples5m) % BUFFER_LEN];
+        final long droppedInput1h = energyInput[bufferPos];
+        final long droppedOutput5s = energyOutput[(bufferPos - DURATION_AVERAGE_TICKS) % BUFFER_LEN];
+        final long droppedOutput5m = energyOutput[(bufferPos - samples5m) % BUFFER_LEN];
+        final long droppedOutput1h = energyOutput[bufferPos];
 
         // Update running counters
-        averageInput5s -= droppedInput / DURATION_AVERAGE_TICKS;
-        averageInput5m -= droppedInput / (20 * 60 * 5);
-        averageInput1h -= droppedInput / (20 * 60 * 60);
-        averageOutput5s -= droppedOutput / DURATION_AVERAGE_TICKS;
-        averageOutput5m -= droppedOutput / (20 * 60 * 5);
-        averageOutput1h -= droppedOutput / (20 * 60 * 60);
+        averageInput5s -= droppedInput5s / DURATION_AVERAGE_TICKS;
+        averageInput5m -= droppedInput5m / samples5m;
+        averageInput1h -= droppedInput1h / BUFFER_LEN;
+        averageOutput5s -= droppedOutput5s / DURATION_AVERAGE_TICKS;
+        averageOutput5m -= droppedOutput5m / samples5m;
+        averageOutput1h -= droppedOutput1h / BUFFER_LEN;
 
         averageInput5s += inputLastTick / DURATION_AVERAGE_TICKS;
-        averageInput5m += inputLastTick / (20 * 60 * 5);
-        averageInput1h += inputLastTick / (20 * 60 * 60);
+        averageInput5m += inputLastTick / samples5m;
+        averageInput1h += inputLastTick / BUFFER_LEN;
         averageOutput5s += outputLastTick / DURATION_AVERAGE_TICKS;
-        averageOutput5m += outputLastTick / (20 * 60 * 5);
-        averageOutput1h += outputLastTick / (20 * 60 * 60);
+        averageOutput5m += outputLastTick / samples5m;
+        averageOutput1h += outputLastTick / BUFFER_LEN;
 
         // Insert values and bump the head
         energyInput[bufferPos] = inputLastTick;
         energyOutput[bufferPos] = outputLastTick;
-        bufferPos = (bufferPos + 1) % (60 * 60 * 20);
+        bufferPos = (bufferPos + 1) % BUFFER_LEN;
 
         return true;
     }
