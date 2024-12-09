@@ -803,6 +803,13 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         averageOutput5m -= droppedOutput / 20 * 60 * 5;
         averageOutput1h -= droppedOutput / 20 * 60 * 60;
 
+        averageInput1m += inputLastTick / 20 * 60;
+        averageInput5m += inputLastTick / 20 * 60 * 5;
+        averageInput1h += inputLastTick / 20 * 60 * 60;
+        averageOutput1m += outputLastTick / 20 * 60;
+        averageOutput5m += outputLastTick / 20 * 60 * 5;
+        averageOutput1h += outputLastTick / 20 * 60 * 60;
+
         // Insert values and bump the head
         energyInput[bufferPos] = inputLastTick;
         energyOutput[bufferPos] = outputLastTick;
