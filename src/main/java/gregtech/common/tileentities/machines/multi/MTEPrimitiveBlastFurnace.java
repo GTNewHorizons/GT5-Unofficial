@@ -8,6 +8,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -55,23 +56,86 @@ public abstract class MTEPrimitiveBlastFurnace extends MetaTileEntity
     implements IAlignment, ISurvivalConstructable, RecipeMapWorkable, IAddUIWidgets, IGetTitleColor {
 
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
+    /**
+     * A static class-level mapping that computes and stores the structure definition
+     * for the `MTEPrimitiveBlastFurnace` machine. The structure definition is computed
+     * lazily when requested for the first time.
+     */
     private static final ClassValue<IStructureDefinition<MTEPrimitiveBlastFurnace>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
+        /**
+         * Computes the structure definition for the given class type.
+         * This method delegates the creation of the structure to the `createStructureDefinition()` method.
+         *
+         * @param type The class type for which the structure definition is being computed.
+         * @return The structure definition for the given class type.
+         */
         @Override
         protected IStructureDefinition<MTEPrimitiveBlastFurnace> computeValue(Class<?> type) {
-            return IStructureDefinition.<MTEPrimitiveBlastFurnace>builder()
-                .addShape(
-                    "main",
-                    transpose(
-                        new String[][] { { "ccc", "c-c", "ccc" }, { "ccc", "clc", "ccc" }, { "c~c", "clc", "ccc" },
-                            { "ccc", "ccc", "ccc" }, }))
-                .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMetaID())))
-                .addElement(
-                    'l',
-                    ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1)))
-                .build();
+            return createStructureDefinition();
         }
     };
+
+    /**
+     * Provides a static, extensible method to create the structure definition for the machine.
+     * This method can be overridden, extended via Mixin, or statically replaced to customize
+     * the structure's logic without altering the overall code structure.
+     *
+     * @return An instance of `IStructureDefinition` specific to the `MTEPrimitiveBlastFurnace`.
+     */
+    protected static IStructureDefinition<MTEPrimitiveBlastFurnace> createStructureDefinition() {
+        return IStructureDefinition.<MTEPrimitiveBlastFurnace>builder()
+            .addShape("main", getShape())
+            .addElement('c', getCasingElement())
+            .addElement('l', getLavaElement())
+            .build();
+    }
+
+    /**
+     * Defines the shape of the machine's structure.
+     * The shape is represented as a 2D array of strings, where each character corresponds
+     * to a specific element in the structure. This method can be overridden or replaced
+     * to customize the shape of the structure.
+     *
+     * @return A 2D array of strings representing the shape of the machine's structure.
+     */
+    protected static String[][] getShape() {
+        return transpose(
+            new String[][]{
+                {"ccc", "c-c", "ccc"},
+                {"ccc", "clc", "ccc"},
+                {"c~c", "clc", "ccc"},
+                {"ccc", "ccc", "ccc"}
+            }
+        );
+    }
+
+    /**
+     * Defines the 'c' element in the structure, representing the machine's casing.
+     * The casing is typically a specific type of block with a corresponding metadata value.
+     * This method can be overridden or replaced to customize the casing element.
+     *
+     * @return An `IStructureElement` instance representing the machine's casing element.
+     */
+    protected static IStructureElement<MTEPrimitiveBlastFurnace> getCasingElement() {
+        return lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMetaID()));
+    }
+
+    /**
+     * Defines the 'l' element in the structure, representing the machine's core.
+     * The core can consist of air, stationary lava, or flowing lava blocks. This method
+     * uses a chain of conditions to validate that any of these blocks fulfill the requirement.
+     * This method can be overridden or replaced to customize the core element.
+     *
+     * @return An `IStructureElement` instance representing the machine's core element.
+     */
+    protected static IStructureElement<MTEPrimitiveBlastFurnace> getLavaElement() {
+        return ofChain(
+            isAir(),
+            ofBlockAnyMeta(Blocks.lava, 1),
+            ofBlockAnyMeta(Blocks.flowing_lava, 1)
+        );
+    }
 
     public int mMaxProgresstime = 0;
     private volatile boolean mUpdated;
