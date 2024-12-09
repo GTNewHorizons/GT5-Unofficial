@@ -144,7 +144,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private final ArrayList<MTEHatchBioOutput> bioHatches = new ArrayList<>();
 
-    ArtificialOrganism currentSpecies;
+    ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
     private int intelligence;
     private int strength;
@@ -153,6 +153,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private int casingTier;
     private int maxAOs;
+
+    private int traitCount = 0;
 
     public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -281,11 +283,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         casingTier = -3;
         bioHatches.clear();
         mEnergyHatches.clear();
-        maxAOs = 50000;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0)) return false;
         if (casingTier < 1) return false;
         updateTextures();
+        maxAOs = 500000 * casingTier;
         return mCasingAmount >= 0;
     }
 
@@ -295,7 +297,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (!aBaseMetaTileEntity.isServerSide() || aTick % 20 != 0 || currentSpecies == null) return;
+        if (!aBaseMetaTileEntity.isServerSide() || aTick % 20 != 0 || currentSpecies == null || !finalizedSpecies) return;
 
         /*
          * for (MTEHatchInput hatch : mInputHatches) {
@@ -352,15 +354,17 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return false;
     }
 
-    private void createNewAOs(Trait trait) {
-        currentSpecies = new ArtificialOrganism(
-            trait.baseInt,
-            trait.baseStr,
-            trait.baseRep,
-            (trait == Trait.Decaying ? maxAOs : 100),
-            0);
-        currentSpecies.addTrait(trait);
+    Boolean finalizedSpecies = false;
+
+    private void createNewAOs() {
+        finalizedSpecies = true;
+        currentSpecies.finalize(maxAOs);
         for (MTEHatchBioOutput hatch : bioHatches) hatch.currentSpecies = currentSpecies;
+    }
+
+    @Override
+    public boolean shouldCheckMaintenance() {
+        return false;
     }
 
     @Override
@@ -442,15 +446,16 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     private ModularWindow createTraitWindow(final EntityPlayer player) {
-        ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight())
+        ModularWindow.Builder builder = ModularWindow.builder(170, 85)
             .setDraggable(false);
 
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setPos(24, 4)
+                .setPos(0, 0)
                 .setSize(170, 85))
             .widget(createTraitItemWidget(new ItemStack(activeTraitWindow.cultureItem, 1)).setPos(95, 50))
-            .widget(createBuildAOsButton().setPos(95, 66));
+            .widget(createAddTraitButton().setPos(95, 66))
+            .widget(createFinalizeAOsButton().setPos(116, 66));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         screenElements.setSynced(false)
@@ -511,14 +516,38 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return (ButtonWidget) button;
     }
 
-    private ButtonWidget createBuildAOsButton() {
+    private ButtonWidget createFinalizeAOsButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (!widget.isClient()) {
+                    createNewAOs();
+                }
+            })
+            .setPlayClickSound(supportsVoidProtection())
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(getVoidingMode().buttonTexture);
+                ret.add(getVoidingMode().buttonOverlay);
+                if (!supportsVoidProtection()) {
+                    ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip("Finalize Population")
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setSize(16, 16);
+        return (ButtonWidget) button;
+    }
+
+    private ButtonWidget createAddTraitButton() {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (!widget.isClient()) {
                 ItemStack inputItem = inputSlotHandler.getStackInSlot(0);
                 if (inputItem == null) return;
-                if (inputItem.getItem() == activeTraitWindow.cultureItem) {
+                if (inputItem.getItem() == activeTraitWindow.cultureItem && traitCount < casingTier) {
                     inputItem.stackSize -= 1;
-                    createNewAOs(activeTraitWindow);
+                    currentSpecies.addTrait(activeTraitWindow);
+                    updateSpecies();
+                    traitCount++;
                 }
             }
         })
@@ -532,7 +561,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                 }
                 return ret.toArray(new IDrawable[0]);
             })
-            .addTooltip("Create Population")
+            .addTooltip("Add Culture")
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setSize(16, 16);
         return (ButtonWidget) button;

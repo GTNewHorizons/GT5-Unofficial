@@ -116,20 +116,29 @@ public class ArtificialOrganism {
     }
 
     public void addTrait(Trait trait) {
+        intelligence += trait.baseInt;
+        strength += trait.baseStr;
+        reproduction += trait.baseRep;
+
         switch (trait) {
             case Decaying -> decaying = true;
             case Immortal -> immortal = true;
         }
     }
 
+    public void finalize(int maxAOs) {
+        if (decaying || immortal) count = maxAOs;
+        else count = 50;
+    }
+
     /**
-     * Default AO for testing.
+     * Default AO
      */
     public ArtificialOrganism() {
-        intelligence = 10;
-        strength = 10;
-        reproduction = 1;
-        count = 50;
+        intelligence = 0;
+        strength = 0;
+        reproduction = 0;
+        count = 0;
         sentience = 0;
     }
 
