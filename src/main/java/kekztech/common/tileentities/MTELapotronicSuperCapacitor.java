@@ -23,10 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -106,14 +104,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private int counter = 1;
     private boolean balanced = false;
 
-    private final Queue<Long> energyInputValues = new LinkedList<>();
-    private final Queue<Long> energyOutputValues = new LinkedList<>();
+    private long energyInputAvg = 0;
+    private long energyOutputAvg = 0;
 
-    private final Queue<Long> energyInputValues5m = new LinkedList<>();
-    private final Queue<Long> energyOutputValues5m = new LinkedList<>();
+    private long energyInput5mAvg = 0;
+    private long energyOutput5mAvg = 0;
 
-    private final Queue<Long> energyInputValues1h = new LinkedList<>();
-    private final Queue<Long> energyOutputValues1h = new LinkedList<>();
+    private long energyInput1hAvg = 0;
+    private long energyOutput1hAvg = 0;
 
     private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
     private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
@@ -788,43 +786,25 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         tBMTE.injectEnergyUnits(ForgeDirection.UNKNOWN, inputLastTick, 1L);
         tBMTE.drainEnergyUnits(ForgeDirection.UNKNOWN, outputLastTick, 1L);
 
-        // Add I/O values to Queues
-        if (energyInputValues.size() > DURATION_AVERAGE_TICKS) {
-            energyInputValues.remove();
-        }
-        energyInputValues.offer(inputLastTick);
-
-        if (energyOutputValues.size() > DURATION_AVERAGE_TICKS) {
-            energyOutputValues.remove();
-        }
-
-        energyOutputValues.offer(outputLastTick);
-
-        // Add I/O values to Queues 5 min
-        if (energyInputValues5m.size() > 6000) {
-            energyInputValues5m.remove();
-        }
-        energyInputValues5m.offer(inputLastTick);
-
-        if (energyOutputValues5m.size() > 6000) {
-            energyOutputValues5m.remove();
-        }
-
-        energyOutputValues5m.offer(outputLastTick);
-
-        // Add I/O values to Queues 1 hour
-        if (energyInputValues1h.size() > 72000) {
-            energyInputValues1h.remove();
-        }
-        energyInputValues1h.offer(inputLastTick);
-
-        if (energyOutputValues1h.size() > 72000) {
-            energyOutputValues1h.remove();
-        }
-
-        energyOutputValues1h.offer(outputLastTick);
+        this.updateAverages(inputLastTick, outputLastTick);
 
         return true;
+    }
+
+    private long rollingAvg(long avg, long new_val, int N) {
+        return (avg * (N - 1) + new_val) / N;
+    }
+
+    private void updateAverages(long inputLastTick, long outputLastTick) {
+        // new_average = (old_average * (n-1) + new_value) / n
+        energyInputAvg = rollingAvg(energyInputAvg, inputLastTick, DURATION_AVERAGE_TICKS);
+        energyOutputAvg = rollingAvg(energyOutputAvg, outputLastTick, DURATION_AVERAGE_TICKS);
+
+        energyInput5mAvg = rollingAvg(energyInput5mAvg, inputLastTick, 6000);
+        energyOutput5mAvg = rollingAvg(energyOutput5mAvg, outputLastTick, 6000);
+
+        energyInput1hAvg = rollingAvg(energyInput1hAvg, inputLastTick, 72000);
+        energyOutput1hAvg = rollingAvg(energyOutput1hAvg, outputLastTick, 72000);
     }
 
     private int rebalance() {
@@ -924,69 +904,27 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private long getAvgIn() {
-        long sum = 0L;
-        for (long l : energyInputValues) {
-            sum += l;
-        }
-        return sum / Math.max(energyInputValues.size(), 1);
+        return energyInputAvg;
     }
 
     private long getAvgOut() {
-        long sum = 0L;
-        for (long l : energyOutputValues) {
-            sum += l;
-        }
-        return sum / Math.max(energyOutputValues.size(), 1);
-    }
-
-    private long getAvgIn5m() {
-        double sum = 0;
-        for (long l : energyInputValues5m) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyInputValues5m.size(), 1);
-    }
-
-    private long getAvgOut5m() {
-        double sum = 0;
-        for (long l : energyOutputValues5m) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyOutputValues5m.size(), 1);
-    }
-
-    private long getAvgIn1h() {
-        double sum = 0;
-        for (long l : energyInputValues1h) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyInputValues1h.size(), 1);
-    }
-
-    private long getAvgOut1h() {
-        double sum = 0;
-        for (long l : energyOutputValues1h) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyOutputValues1h.size(), 1);
+        return energyOutputAvg;
     }
 
     private String getTimeTo() {
-        double avgIn = getAvgIn();
-        double avgOut = getAvgOut();
         double passLoss = passiveDischargeAmount;
         double cap = capacity.doubleValue();
         double sto = stored.doubleValue();
-        if (avgIn >= avgOut + passLoss) {
+        if (energyInputAvg >= energyOutputAvg + passLoss) {
             // Calculate time to full if charging
-            if (avgIn - passLoss > 0) {
-                double timeToFull = (cap - sto) / (avgIn - (passLoss + avgOut)) / 20;
+            if (energyInputAvg - passLoss > 0) {
+                double timeToFull = (cap - sto) / (energyInputAvg - (passLoss + energyOutputAvg)) / 20;
                 return "Time to Full: " + formatTime(timeToFull, true);
             }
             return "Time to Something: Infinity years";
         } else {
             // Calculate time to empty if discharging
-            double timeToEmpty = sto / ((avgOut + passLoss) - avgIn) / 20;
+            double timeToEmpty = sto / ((energyOutputAvg + passLoss) - energyInputAvg) / 20;
             return "Time to Empty: " + formatTime(timeToEmpty, false);
         }
     }
@@ -1033,12 +971,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ll.add("Passive Loss: " + nf.format(passiveDischargeAmount) + " EU/t");
         ll.add("EU IN: " + GTUtility.formatNumbers(inputLastTick) + " EU/t");
         ll.add("EU OUT: " + GTUtility.formatNumbers(outputLastTick) + " EU/t");
-        ll.add("Avg EU IN: " + nf.format(getAvgIn()) + " (last " + secInterval + " seconds)");
-        ll.add("Avg EU OUT: " + nf.format(getAvgOut()) + " (last " + secInterval + " seconds)");
-        ll.add("Avg EU IN: " + nf.format(getAvgIn5m()) + " (last " + 5 + " minutes)");
-        ll.add("Avg EU OUT: " + nf.format(getAvgOut5m()) + " (last " + 5 + " minutes)");
-        ll.add("Avg EU IN: " + nf.format(getAvgIn1h()) + " (last " + 1 + " hour)");
-        ll.add("Avg EU OUT: " + nf.format(getAvgOut1h()) + " (last " + 1 + " hour)");
+        ll.add("Avg EU IN: " + nf.format(energyInputAvg) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU OUT: " + nf.format(energyOutputAvg) + " (last " + secInterval + " seconds)");
+        ll.add("Avg EU IN: " + nf.format(energyInput5mAvg) + " (last " + 5 + " minutes)");
+        ll.add("Avg EU OUT: " + nf.format(energyOutput5mAvg) + " (last " + 5 + " minutes)");
+        ll.add("Avg EU IN: " + nf.format(energyInput1hAvg) + " (last " + 1 + " hour)");
+        ll.add("Avg EU OUT: " + nf.format(energyOutput1hAvg) + " (last " + 1 + " hour)");
 
         ll.add(getTimeTo());
 
