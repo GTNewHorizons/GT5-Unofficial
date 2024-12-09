@@ -23,11 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -111,8 +108,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private final long[] energyInput = new long[60 * 60 * 20];
     private final long[] energyOutput = new long[60 * 60 * 20];
     private int bufferPos = 0;
-    private long averageInput1m = 0;
-    private long averageOutput1m = 0;
+    private long averageInput5s = 0;
+    private long averageOutput5s = 0;
     private long averageInput5m = 0;
     private long averageOutput5m = 0;
     private long averageInput1h = 0;
@@ -796,24 +793,24 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         final long droppedOutput = energyOutput[bufferPos];
 
         // Update running counters
-        averageInput1m -= droppedInput / 20 * 60;
-        averageInput5m -= droppedInput / 20 * 60 * 5;
-        averageInput1h -= droppedInput / 20 * 60 * 60;
-        averageOutput1m -= droppedOutput / 20 * 60;
-        averageOutput5m -= droppedOutput / 20 * 60 * 5;
-        averageOutput1h -= droppedOutput / 20 * 60 * 60;
+        averageInput5s -= droppedInput / DURATION_AVERAGE_TICKS;
+        averageInput5m -= droppedInput / (20 * 60 * 5);
+        averageInput1h -= droppedInput / (20 * 60 * 60);
+        averageOutput5s -= droppedOutput / DURATION_AVERAGE_TICKS;
+        averageOutput5m -= droppedOutput / (20 * 60 * 5);
+        averageOutput1h -= droppedOutput / (20 * 60 * 60);
 
-        averageInput1m += inputLastTick / 20 * 60;
-        averageInput5m += inputLastTick / 20 * 60 * 5;
-        averageInput1h += inputLastTick / 20 * 60 * 60;
-        averageOutput1m += outputLastTick / 20 * 60;
-        averageOutput5m += outputLastTick / 20 * 60 * 5;
-        averageOutput1h += outputLastTick / 20 * 60 * 60;
+        averageInput5s += inputLastTick / DURATION_AVERAGE_TICKS;
+        averageInput5m += inputLastTick / (20 * 60 * 5);
+        averageInput1h += inputLastTick / (20 * 60 * 60);
+        averageOutput5s += outputLastTick / DURATION_AVERAGE_TICKS;
+        averageOutput5m += outputLastTick / (20 * 60 * 5);
+        averageOutput1h += outputLastTick / (20 * 60 * 60);
 
         // Insert values and bump the head
         energyInput[bufferPos] = inputLastTick;
         energyOutput[bufferPos] = outputLastTick;
-        bufferPos = (bufferPos + 1) % 60 * 60 * 20;
+        bufferPos = (bufferPos + 1) % (60 * 60 * 20);
 
         return true;
     }
@@ -915,11 +912,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private long getAvgIn() {
-        return averageInput1m;
+        return averageInput5s;
     }
 
     private long getAvgOut() {
-        return averageOutput1m;
+        return averageOutput5s;
     }
 
     private long getAvgIn5m() {
