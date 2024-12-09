@@ -623,7 +623,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         } else if (!tag.getBoolean("incompleteStructure")) {
             currentTip.add(GREEN + "Running Fine" + efficiency);
         }
-        currentTip.add("Mode: " + tag.getString("machineType"));
+        currentTip.add(
+            StatCollector.translateToLocal(
+                "gt.blockmachines.multimachine.em.research.mode." + tag.getString("machineType")
+                    .replace(" ", "_")));
         currentTip.add(
             String.format(
                 "Computation: %,d / %,d",
