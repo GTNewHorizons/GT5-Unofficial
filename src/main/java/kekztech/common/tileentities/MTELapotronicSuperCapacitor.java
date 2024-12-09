@@ -806,7 +806,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         // Insert values and bump the head
         energyInput[bufferPos] = inputLastTick;
         energyOutput[bufferPos] = outputLastTick;
-        bufferPos++;
+        bufferPos = (bufferPos + 1) % 60 * 60 * 20;
 
         return true;
     }
