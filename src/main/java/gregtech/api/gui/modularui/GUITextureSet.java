@@ -51,6 +51,15 @@ public class GUITextureSet {
             GTUITextures.TAB_TITLE_ANGULAR_STEAM.getAdaptable(steamVariant))
         .setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(steamVariant));
 
+    public static final GUITextureSet ORGANIC = new GUITextureSet().setMainBackground(GTUITextures.BACKGROUND_ORGANIC)
+        .setItemSlot(GTUITextures.SLOT_ITEM_ORGANIC)
+        .setFluidSlot(GTUITextures.SLOT_FLUID_ORGANIC)
+        .setTitleTab(
+            GTUITextures.TAB_TITLE_ORGANIC,
+            GTUITextures.TAB_TITLE_DARK_ORGANIC,
+            GTUITextures.TAB_TITLE_ANGULAR_ORGANIC)
+        .setGregTechLogo(GTUITextures.PICTURE_AO_LOGO);
+
     public GUITextureSet() {}
 
     // region setters

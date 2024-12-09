@@ -7,10 +7,8 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOVAT_EMPTY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
@@ -62,6 +60,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -79,7 +78,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioOutput;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -121,7 +119,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
             @Override
             public long count(MTEEvolutionChamber gtMetaTileEntityEvolutionChamber) {
-                return 1;
+                return gtMetaTileEntityEvolutionChamber.bioHatches.size();
             }
         };
 
@@ -144,8 +142,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         }
     }
 
-    MTEHatchBioOutput bioHatch;
+    private final ArrayList<MTEHatchBioOutput> bioHatches = new ArrayList<>();
+
     ArtificialOrganism currentSpecies;
+
     private int intelligence;
     private int strength;
     private int count;
@@ -207,33 +207,18 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         ITexture[] rTexture;
         int casingMeta = Math.max(casingTier - 1, 0);
         if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(
-                        GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(
-                        GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
+            rTexture = new ITexture[] {
+                Textures.BlockIcons
+                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_BIOVAT_EMPTY)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_BIOVAT_EMPTY_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
                 .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)) };
@@ -270,6 +255,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(textureID);
         for (MTEHatch h : mMaintenanceHatches) h.updateTexture(textureID);
         for (MTEHatch h : mEnergyHatches) h.updateTexture(textureID);
+        for (MTEHatch h : bioHatches) h.updateTexture(textureID);
     }
 
     @Override
@@ -293,7 +279,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         casingTier = -3;
-        bioHatch = null;
+        bioHatches.clear();
         mEnergyHatches.clear();
         maxAOs = 50000;
 
@@ -360,11 +346,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof MTEHatchBioOutput) {
-                ((MTEHatchBioOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                if (bioHatch == null) {
-                    bioHatch = (MTEHatchBioOutput) aMetaTileEntity;
-                    return true;
-                }
+                return bioHatches.add((MTEHatchBioOutput) aMetaTileEntity);
             }
         }
         return false;
@@ -378,14 +360,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             (trait == Trait.Decaying ? maxAOs : 100),
             0);
         currentSpecies.addTrait(trait);
-        if (bioHatch != null) bioHatch.currentSpecies = currentSpecies;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (bioHatch != null) {
-            if (bioHatch.pipenetwork != null) PlayerUtils.messagePlayer(aPlayer, bioHatch.pipenetwork.toString());
-        }
+        for (MTEHatchBioOutput hatch : bioHatches) hatch.currentSpecies = currentSpecies;
     }
 
     @Override
@@ -401,6 +376,11 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         super.getWailaBody(itemStack, currentTip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         currentTip.add("Tier: " + EnumChatFormatting.WHITE + tag.getInteger("casingTier"));
+    }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return GUITextureSet.ORGANIC;
     }
 
     // UI Pit of Doom

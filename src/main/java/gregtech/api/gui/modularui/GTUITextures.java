@@ -36,6 +36,12 @@ public class GTUITextures {
         .of(GregTech.ID, "gui/slot/maintenance", 20, 20, 1);
     public static final AdaptableUITexture SLOT_UPLIFTED = AdaptableUITexture
         .of(GregTech.ID, "gui/slot/uplifted", 18, 18, 1);
+    public static final AdaptableUITexture BACKGROUND_ORGANIC = AdaptableUITexture
+        .of(GregTech.ID, "gui/background/organic", 176, 166, 4);
+    public static final AdaptableUITexture SLOT_ITEM_ORGANIC = AdaptableUITexture
+        .of(GregTech.ID, "gui/slot/item_organic", 18, 18, 1);
+    public static final AdaptableUITexture SLOT_FLUID_ORGANIC = AdaptableUITexture
+        .of(GregTech.ID, "gui/slot/fluid_organic", 18, 18, 1);
 
     public static final UITexture OVERLAY_SLOT_ARROW_ME = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/arrow_me");
     public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture
@@ -243,6 +249,12 @@ public class GTUITextures {
         .of(GregTech.ID, "gui/tab/title_angular", 28, 28, 4);
     public static final SteamTexture TAB_TITLE_ANGULAR_STEAM = SteamTexture
         .adaptableTexture(GregTech.ID, "gui/tab/title_angular_%s", 28, 28, 4);
+    public static final AdaptableUITexture TAB_TITLE_ORGANIC = AdaptableUITexture
+        .of(GregTech.ID, "gui/tab/title_organic", 28, 28, 4);
+    public static final AdaptableUITexture TAB_TITLE_DARK_ORGANIC = AdaptableUITexture
+        .of(GregTech.ID, "gui/tab/title_dark_organic", 28, 28, 4);
+    public static final AdaptableUITexture TAB_TITLE_ANGULAR_ORGANIC = AdaptableUITexture
+        .of(GregTech.ID, "gui/tab/title_angular_organic", 28, 28, 4);
 
     public static final UITexture BUTTON_STANDARD = AdaptableUITexture
         .of(GregTech.ID, "gui/button/standard", 18, 18, 1);
