@@ -51,7 +51,10 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("network", network == null ? "null" : network.toString());
+        tag.setString(
+            "species",
+            network.valid ? network.getSpecies()
+                .toString() : "INVALID");
     }
 
     @Override
@@ -59,8 +62,8 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
+            "Species: " + accessor.getNBTData()
+                .getString("species"));
     }
 
     @Override

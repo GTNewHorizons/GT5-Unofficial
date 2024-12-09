@@ -19,15 +19,13 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
 
-public class MTEHatchBioOutput extends MTEBaseFactoryHatch implements AOFactoryElement {
+public class MTEHatchAO extends MTEBaseFactoryHatch implements AOFactoryElement {
 
-    public ArtificialOrganism currentSpecies;
-
-    public MTEHatchBioOutput(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchAO(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] { "Distributes and Receives Artificial Organisms" });
     }
 
-    public MTEHatchBioOutput(MTEHatchBioOutput prototype) {
+    public MTEHatchAO(MTEHatchAO prototype) {
         super(prototype);
     }
 
@@ -35,7 +33,10 @@ public class MTEHatchBioOutput extends MTEBaseFactoryHatch implements AOFactoryE
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("network", network == null ? "null" : network.toString());
+        tag.setString(
+            "species",
+            network.valid ? network.getSpecies()
+                .toString() : "INVALID");
     }
 
     @Override
@@ -43,8 +44,8 @@ public class MTEHatchBioOutput extends MTEBaseFactoryHatch implements AOFactoryE
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
+            "Species: " + accessor.getNBTData()
+                .getString("species"));
     }
 
     @Override
@@ -59,7 +60,7 @@ public class MTEHatchBioOutput extends MTEBaseFactoryHatch implements AOFactoryE
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHatchBioOutput(this);
+        return new MTEHatchAO(this);
     }
 
     @Override
@@ -75,6 +76,10 @@ public class MTEHatchBioOutput extends MTEBaseFactoryHatch implements AOFactoryE
     @Override
     public boolean canConnectOnSide(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    public void setSpecies(ArtificialOrganism species) {
+        network.addSpecies(species);
     }
 
     // Hatches only have one connectable face, so this will just check that face

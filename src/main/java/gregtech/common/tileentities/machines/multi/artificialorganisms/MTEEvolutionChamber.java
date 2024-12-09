@@ -59,7 +59,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.factory.artificialorganisms.MTEHatchBioOutput;
+import gregtech.api.factory.artificialorganisms.MTEHatchAO;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IHatchElement;
@@ -115,7 +115,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private enum SpecialHatchElement implements IHatchElement<MTEEvolutionChamber> {
 
-        BioOutput(MTEEvolutionChamber::addBioHatch, MTEHatchBioOutput.class) {
+        BioOutput(MTEEvolutionChamber::addBioHatch, MTEHatchAO.class) {
 
             @Override
             public long count(MTEEvolutionChamber gtMetaTileEntityEvolutionChamber) {
@@ -142,7 +142,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         }
     }
 
-    private final ArrayList<MTEHatchBioOutput> bioHatches = new ArrayList<>();
+    private final ArrayList<MTEHatchAO> bioHatches = new ArrayList<>();
 
     ArtificialOrganism currentSpecies = new ArtificialOrganism();
 
@@ -348,8 +348,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private boolean addBioHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchBioOutput) {
-                return bioHatches.add((MTEHatchBioOutput) aMetaTileEntity);
+            if (aMetaTileEntity instanceof MTEHatchAO) {
+                return bioHatches.add((MTEHatchAO) aMetaTileEntity);
             }
         }
         return false;
@@ -360,7 +360,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private void createNewAOs() {
         finalizedSpecies = true;
         currentSpecies.finalize(maxAOs);
-        for (MTEHatchBioOutput hatch : bioHatches) hatch.currentSpecies = currentSpecies;
+        for (MTEHatchAO hatch : bioHatches) hatch.setSpecies(currentSpecies);
     }
 
     @Override

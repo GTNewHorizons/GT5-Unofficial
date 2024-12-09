@@ -5,7 +5,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.factory.artificialorganisms.MTEHatchBioInput;
+import gregtech.api.factory.artificialorganisms.MTEHatchAO;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,7 +22,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
 
-    protected MTEHatchBioInput bioHatch;
+    protected MTEHatchAO bioHatch;
 
     protected int AOsInUse = 0;
 
@@ -86,17 +86,20 @@ public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     }
 
     protected ArtificialOrganism getAO() {
-        if (bioHatch != null) return bioHatch.getAO();
+        if (bioHatch != null) return bioHatch.getNetwork()
+            .getSpecies();
         return null;
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (bioHatch != null) {
-            if (bioHatch.getAO() != null) {
+            if (bioHatch.getNetwork()
+                .getSpecies() != null) {
                 PlayerUtils.messagePlayer(
                     aPlayer,
-                    "Current AO: " + bioHatch.getAO()
+                    "Current AO: " + bioHatch.getNetwork()
+                        .getSpecies()
                         .toString());
             }
         }
@@ -105,10 +108,10 @@ public abstract class MTEAOUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     protected boolean addBioHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchBioInput) {
-                ((MTEHatchBioInput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            if (aMetaTileEntity instanceof MTEHatchAO) {
+                ((MTEHatchAO) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 if (bioHatch == null) {
-                    bioHatch = (MTEHatchBioInput) aMetaTileEntity;
+                    bioHatch = (MTEHatchAO) aMetaTileEntity;
                     return true;
                 }
             }

@@ -30,7 +30,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.factory.artificialorganisms.MTEHatchBioInput;
+import gregtech.api.factory.artificialorganisms.MTEHatchAO;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,7 +58,7 @@ public class MTEAdvancedBioLab extends MTEAOUnitBase<MTEAdvancedBioLab> implemen
             'B',
             ofChain(
                 buildHatchAdder(MTEAdvancedBioLab.class).adder(MTEAOUnitBase::addBioHatch)
-                    .hatchClass(MTEHatchBioInput.class)
+                    .hatchClass(MTEHatchAO.class)
                     .shouldReject(t -> !(t.bioHatch == null))
                     .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(2)
