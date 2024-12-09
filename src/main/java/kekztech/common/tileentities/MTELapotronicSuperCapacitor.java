@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTEClass;
+import static java.lang.Math.floorMod;
 import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
@@ -792,11 +793,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         // Pull off oldest I/O values
         final int samples5m = 60 * 5 * 20;
 
-        final long droppedInput5s = energyInput[(bufferPos - DURATION_AVERAGE_TICKS) % BUFFER_LEN];
-        final long droppedInput5m = energyInput[(bufferPos - samples5m) % BUFFER_LEN];
+        final long droppedInput5s = energyInput[floorMod((bufferPos - DURATION_AVERAGE_TICKS), BUFFER_LEN)];
+        final long droppedInput5m = energyInput[floorMod((bufferPos - samples5m), BUFFER_LEN)];
         final long droppedInput1h = energyInput[bufferPos];
-        final long droppedOutput5s = energyOutput[(bufferPos - DURATION_AVERAGE_TICKS) % BUFFER_LEN];
-        final long droppedOutput5m = energyOutput[(bufferPos - samples5m) % BUFFER_LEN];
+        final long droppedOutput5s = energyOutput[floorMod((bufferPos - DURATION_AVERAGE_TICKS), BUFFER_LEN)];
+        final long droppedOutput5m = energyOutput[floorMod((bufferPos - samples5m), BUFFER_LEN)];
         final long droppedOutput1h = energyOutput[bufferPos];
 
         // Update running counters
@@ -817,7 +818,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         // Insert values and bump the head
         energyInput[bufferPos] = inputLastTick;
         energyOutput[bufferPos] = outputLastTick;
-        bufferPos = (bufferPos + 1) % BUFFER_LEN;
+        bufferPos = floorMod((bufferPos + 1), BUFFER_LEN);
 
         return true;
     }
