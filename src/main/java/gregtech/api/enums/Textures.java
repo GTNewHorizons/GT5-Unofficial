@@ -339,6 +339,10 @@ public class Textures {
         CASING_REINFORCED_WOOD,
         CASING_REINFORCED_WOOD_TOP,
 
+        STERILE_VAT_CASING_T1,
+        STERILE_VAT_CASING_T2,
+        STERILE_VAT_CASING_T3,
+
         OVERLAY_FRONT_MULTI_CANNER,
         OVERLAY_FRONT_MULTI_CANNER_ACTIVE,
         OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW,
@@ -1770,7 +1774,7 @@ public class Textures {
          * page 2: 0-15 solenoid coils
          * page 8: 0-111 TecTech, 112-127 GT casing 6
          * page 12: 0-127 GlodBlock
-         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11
+         * page 16: 0-15 GT glass 1, 16-31 GT casing 9, 32-47 GT glass 2, 48-63 GT casing 10, 64-79 GT casing 11, 80-96 GT casing 12
          * page 42: 0-126 glee8e, 127 KekzTech LSC base
          */
         // spotless:on

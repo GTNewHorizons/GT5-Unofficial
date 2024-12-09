@@ -1528,6 +1528,9 @@ public enum ItemList implements IItemContainer {
     Bio_Hatch_Output,
     Circuit_Tissue,
     Neuron_Cluster,
+    Casing_Vat_T1,
+    Casing_Vat_T2,
+    Casing_Vat_T3,
 
     Machine_LV_Miner,
     Machine_MV_Miner,

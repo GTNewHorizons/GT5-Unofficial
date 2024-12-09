@@ -57,6 +57,7 @@ import gregtech.common.blocks.BlockBlackholeRenderer;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
+import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings3;
 import gregtech.common.blocks.BlockCasings4;
@@ -544,6 +545,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings9 = new BlockCasings9();
         GregTechAPI.sBlockCasings10 = new BlockCasings10();
         GregTechAPI.sBlockCasings11 = new BlockCasings11();
+        GregTechAPI.sBlockCasings12 = new BlockCasings12();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();

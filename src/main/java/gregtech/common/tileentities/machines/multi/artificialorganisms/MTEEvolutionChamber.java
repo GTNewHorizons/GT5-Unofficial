@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.artificialorganisms;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
@@ -8,8 +7,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
@@ -18,19 +15,30 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
@@ -51,22 +59,29 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.objects.ArtificialOrganism.Trait;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.artificialorganisms.hatches.MTEHatchBioOutput;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolutionChamber>
     implements ISurvivalConstructable {
@@ -76,25 +91,58 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         .<MTEEvolutionChamber>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            new String[][] { { "BBB", "AAA", "B~B" }, { "BBB", "A A", "BBB" }, { "BBB", "AAA", "BBB" } })
+            new String[][] { { "BBB", "BAB", "BAB", "BAB", "B~B" }, { "BBB", "A A", "A A", "A A", "BBB" },
+                { "BBB", "BAB", "BAB", "BAB", "BBB" } })
         .addElement(
             'B',
             ofChain(
-                buildHatchAdder(MTEEvolutionChamber.class).adder(MTEEvolutionChamber::addBioHatch)
-                    .hatchClass(MTEHatchBioOutput.class)
-                    .shouldReject(t -> !(t.bioHatch == null))
-                    .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                    .dot(2)
-                    .buildAndChain(
-                        onElementPass(MTEEvolutionChamber::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))),
                 buildHatchAdder(MTEEvolutionChamber.class)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
-                    .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                    .atLeast(InputBus, Maintenance, Energy, InputHatch, SpecialHatchElement.BioOutput)
+                    .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(0))
                     .dot(1)
-                    .buildAndChain(
-                        onElementPass(MTEEvolutionChamber::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
+                    .build(),
+                onElementPass(
+                    MTEEvolutionChamber::onCasingAdded,
+                    StructureUtility.ofBlocksTiered(
+                        MTEEvolutionChamber::getTierFromMeta,
+                        ImmutableList.of(
+                            Pair.of(GregTechAPI.sBlockCasings12, 0),
+                            Pair.of(GregTechAPI.sBlockCasings12, 1),
+                            Pair.of(GregTechAPI.sBlockCasings12, 2)),
+                        -3,
+                        MTEEvolutionChamber::setCasingTier,
+                        MTEEvolutionChamber::getCasingTier))))
         .addElement('A', Glasses.chainAllGlasses())
         .build();
+
+    private enum SpecialHatchElement implements IHatchElement<MTEEvolutionChamber> {
+
+        BioOutput(MTEEvolutionChamber::addBioHatch, MTEHatchBioOutput.class) {
+
+            @Override
+            public long count(MTEEvolutionChamber gtMetaTileEntityEvolutionChamber) {
+                return 1;
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEEvolutionChamber> adder;
+
+        @SafeVarargs
+        SpecialHatchElement(IGTHatchAdder<MTEEvolutionChamber> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super MTEEvolutionChamber> adder() {
+            return adder;
+        }
+    }
 
     MTEHatchBioOutput bioHatch;
     ArtificialOrganism currentSpecies;
@@ -103,6 +151,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private int count;
     private int sentience;
 
+    private int casingTier;
     private int maxAOs;
 
     public MTEEvolutionChamber(final int aID, final String aName, final String aNameRegional) {
@@ -111,6 +160,20 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     public MTEEvolutionChamber(String aName) {
         super(aName);
+    }
+
+    public int getCasingTier() {
+        return casingTier;
+    }
+
+    public void setCasingTier(int i) {
+        casingTier = i;
+    }
+
+    private static Integer getTierFromMeta(Block block, Integer metaID) {
+        if (block != GregTechAPI.sBlockCasings12) return -1;
+        if (metaID < 0 || metaID > 2) return -2;
+        return metaID + 1;
     }
 
     @Override
@@ -124,6 +187,16 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     }
 
     @Override
+    public void onValueUpdate(byte aValue) {
+        casingTier = aValue;
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) casingTier;
+    }
+
+    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEEvolutionChamber(this.mName);
     }
@@ -132,11 +205,12 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
+        int casingMeta = Math.max(casingTier - 1, 0);
         if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                    Textures.BlockIcons.getCasingTextureForId(
+                        GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
                         .extFacing()
@@ -148,8 +222,8 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
                         .build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                    Textures.BlockIcons.getCasingTextureForId(
+                        GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_CANNER)
                         .extFacing()
@@ -162,7 +236,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingMeta)) };
         }
         return rTexture;
     }
@@ -171,11 +245,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Artificial Organism Creator")
-            .addInfo("Controller Block for the Hyperaccelerated Macroevolution Chamber")
             .addInfo("Used to create and maintain Artificial Organisms")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
-            .beginStructureBlock(7, 5, 7, true)
+            .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
             .addCasingInfoExactly("Steel Pipe Casing", 24, false)
@@ -189,15 +262,25 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         return tt;
     }
 
+    private void updateTextures() {
+        getBaseMetaTileEntity().issueTextureUpdate();
+        int textureID = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, casingTier - 1);
+        for (MTEHatch h : mInputBusses) h.updateTexture(textureID);
+        for (MTEHatch h : mInputHatches) h.updateTexture(textureID);
+        for (IDualInputHatch h : mDualInputHatches) h.updateTexture(textureID);
+        for (MTEHatch h : mMaintenanceHatches) h.updateTexture(textureID);
+        for (MTEHatch h : mEnergyHatches) h.updateTexture(textureID);
+    }
+
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 4, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -209,19 +292,32 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
+        casingTier = -3;
         bioHatch = null;
         mEnergyHatches.clear();
         maxAOs = 50000;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0)) return false;
+        if (casingTier < 1) return false;
+        updateTextures();
         return mCasingAmount >= 0;
     }
+
+    private final static FluidStack nutrientcost = Materials.NutrientBroth.getFluid(5);
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (!aBaseMetaTileEntity.isServerSide() || aTick % 20 != 0 || currentSpecies == null) return;
+
+        /*
+         * for (MTEHatchInput hatch : mInputHatches) {
+         * if (drain(hatch, nutrientcost, true)) {
+         * break;
+         * }
+         * }
+         */
 
         if (currentSpecies.getCount() < maxAOs) currentSpecies.doReproduction();
         updateSpecies();
@@ -290,6 +386,21 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         if (bioHatch != null) {
             if (bioHatch.pipenetwork != null) PlayerUtils.messagePlayer(aPlayer, bioHatch.pipenetwork.toString());
         }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("casingTier", Math.max(0, casingTier));
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add("Tier: " + EnumChatFormatting.WHITE + tag.getInteger("casingTier"));
     }
 
     // UI Pit of Doom
