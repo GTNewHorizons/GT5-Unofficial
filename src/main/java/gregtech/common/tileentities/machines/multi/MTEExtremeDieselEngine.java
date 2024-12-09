@@ -20,7 +20,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.maps.FuelBackend;
@@ -41,7 +40,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Combustion Generator")
+        tt.addMachineType("Combustion Generator, ECE")
             .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
             .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
             .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
@@ -172,11 +171,6 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-        }
-
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
@@ -228,7 +222,7 @@ public class MTEExtremeDieselEngine extends MTEDieselEngine {
                 + " %",
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + mPollutionReduction
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %" };
     }

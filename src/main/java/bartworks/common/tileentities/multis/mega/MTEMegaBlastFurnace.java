@@ -23,7 +23,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +59,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -171,7 +169,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace")
+        tt.addMachineType("Blast Furnace, MEBF")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
             .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
@@ -361,12 +359,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         ArrayList<MTEHatchOutput> tOutputHatches;
         if (isOutputPollution) {
             tOutputHatches = this.mPollutionOutputHatches;
-            int pollutionReduction = 0;
-            for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-                pollutionReduction = 100 - tHatch.calculatePollutionReduction(100);
-                break;
-            }
-            tLiquid.amount = tLiquid.amount * pollutionReduction / 100;
+            tLiquid.amount = tLiquid.amount * Math.min(100 - getAveragePollutionPercentage(), 100) / 100;
         } else {
             tOutputHatches = this.mOutputHatches;
         }

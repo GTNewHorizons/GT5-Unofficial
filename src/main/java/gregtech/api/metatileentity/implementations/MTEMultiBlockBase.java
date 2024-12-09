@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.GTUtility.min;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.LongConsumer;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,6 +41,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 
@@ -632,23 +635,73 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean polluteEnvironment(int aPollutionLevel) {
+        final int VENT_AMOUNT = 10_000;
         // Early exit if pollution is disabled
         if (!GTMod.gregtechproxy.mPollution) return true;
         mPollution += aPollutionLevel;
-        if (mPollution < 10000) return true;
-        var validMufflers = new ArrayList<MTEHatchMuffler>(mMufflerHatches.size());
-        validMTEList(mMufflerHatches).forEach(validMufflers::add);
-        Collections.shuffle(validMufflers);
-        for (MTEHatchMuffler tHatch : validMufflers) {
-            if (mPollution >= 10000) {
-                if (tHatch.polluteEnvironment(this)) {
-                    mPollution -= 10000;
-                }
+        if (mPollution < VENT_AMOUNT) return true;
+        if (mMufflerHatches.size() == 0) {
+            // No muffler present. Fail.
+            return false;
+        } else if (mMufflerHatches.size() == 1) {
+            // One muffler, use simple method for performance.
+            MTEHatchMuffler muffler = mMufflerHatches.get(0);
+            if (muffler == null || !muffler.isValid()) {
+                // Muffler invalid. Fail.
+                mMufflerHatches.remove(0);
+                return false;
             } else {
-                break;
+                if (muffler.polluteEnvironment(this, VENT_AMOUNT)) {
+                    mPollution -= VENT_AMOUNT;
+                } else {
+                    // Muffler blocked. Fail.
+                    return false;
+                }
+            }
+        } else {
+            // Multiple mufflers, split pollution output evenly between all of them.
+            int mufflerCount = 0;
+            int ventAmount = 0; // Allow venting of up to VENT_AMOUNT of pollution per muffler.
+            for (MTEHatchMuffler muffler : validMTEList(mMufflerHatches)) {
+                mufflerCount++;
+                if (ventAmount + VENT_AMOUNT <= mPollution) {
+                    ventAmount += VENT_AMOUNT;
+                }
+            }
+            // This might lose some small amount of pollution due to rounding, this is fine.
+            ventAmount /= mufflerCount;
+
+            for (MTEHatchMuffler muffler : validMTEList(mMufflerHatches)) {
+                if (muffler.polluteEnvironment(this, ventAmount)) {
+                    mPollution -= ventAmount;
+                } else {
+                    // Muffler blocked. Fail.
+                    return false;
+                }
             }
         }
-        return mPollution < 10000;
+        return mPollution < VENT_AMOUNT;
+    }
+
+    /**
+     * How much pollution this outputs to the environment. 100 = outputs all, 0 = outputs none. Calculated as an average
+     * across all muffler hatches.
+     *
+     * @return Fraction of pollution output to the environment (out of 100).
+     */
+    public int getAveragePollutionPercentage() {
+        int pollutionPercent = 0;
+        int mufflerCount = 0;
+        for (MTEHatchMuffler muffler : validMTEList(mMufflerHatches)) {
+            pollutionPercent += muffler.calculatePollutionReduction(100);
+            mufflerCount++;
+        }
+        if (mufflerCount > 0) {
+            pollutionPercent /= mufflerCount;
+        } else {
+            pollutionPercent = 100;
+        }
+        return pollutionPercent;
     }
 
     protected void sendStartMultiBlockSoundLoop() {
@@ -834,7 +887,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (IDualInputHatch dualInputHatch : mDualInputHatches) {
                 for (var it = dualInputHatch.inventories(); it.hasNext();) {
                     IDualInputInventory slot = it.next();
-                    processingLogic.setInputItems(slot.getItemInputs());
+                    // Reverse order of input items for consistent behavior with standard input buses.
+                    ItemStack[] inputItems = slot.getItemInputs();
+                    ArrayUtils.reverse(inputItems);
+                    processingLogic.setInputItems(inputItems);
                     processingLogic.setInputFluids(slot.getFluidInputs());
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) {
@@ -958,6 +1014,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     /**
      * Gets the pollution produced per second by this multiblock, default to 0. Override this with its actual value in
      * the code of the multiblock.
+     *
+     * This returns the unmodified raw pollution value, not the one after muffler discounts.
      */
     public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
@@ -1269,6 +1327,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 continue;
             }
             if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
+
+            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
+                if (!tMEHatch.canAcceptFluid()) continue;
+            }
+
             int tAmount = tHatch.fill(copiedFluidStack, false);
             if (tAmount >= copiedFluidStack.amount) {
                 boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
@@ -1826,16 +1889,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-        var validMufflers = new ArrayList<MTEHatchMuffler>(mMufflerHatches.size());
-        validMTEList(mMufflerHatches).forEach(validMufflers::add);
-        if (validMufflers.size() > 0) {
-            for (MTEHatchMuffler tHatch : validMufflers) {
-                mPollutionReduction += tHatch.calculatePollutionReduction(100);
-            }
-            mPollutionReduction /= validMufflers.size();
-        }
-
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
@@ -1891,7 +1944,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 + " %",
             /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + mPollutionReduction
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %" };
     }
@@ -1963,6 +2016,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
                 }
             }
+
+            int outputItemLength = tag.getInteger("outputItemLength");
+            int outputFluidLength = tag.getInteger("outputFluidLength");
+            int totalOutputs = outputItemLength + outputFluidLength;
+            if (totalOutputs > 0) {
+                currentTip.add(StatCollector.translateToLocal("GT5U.waila.producing"));
+                for (int i = 0; i < min(3, outputItemLength); i++) {
+                    currentTip.add(
+                        "  " + tag.getString("outputItem" + i)
+                            + " x "
+                            + formatNumbers(tag.getInteger("outputItemCount" + i)));
+                }
+                for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
+                    currentTip.add(
+                        "  " + tag.getString("outputFluid" + i)
+                            + " x "
+                            + formatNumbers(tag.getInteger("outputFluidCount" + i))
+                            + "L");
+                }
+                if (totalOutputs > 3) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.waila.producing.andmore",
+                            formatNumbers((totalOutputs - 3))));
+                }
+            }
         }
         currentTip
             .add(GTWaila.getMachineProgressString(isActive, tag.getInteger("maxProgress"), tag.getInteger("progress")));
@@ -1989,6 +2068,21 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         tag.setInteger("progress", mProgresstime);
         tag.setInteger("maxProgress", mMaxProgresstime);
         tag.setBoolean("incompleteStructure", (getBaseMetaTileEntity().getErrorDisplayID() & 64) != 0);
+
+        if (mOutputItems != null) {
+            tag.setInteger("outputItemLength", mOutputItems.length);
+            for (int i = 0; i < mOutputItems.length; i++) {
+                tag.setString("outputItem" + i, mOutputItems[i].getDisplayName());
+                tag.setInteger("outputItemCount" + i, mOutputItems[i].stackSize);
+            }
+        }
+        if (mOutputFluids != null) {
+            tag.setInteger("outputFluidLength", mOutputFluids.length);
+            for (int i = 0; i < mOutputFluids.length; i++) {
+                tag.setString("outputFluid" + i, mOutputFluids[i].getLocalizedName());
+                tag.setInteger("outputFluidCount" + i, mOutputFluids[i].amount);
+            }
+        }
 
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
@@ -2467,12 +2561,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         };
 
         int lines = 0;
-        int MAX_LINES = 5;
+        int MAX_LINES = 10;
 
         if (mOutputItems != null) {
             HashMap<String, Long> nameToAmount = new HashMap<>();
             for (var item : mOutputItems) {
-                if (item == null) continue;
+                if (item == null || item.stackSize <= 0) continue;
                 nameToAmount.merge(item.getDisplayName(), (long) item.stackSize, Long::sum);
             }
             for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
@@ -2495,7 +2589,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (mOutputFluids != null) {
             HashMap<String, Long> nameToAmount = new HashMap<>();
             for (var fluid : mOutputFluids) {
-                if (fluid == null) continue;
+                if (fluid == null || fluid.amount <= 0) continue;
                 nameToAmount.merge(fluid.getLocalizedName(), (long) fluid.amount, Long::sum);
             }
             for (Map.Entry<String, Long> entry : nameToAmount.entrySet()) {
@@ -2653,7 +2747,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             || (mOutputItems != null && mOutputItems.length > 0)))
                 .widget(
                     new FakeSyncWidget.ListSyncer<>(
-                        () -> mOutputFluids != null ? Arrays.asList(mOutputFluids) : Collections.emptyList(),
+                        () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
+                            .map(fluidStack -> {
+                                if (fluidStack == null) return null;
+                                return new FluidStack(fluidStack, fluidStack.amount) {
+
+                                    @Override
+                                    public boolean isFluidEqual(FluidStack other) {
+                                        return super.isFluidEqual(other) && amount == other.amount;
+                                    }
+                                };
+                            })
+                            .collect(Collectors.toList()) : Collections.emptyList(),
                         val -> mOutputFluids = val.toArray(new FluidStack[0]),
                         NetworkUtils::writeFluidStack,
                         NetworkUtils::readFluidStack))

@@ -416,8 +416,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     public void addRecipeOutputs() {
-        this.addFluidOutputs(mOutputFluids);
-        this.addItemOutputs(mOutputItems);
+        if (mOutputFluids != null) this.addFluidOutputs(mOutputFluids);
+        if (mOutputItems != null) this.addItemOutputs(mOutputItems);
     }
 
     public void endCycle() {

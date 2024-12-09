@@ -300,7 +300,9 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 // TODO: Refer to heating cycles in another way to avoid confusion
                 "Each completed heating cycle boosts success chance by " + EnumChatFormatting.RED
                     + SUCCESS_PER_CYCLE
-                    + "%.")
+                    + "%"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addInfo(
                 "If the temperature ever reaches " + EnumChatFormatting.RED
                     + MAX_TEMP
@@ -322,7 +324,9 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + "L/s "
                     + EnumChatFormatting.WHITE
                     + coolantMaterial.getFluid(1)
-                        .getLocalizedName())
+                        .getLocalizedName()
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addInfo(
                 EnumChatFormatting.RED + "Raises "
                     + EnumChatFormatting.GRAY

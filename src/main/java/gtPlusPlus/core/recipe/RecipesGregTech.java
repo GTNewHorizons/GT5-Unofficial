@@ -44,9 +44,13 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cyclotronRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -116,6 +120,7 @@ public class RecipesGregTech {
         chemplantRecipes();
         alloySmelterRecipes();
         thermalBoilerRecipes();
+        craftingTableRecipes();
 
         /*
          * Special Recipe handlers
@@ -562,6 +567,26 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_UHV / 2)
             .duration(1 * MINUTES)
             .addTo(AssemblyLine);
+
+        // Expandable Hand Pump
+        RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1))
+            .metadata(RESEARCH_TIME, 30 * MINUTES)
+            .itemInputs(
+                ItemList.Electric_Pump_LuV.get(4),
+                ItemList.Electric_Motor_LuV.get(4),
+                GregtechItemList.VOLUMETRIC_FLASK_32k.get(4),
+                MaterialsAlloy.LAFIUM.getScrew(16),
+                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.ring, 8),
+                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.stick, 16),
+                Materials.Osmiridium.getPlates(32))
+            .fluidInputs(
+                MaterialsAlloy.HELICOPTER.getFluidStack(144 * 32),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(144 * 64))
+            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1004, 1))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(30 * SECONDS)
+            .addTo(AssemblyLine);
     }
 
     private static void laserEngraverRecipes() {
@@ -718,6 +743,7 @@ public class RecipesGregTech {
                 MaterialsElements.getInstance().BARIUM.getDust(2),
                 MaterialsElements.getInstance().CALCIUM.getDust(2),
                 MaterialsElements.getInstance().COPPER.getDust(3))
+            .fluidInputs(Materials.Oxygen.getGas(8000), Materials.Mercury.getFluid(1000))
             .fluidOutputs(MaterialsAlloy.HG1223.getFluidStack(16 * 144))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
@@ -1878,5 +1904,37 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_ZPM)
             .addTo(cyclotronRecipes);
 
+    }
+
+    private static void craftingTableRecipes() {
+
+        List<ItemList> tankList = Arrays.asList(
+            ItemList.Super_Tank_LV,
+            ItemList.Super_Tank_MV,
+            ItemList.Super_Tank_HV,
+            ItemList.Super_Tank_EV,
+            ItemList.Super_Tank_IV,
+            ItemList.Quantum_Tank_LV,
+            ItemList.Quantum_Tank_MV,
+            ItemList.Quantum_Tank_HV,
+            ItemList.Quantum_Tank_EV,
+            ItemList.Quantum_Tank_IV);
+
+        for (int i = 0; i < 10; i++) {
+            ItemStack tank = tankList.get(i)
+                .get(1);
+            ItemStack handPump = ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1004, 1);
+            ItemStack pumpWithNBT = handPump.copy();
+            NBTTagCompound nbt = new NBTTagCompound();
+            int capacity = i == 9 ? Integer.MAX_VALUE : 4_000_000 * (int) Math.pow(2, i);
+            nbt.setInteger("mMeta", 4);
+            nbt.setBoolean("mInit", true);
+            nbt.setString("mFluid", "@@@@@");
+            nbt.setInteger("mFluidAmount", 0);
+            nbt.setInteger("mCapacity", capacity);
+            nbt.setBoolean("capacityInit", true);
+            pumpWithNBT.setTagCompound(nbt);
+            GTModHandler.addShapelessCraftingRecipe(pumpWithNBT, new Object[] { handPump, tank });
+        }
     }
 }
