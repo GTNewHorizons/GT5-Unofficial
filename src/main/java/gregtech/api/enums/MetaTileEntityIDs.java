@@ -1759,6 +1759,8 @@ public enum MetaTileEntityIDs {
     OpticalFiberCable(15470),
     LaserVacuumPipeCasing(15472),
     OpticalFiberCableCasing(15473),
+    TestFactoryPipe(15478),
+    TestFactoryHatch(15479),
     Ownerdetector(15480),
     InsaneBuckConverter(15485),
     LudicrousBuckConverter(15486),
