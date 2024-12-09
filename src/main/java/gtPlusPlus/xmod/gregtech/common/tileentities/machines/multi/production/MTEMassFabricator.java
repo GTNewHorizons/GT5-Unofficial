@@ -97,7 +97,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public String getMachineType() {
-        return "Mass Fabricator / Recycler";
+        return "Mass Fabricator, Recycler";
     }
 
     @Override

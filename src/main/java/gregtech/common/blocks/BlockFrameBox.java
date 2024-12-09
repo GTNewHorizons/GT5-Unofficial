@@ -103,6 +103,8 @@ public class BlockFrameBox extends BlockContainer {
         Materials material = getMaterial(meta);
         MTEFrame frame = new MTEFrame("GT_Frame_" + material, material);
         baseMte.setMetaTileEntity(frame);
+        baseMte.setInitialValuesAsNBT(null, (short) (4096 + meta)); // 4096 is found in LoaderMetaTileEntities for
+                                                                    // frames
         frame.setBaseMetaTileEntity(baseMte);
     }
 
@@ -111,6 +113,7 @@ public class BlockFrameBox extends BlockContainer {
         BaseMetaPipeEntity newTileEntity = new BaseMetaPipeEntity();
         createFrame(worldIn, x, y, z, newTileEntity);
         worldIn.setTileEntity(x, y, z, newTileEntity);
+
         return newTileEntity;
     }
 

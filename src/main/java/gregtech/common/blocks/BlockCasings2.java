@@ -36,7 +36,7 @@ public class BlockCasings2 extends BlockCasingsAbstract {
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Bronze Gear Box Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Steel Gear Box Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Titanium Gear Box Casing");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Assembling Line Casing");
+        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Assembly Line Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Processor Machine Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Data Drive Machine Casing");
         GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Containment Field Machine Casing");

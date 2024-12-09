@@ -49,6 +49,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
@@ -188,7 +189,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + EnumChatFormatting.GRAY
                     + " blocks along each axis.")
             .addInfo("Left click this controller with a data stick, then right click a purification unit to link.")
-            .addInfo("Supplies power to linked purification units. This multiblock accepts TecTech energy hatches.")
+            .addInfo("Supplies power to linked purification units.")
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
                 "Works in fixed time processing cycles of " + EnumChatFormatting.RED
@@ -689,7 +691,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .getLocalName();
 
         String statusString = name + "  " + unit.getStatusString();
-        final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        int widgetWidth = 0;
+        if (NetworkUtils.isClient()) {
+            final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            widgetWidth = fontRenderer.getStringWidth(statusString) + 25;
+        }
 
         row.widget(
             TextWidget.dynamicString(() -> statusString)
@@ -702,7 +708,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 unit.metaTileEntity()
                     .makeSyncerWidgets())
             .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive))
-            .setSize(fontRenderer.getStringWidth(statusString) + 25, 20);
+            .setSize(widgetWidth, 20);
 
         return row;
     }
