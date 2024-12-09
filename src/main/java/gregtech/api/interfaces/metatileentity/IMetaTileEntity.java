@@ -339,7 +339,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     String getSpecialVoltageToolTip();
 
     /**
-     * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
+     * Icon of the Texture.
      *
      * @param side          is the Side of the Block
      * @param facing        is the direction the Block is facing
