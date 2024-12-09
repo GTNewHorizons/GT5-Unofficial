@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
@@ -650,7 +651,7 @@ public class GTValues {
         + EnumChatFormatting.WHITE
         + EnumChatFormatting.ITALIC
         + "Number";
-    public static final String Ollie = "" + EnumChatFormatting.GREEN + EnumChatFormatting.BOLD + "Ollie";
+    public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
     public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
         + "Ba"
         + EnumChatFormatting.LIGHT_PURPLE
@@ -682,6 +683,10 @@ public class GTValues {
         + EnumChatFormatting.AQUA
         + EnumChatFormatting.BOLD
         + "APenguin";
+
+    public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
+
+    public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {

@@ -691,6 +691,7 @@ public final class ModItems {
         toolGregtechPump.registerPumpType(1, "Advanced Hand Pump", 32000, 1);
         toolGregtechPump.registerPumpType(2, "Super Hand Pump", 128000, 2);
         toolGregtechPump.registerPumpType(3, "Ultimate Hand Pump", 512000, 3);
+        toolGregtechPump.registerPumpType(4, "Expandable Hand Pump", 0, 4);
 
         // Xp Fluids - Dev
         if (!FluidRegistry.isFluidRegistered("mobessence")) {

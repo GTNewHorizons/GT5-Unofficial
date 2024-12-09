@@ -612,8 +612,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier());
-        tt.addMachineType("Miner")
-            .addInfo("Controller Block for the Ore Drilling Plant " + (tierSuffix != null ? tierSuffix : ""))
+        tt.addMachineType("Miner, MBM")
             .addInfo("Use a Screwdriver to configure block radius")
             .addInfo("Maximum radius is " + GTUtility.formatNumbers((long) getRadiusInChunks() << 4) + " blocks")
             .addInfo("Use Soldering iron to turn off chunk mode")
@@ -625,7 +624,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addInfo(
                 "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
                     : GTUtility.formatNumbers(baseCycleTime / 20) + " seconds"))
-            .addSeparator()
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -636,7 +634,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addInputBus("Mining Pipes, optional, any base casing", 1)
             .addInputHatch("Drilling Fluid, any base casing", 1)
             .addOutputBus("Any base casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

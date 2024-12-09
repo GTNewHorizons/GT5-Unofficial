@@ -23,7 +23,8 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEEnergyBuffer extends GTPPMetaTileEntity {
 
-    protected byte aCurrentOutputAmperage = 4;
+    protected static final byte DEFAULT_OUTPUT_AMPERAGE = 4;
+    protected byte aCurrentOutputAmperage = DEFAULT_OUTPUT_AMPERAGE;
 
     public MTEEnergyBuffer(final int aID, final String aName, final String aNameRegional, final int aTier,
         final String aDescription, final int aSlotCount) {
@@ -403,7 +404,8 @@ public class MTEEnergyBuffer extends GTPPMetaTileEntity {
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        aNBT.setByte("aCurrentOutputAmperage", aCurrentOutputAmperage);
+        if (aCurrentOutputAmperage != DEFAULT_OUTPUT_AMPERAGE)
+            aNBT.setByte("aCurrentOutputAmperage", aCurrentOutputAmperage);
         long aEU = this.getBaseMetaTileEntity()
             .getStoredEU();
         if (aEU > 0) {

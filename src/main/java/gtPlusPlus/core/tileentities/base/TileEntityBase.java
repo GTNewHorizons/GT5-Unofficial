@@ -28,10 +28,10 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.interfaces.ILazyCoverable;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BTF_Inventory;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import ic2.api.Direction;
 
 public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregTechDeviceInformation, IDescribable {
@@ -1316,7 +1316,7 @@ public class TileEntityBase extends TileEntity implements ILazyCoverable, IGregT
             }
             this.mReleaseEnergy = false;
             this.onExplosion();
-            PollutionUtils.addPollution(this, 100000);
+            Pollution.addPollution(this, 100000);
             this.mMetaTileEntity.doExplosion(aAmount);
         }
     }

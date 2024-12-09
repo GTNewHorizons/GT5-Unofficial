@@ -36,6 +36,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -53,18 +54,18 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
         .<MTEIndustrialExtractor>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            (new String[][] { { "  A  ", " BBB ", "AB~BA", " BBB " }, { "  A  ", " BBB ", "AB BA", " BBB " },
-                { "  A  ", " BBB ", "AB BA", " BBB " }, { "  A  ", " BBB ", "ABBBA", " BBB " },
-                { "  A  ", "  A  ", "AAAAA", "     " } }))
+            (new String[][] { { "CCCCC", "C   C", "C   C", "C   C", "CC~CC" },
+                { "CCCCC", " BBB ", " AAA ", " BBB ", "CCCCC" }, { "CCCCC", " BBB ", " ABA ", " BBB ", "CCCCC" },
+                { "CCCCC", " BBB ", " AAA ", " BBB ", "CCCCC" }, { "CCCCC", "C   C", "C   C", "C   C", "CCCCC" } }))
         .addElement(
-            'B',
+            'C',
             buildHatchAdder(MTEIndustrialExtractor.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(1))
                 .dot(1)
                 .buildAndChain(
                     onElementPass(MTEIndustrialExtractor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement(
-            'A',
+            'B',
             ofBlocksTiered(
                 MTEIndustrialExtractor::getItemPipeTierFromMeta,
                 ImmutableList.of(
@@ -79,6 +80,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
                 -2,
                 MTEIndustrialExtractor::setItemPipeTier,
                 MTEIndustrialExtractor::getItemPipeTier))
+        .addElement('A', Glasses.chainAllGlasses())
         .build();
 
     private int itemPipeTier = 0;
@@ -163,33 +165,31 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Extractor")
-            .addInfo("Controller Block for the Dissection Apparatus")
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Only uses 85% of the EU/t normally required")
             .addInfo("Gains 8 parallels per tier of Item Pipe Casing")
-            .addInfo(AuthorFourIsTheNumber)
-            .addSeparator()
-            .beginStructureBlock(5, 4, 5, true)
+            .beginStructureBlock(5, 5, 5, false)
             .addController("Front Center")
-            .addCasingInfoMin("Stainless Steel Machine Casing", 22, false)
+            .addCasingInfoMin("Stainless Steel Machine Casing", 45, false)
             .addCasingInfoExactly("Item Pipe Casing", 19, true)
+            .addCasingInfoExactly("EV+ Glass", 8, false)
             .addInputBus("Any Stainless Steel Casing", 1)
             .addOutputBus("Any Stainless Steel Casing", 1)
             .addEnergyHatch("Any Stainless Steel Casing", 1)
             .addMaintenanceHatch("Any Stainless Steel Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 4, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -203,8 +203,8 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
         mCasingAmount = 0;
         itemPipeTier = -2;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0)) return false;
-        return mCasingAmount >= 22;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
+        return mCasingAmount >= 45;
     }
 
     @Override
@@ -215,7 +215,8 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
     }
 
     public int getMaxParallelRecipes() {
-        return 8 * itemPipeTier;
+        // Max call to prevent seeing -16 parallels in waila for unformed multi
+        return Math.max(8 * itemPipeTier, 0);
     }
 
     @Override

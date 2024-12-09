@@ -24,6 +24,8 @@ public class TecTechUITextures {
     public static final UITexture BACKGROUND_GLOW_GREEN = UITexture.fullImage(MODID, "gui/background/green_glow");
     public static final UITexture BACKGROUND_GLOW_RED = UITexture.fullImage(MODID, "gui/background/red_glow");
     public static final UITexture BACKGROUND_GLOW_WHITE = UITexture.fullImage(MODID, "gui/background/white_glow");
+    public static final UITexture BACKGROUND_GLOW_WHITE_HALF = UITexture
+        .fullImage(MODID, "gui/background/white_glow_half");
     public static final UITexture BACKGROUND_GLOW_RAINBOW = UITexture.fullImage(MODID, "gui/background/rainbow_glow");
     public static final UITexture BACKGROUND_SPACE = UITexture.fullImage(MODID, "gui/background/space");
 
@@ -89,6 +91,40 @@ public class TecTechUITextures {
         .fullImage(MODID, "gui/overlay_button/rainbow_spiral");
     public static final UITexture OVERLAY_BUTTON_RAINBOW_SPIRAL_OFF = UITexture
         .fullImage(MODID, "gui/overlay_button/rainbow_spiral_off");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION = UITexture
+        .fullImage(MODID, "gui/overlay_button/input_separation_on");
+    public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/input_separation_off");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE = UITexture
+        .fullImage(MODID, "gui/overlay_button/batch_mode_on");
+    public static final UITexture OVERLAY_BUTTON_BATCH_MODE_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/batch_mode_off");
+    public static final UITexture OVERLAY_BUTTON_LOAF_MODE = UITexture
+        .fullImage(MODID, "gui/overlay_button/loaf_mode_on");
+    public static final UITexture OVERLAY_BUTTON_LOAF_MODE_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/loaf_mode_off");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_LOCKED = UITexture
+        .fullImage(MODID, "gui/overlay_button/recipe_locked");
+    public static final UITexture OVERLAY_BUTTON_RECIPE_UNLOCKED = UITexture
+        .fullImage(MODID, "gui/overlay_button/recipe_unlocked");
+    public static final UITexture OVERLAY_BUTTON_VOIDING_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/voiding_disabled");
+    public static final UITexture OVERLAY_BUTTON_VOIDING_ITEMS = UITexture
+        .fullImage(MODID, "gui/overlay_button/voiding_items");
+    public static final UITexture OVERLAY_BUTTON_VOIDING_FLUIDS = UITexture
+        .fullImage(MODID, "gui/overlay_button/voiding_fluids");
+    public static final UITexture OVERLAY_BUTTON_VOIDING_BOTH = UITexture
+        .fullImage(MODID, "gui/overlay_button/voiding_both");
+    public static final UITexture OVERLAY_BUTTON_STRUCTURE_CHECK = UITexture
+        .fullImage(MODID, "gui/overlay_button/structure_check_on");
+    public static final UITexture OVERLAY_BUTTON_STRUCTURE_CHECK_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/structure_check_off");
+    public static final UITexture OVERLAY_BUTTON_FURNACE_MODE = UITexture
+        .fullImage(MODID, "gui/overlay_button/furnace_mode_on");
+    public static final UITexture OVERLAY_BUTTON_FURNACE_MODE_OFF = UITexture
+        .fullImage(MODID, "gui/overlay_button/furnace_mode_off");
+    public static final UITexture OVERLAY_BUTTON_STATISTICS = UITexture
+        .fullImage(MODID, "gui/overlay_button/statistics");
     public static final UITexture OVERLAY_CYCLIC_BLUE = UITexture.fullImage(MODID, "gui/overlay_button/cyclic_blue");
     public static final UITexture OVERLAY_EJECTION_LOCKED = UITexture
         .fullImage(MODID, "gui/overlay_button/eject_disabled");
@@ -145,6 +181,7 @@ public class TecTechUITextures {
         .collect(Collectors.toList())
         .toArray(new UITexture[0]);
     public static final UITexture PICTURE_HEAT_SINK_SMALL = UITexture.fullImage(MODID, "gui/picture/heat_sink_small");
+    public static final UITexture PICTURE_HEAT_SINK_16x8 = UITexture.fullImage(MODID, "gui/picture/heat_sink_16x8");
     public static final UITexture PICTURE_PARAMETER_BLANK = UITexture.fullImage(MODID, "gui/picture/parameter_blank");
     public static final UITexture[] PICTURE_PARAMETER_BLUE = IntStream.range(0, 20)
         .mapToObj(i -> UITexture.partly(MODID, "gui/picture/parameter_blue", 158, 4, i * 8, 0, i * 8 + 6, 4))
@@ -190,6 +227,8 @@ public class TecTechUITextures {
     public static final UITexture PICTURE_UPGRADE_CONNECTOR_RED_OPAQUE = UITexture
         .fullImage(MODID, "gui/picture/connector_red_opaque");
     public static final UITexture SLOT_OUTLINE_GREEN = UITexture.fullImage(MODID, "gui/picture/green_selector");
+    public static final UITexture UNSELECTED_OPTION = UITexture.fullImage(MODID, "gui/picture/unselected_option");
+    public static final UITexture GREEN_CHECKMARK_11x9 = UITexture.fullImage(MODID, "gui/picture/green_checkmark");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
         .fullImage(MODID, "gui/picture/milestone_charge");
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CONVERSION = UITexture

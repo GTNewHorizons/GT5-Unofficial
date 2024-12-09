@@ -18,6 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -30,10 +31,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -74,7 +73,7 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.objects.GTChunkManager;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -142,6 +141,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private int mHeatingCapacity = 0;
     private long running_time = 0;
     private boolean convergence = false;
+    private boolean doesRecipeHaveNativeCatInput = true;
+    private boolean isEnoughCatalystPresent = true;
     private HeatingCoilLevel mCoilLevel;
     private OverclockCalculator overclockCalculator;
 
@@ -544,8 +545,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     protected static final int DIM_INJECTION_CASING = 13;
     protected static final int DIM_BRIDGE_CASING = 14;
 
-    private boolean isMultiChunkloaded = true;
-
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEPlasmaForge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPlasmaForge>builder()
@@ -618,10 +617,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + GTUtility.formatNumbers(efficiency_decay_rate)
                     + EnumChatFormatting.GRAY
                     + " as fast as it builds up.")
-            .addInfo(AuthorColen)
-            .addSeparator()
             .beginStructureBlock(33, 24, 33, false)
-            .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
             .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
@@ -633,7 +629,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 EnumChatFormatting.GOLD + "2,121"
                     + EnumChatFormatting.GRAY
                     + " Dimensionally transcendent casings required.")
-            .addStructureInfo("--------------------------------------------")
+            .addStructureInfo("")
             .addStructureInfo(
                 "Requires " + EnumChatFormatting.GOLD
                     + "1"
@@ -683,8 +679,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + max_input_bus
                     + EnumChatFormatting.GRAY
                     + " output busses.")
-            .addStructureInfo("--------------------------------------------")
-            .toolTipFinisher("Gregtech");
+            .addStructureInfo("")
+            .toolTipFinisher(AuthorColen);
         return tt;
     }
 
@@ -769,7 +765,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 overclockCalculator = super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity);
                 if (discount == maximum_discount && convergence) {
-                    overclockCalculator = overclockCalculator.enablePerfectOC();
+                    if (doesRecipeHaveNativeCatInput || isEnoughCatalystPresent) {
+                        overclockCalculator = overclockCalculator.enablePerfectOC();
+                    }
                 }
                 return overclockCalculator;
             }
@@ -790,6 +788,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Nonnull
     protected GTRecipe recipeAfterAdjustments(@Nonnull GTRecipe recipe) {
+        doesRecipeHaveNativeCatInput = true;
         GTRecipe tRecipe = recipe.copy();
         boolean adjusted = false;
         outside: for (int i = 0; i < recipe.mFluidInputs.length; i++) {
@@ -814,11 +813,42 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             && convergence
             && overclockCalculator != null
             && overclockCalculator.getCalculationStatus()) {
+            doesRecipeHaveNativeCatInput = false;
+            isEnoughCatalystPresent = checkCatalyst();
             recalculateDiscount();
             calculateCatalystIncrease(tRecipe, 0, true);
             getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         }
         return tRecipe;
+    }
+
+    private boolean checkCatalyst() {
+        FluidStack selectedCatalyst = valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1];
+
+        double sub1TickMultiplier = Math.max(Math.floor(1 / recipeDuration), 1d);
+        int neededAmount = (int) Math.min(
+            maximum_discount * (isBatchModeEnabled() ? getMaxBatchSize() : 1)
+                * sub1TickMultiplier
+                * extraCatalystNeeded,
+            Integer.MAX_VALUE);
+        selectedCatalyst.amount = neededAmount;
+        startRecipeProcessing();
+        for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
+            FluidStack checked = hatch.drain(ForgeDirection.UNKNOWN, selectedCatalyst, true);
+
+            if (checked == null) {
+                continue;
+            }
+
+            neededAmount -= checked.amount;
+
+            if (neededAmount == 0) {
+                endRecipeProcessing();
+                return true;
+            }
+        }
+        endRecipeProcessing();
+        return false;
     }
 
     @Override
@@ -918,7 +948,12 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         // Calculate discount to make sure it is shown properly even when machine is off but decaying
         recalculateDiscount();
 
-        return new String[] { "------------ Critical Information ------------",
+        return new String[] {
+            EnumChatFormatting.STRIKETHROUGH + "------------"
+                + EnumChatFormatting.RESET
+                + " Critical Information "
+                + EnumChatFormatting.STRIKETHROUGH
+                + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime)
@@ -970,7 +1005,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + EnumChatFormatting.RESET
                 + "%",
             "Convergence: " + (convergence ? EnumChatFormatting.GREEN + "Active" : EnumChatFormatting.RED + "Inactive"),
-            "-----------------------------------------" };
+            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
     private void recalculateDiscount() {
@@ -982,16 +1017,16 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     private int catalystTypeForRecipesWithoutCatalyst = 1;
+    private int extraCatalystNeeded;
+    private double recipeDuration;
 
     private void calculateCatalystIncrease(GTRecipe recipe, int index, boolean withoutCatalyst) {
         long machineConsumption = overclockCalculator.getConsumption();
         int numberOfOverclocks = (int) Math.ceil(calculateTier(machineConsumption) - GTUtility.getTier(recipe.mEUt));
-        double recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
+        recipeDuration = recipe.mDuration / Math.pow(4, numberOfOverclocks);
         // Power difference between regular and perfect OCs for this recipe duration
         long extraPowerNeeded = (long) ((Math.pow(2, numberOfOverclocks) - 1) * machineConsumption * recipeDuration);
-        int inputFluids = recipe.mFluidInputs.length;
         int outputFluids = recipe.mFluidOutputs.length;
-        int extraCatalystNeeded;
         Fluid validFuel;
         if (!withoutCatalyst) {
             validFuel = recipe.mFluidInputs[index].getFluid();
@@ -1007,26 +1042,22 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 }
             }
         } else {
-            // Add chosen catalyst as recipe input
+            // Calculate extra catalyst amount
             validFuel = valid_fuels[catalystTypeForRecipesWithoutCatalyst - 1].getFluid();
             extraCatalystNeeded = (int) (extraPowerNeeded / FUEL_ENERGY_VALUES.get(validFuel)
                 .getLeft());
-            FluidStack[] newInputFluids = new FluidStack[inputFluids + 1];
-            for (int i = 0; i < inputFluids; i++) {
-                newInputFluids[i] = recipe.mFluidInputs[i].copy();
+            if (isEnoughCatalystPresent) {
+                // Add residue as recipe output
+                FluidStack[] newOutputFluids = new FluidStack[outputFluids + 1];
+                for (int i = 0; i < outputFluids; i++) {
+                    newOutputFluids[i] = recipe.mFluidOutputs[i].copy();
+                }
+                newOutputFluids[outputFluids] = new FluidStack(
+                    MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1),
+                    (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
+                        .getRight()));
+                recipe.mFluidOutputs = newOutputFluids;
             }
-            newInputFluids[inputFluids] = new FluidStack(validFuel, extraCatalystNeeded / 2);
-            recipe.mFluidInputs = newInputFluids;
-            // Add residue as recipe output
-            FluidStack[] newOutputFluids = new FluidStack[outputFluids + 1];
-            for (int i = 0; i < outputFluids; i++) {
-                newOutputFluids[i] = recipe.mFluidOutputs[i].copy();
-            }
-            newOutputFluids[outputFluids] = new FluidStack(
-                MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1),
-                (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
-                    .getRight()));
-            recipe.mFluidOutputs = newOutputFluids;
         }
     }
 
@@ -1038,48 +1069,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
-            // If machine has stopped, stop chunkloading.
-            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-            isMultiChunkloaded = false;
-        } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !isMultiChunkloaded) {
-            // Load a 3x3 area centered on controller when machine is running.
-            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-
-            int ControllerXCoordinate = ((TileEntity) aBaseMetaTileEntity).xCoord;
-            int ControllerZCoordinate = ((TileEntity) aBaseMetaTileEntity).zCoord;
-
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate, ControllerZCoordinate));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate + 16, ControllerZCoordinate));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate - 16, ControllerZCoordinate));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate, ControllerZCoordinate + 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate, ControllerZCoordinate - 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate + 16, ControllerZCoordinate + 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate + 16, ControllerZCoordinate - 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate - 16, ControllerZCoordinate + 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate - 16, ControllerZCoordinate - 16));
-
-            isMultiChunkloaded = true;
-        }
-
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
@@ -1229,7 +1218,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     public void loadNBTData(final NBTTagCompound aNBT) {
         running_time = aNBT.getLong("eRunningTime");
         discount = aNBT.getDouble("eLongDiscountValue");
-        catalystTypeForRecipesWithoutCatalyst = aNBT.getInteger("catalystType");
+        if (aNBT.hasKey("catalystType")) catalystTypeForRecipesWithoutCatalyst = aNBT.getInteger("catalystType");
         convergence = aNBT.getBoolean("convergence");
         super.loadNBTData(aNBT);
     }
@@ -1255,5 +1244,17 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
+        return true;
     }
 }

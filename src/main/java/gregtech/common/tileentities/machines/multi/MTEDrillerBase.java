@@ -181,6 +181,18 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         initFields();
     }
 
+    protected void addOperatingMessages() {
+        // Inheritors can overwrite these to add custom operating messages.
+        addResultMessage(STATE_DOWNWARD, true, "deploying_pipe");
+        addResultMessage(STATE_DOWNWARD, false, "extracting_pipe");
+        addResultMessage(STATE_AT_BOTTOM, true, "drilling");
+        addResultMessage(STATE_AT_BOTTOM, false, "no_mining_pipe");
+        addResultMessage(STATE_UPWARD, true, "retracting_pipe");
+        addResultMessage(STATE_UPWARD, false, "drill_generic_finished");
+        addResultMessage(STATE_ABORT, true, "retracting_pipe");
+        addResultMessage(STATE_ABORT, false, "drill_retract_pipes_finished");
+    }
+
     private void initFields() {
         casingBlock = getCasingBlockItem().getBlock();
         casingMeta = getCasingBlockItem().get(0)
@@ -192,15 +204,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         casingTextureIndex = getCasingTextureIndex();
         workState = STATE_DOWNWARD;
 
-        // Inheritors can overwrite these to add custom operating messages.
-        addResultMessage(STATE_DOWNWARD, true, "deploying_pipe");
-        addResultMessage(STATE_DOWNWARD, false, "extracting_pipe");
-        addResultMessage(STATE_AT_BOTTOM, true, "drilling");
-        addResultMessage(STATE_AT_BOTTOM, false, "no_mining_pipe");
-        addResultMessage(STATE_UPWARD, true, "retracting_pipe");
-        addResultMessage(STATE_UPWARD, false, "drill_generic_finished");
-        addResultMessage(STATE_ABORT, true, "retracting_pipe");
-        addResultMessage(STATE_ABORT, false, "drill_retract_pipes_finished");
+        addOperatingMessages();
+
     }
 
     @Override

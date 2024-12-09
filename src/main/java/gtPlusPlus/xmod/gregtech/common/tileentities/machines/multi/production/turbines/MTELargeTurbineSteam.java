@@ -40,7 +40,7 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
 
     @Override
     public int getCasingTextureIndex() {
-        return 16;
+        return 57;
     }
 
     @Override
@@ -171,7 +171,7 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Steam Turbine";
+        return "Large Steam Turbine, XLST";
     }
 
     @Override
@@ -182,5 +182,10 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
     @Override
     protected String getCasingName() {
         return "Reinforced Steam Turbine Casing";
+    }
+
+    @Override
+    protected boolean isDenseSteam() {
+        return isUsingDenseSteam;
     }
 }

@@ -36,7 +36,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 
 public class MTEBoilerBronze extends MTEBoiler {
 

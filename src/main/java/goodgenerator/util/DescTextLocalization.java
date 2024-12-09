@@ -5,6 +5,7 @@ import net.minecraft.util.StatCollector;
 
 public class DescTextLocalization {
 
+    @Deprecated
     public static final String BLUE_PRINT_INFO = "Follow the" + EnumChatFormatting.BLUE
         + " Structure"
         + EnumChatFormatting.DARK_BLUE

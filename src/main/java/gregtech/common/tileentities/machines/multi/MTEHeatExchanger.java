@@ -107,14 +107,12 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger")
-            .addInfo("Controller Block for the Large Heat Exchanger")
+        tt.addMachineType("Heat Exchanger, LHE")
             .addInfo("More complicated than a Fusion Reactor. Seriously")
             .addInfo("Inputs are Hot Coolant or Lava")
             .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
             .addInfo("Read the wiki article to understand how it works")
             .addInfo("Then go to the Discord to understand the wiki")
-            .addSeparator()
             .beginStructureBlock(3, 4, 3, false)
             .addController("Front bottom")
             .addCasingInfoRange("Stable Titanium Machine Casing", 20, 32, false)
@@ -124,7 +122,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             .addInputHatch("Distilled water, any casing", 1)
             .addOutputHatch("Cold fluid, top center", 3)
             .addOutputHatch("Steam/SH Steam, any casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

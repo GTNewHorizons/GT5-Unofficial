@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -181,8 +180,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Neutron Activator")
-            .addInfo("Controller block for the Neutron Activator")
+        tt.addMachineType("Neutron Activator, NA")
             .addInfo("Superluminal-velocity Motion.")
             .addInfo("The minimum height of the Speeding Pipe Casing is 4.")
             .addInfo("Per extra Speeding Pipe Casing will give time discount.")
@@ -197,9 +195,6 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                     + EnumChatFormatting.GRAY
                     + ".")
             .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .addController("Front bottom")
             .addInputHatch("Hint block with dot 1")
             .addInputBus("Hint block with dot 1")
@@ -213,7 +208,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             .addCasingInfoMin("Steel Frame Box", 16, false)
             .addCasingInfoMin("Speeding Pipe Casing", 4, false)
             .addCasingInfoMin("EV+ Glass", 32, false)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 
