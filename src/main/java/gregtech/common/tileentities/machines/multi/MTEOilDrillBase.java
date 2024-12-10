@@ -117,7 +117,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .getDisplayName();
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Pump")
+        tt.addMachineType("Pump, FDP")
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .addInfo("Use a Screwdriver to configure range")
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
