@@ -102,8 +102,6 @@ import gregtech.common.render.GTCapeRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
-import gregtech.common.render.MultiTileRenderer;
-import gregtech.common.render.PollutionRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
