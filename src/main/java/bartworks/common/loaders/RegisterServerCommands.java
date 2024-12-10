@@ -14,6 +14,7 @@
 package bartworks.common.loaders;
 
 import bartworks.common.commands.SummonRuin;
+import bartworks.common.commands.PrintRecipeListToFile;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class RegisterServerCommands {
