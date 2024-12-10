@@ -20,5 +20,6 @@ public class RegisterServerCommands {
 
     public static void registerAll(FMLServerStartingEvent event) {
         event.registerServerCommand(new SummonRuin());
+        event.registerServerCommand(new PrintRecipeListToFile());
     }
 }
