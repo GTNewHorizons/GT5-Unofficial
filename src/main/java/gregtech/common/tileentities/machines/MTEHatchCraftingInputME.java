@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -50,6 +49,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
@@ -775,7 +775,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     @Override
                     protected ItemStack getItemStackForRendering(Slot slotIn) {
                         ItemStack stack = slot.getStack();
-                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem) || patternHasRecipeListCache.charAt(slot.getSlotIndex()) == '0') {
+                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)
+                            || patternHasRecipeListCache.charAt(slot.getSlotIndex()) == '0') {
                             return stack;
                         }
                         ItemStack output = patternItem.getOutput(stack);
@@ -785,7 +786,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
                 .build()
                 .setPos(7, 9))
-            .widget(new FakeSyncWidget.StringSyncer(this::getPatternHasRecipeList, val -> patternHasRecipeListCache = val))
+            .widget(
+                new FakeSyncWidget.StringSyncer(this::getPatternHasRecipeList, val -> patternHasRecipeListCache = val))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
                     widget.getContext()
