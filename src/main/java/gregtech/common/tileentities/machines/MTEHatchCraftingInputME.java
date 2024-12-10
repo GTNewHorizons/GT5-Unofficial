@@ -253,6 +253,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
 
         public void setPatternRecipe(GTRecipe recipe, int hash) {
+            if (recipe != null) {
+                Objects.requireNonNull(pattern.getItem()).setMaxStackSize(63); //trick for indicate "have recipe" in gui
+            } else {
+                Objects.requireNonNull(pattern.getItem()).setMaxStackSize(64);
+            }
             patternRecipe = recipe;
             patternRecipeMapHash = hash;
         }
@@ -756,7 +761,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     @Override
                     protected ItemStack getItemStackForRendering(Slot slotIn) {
                         ItemStack stack = slot.getStack();
-                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
+                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem) || stack.getItem().getItemStackLimit() == 64) {
                             return stack;
                         }
                         ItemStack output = patternItem.getOutput(stack);
@@ -822,6 +827,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 try {
                     originalPattern.refund(getProxy(), getRequest());
                     originalPattern.setPatternRecipe(null, 0);
+                    Objects.requireNonNull(originalPattern.pattern.getItem()).setMaxStackSize(64);
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
                 needPatternSync = true;
