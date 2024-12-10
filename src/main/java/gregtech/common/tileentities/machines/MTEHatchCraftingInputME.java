@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -253,11 +254,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
 
         public void setPatternRecipe(GTRecipe recipe, int hash) {
-            if (recipe != null) {
-                Objects.requireNonNull(pattern.getItem()).setMaxStackSize(63); //trick for indicate "have recipe" in gui
-            } else {
-                Objects.requireNonNull(pattern.getItem()).setMaxStackSize(64);
-            }
             patternRecipe = recipe;
             patternRecipeMapHash = hash;
         }
@@ -747,6 +743,24 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         return super.getGUIWidth() + 16;
     }
 
+    private String getPatternHasRecipeList() {
+        StringBuilder sl = new StringBuilder();
+        for (PatternSlot slot : internalInventory) {
+            if (slot == null) {
+                sl.append(0);
+            } else {
+                if (slot.patternRecipe != null) {
+                    sl.append(1);
+                } else {
+                    sl.append(0);
+                }
+            }
+        }
+        return sl.toString();
+    }
+
+    private String patternHasRecipeListCache = "000000000000000000000000000000000000";
+
     @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
@@ -761,7 +775,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     @Override
                     protected ItemStack getItemStackForRendering(Slot slotIn) {
                         ItemStack stack = slot.getStack();
-                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem) || stack.getItem().getItemStackLimit() == 64) {
+                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem) || patternHasRecipeListCache.charAt(slot.getSlotIndex()) == '0') {
                             return stack;
                         }
                         ItemStack output = patternItem.getOutput(stack);
@@ -771,6 +785,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
                 .build()
                 .setPos(7, 9))
+            .widget(new FakeSyncWidget.StringSyncer(this::getPatternHasRecipeList, val -> patternHasRecipeListCache = val))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
                     widget.getContext()
@@ -827,7 +842,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 try {
                     originalPattern.refund(getProxy(), getRequest());
                     originalPattern.setPatternRecipe(null, 0);
-                    Objects.requireNonNull(originalPattern.pattern.getItem()).setMaxStackSize(64);
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
                 needPatternSync = true;
