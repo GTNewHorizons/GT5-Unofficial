@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import javax.annotation.Nonnull;
 
@@ -24,6 +25,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -43,6 +47,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -52,7 +58,9 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> implements ISurvivalConstructable {
 
@@ -232,21 +240,79 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
         return true;
     }
 
+    int drainedMagmatter = 0;
+
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                if (mSpecialTier == 4) {
+                    boolean foundNanite = false;
+                    ItemStack inputNanite = recipe.mOutputs[0];
+                    int busWithNaniteIndex = 0;
+                    int slotWithNaniteIndex = 0;
+
+                    for (int i = 0; i < mInputBusses.size(); i++) {
+                        if (foundNanite) {
+                            break;
+                        }
+                        MTEHatchInputBus inputBus = mInputBusses.get(i);
+                        ItemStack[] busInventory = inputBus.getRealInventory();
+                        for (int j = 0; j < busInventory.length; j++) {
+                            ItemStack inputItem = null;
+                            if (inputBus instanceof MTEHatchInputBusME meBus) {
+                                if (j == 18) {
+                                    break;
+                                }
+                                inputItem = meBus.getRealInventory()[j + 16];
+                            } else {
+                                inputItem = inputBus.getStackInSlot(j);
+                            }
+                            if (inputItem != null && inputItem.isItemEqual(inputNanite)) {
+                                busWithNaniteIndex = i;
+                                slotWithNaniteIndex = j;
+                                foundNanite = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (foundNanite) {
+                        for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
+                            FluidStack drained = hatch.drain(
+                                ForgeDirection.UNKNOWN,
+                                MaterialsUEVplus.MagMatter.getMolten(Integer.MAX_VALUE),
+                                true);
+                            if (drained == null) {
+                                continue;
+                            }
+                            drainedMagmatter = drained.amount;
+                            mInputBusses.get(busWithNaniteIndex)
+                                .decrStackSize(slotWithNaniteIndex, 1);
+                        }
+                    }
+                } else {
+                    drainedMagmatter = 0;
+                }
+                maxParallel = Math.max((int) (drainedMagmatter / (144 / Math.pow(2, 4 - mSpecialTier))), 1);
                 return recipe.mSpecialValue <= mSpecialTier ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+            @NotNull
+            @Override
+            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+                return super.createParallelHelper(recipe);
             }
 
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
-                    .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0);
+                    .setDurationDecreasePerOC(mSpecialTier > recipe.mSpecialValue ? 4.0 : 2.0)
+                    .setSpeedBoost(Math.pow(0.9999, maxParallel));
             }
         };
     }
@@ -284,6 +350,12 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge> i
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
                 mSpecialTier = 3;
+            }
+
+            if (aStack.isItemEqual(MaterialsUEVplus.Eternity.getNanite(1))
+                && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
+                && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
+                mSpecialTier = 4;
             }
         }
 
