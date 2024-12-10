@@ -612,7 +612,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier());
-        tt.addMachineType("Miner")
+        tt.addMachineType("Miner, MBM")
             .addInfo("Use a Screwdriver to configure block radius")
             .addInfo("Maximum radius is " + GTUtility.formatNumbers((long) getRadiusInChunks() << 4) + " blocks")
             .addInfo("Use Soldering iron to turn off chunk mode")
