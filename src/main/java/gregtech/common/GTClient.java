@@ -102,11 +102,8 @@ import gregtech.common.render.GTCapeRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
-<<<<<<< HEAD
 import gregtech.common.render.MultiTileRenderer;
-=======
 import gregtech.common.render.PollutionRenderer;
->>>>>>> 1182bed61b (remove more classes)
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
