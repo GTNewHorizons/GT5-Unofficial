@@ -22,7 +22,6 @@ import java.util.Locale;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -2114,13 +2113,5 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.TierdDrone2
             .set(new ItemTierDrone("tierdDrone2", "Drone (Level 3)", "Single Engine Anti-Gravity Large Aircraft", 3));
 
-        GameRegistry.registerItem(new Item().setUnlocalizedName("itemMatterManipulator0"), "itemMatterManipulator0");
-        GameRegistry.registerItem(new Item().setUnlocalizedName("itemMatterManipulator1"), "itemMatterManipulator1");
-        GameRegistry.registerItem(new Item().setUnlocalizedName("itemMatterManipulator2"), "itemMatterManipulator2");
-        GameRegistry.registerItem(new Item().setUnlocalizedName("itemMatterManipulator3"), "itemMatterManipulator3");
-        GameRegistry.registerItem(
-            new Item().setUnlocalizedName("gt.metaitem.04")
-                .setHasSubtypes(true),
-            "gt.metaitem.04");
     }
 }
