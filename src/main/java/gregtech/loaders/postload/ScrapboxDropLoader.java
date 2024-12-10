@@ -1,5 +1,8 @@
 package gregtech.loaders.postload;
 
+import static gregtech.api.enums.Mods.AE2FluidCraft;
+import static gregtech.api.util.GTModHandler.getModItem;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,7 +18,9 @@ public class ScrapboxDropLoader implements Runnable {
 
     @Override
     public void run() {
+
         GTLog.out.println("GTMod: (re-)adding Scrapbox Drops.");
+        makeAE2FCdrop();
 
         GTModHandler.addScrapboxDrop(9.5F, new ItemStack(Items.wooden_hoe));
         GTModHandler.addScrapboxDrop(2.0F, new ItemStack(Items.wooden_axe));
@@ -96,5 +101,12 @@ public class ScrapboxDropLoader implements Runnable {
         GTModHandler.addScrapboxDrop(0.05F, GTOreDictUnificator.get(OrePrefixes.gem, Materials.GreenSapphire, 1L));
         GTModHandler.addScrapboxDrop(0.05F, GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L));
         GTModHandler.addScrapboxDrop(0.05F, GTOreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1L));
+    }
+
+    private void makeAE2FCdrop() {
+        if (!AE2FluidCraft.isModLoaded()) {
+            return;
+        }
+        GTModHandler.addScrapboxDrop(0.4F, getModItem(AE2FluidCraft.ID, "fluid_storage.singularity.defective", 1, 0));
     }
 }
