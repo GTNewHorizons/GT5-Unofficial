@@ -832,7 +832,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 * extraCatalystNeeded,
             Integer.MAX_VALUE);
         selectedCatalyst.amount = neededAmount;
-        startRecipeProcessing();
         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
             FluidStack checked = hatch.drain(ForgeDirection.UNKNOWN, selectedCatalyst, true);
 
@@ -843,11 +842,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             neededAmount -= checked.amount;
 
             if (neededAmount == 0) {
-                endRecipeProcessing();
                 return true;
             }
         }
-        endRecipeProcessing();
         return false;
     }
 
