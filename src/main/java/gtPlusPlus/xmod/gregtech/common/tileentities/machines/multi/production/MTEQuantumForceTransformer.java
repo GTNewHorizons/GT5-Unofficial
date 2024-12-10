@@ -243,7 +243,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Quantum Force Transformer")
+        tt.addMachineType("Quantum Force Transformer, QFT")
             .addInfo("Allows Complex chemical lines to be performed instantly in one step")
             .addInfo("Every recipe requires a catalyst, each catalyst adds 1 parallel and lasts forever")
             .addInfo("All inputs go on the bottom, all outputs go on the top")
