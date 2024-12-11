@@ -2,6 +2,7 @@ package galacticgreg.api.enums.properties;
 
 public class AsteroidPropertyBuilder {
 
+    public boolean enabled = true;
     public int probability;
     public int sizeMin, sizeMax;
     public int specialBlockChance;
@@ -11,7 +12,7 @@ public class AsteroidPropertyBuilder {
     public static class OreSpawnPropertyBuilder {
 
         public int baseOreChance;
-        public boolean obeyHeighLimits;
+        public boolean obeyHeightLimits;
         public boolean oresOnlyInsideAsteroids;
         public int primaryToRareOreOffset;
         public int smallOreChance;
@@ -21,8 +22,8 @@ public class AsteroidPropertyBuilder {
             return this;
         }
 
-        public OreSpawnPropertyBuilder doesObeyingHeightLimits(boolean obeyHeighLimits) {
-            this.obeyHeighLimits = obeyHeighLimits;
+        public OreSpawnPropertyBuilder doesObeyingHeightLimits(boolean obeyHeightLimits) {
+            this.obeyHeightLimits = obeyHeightLimits;
             return this;
         }
 
@@ -75,6 +76,11 @@ public class AsteroidPropertyBuilder {
     public AsteroidPropertyBuilder() {
         oreSpawn = new OreSpawnPropertyBuilder();
         loot = new LootPropertyBuilder();
+    }
+
+    public AsteroidPropertyBuilder enabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
     }
 
     public AsteroidPropertyBuilder probability(int probability) {

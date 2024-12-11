@@ -2533,6 +2533,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         CarbonDioxide.add(SubTag.ICE_ORE);
         SulfurDioxide.add(SubTag.ICE_ORE);
         Ammonia.add(SubTag.ICE_ORE);
+
+        Hydrogen.setOreMultiplier(4);
+        Nitrogen.setOreMultiplier(4);
+        Oxygen.setOreMultiplier(4);
+        Methane.setOreMultiplier(4);
+        CarbonDioxide.setOreMultiplier(4);
+        SulfurDioxide.setOreMultiplier(4);
+        Ammonia.setOreMultiplier(4);
     }
 
     public static void init() {

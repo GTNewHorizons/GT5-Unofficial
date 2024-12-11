@@ -11,6 +11,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTOreDictUnificator;
@@ -110,6 +111,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         if (!oreBlocksByStoneType.containsKey(stoneType2)) return false;
         if (!stoneType2.isEnabled()) return false;
         if (!info.material.isValidForStone(stoneType2)) return false;
+        if (stoneType2.getCategory() == StoneCategory.Ice && info.isSmall) return false;
 
         return true;
     }
@@ -120,6 +122,8 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
     @Override
     public OreInfo<Materials> getOreInfo(Block block, int meta) {
         if (!(block instanceof BlockOresAbstract oreBlock)) return null;
+
+        if (meta < 0) throw new IllegalArgumentException("illegal metadata: " + meta + "; a tool may be casting an int to a byte, which is incompatible with NEID");
 
         int matId = meta % 1000;
         int stoneId = ((meta % SMALL_ORE_META_OFFSET) % NATURAL_ORE_META_OFFSET) / 1000;
@@ -132,6 +136,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
 
         StoneType stoneType = GTUtility.getIndexSafe(oreBlock.stoneTypes, stoneId);
         if (stoneType == null || !stoneType.isEnabled()) return null;
+        if (stoneType.getCategory() == StoneCategory.Ice && small) return null;
 
         OreInfo<Materials> info = OreInfo.getNewInfo();
 
@@ -152,6 +157,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         
         if (!(info.stoneType instanceof StoneType stoneType)) return null;
         if (!stoneType.isEnabled()) return null;
+        if (stoneType.getCategory() == StoneCategory.Ice && info.isSmall) return null;
 
         BlockOresAbstract oreBlock = oreBlocksByStoneType.get(stoneType);
 

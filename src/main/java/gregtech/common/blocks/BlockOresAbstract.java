@@ -11,6 +11,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
@@ -122,7 +123,7 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
             for (StoneType stoneType : stoneTypes) {
                 // if this material only has ice ore, we only want to show the ice variants
                 if (info.material.contains(SubTag.ICE_ORE)) {
-                    if (stoneType == StoneType.PackedIce) {
+                    if (stoneType.getCategory() == StoneCategory.Ice) {
                         info.stoneType = stoneType;
         
                         list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
@@ -225,7 +226,7 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
     public IIcon getIcon(int side, int meta) {
         StoneType stoneType = getStoneType(meta);
 
-        return stoneType == null ? null : stoneType.getIcon(side);
+        return stoneType == null ? StoneType.Stone.getIcon(side) : stoneType.getIcon(side);
     }
 
     @Override

@@ -21,6 +21,7 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
     public boolean checkWeight = true;
     public Set<String> dimensions;
     public Set<IStoneCategory> stoneCategories = new HashSet<>(Arrays.asList(StoneCategory.Stone));
+    public boolean defaultStoneCategories = true;
 
     public WorldgenQuery(List<TLayer> list) {
         this.list = list;
@@ -81,10 +82,13 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
         return this;
     }
 
-    public WorldgenQuery<TLayer> inStone(IStoneCategory stoneType) {
-        if (stoneCategories == null) stoneCategories = new HashSet<>();
+    public WorldgenQuery<TLayer> inStone(IStoneCategory stoneCategories) {
+        if (defaultStoneCategories) {
+            this.stoneCategories = new HashSet<>();
+            defaultStoneCategories = false;
+        }
 
-        stoneCategories.add(stoneType);
+        this.stoneCategories.addAll(Arrays.asList(stoneCategories));
 
         return this;
     }

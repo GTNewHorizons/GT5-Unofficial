@@ -47,18 +47,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class WorldGeneratorSpace implements IWorldGenerator {
 
-    private static boolean generateEndAsteroids = true;
-    private static int mEndAsteroidProbability;
-    private static int mEndAsteroidMinSize;
-    private static int mEndAsteroidMaxSize;
-
     public WorldGeneratorSpace() {
         GameRegistry.registerWorldGenerator(this, Integer.MAX_VALUE);
-
-        generateEndAsteroids = Worldgen.endAsteroids.generateEndAsteroids;
-        mEndAsteroidProbability = Worldgen.endAsteroids.EndAsteroidProbability;
-        mEndAsteroidMinSize = Worldgen.endAsteroids.EndAsteroidMinSize;
-        mEndAsteroidMaxSize = Worldgen.endAsteroids.EndAsteroidMaxSize;
     }
 
     private static final int END_ASTEROID_DISTANCE = 16;
@@ -117,7 +107,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         }
     }
 
-    private static class AsteroidGenerator {
+    public static class AsteroidGenerator {
         public List<Ellipsoid> positive, negative;
         public int cX, cY, cZ, radius;
         public long seed;
@@ -127,9 +117,11 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
         public static AsteroidGenerator forChunk(World world, int seedChunkX, int seedChunkZ) {
             ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world);
-            AsteroidConfig dimAsteroidConfig = DynamicDimensionConfig.getAsteroidConfig(dimensionDef);
+            AsteroidConfig asteroidConfig = DynamicDimensionConfig.getAsteroidConfig(dimensionDef);
             
-            if (!generatesAsteroid(world.getSeed(), seedChunkX, seedChunkZ, world.provider.dimensionId, dimAsteroidConfig.Probability)) return null;
+            if (!asteroidConfig.Enabled) return null;
+
+            if (!generatesAsteroid(world.getSeed(), seedChunkX, seedChunkZ, world.provider.dimensionId, asteroidConfig.Probability)) return null;
 
             XSTR rng = getRandom(world.getSeed(), seedChunkX, seedChunkZ, world.provider.dimensionId);
 
@@ -168,14 +160,10 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             int tY = minY + rng.nextInt(maxY - minY);
             int tZ = seedChunkZ * 16 + rng.nextInt(16);
 
-            if (!world.isAirBlock(tX, tY, tZ)) return null;
-
-            int asteroidSize = (mEndAsteroidMinSize + rng.nextInt(mEndAsteroidMaxSize - mEndAsteroidMinSize + 1));
-
             List<Ellipsoid> positive = new ArrayList<>();
             List<Ellipsoid> negative = new ArrayList<>();
 
-            int radius = rng.nextInt(asteroidSize / 4);
+            int radius = (asteroidConfig.MinSize + rng.nextInt(asteroidConfig.MinSize - asteroidConfig.MaxSize + 1));
             positive.add(new Ellipsoid(0, 0, 0, radius));
 
             int k = rng.nextInt(2);
@@ -204,7 +192,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             gen.cX = tX;
             gen.cY = tY;
             gen.cZ = tZ;
-            gen.radius = asteroidSize;
+            gen.radius = radius * 2;
 
             gen.seed = rng.nextLong();
 
@@ -215,26 +203,24 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         }
 
         public boolean affectsChunk(int chunkX, int chunkZ) {
-            int minX = getChunkCoord(cX - radius);
-            int maxX = getChunkCoord(cX + radius + 1);
+            int minX = (cX - radius) >> 4;
+            int maxX = (cX + radius + 1) >> 4;
 
-            int minZ = getChunkCoord(cZ - radius);
-            int maxZ = getChunkCoord(cZ + radius + 1);
+            int minZ = (cZ - radius) >> 4;
+            int maxZ = (cZ + radius + 1) >> 4;
 
             return minX <= chunkX && chunkX <= maxX || minZ <= chunkZ && chunkZ <= maxZ;
         }
 
         public void generateChunk(World world, int chunkX, int chunkZ) {
-            int minX = Math.max(chunkX * 16, cX - radius);
+            int minX = Math.max(chunkX * 16, cX - radius - 1);
             int maxX = Math.min((chunkX + 1) * 16, cX + radius + 1);
 
-            int minY = Math.max(0, cY - radius);
+            int minY = Math.max(0, cY - radius - 1);
             int maxY = Math.min(255, cY + radius + 1);
 
-            int minZ = Math.max(chunkZ * 16, cZ - radius);
+            int minZ = Math.max(chunkZ * 16, cZ - radius - 1);
             int maxZ = Math.min((chunkZ + 1) * 16, cZ + radius + 1);
-
-            XSTR rng = new XSTR(seed);
 
             ModDimensionDef def = DimensionDef.getDefForWorld(world);
             AsteroidConfig dimAsteroidConfig = DynamicDimensionConfig.getAsteroidConfig(def);
@@ -247,8 +233,18 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                             continue;
                         }
 
+                        long seed = world.getSeed();
+                        seed = seed * 12289 + chunkX;
+                        seed = seed * 12289 + chunkZ;
+                        seed = seed * 12289 + world.provider.dimensionId;
+                        seed = seed * 12289 + x;
+                        seed = seed * 12289 + y;
+                        seed = seed * 12289 + z;
+
+                        XSTR rng2 = new XSTR(seed);
+
                         for (Ellipsoid e : negative) {
-                            if (e.dist2(rng, x - cX + 0.5f, y - cY + 0.5f, z - cZ + 0.5f) <= 1) {
+                            if (e.dist2(rng2, x - cX + 0.5f, y - cY + 0.5f, z - cZ + 0.5f) <= 1) {
                                 continue outer;
                             }
                         }
@@ -256,7 +252,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         float dist = 2f;
 
                         for (Ellipsoid e : positive) {
-                            dist = Math.min(dist, e.dist2(rng, x - cX + 0.5f, y - cY + 0.5f, z - cZ + 0.5f));
+                            dist = Math.min(dist, e.dist2(rng2, x - cX + 0.5f, y - cY + 0.5f, z - cZ + 0.5f));
                         }
 
                         if (dist >= 1) continue;
@@ -266,7 +262,14 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         // try to place big ores, if the ore vein creates big ore
                         if (ore.generatesBigOre()) {
                             if (!placedAnything) {
-                                placedAnything = generateOreBlock(rng, world, x, y, z, stoneType, ore, false, dist);
+                                placedAnything = generateOreBlock(
+                                    rng2,
+                                    world,
+                                    x, y, z,
+                                    stoneType,
+                                    ore,
+                                    false,
+                                    radius / 4 < 15 ? rng2.nextFloat() : dist);
                             }
                         }
 
@@ -274,7 +277,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         if (!placedAnything) {
                             placedAnything = generateSpecialBlocks(
                                 def,
-                                rng,
+                                rng2,
                                 world,
                                 dimAsteroidConfig,
                                 x,
@@ -286,7 +289,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         // try to place small ores
                         if (!placedAnything) {
                             placedAnything = generateOreBlock(
-                                rng,
+                                rng2,
                                 world,
                                  x,
                                  y,
@@ -294,7 +297,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                                 stoneType,
                                 ore,
                                 true,
-                                rng.nextFloat());
+                                rng2.nextFloat());
                         }
 
                         // no smallores either? do normal block
@@ -313,18 +316,10 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         }
     }
 
-    private static int getChunkCoord(int k) {
-        if (k < 0) {
-            return GTUtility.ceilDiv2(k, 16);
-        } else {
-            return k / 16;
-        }
-    }
-
     /** A random number which gets added to the XSTR because I felt like it */
     private static final long OFFSET = 588283;
 
-    private static XSTR getRandom(long worldSeed, int chunkX, int chunkZ, int dimId) {
+    public static XSTR getRandom(long worldSeed, int chunkX, int chunkZ, int dimId) {
         return new XSTR(chunkX * 341873128712L + chunkZ * 132897987541L + dimId + OFFSET + worldSeed);
     }
 
@@ -511,8 +506,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             IMaterial mat = oreLayer.getOre(control);
 
             if (mat != null) {
-                OreManager.setOreForWorldGen(pWorld, pX, pY, pZ, stoneType, mat, small);
-                return true;
+                return OreManager.setOreForWorldGen(pWorld, pX, pY, pZ, stoneType, mat, small);
             }
         }
 
