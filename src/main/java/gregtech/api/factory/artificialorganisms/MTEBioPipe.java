@@ -22,6 +22,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.objects.ArtificialOrganism;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
@@ -51,10 +52,10 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString(
-            "species",
-            network.valid ? network.getSpecies()
-                .toString() : "INVALID");
+        ArtificialOrganism AO = network.getAO();
+
+        tag.setString("species", AO != null ? AO.toString() : "INVALID");
+        tag.setString("network", network == null ? "null" : network.toString());
     }
 
     @Override
@@ -64,6 +65,9 @@ public class MTEBioPipe extends MTEBaseFactoryPipe implements AOFactoryElement {
         currenttip.add(
             "Species: " + accessor.getNBTData()
                 .getString("species"));
+        currenttip.add(
+            "Network: " + accessor.getNBTData()
+                .getString("network"));
     }
 
     @Override

@@ -30,7 +30,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.factory.artificialorganisms.MTEHatchAO;
+import gregtech.api.factory.artificialorganisms.MTEHatchAOInput;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,7 +58,7 @@ public class MTEAdvancedBioLab extends MTEAOUnitBase<MTEAdvancedBioLab> implemen
             'B',
             ofChain(
                 buildHatchAdder(MTEAdvancedBioLab.class).adder(MTEAOUnitBase::addBioHatch)
-                    .hatchClass(MTEHatchAO.class)
+                    .hatchClass(MTEHatchAOInput.class)
                     .shouldReject(t -> !(t.bioHatch == null))
                     .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                     .dot(2)
@@ -204,6 +204,7 @@ public class MTEAdvancedBioLab extends MTEAOUnitBase<MTEAdvancedBioLab> implemen
                 // requirement. TODO: adapt this into a formula based on the recipe stats
 
                 ArtificialOrganism currentOrganism = getAO();
+
                 if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
                 else if (currentOrganism.getCount() <= 500) return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
 

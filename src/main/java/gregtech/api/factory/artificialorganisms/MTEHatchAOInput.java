@@ -14,18 +14,19 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.ArtificialOrganism;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
 
-public class MTEHatchAO extends MTEBaseFactoryHatch implements AOFactoryElement {
+public class MTEHatchAOInput extends MTEBaseFactoryHatch implements AOFactoryElement {
 
-    public MTEHatchAO(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, new String[] { "Distributes and Receives Artificial Organisms" });
+    public MTEHatchAOInput(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, new String[] { "Receives Artificial Organisms" });
     }
 
-    public MTEHatchAO(MTEHatchAO prototype) {
+    public MTEHatchAOInput(MTEHatchAOInput prototype) {
         super(prototype);
     }
 
@@ -33,10 +34,10 @@ public class MTEHatchAO extends MTEBaseFactoryHatch implements AOFactoryElement 
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString(
-            "species",
-            network.valid ? network.getSpecies()
-                .toString() : "INVALID");
+        ArtificialOrganism AO = network.getAO();
+
+        tag.setString("species", AO != null ? AO.toString() : "INVALID");
+        tag.setString("network", network == null ? "null" : network.toString());
     }
 
     @Override
@@ -46,6 +47,9 @@ public class MTEHatchAO extends MTEBaseFactoryHatch implements AOFactoryElement 
         currenttip.add(
             "Species: " + accessor.getNBTData()
                 .getString("species"));
+        currenttip.add(
+            "Network: " + accessor.getNBTData()
+                .getString("network"));
     }
 
     @Override
@@ -60,7 +64,7 @@ public class MTEHatchAO extends MTEBaseFactoryHatch implements AOFactoryElement 
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHatchAO(this);
+        return new MTEHatchAOInput(this);
     }
 
     @Override
@@ -69,17 +73,13 @@ public class MTEHatchAO extends MTEBaseFactoryHatch implements AOFactoryElement 
     }
 
     @Override
-    public ConnectionType getConnectionType() {
-        return ConnectionType.BIO;
+    public MTEHatch.ConnectionType getConnectionType() {
+        return MTEHatch.ConnectionType.BIO;
     }
 
     @Override
     public boolean canConnectOnSide(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    public void setSpecies(ArtificialOrganism species) {
-        network.addSpecies(species);
     }
 
     // Hatches only have one connectable face, so this will just check that face

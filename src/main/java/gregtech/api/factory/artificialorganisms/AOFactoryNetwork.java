@@ -1,21 +1,16 @@
 package gregtech.api.factory.artificialorganisms;
 
-import java.util.ArrayList;
-
 import gregtech.api.factory.standard.StandardFactoryNetwork;
 import gregtech.api.objects.ArtificialOrganism;
 
 public class AOFactoryNetwork extends StandardFactoryNetwork<AOFactoryNetwork, AOFactoryElement, AOFactoryGrid> {
 
-    private final ArrayList<ArtificialOrganism> species = new ArrayList<>();
-    public Boolean valid = false;
-
-    public ArtificialOrganism getSpecies() {
-        return species.get(0);
+    /**
+     * Queries for AO output components. If there are none, or if there are more than one, this method will return null.
+     */
+    public ArtificialOrganism getAO() {
+        IAOStorageComponent[] outputs = getComponents(IAOStorageComponent.class).toArray(new IAOStorageComponent[0]);
+        return (outputs.length == 1) ? outputs[0].getAO() : null;
     }
 
-    public void addSpecies(ArtificialOrganism species) {
-        this.species.add(species);
-        valid = this.species.size() == 1;
-    }
 }

@@ -125,7 +125,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_LV;
 import static gregtech.api.enums.MetaTileEntityIDs.BETTER_JUKEBOX_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.BIO_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.BIO_PIPE;
 import static gregtech.api.enums.MetaTileEntityIDs.BLACKHOLE_COMPRESSOR_CONTROLLER;
 import static gregtech.api.enums.MetaTileEntityIDs.BREWERY_EV;
@@ -945,7 +944,8 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.factory.artificialorganisms.MTEBioPipe;
-import gregtech.api.factory.artificialorganisms.MTEHatchAO;
+import gregtech.api.factory.artificialorganisms.MTEHatchAOInput;
+import gregtech.api.factory.artificialorganisms.MTEHatchAOOutput;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -1647,7 +1647,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Hyperaccelerated Macroevolution Chamber").getStackForm(1));
 
         ItemList.Bio_Pipe.set(new MTEBioPipe(BIO_PIPE.ID, "pipe.bio", "Sterile Bio Pipe").getStackForm(1));
-        ItemList.Bio_Hatch.set(new MTEHatchAO(BIO_HATCH.ID, "hatch.bio", "AO Transmission Hatch", 8).getStackForm(1));
+        ItemList.Bio_Hatch_Output.set(
+            new MTEHatchAOOutput(BIO_HATCH_OUTPUT.ID, "hatch.biooutput", "AO Transmission Hatch", 8).getStackForm(1));
+        ItemList.Bio_Hatch_Input
+            .set(new MTEHatchAOInput(BIO_HATCH_INPUT.ID, "hatch.bioinput", "AO Receiver Hatch", 8).getStackForm(1));
         ItemList.Machine_Multi_AOAssembler
             .set(new MTEBioSynthesizer(AO_ASSEMBLER.ID, "multimachine.aoassembler", "Bio Synthesizer").getStackForm(1));
         ItemList.Machine_Multi_AOBioLab
