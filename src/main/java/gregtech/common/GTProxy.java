@@ -109,6 +109,7 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -2789,6 +2790,25 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
             GTItemStack aStack = new GTItemStack(aStackTemp);
             if (providesProtection(aStackTemp)) {
                 event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE + "Provides full hazmat protection.");
+            }
+        }
+    }
+
+    /// Used for tool sounds in the crafting grid
+    @SubscribeEvent
+    public void onPlayerCrafting(ItemCraftedEvent event) {
+        for (int i = 0; i < event.craftMatrix.getSizeInventory(); i++) {
+            ItemStack stack = event.craftMatrix.getStackInSlot(i);
+
+            if (stack != null && stack.getItem() instanceof MetaGeneratedTool mgt) {
+                if (this.mTicksUntilNextCraftSound <= 0) {
+                    this.mTicksUntilNextCraftSound = 10;
+                    IToolStats tStats = mgt.getToolStats(stack);
+                    boolean playBreak = (MetaGeneratedTool.getToolDamage(stack)
+                        + tStats.getToolDamagePerContainerCraft()) >= MetaGeneratedTool.getToolMaxDamage(stack);
+                    String sound = playBreak ? tStats.getBreakingSound() : tStats.getCraftingSound();
+                    GTUtility.doSoundAtClient(sound, 1, 1.0F);
+                }
             }
         }
     }
