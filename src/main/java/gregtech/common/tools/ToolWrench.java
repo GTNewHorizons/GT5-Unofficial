@@ -126,7 +126,7 @@ public class ToolWrench extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block block, byte aMetaData) {
+    public boolean isMinableBlock(Block block, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(block, aMetaData, "wrench")
             || GTToolHarvestHelper.isAppropriateMaterial(block, Material.piston)
             || block instanceof AEBaseTileBlock
@@ -194,7 +194,7 @@ public class ToolWrench extends GTTool {
     private boolean LastEventFromThis = false;
 
     @Override
-    public void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, byte metadata,
+    public void onBreakBlock(@Nonnull EntityPlayer player, int x, int y, int z, @Nonnull Block block, int metadata,
         TileEntity tile, @Nonnull BlockEvent.BreakEvent event) {
         if (tile instanceof IWrenchable wrenchable) {
             if (!wrenchable.wrenchCanRemove(player)) {
@@ -246,7 +246,7 @@ public class ToolWrench extends GTTool {
 
     @Override
     public int convertBlockDrops(List<ItemStack> drops, ItemStack Stack, EntityPlayer player, Block block, int x, int y,
-        int z, byte metaData, int fortune, boolean silkTouch, BlockEvent.HarvestDropsEvent event) {
+        int z, int metaData, int fortune, boolean silkTouch, BlockEvent.HarvestDropsEvent event) {
         ItemStack drop = null;
         int modified = 0;
         if (wrenchableDrop != null) {

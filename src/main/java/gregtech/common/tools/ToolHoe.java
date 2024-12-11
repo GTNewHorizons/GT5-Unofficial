@@ -83,7 +83,7 @@ public class ToolHoe extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "hoe")
             || GTToolHarvestHelper.isAppropriateMaterial(aBlock, Material.gourd);
     }

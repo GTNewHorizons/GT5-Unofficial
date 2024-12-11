@@ -89,7 +89,7 @@ public class ToolUniversalSpade extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "shovel", "axe", "saw", "sword", "crowbar")
             || GTToolHarvestHelper.isAppropriateMaterial(
                 aBlock,

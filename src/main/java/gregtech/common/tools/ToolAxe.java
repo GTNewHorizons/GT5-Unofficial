@@ -93,7 +93,7 @@ public class ToolAxe extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "axe")
             || GTToolHarvestHelper.isAppropriateMaterial(aBlock, Material.wood)
             || GTToolHarvestHelper.isSpecialBlock(aBlock, Blocks.ladder);
@@ -101,7 +101,7 @@ public class ToolAxe extends GTTool {
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rAmount = 0;
         if ((GregTechAPI.sTimber) && (!aPlayer.isSneaking())
             && (OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData)))) {
@@ -118,7 +118,7 @@ public class ToolAxe extends GTTool {
     }
 
     @Override
-    public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld,
+    public float getMiningSpeed(Block aBlock, int aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld,
         int aX, int aY, int aZ) {
 
         if (aBlock.isWood(aPlayer.worldObj, aX, aY, aZ)

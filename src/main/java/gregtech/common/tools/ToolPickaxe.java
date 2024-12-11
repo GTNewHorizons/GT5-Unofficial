@@ -83,7 +83,7 @@ public class ToolPickaxe extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "pickaxe") //
             || GTToolHarvestHelper.isAppropriateMaterial(
                 aBlock, //
