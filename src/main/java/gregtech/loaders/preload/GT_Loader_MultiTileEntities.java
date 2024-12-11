@@ -2,18 +2,9 @@ package gregtech.loaders.preload;
 
 import static gregtech.GTMod.GT_FML_LOGGER;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.gtnewhorizon.structurelib.alignment.constructable.IMultiblockInfoContainer;
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.mutecore.SystemRegistrator;
 import com.gtnewhorizons.mutecore.api.block.MultiTileEntityBlock;
 import com.gtnewhorizons.mutecore.api.data.FluidOutputInventory;
@@ -25,14 +16,13 @@ import com.gtnewhorizons.mutecore.api.registry.MultiTileEntityRegistry;
 import com.gtnewhorizons.mutecore.api.tile.MultiTileEntity;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import dev.dominion.ecs.api.Entity;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.multitileentity.StructureHandler;
 import gregtech.api.multitileentity.data.Structure;
 import gregtech.api.multitileentity.data.TooltipComponent;
 import gregtech.api.multitileentity.enums.GT_MultiTileMachine;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.multiblock.MultiTileEntityInfo;
+import gregtech.common.tileentities.machines.multiblock.coke_oven.CokeOvenStructureHandler;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 
@@ -100,104 +90,17 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .register();
     }
 
-    private static class MultiTileEntityInfo implements IMultiblockInfoContainer<MultiTileEntity> {
-
-        @Override
-        public void construct(ItemStack stackSize, boolean hintsOnly, MultiTileEntity tileEntity,
-            ExtendedFacing aSide) {
-            Entity entity = tileEntity.getEntity();
-            if (!entity.has(Structure.class)) return;
-            Structure struct = entity.get(Structure.class);
-            StructureHandler structH;
-            try {
-                structH = struct.getHandlerClass()
-                    .getConstructor(Entity.class)
-                    .newInstance(entity);
-            } catch (Exception ing) {
-                return;
-            }
-            structH.construct(stackSize, hintsOnly);
-        }
-
-        @Override
-        public int survivalConstruct(ItemStack stackSize, int elementBudge, ISurvivalBuildEnvironment env,
-            MultiTileEntity tileEntity, ExtendedFacing aSide) {
-            Entity entity = tileEntity.getEntity();
-            if (!entity.has(Structure.class)) return -1;
-            Structure struct = entity.get(Structure.class);
-            StructureHandler structH;
-            try {
-                structH = struct.getHandlerClass()
-                    .getConstructor(Entity.class)
-                    .newInstance(entity);
-            } catch (Exception ing) {
-                return -1;
-            }
-            return structH.survivalConstruct(stackSize, elementBudge, env);
-        }
-
-        @Override
-        public String[] getDescription(ItemStack stackSize) {
-            Item item = stackSize.getItem();
-            if (!(item instanceof MultiTileEntityItem muteItem)) return new String[0];
-
-            MultiTileEntityBlock muBlock = (MultiTileEntityBlock) Block.getBlockFromItem(muteItem);
-            Entity entity = muBlock.getRegistry()
-                .getMultiTileContainer(stackSize.getItemDamage())
-                .getFakeEntity();
-            if (!entity.has(Structure.class)) return new String[0];
-            Structure struct = entity.get(Structure.class);
-            StructureHandler structH;
-            try {
-                structH = struct.getHandlerClass()
-                    .getConstructor(Entity.class)
-                    .newInstance(entity);
-            } catch (Exception ing) {
-                return new String[0];
-            }
-            return structH.getStructureDescription(stackSize);
-        }
-
-    }
-
-    private static class CokeOvenStructureHandler extends StructureHandler {
-
-        public static final IStructureDefinition<Entity> STRUCTURE = StructureDefinition.<Entity>builder()
-            .addShape(
-                "main",
-                new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } })
-            .addElement('A', StructureUtility.ofBlock(GregTechAPI.sBlockCasings8, 1))
-            .build();
-
-        public CokeOvenStructureHandler(Entity entity) {
-            super(entity);
-        }
-
-        @Override
-        public void construct(ItemStack stackSize, boolean hintsOnly) {
-            construct(stackSize, "main", 1, 1, 0, hintsOnly);
-        }
-
-        @Override
-        public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-            return survivalConstruct(stackSize, "main", 1, 1, 0, elementBudget, env);
-        }
-
-        @Override
-        public IStructureDefinition<Entity> getStructureDefinition() {
-            return STRUCTURE;
-        }
-    }
-
     private static void registerCasings() {}
 
     private static void registerComponentCasings() {}
 
     public static void registerRenders() {
         MACHINE_REGISTRY.registerRender(GT_MultiTileMachine.CokeOven.getId(), (e, rb, x, y, z, w) -> {});
+        MACHINE_REGISTRY.registerRender(1, (e, rb, x, y, z, w) -> {});
     }
 
     public static void registerSystems() {
-        SystemRegistrator.registerSystemsParallel();
+        SystemRegistrator.registerSystems();
     }
+
 }

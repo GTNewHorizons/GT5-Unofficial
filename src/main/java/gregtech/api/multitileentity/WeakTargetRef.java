@@ -6,10 +6,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import com.badlogic.ashley.core.Entity;
 import com.gtnewhorizons.mutecore.api.data.Coordinates;
 import com.gtnewhorizons.mutecore.api.data.WorldContainer;
-
-import dev.dominion.ecs.api.Entity;
+import com.gtnewhorizons.mutecore.api.tile.MultiTileEntity;
 
 public class WeakTargetRef<T extends Entity> {
 
@@ -34,9 +34,9 @@ public class WeakTargetRef<T extends Entity> {
         if (!targetClass.isInstance(newTarget)) {
             throw new IllegalArgumentException("Target is not of the correct type");
         }
-        Coordinates coords = newTarget.get(Coordinates.class);
+        Coordinates coords = newTarget.getComponent(Coordinates.class);
         position.set(coords.getX(), coords.getY(), coords.getZ());
-        world = newTarget.get(WorldContainer.class)
+        world = newTarget.getComponent(WorldContainer.class)
             .getWorld();
     }
 
@@ -76,7 +76,8 @@ public class WeakTargetRef<T extends Entity> {
     protected T resolveTarget() {
         if (world != null && position.posX >= 0 && world.blockExists(position.posX, position.posY, position.posZ)) {
             final TileEntity te = world.getTileEntity(position.posX, position.posY, position.posZ);
-            return this.targetClass.isInstance(te) ? (T) te : null;
+            if (!(te instanceof MultiTileEntity mute)) return null;
+            return (T) mute.getEntity();
         }
         return null;
     }

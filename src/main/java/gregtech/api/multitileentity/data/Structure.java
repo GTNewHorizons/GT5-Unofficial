@@ -1,8 +1,10 @@
 package gregtech.api.multitileentity.data;
 
+import com.badlogic.ashley.core.Component;
+
 import gregtech.api.multitileentity.StructureHandler;
 
-public class Structure {
+public class Structure implements Component {
 
     private Class<? extends StructureHandler> handlerClass;
 
