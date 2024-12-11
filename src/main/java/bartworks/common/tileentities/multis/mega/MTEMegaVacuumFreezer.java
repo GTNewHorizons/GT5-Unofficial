@@ -233,7 +233,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Vacuum Freezer")
+        tt.addMachineType("Vacuum Freezer, MVF")
             .addInfo("Cools hot ingots and cells")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addTecTechHatchInfo()

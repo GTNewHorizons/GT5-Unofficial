@@ -113,7 +113,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
 
     @Override
     public String getMachineType() {
-        return "Energy Buffer";
+        return "Energy Buffer, PSS";
     }
 
     @Override

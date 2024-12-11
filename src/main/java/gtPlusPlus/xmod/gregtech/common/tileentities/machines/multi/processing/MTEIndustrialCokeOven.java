@@ -58,7 +58,7 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
 
     @Override
     public String getMachineType() {
-        return "Coke Oven";
+        return "Coke Oven, ICO";
     }
 
     @Override

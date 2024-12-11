@@ -123,9 +123,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         this.heatLevel = aCoilLevel;
     }
 
-    public Integer getCoilTier() {
-        return (int) this.getCoilLevel()
-            .getTier() + 1;
+    public int getCoilTier() {
+        return heatLevel == null ? 0 : (int) this.heatLevel.getTier() + 1;
     }
 
     private static final IStructureDefinition<MTEMultiAutoclave> STRUCTURE_DEFINITION = StructureDefinition

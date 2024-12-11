@@ -75,7 +75,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         String casings = this.getCasingBlockItem()
             .get(0)
             .getDisplayName();
-        tt.addMachineType("Geothermal Heat Pump")
+        tt.addMachineType("Geothermal Heat Pump, DEHP")
             .addInfo("Consumes " + TierEU.RECIPE_HV + "EU/t")
             .addInfo("Has 2 Modes, use the Screwdriver to change them:");
 
