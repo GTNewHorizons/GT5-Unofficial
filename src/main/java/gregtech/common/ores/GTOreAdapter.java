@@ -131,7 +131,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         if (!OrePrefixes.ore.doGenerateItem(mat)) return null;
 
         StoneType stoneType = GTUtility.getIndexSafe(oreBlock.stoneTypes, stoneId);
-        if (!stoneType.isEnabled()) return null;
+        if (stoneType == null || !stoneType.isEnabled()) return null;
 
         OreInfo<Materials> info = OreInfo.getNewInfo();
 

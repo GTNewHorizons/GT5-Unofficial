@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import galacticgreg.api.Enums.DimensionType;
+import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
 import net.minecraft.block.Block;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -361,13 +362,13 @@ public class ModDimensionDef {
      *
      * @return
      */
-    public AsteroidBlockComb getRandomAsteroidMaterial() {
+    public AsteroidBlockComb getRandomAsteroidMaterial(Random rng) {
         if (validAsteroidMaterials.isEmpty()) return null;
 
         if (validAsteroidMaterials.size() == 1) {
             return validAsteroidMaterials.get(0);
         } else {
-            return validAsteroidMaterials.get(random.nextInt(validAsteroidMaterials.size()));
+            return validAsteroidMaterials.get(rng.nextInt(validAsteroidMaterials.size()));
         }
     }
 
@@ -378,13 +379,13 @@ public class ModDimensionDef {
      *
      * @return
      */
-    public SpecialBlockComb getRandomSpecialAsteroidBlock() {
+    public SpecialBlockComb getRandomSpecialAsteroidBlock(Random rng) {
         if (specialBlocksForAsteroids.isEmpty()) return null;
 
         if (specialBlocksForAsteroids.size() == 1) {
             return specialBlocksForAsteroids.get(0);
         } else {
-            return specialBlocksForAsteroids.get(random.nextInt(specialBlocksForAsteroids.size()));
+            return specialBlocksForAsteroids.get(rng.nextInt(specialBlocksForAsteroids.size()));
         }
     }
 
@@ -393,7 +394,7 @@ public class ModDimensionDef {
      *
      * @param pMaterial
      */
-    public void addAsteroidMaterial(IStoneType stoneType) {
+    public void addAsteroidMaterial(StoneType stoneType) {
         addAsteroidMaterial(new AsteroidBlockComb(stoneType));
     }
 

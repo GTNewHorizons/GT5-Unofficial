@@ -4560,6 +4560,29 @@ public class GTUtility {
         return (lhs + rhs - 1) / rhs;
     }
 
+    /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
+    public static int ceilDiv2(int lhs, int rhs) {
+        int sign = signum(lhs) * signum(rhs);
+
+        if (lhs == 0) return 0;
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        lhs = Math.abs(lhs);
+        rhs = Math.abs(rhs);
+
+        int unsigned = 1 + ((lhs - 1) / rhs);
+
+        return unsigned * sign;
+    }
+
+    public static int signum(int x) {
+        return x < 0 ? -1 : x > 0 ? 1 : 0;
+    }
+
+    public static long signum(long x) {
+        return x < 0 ? -1 : x > 0 ? 1 : 0;
+    }
+    
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */

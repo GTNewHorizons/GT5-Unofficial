@@ -1,6 +1,6 @@
 package galacticgreg.api;
 
-import gregtech.api.interfaces.IStoneType;
+import gregtech.api.enums.StoneType;
 import net.minecraft.block.Block;
 
 /**
@@ -9,7 +9,7 @@ import net.minecraft.block.Block;
  */
 public class AsteroidBlockComb extends BlockMetaComb {
 
-    private final IStoneType stoneType;
+    private final StoneType stoneType;
 
     /**
      * Create an advanced definition which uses the GregTech-OreType values for ores, and your own definition of Block
@@ -18,7 +18,7 @@ public class AsteroidBlockComb extends BlockMetaComb {
      * @param pOreType The GregTech oreType
      * @param pBlock   Your block
      */
-    public AsteroidBlockComb(IStoneType stoneType, Block pBlock) {
+    public AsteroidBlockComb(StoneType stoneType, Block pBlock) {
         super(pBlock, 0);
         this.stoneType = stoneType;
     }
@@ -31,7 +31,7 @@ public class AsteroidBlockComb extends BlockMetaComb {
      * @param pBlock   Your block
      * @param pMeta    The metavalue for your block (If required)
      */
-    public AsteroidBlockComb(IStoneType stoneType, Block pBlock, int pMeta) {
+    public AsteroidBlockComb(StoneType stoneType, Block pBlock, int pMeta) {
         super(pBlock, pMeta);
         this.stoneType = stoneType;
     }
@@ -41,7 +41,7 @@ public class AsteroidBlockComb extends BlockMetaComb {
      *
      * @param pOreType The GregTech oreType
      */
-    public AsteroidBlockComb(IStoneType stoneType) {
+    public AsteroidBlockComb(StoneType stoneType) {
         super(stoneType.getStone().left(), stoneType.getStone().rightInt());
         this.stoneType = stoneType;
     }
@@ -51,7 +51,7 @@ public class AsteroidBlockComb extends BlockMetaComb {
      *
      * @return The GT Material for the oregen
      */
-    public IStoneType getStone() {
+    public StoneType getStone() {
         return stoneType;
     }
 

@@ -92,7 +92,7 @@ public class OreManager {
                 var block = oreAdapter.getBlock(info);
     
                 if (block != null) {
-                    world.setBlock(x, y, z, block.left(), block.rightInt(), 3);
+                    world.setBlock(x, y, z, block.left(), block.rightInt(), 2);
     
                     return true;
                 }
@@ -115,7 +115,7 @@ public class OreManager {
                 var block = oreAdapter.getBlock(info);
     
                 if (block != null) {
-                    world.setBlock(x, y, z, block.left(), block.rightInt(), 3);
+                    world.setBlock(x, y, z, block.left(), block.rightInt(), 2);
     
                     return true;
                 }
@@ -139,7 +139,7 @@ public class OreManager {
         
         if (block == null) return false;
 
-        world.setBlock(x, y, z, block.left(), block.rightInt(), 3);
+        world.setBlock(x, y, z, block.left(), block.rightInt(), 2);
 
         return true;
     }
