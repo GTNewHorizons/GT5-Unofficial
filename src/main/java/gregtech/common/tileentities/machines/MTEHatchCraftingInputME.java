@@ -387,6 +387,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private final boolean supportFluids;
     private boolean additionalConnection = false;
     private boolean disablePatternOptimization = false;
+    public boolean superCribsRecipeCheck = false;
 
     public MTEHatchCraftingInputME(int aID, String aName, String aNameRegional, boolean supportFluids) {
         super(
@@ -594,6 +595,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (customName != null) aNBT.setString("customName", customName);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setBoolean("disablePatternOptimization", disablePatternOptimization);
+        aNBT.setBoolean("superCribsRecipeCheck", superCribsRecipeCheck);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -644,6 +646,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
         additionalConnection = aNBT.getBoolean("additionalConnection");
         disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
+        superCribsRecipeCheck = aNBT.getBoolean("superCribsRecipeCheck");
 
         getProxy().readFromNBT(aNBT);
     }
@@ -744,22 +747,30 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     private String getPatternHasRecipeList() {
-        StringBuilder sl = new StringBuilder();
-        for (PatternSlot slot : internalInventory) {
-            if (slot == null) {
-                sl.append(0);
-            } else {
-                if (slot.patternRecipe != null) {
-                    sl.append(1);
-                } else {
+        if (superCribsRecipeCheck) {
+            StringBuilder sl = new StringBuilder();
+            for (PatternSlot slot : internalInventory) {
+                if (slot == null) {
                     sl.append(0);
+                } else {
+                    if (slot.patternRecipe != null) {
+                        sl.append(1);
+                    } else {
+                        sl.append(0);
+                    }
                 }
             }
+            return sl.toString();
         }
-        return sl.toString();
+        return patternHasRecipeListCache;
     }
 
-    private String patternHasRecipeListCache = "000000000000000000000000000000000000";
+    @Override
+    public void setSuperCribsRecipeCheck(boolean state) {
+        superCribsRecipeCheck = state;
+    }
+
+    private String patternHasRecipeListCache = "111111111111111111111111111111111111";
 
     @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {

@@ -298,7 +298,8 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public void resetRecipes() {
-        if (getMaster() != null) getMaster().resetRecipes();
-    }
+    public void resetRecipes() {}
+
+    @Override
+    public void setSuperCribsRecipeCheck(boolean state) {}
 }

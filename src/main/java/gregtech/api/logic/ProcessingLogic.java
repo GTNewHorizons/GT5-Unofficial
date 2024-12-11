@@ -162,7 +162,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             .items(inItems)
             .fluids(inFluids)
             .specialSlot(specialSlotItem)
-            .cachedRecipe(lastRecipe)
             .find();
     }
 

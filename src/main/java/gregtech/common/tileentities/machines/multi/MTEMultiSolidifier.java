@@ -431,53 +431,31 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
         // check crafting input hatches first
         if (supportsCraftingMEBuffer()) {
-
-            RecipeMap<?> map = getRecipeMap();
-            RecipeMap<?>[] maps = getRecipeMaps();
-
-            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                ItemStack[] sharedItems = dualInputHatch.getSharedItems();
-
-                for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                    IDualInputInventory slot = it.next();
-                    GTRecipe recipe = slot.getPatternRecipe();
-                    int recipeMapHash = slot.getPatternRecipeMapHash();
-
-                    if (recipe == null) { // set recipe
-                        MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot.getPatternInputs();
-                        GTRecipe slotRecipe = processingLogic
-                            .getRecipeByInputs(tempRecipeInputs.inputItems, tempRecipeInputs.inputFluid);
-                        int tempRecipeMapHash = processingLogic.getCribsRecipeMapHash();
-
-                        if (slotRecipe != null) {
-                            slot.setPatternRecipe(slotRecipe, tempRecipeMapHash);
-                        } else {
-                            continue;
+            if (superCribsRecipeCheck) {
+                CheckRecipeResult superCribsRecipeCheckResult = doSuperCribsCheckRecipe();
+                if (superCribsRecipeCheckResult == CheckRecipeResultRegistry.SUCCESSFUL) {
+                    return superCribsRecipeCheckResult;
+                } else {
+                    result = superCribsRecipeCheckResult;
+                }
+            } else {
+                for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                    ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+                    for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                        IDualInputInventory slot = it.next();
+                        // Reverse order of input items for consistent behavior with standard input buses.
+                        ItemStack[] inputItems = ArrayUtils.addAll(slot.getItemInputs(), sharedItems);
+                        ArrayUtils.reverse(inputItems);
+                        processingLogic.setInputItems(inputItems);
+                        processingLogic.setInputFluids(slot.getFluidInputs());
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) {
+                            return foundResult;
                         }
-
-                        recipe = slotRecipe;
-                        recipeMapHash = tempRecipeMapHash;
-                    }
-
-                    if (checkRecipeHash(map, maps, recipeMapHash)) continue; // make sure that this machine able to
-                                                                             // process recipe
-
-                    ItemStack[] items = slot.getItemInputs();
-                    FluidStack[] fluids = slot.getFluidInputs();
-
-                    if (items.length == 0 && fluids.length == 0) continue;
-
-                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, items));
-                    processingLogic.setInputFluids(fluids);
-                    processingLogic.setCribsRecipe(recipe);
-
-                    CheckRecipeResult foundResult = processingLogic.process();
-                    if (foundResult.wasSuccessful()) {
-                        return foundResult;
-                    }
-                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                        // Recipe failed in interesting way, so remember that and continue searching
-                        result = foundResult;
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                            // Recipe failed in interesting way, so remember that and continue searching
+                            result = foundResult;
+                        }
                     }
                 }
             }
