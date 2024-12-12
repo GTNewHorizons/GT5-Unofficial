@@ -738,7 +738,7 @@ public class RecipesGregTech {
         // Signalium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(2),
+                GTUtility.getIntegratedCircuit(3),
                 Materials.AnnealedCopper.getDust(30),
                 Materials.Ardite.getDust(10),
                 Materials.Redstone.getDust(50))
