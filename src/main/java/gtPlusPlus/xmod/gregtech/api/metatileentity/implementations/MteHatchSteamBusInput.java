@@ -5,9 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -45,20 +42,6 @@ public class MteHatchSteamBusInput extends MTEHatchInputBus {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MteHatchSteamBusInput(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
-            fillStacksIntoFirstSlots();
-        }
-    }
-
-    @Override
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length - 1; i++)
-            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        if (!disableSort) fillStacksIntoFirstSlots();
     }
 
     @Override
@@ -192,8 +175,8 @@ public class MteHatchSteamBusInput extends MTEHatchInputBus {
             new GTRenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
-//    @Override
-//    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-//        getBaseMetaTileEntity().add2by2Slots(builder);
-//    }
+    // @Override
+    // public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+    // getBaseMetaTileEntity().add2by2Slots(builder);
+    // }
 }
