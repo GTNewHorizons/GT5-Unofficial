@@ -1570,6 +1570,55 @@ public class WerkstoffLoader {
         104,
         TextureSet.SET_SHINY);
 
+    // Extracted from GalaxySpace
+    public static final Werkstoff LiquidHelium = new Werkstoff(
+        new short[] { 210, 230, 250 },
+        "Liquid Helium",
+        "He",
+        new Werkstoff.Stats().setBoilingPoint(4)
+            .setGas(false)
+            .setMeltingPoint(1),
+        Werkstoff.Types.MATERIAL,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        11500,
+        TextureSet.SET_FLUID);
+
+    public static final Werkstoff HafniumCarbide = new Werkstoff(
+        new short[] { 125, 135, 125 },
+        "Hafnium Carbide",
+        "HfC",
+        new Werkstoff.Stats().setMass(192),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().onlyDust(),
+        11501,
+        TextureSet.SET_METALLIC);
+
+    public static final Werkstoff TantalumCarbideHafniumCarbideMixture = new Werkstoff(
+        new short[] { 75, 85, 75 },
+        "Tantalum Carbide / Hafnium Carbide Mixture",
+        subscriptNumbers("(TaC)4HfC"),
+        new Werkstoff.Stats(),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().onlyDust(),
+        11502,
+        TextureSet.SET_METALLIC);
+
+    public static final Werkstoff TantalumHafniumCarbide = new Werkstoff(
+        new short[] { 80, 90, 80 },
+        "Tantalum Hafnium Carbide",
+        subscriptNumbers("Ta4HfC5"),
+        new Werkstoff.Stats().setMass(192)
+            .setMass(962)
+            .setMeltingPoint(4263),
+        Werkstoff.Types.COMPOUND,
+        new Werkstoff.GenerationFeatures().onlyDust()
+            .addMetalItems()
+            .addMolten()
+            .setBlacklist(OrePrefixes.plate),
+        11503,
+        TextureSet.SET_METALLIC);
+
     public static HashMap<OrePrefixes, BWMetaGeneratedItems> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
     public static HashBiMap<Werkstoff, Fluid> molten = HashBiMap.create();
