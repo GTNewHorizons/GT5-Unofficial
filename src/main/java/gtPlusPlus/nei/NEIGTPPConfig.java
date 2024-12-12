@@ -75,6 +75,7 @@ public class NEIGTPPConfig implements IConfigureNEI {
         if (Utils.isClient()) {
             API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_8k.get(1));
             API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_32k.get(1));
+            API.addItemListEntry(GregtechItemList.KLEIN_BOTTLE.get(1));
         }
         sIsAdded = true;
     }
