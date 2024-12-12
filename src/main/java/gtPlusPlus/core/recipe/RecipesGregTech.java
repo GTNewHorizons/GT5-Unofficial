@@ -761,7 +761,7 @@ public class RecipesGregTech {
             .fluidOutputs(GGMaterial.lumiium.getMolten(5 * 144))
             .eut(TierEU.RECIPE_LuV)
             .noOptimize()
-            .duration(4 * MINUTES)
+            .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
         // Eglin Steel
