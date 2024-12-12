@@ -1940,7 +1940,11 @@ public enum MetaTileEntityIDs {
     ComponentAssemblyLine(32026),
     AntimatterForge(32027),
     WireLumiium(32737),
-    WireSignalium(32749),;
+    WireSignalium(32749),
+    NeutronAcceleratorUHV(32761),
+    NeutronAcceleratorUEV(32762),
+    NeutronAcceleratorUIV(32763),
+    NeutronAcceleratorUMV(32764),;
 
     public final int ID;
 
