@@ -13,8 +13,6 @@
 
 package bartworks.common.loaders;
 
-import bartworks.common.commands.ClearCraftingCache;
-import bartworks.common.commands.GetWorkingDirectory;
 import bartworks.common.commands.PrintRecipeListToFile;
 import bartworks.common.commands.SummonRuin;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -24,7 +22,5 @@ public class RegisterServerCommands {
     public static void registerAll(FMLServerStartingEvent event) {
         event.registerServerCommand(new SummonRuin());
         event.registerServerCommand(new PrintRecipeListToFile());
-        event.registerServerCommand(new ClearCraftingCache());
-        event.registerServerCommand(new GetWorkingDirectory());
     }
 }
