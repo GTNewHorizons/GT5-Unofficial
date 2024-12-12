@@ -36,8 +36,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static kubatech.api.Variables.StructureHologram;
-import static kubatech.api.Variables.buildAuthorList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
 
@@ -126,7 +124,6 @@ import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import kubatech.Tags;
 import kubatech.api.DynamicInventory;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
@@ -235,7 +232,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         })
         .build();
 
-    @SuppressWarnings("unused")
     public MTEMegaIndustrialApiary(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -293,19 +289,20 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Mega Apiary")
-            .addInfo("Controller block for Industrial Apicultural Acclimatiser and Drone Domestication Station")
-            .addInfo(buildAuthorList("kuba6000", "Runakai"))
+        tt.addMachineType("Mega Apiary, Mapiary")
             .addInfo("The ideal home for your bees")
             .addInfo("Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)")
             .addInfo("Use screwdriver + shift to change operation mode (NORMAL/SWARMER)")
-            .addInfo("--------------------- INPUT MODE ---------------------")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + "Input Mode:")
             .addInfo("- Does not take power")
             .addInfo("- Put your queens in the input bus to put them in the internal buffer")
-            .addInfo("-------------------- OUTPUT MODE ---------------------")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + "Output Mode:")
             .addInfo("- Does not take power")
             .addInfo("- Will give your bees back to output bus")
-            .addInfo("------------------- OPERATING MODE -------------------")
+            .addSeparator()
+            .addInfo(EnumChatFormatting.GOLD + "Operating Mode:")
             .addInfo("- NORMAL:")
             .addInfo("  - For each " + voltageTooltipFormatted(6) + " amp you can insert 1 bee")
             .addInfo("  - Processing time: 5 seconds")
@@ -326,8 +323,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo("  - Base processing time: 1 minute")
             .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5))
             .addInfo("  - Can overclock")
-            .addInfo(StructureHologram)
-            .addSeparator()
             .beginStructureBlock(15, 17, 15, false)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Bronze Plated Bricks", 190, false)
@@ -339,7 +334,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addOutputBus("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
-            .toolTipFinisher(Tags.MODNAME);
+            .toolTipFinisher(GTValues.AuthorKuba, "Runakai");
         return tt;
     }
 

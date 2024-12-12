@@ -7,6 +7,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -69,7 +71,23 @@ public class BlockWormholeRender extends Block {
 
     @Override
     public boolean isCollidable() {
-        return true;
+        return false;
+    }
+
+    @Override
+    public boolean getBlocksMovement(IBlockAccess worldIn, int x, int y, int z) {
+        return false;
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z) {
+        return null;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World worldIn, int x, int y, int z) {
+        return null;
     }
 
 }

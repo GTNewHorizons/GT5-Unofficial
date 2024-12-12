@@ -27,10 +27,8 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .getDisplayName();
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Pump")
-            .addInfo("Controller Block for the Infinite Oil/Gas/Fluid Drilling Rig ")
+        tt.addMachineType("Pump, FDP")
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
-            .addSeparator()
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -40,7 +38,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .addMaintenanceHatch("Any base casing", 1)
             .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
             .addOutputHatch("Any base casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

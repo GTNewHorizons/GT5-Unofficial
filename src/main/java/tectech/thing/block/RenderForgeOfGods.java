@@ -28,8 +28,8 @@ import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 
 import tectech.Reference;
-import tectech.thing.metaTileEntity.multi.ForgeOfGodsRingsStructureString;
-import tectech.thing.metaTileEntity.multi.ForgeOfGodsStructureString;
+import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
+import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.util.StructureVBO;
 import tectech.util.TextureUpdateRequester;
 
@@ -428,6 +428,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         // But prevent bypassing the pause menu
         long millis = System.currentTimeMillis() % (1000 * 36000);
         float timer = millis / (50f); // to ticks
+
+        forgeTile.incrementColors();
 
         RenderEntireStar(forgeTile, x, y, z, timer);
         RenderRings(forgeTile, x, y, z, timer);

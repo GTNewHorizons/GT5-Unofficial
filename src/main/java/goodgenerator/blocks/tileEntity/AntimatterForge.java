@@ -40,7 +40,6 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -95,7 +94,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     private final int[] fluidConsumptions = { 0, 0, 0, 0 };
 
     public static final String MAIN_NAME = "antimatterForge";
-    private final int speed = 100;
+    private final int speed = 20;
     private long rollingCost = 0L;
     private boolean isLoadedChunk;
     public GTRecipe mLastRecipe;
@@ -150,21 +149,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
     };
 
-    static {
-        Textures.BlockIcons.setCasingTextureForId(
-            53,
-            TextureFactory.of(
-                TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_ANTIMATTER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_ANTIMATTER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build()));
-    }
-
     public AntimatterForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -208,7 +192,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + " EU per operation to produce antimatter")
             .addSeparator()
             .addInfo("Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded")
-            .addInfo("Cycles every 5 seconds")
+            .addInfo("Cycles every second")
             .addInfo(
                 "All hatches with more than the lowest amount will " + EnumChatFormatting.RED
                     + "lose half the difference!"
@@ -307,7 +291,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "+0.10"
                     + EnumChatFormatting.GRAY)
             .addInfo("Each stabilization can only use one of the fluids at a time")
-            .addSeparator()
             .addCasingInfoMin("Antimatter Containment Casing", 512, false)
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
@@ -315,7 +298,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInputHatch("1-6, Hint block with dot 1", 1)
             .addEnergyHatch("1-9, Hint block with dot 2", 2)
             .addOtherStructurePart("Antimatter Hatch", "16, Hint Block with dot 3", 3)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -373,21 +356,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
     }
 
-    private static final ITexture textureOverlay = TextureFactory.of(
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION1)
-            .extFacing()
-            .build(),
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION1_GLOW)
-            .extFacing()
-            .glow()
-            .build());
-
-    public ITexture getTextureOverlay() {
-        return textureOverlay;
-    }
-
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, GTItemStack aStack) {
         return side != getBaseMetaTileEntity().getFrontFacing();
@@ -416,8 +384,25 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (side == facing) return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
-            .build(), getTextureOverlay() };
-        if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(53) };
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FUSION1)
+                .extFacing()
+                .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FUSION1_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
+        if (aActive) return new ITexture[] { TextureFactory.builder()
+            .addIcon(MACHINE_CASING_ANTIMATTER)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_ANTIMATTER_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
         return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
@@ -782,7 +767,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(this.guiAntimatterChange)
                 + EnumChatFormatting.RESET
-                + " EU/t" };
+                + " L" };
     }
 
     private long getAntimatterAmount() {

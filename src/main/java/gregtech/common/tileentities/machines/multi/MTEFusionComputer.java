@@ -222,11 +222,9 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addController("Fusion Reactor")
             .addInfo("Some kind of fusion reactor, maybe")
-            .addSeparator()
-            .addInfo("Some kind of fusion reactor, maybe")
             .addStructureInfo("Should probably be built similar to other fusions")
             .addStructureInfo("See controller tooltip for details")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -424,6 +422,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
+                            mLastWorkingTick = mTotalRunTime;
                             if (mOutputFluids != null && mOutputFluids.length > 0) {
                                 try {
                                     GTMod.achievements.issueAchivementHatchFluid(

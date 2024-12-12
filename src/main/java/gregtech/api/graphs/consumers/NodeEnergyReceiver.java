@@ -14,7 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.Pollution;
+import gregtech.common.pollution.Pollution;
 
 // consumer for RF machines
 public class NodeEnergyReceiver extends ConsumerNode {

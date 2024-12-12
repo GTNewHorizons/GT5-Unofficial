@@ -17,6 +17,7 @@ import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.logic.FluidInventoryLogic;
 import gregtech.api.logic.ItemInventoryLogic;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 
 /**
  * Helper class to calculate how many parallels of items / fluids can fit in the output buses / hatches.
@@ -255,7 +256,14 @@ public class VoidProtectionHelper {
         }
 
         for (IFluidStore tHatch : hatches) {
-            int tSpaceLeft = tHatch.getCapacity() - tHatch.getFluidAmount();
+            int tSpaceLeft;
+            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
+                tSpaceLeft = tMEHatch.canAcceptFluid() ? Integer.MAX_VALUE : 0;
+            } else if (tHatch instanceof OutputHatchWrapper w && w.unwrap() instanceof MTEHatchOutputME tMEHatch) {
+                tSpaceLeft = tMEHatch.canAcceptFluid() ? Integer.MAX_VALUE : 0;
+            } else {
+                tSpaceLeft = tHatch.getCapacity() - tHatch.getFluidAmount();
+            }
 
             // check if hatch filled
             if (tSpaceLeft <= 0) continue;
@@ -289,7 +297,16 @@ public class VoidProtectionHelper {
             ParallelStackInfo<FluidStack> tParallel = aParallelQueue.poll();
             assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
             Integer tCraftSize = tFluidOutputMap.get(tParallel.stack);
-            int tSpaceLeft = tHatch.getCapacity();
+
+            int tSpaceLeft;
+            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
+                tSpaceLeft = tMEHatch.canAcceptFluid() ? Integer.MAX_VALUE : 0;
+            } else if (tHatch instanceof OutputHatchWrapper w && w.unwrap() instanceof MTEHatchOutputME tMEHatch) {
+                tSpaceLeft = tMEHatch.canAcceptFluid() ? Integer.MAX_VALUE : 0;
+            } else {
+                tSpaceLeft = tHatch.getCapacity();
+            }
+
             tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
             tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
             aParallelQueue.add(tParallel);

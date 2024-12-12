@@ -30,6 +30,9 @@ public class MachineStats {
     @Config.Comment("Teleporter section")
     public static Teleporter teleporter = new Teleporter();
 
+    @Config.Comment("Cleanroom section")
+    public static Cleanroom cleanroom = new Cleanroom();
+
     @Config.LangKey("GT5U.gui.config.machine_stats.bronze_solar_boiler")
     public static class BronzeSolarBoiler {
 
@@ -124,7 +127,7 @@ public class MachineStats {
         public int UUAPerUUM;
 
         @Config.Comment("Speed bonus delivered by the UUA.")
-        @Config.DefaultInt(40)
+        @Config.DefaultInt(4)
         @Config.RequiresMcRestart
         public int UUASpeedBonus;
     }
@@ -165,5 +168,31 @@ public class MachineStats {
         @Config.DefaultInt(100)
         @Config.RequiresMcRestart
         public int powerMultiplier;
+    }
+
+    @Config.LangKey("GT5U.gui.config.machine_stats.cleanroom")
+    public static class Cleanroom {
+
+        @Config.Comment("Minimum number of plascrete blocks in a valid cleanroom.")
+        @Config.RangeInt(min = 0)
+        @Config.DefaultInt(20)
+        @Config.RequiresMcRestart
+        public int minCasingCount;
+
+        @Config.Comment("Maximum percentage of plascrete blocks which can be replaced by other valid blocks: glass, doors, hatches, etc.")
+        @Config.RangeInt(min = 0, max = 100)
+        @Config.DefaultInt(30)
+        @Config.RequiresMcRestart
+        public int maxReplacementPercentage;
+
+        @Config.Comment("List of other blocks allowed as a part of the cleanroom. Format: <block name> or <block name>:<meta>.")
+        @Config.DefaultStringList({ "BW_GlasBlocks", // All Bart glass (including HV tier)
+            "tile.openblocks.elevator", "tile.openblocks.elevator_rotating", // OpenBlocks elevators
+            "tile.blockTravelAnchor", // EnderIO travel anchors
+            "tile.blockCosmeticOpaque:2", // TC Warded glass (usually HV tier)
+            "tile.extrautils:etherealglass" // ExtraUtils ineffable glass and variants
+        })
+        @Config.RequiresMcRestart
+        public String[] allowedBlocks;
     }
 }

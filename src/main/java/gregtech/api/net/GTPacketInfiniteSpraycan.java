@@ -119,6 +119,19 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
                 }
                 return false;
             }
+        },
+        TOGGLE_SHAKE_LOCK {
+
+            @Override
+            boolean execute(final BehaviourSprayColorInfinite behavior, final ItemStack itemStack,
+                final EntityPlayerMP player, final int newColor) {
+                if (behavior.togglePreventShake(itemStack)) {
+                    Action.playLockSound(player);
+                } else {
+                    Action.playUnlockSound(player);
+                }
+                return true;
+            }
         };
 
         private static void playShakeSound(final EntityPlayerMP player) {

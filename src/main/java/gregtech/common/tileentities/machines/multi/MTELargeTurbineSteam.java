@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -59,13 +58,11 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Steam Turbine")
-            .addInfo("Controller block for the Large Steam Turbine")
+        tt.addMachineType("Steam Turbine, LST")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Outputs Distilled Water as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Turbine Casing", 8, 31, false)
@@ -73,7 +70,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Steam, Side centered", 2)
             .addOutputHatch("Distilled Water, Side centered", 2)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -94,7 +91,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
 
     @Override
     public int getCasingTextureIndex() {
-        return 16;
+        return 57;
     }
 
     @Override
@@ -209,17 +206,5 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
     @Override
     public String[] getInfoData() {
         return super.getInfoData();
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("turbineFitting", looseFit);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        looseFit = aNBT.getBoolean("turbineFitting");
     }
 }

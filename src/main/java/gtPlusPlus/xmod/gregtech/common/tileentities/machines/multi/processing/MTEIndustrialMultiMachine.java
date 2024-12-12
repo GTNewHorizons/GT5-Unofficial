@@ -58,13 +58,12 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -130,7 +129,6 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Industrial Multi-Machine")
             .addInfo(EnumChatFormatting.RED + "DEPRECATED! This machine will be removed in the next major update.")
             .addInfo(EnumChatFormatting.RED + "A variety of multiblocks have been added to replace these machines!")
             .addInfo("250% faster than using single block machines of the same voltage")
@@ -144,7 +142,6 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
                 EnumChatFormatting.AQUA + "You can use Solidifier Hatch to solidify multiple liquids."
                     + EnumChatFormatting.RESET)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Multi-Use Casings", 6, false)
@@ -155,7 +152,7 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -225,13 +222,13 @@ public class MTEIndustrialMultiMachine extends GTPPMultiBlockBase<MTEIndustrialM
     public int getPollutionPerSecond(final ItemStack aStack) {
         switch (machineMode) {
             case MACHINEMODE_METAL -> {
-                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
+                return PollutionConfig.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
             }
             case MACHINEMODE_FLUID -> {
-                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
+                return PollutionConfig.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
             }
             default -> {
-                return Configuration.pollution.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
+                return PollutionConfig.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
             }
         }
     }

@@ -52,9 +52,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -176,7 +175,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Advanced Distillation Tower")
             .addInfo("Use 85% less energy in distillery mode")
             .addInfo("250%/100% faster in DT/distillery mode")
             .addInfo("Right click the controller with screwdriver to change mode.")
@@ -185,7 +183,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInfo("Distillery Mode: Tower Tier * (4*InputTier)")
             .addInfo("Distillery Mode require a full height tower")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
             .addInputBus("Bottom Casing", 1)
             .addOutputBus("Bottom Casing", 1)
@@ -194,7 +191,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addEnergyHatch("Any Casing", 1)
             .addOutputHatch("One per layer except bottom", 2)
             .addMufflerHatch("Top Casing", 3)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -305,8 +302,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         if (this.mMode == Mode.Distillery)
-            return Configuration.pollution.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
-        return Configuration.pollution.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
+            return PollutionConfig.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
+        return PollutionConfig.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
     }
 
     @Override
@@ -358,17 +355,17 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] mOutputFluids2) {
+    protected void addFluidOutputs(FluidStack[] outputFluids) {
         if (mMode == Mode.DistillationTower) {
             // dt mode
-            for (int i = 0; i < mOutputFluids2.length && i < mOutputHatchesByLayer.size(); i++) {
-                FluidStack tStack = mOutputFluids2[i].copy();
+            for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
+                FluidStack tStack = outputFluids[i].copy();
                 if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
                     dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
             }
         } else {
             // distillery mode
-            for (FluidStack outputFluidStack : mOutputFluids2) {
+            for (FluidStack outputFluidStack : outputFluids) {
                 addOutput(outputFluidStack);
             }
         }
@@ -449,7 +446,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        aNBT.setBoolean("mUpgraded", mUpgraded);
+        if (mUpgraded) aNBT.setBoolean("mUpgraded", true);
         super.setItemNBT(aNBT);
     }
 

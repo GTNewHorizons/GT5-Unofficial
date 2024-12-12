@@ -10,12 +10,15 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -30,12 +33,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
@@ -49,6 +52,10 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialCentrifuge> STRUCTURE_DEFINITION = null;
     // public static double recipesComplete = 0;
+    // client side stuff
+    // mMachine got overwritten by StructureLib extended facing query response
+    // so we use a separate field for this
+    protected boolean mFormed;
 
     public MTEIndustrialCentrifuge(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -74,13 +81,11 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Industrial Centrifuge")
             .addInfo("125% faster than using single block machines of the same voltage")
             .addInfo("Disable animations with a screwdriver")
             .addInfo("Only uses 90% of the EU/t normally required")
             .addInfo("Processes six items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Centrifuge Casings", 6, false)
@@ -91,7 +96,7 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -127,6 +132,18 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     }
 
     @Override
+    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
+        boolean f = super.checkStructure(aForceReset, aBaseMetaTileEntity);
+        if (f && getBaseMetaTileEntity().isServerSide()) {
+            // while is this a client side field, blockrenderer will reuse the server world for client side rendering
+            // so we must set it as well...
+            mFormed = true;
+            return true;
+        }
+        return f;
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         return checkPiece(mName, 1, 1, 0) && mCasing >= 6 && checkHatch();
@@ -135,15 +152,27 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     @Override
     protected IIconContainer getActiveOverlay() {
         if (usingAnimations()) {
-            return frontFaceActive;
+            return LARGETURBINE_NEW_ACTIVE5;
         } else {
-            return frontFace;
+            return getInactiveOverlay();
         }
     }
 
     @Override
     protected IIconContainer getInactiveOverlay() {
-        return frontFace;
+        return LARGETURBINE_NEW5;
+    }
+
+    @Override
+    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
+        if (!mFormed) return false;
+
+        IIconContainer[] tTextures;
+        if (getBaseMetaTileEntity().isActive() && usingAnimations()) tTextures = TURBINE_NEW_ACTIVE;
+        else tTextures = TURBINE_NEW;
+        GTUtilityClient
+            .renderTurbineOverlay(aWorld, aX, aY, aZ, aRenderer, getExtendedFacing(), getCasingBlock(), tTextures);
+        return false;
     }
 
     @Override
@@ -187,7 +216,7 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialCentrifuge;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialCentrifuge;
     }
 
     @Override
@@ -225,5 +254,16 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     public boolean usingAnimations() {
         // Logger.INFO("Is animated? "+this.mIsAnimated);
         return this.mIsAnimated;
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        mFormed = (aValue & 0x1) != 0;
+
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return (byte) ((mMachine ? 1 : 0));
     }
 }

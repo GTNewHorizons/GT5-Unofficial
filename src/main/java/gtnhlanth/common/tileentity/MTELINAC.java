@@ -183,7 +183,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addInfo("Use a lower temperature coolant to improve output focus")
             .addInfo("Output energy does not scale for input energies higher than 7500 keV")
             // .addInfo("Extendable, with a minimum length of 18 blocks")
-            .addInfo(DescTextLocalization.BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addInfo("Valid Coolants:");
 
@@ -196,7 +195,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         }
 
-        tt.addInfo("Requires (length + 1)kL/s of coolant")
+        tt.addInfo("Requires (length)kL/s of coolant")
             .addSeparator()
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController("Front bottom")
@@ -213,8 +212,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addOutputHatch(addDotText(2))
             .addOtherStructurePart("Beamline Input Hatch", addDotText(3))
             .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
-
-            .toolTipFinisher("GTNH: Lanthanides");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -286,7 +284,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         FluidStack primFluid = tFluidInputs.get(0);
 
         // 1b (1000L)/m/operation
-        final int fluidConsumed = 1000 * length;
+        final int fluidConsumed = 1000 * (length + 1); // length variable is technically physical length - 1, adding
+                                                       // here so as to not affect existing math
 
         this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
@@ -310,8 +309,11 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         mMaxProgresstime = 1 * TickTime.SECOND;
+
         // Consume the input tier's corresponding practical voltage instead of the maximum suggested by the logic
-        mEUt = (int) -GTValues.VP[(int) this.getInputVoltageTier()];
+        // 1A if one energy hatch, 4A if two
+        mEUt = (int) ((this.mEnergyHatches.size() == 1) ? -GTValues.VP[(int) this.getInputVoltageTier()]
+            : (int) (-this.getMaxInputAmps() * GTValues.VP[(int) this.getInputVoltageTier()]));
 
         // Particle stays the same with this multiblock
         outputParticle = particleId;
@@ -339,10 +341,8 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             : inputFocus * (machineFocus / 100); // If input focus > machine focus, take the average of both, else
                                                  // weigh the former by the latter
 
-        long voltage = this.getMaxInputVoltage();
-        // voltageFactor = calculateVoltageFactor(voltage);
-
-        // machineEnergy = Math.max(-((60) / this.length) * voltageFactor + 60_000, 2000); // Minimum of 2000keV
+        // 1A of full power if one energy hatch, 4A if two
+        long voltage = (this.mEnergyHatches.size() == 1) ? this.getMaxInputVoltage() : this.getMaxInputPower();
 
         machineEnergy = (float) Math.max(length / 4 * Math.pow(voltage, 1.0 / 3.0), 50); // Minimum of 50keV
 
@@ -350,13 +350,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .getEnergy();
 
         inputEnergy = Math.min(inputEnergy, 7500); // Does not scale past 7500 keV, prevents double LINAC issue
-        /*
-         * outputEnergy = Math.min(
-         * (1 + inputEnergy / Particle.getParticleFromId(outputParticle)
-         * .maxSourceEnergy()) * machineEnergy,
-         * 120_000); // TODO more complex calculation than just
-         * // addition
-         */
 
         outputEnergy = (float) Math.pow(
             10,
@@ -411,7 +404,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     @Override
     public void stopMachine() {
 
-        // GTLog.out.print("Machine stopped");
         outputFocus = 0;
         outputEnergy = 0;
         outputParticle = 0;
@@ -448,6 +440,10 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         BeamInformation information = this.getInputInformation();
 
+        if (information == null) {
+            information = new BeamInformation(0, 0, 0, 0);
+        }
+
         return new String[] {
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
@@ -476,7 +472,9 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
-                + " EU/t(*2A) "
+                + " EU/t(*"
+                + getMaxInputAmps()
+                + "A)"
                 + StatCollector.translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
@@ -506,7 +504,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
             StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant usage:
                 + EnumChatFormatting.AQUA
-                + length
+                + (length + 1)
                 + EnumChatFormatting.RESET
                 + " kL/s", // e.g. "24 kL/s
 
@@ -561,7 +559,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                                                                // Will it matter? No :boubs_glasses:
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
-            // if (in.q == null) return new BeamInformation(10000, 10, 0, 90); // temporary for testing purposes
 
             return in.q.getContent();
         }
@@ -571,13 +568,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     private static float calculateTemperatureFactor(int fluidTemp) {
         return (float) Math.pow(1.1, 0.2 * fluidTemp);
     }
-
-    /*
-     * private static float calculateVoltageFactor(long voltage) {
-     * float factor = (float) Math.pow(1.00009, -(0.1 * voltage - 114000));
-     * return factor;
-     * }
-     */
 
     @Override
     public String[] getStructureDescription(ItemStack arg0) {
@@ -615,8 +605,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             length += 2;
         }
 
-        // if (!checkPiece(STRUCTURE_PIECE_END, 3, 6, -length)) return false;
-
         // Likely off by one or two, not visible to player however so doesn't particularly matter
         length += 8;
 
@@ -638,9 +626,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
         }
 
         for (int i = -8; i > -lLength - 1; i -= 2) {
-
-            // GTLog.out.print("Building inner piece! i = " + i);
-
             buildPiece(STRUCTURE_PIECE_LAYER, stackSize, hintsOnly, 3, 6, i);
         }
 

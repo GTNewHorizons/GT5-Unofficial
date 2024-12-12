@@ -1,6 +1,7 @@
 package gregtech.api.interfaces;
 
 import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -61,8 +62,8 @@ public interface IItemBehaviour<E extends Item> {
 
     List<String> getAdditionalToolTips(E aItem, List<String> aList, ItemStack aStack);
 
-    default List<String> getAdditionalToolTipsWhileSneaking(E aItem, List<String> aList, ItemStack aStack) {
-        return aList;
+    default Optional<List<String>> getAdditionalToolTipsWhileSneaking(E aItem, List<String> aList, ItemStack aStack) {
+        return Optional.empty();
     }
 
     void onUpdate(E aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand);

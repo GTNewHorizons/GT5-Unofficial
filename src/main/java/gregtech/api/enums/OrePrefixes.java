@@ -3,7 +3,6 @@ package gregtech.api.enums;
 import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.GTValues.D2;
 import static gregtech.api.enums.GTValues.M;
-import static gregtech.api.util.GTRecipeBuilder.DEBUG_MODE_COLLISION;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +15,6 @@ import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableList;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
@@ -615,7 +613,10 @@ public enum OrePrefixes {
     blockCasingAdvanced("An Advanced Casing block for a Multiblock-Machine", "Rebolted ", " Casing", true, true, true,
         true, false, true, false, true, false, false, 0, M * 9, 64, -1),
     capsuleMolten("Capsule of Molten stuff", "Molten ", " Capsule", true, true, true, true, false, false, false, true,
-        false, false, 0, M * 1, 64, -1);
+        false, false, 0, M * 1, 64, -1),
+    // subatomic particles
+    particle("A Subatomic Particle", "", "", false, false, true, false, false, false, false, false, false, false, 0, -1,
+        64, -1);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
         cell,
@@ -1181,8 +1182,6 @@ public enum OrePrefixes {
         } else if (name().startsWith("battery")) {
             new TC_AspectStack(TCAspects.ELECTRUM, 1).addToAspectList(mAspects);
         }
-
-        GregTechAPI.sGTCompleteLoad.add(this::onLoadComplete);
     }
 
     public static boolean isInstanceOf(String aName, OrePrefixes aPrefix) {
@@ -1301,9 +1300,6 @@ public enum OrePrefixes {
         return mOreProcessing.add(aRegistrator);
     }
 
-    // Hack to prevent duplicate registry of oredicted materials
-    HashSet<Materials> used = new HashSet<>();
-
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
         if (aMaterial == null) {
@@ -1314,26 +1310,9 @@ public enum OrePrefixes {
             return;
         }
 
-        if (aMaterial == Materials._NULL && !mIsSelfReferencing && mIsMaterialBased) {
+        if (!((aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased)
+            && GTUtility.isStackValid(aStack))) {
             return;
-        }
-
-        if (!GTUtility.isStackValid(aStack)) {
-            return;
-        }
-
-        if (!aOreDictName.startsWith("stone") && aMaterial != Materials._NULL) {
-            if (!used.add(aMaterial)) {
-                if (DEBUG_MODE_COLLISION) {
-                    GTLog.out
-                        .println("Attempted duplicate recipe registration by " + aModName + " for " + aOreDictName);
-                }
-                return;
-            } else {
-                if (DEBUG_MODE_COLLISION) {
-                    GTLog.out.println("New recipe registration by " + aModName + " for " + aOreDictName);
-                }
-            }
         }
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
@@ -1347,10 +1326,6 @@ public enum OrePrefixes {
                     + GTUtility.getClassName(tRegistrator));
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }
-    }
-
-    public void onLoadComplete() {
-        used = null;
     }
 
     public Object get(Object aMaterial) {

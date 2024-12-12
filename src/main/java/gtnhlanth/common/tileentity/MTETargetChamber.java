@@ -13,7 +13,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gtnhlanth.util.DescTextLocalization.BLUEPRINT_INFO;
 import static gtnhlanth.util.DescTextLocalization.addDotText;
 
 import java.util.ArrayList;
@@ -183,12 +182,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Collision Chamber")
-            .addInfo("Controller block for the Target Chamber")
             .addInfo("Hitting things with other things")
-
-            .addInfo(BLUEPRINT_INFO)
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom")
             .addCasingInfoExactly("Grate Machine Casing", 29, false)
@@ -205,7 +200,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInputBus(addDotText(3))
             .addOutputBus(addDotText(4))
             .addOtherStructurePart("Beamline Input Hatch", addDotText(5))
-            .toolTipFinisher("GTNH: Lanthanides");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -277,15 +272,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             })
             .find();
 
-        if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, new FluidStack[] {}, tItemsWithFocusItemArray))
-            return false;
-
-        if (tRecipe.focusItem != null) {
-            if (tRecipe.focusItem.getItem() != tFocusItem.getItem()) return false;
-        }
-
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
+        if (tRecipe == null) return false;
 
         BeamInformation inputInfo = this.getInputInformation();
 
@@ -302,23 +289,72 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         if (inputParticle != tRecipe.particleId) return false;
 
-        this.mMaxProgresstime = Math.max(Math.round((tRecipe.amount / inputRate * 5 * TickTime.SECOND)), 1); // 5
-                                                                                                             // seconds
-                                                                                                             // per
+        if (tRecipe.focusItem != null) {
+            if (tRecipe.focusItem.getItem() != tFocusItem.getItem()) return false;
+        }
+
+        int focusDurabilityDepletion = 1;
+
+        float progressTime = tRecipe.amount / inputRate * 5 * TickTime.SECOND;
+
+        int batchAmount = 1;
+
+        if (progressTime < 1) { // Subticking
+
+            batchAmount = (int) Math.round(1.0 / progressTime);
+
+            if (tRecipe.focusItem != null) {
+                int maskLimit = tFocusItem.getMaxDamage() - tFocusItem.getItemDamage() + 1;
+
+                if (batchAmount > maskLimit) batchAmount = maskLimit; // Limited by mask durability first, if it's
+                                                                      // present in recipe. Assume mask is present in
+                                                                      // machine from above condition
+            }
+
+            progressTime = 1;
+        }
+
+        this.mMaxProgresstime = (int) progressTime; // 5
+        // seconds
+        // per
         // integer multiple
         // over the rate. E.g., 100a, 10r
         // would equal 50 seconds
+
         if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1) return false;
+
+        double maxParallel = tRecipe
+            .maxParallelCalculatedByInputs(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
+
+        if (maxParallel < 1) // Insufficient items
+            return false;
+
+        if (batchAmount > maxParallel) batchAmount = (int) maxParallel;
+
+        tRecipe.consumeInput(batchAmount, new FluidStack[] {}, tItemsWithFocusItemArray);
+
+        focusDurabilityDepletion = batchAmount;
+
+        ItemStack[] itemOutputArray = GTUtility.copyItemArray(tRecipe.mOutputs);
+
+        for (ItemStack stack : itemOutputArray) {
+
+            stack.stackSize *= batchAmount;
+
+        }
+
+        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
+        this.mEfficiencyIncrease = 10000;
 
         mEUt = (int) -tVoltage;
         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
-        this.mOutputItems = tRecipe.mOutputs;
+        this.mOutputItems = itemOutputArray;
 
         if (tRecipe.focusItem != null) // Recipe actually uses the mask, can also assume machine mask item is nonnull
                                        // due to above conditions
             mInputFocus.get(0)
-                .depleteFocusDurability(1);
+                .depleteFocusDurability(focusDurabilityDepletion);
 
         this.updateSlots();
 
@@ -330,9 +366,6 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         for (MTEHatchInputBeamline in : this.mInputBeamline) {
 
             if (in.q == null) return new BeamInformation(0, 0, 0, 0);
-            // if (in.q == null) return new BeamInformation(10, 10, Particle.PHOTON.ordinal(), 90); // temporary
-            // for
-            // testing purposes
 
             return in.q.getContent();
         }
@@ -342,6 +375,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     private ItemStack getFocusItemStack() {
 
         for (MTEBusInputFocus hatch : this.mInputFocus) {
+
+            if (hatch.getContentUsageSlots()
+                .isEmpty()) return null;
+
             return hatch.getContentUsageSlots()
                 .get(0);
         }
@@ -404,6 +441,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         }
 
         BeamInformation information = this.getInputInformation();
+
+        if (information == null) {
+            information = new BeamInformation(0, 0, 0, 0);
+        }
 
         return new String[] {
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "

@@ -649,7 +649,7 @@ public class ItemUtils {
                     returnValues[i] = oreDictList.get(i);
                 }
             }
-            return returnValues.length > 0 ? returnValues : null;
+            return returnValues;
         } else {
             return null;
         }
@@ -937,12 +937,6 @@ public class ItemUtils {
             return true;
         }
         if (GTUtility.areStacksEqual(aStack, GenericChem.TemporalHarmonyCatalyst, true)) {
-            return true;
-        }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mLimpidWaterCatalyst, true)) {
-            return true;
-        }
-        if (GTUtility.areStacksEqual(aStack, GenericChem.mFlawlessWaterCatalyst, true)) {
             return true;
         }
         if (GTUtility.areStacksEqual(aStack, GenericChem.mParticleAccelerationCatalyst, true)) {

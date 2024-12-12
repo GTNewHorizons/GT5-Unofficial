@@ -48,7 +48,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -74,10 +73,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     private UUID owner_uuid;
     private boolean wirelessEnabled = false;
     private boolean canUseWireless = true;
-    private long euCapacity = 0;
     private long euLastCycle = 0;
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
+    private final List<Float> avgEff = new ArrayList<>(10);
 
     private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
@@ -111,21 +110,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 .build();
         }
     };
-
-    static {
-        Textures.BlockIcons.setCasingTextureForId(
-            53,
-            TextureFactory.of(
-                TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_ANTIMATTER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_ANTIMATTER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build()));
-    }
 
     private boolean addLaserSource(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
@@ -178,6 +162,12 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         if (i == 2 && containedAntimatter > 0 && catalystFluid != null) {
             createEU(containedAntimatter, catalystFluid);
         }
+        // Set stats if one fluid supplied.
+        if ((containedAntimatter == 0 && catalystFluid != null) || (containedAntimatter > 0 && catalystFluid == null)) {
+            this.annihilationEfficiency = 0;
+            this.euLastCycle = 0;
+            setAvgEff(0f);
+        }
 
         endRecipeProcessing();
         return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -203,11 +193,28 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             float efficiency = Math
                 .min(((float) antimatter / (float) catalystCount), ((float) catalystCount / (float) antimatter));
             this.annihilationEfficiency = efficiency;
+            setAvgEff(efficiency);
             generatedEU = (long) ((Math.pow(antimatter, modifier) * ANTIMATTER_FUEL_VALUE) * efficiency);
+        } else { // Set stats and return if supplied antimatter with incorrect fluid.
+            this.annihilationEfficiency = 0;
+            this.euLastCycle = 0;
+            setAvgEff(0f);
+            return;
         }
 
         if (wirelessEnabled && modifier >= 1.03F) {
             // Clamp the EU to the maximum of the hatches so wireless cannot bypass the limitations
+            long euCapacity = 0;
+            for (MTEHatch tHatch : getExoticEnergyHatches()) {
+                if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
+                    euCapacity += tLaserSource.maxEUStore();
+                }
+            }
+
+            // Prevent -Generation when long overflow
+            if (generatedEU < 0) generatedEU = Long.MAX_VALUE;
+            if (euCapacity < 0) euCapacity = Long.MAX_VALUE;
+
             generatedEU = Math.min(generatedEU, euCapacity);
             this.euLastCycle = generatedEU;
             addEUToGlobalEnergyMap(owner_uuid, generatedEU);
@@ -224,12 +231,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.euCapacity = 0;
-        for (MTEHatch tHatch : getExoticEnergyHatches()) {
-            if (tHatch instanceof MTEHatchDynamoTunnel tLaserSource) {
-                this.euCapacity += tLaserSource.maxEUStore();
-            }
-        }
         return checkPiece(MAIN_NAME, 17, 41, 0);
     }
 
@@ -330,6 +331,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY)
             .addSeparator()
             .addInfo("Antimatter base energy value: " + GTUtility.formatNumbers(ANTIMATTER_FUEL_VALUE) + " EU/L")
+            .addInfo("Cannot produce more than 9.2e18 EU per cycle")
             .addInfo("Energy production is exponentially increased depending on the matter used:")
             .addInfo("Molten Copper: 1.00")
             .addInfo("Molten SC UIV Base: 1.02")
@@ -339,7 +341,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Enable wireless EU mode with screwdriver")
             .addInfo("Wireless mode requires SC UMV Base or better")
             .addInfo("Wireless mode uses hatch capacity limit")
-            .addSeparator()
             .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
             .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
@@ -349,7 +350,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addCasingInfoMin("Advanced Filter Casing", 209, false)
             .addInputHatch("2, Hint block with dot 1", 1)
             .addOtherStructurePart("Laser Source Hatch", "1-64, Hint Block with dot 2", 2)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -402,6 +403,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             maxEnergy += tHatch.getBaseMetaTileEntity()
                 .getEUCapacity();
         }
+        // Prevent -Value when long overflow
+        if (storedEnergy < 0) storedEnergy = Long.MAX_VALUE;
+        if (maxEnergy < 0) maxEnergy = Long.MAX_VALUE;
 
         return new String[] { EnumChatFormatting.BLUE + "Antimatter Forge " + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
@@ -431,7 +435,12 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(Math.ceil(this.annihilationEfficiency * 100))
                 + EnumChatFormatting.RESET
-                + " %" };
+                + " %",
+            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+                + EnumChatFormatting.AQUA
+                + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
+                + EnumChatFormatting.RESET
+                + " % ⟩₁₀" };
     }
 
     private long getEnergyProduced() {
@@ -442,8 +451,31 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         return this.annihilationEfficiency;
     }
 
+    private int n = 0;
+
+    private void setAvgEff(float a) {
+        if (n == 10) n = 0;
+        if (this.avgEff.size() < 10) {
+            this.avgEff.add(a);
+        } else {
+            this.avgEff.set(n, a);
+            n++;
+        }
+
+        float b = 0;
+        for (float c : this.avgEff) {
+            b += c;
+        }
+        this.avgEffCache = b == 0 ? 0 : b / this.avgEff.size();
+    }
+
+    private float getAvgEfficiency() {
+        return this.avgEffCache;
+    }
+
     protected long energyProducedCache;
     protected float efficiencyCache;
+    protected float avgEffCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     protected static DecimalFormat standardFormat;
@@ -478,7 +510,17 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                             + EnumChatFormatting.WHITE
                             + " %")
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.FloatSyncer(this::getEfficiency, val -> efficiencyCache = val));
+            .widget(new FakeSyncWidget.FloatSyncer(this::getEfficiency, val -> efficiencyCache = val))
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+                            + EnumChatFormatting.RED
+                            + numberFormat.format(Math.ceil(avgEffCache * 100))
+                            + EnumChatFormatting.WHITE
+                            + " % ⟩₁₀")
+                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
+            .widget(new FakeSyncWidget.FloatSyncer(this::getAvgEfficiency, val -> avgEffCache = val));
     }
 
     @Override
@@ -486,30 +528,31 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
-    private static final ITexture textureOverlay = TextureFactory.of(
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION1)
-            .extFacing()
-            .build(),
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION1_GLOW)
-            .extFacing()
-            .glow()
-            .build());
-
-    public ITexture getTextureOverlay() {
-        return textureOverlay;
-    }
-
     @Override
-    @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
-            .build(), getTextureOverlay() };
-        if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(53) };
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FUSION1)
+                .extFacing()
+                .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FUSION1_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
+        if (aActive) return new ITexture[] { TextureFactory.builder()
+            .addIcon(MACHINE_CASING_ANTIMATTER)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_ANTIMATTER_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
         return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
