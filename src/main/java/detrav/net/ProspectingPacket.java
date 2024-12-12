@@ -162,6 +162,8 @@ public class ProspectingPacket extends DetravPacket {
         int aX = cX - (chunkX - size);
         int aZ = cZ - (chunkZ - size);
 
+        if (fluid == null || fluid.getFluid() == null) return;
+
         String stackName = fluid.getLocalizedName();
 
         short objectId;

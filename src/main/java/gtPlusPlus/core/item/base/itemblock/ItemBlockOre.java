@@ -8,6 +8,7 @@ import java.util.Set;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.common.WorldgenGTOreLayer;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -103,7 +104,7 @@ public class ItemBlockOre extends ItemBlock {
             list.add("Found:");
             if (dims != null && !dims.isEmpty()) {
                 for (String m : dims) {
-                    list.add("- " + m);
+                    list.add("- " + I18n.format("gtnop.world." + m));
                 }
             } else {
                 list.add("- Unknown");

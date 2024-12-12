@@ -43,6 +43,7 @@ public class Material implements IMaterial {
 
     public static final Set<Material> mMaterialMap = new HashSet<>();
     public static HashMap<String, Material> mMaterialCache = new HashMap<>();
+    public static HashMap<String, Material> mMaterialsByName = new HashMap<>();
 
     public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<>();
 
@@ -389,6 +390,7 @@ public class Material implements IMaterial {
             this.translatedName = GTLanguageManager
                 .addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
             mMaterialCache.put(getLocalizedName().toLowerCase(), this);
+            mMaterialsByName.put(unlocalizedName, this);
             Logger.INFO("Stored " + getLocalizedName() + " to cache with key: " + getLocalizedName().toLowerCase());
 
             this.materialState = defaultState;

@@ -56,7 +56,7 @@ public class BaseOreComponent extends Item {
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
         GTOreDictUnificator
-            .registerOre(componentType.getComponent() + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+            .registerOre(componentType.getOrePrefix() + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
     }
 
     public boolean registerComponent() {
@@ -233,16 +233,28 @@ public class BaseOreComponent extends Item {
         CRUSHED("crushed", "Crushed ", " Ore", true),
         CRUSHEDCENTRIFUGED("crushedCentrifuged", "Centrifuged Crushed ", " Ore", true),
         CRUSHEDPURIFIED("crushedPurified", "Purified Crushed ", " Ore", true),
-        RAWORE("oreRaw", "Raw ", " Ore", true),
+        RAWORE("oreRaw", OrePrefixes.rawOre, "Raw ", " Ore", true),
         MILLED("milled", "Milled ", " Ore", true);
 
         private final String COMPONENT_NAME;
         private final String PREFIX;
         private final String DISPLAY_NAME;
         private final boolean HAS_OVERLAY;
+        private final String orePrefix;
 
         ComponentTypes(final String LocalName, final String prefix, final String DisplayName, final boolean overlay) {
             this.COMPONENT_NAME = LocalName;
+            this.orePrefix = LocalName;
+            this.PREFIX = prefix;
+            this.DISPLAY_NAME = DisplayName;
+            this.HAS_OVERLAY = overlay;
+            // dust + Dirty, Impure, Pure, Refined
+            // crushed + centrifuged, purified
+        }
+
+        ComponentTypes(final String LocalName, final OrePrefixes orePrefix, final String prefix, final String DisplayName, final boolean overlay) {
+            this.COMPONENT_NAME = LocalName;
+            this.orePrefix = orePrefix.name();
             this.PREFIX = prefix;
             this.DISPLAY_NAME = DisplayName;
             this.HAS_OVERLAY = overlay;
@@ -252,6 +264,10 @@ public class BaseOreComponent extends Item {
 
         public String getComponent() {
             return this.COMPONENT_NAME;
+        }
+
+        public String getOrePrefix() {
+            return orePrefix;
         }
 
         public String getName() {

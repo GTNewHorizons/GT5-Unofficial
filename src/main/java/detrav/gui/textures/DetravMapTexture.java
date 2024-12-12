@@ -81,6 +81,8 @@ public class DetravMapTexture extends AbstractTexture {
 
                     var object = packet.objects.get(e.getShortValue());
 
+                    if (object == null) continue;
+
                     image.setRGB(x, z, object.rightInt());
                 }
             }
@@ -90,6 +92,8 @@ public class DetravMapTexture extends AbstractTexture {
                         int amount = packet.getAmount(cX, cZ);
                         
                         var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
+
+                        if (object == null) continue;
 
                         String name = object.left();
                         int rgba = object.rightInt();

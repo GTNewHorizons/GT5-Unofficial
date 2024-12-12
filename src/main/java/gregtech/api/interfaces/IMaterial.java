@@ -25,7 +25,7 @@ public interface IMaterial {
 
         if (bw != null) return bw;
         
-        IMaterial gtpp = Material.mMaterialCache.get(name);
+        IMaterial gtpp = Material.mMaterialsByName.get(name);
 
         if (gtpp != null) return gtpp;
 
