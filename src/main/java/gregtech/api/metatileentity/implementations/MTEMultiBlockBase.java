@@ -143,11 +143,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
+    protected boolean superCribsRecipeCheck = false;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
     protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
     protected static final String BATCH_MODE_NBT_KEY = "batchMode";
+    protected static final String SUPER_CRIBS_MODE_NBT_KEY = "superCribsMode";
     protected SingleRecipeCheck mSingleRecipeCheck = null;
 
     public ArrayList<MTEHatchInput> mInputHatches = new ArrayList<>();
@@ -209,6 +211,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 mSingleRecipeCheck = null;
             }
         }
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
+            superCribsRecipeCheck ^= true;
+            resetCribsRecipes();
+            setSuperCribsRecipeCheck(superCribsRecipeCheck);
+            aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.multiblock.superCribs." + superCribsRecipeCheck));
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -297,6 +312,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         aNBT.setBoolean(BATCH_MODE_NBT_KEY, batchMode);
         aNBT.setBoolean(INPUT_SEPARATION_NBT_KEY, inputSeparation);
         aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
+        aNBT.setBoolean(SUPER_CRIBS_MODE_NBT_KEY, superCribsRecipeCheck);
     }
 
     @Override
@@ -335,6 +351,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
+        superCribsRecipeCheck = aNBT.getBoolean(SUPER_CRIBS_MODE_NBT_KEY);
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
             voidingMode = VoidingMode.fromName(aNBT.getString(VOIDING_MODE_NBT_KEY));
         } else if (aNBT.hasKey(VOID_EXCESS_NBT_KEY)) {
@@ -875,6 +892,91 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return true;
     }
 
+    public void resetCribsRecipes() {
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            dualInputHatch.resetRecipes();
+        }
+    }
+
+    public void setSuperCribsRecipeCheck(boolean state) {
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            dualInputHatch.setSuperCribsRecipeCheck(state);
+        }
+    }
+
+    public RecipeMap<?>[] getRecipeMaps() {
+        return null;
+    }
+
+    // check if this machine working in same recipe map/maps
+    public boolean checkRecipeHash(RecipeMap<?> map, RecipeMap<?>[] maps, int hash) {
+        if (map != null && map.hashCode() == hash) {
+            return false;
+        } else if (maps != null) {
+            for (RecipeMap<?> tempMap : maps) {
+                if (tempMap.hashCode() == hash) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public CheckRecipeResult doSuperCribsCheckRecipe() {
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+        RecipeMap<?> map = getRecipeMap();
+        RecipeMap<?>[] maps = getRecipeMaps();
+
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+                GTRecipe recipe = slot.getPatternRecipe();
+                int recipeMapHash = slot.getPatternRecipeMapHash();
+
+                if (recipe == null) { // set recipe
+                    MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot
+                        .getPatternInputs(sharedItems);
+                    GTRecipe slotRecipe = processingLogic
+                        .getRecipeByInputs(tempRecipeInputs.inputItems, tempRecipeInputs.inputFluid);
+                    int tempRecipeMapHash = processingLogic.getCribsRecipeMapHash();
+
+                    if (slotRecipe != null) {
+                        slot.setPatternRecipe(slotRecipe, tempRecipeMapHash);
+                    } else {
+                        continue;
+                    }
+
+                    recipe = slotRecipe;
+                    recipeMapHash = tempRecipeMapHash;
+                }
+
+                if (checkRecipeHash(map, maps, recipeMapHash)) continue; // make sure that this machine able to
+                // process recipe
+
+                ItemStack[] items = slot.getItemInputs();
+                FluidStack[] fluids = slot.getFluidInputs();
+
+                if (items.length == 0 && fluids.length == 0) continue;
+
+                processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, items));
+                processingLogic.setInputFluids(fluids);
+                processingLogic.setCribsRecipe(recipe);
+
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) {
+                    return foundResult;
+                }
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                    // Recipe failed in interesting way, so remember that and continue searching
+                    result = foundResult;
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * Iterates over hatches and tries to find recipe. Assume {@link #processingLogic} is already set up for use.
      * If return value is successful, inputs are consumed.
@@ -884,21 +986,34 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
         // check crafting input hatches first
         if (supportsCraftingMEBuffer()) {
-            for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                    IDualInputInventory slot = it.next();
-                    // Reverse order of input items for consistent behavior with standard input buses.
-                    ItemStack[] inputItems = slot.getItemInputs();
-                    ArrayUtils.reverse(inputItems);
-                    processingLogic.setInputItems(inputItems);
-                    processingLogic.setInputFluids(slot.getFluidInputs());
-                    CheckRecipeResult foundResult = processingLogic.process();
-                    if (foundResult.wasSuccessful()) {
-                        return foundResult;
-                    }
-                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                        // Recipe failed in interesting way, so remember that and continue searching
-                        result = foundResult;
+            if (superCribsRecipeCheck) {
+                CheckRecipeResult superCribsRecipeCheckResult = doSuperCribsCheckRecipe();
+                if (superCribsRecipeCheckResult == CheckRecipeResultRegistry.SUCCESSFUL) {
+                    return superCribsRecipeCheckResult;
+                } else {
+                    result = superCribsRecipeCheckResult;
+                }
+            } else {
+                for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+                    ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+                    for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                        IDualInputInventory slot = it.next();
+                        ItemStack[] inputItems = slot.getItemInputs();
+                        FluidStack[] inputFluids = slot.getFluidInputs();
+                        if (inputItems.length == 0 && inputFluids.length == 0) continue;
+                        inputItems = ArrayUtils.addAll(inputItems, sharedItems);
+                        // Reverse order of input items for consistent behavior with standard input buses.
+                        ArrayUtils.reverse(inputItems);
+                        processingLogic.setInputItems(inputItems);
+                        processingLogic.setInputFluids(slot.getFluidInputs());
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) {
+                            return foundResult;
+                        }
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                            // Recipe failed in interesting way, so remember that and continue searching
+                            result = foundResult;
+                        }
                     }
                 }
             }
@@ -2409,6 +2524,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void setMachineMode(int index) {
         machineMode = index;
+        resetCribsRecipes();
     }
 
     @Override

@@ -18,4 +18,10 @@ public interface IDualInputHatch {
     Optional<IDualInputInventory> getFirstNonEmptyInventory();
 
     boolean supportsFluids();
+
+    ItemStack[] getSharedItems();
+
+    void resetRecipes();
+
+    void setSuperCribsRecipeCheck(boolean state);
 }
