@@ -2566,7 +2566,7 @@ public enum ItemList implements IItemContainer {
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal,
-    ResearchCompleter, // Populated in EMT
+    ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,
     // semicolon after the comment to reduce merge conflicts
