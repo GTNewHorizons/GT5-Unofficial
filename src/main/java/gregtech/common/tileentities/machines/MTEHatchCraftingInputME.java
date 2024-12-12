@@ -350,7 +350,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 supportFluids ? "It supports patterns including fluids"
                     : "It does not support patterns including fluids",
                 "Change ME connection behavior by right-clicking with wire cutter",
-                "Ignores content of other buses/hatches" });
+                EnumChatFormatting.RED + "Ignores content of other buses/hatches" });
         disableSort = true;
         this.supportFluids = supportFluids;
     }
