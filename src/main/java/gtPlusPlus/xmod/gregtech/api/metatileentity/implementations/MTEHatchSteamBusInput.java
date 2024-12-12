@@ -11,15 +11,15 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MteHatchSteamBusInput extends MTEHatchInputBus {
+public class MTEHatchSteamBusInput extends MTEHatchInputBus {
 
     public RecipeMap<?> mRecipeMap = null;
 
-    public MteHatchSteamBusInput(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchSteamBusInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, getSlots(aTier) + 1);
     }
 
-    public MteHatchSteamBusInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchSteamBusInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, getSlots(aTier) + 1, aDescription, aTextures);
     }
 
@@ -36,7 +36,7 @@ public class MteHatchSteamBusInput extends MTEHatchInputBus {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MteHatchSteamBusInput(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchSteamBusInput(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
