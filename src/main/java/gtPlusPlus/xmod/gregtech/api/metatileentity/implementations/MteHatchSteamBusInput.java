@@ -6,6 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -15,11 +16,15 @@ public class MteHatchSteamBusInput extends MTEHatchInputBus {
     public RecipeMap<?> mRecipeMap = null;
 
     public MteHatchSteamBusInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, getSlots(aTier + 1) + 1);
+        super(aID, aName, aNameRegional, aTier, getSlots(aTier) + 1);
     }
 
     public MteHatchSteamBusInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, getSlots(aTier + 1) + 1, aDescription, aTextures);
+        super(aName, aTier, getSlots(aTier) + 1, aDescription, aTextures);
+    }
+
+    public static int getSlots(int aTier) {
+        return MTEHatch.getSlots(aTier + 1);
     }
 
     @Override
@@ -36,7 +41,7 @@ public class MteHatchSteamBusInput extends MTEHatchInputBus {
 
     @Override
     public int getCircuitSlot() {
-        return getSlots(mTier + 1);
+        return getSlots(mTier);
     }
 
     @Override
