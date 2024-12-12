@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
+import com.gtnewhorizons.postea.utility.BlockInfo;
+
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -21,6 +24,7 @@ import gregtech.common.GTProxy.OreDropSystem;
 import gregtech.common.blocks.BlockOresAbstract;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 public enum GTOreAdapter implements IOreAdapter<Materials> {
@@ -89,6 +93,36 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         });
 
         ores = new BlockOresAbstract[] { ores1, ores2, ores3, ores4, ores5, ores6 };
+
+        StoneType[] legacyStones = {
+            StoneType.Stone,
+            StoneType.Netherrack,
+            StoneType.Endstone,
+            StoneType.BlackGranite,
+            StoneType.RedGranite,
+            StoneType.Marble,
+            StoneType.Basalt,
+        };
+
+        TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world) -> {
+            int meta = tag.getInteger("m");
+            boolean natural = tag.getBoolean("n");
+
+            try (OreInfo<Materials> info = OreInfo.getNewInfo()) {
+                info.stoneType = GTUtility.getIndexSafe(legacyStones, (meta % 16000) / 1000);
+                info.material = GregTechAPI.sGeneratedMaterials[meta % 1000];
+                info.isSmall = meta >= 16000;
+                info.isNatural = natural;
+
+                if (!INSTANCE.supports(info)) {
+                    return new BlockInfo(Blocks.air, 0);
+                } else {
+                    var p = INSTANCE.getBlock(info);
+    
+                    return new BlockInfo(p.left(), p.rightInt());
+                }
+            }
+        });
     }
 
     public void registerOre(StoneType stoneType, BlockOresAbstract oreBlock) {
