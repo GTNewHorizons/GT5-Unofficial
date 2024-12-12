@@ -54,7 +54,7 @@ public class GregtechSteamMultis {
                 .getStackForm(1));
 
         GregtechItemList.Hatch_Input_Bus_Steam.set(
-            new MteHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 0)
+            new MteHatchSteamBusInput(Hatch_Input_Bus_Steam.ID, "hatch.input_bus.tier.steam", "Input Bus (Steam)", 1)
                 .getStackForm(1L));
         GregtechItemList.Hatch_Output_Bus_Steam.set(
             new MTEHatchSteamBusOutput(

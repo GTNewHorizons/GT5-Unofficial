@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.Textures.BlockIcons.ITEM_IN_SIGN;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,71 +8,33 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
-import gregtech.GTMod;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MteHatchSteamBusInput extends MTEHatch {
+public class MteHatchSteamBusInput extends MTEHatchInputBus {
 
     public RecipeMap<?> mRecipeMap = null;
-    public boolean disableSort;
 
     public MteHatchSteamBusInput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            getSlots(aTier),
-            new String[] { "Item Input for Steam Multiblocks",
-                "Shift + right click with screwdriver to toggle automatic item shuffling", "Capacity: 4 stacks",
-                "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() });
-    }
-
-    public MteHatchSteamBusInput(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
+        super(aID, aName, aNameRegional, aTier, getSlots(aTier) + 1);
     }
 
     public MteHatchSteamBusInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 4, aDescription, aTextures);
+        super(aName, aTier, getSlots(aTier) + 1, aDescription, aTextures);
     }
 
     @Override
-    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
-    }
-
-    @Override
-    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_IN) };
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return true;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
+    public String[] getDescription() {
+        return new String[] { "Item Input for Steam Multiblocks",
+            "Shift + right click with screwdriver to toggle automatic item shuffling", "Capacity: 4 stacks",
+            "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() };
     }
 
     @Override
@@ -89,42 +48,17 @@ public class MteHatchSteamBusInput extends MTEHatch {
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
-        return true;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
             fillStacksIntoFirstSlots();
         }
     }
 
+    @Override
     public void updateSlots() {
-        for (int i = 0; i < mInventory.length; i++)
+        for (int i = 0; i < mInventory.length - 1; i++)
             if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        fillStacksIntoFirstSlots();
-    }
-
-    protected void fillStacksIntoFirstSlots() {
-        if (disableSort) {
-            for (int i = 0; i < mInventory.length; i++)
-                if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        } else {
-            for (int i = 0; i < mInventory.length; i++)
-                for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
-                    && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j])))
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity(),
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-        }
+        if (!disableSort) fillStacksIntoFirstSlots();
     }
 
     @Override
@@ -154,13 +88,6 @@ public class MteHatchSteamBusInput extends MTEHatch {
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return side == getBaseMetaTileEntity().getFrontFacing()
-            && (mRecipeMap == null || mRecipeMap.containsInput(aStack));
     }
 
     @Override
@@ -265,8 +192,8 @@ public class MteHatchSteamBusInput extends MTEHatch {
             new GTRenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT) };
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        getBaseMetaTileEntity().add2by2Slots(builder);
-    }
+//    @Override
+//    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+//        getBaseMetaTileEntity().add2by2Slots(builder);
+//    }
 }
