@@ -936,7 +936,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 int recipeMapHash = slot.getPatternRecipeMapHash();
 
                 if (recipe == null) { // set recipe
-                    MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot.getPatternInputs();
+                    MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot.getPatternInputs(sharedItems);
                     GTRecipe slotRecipe = processingLogic
                         .getRecipeByInputs(tempRecipeInputs.inputItems, tempRecipeInputs.inputFluid);
                     int tempRecipeMapHash = processingLogic.getCribsRecipeMapHash();

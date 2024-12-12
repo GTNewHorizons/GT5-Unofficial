@@ -11,7 +11,7 @@ public interface IDualInputInventory {
 
     FluidStack[] getFluidInputs();
 
-    MTEHatchCraftingInputME.PatternSlot.recipeInputs getPatternInputs();
+    MTEHatchCraftingInputME.PatternSlot.recipeInputs getPatternInputs(ItemStack[] sharedItems);
 
     void setPatternRecipe(GTRecipe recipe, int hash);
 

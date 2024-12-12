@@ -121,28 +121,25 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         private final ICraftingPatternDetails patternDetails;
         private final List<ItemStack> itemInventory;
         private final List<FluidStack> fluidInventory;
-        private final SharedItemGetter sharedItemGetter;
         private GTRecipe patternRecipe;
         private int patternRecipeMapHash;
 
-        public PatternSlot(ItemStack pattern, World world, SharedItemGetter getter) {
+        public PatternSlot(ItemStack pattern, World world) {
             this.pattern = pattern;
             this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
                 .getPatternForItem(pattern, world);
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
-            this.sharedItemGetter = getter;
             this.patternRecipe = null;
             this.patternRecipeMapHash = 0;
         }
 
-        public PatternSlot(ItemStack pattern, NBTTagCompound nbt, World world, SharedItemGetter getter) {
+        public PatternSlot(ItemStack pattern, NBTTagCompound nbt, World world) {
             this.pattern = pattern;
             this.patternDetails = ((ICraftingPatternItem) Objects.requireNonNull(pattern.getItem()))
                 .getPatternForItem(pattern, world);
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
-            this.sharedItemGetter = getter;
             this.patternRecipe = null;
             this.patternRecipeMapHash = 0;
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
@@ -230,10 +227,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             return patternDetails;
         }
 
-        public recipeInputs getPatternInputs() {
+        public recipeInputs getPatternInputs(ItemStack[] sharedItems) {
             recipeInputs inputsSuper = new recipeInputs();
 
-            ItemStack[] inputItems = sharedItemGetter.getSharedItem();
+            ItemStack[] inputItems = sharedItems;
             FluidStack[] inputFluids = new FluidStack[0];
 
             for (IAEItemStack singleInput : this.getPatternDetails()
@@ -613,8 +610,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 internalInventory[patternSlot] = new PatternSlot(
                     pattern,
                     patternSlotNBT,
-                    getBaseMetaTileEntity().getWorld(),
-                    this::getSharedItems);
+                    getBaseMetaTileEntity().getWorld());
             } else {
                 GTMod.GT_FML_LOGGER.warn(
                     "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: "
@@ -866,7 +862,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         // original does not exist or has changed
         if (newItem == null || !(newItem.getItem() instanceof ICraftingPatternItem)) return;
 
-        PatternSlot patternSlot = new PatternSlot(newItem, world, this::getSharedItems);
+        PatternSlot patternSlot = new PatternSlot(newItem, world);
         internalInventory[index] = patternSlot;
         patternDetailsPatternSlotMap.put(patternSlot.getPatternDetails(), patternSlot);
 
