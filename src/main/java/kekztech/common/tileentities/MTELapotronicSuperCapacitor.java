@@ -10,7 +10,9 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTEClass;
+import static java.lang.Math.floorMod;
 import static java.lang.Math.min;
+import static java.lang.Math.pow;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
 
@@ -23,10 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -106,14 +106,14 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     private int counter = 1;
     private boolean balanced = false;
 
-    private final Queue<Long> energyInputValues = new LinkedList<>();
-    private final Queue<Long> energyOutputValues = new LinkedList<>();
-
-    private final Queue<Long> energyInputValues5m = new LinkedList<>();
-    private final Queue<Long> energyOutputValues5m = new LinkedList<>();
-
-    private final Queue<Long> energyInputValues1h = new LinkedList<>();
-    private final Queue<Long> energyOutputValues1h = new LinkedList<>();
+    // Holds one hour of ticks
+    private final static int BUFFER_LEN = 60 * 60 * 20;
+    private final long[] energyInput = new long[BUFFER_LEN];
+    private final long[] energyOutput = new long[BUFFER_LEN];
+    private int bufferPos = 0;
+    // Holds input/output over last 5s, 5m, and 1h
+    private final double[] averageIOd = new double[6];
+    private final long[] averageIOl = new long[6];
 
     private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
     private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
@@ -788,43 +788,59 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         tBMTE.injectEnergyUnits(ForgeDirection.UNKNOWN, inputLastTick, 1L);
         tBMTE.drainEnergyUnits(ForgeDirection.UNKNOWN, outputLastTick, 1L);
 
-        // Add I/O values to Queues
-        if (energyInputValues.size() > DURATION_AVERAGE_TICKS) {
-            energyInputValues.remove();
-        }
-        energyInputValues.offer(inputLastTick);
-
-        if (energyOutputValues.size() > DURATION_AVERAGE_TICKS) {
-            energyOutputValues.remove();
-        }
-
-        energyOutputValues.offer(outputLastTick);
-
-        // Add I/O values to Queues 5 min
-        if (energyInputValues5m.size() > 6000) {
-            energyInputValues5m.remove();
-        }
-        energyInputValues5m.offer(inputLastTick);
-
-        if (energyOutputValues5m.size() > 6000) {
-            energyOutputValues5m.remove();
-        }
-
-        energyOutputValues5m.offer(outputLastTick);
-
-        // Add I/O values to Queues 1 hour
-        if (energyInputValues1h.size() > 72000) {
-            energyInputValues1h.remove();
-        }
-        energyInputValues1h.offer(inputLastTick);
-
-        if (energyOutputValues1h.size() > 72000) {
-            energyOutputValues1h.remove();
-        }
-
-        energyOutputValues1h.offer(outputLastTick);
+        updateAverageEut();
 
         return true;
+    }
+
+    /**
+     * Updates the running average EU/t counters. Call once per tick, after {@link #inputLastTick} and
+     * {@link #outputLastTick} have been set.
+     */
+    private void updateAverageEut() {
+        // Pull off oldest I/O values
+        final int samples5m = 60 * 5 * 20;
+
+        final long droppedInput5s = energyInput[floorMod((bufferPos - DURATION_AVERAGE_TICKS), BUFFER_LEN)];
+        final long droppedOutput5s = energyOutput[floorMod((bufferPos - DURATION_AVERAGE_TICKS), BUFFER_LEN)];
+        final long droppedInput5m = energyInput[floorMod((bufferPos - samples5m), BUFFER_LEN)];
+        final long droppedOutput5m = energyOutput[floorMod((bufferPos - samples5m), BUFFER_LEN)];
+        final long droppedInput1h = energyInput[bufferPos];
+        final long droppedOutput1h = energyOutput[bufferPos];
+
+        // Update running counters
+        averageIOl[0] -= droppedInput5s / DURATION_AVERAGE_TICKS;
+        averageIOl[1] -= droppedOutput5s / DURATION_AVERAGE_TICKS;
+        averageIOl[2] -= droppedInput5m / samples5m;
+        averageIOl[3] -= droppedOutput5m / samples5m;
+        averageIOl[4] -= droppedInput1h / BUFFER_LEN;
+        averageIOl[5] -= droppedOutput1h / BUFFER_LEN;
+
+        averageIOl[0] += inputLastTick / DURATION_AVERAGE_TICKS;
+        averageIOl[1] += outputLastTick / DURATION_AVERAGE_TICKS;
+        averageIOl[2] += inputLastTick / samples5m;
+        averageIOl[3] += outputLastTick / samples5m;
+        averageIOl[4] += inputLastTick / BUFFER_LEN;
+        averageIOl[5] += outputLastTick / BUFFER_LEN;
+
+        averageIOd[0] -= (double) droppedInput5s / DURATION_AVERAGE_TICKS;
+        averageIOd[1] -= (double) droppedOutput5s / DURATION_AVERAGE_TICKS;
+        averageIOd[2] -= (double) droppedInput5m / samples5m;
+        averageIOd[3] -= (double) droppedOutput5m / samples5m;
+        averageIOd[4] -= (double) droppedInput1h / BUFFER_LEN;
+        averageIOd[5] -= (double) droppedOutput1h / BUFFER_LEN;
+
+        averageIOd[0] += (double) inputLastTick / DURATION_AVERAGE_TICKS;
+        averageIOd[1] += (double) outputLastTick / DURATION_AVERAGE_TICKS;
+        averageIOd[2] += (double) inputLastTick / samples5m;
+        averageIOd[3] += (double) outputLastTick / samples5m;
+        averageIOd[4] += (double) inputLastTick / BUFFER_LEN;
+        averageIOd[5] += (double) outputLastTick / BUFFER_LEN;
+
+        // Insert values and bump the head
+        energyInput[bufferPos] = inputLastTick;
+        energyOutput[bufferPos] = outputLastTick;
+        bufferPos = floorMod((bufferPos + 1), BUFFER_LEN);
     }
 
     private int rebalance() {
@@ -924,51 +940,27 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private long getAvgIn() {
-        long sum = 0L;
-        for (long l : energyInputValues) {
-            sum += l;
-        }
-        return sum / Math.max(energyInputValues.size(), 1);
+        return averageIOl[0] > pow(2, 53) ? averageIOl[0] : (long) averageIOd[0];
     }
 
     private long getAvgOut() {
-        long sum = 0L;
-        for (long l : energyOutputValues) {
-            sum += l;
-        }
-        return sum / Math.max(energyOutputValues.size(), 1);
+        return averageIOl[1] > pow(2, 53) ? averageIOl[1] : (long) averageIOd[1];
     }
 
     private long getAvgIn5m() {
-        double sum = 0;
-        for (long l : energyInputValues5m) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyInputValues5m.size(), 1);
+        return averageIOl[2] > pow(2, 53) ? averageIOl[2] : (long) averageIOd[2];
     }
 
     private long getAvgOut5m() {
-        double sum = 0;
-        for (long l : energyOutputValues5m) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyOutputValues5m.size(), 1);
+        return averageIOl[3] > pow(2, 53) ? averageIOl[3] : (long) averageIOd[3];
     }
 
     private long getAvgIn1h() {
-        double sum = 0;
-        for (long l : energyInputValues1h) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyInputValues1h.size(), 1);
+        return averageIOl[4] > pow(2, 53) ? averageIOl[4] : (long) averageIOd[4];
     }
 
     private long getAvgOut1h() {
-        double sum = 0;
-        for (long l : energyOutputValues1h) {
-            sum += l;
-        }
-        return (long) sum / Math.max(energyOutputValues1h.size(), 1);
+        return averageIOl[5] > pow(2, 53) ? averageIOl[5] : (long) averageIOd[5];
     }
 
     private String getTimeTo() {
