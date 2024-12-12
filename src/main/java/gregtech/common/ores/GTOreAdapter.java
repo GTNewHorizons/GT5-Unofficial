@@ -175,7 +175,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
 
     @Override
     public List<ItemStack> getOreDrops(OreInfo<?> info2, boolean silktouch, int fortune) {
-        if (!supports(info2)) return null;
+        if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
         OreInfo<Materials> info = (OreInfo<Materials>) info2;
@@ -184,7 +184,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
 
         BlockOresAbstract oreBlock = oreBlocksByStoneType.get(info.stoneType);
 
-        if (oreBlock == null) return null;
+        if (oreBlock == null) return new ArrayList<>();
 
         if (!info.isNatural) fortune = 0;
 
@@ -201,7 +201,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
     
     @Override
     public List<ItemStack> getPotentialDrops(OreInfo<?> info2) {
-        if (!supports(info2)) return null;
+        if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
         OreInfo<Materials> info = (OreInfo<Materials>) info2;

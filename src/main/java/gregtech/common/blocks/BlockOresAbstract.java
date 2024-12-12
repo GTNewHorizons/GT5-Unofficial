@@ -123,7 +123,7 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
             for (StoneType stoneType : stoneTypes) {
                 // if this material only has ice ore, we only want to show the ice variants
                 if (info.material.contains(SubTag.ICE_ORE)) {
-                    if (stoneType.getCategory() == StoneCategory.Ice) {
+                    if (stoneType != null && stoneType.getCategory() == StoneCategory.Ice) {
                         info.stoneType = stoneType;
         
                         list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
@@ -178,13 +178,7 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
         try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
 
-            ArrayList<ItemStack> drops = (ArrayList<ItemStack>) GTOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
-
-            if (drops == null) return new ArrayList<>();
-
-            drops.remove(null);
-
-            return drops;
+            return (ArrayList<ItemStack>) GTOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
         }
     }
 

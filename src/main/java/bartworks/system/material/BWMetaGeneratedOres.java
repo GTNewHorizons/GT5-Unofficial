@@ -13,9 +13,14 @@
 
 package bartworks.system.material;
 
+import static bartworks.system.material.BWMetaGeneratedItems.metaTab;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -23,30 +28,52 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
+import gregtech.common.render.GTRendererBlock;
 
-public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
+public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
-    public final boolean isNatural;
+    public final String blockTypeLocalizedName;
+    public final StoneType stoneType;
+    public final boolean isSmall, isNatural;
 
-    public BWMetaGeneratedOres(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName, boolean natural) {
-        super(p_i45386_1_, tileEntity, blockName);
-        this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.blocktype." + OrePrefixes.ore,
-            OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+    public BWMetaGeneratedOres(String blockName, StoneType stoneType, boolean small, boolean natural) {
+        super(Material.rock);
+        
+        this.setBlockName(blockName);
+        this.setHardness(5.0F);
+        this.setResistance(5.0F);
+        this.setCreativeTab(metaTab);
+
+        if (small) {
+            this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
+                "bw.blocktype." + OrePrefixes.oreSmall,
+                OrePrefixes.oreSmall.mLocalizedMaterialPre + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
+        } else {
+            this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
+                "bw.blocktype." + OrePrefixes.ore,
+                OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
+        }
+
+        Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
+
+        this.stoneType = stoneType;
+        this.isSmall = small;
         this.isNatural = natural;
     }
 
-    @Override
     protected void doRegistrationStuff(Werkstoff w) {
         if (w != null) {
             if (!w.hasItemType(OrePrefixes.ore) || (w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
@@ -70,8 +97,17 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
     }
 
     @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
+    @Override
     public String getUnlocalizedName() {
-        return "bw.blockores.01";
+        if (isSmall) {
+            return "bw.blockores.02";
+        } else {
+            return "bw.blockores.01";
+        }
     }
 
     @Override
@@ -93,8 +129,36 @@ public class BWMetaGeneratedOres extends BWMetaGeneratedBlocks {
         boolean doFortune = !(harvester instanceof FakePlayer);
         boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
 
-        try (OreInfo<Werkstoff> info = BWOreAdapter.INSTANCE.getOreInfo(this, metadata);) {
+        try (OreInfo<Werkstoff> info = BWOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             return (ArrayList<ItemStack>) BWOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
         }
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererBlock.mRenderID;
+    }
+
+    @Override
+    @Nullable
+    public ITexture[][] getTextures(int metadata) {
+        Werkstoff material = Werkstoff.werkstoffHashMap.get((short) metadata);
+
+        ITexture[] layers;
+
+        if (material != null) {
+            ITexture aIconSet = TextureFactory.of(material.getTexSet().mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex], material.getRGBA());
+            layers = new ITexture[] {
+                stoneType.getTexture(0),
+                aIconSet
+            };
+        } else {
+            layers = new ITexture[] {
+                stoneType.getTexture(0),
+                TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex])
+            };
+        }
+
+        return new ITexture[][] { layers, layers, layers, layers, layers, layers };
     }
 }

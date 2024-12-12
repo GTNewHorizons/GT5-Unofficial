@@ -54,6 +54,14 @@ public enum DimensionDef {
         DimNames.ASTEROIDS,
         "micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids",
         Enums.DimensionType.Asteroid)),
+    Ross128b(new ModDimensionDef(
+        DimNames.ROSS128B,
+        "bwcrossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b",
+        Enums.DimensionType.Planet)),
+    Ross128ba(new ModDimensionDef(
+        DimNames.ROSS128BA,
+        "bwcrossmod.galacticraft.planets.ross128ba.ChunkProviderRoss128ba",
+        Enums.DimensionType.Planet)),
     Pluto(new ModDimensionDef(
         DimNames.PLUTO,
         "galaxyspace.SolarSystem.planets.pluto.dimension.ChunkProviderPluto",

@@ -6,10 +6,13 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
@@ -19,6 +22,30 @@ import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 import gtneioreplugin.util.OreVeinLayer;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
+
+    public static final ImmutableList<OrePrefixes> PREFIX_WHITELIST = ImmutableList.copyOf(new OrePrefixes[] {
+        OrePrefixes.dust,
+        OrePrefixes.dustPure,
+        OrePrefixes.dustImpure,
+        OrePrefixes.oreBlackgranite,
+        OrePrefixes.oreRedgranite,
+        OrePrefixes.oreMarble,
+        OrePrefixes.oreBasalt,
+        OrePrefixes.oreNetherrack,
+        OrePrefixes.oreNether,
+        OrePrefixes.oreEndstone,
+        OrePrefixes.oreEnd,
+        OrePrefixes.ore,
+        OrePrefixes.crushedCentrifuged,
+        OrePrefixes.crushedPurified,
+        OrePrefixes.crushed,
+        OrePrefixes.rawOre,
+        OrePrefixes.gemChipped,
+        OrePrefixes.gemFlawed,
+        OrePrefixes.gemFlawless,
+        OrePrefixes.gemExquisite,
+        OrePrefixes.gem,
+    });
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -34,19 +61,41 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
         IMaterial mat = OreManager.getMaterial(stack);
+
         if (mat != null) {
             loadMatchingVeins(mat);
-        } else {
-            super.loadCraftingRecipes(stack);
+
+            return;
         }
+
+        boolean isMatItem = false;
+
+        for (var p : OrePrefixes.detectPrefix(stack)) {
+            if (!PREFIX_WHITELIST.contains(p.left())) continue;
+
+            mat = IMaterial.findMaterial(p.right());
+
+            if (mat != null) {
+                isMatItem |= loadMatchingVeins(mat);
+            }
+        }
+
+        if (isMatItem) return;
+
+        super.loadCraftingRecipes(stack);
     }
 
-    private void loadMatchingVeins(IMaterial ore) {
+    private boolean loadMatchingVeins(IMaterial ore) {
+        boolean foundAny = false;
+
         for (OreLayerWrapper oreVein : getAllVeins()) {
             if (oreVein.containsOre(ore)) {
                 addVeinWithLayers(oreVein);
+                foundAny = true;
             }
         }
+
+        return foundAny;
     }
 
     @Override

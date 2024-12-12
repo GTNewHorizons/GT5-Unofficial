@@ -30,6 +30,7 @@ import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -84,7 +85,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             }
         }
 
-        if (def != null && def.getDimensionType() == DimensionType.Asteroid) {
+        if (def == null || def.getDimensionType() != DimensionType.Planet) {
             return;
         }
         
@@ -109,6 +110,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 + " SIZE: "
                 + pendingTasks.size());
 
+        // hack to prevent cascading worldgen
         if (!this.mIsGenerating) {
             this.mIsGenerating = true;
 
@@ -567,13 +569,13 @@ public class GTWorldgenerator implements IWorldGenerator {
             long duration = (endTime - startTime);
 
             if (debugWorldGen || profileWorldGen) {
-                GTLog.out.println(
-                    " Oregen took " + (oregenTime - stonegenTime)
-                        + " Stonegen took "
-                        + (stonegenTime - startTime)
-                        + " Worldgen took "
-                        + duration
-                        + " nanoseconds");
+                GTMod.GT_FML_LOGGER.info(
+                    " Oregen took " + (oregenTime - stonegenTime) / 1e3
+                    + "us Stonegen took "
+                    + (stonegenTime - startTime) / 1e3
+                    + "us Worldgen took "
+                    + duration / 1e3
+                    + "us");
             }
         }
     }

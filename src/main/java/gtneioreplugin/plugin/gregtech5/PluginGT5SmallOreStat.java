@@ -7,6 +7,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.common.ores.IOreAdapter;
@@ -15,6 +16,7 @@ import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.GT5OreSmallHelper;
 import gtneioreplugin.util.GT5OreSmallHelper.OreSmallWrapper;
+import gtneioreplugin.util.GT5OreSmallHelper.SmallOreDimensionWrapper;
 
 public class PluginGT5SmallOreStat extends PluginGT5Base {
 
@@ -68,9 +70,24 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
 
         if (mat != null) {
             loadSmallOre(mat);
-        } else {
-            super.loadCraftingRecipes(stack);
+            return;
         }
+
+        boolean isMatItem = false;
+
+        for (var p : OrePrefixes.detectPrefix(stack)) {
+            if (!PluginGT5VeinStat.PREFIX_WHITELIST.contains(p.left())) continue;
+
+            mat = IMaterial.findMaterial(p.right());
+
+            if (mat != null) {
+                isMatItem |= loadSmallOre(mat);
+            }
+        }
+
+        if (isMatItem) return;
+
+        super.loadCraftingRecipes(stack);
     }
 
     @Override
@@ -78,25 +95,24 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
         String abbr = ItemDimensionDisplay.getDimension(stack);
         if (abbr == null) return;
 
-        for (OreSmallWrapper oreVein : GT5OreSmallHelper.SMALL_ORES_BY_DIM.get(abbr).smallOres) {
+        SmallOreDimensionWrapper wrapper = GT5OreSmallHelper.SMALL_ORES_BY_DIM.get(abbr);
+        if (wrapper == null) return;
+
+        for (OreSmallWrapper oreVein : wrapper.smallOres) {
             addSmallOre(oreVein);
         }
     }
 
-    private void loadSmallOre(IMaterial material) {
-        OreSmallWrapper smallOre = getSmallOre(material);
+    private boolean loadSmallOre(IMaterial material) {
+        OreSmallWrapper smallOre = GT5OreSmallHelper.SMALL_ORES_BY_MAT.get(material);
+
         if (smallOre != null) {
             addSmallOre(smallOre);
-        }
-    }
 
-    private OreSmallWrapper getSmallOre(IMaterial material) {
-        for (OreSmallWrapper oreSmallWorldGen : GT5OreSmallHelper.SMALL_ORES_BY_NAME.values()) {
-            if (oreSmallWorldGen.material == material) {
-                return oreSmallWorldGen;
-            }
+            return true;
+        } else {
+            return false;
         }
-        return null;
     }
 
     private void addSmallOre(OreSmallWrapper smallOre) {

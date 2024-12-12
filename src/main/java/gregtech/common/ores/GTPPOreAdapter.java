@@ -1,6 +1,7 @@
 package gregtech.common.ores;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -57,7 +58,7 @@ public enum GTPPOreAdapter implements IOreAdapter<Material> {
 
     @Override
     public List<ItemStack> getOreDrops(OreInfo<?> info2, boolean silktouch, int fortune) {
-        if (!supports(info2)) return null;
+        if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
         OreInfo<Material> info = (OreInfo<Material>) info2;
@@ -73,7 +74,7 @@ public enum GTPPOreAdapter implements IOreAdapter<Material> {
 
     @Override
     public List<ItemStack> getPotentialDrops(OreInfo<?> info2) {
-        if (!supports(info2)) return null;
+        if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")
         OreInfo<Material> info = (OreInfo<Material>) info2;

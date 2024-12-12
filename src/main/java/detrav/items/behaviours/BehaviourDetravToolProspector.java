@@ -23,12 +23,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
-import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import detrav.DetravScannerMod;
 import detrav.items.DetravMetaGeneratedTool01;
-import detrav.utils.BartWorksHelper;
-import detrav.utils.GTppHelper;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.objects.ItemData;
@@ -312,15 +309,6 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                                 ItemStack blockStack2 = new ItemStack(tBlock, 1, tMetaID);
                                 addOreToHashMap(blockStack2.getDisplayName(), aPlayer);
                             }
-                        } else if (GTppHelper.isGTppBlock(tBlock)) {
-                            String name = GTppHelper.getGTppVeinName(tBlock);
-                            if (!name.isEmpty()) addOreToHashMap(name, aPlayer);
-                        } else if (BartWorksHelper.isOre(tBlock)) {
-                            if (data != DetravMetaGeneratedTool01.MODE_ALL_ORES && BartWorksHelper.isSmallOre(tBlock)) continue;
-                            final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault((short) ((BartWorksHelper.getMetaFromBlock(chunk, cx, cy, cz, tBlock)) * -1), null);
-                            String type = BartWorksHelper.isSmallOre(tBlock) ? "oreSmall" : "ore";
-                            String translated = GTLanguageManager.getTranslation("bw.blocktype." + type);
-                            addOreToHashMap(translated.replace("%material", werkstoff.getLocalizedName()), aPlayer);
                         } else if (data == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
                             itemData = GTOreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                             if (itemData != null && itemData.mPrefix.toString().startsWith("ore")) {

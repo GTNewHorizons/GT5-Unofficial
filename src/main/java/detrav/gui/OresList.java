@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.client.GuiScrollingList;
 import detrav.items.DetravMetaGeneratedTool01;

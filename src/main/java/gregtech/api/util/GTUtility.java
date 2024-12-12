@@ -123,8 +123,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.mojang.authlib.GameProfile;
 
-import bartworks.system.material.BWMetaGeneratedOres;
-import bartworks.system.material.BWMetaGeneratedSmallOres;
 import buildcraft.api.transport.IPipeTile;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.transport.IItemDuct;

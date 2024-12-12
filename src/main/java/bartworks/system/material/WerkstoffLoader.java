@@ -90,11 +90,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.HashBiMap;
+import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
+import com.gtnewhorizons.postea.utility.BlockInfo;
 
 import bartworks.API.SideReference;
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
-import bartworks.client.renderer.BWBlockOreRenderer;
 import bartworks.system.material.CircuitGeneration.BWCircuitsLoader;
 import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
@@ -125,8 +126,10 @@ import bwcrossmod.cls.CLSCompat;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.FluidState;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -134,6 +137,8 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.ores.BWOreAdapter;
+import gregtech.loaders.postload.PosteaTransformers;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
@@ -1927,36 +1932,14 @@ public class WerkstoffLoader {
     }
 
     static void gameRegistryHandler() {
-        if (SideReference.Side.Client) BWBlockOreRenderer.register();
-
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedOre.class, "bw.blockoresTE");
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedSmallOre.class, "bw.blockoresSmallTE");
         GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedWerkstoffBlock.class, "bw.werkstoffblockTE");
         GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedBlocksCasing.class, "bw.werkstoffblockcasingTE");
         GameRegistry.registerTileEntity(
             BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
             "bw.werkstoffblockscasingadvancedTE");
 
-        WerkstoffLoader.BWOres = new BWMetaGeneratedOres(
-            Material.rock,
-            BWTileEntityMetaGeneratedOre.class,
-            "bw.blockores",
-            false);
-        WerkstoffLoader.BWOresNatural = new BWMetaGeneratedOres(
-            Material.rock,
-            BWTileEntityMetaGeneratedOre.class,
-            "bw.blockores.natural",
-            true);
-        WerkstoffLoader.BWSmallOres = new BWMetaGeneratedSmallOres(
-            Material.rock,
-            BWTileEntityMetaGeneratedSmallOre.class,
-            "bw.blockoresSmall",
-            false);
-        WerkstoffLoader.BWSmallOresNatural = new BWMetaGeneratedSmallOres(
-            Material.rock,
-            BWTileEntityMetaGeneratedSmallOre.class,
-            "bw.blockoresSmall.natural",
-            true);
+        BWOreAdapter.INSTANCE.init();
+
         WerkstoffLoader.BWBlocks = new BWMetaGeneratedWerkstoffBlocks(
             Material.iron,
             BWTileEntityMetaGeneratedWerkstoffBlock.class,
@@ -1972,10 +1955,6 @@ public class WerkstoffLoader {
             "bw.werkstoffblockscasingadvanced",
             OrePrefixes.blockCasingAdvanced);
 
-        GameRegistry.registerBlock(WerkstoffLoader.BWOres, BWItemMetaGeneratedBlock.class, "bw.blockores.01");
-        GameRegistry.registerBlock(WerkstoffLoader.BWOresNatural, BWItemMetaGeneratedBlock.class, "bw.blockores.natural.01");
-        GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BWItemMetaGeneratedBlock.class, "bw.blockores.02");
-        GameRegistry.registerBlock(WerkstoffLoader.BWSmallOresNatural, BWItemMetaGeneratedBlock.class, "bw.blockores.natural.02");
         GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BWItemMetaGeneratedBlock.class, "bw.werkstoffblocks.01");
         GameRegistry.registerBlock(
             WerkstoffLoader.BWBlockCasings,
@@ -1998,29 +1977,6 @@ public class WerkstoffLoader {
                 registration.run(werkstoff);
             }
         }
-        addFakeItemDataToInWorldBlocksAndCleanUpFakeData();
-    }
-
-    /**
-     * very hacky way to make my ores/blocks/small ores detectable by gt association in world, well at least the prefix.
-     * used for the miners mostly removing this hacky material from the materials map instantly. we only need the item
-     * data.
-     */
-    private static void addFakeItemDataToInWorldBlocksAndCleanUpFakeData() {
-        Materials oreMat = new Materials(-1, null, 0, 0, 0, false, "bwores", "bwores", null, true, null);
-        Materials smallOreMat = new Materials(-1, null, 0, 0, 0, false, "bwsmallores", "bwsmallores", null, true, null);
-        Materials blockMat = new Materials(-1, null, 0, 0, 0, false, "bwblocks", "bwblocks", null, true, null);
-        for (int i = 0; i < 16; i++) {
-            GTOreDictUnificator.addAssociation(ore, oreMat, new ItemStack(BWOres, 1, i), true);
-            GTOreDictUnificator.addAssociation(oreSmall, smallOreMat, new ItemStack(BWSmallOres, 1, i), true);
-            GTOreDictUnificator.addAssociation(block, blockMat, new ItemStack(BWBlocks, 1, i), true);
-        }
-        Materials.getMaterialsMap()
-            .remove("bwores");
-        Materials.getMaterialsMap()
-            .remove("bwsmallores");
-        Materials.getMaterialsMap()
-            .remove("bwblocks");
     }
 
     public static void removeIC2Recipes() {

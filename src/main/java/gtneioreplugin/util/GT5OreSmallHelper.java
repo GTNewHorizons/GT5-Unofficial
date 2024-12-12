@@ -26,6 +26,7 @@ public class GT5OreSmallHelper {
 
     public static final List<ItemStack> SMALL_ORE_LIST = new ArrayList<>();
     public static final HashMap<String, OreSmallWrapper> SMALL_ORES_BY_NAME = new HashMap<>();
+    public static final HashMap<IMaterial, OreSmallWrapper> SMALL_ORES_BY_MAT = new HashMap<>();
     public static final HashMap<String, IMaterial> ORE_DROP_TO_MAT = new HashMap<>();
     public static final HashMap<IMaterial, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
     /** {abbr dim name: wrapper} */
@@ -50,6 +51,7 @@ public class GT5OreSmallHelper {
 
             OreSmallWrapper wrapper = new OreSmallWrapper(smallOreDefMap.get(smallOreWorldGen.mWorldGenName));
             SMALL_ORES_BY_NAME.put(worldGen.mWorldGenName, wrapper);
+            SMALL_ORES_BY_MAT.put(smallOreWorldGen.mMaterial, wrapper);
 
             if (ORE_MAT_TO_DROPS.containsKey(smallOreWorldGen.mMaterial)) {
                 throw new IllegalStateException("Duplicate small ore world gen for material " + smallOreWorldGen.mMaterial);

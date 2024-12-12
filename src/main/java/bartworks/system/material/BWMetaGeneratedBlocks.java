@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import bartworks.client.renderer.BWBlockOreRenderer;
 import bartworks.common.blocks.BWTileEntityContainer;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
@@ -81,12 +80,6 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer {
     @Override
     protected boolean canSilkHarvest() {
         return false;
-    }
-
-    @Override
-    public int getRenderType() {
-        if (BWBlockOreRenderer.INSTANCE == null) return super.getRenderType();
-        return BWBlockOreRenderer.renderID;
     }
 
     @Override

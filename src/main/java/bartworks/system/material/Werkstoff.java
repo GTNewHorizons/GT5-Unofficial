@@ -68,6 +68,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     public static final LinkedHashSet<Werkstoff> werkstoffHashSet = new LinkedHashSet<>();
     public static final LinkedHashMap<Short, Werkstoff> werkstoffHashMap = new LinkedHashMap<>();
     public static final LinkedHashMap<String, Werkstoff> werkstoffNameHashMap = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, Werkstoff> werkstoffVarNameHashMap = new LinkedHashMap<>();
 
     public static final Map<String, String> modNameOverrides = new HashMap<>() {
 
@@ -383,6 +384,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         Werkstoff.werkstoffHashSet.add(this);
         Werkstoff.werkstoffHashMap.put(this.mID, this);
         Werkstoff.werkstoffNameHashMap.put(this.defaultName, this);
+        Werkstoff.werkstoffVarNameHashMap.put(this.getVarName(), this);
 
         this.owner = this.getMaterialOwner();
     }

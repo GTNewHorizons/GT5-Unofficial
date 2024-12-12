@@ -18,7 +18,6 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import detrav.DetravScannerMod;
 import detrav.gui.DetravScannerGUI;
 import detrav.gui.textures.DetravMapTexture;
-import detrav.items.DetravMetaGeneratedTool01;
 import detrav.utils.FluidColors;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.common.ores.OreManager;
