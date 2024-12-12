@@ -751,7 +751,7 @@ public class RecipesGregTech {
         // Lumiium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(2),
+                GTUtility.getIntegratedCircuit(6),
                 Materials.Tin.getDust(10),
                 Materials.Iron.getDust(10),
                 Materials.Copper.getDust(2),
