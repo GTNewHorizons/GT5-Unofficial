@@ -238,8 +238,10 @@ public enum StoneType implements IStoneType {
     public boolean contains(Block block, int meta) {
         if (block == builder.mainStone.block && meta == builder.mainStone.meta) return true;
 
-        for (BlockMeta other : builder.otherStones) {
-            if (block == other.block && meta == other.meta) return true;
+        if (builder.otherStones != null) {
+            for (BlockMeta other : builder.otherStones) {
+                if (block == other.block && meta == other.meta) return true;
+            }
         }
 
         return false;
@@ -272,7 +274,7 @@ public enum StoneType implements IStoneType {
     private static class StoneBuilder {
         public boolean enabled = true;
         public BlockMeta cobble, mainStone;
-        public List<BlockMeta> otherStones = new ArrayList<>();
+        public List<BlockMeta> otherStones;
         public OrePrefixes oreBlockPrefix = OrePrefixes.ore;
         public ItemStack pureDust = GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
         public ItemStack impureDust = GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1);
@@ -364,6 +366,7 @@ public enum StoneType implements IStoneType {
             Block block = GameRegistry.findBlock(owner.ID, blockName);
 
             if (block != null) {
+                if (otherStones == null) otherStones = new ArrayList<>();
                 otherStones.add(new BlockMeta(block, meta));
             }
 

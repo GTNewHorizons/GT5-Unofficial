@@ -1,7 +1,6 @@
 package gregtech.common.ores;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -28,6 +27,7 @@ public enum GTPPOreAdapter implements IOreAdapter<Material> {
     public boolean supports(OreInfo<?> info) {
         if (info.stoneType != null && info.stoneType != StoneType.Stone) return false;
         if (!(info.material instanceof Material)) return false;
+        if (info.isSmall) return false;
 
         return true;
     }
@@ -47,6 +47,8 @@ public enum GTPPOreAdapter implements IOreAdapter<Material> {
 
     @Override
     public ObjectIntPair<Block> getBlock(OreInfo<?> info) {
+        if (!supports(info)) return null;
+
         if (!(info.material instanceof Material gtppMat)) return null;
         
         Block ore = gtppMat.getOreBlock(1);
@@ -86,9 +88,7 @@ public enum GTPPOreAdapter implements IOreAdapter<Material> {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         switch (oreDropMode) {
-            case Item -> drops.add(
-                ItemUtils
-                    .getItemStackOfAmountFromOreDictNoBroken("oreRaw" + info.material.getLocalizedName(), 1));
+            case Item -> drops.add(info.material.getRawOre(1));
             case FortuneItem -> {
                 // if shouldFortune and isNatural then get fortune drops
                 // if not shouldFortune or not isNatural then get normal drops

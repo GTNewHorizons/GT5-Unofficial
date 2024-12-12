@@ -3,6 +3,7 @@ package gtPlusPlus.everglades.chunk;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.api.objects.MolecularRandom;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -107,7 +108,7 @@ public class ChunkProviderModded implements IChunkProvider {
         this.worldObj = par1World;
         this.field_147435_p = par1World.getWorldInfo()
             .getTerrainType();
-        this.rand = new Random(par2);
+        this.rand = new MolecularRandom(par2);
         this.field_147431_j = new NoiseGeneratorOctaves(this.rand, 16);
         this.field_147432_k = new NoiseGeneratorOctaves(this.rand, 16);
         this.field_147429_l = new NoiseGeneratorOctaves(this.rand, 8);

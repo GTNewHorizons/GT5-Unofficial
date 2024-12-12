@@ -1229,8 +1229,14 @@ public class Material implements IMaterial {
         return getComponentByPrefix(OrePrefixes.milled, stacksize);
     }
 
+    ItemStack rawOre;
+
     public final ItemStack getRawOre(final int stacksize) {
-        return getComponentByPrefix(OrePrefixes.rawOre, stacksize);
+        if (rawOre == null) {
+            rawOre = getComponentByPrefix(OrePrefixes.rawOre, 1);
+        }
+
+        return GTUtility.copyAmount(stacksize, rawOre);
     }
 
     public final boolean hasSolidForm() {
