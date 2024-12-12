@@ -1,5 +1,7 @@
 package gregtech.common.tools;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -9,8 +11,10 @@ import net.minecraft.util.IChatComponent;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTToolHarvestHelper;
 
-public class ToolKnife extends ToolSword {
+public class ToolKnife extends GTTool {
 
     @Override
     public int getToolDamagePerBlockBreak() {
@@ -53,8 +57,52 @@ public class ToolKnife extends ToolSword {
     }
 
     @Override
+    public boolean canBlock() {
+        return true;
+    }
+
+    @Override
+    public boolean isCrowbar() {
+        return false;
+    }
+
+    @Override
+    public boolean isWeapon() {
+        return true;
+    }
+
+    @Override
+    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+        return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "sword")
+            || GTToolHarvestHelper.isAppropriateMaterial(
+                aBlock,
+                Material.leaves,
+                Material.gourd,
+                Material.vine,
+                Material.web,
+                Material.cloth,
+                Material.carpet,
+                Material.plants,
+                Material.cactus,
+                Material.cake,
+                Material.tnt,
+                Material.sponge);
+    }
+
+    @Override
+    public ItemStack getBrokenItem(ItemStack aStack) {
+        return null; // Copied from ToolSword
+    }
+
+    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? Textures.ItemIcons.KNIFE : null;
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
