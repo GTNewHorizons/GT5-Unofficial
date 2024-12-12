@@ -1,8 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
@@ -10,7 +8,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 
 public class MteHatchSteamBusInput extends MTEHatchInputBus {
@@ -33,41 +30,13 @@ public class MteHatchSteamBusInput extends MTEHatchInputBus {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MteHatchSteamBusInput(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("disableSort", disableSort);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        disableSort = aNBT.getBoolean("disableSort");
-    }
-
-    @Override
     public int getCircuitSlot() {
         return getSlots(mTier + 1);
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            disableSort = !disableSort;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                GTUtility.trans("200.1", "Automatic Item Shuffling: ")
-                    + (disableSort ? GTUtility.trans("087", "Disabled") : GTUtility.trans("088", "Enabled")));
-        }
     }
 
     @Override
