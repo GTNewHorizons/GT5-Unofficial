@@ -27,6 +27,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
@@ -1160,15 +1161,21 @@ public class Material implements IMaterial {
         return getComponentByPrefix(OrePrefixes.cableGt16, stacksize);
     }
 
+    private ItemStack ore;
+
     /**
      * Ore Components
      *
      * @return
      */
     public final ItemStack getOre(final int stacksize) {
-        return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-            "ore" + Utils.sanitizeString(this.getUnlocalizedName()),
-            stacksize);
+        if (ore == null) {
+            ore = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
+                "ore" + Utils.sanitizeString(this.getUnlocalizedName()),
+                1);
+        }
+
+        return GTUtility.copyAmount(stacksize, ore);
     }
 
     public final Block getOreBlock(final int stacksize) {

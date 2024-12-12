@@ -260,7 +260,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         // To allow for early exit due to no ore placed in the bottom layer (probably because we are in the sky), unroll
         // 1 pass through the loop
         // Now we do bottom-level-first oregen, and work our way upwards.
-        // Layer -1 Secondary and Sporadic
         
         generator.generateLayer(true, false, false); // layer -1
 
