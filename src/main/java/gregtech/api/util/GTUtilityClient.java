@@ -63,6 +63,7 @@ public class GTUtilityClient {
         int[] tABCCoord = new int[] { -1, -1, 0 };
         int[] tXYZOffset = new int[3];
         final ForgeDirection tDirection = tExtendedFacing.getDirection();
+        tExtendedFacing = ExtendedFacing.of(tDirection);
         final LightingHelper tLighting = new LightingHelper(aRenderer);
 
         // for some reason +x and -z need this field set to true, but not any other sides
