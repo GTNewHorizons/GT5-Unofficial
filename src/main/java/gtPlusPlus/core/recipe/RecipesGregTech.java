@@ -724,7 +724,7 @@ public class RecipesGregTech {
         // Enderium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(2),
+                GTUtility.getIntegratedCircuit(5),
                 Materials.Tin.getDust(2),
                 Materials.Platinum.getDust(1),
                 Materials.Silver.getDust(1),
