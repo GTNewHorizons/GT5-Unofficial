@@ -107,7 +107,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger")
+        tt.addMachineType("Heat Exchanger, LHE")
             .addInfo("More complicated than a Fusion Reactor. Seriously")
             .addInfo("Inputs are Hot Coolant or Lava")
             .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
