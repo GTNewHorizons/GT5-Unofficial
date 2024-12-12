@@ -372,6 +372,21 @@ public class Gregtech {
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean loggingExplosions;
+
+        @Config.Comment("The maximum number of nanoseconds that the cooperative scheduler will run for each tick.")
+        @Config.DefaultInt(10_000_000) // 10 ms
+        @Config.Name("Scheduler Max Duration (ns)")
+        public int schedulerDuration;
+
+        @Config.Comment("The maximum number of tasks that the scheduler will try to run per tick (not a hard limit).")
+        @Config.DefaultInt(5)
+        @Config.Name("Scheduler Target Task Count")
+        public int maxTaskCount;
+
+        @Config.Comment("0 = No Profiling. 1 = Print the time taken by the scheduler. 2 = Print the time taken by each task.")
+        @Config.DefaultInt(0)
+        @Config.Name("Scheduler Profiling")
+        public int schedulerProfileLevel;
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.harvest_level")

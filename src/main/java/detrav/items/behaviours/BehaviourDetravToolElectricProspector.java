@@ -7,6 +7,8 @@ import static gregtech.api.enums.Mods.VisualProspecting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Future;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,12 +21,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.google.common.collect.MapMaker;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.net.DetravNetwork;
 import detrav.net.ProspectingPacket;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.task.CooperativeScheduler;
 import gregtech.common.UndergroundOil;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -35,15 +39,25 @@ import gregtech.common.pollution.Pollution;
  */
 public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolProspector {
 
+    private Map<EntityPlayer, Future<?>> PENDING_SCANS = new MapMaker().weakValues().makeMap();
+
     public BehaviourDetravToolElectricProspector(int aCosts) {
         super(aCosts);
     }
 
     public ItemStack onItemRightClick(MetaBaseItem aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (!aWorld.isRemote) {
-            int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack)
-                .intValue();
+            Future<?> scan = PENDING_SCANS.remove(aPlayer);
+
+            if (scan != null && !scan.isDone()) {
+                scan.cancel(true);
+                aPlayer.addChatMessage(new ChatComponentText("Cancelled pending scan"));
+            }
+
             if (aPlayer.isSneaking()) {
+                int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack)
+                    .intValue();
+
                 data++;
                 if (data > 3) data = 0;
                 aPlayer.addChatMessage(
@@ -53,17 +67,27 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                 return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
             }
 
-            final DetravMetaGeneratedTool01 tool = (DetravMetaGeneratedTool01) aItem;
+            int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack)
+                .intValue();
+
             final int cX = ((int) aPlayer.posX) >> 4;
             final int cZ = ((int) aPlayer.posZ) >> 4;
-            int size = aItem.getHarvestLevel(aStack, "") + 1;
             final List<Chunk> chunks = new ArrayList<>();
             aPlayer.addChatMessage(new ChatComponentText("Scanning..."));
 
-            for (int i = -size; i <= size; i++)
-                for (int j = -size; j <= size; j++) if (i != -size && i != size && j != -size && j != size)
-                    chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
-            size = size - 1;
+            int size;
+
+            {
+                int size2 = aItem.getHarvestLevel(aStack, "") + 1;
+                for (int i = -size2; i <= size2; i++)
+                    for (int j = -size2; j <= size2; j++) if (i != -size2 && i != size2 && j != -size2 && j != size2)
+                        chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
+
+                size = size2 - 1;
+            }
+
+            final DetravMetaGeneratedTool01 tool = (DetravMetaGeneratedTool01) aItem;
+            if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, this.mCosts * chunks.size());
 
             final ProspectingPacket packet = new ProspectingPacket(
                 cX,
@@ -73,75 +97,85 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                 size,
                 data);
 
-            switch (data) {
-                case MODE_BIG_ORES, MODE_ALL_ORES -> {
-                    for (Chunk c : chunks) {
-                        for (int x = 0; x < 16; x++) {
-                            for (int z = 0; z < 16; z++) {
-                                final int height = c.getHeightValue(x, z);
+            Future<?> task = CooperativeScheduler.INSTANCE.schedule(
+                ctx -> {
+                    while (!ctx.shouldYield()) {
+                        if (chunks.isEmpty()) {
+                            ctx.stop(null);
+                            break;
+                        }
 
-                                for (int y = 1; y < height; y++) {
-                                    Block block = c.getBlock(x, y, z);
-                                    int meta = c.getBlockMetadata(x, y, z);
-
-                                    if (OreManager.getStoneType(block, meta) != null) continue;
-
-                                    var p = OreManager.getOreInfo(block, meta);
-
-                                    if (p != null) {
-                                        try (OreInfo<?> info = p.right()) {
-                                            if (!info.isNatural) continue;
-                                            if (data != MODE_ALL_ORES && info.isSmall) continue;
+                        Chunk c = chunks.remove(chunks.size() - 1);
+    
+                        switch (data) {
+                            case MODE_BIG_ORES, MODE_ALL_ORES -> {
+                                for (int x = 0; x < 16; x++) {
+                                    for (int z = 0; z < 16; z++) {
+                                        final int height = c.getHeightValue(x, z);
         
-                                            packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, block, meta);
-                                            continue;
+                                        for (int y = 1; y < height; y++) {
+                                            Block block = c.getBlock(x, y, z);
+                                            int meta = c.getBlockMetadata(x, y, z);
+        
+                                            if (OreManager.getStoneType(block, meta) != null) continue;
+        
+                                            var p = OreManager.getOreInfo(block, meta);
+        
+                                            if (p != null) {
+                                                try (OreInfo<?> info = p.right()) {
+                                                    if (!info.isNatural) continue;
+                                                    if (data != MODE_ALL_ORES && info.isSmall) continue;
+                
+                                                    packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, block, meta);
+                                                    continue;
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
+                            case MODE_FLUIDS -> {
+                                FluidStack fluid = UndergroundOil.undergroundOil(c, -1);
+        
+                                packet.addFluid(c.xPosition, c.zPosition, fluid);
+                            }
+                            case DetravMetaGeneratedTool01.MODE_POLLUTION -> {
+                                int pollution = Pollution.getPollution(c);
+        
+                                packet.addPollution(c.xPosition, c.zPosition, pollution);
+                            }
                         }
                     }
-                }
-                case MODE_FLUIDS -> {
-                    for (Chunk c : chunks) {
-                        FluidStack fluid = UndergroundOil.undergroundOil(c, -1);
+                })
+                .onFinished(x -> {
+                    PENDING_SCANS.remove(aPlayer);
 
-                        packet.addFluid(c.xPosition, c.zPosition, fluid);
+                    DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
+        
+                    if (VisualProspecting.isModLoaded()) {
+                        if (data == MODE_BIG_ORES || data == MODE_ALL_ORES) {
+                            VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
+                                (EntityPlayerMP) aPlayer,
+                                VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
+                                    aWorld.provider.dimensionId,
+                                    (int) aPlayer.posX,
+                                    (int) aPlayer.posZ,
+                                    size * 16),
+                                new ArrayList<>());
+                        } else if (data == MODE_FLUIDS) {
+                            VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
+                                (EntityPlayerMP) aPlayer,
+                                new ArrayList<>(),
+                                VisualProspecting_API.LogicalServer.prospectUndergroundFluidsWithingRadius(
+                                    aWorld,
+                                    (int) aPlayer.posX,
+                                    (int) aPlayer.posZ,
+                                    size * 16));
+                        }
                     }
-                }
-                case DetravMetaGeneratedTool01.MODE_POLLUTION -> {
-                    for (Chunk c : chunks) {
-                        int pollution = Pollution.getPollution(c);
+                });
 
-                        packet.addPollution(c.xPosition, c.zPosition, pollution);
-                    }
-                }
-            }
-
-            DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
-            if (!aPlayer.capabilities.isCreativeMode) tool.doDamage(aStack, this.mCosts * chunks.size());
-
-            if (VisualProspecting.isModLoaded()) {
-                if (data == MODE_BIG_ORES || data == MODE_ALL_ORES) {
-                    VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
-                        (EntityPlayerMP) aPlayer,
-                        VisualProspecting_API.LogicalServer.prospectOreVeinsWithinRadius(
-                            aWorld.provider.dimensionId,
-                            (int) aPlayer.posX,
-                            (int) aPlayer.posZ,
-                            size * 16),
-                        new ArrayList<>());
-                } else if (data == MODE_FLUIDS) {
-                    VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(
-                        (EntityPlayerMP) aPlayer,
-                        new ArrayList<>(),
-                        VisualProspecting_API.LogicalServer.prospectUndergroundFluidsWithingRadius(
-                            aWorld,
-                            (int) aPlayer.posX,
-                            (int) aPlayer.posZ,
-                            size * 16));
-                }
-            }
+            PENDING_SCANS.put(aPlayer, task);
         }
         return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
     }
