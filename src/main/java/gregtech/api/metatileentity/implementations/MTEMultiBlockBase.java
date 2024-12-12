@@ -936,7 +936,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 int recipeMapHash = slot.getPatternRecipeMapHash();
 
                 if (recipe == null) { // set recipe
-                    MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot.getPatternInputs(sharedItems);
+                    MTEHatchCraftingInputME.PatternSlot.recipeInputs tempRecipeInputs = slot
+                        .getPatternInputs(sharedItems);
                     GTRecipe slotRecipe = processingLogic
                         .getRecipeByInputs(tempRecipeInputs.inputItems, tempRecipeInputs.inputFluid);
                     int tempRecipeMapHash = processingLogic.getCribsRecipeMapHash();
@@ -997,8 +998,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     ItemStack[] sharedItems = dualInputHatch.getSharedItems();
                     for (var it = dualInputHatch.inventories(); it.hasNext();) {
                         IDualInputInventory slot = it.next();
+                        ItemStack[] inputItems = slot.getItemInputs();
+                        FluidStack[] inputFluids = slot.getFluidInputs();
+                        if (inputItems.length == 0 && inputFluids.length == 0) continue;
+                        inputItems = ArrayUtils.addAll(inputItems, sharedItems);
                         // Reverse order of input items for consistent behavior with standard input buses.
-                        ItemStack[] inputItems = ArrayUtils.addAll(slot.getItemInputs(), sharedItems);
                         ArrayUtils.reverse(inputItems);
                         processingLogic.setInputItems(inputItems);
                         processingLogic.setInputFluids(slot.getFluidInputs());
