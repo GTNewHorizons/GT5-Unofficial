@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -50,6 +49,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -79,6 +79,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
         this.TIER_MULTIPLIER = (byte) Math.max(tier, 1);
+        casingTextureIndex = getControllerTextureIndex();
     }
 
     @Override
@@ -103,9 +104,9 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public CheckRecipeResult checkProcessing() {
         setElectricityStats();
         if (working()) {
-            return SimpleCheckRecipeResult.ofSuccess("charging");
+            return SimpleCheckRecipeResult.ofSuccess("Extracting Ores");
         } else {
-            return SimpleCheckRecipeResult.ofFailure("maming");
+            return SimpleCheckRecipeResult.ofFailure("Extraction Failed");
         }
     }
 
@@ -156,8 +157,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
                     + ".")
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
-            .addOtherStructurePart("a","form the 3x1x3 Base")
-            .addOtherStructurePart("a","1x3x1 pillar above the center of the base (2 minimum total)")
+            .addOtherStructurePart("a", "form the 3x1x3 Base")
+            .addOtherStructurePart("a", "1x3x1 pillar above the center of the base (2 minimum total)")
             .addOtherStructurePart(" Frame Boxes", "Each pillar's side and 1x3x1 on top")
             .addEnergyHatch(VN[this.getMinTier()] + "+, Any base casing")
             .addMaintenanceHatch("Any base casing")
@@ -333,12 +334,14 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         }
         return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
     }
-    
+
     protected boolean checkHatches() {
         return !mMaintenanceHatches.isEmpty() && !mInputHatches.isEmpty()
             && !mOutputBusses.isEmpty()
             && !mEnergyHatches.isEmpty();
     }
+
+    protected abstract int getControllerTextureIndex();
 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
