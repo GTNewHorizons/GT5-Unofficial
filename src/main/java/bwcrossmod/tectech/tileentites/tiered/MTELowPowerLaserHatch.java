@@ -13,11 +13,14 @@
 
 package bwcrossmod.tectech.tileentites.tiered;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
+@Deprecated
 public class MTELowPowerLaserHatch extends MTEHatchEnergyTunnel implements LowPowerLaser {
 
     public MTELowPowerLaserHatch(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
@@ -30,7 +33,10 @@ public class MTELowPowerLaserHatch extends MTEHatchEnergyTunnel implements LowPo
 
     @Override
     public String[] getDescription() {
-        return mDescriptionArray;
+        String[] desc = new String[mDescriptionArray.length + 1];
+        desc[0] = EnumChatFormatting.RED + "DEPRECATED! This machine will be removed in the next major update.";
+        System.arraycopy(mDescriptionArray, 0, desc, 1, mDescriptionArray.length);
+        return desc;
     }
 
     @Override
