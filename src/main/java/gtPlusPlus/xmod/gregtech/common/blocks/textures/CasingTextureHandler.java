@@ -9,8 +9,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 
 public class CasingTextureHandler {
 
-    private static final TexturesCentrifugeMultiblock gregtechX = new TexturesCentrifugeMultiblock();
-
     public static IIcon getIcon(final int ordinalSide, final int aMeta) { // Texture ID's. case 0 == ID[57]
         if ((aMeta >= 0) && (aMeta < 16)) {
             return switch (aMeta) {
@@ -52,6 +50,12 @@ public class CasingTextureHandler {
 
     public static IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord,
         final ForgeDirection side, final GregtechMetaCasingBlocks thisBlock) {
-        return gregtechX.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, side, thisBlock);
+        final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+        final int ordinalSide = side.ordinal();
+        if (tMeta != 0) {
+            return getIcon(ordinalSide, tMeta);
+        }
+
+        return TexturesGtBlock.Casing_Material_Centrifuge.getIcon();
     }
 }

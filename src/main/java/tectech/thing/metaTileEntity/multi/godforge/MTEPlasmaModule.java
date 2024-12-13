@@ -14,8 +14,6 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -77,7 +75,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * getMaxParallel();
                 if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
@@ -91,7 +89,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
 
             @NotNull
             @Override
-            protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
+            protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * maxParallel;
                 if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
@@ -106,9 +104,9 @@ public class MTEPlasmaModule extends MTEBaseModule {
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            @Nonnull
+            @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUt(getProcessingVoltage())
                     .setDurationDecreasePerOC(getOverclockTimeFactor());
             }

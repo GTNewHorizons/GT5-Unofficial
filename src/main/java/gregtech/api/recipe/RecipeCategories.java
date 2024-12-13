@@ -17,13 +17,6 @@ public final class RecipeCategories {
         builder -> builder.setDisplayImage(
             createIcon(GregTech.getResourcePath("textures", "gui", "picture", "arc_furnace_recycling.png"))));
 
-    public static final RecipeCategory plasmaArcFurnaceRecycling = new RecipeCategory(
-        "gt.recipe.category.plasma_arc_furnace_recycling",
-        RecipeMaps.plasmaArcFurnaceRecipes,
-        () -> Client.nei.recipeCategories.plasmaArcFurnaceRecycling,
-        builder -> builder.setDisplayImage(
-            createIcon(GregTech.getResourcePath("textures", "gui", "picture", "plasma_arc_furnace_recycling.png"))));
-
     public static final RecipeCategory maceratorRecycling = new RecipeCategory(
         "gt.recipe.category.macerator_recycling",
         RecipeMaps.maceratorRecipes,
