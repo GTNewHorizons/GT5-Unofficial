@@ -213,10 +213,6 @@ public class Client {
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting arcFurnaceRecycling = ENABLE;
 
-            @Config.LangKey("gt.recipe.category.plasma_arc_furnace_recycling")
-            @Config.DefaultEnum("ENABLE")
-            public RecipeCategorySetting plasmaArcFurnaceRecycling = ENABLE;
-
             @Config.LangKey("gt.recipe.category.macerator_recycling")
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting maceratorRecycling = ENABLE;

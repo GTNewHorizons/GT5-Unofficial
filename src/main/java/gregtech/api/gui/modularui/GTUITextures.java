@@ -537,6 +537,7 @@ public class GTUITextures {
     public static final UITexture PICTURE_SLOTS_HOLO_3BY3 = UITexture
         .fullImage(GregTech.ID, "gui/picture/slots_holo_3by3");
     public static final UITexture PICTURE_ARROW_DOUBLE = UITexture.fullImage(GregTech.ID, "gui/picture/arrow_double");
+    public static final UITexture PICTURE_ARROW_GRAY = UITexture.fullImage(GregTech.ID, "gui/picture/arrow_gray");
     public static final UITexture PICTURE_SUPER_BUFFER = UITexture.fullImage(GregTech.ID, "gui/picture/super_buffer");
     public static final UITexture PICTURE_SQUARE_LIGHT_GRAY = UITexture
         .fullImage(GregTech.ID, "gui/picture/square_light_gray");

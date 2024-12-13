@@ -31,8 +31,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
@@ -319,9 +317,13 @@ public final class RecipeMaps {
             (index, isFluid, isOutput,
                 isSpecial) -> !isFluid && !isOutput && index != 0 ? GTUITextures.OVERLAY_SLOT_LENS : null)
         // Add a simple ordering so lower tier purified water is displayed first, otherwise it gets really confusing
+        // NEI Catalyst search requires recipes to be sorted by voltage tier. Therefore, we first sort by voltage tier,
+        // then by water tier, then the default comparator.
         .neiRecipeComparator(
-            (a, b) -> Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
-                .thenComparing(GTRecipe::compareTo)
+            (a, b) -> Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mEUt)
+                .thenComparing(
+                    Comparator.comparing(PurifiedWaterHelpers::getWaterTierFromRecipe)
+                        .thenComparing(GTRecipe::compareTo))
                 .compare(a, b))
         .build();
     public static final RecipeMap<RecipeMapBackend> mixerRecipes = RecipeMapBuilder.of("gt.recipe.mixer")
@@ -471,16 +473,6 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_MOLD : null)
-        .recipeTransformer(r -> {
-            if (ArrayUtils.isNotEmpty(r.mFluidInputs)) {
-                if (Materials.PhasedGold.getMolten(1)
-                    .isFluidEqual(r.mFluidInputs[0]))
-                    r.mFluidInputs = new FluidStack[] { Materials.VibrantAlloy.getMolten(r.mFluidInputs[0].amount) };
-                else if (Materials.PhasedIron.getMolten(1)
-                    .isFluidEqual(r.mFluidInputs[0]))
-                    r.mFluidInputs = new FluidStack[] { Materials.PulsatingIron.getMolten(r.mFluidInputs[0].amount) };
-            }
-        })
         .build();
     public static final RecipeMap<RecipeMapBackend> fluidExtractionRecipes = RecipeMapBuilder
         .of("gt.recipe.fluidextractor")
@@ -490,16 +482,6 @@ public final class RecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CENTRIFUGE
                 : null)
         .progressBar(GTUITextures.PROGRESSBAR_EXTRACT)
-        .recipeTransformer(r -> {
-            if (ArrayUtils.isNotEmpty(r.mFluidOutputs)) {
-                if (Materials.PhasedGold.getMolten(1)
-                    .isFluidEqual(r.mFluidOutputs[0]))
-                    r.mFluidOutputs = new FluidStack[] { Materials.VibrantAlloy.getMolten(r.mFluidOutputs[0].amount) };
-                else if (Materials.PhasedIron.getMolten(1)
-                    .isFluidEqual(r.mFluidOutputs[0]))
-                    r.mFluidOutputs = new FluidStack[] { Materials.PulsatingIron.getMolten(r.mFluidOutputs[0].amount) };
-            }
-        })
         .build();
     public static final RecipeMap<RecipeMapBackend> packagerRecipes = RecipeMapBuilder.of("gt.recipe.packager")
         .maxIO(2, 1, 0, 0)
