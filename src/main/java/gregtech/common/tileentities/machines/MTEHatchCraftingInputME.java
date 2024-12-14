@@ -355,7 +355,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private final boolean supportFluids;
     private boolean additionalConnection = false;
     private boolean disablePatternOptimization = false;
-    public boolean superCribsRecipeCheck = false;
 
     public MTEHatchCraftingInputME(int aID, String aName, String aNameRegional, boolean supportFluids) {
         super(
@@ -563,7 +562,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (customName != null) aNBT.setString("customName", customName);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setBoolean("disablePatternOptimization", disablePatternOptimization);
-        aNBT.setBoolean("superCribsRecipeCheck", superCribsRecipeCheck);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -613,7 +611,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
         additionalConnection = aNBT.getBoolean("additionalConnection");
         disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
-        superCribsRecipeCheck = aNBT.getBoolean("superCribsRecipeCheck");
 
         getProxy().readFromNBT(aNBT);
     }

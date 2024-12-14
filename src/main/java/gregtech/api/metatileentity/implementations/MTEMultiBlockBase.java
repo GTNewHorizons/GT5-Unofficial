@@ -144,7 +144,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected VoidingMode voidingMode = getDefaultVoidingMode();
     protected boolean batchMode = getDefaultBatchMode();
     protected @Nonnull CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.NONE;
-    protected boolean superCribsRecipeCheck = false;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -300,7 +299,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         aNBT.setBoolean(BATCH_MODE_NBT_KEY, batchMode);
         aNBT.setBoolean(INPUT_SEPARATION_NBT_KEY, inputSeparation);
         aNBT.setString(VOIDING_MODE_NBT_KEY, voidingMode.name);
-        aNBT.setBoolean(SUPER_CRIBS_MODE_NBT_KEY, superCribsRecipeCheck);
     }
 
     @Override
@@ -339,7 +337,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
         inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
-        superCribsRecipeCheck = aNBT.getBoolean(SUPER_CRIBS_MODE_NBT_KEY);
         if (aNBT.hasKey(VOIDING_MODE_NBT_KEY, Constants.NBT.TAG_STRING)) {
             voidingMode = VoidingMode.fromName(aNBT.getString(VOIDING_MODE_NBT_KEY));
         } else if (aNBT.hasKey(VOID_EXCESS_NBT_KEY)) {
@@ -877,20 +874,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected boolean supportsCraftingMEBuffer() {
-        return true;
-    }
-
-    // check if this machine working in same recipe map/maps
-    public boolean checkRecipeHash(RecipeMap<?> map, RecipeMap<?>[] maps, int hash) {
-        if (map != null && map.hashCode() == hash) {
-            return false;
-        } else if (maps != null) {
-            for (RecipeMap<?> tempMap : maps) {
-                if (tempMap.hashCode() == hash) {
-                    return false;
-                }
-            }
-        }
         return true;
     }
 
