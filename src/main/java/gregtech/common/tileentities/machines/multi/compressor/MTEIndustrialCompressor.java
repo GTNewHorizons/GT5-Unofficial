@@ -150,7 +150,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             .addController("Front Center")
             .addCasingInfoMin("Electric Compressor Casing", 95, false)
             .addCasingInfoMin("Compressor Pipe Casing", 45, false)
-            .addCasingInfoExactly("EV+ Glass", 6, false)
+            .addCasingInfoExactly("Any Glass", 6, false)
             .addInputBus("Pipe Casings on Side", 2)
             .addInputHatch("Pipe Casings on Side", 2)
             .addOutputBus("Pipe Casings on Side", 2)

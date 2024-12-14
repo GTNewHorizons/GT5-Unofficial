@@ -160,7 +160,7 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Super-heated Steam Turbine";
+        return "Large Super-heated Steam Turbine, XLHPT";
     }
 
     @Override
@@ -171,5 +171,10 @@ public class MTELargeTurbineSHSteam extends MTELargerTurbineBase {
     @Override
     protected String getCasingName() {
         return "Reinforced HP Steam Turbine Casing";
+    }
+
+    @Override
+    protected boolean isDenseSteam() {
+        return isUsingDenseSteam;
     }
 }

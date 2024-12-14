@@ -181,7 +181,7 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Gas Turbine";
+        return "Large Gas Turbine, XLGT";
     }
 
     @Override
@@ -192,5 +192,10 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
     @Override
     protected String getCasingName() {
         return "Reinforced Gas Turbine Casing";
+    }
+
+    @Override
+    protected boolean isDenseSteam() {
+        return false;
     }
 }

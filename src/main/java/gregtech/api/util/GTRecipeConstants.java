@@ -14,6 +14,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -241,19 +243,20 @@ public class GTRecipeConstants {
         if (aDuration <= 0) {
             return Collections.emptyList();
         }
-        builder.duration(aDuration);
         boolean recycle = builder.getMetadataOrDefault(RECYCLE, false);
         Collection<GTRecipe> ret = new ArrayList<>();
         for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
-            int tPlasmaAmount = (int) Math.max(1L, aDuration / (mat.getMass() * 16L));
+            builder.duration(Math.max(1, mat == Materials.Nitrogen ? aDuration / 4 : aDuration / 24));
+            int tPlasmaAmount = (int) Math.min(1L, aDuration / (mat.getMass() * 16L));
             GTRecipeBuilder plasmaBuilder = builder.copy()
                 .fluidInputs(mat.getPlasma(tPlasmaAmount))
                 .fluidOutputs(mat.getGas(tPlasmaAmount));
             if (recycle) {
-                plasmaBuilder.recipeCategory(RecipeCategories.plasmaArcFurnaceRecycling);
+                continue;
             }
             ret.addAll(RecipeMaps.plasmaArcFurnaceRecipes.doAdd(plasmaBuilder));
         }
+        builder.duration(aDuration);
         GTRecipeBuilder arcBuilder = builder.copy()
             .fluidInputs(Materials.Oxygen.getGas(aDuration));
         if (recycle) {
@@ -262,7 +265,6 @@ public class GTRecipeConstants {
         ret.addAll(RecipeMaps.arcFurnaceRecipes.doAdd(arcBuilder));
         return ret;
     });
-
     /**
      * Add a chemical reactor recipe to both LCR and singleblocks.
      */
@@ -342,16 +344,18 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .itemInputs(itemInputs)
-                        .fluidInputs(GTModHandler.getDistilledWater(100L))
+                        .fluidInputs(ArrayUtils.addAll(builder.fluidInputs, GTModHandler.getDistilledWater(100L)))
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .itemInputs(itemInputs)
-                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(100L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(100L)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .itemInputs(itemInputs)
-                        .fluidInputs(Materials.Grade2PurifiedWater.getFluid(100L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(100L)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -359,11 +363,13 @@ public class GTRecipeConstants {
                 // Require purified water for europium wafers, at least grade 3
                 return GTUtility.concat(
                     builder.copy()
-                        .fluidInputs(Materials.Grade3PurifiedWater.getFluid(100L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade3PurifiedWater.getFluid(100L)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade4PurifiedWater.getFluid(100L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade4PurifiedWater.getFluid(100L)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -371,11 +377,13 @@ public class GTRecipeConstants {
                 // Require purified water for americium wafers, at least grade 5
                 return GTUtility.concat(
                     builder.copy()
-                        .fluidInputs(Materials.Grade5PurifiedWater.getFluid(100L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade5PurifiedWater.getFluid(100L)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade6PurifiedWater.getFluid(100L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade6PurifiedWater.getFluid(100L)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -384,15 +392,18 @@ public class GTRecipeConstants {
                 // T1 masks require grade 1, 2 or 3 purified water
                 return GTUtility.concat(
                     builder.copy()
-                        .fluidInputs(Materials.Grade1PurifiedWater.getFluid(32000L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(32000L)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade2PurifiedWater.getFluid(32000L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(32000L)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade3PurifiedWater.getFluid(32000L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade3PurifiedWater.getFluid(32000L)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -400,11 +411,13 @@ public class GTRecipeConstants {
                 // T2 masks require grade 4 or 5 purified water
                 return GTUtility.concat(
                     builder.copy()
-                        .fluidInputs(Materials.Grade4PurifiedWater.getFluid(32000L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade4PurifiedWater.getFluid(32000L)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade5PurifiedWater.getFluid(32000L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade5PurifiedWater.getFluid(32000L)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -412,15 +425,18 @@ public class GTRecipeConstants {
                 // T3 masks require grade 6, 7 or 8 purified water
                 return GTUtility.concat(
                     builder.copy()
-                        .fluidInputs(Materials.Grade6PurifiedWater.getFluid(32000L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade6PurifiedWater.getFluid(32000L)))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade7PurifiedWater.getFluid(32000L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade7PurifiedWater.getFluid(32000L)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .fluidInputs(Materials.Grade8PurifiedWater.getFluid(32000L))
+                        .fluidInputs(
+                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade8PurifiedWater.getFluid(32000L)))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }

@@ -180,7 +180,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Engine")
+        tt.addMachineType("Chemical Engine, UCFE")
             .addInfo("BURNING BURNING BURNING")
             .addInfo("Use combustible liquid to generate power.")
             .addInfo("You need to supply Combustion Promoter to keep it running.")
@@ -276,7 +276,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     public String[] getInfoData() {
         String[] info = super.getInfoData();
         info[4] = "Currently generates: " + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(this.getPowerFlow() * tEff)
+            + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
             + EnumChatFormatting.RESET
             + " EU/t";
         info[6] = "Problems: " + EnumChatFormatting.RED

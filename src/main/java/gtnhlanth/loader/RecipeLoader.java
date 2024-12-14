@@ -171,7 +171,7 @@ public class RecipeLoader {
                 ItemList.Conveyor_Module_LuV.get(4),
                 GTUtility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.VanadiumGallium, 2),
-                GTUtility.getIntegratedCircuit(16)
+                GTUtility.getIntegratedCircuit(15)
 
             )
             .itemOutputs(LanthItemList.SOURCE_CHAMBER)
@@ -190,7 +190,7 @@ public class RecipeLoader {
                 ItemList.Electric_Pump_LuV.get(2),
                 GTUtility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.VanadiumGallium, 2),
-                GTUtility.getIntegratedCircuit(16)
+                GTUtility.getIntegratedCircuit(15)
 
             )
             .itemOutputs(LanthItemList.LINAC)
@@ -209,7 +209,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2),
                 GTUtility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
                 GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.VanadiumGallium, 1),
-                GTUtility.getIntegratedCircuit(16)
+                GTUtility.getIntegratedCircuit(15)
 
             )
             .itemOutputs(LanthItemList.TARGET_CHAMBER)
@@ -228,7 +228,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
                 GTUtility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.NiobiumTitanium, 8),
-                GTUtility.getIntegratedCircuit(16))
+                GTUtility.getIntegratedCircuit(15))
             .itemOutputs(LanthItemList.SYNCHROTRON)
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -817,16 +817,33 @@ public class RecipeLoader {
                 for (ItemStack lens : OreDictionary.getOres("craftingLens" + lensColour.mName.replace(" ", ""))) {
 
                     if (lens == null) continue;
+                    if (mask == MaskList.LCC) {
 
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
-                            GTUtility.copyAmount(0, lens))
-                        .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
-                        .requiresCleanRoom()
-                        .duration(120 * SECONDS)
-                        .eut(mask.getEngraverEUt())
-                        .addTo(WaferEngravingRecipes);
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(
+                                new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
+                                GTUtility.copyAmount(0, lens))
+                            .fluidInputs(
+                                // damage * 4 (chips per recipe) * 50 (L per chip normally) * 3 / 4 (75% of the cost)
+                                Materials.BioMediumSterilized.getFluid((mask.getDamage() + 1) * 4L * 50 * 3 / 4))
+                            .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
+                            .requiresCleanRoom()
+                            .duration(120 * SECONDS)
+                            .eut(mask.getEngraverEUt())
+                            .addTo(WaferEngravingRecipes);
+
+                    } else {
+
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(
+                                new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
+                                GTUtility.copyAmount(0, lens))
+                            .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
+                            .requiresCleanRoom()
+                            .duration(120 * SECONDS)
+                            .eut(mask.getEngraverEUt())
+                            .addTo(WaferEngravingRecipes);
+                    }
 
                 }
             }
@@ -3408,16 +3425,6 @@ public class RecipeLoader {
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidHeaterRecipes);
-
-        // PTMEG Manipulation
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
-            .itemOutputs(WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.plate, 1))
-            .fluidInputs(WerkstoffMaterialPool.PTMEGElastomer.getMolten(144))
-            .duration(2 * SECONDS)
-            .eut(64)
-            .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
             .fluidInputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1000))

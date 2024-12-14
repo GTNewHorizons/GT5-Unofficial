@@ -645,6 +645,7 @@ gt.blockcasingsBA0.8.desc.1=Who wouldn't want a 32k epoxy multi?
 
 #Multiblocks
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
+gt.blockmachines.multimachine.em.transformer.machinetype=Active Transformer, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
 gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
@@ -700,6 +701,7 @@ gt.blockmachines.multimachine.em.switch.desc.0=Controller block of the Network S
 gt.blockmachines.multimachine.em.switch.desc.1=Routes and distributes computation
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
+gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
 gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced computer casing
 gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
@@ -1007,7 +1009,7 @@ fog.upgrade.text.16=Allows the Helioflare Power Forge to receive the full benefi
 fog.upgrade.text.17=Increases the cap of EBF heat bonuses to 30,000K.
 fog.upgrade.text.18=Unlocks a multiplier to maximum parallel based on current heat. This bonus is calculated via this formula: Multiplier = 1 + Heat / 15000
 fog.upgrade.text.19=Improves the EBF energy reduction heat bonus from 5% to 8% and adds an energy discount based on the fill level of the internal battery. This bonus is calculated via the formula: Discount = (Current fill level / Max Capacity - 0.5)^2 * (-0.6) + 0.15, multiplied by 2/3 for modules other than the Plasma Fabricator
-fog.upgrade.text.20=EBF heat bonuses are granted above 30,000K, but the heat value used in heat bonus calculations is determined by this formula: Actual Heat = 30000 + (Current Heat - 30000)^0.85
+fog.upgrade.text.20=EBF heat bonuses are granted above 30,000K, but the heat value used in heat bonus calculations is determined by this formula: Power Forge Heat = 30000 + (Current Heat - 30000)^0.85, Melting Core Heat = 30000 + (Current Heat - 30000)^0.8
 fog.upgrade.text.21=Unlocks a multiplier to maximum parallel based on total amount of purchased upgrades. This bonus is calculated via this formula: Multiplier = 1 + Upgrade Amount / 5
 fog.upgrade.text.22=Improves IGCC based on current maximum parallel. Improved Formula: Multiplier = (1 / Heat^0.01) / (Parallel^0.02)
 fog.upgrade.text.23=Multiplies maximum processing voltage by 4 per active ring, applies after other bonuses.
