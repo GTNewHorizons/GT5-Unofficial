@@ -702,6 +702,7 @@ public class WerkstoffLoader {
             .onlyDust()
             .addMetalItems()
             .addMolten()
+            .addMetalCraftingSolidifierRecipes()
             .enforceUnification(),
         39,
         TextureSet.SET_METALLIC
@@ -1049,6 +1050,8 @@ public class WerkstoffLoader {
             .addMolten()
             .addMetalItems()
             .addCraftingMetalWorkingItems()
+            .addMetaSolidifierRecipes()
+            .addMetalCraftingSolidifierRecipes()
             .enforceUnification(),
         64,
         TextureSet.SET_METALLIC
@@ -1237,6 +1240,8 @@ public class WerkstoffLoader {
             .addMetalItems()
             .addMolten()
             .addCraftingMetalWorkingItems()
+            .addMetaSolidifierRecipes()
+            .addMetalCraftingSolidifierRecipes()
             .enforceUnification(),
         78,
         TextureSet.SET_METALLIC);
@@ -1346,7 +1351,9 @@ public class WerkstoffLoader {
             .addMixerRecipes((short) 1)
             .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems(),
+            .addMultipleIngotMetalWorkingItems()
+            .addMetaSolidifierRecipes()
+            .addMetalCraftingSolidifierRecipes(),
         88,
         TextureSet.SET_METALLIC,
         new Pair<>(Materials.Palladium, 3),
@@ -1382,7 +1389,9 @@ public class WerkstoffLoader {
             .addMixerRecipes((short) 1)
             .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems(),
+            .addMultipleIngotMetalWorkingItems()
+            .addMetaSolidifierRecipes()
+            .addMetalCraftingSolidifierRecipes(),
         90,
         TextureSet.SET_METALLIC,
         new Pair<>(WerkstoffLoader.Ruthenium, 2),
@@ -1412,7 +1421,9 @@ public class WerkstoffLoader {
             .addMixerRecipes()
             .addSimpleMetalWorkingItems()
             .addCraftingMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems(),
+            .addMultipleIngotMetalWorkingItems()
+            .addMetaSolidifierRecipes()
+            .addMetalCraftingSolidifierRecipes(),
         92,
         TextureSet.SET_SHINY,
         new Pair<>(Materials.TungstenSteel, 12),
@@ -1473,7 +1484,9 @@ public class WerkstoffLoader {
             .addCraftingMetalWorkingItems()
             .addMolten()
             .addSimpleMetalWorkingItems()
-            .addMultipleIngotMetalWorkingItems(),
+            .addMultipleIngotMetalWorkingItems()
+            .addMetaSolidifierRecipes()
+            .addMetalCraftingSolidifierRecipes(),
         96,
         TextureSet.SET_METALLIC,
         new Pair<>(Materials.Steel, 2),
