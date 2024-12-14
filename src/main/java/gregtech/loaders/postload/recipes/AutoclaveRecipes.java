@@ -47,12 +47,12 @@ public class AutoclaveRecipes implements Runnable {
         certusQuartzTag.setInteger("progress", 0);
         certusQuartzSeed.setTagCompound(certusQuartzTag);
 
-        final ItemStack netherQuartzSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 600);
+        final ItemStack netherQuartzSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 600);
         NBTTagCompound netherQuartzTag = new NBTTagCompound();
         netherQuartzTag.setInteger("progress", 600);
         netherQuartzSeed.setTagCompound(netherQuartzTag);
 
-        final ItemStack fluixSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 2L, 1200);
+        final ItemStack fluixSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 1200);
         NBTTagCompound fluixTag = new NBTTagCompound();
         fluixTag.setInteger("progress", 1200);
         fluixSeed.setTagCompound(fluixTag);
