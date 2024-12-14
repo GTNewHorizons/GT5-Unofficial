@@ -3,7 +3,9 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.item.ItemStack;
@@ -35,7 +37,6 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -45,23 +46,35 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
     // region structure
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        "1 - Classic/Data Hatches or Computer casing", // 1 - Classic/Data Hatches or Computer casing
+        translateToLocal("gt.blockmachines.multimachine.em.switch.hint.0"), // 1 - Data Input/Output Hatches or Advanced
+                                                                            // computer casing
+        translateToLocal("gt.blockmachines.multimachine.em.switch.hint.1"), // 2 - Data Output Hatches or Computer
+                                                                            // casing
     };
 
     private static final IStructureDefinition<MTENetworkSwitch> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTENetworkSwitch>builder()
         .addShape(
             "main",
-            transpose(new String[][] { { "BBB", "BBB", "BBB" }, { "B~B", "BAB", "BBB" }, { "BBB", "BBB", "BBB" } }))
-        .addElement('A', ofBlock(TTCasingsContainer.sBlockCasingsTT, 3))
+            transpose(new String[][] { { "BBB", "BAB", "BBB" }, { "B~B", "AAA", "BAB" }, { "BBB", "BAB", "BBB" } }))
+        .addElement(
+            'A',
+            buildHatchAdder(MTENetworkSwitch.class)
+                .atLeast(
+                    Energy.or(HatchElement.EnergyMulti),
+                    Maintenance,
+                    HatchElement.InputData,
+                    HatchElement.OutputData)
+                .casingIndex(BlockGTCasingsTT.textureOffset + 3)
+                .dot(1)
+                .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 3)))
         .addElement(
             'B',
-            ofHatchAdderOptional(
-                MTENetworkSwitch::addClassicToMachineList,
-                BlockGTCasingsTT.textureOffset + 1,
-                1,
-                TTCasingsContainer.sBlockCasingsTT,
-                1))
+            buildHatchAdder(MTENetworkSwitch.class)
+                .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, HatchElement.OutputData) // No Input Data
+                .casingIndex(BlockGTCasingsTT.textureOffset + 1)
+                .dot(2)
+                .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 1)))
         .build();
     // endregion
 
@@ -207,30 +220,24 @@ public class MTENetworkSwitch extends TTMultiblockBase implements IConstructable
             // Switch With QoS
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.1")) // Used to route and
                                                                                          // distribute computation
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.desc.2")) // Needs a Parametrizer to
-                                                                                         // be configured
-            .addSeparator()
+            .addTecTechHatchInfo()
+
             .beginStructureBlock(3, 3, 3, false)
             .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
-            .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.1.name"), 0, false) // 0x Computer Casing
-                                                                                      // (minimum)
             .addOtherStructurePart(
-                translateToLocal("gt.blockcasingsTT.3.name"),
-                translateToLocal("tt.keyword.Structure.Center")) // Advanced Computer Casing: Center
+                translateToLocal("tt.keyword.Structure.DataInput"), // Data Input Hatch: Any Advanced Computer Casing
+                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"),
+                1)
             .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataConnector"),
+                translateToLocal("tt.keyword.Structure.DataOutput"), // Data Output Hatch: Any Computer Casing
                 translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2) // Data Connector: Any Computer Casing
-            .addOtherStructurePart(
-                translateToLocal("gt.blockmachines.hatch.param.tier.05.name"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2) // Parametrizer: Any Computer Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 1) // Energy Hatch: Any
+                2)
+            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Energy Hatch: Any
                                                                                            // Computer Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 1) // Maintenance
+            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2) // Maintenance
                                                                                                 // Hatch: Any
                                                                                                 // Computer Casing
-            .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .toolTipFinisher();
         return tt;
     }
 

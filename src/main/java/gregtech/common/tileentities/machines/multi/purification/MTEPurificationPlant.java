@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -47,6 +49,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
@@ -60,6 +63,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -185,7 +189,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + EnumChatFormatting.GRAY
                     + " blocks along each axis.")
             .addInfo("Left click this controller with a data stick, then right click a purification unit to link.")
-            .addInfo("Supplies power to linked purification units. This multiblock accepts TecTech energy hatches.")
+            .addInfo("Supplies power to linked purification units.")
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(
                 "Works in fixed time processing cycles of " + EnumChatFormatting.RED
@@ -235,7 +240,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "purification processes, and this multiblock is the heart of the operation.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(7, 9, 8, false)
             .addCasingInfoExactlyColored(
                 "Superplasticizer-Treated High Strength Concrete",
@@ -243,17 +247,17 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 56,
                 EnumChatFormatting.GOLD,
                 false)
-            .addCasingInfoExactlyColored(
-                "Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                77,
-                EnumChatFormatting.GOLD,
-                false)
             .addCasingInfoRangeColored(
-                "Reinforced Sterile Water Plant Casing",
+                "Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
                 71,
                 72,
+                EnumChatFormatting.GOLD,
+                false)
+            .addCasingInfoExactlyColored(
+                "Reinforced Sterile Water Plant Casing",
+                EnumChatFormatting.GRAY,
+                77,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -268,13 +272,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 6,
                 EnumChatFormatting.GOLD,
                 false)
-            .addCasingInfoExactlyColored("Reinforced Door", EnumChatFormatting.GRAY, 1, EnumChatFormatting.GOLD, false)
             .addController("Front center")
             .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
             .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
             .addStructureInfo("Requires water to be placed in the tank.")
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -495,7 +497,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     public void registerLinkedUnit(MTEPurificationUnitBase<?> unit) {
-        this.mLinkedUnits.add(new LinkedPurificationUnit(unit));
+        LinkedPurificationUnit link = new LinkedPurificationUnit(unit);
+        // Make sure to mark it as active if it is running a recipe. This happens on server restart and fixes
+        // waterline multiblocks not resuming their progress until the next cycle.
+        link.setActive(unit.mMaxProgresstime > 0);
+        this.mLinkedUnits.add(link);
     }
 
     public void unregisterLinkedUnit(MTEPurificationUnitBase<?> unit) {
@@ -634,7 +640,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 .setSize(windowWidth, 8));
 
         int currentYPosition = 20;
-        Scrollable mainDisp = new Scrollable().setVerticalScroll();
+        Scrollable mainDisp = new Scrollable().setVerticalScroll()
+            .setHorizontalScroll();
 
         int rowHeight = 20;
         for (int i = 0; i < this.mLinkedUnits.size(); i++) {
@@ -683,17 +690,25 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         String name = unit.metaTileEntity()
             .getLocalName();
 
+        String statusString = name + "  " + unit.getStatusString();
+        int widgetWidth = 0;
+        if (NetworkUtils.isClient()) {
+            final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            widgetWidth = fontRenderer.getStringWidth(statusString) + 25;
+        }
+
         row.widget(
-            TextWidget.dynamicString(() -> name + "  " + unit.getStatusString())
+            TextWidget.dynamicString(() -> statusString)
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setPos(25, 0)
-                .setSize(0, 20))
+                .fillParent())
             .widget(new FakeSyncWidget.StringSyncer(() -> name, _name -> {}))
             .widget(
                 unit.metaTileEntity()
                     .makeSyncerWidgets())
-            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive));
+            .widget(new FakeSyncWidget.BooleanSyncer(unit::isActive, unit::setActive))
+            .setSize(widgetWidth, 20);
 
         return row;
     }
@@ -720,7 +735,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         //
         builder.widget(
-            new ButtonWidget().setPlayClickSound(true)
+            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder).setPlayClickSound(true)
                 .setOnClick((c, w) -> debugMode = !debugMode)
                 .setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
@@ -767,5 +782,18 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             }
             return null;
         }));
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        debugMode = aNBT.getBoolean("debugMode");
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("debugMode", debugMode);
+
     }
 }

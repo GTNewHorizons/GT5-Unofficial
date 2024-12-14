@@ -641,16 +641,16 @@ import tectech.thing.metaTileEntity.multi.MTEActiveTransformer;
 import tectech.thing.metaTileEntity.multi.MTEDataBank;
 import tectech.thing.metaTileEntity.multi.MTEEnergyInfuser;
 import tectech.thing.metaTileEntity.multi.MTEEyeOfHarmony;
-import tectech.thing.metaTileEntity.multi.MTEForgeOfGods;
 import tectech.thing.metaTileEntity.multi.MTEMicrowave;
 import tectech.thing.metaTileEntity.multi.MTENetworkSwitch;
 import tectech.thing.metaTileEntity.multi.MTEQuantumComputer;
 import tectech.thing.metaTileEntity.multi.MTEResearchStation;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEExoticModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEMoltenModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTEPlasmaModule;
-import tectech.thing.metaTileEntity.multi.godforge_modules.MTESmeltingModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTEExoticModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTEForgeOfGods;
+import tectech.thing.metaTileEntity.multi.godforge.MTEMoltenModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTEPlasmaModule;
+import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 import tectech.thing.metaTileEntity.pipe.MTEPipeBlockData;
 import tectech.thing.metaTileEntity.pipe.MTEPipeBlockEnergy;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
@@ -2279,10 +2279,10 @@ public class MachineLoader implements Runnable {
                                                                                                                         // for
                                                                                                                         // NH
         Uncertainty_Hatch.set(
-            new MTEHatchUncertainty(UncertaintyResolver.ID, "hatch.certain.tier.07", "Uncertainty Resolver", 7)
+            new MTEHatchUncertainty(UncertaintyResolver.ID, "hatch.certain.tier.05", "Uncertainty Resolver", 5)
                 .getStackForm(1L));
         UncertaintyX_Hatch.set(
-            new MTEHatchUncertainty(UncertaintyResolverX.ID, "hatch.certain.tier.10", "Uncertainty Resolver X", 10)
+            new MTEHatchUncertainty(UncertaintyResolverX.ID, "hatch.certain.tier.07", "Uncertainty Resolver X", 7)
                 .getStackForm(1L));
         dataIn_Hatch.set(
             new MTEHatchDataInput(OpticalSlaveConnector.ID, "hatch.datain.tier.07", "Optical Reception Connector", 7)

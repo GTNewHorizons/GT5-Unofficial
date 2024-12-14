@@ -6,6 +6,7 @@ import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
@@ -269,8 +270,14 @@ public abstract class MetaBaseItem extends GTGenericItem
         ArrayList<IItemBehaviour<MetaBaseItem>> behaviours = mItemBehaviors.get((short) getDamage(aStack));
         if (behaviours != null) {
             for (IItemBehaviour<MetaBaseItem> behavior : behaviours) {
-                aList = !KeyboardUtil.isShiftKeyDown() ? behavior.getAdditionalToolTips(this, aList, aStack)
-                    : behavior.getAdditionalToolTipsWhileSneaking(this, aList, aStack);
+                final Optional<List<String>> shiftTooltips = KeyboardUtil.isShiftKeyDown()
+                    ? behavior.getAdditionalToolTipsWhileSneaking(this, aList, aStack)
+                    : Optional.empty();
+                if (shiftTooltips.isPresent()) {
+                    aList = shiftTooltips.get();
+                } else {
+                    aList = behavior.getAdditionalToolTips(this, aList, aStack);
+                }
             }
         }
 

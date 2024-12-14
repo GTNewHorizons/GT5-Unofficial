@@ -83,7 +83,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MteHatchSteamBusInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
@@ -240,7 +239,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 + " %");
 
         if (this.getPollutionPerSecond(null) > 0) {
-            int mPollutionReduction = getPollutionReductionForAllMufflers();
             mInfo.add(
                 StatCollector.translateToLocal("GTPP.multiblock.pollution") + ": "
                     + EnumChatFormatting.RED
@@ -250,7 +248,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             mInfo.add(
                 StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
                     + EnumChatFormatting.GREEN
-                    + mPollutionReduction
+                    + getAveragePollutionPercentage()
                     + EnumChatFormatting.RESET
                     + " %");
         }
@@ -285,14 +283,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         mInfo.add("Total Time in ticks: " + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime);
 
         return mInfo.toArray(new String[0]);
-    }
-
-    public int getPollutionReductionForAllMufflers() {
-        int mPollutionReduction = 0;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            mPollutionReduction = Math.max(calculatePollutionReductionForHatch(tHatch, 100), mPollutionReduction);
-        }
-        return mPollutionReduction;
     }
 
     public long getStoredEnergyInAllEnergyHatches() {
@@ -751,8 +741,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             if (aMetaTileEntity == null) {
                 return false;
             }
-            if (aMetaTileEntity instanceof MTEHatchInput || aMetaTileEntity instanceof MTEHatchInputBus
-                || aMetaTileEntity instanceof MteHatchSteamBusInput) {
+            if (aMetaTileEntity instanceof MTEHatchInput || aMetaTileEntity instanceof MTEHatchInputBus) {
                 return resetRecipeMapForHatch((MTEHatch) aMetaTileEntity, aMap);
             } else {
                 return false;
@@ -767,8 +756,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aTileEntity == null) {
             return false;
         }
-        if (aTileEntity instanceof MTEHatchInput || aTileEntity instanceof MTEHatchInputBus
-            || aTileEntity instanceof MteHatchSteamBusInput) {
+        if (aTileEntity instanceof MTEHatchInput || aTileEntity instanceof MTEHatchInputBus) {
             if (aTileEntity instanceof MTEHatchInput) {
                 ((MTEHatchInput) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInput) aTileEntity).mRecipeMap = aMap;
@@ -780,14 +768,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             } else if (aTileEntity instanceof MTEHatchInputBus) {
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = aMap;
-                if (aMap != null) {
-                    log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
-                } else {
-                    log("Cleared Input Bus.");
-                }
-            } else {
-                ((MteHatchSteamBusInput) aTileEntity).mRecipeMap = null;
-                ((MteHatchSteamBusInput) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
                     log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
                 } else {
@@ -1404,7 +1384,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                     .dynamicString(
                         () -> StatCollector.translateToLocal("GTPP.multiblock.pollutionreduced") + ": "
                             + EnumChatFormatting.GREEN
-                            + getPollutionReductionForAllMufflers()
+                            + getAveragePollutionPercentage()
                             + EnumChatFormatting.RESET
                             + " %")
                     .setDefaultColor(COLOR_TEXT_WHITE.get())

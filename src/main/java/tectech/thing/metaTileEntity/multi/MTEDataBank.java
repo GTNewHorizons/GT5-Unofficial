@@ -3,8 +3,11 @@ package tectech.thing.metaTileEntity.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +51,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
-import tectech.util.CommonValues;
 
 public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructable {
 
@@ -79,7 +81,12 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                     { "BCCCB", "BDDDB", "BDDDB" } }))
         .addElement('A', ofBlock(TTCasingsContainer.sBlockCasingsTT, 1))
         .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 2))
-        .addElement('C', classicHatches(BlockGTCasingsTT.textureOffset, 1, TTCasingsContainer.sBlockCasingsTT, 0))
+        .addElement(
+            'C',
+            buildHatchAdder(MTEDataBank.class).atLeast(Maintenance, Energy, EnergyMulti)
+                .casingIndex(BlockGTCasingsTT.textureOffset)
+                .dot(1)
+                .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0))
         .addElement(
             'D',
             buildHatchAdder(MTEDataBank.class)
@@ -122,10 +129,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                                                                                            // the same Data
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to toggle
                                                                                            // wireless mode
-
-            // Stick
-            .addInfo(translateToLocal("tt.keyword.Structure.StructureTooComplex")) // The structure is too complex!
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginStructureBlock(5, 3, 3, false)
             .addOtherStructurePart(
                 translateToLocal("tt.keyword.Structure.DataAccessHatch"),
@@ -140,7 +144,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
                                                                                                  // Hatch: Any High
                                                                                                  // Power Casing
-            .toolTipFinisher(CommonValues.TEC_MARK_EM);
+            .toolTipFinisher();
         return tt;
     }
 

@@ -13,10 +13,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTUtility;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -296,7 +296,7 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
     }
 
     public int getCurrentChunkPollution(IGregTechTileEntity aBaseMetaTileEntity) {
-        return PollutionUtils.getPollution(aBaseMetaTileEntity);
+        return Pollution.getPollution(aBaseMetaTileEntity);
     }
 
     @Override

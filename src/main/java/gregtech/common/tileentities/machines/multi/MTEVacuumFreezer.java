@@ -54,10 +54,8 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Vacuum Freezer")
-            .addInfo("Controller Block for the Vacuum Freezer")
+        tt.addMachineType("Vacuum Freezer, VF")
             .addInfo("Cools hot ingots and cells")
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoRange("Frost Proof Machine Casing", 16, 24, false)
@@ -67,7 +65,7 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
             .addOutputHatch("Any casing", 1)
             .addInputBus("Any casing", 1)
             .addOutputBus("Any casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 

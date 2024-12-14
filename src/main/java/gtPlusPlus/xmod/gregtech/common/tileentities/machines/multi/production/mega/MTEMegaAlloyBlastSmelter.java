@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.mega;
 
+import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -15,9 +16,6 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -263,14 +261,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
-        List<MTEHatch> tHatches = new ArrayList<>();
-        tHatches.addAll(mExoticEnergyHatches);
-        tHatches.addAll(mEnergyHatches);
-        return tHatches;
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece("main", stackSize, hintsOnly, 5, 16, 0);
     }
@@ -283,8 +273,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Alloy Cooker")
-            .addInfo("Controller block for the Mega Alloy Blast Smelter")
+        tt.addMachineType("Fluid Alloy Cooker, MABS")
             .addInfo(
                 "Runs the same recipes as the normal ABS, except with up to " + EnumChatFormatting.BOLD
                     + EnumChatFormatting.UNDERLINE
@@ -309,22 +298,17 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY)
             .addInfo("The glass limits the tier of the energy hatch. UEV glass unlocks all tiers.")
-            .addInfo("UV glass required for TecTech laser hatches.")
+            .addTecTechHatchInfo()
+            .addInfo("UV glass required for " + TT + " laser hatches.")
             .addInfo(
                 EnumChatFormatting.ITALIC + "\"all it does is make metals hot\""
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY)
             .beginStructureBlock(11, 20, 11, false)
-            .addStructureInfo("This structure is too complex! See schematic for details.")
             .addMaintenanceHatch("Around the controller", 2)
             .addOtherStructurePart("Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch", "Bottom Casing", 1)
             .addMufflerHatch("1 in the center of the top layer", 3)
-            .toolTipFinisher(
-                EnumChatFormatting.AQUA + "MadMan310 "
-                    + EnumChatFormatting.GRAY
-                    + "via "
-                    + EnumChatFormatting.RED
-                    + "GT++");
+            .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
 
@@ -342,7 +326,12 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 .getEUCapacity();
         }
 
-        return new String[] { "------------ Critical Information ------------",
+        return new String[] {
+            EnumChatFormatting.STRIKETHROUGH + "------------"
+                + EnumChatFormatting.RESET
+                + " Critical Information "
+                + EnumChatFormatting.STRIKETHROUGH
+                + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(mProgresstime)
@@ -383,7 +372,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             "Parallels: " + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET,
             "Speed Bonus: " + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET,
             "Energy Discount: " + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET,
-            "-----------------------------------------" };
+            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
     @Override
@@ -439,16 +428,13 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch recipes.");
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Don't batch recipes.");
-            }
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
-
         return true;
     }
 

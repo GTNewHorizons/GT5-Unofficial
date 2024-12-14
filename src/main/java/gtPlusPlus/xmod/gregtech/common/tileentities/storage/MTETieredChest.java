@@ -26,6 +26,9 @@ import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@Deprecated
+// GT++ was adding super chests too for some reason when GT already has some
+// this is deprecated but not deleted because it is used for the MTEInfiniteItemHolder
 public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidgets {
 
     public int mItemCount = 0;

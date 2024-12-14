@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
@@ -192,26 +191,24 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Essentia Smeltery")
-            .addInfo("Controller block for the Large Essentia Smeltery")
+        tt.addMachineType("Essentia Smeltery, LES")
             .addInfo("Necessary evil.")
             .addInfo("Advanced Essentia smelting technology.")
-            .addInfo("Max parallel dictated by structure size and Essentia Diffusion Cell tier")
+            .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
+            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length.")
             .addInfo("Energy Hatch tier: HV+")
             .addInfo("You can find more information about this machine in the Thaumonomicon.")
+            .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .addController("Front center")
-            .addCasingInfo("Magic Casing", 24)
+            .addCasingInfoMin("Magic Casing", 24, false)
             .addMaintenanceHatch("Hint block with dot 1")
             .addInputBus("Hint block with dot 1")
             .addInputHatch("Hint block with dot 1")
             .addEnergyHatch("Hint block with dot 1")
             .addOtherStructurePart("Essentia Output Hatch", "Hint block with dot 1")
             .addMufflerHatch("Hint block with dot 2")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

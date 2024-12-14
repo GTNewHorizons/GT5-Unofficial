@@ -186,8 +186,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Processor")
-            .addInfo("Controller Block for the Integrated Ore Factory")
+        tt.addMachineType("Ore Processor, IOF")
             .addInfo("It is OP. I mean ore processor.")
             .addInfo("Do all ore processing in one step.")
             .addInfo("Can process up to 1024 ores at a time.")
@@ -195,7 +194,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Processing time is dependent on mode.")
             .addInfo("Use a screwdriver to switch mode.")
             .addInfo("Sneak click with screwdriver to void the stone dust.")
-            .addSeparator()
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
             .addStructureInfo("128 Advanced Iridium Plated Machine Casing")
@@ -210,7 +208,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
             .addMufflerHatch("Output Pollution", 3)
             .addOutputBus("Output products", 4)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -336,7 +334,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
         }
 
-        int finalParallel = (int) (batchMultiplierMax * maxParallelBeforeBatchMode);
+        int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
         // for scanner
         setCurrentParallelism(finalParallel);
