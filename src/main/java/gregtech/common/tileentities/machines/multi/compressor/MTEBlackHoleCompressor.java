@@ -551,7 +551,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 return map.findRecipeQuery()
                     .items(inItems)
                     .fluids(inFluids)
-                    .specialSlot(specialSlotItem)
                     .find();
             }
 

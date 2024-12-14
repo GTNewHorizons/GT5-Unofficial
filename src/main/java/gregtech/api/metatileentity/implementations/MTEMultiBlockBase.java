@@ -149,7 +149,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
     protected static final String VOIDING_MODE_NBT_KEY = "voidingMode";
     protected static final String BATCH_MODE_NBT_KEY = "batchMode";
-    protected static final String SUPER_CRIBS_MODE_NBT_KEY = "superCribsMode";
     protected SingleRecipeCheck mSingleRecipeCheck = null;
 
     public ArrayList<MTEHatchInput> mInputHatches = new ArrayList<>();
@@ -894,7 +893,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
                 if (!slot.isEmpty()) {
                     if (!processingLogic.cribsHasRecipe(slotHash)
-                        && !processingLogic.setCribsSlotRecipe(slot.getPatternInputs(sharedItems), slotHash)) continue;
+                        && !processingLogic.setCribsSlotRecipe(slot.getPatternInputs(), slotHash)) continue;
 
                     processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                     processingLogic.setInputFluids(slot.getFluidInputs());

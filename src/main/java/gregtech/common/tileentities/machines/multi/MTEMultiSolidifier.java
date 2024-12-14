@@ -439,7 +439,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
 
                 if (!slot.isEmpty()) {
                     if (!processingLogic.cribsHasRecipe(slotHash)
-                        && !processingLogic.setCribsSlotRecipe(slot.getPatternInputs(sharedItems), slotHash)) continue;
+                        && !processingLogic.setCribsSlotRecipe(slot.getPatternInputs(), slotHash)) continue;
 
                     processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
                     processingLogic.setInputFluids(slot.getFluidInputs());

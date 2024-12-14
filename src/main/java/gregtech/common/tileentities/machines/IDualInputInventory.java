@@ -13,6 +13,6 @@ public interface IDualInputInventory {
 
     FluidStack[] getFluidInputs();
 
-    GTDualInputs getPatternInputs(ItemStack[] sharedItems);
+    GTDualInputs getPatternInputs();
 
 }

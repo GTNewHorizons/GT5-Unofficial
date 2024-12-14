@@ -178,7 +178,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return map.findRecipeQuery()
             .items(inItems)
             .fluids(inFluids)
-            .specialSlot(specialSlotItem)
             .find();
     }
 
