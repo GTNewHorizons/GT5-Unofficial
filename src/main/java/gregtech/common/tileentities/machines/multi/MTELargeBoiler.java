@@ -356,10 +356,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     }
 
     private double getLongBurntimeRatio(ItemStack tInput) {
-        double logScale = Math.log((float) GTModHandler.getFuelValue(tInput) / 1600)
-            / Math.log(9);
+        double logScale = Math.log((float) GTModHandler.getFuelValue(tInput) / 1600) / Math.log(9);
         return 1 + logScale * 0.025;
     }
+
     abstract int runtimeBoost(int mTime);
 
     abstract boolean isSuperheated();
