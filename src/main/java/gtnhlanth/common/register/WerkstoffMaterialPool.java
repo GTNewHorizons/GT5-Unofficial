@@ -1034,7 +1034,8 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
             .addMolten()
-            .addMetalItems(),
+            .addMetalItems()
+            .addMetalCraftingSolidifierRecipes(),
         offsetID3 + 12,
         TextureSet.SET_DULL);
 
@@ -1945,7 +1946,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new short[] { 0, 0, 0 },
         "Reactive-Ion Etching Mixture",
         subscriptNumbers("CHF3/O2"),
-        new Werkstoff.Stats().setCentrifuge(true),
+        new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
@@ -2015,13 +2016,21 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3b + 10,
         TextureSet.SET_FLUID);
 
+    public static final Werkstoff HotSuperCoolant = new Werkstoff(
+        new short[] { 155, 17, 30 },
+        "Hot Super Coolant",
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID3b + 11,
+        TextureSet.SET_FLUID);
+
     public static void runInit() {
         addSubTags();
     }
 
     private static void addSubTags() {
-
-        // WerkstoffMaterialPool.PTMEGElastomer.add(SubTag.BOUNCY, SubTag.STRETCHY);
 
     }
 

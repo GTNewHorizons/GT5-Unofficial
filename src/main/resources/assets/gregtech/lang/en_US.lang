@@ -793,6 +793,9 @@ GT5U.waila.drone_downlink.noConnection=Not connected
 GT5U.waila.drone_downlink.connection=Connect to centre:
 GT5U.waila.drone_downlink.connectionCount=Connection Count:
 GT5U.waila.drone_downlink.droneLevel=Drone Level:
+GT5U.waila.producing=Producing:
+GT5U.waila.producing.andmore=  And %d More...
+
 
 achievement.flintpick=First Tools
 achievement.flintpick.desc=Craft a flint pick
@@ -1626,6 +1629,12 @@ gt.solar.system.nereid=Nereid
 gt.solar.system.mercury=Mercury
 gt.solar.system.titan=Titan
 gt.solar.system.phobos=Phobos
+
+item.flintSword.name=Flint Sword
+item.flintAxe.name=Flint Axe
+item.flintShovel.name=Flint Shovel
+item.flintPickaxe.name=Flint Pickaxe
+item.flintHoe.name=Flint Hoe
 
 gt.multiBlock.controller.cokeOven=Coke Oven
 
