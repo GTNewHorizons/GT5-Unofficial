@@ -1,6 +1,8 @@
 package gregtech.api.logic;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -10,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
+import gregtech.api.objects.GTDualInputs;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -29,8 +32,8 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     protected ItemStack[] inputItems;
     protected FluidStack[] inputFluids;
     protected boolean isRecipeLocked;
-    protected GTRecipe cribsRecipe;
-    protected int cribsRecipeMapHash;
+    protected int cribsSlotHash;
+    protected Map<Integer, GTRecipe> cribsRecipeMap = new HashMap<>();
 
     public ProcessingLogic() {}
 
@@ -65,12 +68,25 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         return getThis();
     }
 
-    public void setCribsRecipe(GTRecipe recipe) {
-        this.cribsRecipe = recipe;
+    public void setCribsSlotHash(int hash) {
+        this.cribsSlotHash = hash;
     }
 
-    public int getCribsRecipeMapHash() {
-        return cribsRecipeMapHash;
+    public boolean cribsHasRecipe(int hash) {
+        return cribsRecipeMap.containsKey(hash);
+    }
+
+    public boolean setCribsSlotRecipe(GTDualInputs inputs, int hash) {
+        GTRecipe tempRecipe = getRecipeByInputs(inputs.inputItems, inputs.inputFluid);
+        if (tempRecipe != null) {
+            cribsRecipeMap.put(hash, tempRecipe);
+            return true;
+        }
+        return false;
+    }
+
+    public void resetCribsRecipeMap() {
+        cribsRecipeMap.clear();
     }
 
     /**
@@ -95,7 +111,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
         this.calculatedEut = 0;
         this.duration = 0;
         this.calculatedParallels = 0;
-        this.cribsRecipe = null;
+        this.cribsSlotHash = 0;
         return getThis();
     }
 
@@ -118,9 +134,10 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
             inputFluids = new FluidStack[0];
         }
 
-        if (cribsRecipe != null) {
-            if (cribsRecipe.maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
-                return validateAndCalculateRecipe(cribsRecipe).checkRecipeResult;
+        if (cribsSlotHash != 0 && cribsRecipeMap.containsKey(cribsSlotHash)) {
+            if (cribsRecipeMap.get(cribsSlotHash)
+                .maxParallelCalculatedByInputs(1, inputFluids, inputItems) == 1) {
+                return validateAndCalculateRecipe(cribsRecipeMap.get(cribsSlotHash)).checkRecipeResult;
             }
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
@@ -157,7 +174,7 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
 
     public GTRecipe getRecipeByInputs(ItemStack[] inItems, FluidStack[] inFluids) {
         RecipeMap<?> map = preProcess();
-        cribsRecipeMapHash = map.hashCode();
+        if (map == null) return null;
         return map.findRecipeQuery()
             .items(inItems)
             .fluids(inFluids)

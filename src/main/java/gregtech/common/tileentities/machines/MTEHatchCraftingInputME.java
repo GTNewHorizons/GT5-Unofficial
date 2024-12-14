@@ -49,7 +49,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
@@ -92,8 +91,8 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.objects.GTDualInputs;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -106,23 +105,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot implements IDualInputInventory {
 
-        public interface SharedItemGetter {
-
-            ItemStack[] getSharedItem();
-        }
-
-        public static class recipeInputs {
-
-            public ItemStack[] inputItems;
-            public FluidStack[] inputFluid;
-        }
-
         private final ItemStack pattern;
         private final ICraftingPatternDetails patternDetails;
         private final List<ItemStack> itemInventory;
         private final List<FluidStack> fluidInventory;
-        private GTRecipe patternRecipe;
-        private int patternRecipeMapHash;
 
         public PatternSlot(ItemStack pattern, World world) {
             this.pattern = pattern;
@@ -130,8 +116,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .getPatternForItem(pattern, world);
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
-            this.patternRecipe = null;
-            this.patternRecipeMapHash = 0;
         }
 
         public PatternSlot(ItemStack pattern, NBTTagCompound nbt, World world) {
@@ -140,8 +124,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .getPatternForItem(pattern, world);
             this.itemInventory = new ArrayList<>();
             this.fluidInventory = new ArrayList<>();
-            this.patternRecipe = null;
-            this.patternRecipeMapHash = 0;
             NBTTagList inv = nbt.getTagList("inventory", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < inv.tagCount(); i++) {
                 NBTTagCompound tagItemStack = inv.getCompoundTagAt(i);
@@ -207,6 +189,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             return fluidInventory.isEmpty();
         }
 
+        @Override
         public boolean isEmpty() {
             return isItemEmpty() && isFluidEmpty();
         }
@@ -227,8 +210,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             return patternDetails;
         }
 
-        public recipeInputs getPatternInputs(ItemStack[] sharedItems) {
-            recipeInputs inputsSuper = new recipeInputs();
+        public GTDualInputs getPatternInputs(ItemStack[] sharedItems) {
+            GTDualInputs dualInputs = new GTDualInputs();
 
             ItemStack[] inputItems = sharedItems;
             FluidStack[] inputFluids = new FluidStack[0];
@@ -245,22 +228,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 }
             }
 
-            inputsSuper.inputItems = inputItems;
-            inputsSuper.inputFluid = inputFluids;
-            return inputsSuper;
-        }
-
-        public void setPatternRecipe(GTRecipe recipe, int hash) {
-            patternRecipe = recipe;
-            patternRecipeMapHash = hash;
-        }
-
-        public GTRecipe getPatternRecipe() {
-            return patternRecipe;
-        }
-
-        public int getPatternRecipeMapHash() {
-            return patternRecipeMapHash;
+            dualInputs.inputItems = inputItems;
+            dualInputs.inputFluid = inputFluids;
+            return dualInputs;
         }
 
         public void refund(AENetworkProxy proxy, BaseActionSource src) throws GridAccessException {
@@ -369,6 +339,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private static final int MANUAL_SLOT_WINDOW = 10;
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
+    public boolean needClearRecipeMap;
 
     // holds all internal inventories
     private final PatternSlot[] internalInventory = new PatternSlot[MAX_PATTERN_COUNT];
@@ -742,32 +713,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         return super.getGUIWidth() + 16;
     }
 
-    private String getPatternHasRecipeList() {
-        if (superCribsRecipeCheck) {
-            StringBuilder sl = new StringBuilder();
-            for (PatternSlot slot : internalInventory) {
-                if (slot == null) {
-                    sl.append(0);
-                } else {
-                    if (slot.patternRecipe != null) {
-                        sl.append(1);
-                    } else {
-                        sl.append(0);
-                    }
-                }
-            }
-            return sl.toString();
-        }
-        return patternHasRecipeListCache;
-    }
-
-    @Override
-    public void setSuperCribsRecipeCheck(boolean state) {
-        superCribsRecipeCheck = state;
-    }
-
-    private String patternHasRecipeListCache = "111111111111111111111111111111111111";
-
     @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
@@ -782,8 +727,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     @Override
                     protected ItemStack getItemStackForRendering(Slot slotIn) {
                         ItemStack stack = slot.getStack();
-                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)
-                            || patternHasRecipeListCache.charAt(slot.getSlotIndex()) == '0') {
+                        if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
                             return stack;
                         }
                         ItemStack output = patternItem.getOutput(stack);
@@ -793,8 +737,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     .setChangeListener(() -> onPatternChange(slot.getSlotIndex(), slot.getStack())))
                 .build()
                 .setPos(7, 9))
-            .widget(
-                new FakeSyncWidget.StringSyncer(this::getPatternHasRecipeList, val -> patternHasRecipeListCache = val))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
                     widget.getContext()
@@ -850,7 +792,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             if (originalPattern.hasChanged(newItem, world)) {
                 try {
                     originalPattern.refund(getProxy(), getRequest());
-                    originalPattern.setPatternRecipe(null, 0);
+                    needClearRecipeMap = true;
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
                 needPatternSync = true;
@@ -1137,10 +1079,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
-    public void resetRecipes() {
-        for (PatternSlot slot : internalInventory) {
-            if (slot == null) continue;
-            slot.setPatternRecipe(null, 0);
-        }
+    public boolean needClearRecipeMap() {
+        return needClearRecipeMap;
     }
 }

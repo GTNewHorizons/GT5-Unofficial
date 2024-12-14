@@ -21,7 +21,5 @@ public interface IDualInputHatch {
 
     ItemStack[] getSharedItems();
 
-    void resetRecipes();
-
-    void setSuperCribsRecipeCheck(boolean state);
+    boolean needClearRecipeMap();
 }

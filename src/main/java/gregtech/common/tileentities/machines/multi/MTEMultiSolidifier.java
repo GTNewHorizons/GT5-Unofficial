@@ -430,35 +430,28 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
         // check crafting input hatches first
-        if (supportsCraftingMEBuffer()) {
-            if (superCribsRecipeCheck) {
-                CheckRecipeResult superCribsRecipeCheckResult = doSuperCribsCheckRecipe();
-                if (superCribsRecipeCheckResult == CheckRecipeResultRegistry.SUCCESSFUL) {
-                    return superCribsRecipeCheckResult;
-                } else {
-                    result = superCribsRecipeCheckResult;
-                }
-            } else {
-                for (IDualInputHatch dualInputHatch : mDualInputHatches) {
-                    ItemStack[] sharedItems = dualInputHatch.getSharedItems();
-                    for (var it = dualInputHatch.inventories(); it.hasNext();) {
-                        IDualInputInventory slot = it.next();
-                        ItemStack[] inputItems = slot.getItemInputs();
-                        FluidStack[] inputFluids = slot.getFluidInputs();
-                        if (inputItems.length == 0 && inputFluids.length == 0) continue;
-                        inputItems = ArrayUtils.addAll(inputItems, sharedItems);
-                        // Reverse order of input items for consistent behavior with standard input buses.
-                        ArrayUtils.reverse(inputItems);
-                        processingLogic.setInputItems(inputItems);
-                        processingLogic.setInputFluids(slot.getFluidInputs());
-                        CheckRecipeResult foundResult = processingLogic.process();
-                        if (foundResult.wasSuccessful()) {
-                            return foundResult;
-                        }
-                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
-                            // Recipe failed in interesting way, so remember that and continue searching
-                            result = foundResult;
-                        }
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+            if (dualInputHatch.needClearRecipeMap()) processingLogic.resetCribsRecipeMap();
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+                int slotHash = slot.hashCode();
+
+                if (!slot.isEmpty()) {
+                    if (!processingLogic.cribsHasRecipe(slotHash)
+                        && !processingLogic.setCribsSlotRecipe(slot.getPatternInputs(sharedItems), slotHash)) continue;
+
+                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
+                    processingLogic.setInputFluids(slot.getFluidInputs());
+                    processingLogic.setCribsSlotHash(slotHash);
+
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
                     }
                 }
             }

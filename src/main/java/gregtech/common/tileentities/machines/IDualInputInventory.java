@@ -3,19 +3,16 @@ package gregtech.common.tileentities.machines;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GTRecipe;
+import gregtech.api.objects.GTDualInputs;
 
 public interface IDualInputInventory {
+
+    boolean isEmpty();
 
     ItemStack[] getItemInputs();
 
     FluidStack[] getFluidInputs();
 
-    MTEHatchCraftingInputME.PatternSlot.recipeInputs getPatternInputs(ItemStack[] sharedItems);
+    GTDualInputs getPatternInputs(ItemStack[] sharedItems);
 
-    void setPatternRecipe(GTRecipe recipe, int hash);
-
-    GTRecipe getPatternRecipe();
-
-    int getPatternRecipeMapHash();
 }
