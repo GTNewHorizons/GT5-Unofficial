@@ -860,8 +860,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     ItemBlockLapotronicEnergyUnit.UMV_wireless_eu_cap
                         .multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
 
-        if (transferred_eu.signum() == 1) {
-            inputLastTick += transferred_eu.longValue();
+        if (transferred_eu.signum() == -1) {
+            inputLastTick += Math.abs(transferred_eu.longValue());
         } else {
             outputLastTick += transferred_eu.longValue();
         }

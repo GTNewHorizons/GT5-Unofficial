@@ -243,19 +243,20 @@ public class GTRecipeConstants {
         if (aDuration <= 0) {
             return Collections.emptyList();
         }
-        builder.duration(aDuration);
         boolean recycle = builder.getMetadataOrDefault(RECYCLE, false);
         Collection<GTRecipe> ret = new ArrayList<>();
         for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
-            int tPlasmaAmount = (int) Math.max(1L, aDuration / (mat.getMass() * 16L));
+            builder.duration(Math.max(1, mat == Materials.Nitrogen ? aDuration / 4 : aDuration / 24));
+            int tPlasmaAmount = (int) Math.min(1L, aDuration / (mat.getMass() * 16L));
             GTRecipeBuilder plasmaBuilder = builder.copy()
                 .fluidInputs(mat.getPlasma(tPlasmaAmount))
                 .fluidOutputs(mat.getGas(tPlasmaAmount));
             if (recycle) {
-                plasmaBuilder.recipeCategory(RecipeCategories.plasmaArcFurnaceRecycling);
+                continue;
             }
             ret.addAll(RecipeMaps.plasmaArcFurnaceRecipes.doAdd(plasmaBuilder));
         }
+        builder.duration(aDuration);
         GTRecipeBuilder arcBuilder = builder.copy()
             .fluidInputs(Materials.Oxygen.getGas(aDuration));
         if (recycle) {
@@ -264,7 +265,6 @@ public class GTRecipeConstants {
         ret.addAll(RecipeMaps.arcFurnaceRecipes.doAdd(arcBuilder));
         return ret;
     });
-
     /**
      * Add a chemical reactor recipe to both LCR and singleblocks.
      */
