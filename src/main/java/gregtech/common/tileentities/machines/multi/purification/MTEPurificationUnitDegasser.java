@@ -411,7 +411,9 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "If this bit is on, you must insert " + EnumChatFormatting.RED
                     + "4608L "
                     + EnumChatFormatting.WHITE
-                    + "Molten Neutronium")
+                    + "Molten Neutronium"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
@@ -768,7 +770,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Current control signal: " + EnumChatFormatting.YELLOW + controlSignal.toString());
+        info.add("Current control signal (binary): 0b" + EnumChatFormatting.YELLOW + controlSignal.toString());
         info.add("Current output multiplier: " + EnumChatFormatting.YELLOW + outputMultiplier);
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(

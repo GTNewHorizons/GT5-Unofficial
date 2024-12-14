@@ -80,7 +80,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public String getMachineType() {
-        return "(Plasma/Electric) Arc Furnace";
+        return "Arc Furnace, Plasma Arc Furnace";
     }
 
     @Override
@@ -88,7 +88,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("250% faster than using single block machines of the same voltage")
-            .addInfo("Processes 8 * voltage tier * W items")
+            .addInfo("Processes voltage tier * W items in Electric mode or 8 * voltage tier * W items in Plasma mode")
             .addInfo("Right-click controller with a Screwdriver to change modes")
             .addInfo("Max Size required to process Plasma recipes")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -250,7 +250,7 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
 
     @Override
     public int getMaxParallelRecipes() {
-        return (this.mSize * 8 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (this.mSize * (mPlasmaMode ? 8 : 1) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override

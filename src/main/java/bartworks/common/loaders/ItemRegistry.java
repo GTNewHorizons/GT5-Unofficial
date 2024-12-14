@@ -386,7 +386,9 @@ public class ItemRegistry {
     public static ItemStack giantOutputHatch;
     public static ItemStack humongousInputHatch;
 
+    @Deprecated
     public static ItemStack[][][] TecTechLaserAdditions = new ItemStack[3][4][4];
+    @Deprecated
     public static ItemStack TecTechPipeEnergyLowPower;
 
     public static void run() {
