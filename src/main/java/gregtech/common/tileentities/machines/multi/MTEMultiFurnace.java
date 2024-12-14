@@ -48,6 +48,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.VoidProtectionHelper;
 
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> implements ISurvivalConstructable {
 
@@ -206,6 +207,25 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
+                // Initialize void protection for the current output
+                if (protectsExcessItem()) {
+                    VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
+                    voidProtectionHelper.setMachine(this)
+                        .setMaxParallel(remainingCost)
+                        .setItemOutputs(new ItemStack[] { smeltedOutput })
+                        .build();
+
+                    int maxParallelForOutput = (int) Math
+                        .min(voidProtectionHelper.getMaxParallel() * batchMultiplierMax, remainingCost);
+
+                    if (maxParallelForOutput == 0) {
+                        continue;
+                    }
+
+                    remainingCost = maxParallelForOutput;
+                }
+
+                // Handle input and output consumption based on remaining cost
                 if (remainingCost >= item.stackSize) {
                     remainingCost -= item.stackSize;
                     smeltedOutput.stackSize *= item.stackSize;
@@ -219,6 +239,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 }
             }
         }
+
+        if (protectsExcessItem() && smeltedOutputs.isEmpty()) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+        }
+
         this.mOutputItems = smeltedOutputs.toArray(new ItemStack[0]);
 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
@@ -374,6 +399,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         } else {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
         return true;
     }
 }
