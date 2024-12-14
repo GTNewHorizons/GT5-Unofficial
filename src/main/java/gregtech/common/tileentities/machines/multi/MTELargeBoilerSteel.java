@@ -19,6 +19,8 @@ public class MTELargeBoilerSteel extends MTELargeBoiler {
         pollutionPerSecond = GTMod.gregtechproxy.mPollutionLargeSteelBoilerPerSecond;
     }
 
+    public static final int EUT_GENERATED = 1000;
+
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTELargeBoilerSteel(this.mName);
@@ -76,7 +78,7 @@ public class MTELargeBoilerSteel extends MTELargeBoiler {
 
     @Override
     public int getEUt() {
-        return 1000;
+        return MTELargeBoilerSteel.EUT_GENERATED;
     }
 
     @Override

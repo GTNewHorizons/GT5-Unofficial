@@ -14,6 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_AR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PROCESSING_ARRAY_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -49,6 +51,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
 
 public class MTEPurificationUnitBaryonicPerfection
     extends MTEPurificationUnitBase<MTEPurificationUnitBaryonicPerfection> implements ISurvivalConstructable {
@@ -246,6 +250,11 @@ public class MTEPurificationUnitBaryonicPerfection
         numCasings = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
         if (numCasings < MIN_CASINGS) return false;
+        // Blacklist stocking bus because it's incredibly buggy with this and keeps duping catalyst no matter how much
+        // I try to fix it.
+        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
+            if (bus instanceof MTEHatchInputBusME) return false;
+        }
         return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
@@ -303,7 +312,9 @@ public class MTEPurificationUnitBaryonicPerfection
                     + CATALYST_BASE_COST
                     + "L"
                     + EnumChatFormatting.WHITE
-                    + " Molten Infinity")
+                    + " Molten Infinity"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addInfo("For every duplicate occurrence of an inserted catalyst in the sequence, this cost is doubled.")
             .addSeparator()
             .addInfo("Keeps track of the entire sequence of catalysts inserted this recipe.")
@@ -313,8 +324,18 @@ public class MTEPurificationUnitBaryonicPerfection
                     + BARYONIC_MATTER_OUTPUT
                     + "L "
                     + EnumChatFormatting.WHITE
-                    + "Stabilised Baryonic Matter")
-            .addInfo("At the end of the recipe, all incorrectly inserted catalysts are returned in the output bus.")
+                    + "Stabilised Baryonic Matter"
+                    + EnumChatFormatting.GRAY
+                    + ".")
+            .addInfo(
+                "At the end of a successful recipe, outputs additional " + EnumChatFormatting.RED
+                    + PurifiedWaterRecipes.extraBaryonicOutput
+                    + "L "
+                    + EnumChatFormatting.WHITE
+                    + "Stabilised Baryonic Matter"
+                    + EnumChatFormatting.GRAY
+                    + " per parallel.")
+            .addInfo("At the end of the recipe, returns all incorrectly inserted catalysts in the output bus.")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -364,7 +385,7 @@ public class MTEPurificationUnitBaryonicPerfection
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front Center")
-            .addInputBus("Any Quark Exclusion Casing", 1)
+            .addInputBus("Any Quark Exclusion Casing. Stocking bus is blacklisted.", 1)
             .addInputHatch("Any Quark Exclusion Casing", 1)
             .addOutputBus("Any Quark Exclusion Casing", 1)
             .addOutputHatch("Any Quark Exclusion Casing", 1)
@@ -400,7 +421,7 @@ public class MTEPurificationUnitBaryonicPerfection
         // Output incorrect indices unchanged, the spent ones will follow if recipe was successful from the actual
         // recipe outputs
         for (int i = 0; i < insertedCatalysts.size(); ++i) {
-            if (i == correctStartIndex || i == correctStartIndex + 1) continue;
+            if (correctStartIndex != -1 && (i == correctStartIndex || i == correctStartIndex + 1)) continue;
 
             addOutput(insertedCatalysts.get(i));
         }

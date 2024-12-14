@@ -333,9 +333,9 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             this.excessFuel += GTModHandler.getFuelValue(tInput) % 80;
                             this.mMaxProgresstime += this.excessFuel / 80;
                             this.excessFuel %= 80;
+                            this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                             this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
                             this.mEUt = adjustEUtForConfig(getEUt());
-                            this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
