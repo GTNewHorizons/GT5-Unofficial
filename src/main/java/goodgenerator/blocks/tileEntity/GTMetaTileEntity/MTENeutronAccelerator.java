@@ -3,6 +3,8 @@ package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.util.GTUtility.formatNumbers;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -30,7 +32,10 @@ public class MTENeutronAccelerator extends MTEHatchEnergy {
     @Override
     public String[] getDescription() {
         return new String[] { "Uses Energy to Accelerate the Neutrons!",
-            "Max consumption: " + formatNumbers(this.getMaxEUConsume()) + " EU/t",
+            "Max consumption: " + EnumChatFormatting.YELLOW
+                + formatNumbers(this.getMaxEUConsume())
+                + EnumChatFormatting.WHITE
+                + " EU/t",
             "Every EU gets converted into 10-20 eV Neutron Kinetic Energy." };
     }
 
