@@ -883,6 +883,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Nonnull
     protected CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
         // check crafting input hatches first
         for (IDualInputHatch dualInputHatch : mDualInputHatches) {
             ItemStack[] sharedItems = dualInputHatch.getSharedItems();

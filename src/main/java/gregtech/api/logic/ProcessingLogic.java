@@ -122,7 +122,6 @@ public class ProcessingLogic extends AbstractProcessingLogic<ProcessingLogic> {
     /**
      * Executes the recipe check: Find recipe from recipemap, Calculate parallel, overclock and outputs.
      */
-
     @Nonnull
     public CheckRecipeResult process() {
         RecipeMap<?> recipeMap = preProcess();
