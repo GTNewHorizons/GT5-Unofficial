@@ -218,7 +218,7 @@ public class MTEIndustrialElectromagneticSeparator
             .beginStructureBlock(7, 6, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
-            .addOtherStructurePart("Any glass", "x12")
+            .addCasingInfoExactly("Any Glass", 12, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
             .addOtherStructurePart("Electromagnet Housing", "1 Block Above/Behind Controller", 2)
             .addInputBus("Any Casing", 1)

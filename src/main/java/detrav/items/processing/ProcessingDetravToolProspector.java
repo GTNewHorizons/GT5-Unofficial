@@ -26,7 +26,7 @@ import gregtech.api.util.GTModHandler;
 public class ProcessingDetravToolProspector implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingDetravToolProspector() {
-        OrePrefixes.toolHeadPickaxe.add(this);
+
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials material, String aOreDictName, String aModName,
