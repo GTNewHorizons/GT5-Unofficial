@@ -58,7 +58,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Turbine")
+        tt.addMachineType("Plasma Turbine, LPT")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Use your Fusion Reactor to produce the Plasma")
             .beginStructureBlock(3, 3, 4, true)

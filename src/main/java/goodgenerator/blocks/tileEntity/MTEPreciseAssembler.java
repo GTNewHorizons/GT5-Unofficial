@@ -330,7 +330,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Precise Assembler/Assembler")
+        tt.addMachineType("Precise Assembler, Assembler, PrAss")
             .addInfo("The error is no more than 7nm.")
             .addInfo("Can assemble precise component in Precise Mode.")
             .addInfo("Can work like a normal assembler in Normal Mode.")

@@ -460,7 +460,6 @@ import static gregtech.common.items.IDMetaItem01.ZPM4;
 import static gregtech.common.items.IDMetaItem01.ZPM5;
 import static gregtech.common.items.IDMetaItem01.ZPM6;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -2934,19 +2933,19 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_Chest_Basic.ID,
                 "Basic Item Holder",
-                "Hold a few item for use within machine GUI",
+                "Holds 9 item for use within machine GUI (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         ItemList.Cover_Chest_Good.set(
             addItem(
                 Cover_Chest_Good.ID,
                 "Good Item Holder",
-                "Hold a few item for use within machine GUI",
+                "Holds 12 item for use within machine GUI (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         ItemList.Cover_Chest_Advanced.set(
             addItem(
                 Cover_Chest_Advanced.ID,
                 "Advanced Item Holder",
-                "Hold a few item for use within machine GUI",
+                "Holds 15 item for use within machine GUI (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
 
         ItemList.Cover_Screen.set(
@@ -3511,15 +3510,16 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
     }
 
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
-        Collection<GTRecipe> fusionRecipes = RecipeMaps.fusionRecipes.getAllRecipes();
-        if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) { // Materials has a plasma fluid
-            for (GTRecipe recipe : fusionRecipes) { // Loop through fusion recipes
-                if (recipe.getFluidOutput(0) != null) { // Make sure fluid output can't be null (not sure if possible)
+        // Materials has a plasma fluid
+        if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) {
+            if (aMaterial.mHasPlasma) return true;
+            // Loop through fusion recipes
+            for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
+                // Make sure fluid output can't be null (not sure if possible)
+                if (recipe.getFluidOutput(0) != null) {
+                    // Fusion recipe output matches current plasma cell fluid
                     if (recipe.getFluidOutput(0)
-                        .isFluidEqual(aMaterial.getPlasma(1L))) return true; // Fusion recipe
-                                                                             // output matches
-                                                                             // current plasma
-                                                                             // cell fluid
+                        .isFluidEqual(aMaterial.getPlasma(1L))) return true;
                 }
             }
         }

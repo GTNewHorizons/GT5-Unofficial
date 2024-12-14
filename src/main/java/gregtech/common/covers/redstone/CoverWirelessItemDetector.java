@@ -59,6 +59,8 @@ public class CoverWirelessItemDetector
         final long hash = hashCoverCoords(aTileEntity, side);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
+        aTileEntity.setOutputRedstoneSignal(side, signal);
+
         return aCoverVariable;
     }
 

@@ -75,6 +75,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     private static final String MS_RIGHT_MID = "rightmid";
     private static final String MS_END = "end";
 
+    private static final int BASE_PARALLELS = 2;
     private static final int PARALLELS_PER_WIDTH = 3;
     private static final double DECAY_RATE = 0.025;
 
@@ -106,7 +107,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             STRUCTURE_PIECE_MAIN,
             (transpose(
                 new String[][] { { "       ", "BBBBBBB", "BBBBBBB", "BBBBBBB", "       " },
-                    { "BBBBBBB", "       ", "D D D D", "       ", "AAAAAAA" },
+                    { "BBBBBBB", "       ", "D D D D", "       ", "BBBBBBB" },
                     { "AAAAAAA", "       ", "       ", "       ", "AAAAAAA" },
                     { "CCCBCCC", "       ", "F F F F", "       ", "CCCCCCC" },
                     { "BBB~BBB", "BBBBBBB", "BBBBBBB", "BBBBBBB", "BBBBBBB" } })))
@@ -196,13 +197,13 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     + EnumChatFormatting.GRAY
                     + " to hold different molds")
             .addInfo("Speeds up to a maximum of 200% faster than singleblock machines while running")
-            .addInfo("Decays at double the Rate that it Speeds up at")
+            .addInfo("Decays at double the rate that it speeds up at")
             .addInfo("Only uses 80% of the EU/t normally required")
-            .addInfo("Starts with 4 Parallels")
-            .addInfo("Gain " + PARALLELS_PER_WIDTH + " Parallels per Width Expansion and Multiplied by Voltage Tier")
-            .addInfo("Energy Hatch Based on Glass Tier, UMV Glass Unlocks all")
+            .addInfo("Processes " + BASE_PARALLELS + " items per voltage tier")
+            .addInfo("Processes an additional " + PARALLELS_PER_WIDTH + " items per voltage tier per width expansion")
+            .addInfo("Energy hatch limited by glass tier, UMV Glass unlocks all")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .beginVariableStructureBlock(17, 33, 5, 5, 5, 5, true)
+            .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
             .addController("Front Center bottom")
             .addCasingInfoRange("Solidifier Casing", 91, 211, false)
             .addCasingInfoRange("Solidifier Radiator", 13, 73, false)
@@ -281,7 +282,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             }
         }
 
-        return casingAmount >= (91 + width * 20) && mMaintenanceHatches.size() == 1;
+        return casingAmount >= (91 + width * 20);
     }
 
     @Override
@@ -344,7 +345,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     public int getMaxParallelRecipes() {
-        return 4 + (width * PARALLELS_PER_WIDTH) * GTUtility.getTier(this.getMaxInputVoltage());
+        return (BASE_PARALLELS + (width * PARALLELS_PER_WIDTH)) * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
