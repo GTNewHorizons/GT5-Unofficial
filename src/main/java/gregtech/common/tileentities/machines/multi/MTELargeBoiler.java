@@ -334,6 +334,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             this.mMaxProgresstime += this.excessFuel / 80;
                             this.excessFuel %= 80;
                             this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
+                            this.mMaxProgresstime = (int) (this.mMaxProgresstime * getLongBurntimeRatio(tInput));
                             this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
                             this.mEUt = adjustEUtForConfig(getEUt());
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
@@ -342,16 +343,6 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             if (this.mEfficiencyIncrease > 5000) {
                                 this.mEfficiencyIncrease = 0;
                                 this.mSuperEfficencyIncrease = 20;
-
-                                // Increase burntime by a small amount based on the initial burntime value.
-                                // Balanced to the approx 16 percent increase for 5x Compressed Coal Coke in the GT++
-                                // boiler line
-                                // Percentage increases on a base 9 log scale with a base of 1600 (coal / charcoal)
-                                double logScale = Math.log((float) GTModHandler.getFuelValue(tInput) / 1600)
-                                    / Math.log(9);
-                                double ratio = 1 + logScale * 0.025;
-
-                                this.mMaxProgresstime = (int) (this.mProgresstime * ratio);
                             }
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
@@ -364,6 +355,11 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
+    private double getLongBurntimeRatio(ItemStack tInput) {
+        double logScale = Math.log((float) GTModHandler.getFuelValue(tInput) / 1600)
+            / Math.log(9);
+        return 1 + logScale * 0.025;
+    }
     abstract int runtimeBoost(int mTime);
 
     abstract boolean isSuperheated();
