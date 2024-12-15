@@ -162,11 +162,6 @@ public class MTEBoilerBase extends MTEBoiler {
     }
 
     @Override
-    public boolean isElectric() {
-        return false;
-    }
-
-    @Override
     public int getCapacity() {
         return (16000 + (16000 * tier));
     }
