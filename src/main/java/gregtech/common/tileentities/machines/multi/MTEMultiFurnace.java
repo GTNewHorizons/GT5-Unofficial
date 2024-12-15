@@ -207,6 +207,8 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
+                int maxParallelForOutput = remainingCost;
+
                 // Initialize void protection for the current output
                 if (protectsExcessItem()) {
                     VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
@@ -215,26 +217,26 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                         .setItemOutputs(new ItemStack[] { smeltedOutput })
                         .build();
 
-                    int maxParallelForOutput = (int) Math
-                        .min(voidProtectionHelper.getMaxParallel() * batchMultiplierMax, remainingCost);
+                    maxParallelForOutput = Math.min(voidProtectionHelper.getMaxParallel(), remainingCost);
 
                     if (maxParallelForOutput == 0) {
                         continue;
                     }
-
-                    remainingCost = maxParallelForOutput;
                 }
 
-                // Handle input and output consumption based on remaining cost
-                if (remainingCost >= item.stackSize) {
+                if (maxParallelForOutput >= item.stackSize) {
                     remainingCost -= item.stackSize;
                     smeltedOutput.stackSize *= item.stackSize;
                     item.stackSize = 0;
                     smeltedOutputs.add(smeltedOutput);
                 } else {
-                    smeltedOutput.stackSize *= remainingCost;
-                    item.stackSize -= remainingCost;
+                    remainingCost -= maxParallelForOutput;
+                    smeltedOutput.stackSize *= maxParallelForOutput;
+                    item.stackSize -= maxParallelForOutput;
                     smeltedOutputs.add(smeltedOutput);
+                }
+
+                if (remainingCost <= 0) {
                     break;
                 }
             }
