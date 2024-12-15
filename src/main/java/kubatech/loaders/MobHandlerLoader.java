@@ -74,7 +74,7 @@ public class MobHandlerLoader {
 
         public final MobRecipe recipe;
 
-        public final int mEUt = 2000;
+        public final int mEUt = 1920;
         public final int mDuration;
         public final EntityLiving entityCopy;
 
@@ -183,7 +183,6 @@ public class MobHandlerLoader {
                     if (infernalstacks != null) {
                         ItemStack infernalstack = infernalstacks.get(rnd.nextInt(infernalstacks.size()))
                             .copy();
-                        // noinspection ConstantConditions
                         EnchantmentHelper.addRandomEnchantment(
                             rnd,
                             infernalstack,

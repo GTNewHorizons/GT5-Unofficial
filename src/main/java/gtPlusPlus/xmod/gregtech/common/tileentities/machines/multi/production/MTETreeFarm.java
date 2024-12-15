@@ -72,12 +72,11 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -112,21 +111,20 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
     @Override
     public String getMachineType() {
-        return "Tree Farm";
+        return "Tree Farm, TGS";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller block for the Tree Growth Simulator")
             .addInfo("Farms and harvests trees using EU")
             .addInfo("Place a sapling in the controller slot")
             .addInfo("Place a tool in an input bus")
             .addInfo("Different tools are required for different outputs")
             .addInfo("Advanced tools multiply output amount")
             .addInfo("  Logs: Saw (1x), Buzzsaw (2x), Chainsaw (4x)")
-            .addInfo("  Saplings: Branch Cutter (1x), Grafter (3x)")
+            .addInfo("  Saplings: Branch Cutter (1x), Grafter (4x)")
             .addInfo("  Leaves: Shears (1x), Wire Cutter (2x), Automatic Snips (4x)")
             .addInfo("  Fruit: Knife (1x)")
             .addInfo("Multiple tools can be used at the same time")
@@ -135,7 +133,6 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             .addInfo("Energy input tier multiplies output further")
             .addInfo("Output multiplier is equal to: 2*tier^2 - 2*tier + 5")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasingInfoMin(mCasingName, 8, false)
@@ -146,7 +143,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
             .addEnergyHatch("Any casing", 1)
             .addMaintenanceHatch("Any casing", 1)
             .addMufflerHatch("Any casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -210,7 +207,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiTreeFarm;
+        return PollutionConfig.pollutionPerSecondMultiTreeFarm;
     }
 
     @Override
@@ -266,8 +263,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
          * In previous versions, a saw used to go in the controller slot. We do not want an update to stop processing of
          * a machine set up like this. Instead, a sapling is placed in this slot at the start of the next operation.
          */
-        if (aStack.getItem() instanceof MetaGeneratedTool01) return true;
-        return false;
+        return aStack.getItem() instanceof MetaGeneratedTool01;
     }
 
     @Override
@@ -293,7 +289,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
     private static final EnumMap<Mode, Integer> modeMultiplier = new EnumMap<>(Mode.class);
     static {
         modeMultiplier.put(Mode.LOG, 5);
-        modeMultiplier.put(Mode.SAPLING, 1);
+        modeMultiplier.put(Mode.SAPLING, 5);
         modeMultiplier.put(Mode.LEAVES, 2);
         modeMultiplier.put(Mode.FRUIT, 1);
     }
@@ -462,7 +458,7 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                     return 1;
                 }
                 if (Forestry.isModLoaded() && tool instanceof IToolGrafter && tool.isDamageable()) {
-                    return 3;
+                    return 4;
                 }
                 break;
 

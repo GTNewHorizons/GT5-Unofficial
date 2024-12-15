@@ -119,7 +119,7 @@ public class BaseItemMisc extends Item {
         // Nothing Fancy here yet.
     }
 
-    public static enum MiscTypes {
+    public enum MiscTypes {
 
         POTION("Potion", " Potion", "potion"),
         KEY("Key", " Key", "key"),
@@ -133,7 +133,7 @@ public class BaseItemMisc extends Item {
         private final String DISPLAY_NAME_SUFFIX;
         private final String OREDICT_PREFIX;
 
-        private MiscTypes(final String LocalName, final String DisplayNameSuffix, final String OreDictPrefix) {
+        MiscTypes(final String LocalName, final String DisplayNameSuffix, final String OreDictPrefix) {
             this.TYPE = LocalName;
             this.DISPLAY_NAME_SUFFIX = DisplayNameSuffix;
             this.OREDICT_PREFIX = OreDictPrefix;

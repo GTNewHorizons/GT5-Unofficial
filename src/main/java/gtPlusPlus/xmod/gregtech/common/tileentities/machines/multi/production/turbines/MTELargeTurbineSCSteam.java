@@ -7,16 +7,12 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
 
@@ -121,7 +117,8 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
         if (isUsingDenseSteam) {
             addOutput(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
         } else {
-            addOutput(GTModHandler.getSteam(totalFlow * 100));
+            addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
+
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
@@ -135,10 +132,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
             tEU = MathUtils
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
         }
-        if (isUsingDenseSteam) {
-            return tEU;
-        }
-        return tEU * 100L;
+        return tEU;
     }
 
     @Override
@@ -148,7 +142,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Supercritical Steam Turbine";
+        return "Large Supercritical Steam Turbine, XLSCT";
     }
 
     @Override
@@ -162,12 +156,7 @@ public class MTELargeTurbineSCSteam extends MTELargerTurbineBase {
     }
 
     @Override
-    protected ITexture getTextureFrontFace() {
-        return TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
-    }
-
-    @Override
-    protected ITexture getTextureFrontFaceActive() {
-        return TextureFactory.of(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
+    protected boolean isDenseSteam() {
+        return isUsingDenseSteam;
     }
 }

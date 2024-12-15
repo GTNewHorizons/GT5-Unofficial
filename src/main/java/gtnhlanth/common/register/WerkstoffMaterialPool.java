@@ -11,7 +11,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 
-@SuppressWarnings({ "unchecked" })
 public class WerkstoffMaterialPool implements Runnable {
 
     // Current highest ID = 11_499
@@ -824,7 +823,6 @@ public class WerkstoffMaterialPool implements Runnable {
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
-            .addMolten()
             .addCells(),
         offsetID2 + 24,
         TextureSet.SET_DULL,
@@ -1036,7 +1034,8 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
             .addMolten()
-            .addMetalItems(),
+            .addMetalItems()
+            .addMetalCraftingSolidifierRecipes(),
         offsetID3 + 12,
         TextureSet.SET_DULL);
 
@@ -1846,7 +1845,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CeriumDopedLutetiumAluminiumOxygenBlend = new Werkstoff(
         new short[] { 128, 192, 80 },
         "Cerium-doped Lutetium Aluminium Oxygen Blend",
-        subscriptNumbers("(Ce)Lu3Al5O12"),
+        subscriptNumbers("CeLu3(Al2O3)5"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MATERIAL,
         new Werkstoff.GenerationFeatures().disable()
@@ -1858,7 +1857,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CeriumDopedLutetiumAluminiumGarnet = new Werkstoff(
         new short[] { 144, 255, 63 },
         "Cerium-doped Lutetium Aluminium Garnet (Ce:LuAG)",
-        subscriptNumbers("(Ce)Lu3Al5O12"),
+        subscriptNumbers("CeLu3(Al2O3)5"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MATERIAL,
         new Werkstoff.GenerationFeatures().disable()
@@ -1947,7 +1946,7 @@ public class WerkstoffMaterialPool implements Runnable {
         new short[] { 0, 0, 0 },
         "Reactive-Ion Etching Mixture",
         subscriptNumbers("CHF3/O2"),
-        new Werkstoff.Stats().setCentrifuge(true),
+        new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
@@ -2017,13 +2016,21 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3b + 10,
         TextureSet.SET_FLUID);
 
+    public static final Werkstoff HotSuperCoolant = new Werkstoff(
+        new short[] { 155, 17, 30 },
+        "Hot Super Coolant",
+        new Werkstoff.Stats(),
+        Werkstoff.Types.MIXTURE,
+        new Werkstoff.GenerationFeatures().disable()
+            .addCells(),
+        offsetID3b + 11,
+        TextureSet.SET_FLUID);
+
     public static void runInit() {
         addSubTags();
     }
 
     private static void addSubTags() {
-
-        // WerkstoffMaterialPool.PTMEGElastomer.add(SubTag.BOUNCY, SubTag.STRETCHY);
 
     }
 

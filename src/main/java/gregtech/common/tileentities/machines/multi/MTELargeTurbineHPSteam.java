@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -59,12 +58,10 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine")
-            .addInfo("Controller block for the Large High Pressure Steam Turbine")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Outputs Steam as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Titanium Turbine Casing", 8, 31, false)
@@ -72,7 +69,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Superheated Steam, Side centered", 2)
             .addOutputHatch("Steam, Side centered", 2)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -196,17 +193,5 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbine {
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return (looseFit && XSTR_INSTANCE.nextInt(4) == 0) ? 0 : 1;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("turbineFitting", looseFit);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        looseFit = aNBT.getBoolean("turbineFitting");
     }
 }

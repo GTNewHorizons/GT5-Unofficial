@@ -15,12 +15,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.common.items.ItemVolumetricFlask;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SideOnly(Side.CLIENT)
 public final class FlaskRenderer implements IItemRenderer {
 
     public FlaskRenderer() {
         MinecraftForgeClient.registerItemRenderer(ItemList.VOLUMETRIC_FLASK.getItem(), this);
+        MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_8k.getItem(), this);
+        MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_32k.getItem(), this);
     }
 
     @Override

@@ -250,7 +250,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                     this.ToBuildWith[3][0]);
                             } else if (dx == 0 && dz == -5 && (dy == 1 || dy == 2)) {
                                 if (dy == 1) {
-                                    this.setBlock(worldObj, x + dx, y + 1, z + -5, Blocks.iron_door, 1);
+                                    this.setBlock(worldObj, x + dx, y + 1, z - 5, Blocks.iron_door, 1);
                                 }
                                 if (dy == 2) {
                                     this.setBlock(worldObj, x + dx, y + 2, z + dz, Blocks.iron_door, 8);
@@ -303,7 +303,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                                     this.setBlock(worldObj, x + 3, y + 1, z + dz, Blocks.crafting_table, 0);
                                 }
                                 if (dx == -3 && (dz == -3 || dz == -2)) {
-                                    this.setBlock(worldObj, x + -3, y + dy, z + dz, Blocks.chest, 5);
+                                    this.setBlock(worldObj, x - 3, y + dy, z + dz, Blocks.chest, 5);
                                     IInventory chest = (IInventory) worldObj.getTileEntity(x + dx, y + dy, z + dz);
                                     if (chest != null) {
                                         WeightedRandomChestContent.generateChestContents(

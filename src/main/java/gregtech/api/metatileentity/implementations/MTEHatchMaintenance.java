@@ -176,8 +176,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
+            if (aBaseMetaTileEntity.isClientSide()) return true;
             // only allow OC robot fake player
             if (aPlayer instanceof FakePlayer && !aPlayer.getGameProfile()
                 .getName()
@@ -272,7 +272,6 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                                 aStack.stackSize = 0;
                             } else {
                                 aStack.stackSize -= amt;
-                                amt = 0;
                                 break;
                             }
                         }

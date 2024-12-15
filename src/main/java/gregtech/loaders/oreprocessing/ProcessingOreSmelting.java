@@ -120,14 +120,6 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                     .metadata(ADDITIVE_AMOUNT, 2)
                                     .addTo(primitiveBlastRecipes);
                                 GTValues.RA.stdBuilder()
-                                    .itemInputs(aMaterial.getDust(2), Materials.Quartzite.getDust(4))
-                                    .itemOutputs(
-                                        aMaterial.mDirectSmelting.getIngots(outputAmount),
-                                        Materials.Ferrosilite.getDustSmall(outputAmount))
-                                    .duration(2 * MINUTES)
-                                    .metadata(ADDITIVE_AMOUNT, 2)
-                                    .addTo(primitiveBlastRecipes);
-                                GTValues.RA.stdBuilder()
                                     .itemInputs(aMaterial.getDust(2), Materials.NetherQuartz.getDust(2))
                                     .itemOutputs(
                                         aMaterial.mDirectSmelting.getIngots(outputAmount),
@@ -191,7 +183,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     1L);
                 if ((tStack == null) && (!aMaterial.contains(SubTag.SMELTING_TO_GEM)))
                     tStack = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
-                GTModHandler.addSmeltingRecipe(GTOreDictUnificator.get(aPrefix, aMaterial, 1L), tStack);
+                GTModHandler.addSmeltingRecipe(aStack, tStack);
             }
         }
     }

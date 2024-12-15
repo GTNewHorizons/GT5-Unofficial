@@ -58,11 +58,9 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Turbine")
-            .addInfo("Controller block for the Large Plasma Turbine")
+        tt.addMachineType("Plasma Turbine, LPT")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Use your Fusion Reactor to produce the Plasma")
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Tungstensteel Turbine Casing", 8, 31, false)
@@ -70,7 +68,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Plasma Fluid, Side centered", 2)
             .addOutputHatch("Molten Fluid, optional, Side centered", 2)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -124,7 +122,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbine {
 
     @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
-        if (aFluids.size() >= 1) {
+        if (!aFluids.isEmpty()) {
             int tEU = 0;
 
             int actualOptimalFlow = 0;

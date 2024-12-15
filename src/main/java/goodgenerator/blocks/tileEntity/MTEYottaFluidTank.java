@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.*;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -57,6 +56,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
@@ -254,8 +254,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             cacheNeedsRecreation = !tankInfoCache[0].fluid.isFluidEqual(mFluid);
         }
         if (cacheNeedsRecreation) {
-            final FluidStack storedFluid = mFluid.copy();
-            storedFluid.amount = fluidSize;
+            final FluidStack storedFluid = GTUtility.copyAmount(fluidSize, mFluid);
             tankInfoCache[0] = new FluidTankInfo(storedFluid, tankCapacity);
         } else if (mFluid != null) {
             tankInfoCache[0].fluid.amount = fluidSize;
@@ -418,14 +417,10 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
-            .addInfo("Controller block for the YOTTank.")
             .addInfo("The max output speed is decided by the amount of stored liquid and the output hatch's capacity.")
             .addInfo("The max fluid cell tier is limited by the glass tier.")
             .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
             .addInfo("The max height of the cell blocks is 15.")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
             .addController("Front of the second layer")
             .addCasingInfoExactly("Steel Frame Box", 16, false)
@@ -434,7 +429,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
             .addInputHatch("Hint block with dot 1")
             .addOutputHatch("Hint block with dot 3")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

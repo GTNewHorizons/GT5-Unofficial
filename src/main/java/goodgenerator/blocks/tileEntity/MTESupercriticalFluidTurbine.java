@@ -68,7 +68,7 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(GTModHandler.getSteam(totalFlow));
+        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
         if (totalFlow == realOptFlow) {
             tEU = GTUtility
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
@@ -138,25 +138,27 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
         return 1538;
     }
 
+    public boolean isNewStyleRendering() {
+        return true;
+    }
+
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Supercritical Steam Turbine")
-            .addInfo("Controller block for Large Supercritical Fluid Turbine")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Use Supercritical Steam to generate power.")
-            .addInfo("Outputs 1L of Steam per 1L of SC Steam as well as producing power")
+            .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
             .addInfo("Power output depends on turbine and fitting")
             .addInfo("Use screwdriver to adjust fitting of turbine")
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
-            .addCasingInfo("SC Turbine Casing", 24)
+            .addCasingInfoMin("SC Turbine Casing", 24, false)
             .addDynamoHatch("Back center", 1)
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Supercritical Fluid, Side centered", 2)
             .addOutputHatch("Superheated Steam, Side centered", 3)
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 

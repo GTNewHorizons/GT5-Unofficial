@@ -17,14 +17,13 @@ import tectech.TecTech;
  */
 public final class RenderQuantumStuff implements ISimpleBlockRenderingHandler {
 
-    private static final Tessellator tes = Tessellator.instance;
-
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glPushMatrix();
         // Get icons from custom register (useful for renderers and fluids)
         IIcon side = BlockQuantumStuff.stuff;
+        Tessellator tes = Tessellator.instance;
         tes.startDrawingQuads();
         tes.setNormal(0.0F, -1.0F, 0.0F);
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, side);
@@ -58,6 +57,7 @@ public final class RenderQuantumStuff implements ISimpleBlockRenderingHandler {
         RenderBlocks renderer) {
         // renderer.renderStandardBlock(block, x, y, z);
         GL11.glPushMatrix();
+        Tessellator tes = Tessellator.instance;
         tes.setNormal(0F, 1F, 0F);
         tes.setBrightness(15728880);
         IIcon side = BlockQuantumStuff.stuff;
@@ -88,7 +88,8 @@ public final class RenderQuantumStuff implements ISimpleBlockRenderingHandler {
         pos.rotateAroundX(rotX);
         pos.rotateAroundY(rotY);
         pos.rotateAroundZ(rotZ);
-        tes.addVertexWithUV(pos.xCoord + x + .5f, pos.yCoord + y + .5f, pos.zCoord + z + .5f, sideU, sideV);
+        Tessellator.instance
+            .addVertexWithUV(pos.xCoord + x + .5f, pos.yCoord + y + .5f, pos.zCoord + z + .5f, sideU, sideV);
     }
 
     @Override

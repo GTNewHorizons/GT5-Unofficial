@@ -1,5 +1,10 @@
 package tectech.thing.block;
 
+import static tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor.DEFAULT_BLUE;
+import static tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor.DEFAULT_GAMMA;
+import static tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor.DEFAULT_GREEN;
+import static tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor.DEFAULT_RED;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -9,38 +14,71 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import com.gtnewhorizons.modularui.api.math.Color;
+
+import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
+import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
 
 public class TileEntityForgeOfGods extends TileEntity {
 
     private float radius = 32;
     private float rotationSpeed = 10;
     private int ringCount = 1;
-    private float colorR = .7f, colorG = .8f, colorB = 1f, gamma = 3f;
     private float rotAngle = 0, rotAxisX = 1, rotAxisY = 0, rotAxisZ = 0;
+    private AxisAlignedBB renderBoundingBox;
+
+    private ForgeOfGodsStarColor starColor = ForgeOfGodsStarColor.DEFAULT;
+
+    // current color data
+    private int currentColor = Color.rgb(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE);
+    private float gamma = DEFAULT_GAMMA;
+
+    // interpolation color data
+    private int cycleStep;
+    private int interpIndex;
+    private int interpA;
+    private int interpB;
+    private float interpGammaA;
+    private float interpGammaB;
 
     private static final String NBT_TAG = "FOG:";
     private static final String ROTATION_SPEED_NBT_TAG = NBT_TAG + "ROTATION";
     private static final String SIZE_NBT_TAG = NBT_TAG + "RADIUS";
     private static final String RINGS_NBT_TAG = NBT_TAG + "RINGS";
-    private static final String COLOR_RED_NBT_TAG = NBT_TAG + "COLOR_RED";
-    private static final String COLOR_GREEN_NBT_TAG = NBT_TAG + "COLOR_GREEN";
-    private static final String COLOR_BLUE_NBT_TAG = NBT_TAG + "COLOR_BLUE";
-    private static final String COLOR_GAMMA_NBT_TAG = NBT_TAG + "COLOR_GAMMA";
     private static final String ROT_ANGLE_NBT_TAG = NBT_TAG + "ROT_ANGLE";
     private static final String ROT_AXIS_X_NBT_TAG = NBT_TAG + "ROT_AXIS_X";
     private static final String ROT_AXIS_Y_NBT_TAG = NBT_TAG + "ROT_AXIS_Y";
     private static final String ROT_AXIS_Z_NBT_TAG = NBT_TAG + "ROT_AXIS_Z";
+    private static final String STAR_COLOR_TAG = NBT_TAG + "STAR_COLOR";
 
     public static final float BACK_PLATE_DISTANCE = -121.5f, BACK_PLATE_RADIUS = 13f;
+    private static final double RING_RADIUS = 63;
+    private static final double BEAM_LENGTH = 59;
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
+        if (renderBoundingBox == null) {
+            double x = this.xCoord;
+            double y = this.yCoord;
+            double z = this.zCoord;
+
+            // This could possibly be made smaller by figuring out the beam direction,
+            // but since this is not always known (set dynamically by the MTE), this
+            // currently just bounds as if the beam is in all 4 directions.
+            renderBoundingBox = AxisAlignedBB.getBoundingBox(
+                x - RING_RADIUS - BEAM_LENGTH,
+                y - RING_RADIUS - BEAM_LENGTH,
+                z - RING_RADIUS - BEAM_LENGTH,
+                x + RING_RADIUS + BEAM_LENGTH + 1,
+                y + RING_RADIUS + BEAM_LENGTH + 1,
+                z + RING_RADIUS + BEAM_LENGTH + 1);
+        }
+        return renderBoundingBox;
     }
 
     @Override
     public double getMaxRenderDistanceSquared() {
-        return 51200;
+        return Double.MAX_VALUE;
     }
 
     public void setStarRadius(float size) {
@@ -60,30 +98,39 @@ public class TileEntityForgeOfGods extends TileEntity {
     }
 
     public float getColorR() {
-        return colorR;
+        return Color.getRedF(currentColor);
     }
 
     public float getColorG() {
-        return colorG;
+        return Color.getGreenF(currentColor);
     }
 
     public float getColorB() {
-        return colorB;
+        return Color.getBlueF(currentColor);
     }
 
     public float getGamma() {
         return gamma;
     }
 
-    public void setColor(float r, float g, float b) {
-        setColor(r, g, b, 1);
-    }
+    public void setColor(ForgeOfGodsStarColor color) {
+        this.starColor = color;
+        if (this.starColor == null) {
+            this.starColor = ForgeOfGodsStarColor.DEFAULT;
+        }
 
-    public void setColor(float r, float g, float b, float gamma) {
-        colorR = r;
-        colorG = g;
-        colorB = b;
-        this.gamma = gamma;
+        StarColorSetting colorSetting = starColor.getColor(0);
+        currentColor = Color.rgb(colorSetting.getColorR(), colorSetting.getColorG(), colorSetting.getColorB());
+        gamma = colorSetting.getGamma();
+
+        if (starColor.numColors() > 1) {
+            cycleStep = 0;
+            interpA = currentColor;
+            interpGammaA = gamma;
+            colorSetting = starColor.getColor(1);
+            interpB = Color.rgb(colorSetting.getColorR(), colorSetting.getColorG(), colorSetting.getColorB());
+            interpGammaB = colorSetting.getGamma();
+        }
     }
 
     public int getRingCount() {
@@ -157,20 +204,59 @@ public class TileEntityForgeOfGods extends TileEntity {
         return y0 + ((x - x0) * (y1 - y0)) / (x1 - x0);
     }
 
+    public void incrementColors() {
+        if (starColor.numColors() > 1) {
+            cycleStep += starColor.getCycleSpeed();
+
+            if (cycleStep < 255) {
+                // interpolate like normal between these two colors
+                interpolateColors();
+            } else if (cycleStep == 255) {
+                // interpolate like normal, but then update interp values to the next set and reset cycleStep
+                cycleStarColors();
+                currentColor = interpA;
+                gamma = interpGammaA;
+                cycleStep = 0;
+            } else {
+                // update interp values to the next set, reset cycleStep then interpolate
+                cycleStep -= 255;
+                cycleStarColors();
+                interpolateColors();
+            }
+        }
+    }
+
+    private void interpolateColors() {
+        float position = cycleStep / 255.0f;
+        currentColor = Color.interpolate(interpA, interpB, position);
+        gamma = interpGammaA + (interpGammaB - interpGammaA) * position;
+    }
+
+    private void cycleStarColors() {
+        interpA = interpB;
+        interpGammaA = interpGammaB;
+
+        interpIndex++;
+        if (interpIndex >= starColor.numColors()) {
+            interpIndex = 0;
+        }
+        StarColorSetting nextColor = starColor.getColor(interpIndex);
+
+        interpB = Color.rgb(nextColor.getColorR(), nextColor.getColorG(), nextColor.getColorB());
+        interpGammaB = nextColor.getGamma();
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setFloat(ROTATION_SPEED_NBT_TAG, rotationSpeed);
         compound.setFloat(SIZE_NBT_TAG, radius);
         compound.setInteger(RINGS_NBT_TAG, ringCount);
-        compound.setFloat(COLOR_RED_NBT_TAG, colorR);
-        compound.setFloat(COLOR_GREEN_NBT_TAG, colorG);
-        compound.setFloat(COLOR_BLUE_NBT_TAG, colorB);
-        compound.setFloat(COLOR_GAMMA_NBT_TAG, gamma);
         compound.setFloat(ROT_ANGLE_NBT_TAG, rotAngle);
         compound.setFloat(ROT_AXIS_X_NBT_TAG, rotAxisX);
         compound.setFloat(ROT_AXIS_Y_NBT_TAG, rotAxisY);
         compound.setFloat(ROT_AXIS_Z_NBT_TAG, rotAxisZ);
+        compound.setTag(STAR_COLOR_TAG, starColor.serializeToNBT());
     }
 
     @Override
@@ -182,14 +268,14 @@ public class TileEntityForgeOfGods extends TileEntity {
         ringCount = compound.getInteger(RINGS_NBT_TAG);
         if (ringCount < 1) ringCount = 1;
 
-        colorR = compound.getFloat(COLOR_RED_NBT_TAG);
-        colorG = compound.getFloat(COLOR_GREEN_NBT_TAG);
-        colorB = compound.getFloat(COLOR_BLUE_NBT_TAG);
-        gamma = compound.getFloat(COLOR_GAMMA_NBT_TAG);
         rotAngle = compound.getFloat(ROT_ANGLE_NBT_TAG);
         rotAxisX = compound.getFloat(ROT_AXIS_X_NBT_TAG);
         rotAxisY = compound.getFloat(ROT_AXIS_Y_NBT_TAG);
         rotAxisZ = compound.getFloat(ROT_AXIS_Z_NBT_TAG);
+
+        if (compound.hasKey(STAR_COLOR_TAG)) {
+            setColor(ForgeOfGodsStarColor.deserialize(compound.getCompoundTag(STAR_COLOR_TAG)));
+        }
     }
 
     @Override

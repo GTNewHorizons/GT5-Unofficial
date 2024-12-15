@@ -96,13 +96,11 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coke Oven")
-            .addInfo("Controller block for the Pyrolyse Oven")
             .addInfo("Industrial Charcoal producer")
             .addInfo("Processing speed scales linearly with Coil tier:")
             .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front center")
             .addCasingInfoRange("Pyrolyse Oven Casing", 60, 80, false)
@@ -114,7 +112,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
             .addInputHatch("Center 3x1x3 area in top layer", 2)
             .addOutputBus("Any bottom layer casing", 1)
             .addOutputHatch("Any bottom layer casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -122,7 +120,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.casingTexturePages[8][66], TextureFactory.builder()
+            if (active) return new ITexture[] { BlockIcons.casingTexturePages[0][0], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
                 .extFacing()
                 .build(),
@@ -131,7 +129,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { BlockIcons.casingTexturePages[8][66], TextureFactory.builder()
+            return new ITexture[] { BlockIcons.casingTexturePages[0][0], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN)
                 .extFacing()
                 .build(),
@@ -141,7 +139,7 @@ public class MTEPyrolyseOven extends MTEEnhancedMultiBlockBase<MTEPyrolyseOven> 
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[8][66] };
+        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][0] };
     }
 
     @Override

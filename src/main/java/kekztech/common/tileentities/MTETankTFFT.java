@@ -343,7 +343,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addInfo("Note on hatch locking:")
             .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
             .addInfo("The index of a stored fluid can be obtained through the Tricorder.")
-            .addSeparator()
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
             .addController("Top Center")
             .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
@@ -361,7 +360,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addStructureInfo("Use MIOH with conduits or fluid storage busses to see all fluids at once.")
             .addSubChannelUsage("field", "Maximum Field Tier")
             .addSubChannelUsage("height", "Height of structure")
-            .toolTipFinisher("KekzTech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -551,7 +550,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             "Maintenance Status: " + ((getRepairStatus() == getIdealStatus())
                 ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
                 : EnumChatFormatting.RED + "Has Problems" + EnumChatFormatting.RESET));
-        ll.add("---------------------------------------------");
+        ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
 
         return ll.toArray(new String[0]);
     }

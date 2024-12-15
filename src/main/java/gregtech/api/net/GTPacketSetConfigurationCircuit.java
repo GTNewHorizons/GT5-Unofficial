@@ -22,7 +22,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Client -> Server: Update machine configuration data
  */
-public class GTPacketSetConfigurationCircuit extends GTPacketNew {
+public class GTPacketSetConfigurationCircuit extends GTPacket {
 
     protected int mX;
     protected short mY;
@@ -32,7 +32,7 @@ public class GTPacketSetConfigurationCircuit extends GTPacketNew {
     protected ItemStack circuit;
 
     public GTPacketSetConfigurationCircuit() {
-        super(true);
+        super();
     }
 
     public GTPacketSetConfigurationCircuit(IGregTechTileEntity tile, ItemStack circuit) {
@@ -44,7 +44,7 @@ public class GTPacketSetConfigurationCircuit extends GTPacketNew {
     }
 
     public GTPacketSetConfigurationCircuit(int x, short y, int z, ItemStack circuit) {
-        super(false);
+        super();
 
         this.mX = x;
         this.mY = y;
@@ -82,7 +82,7 @@ public class GTPacketSetConfigurationCircuit extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         return new GTPacketSetConfigurationCircuit(
             aData.readInt(),
             aData.readShort(),

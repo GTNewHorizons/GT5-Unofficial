@@ -39,8 +39,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static kubatech.api.Variables.Author;
-import static kubatech.api.Variables.StructureHologram;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -54,7 +52,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -63,7 +60,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderHell;
@@ -76,7 +72,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.Multimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -107,6 +102,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -264,11 +260,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Powered Spawner, EEC")
-            .addInfo("Controller block for the Extreme Entity Crusher")
-            .addInfo(Author)
             .addInfo("Spawns and kills monsters for you.")
             .addInfo("You have to insert the powered spawner in the controller.")
-            .addInfo("Base energy usage: 2,000 EU/t")
+            .addInfo("Base energy usage: 1,920 EU/t")
             .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs.")
             .addInfo("Recipe time is based on mob health.")
             .addInfo("You can additionally put a weapon inside the GUI.")
@@ -282,8 +276,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo("When in ritual mode and the Well Of Suffering ritual is built directly centered on the machine,")
             .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
             .addInfo("You can disable mob animation with a soldering iron.")
-            .addInfo(StructureHologram)
-            .addSeparator()
             .beginStructureBlock(5, 7, 5, true)
             .addController("Front Bottom Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
@@ -295,7 +287,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addOutputHatch("Any bottom casing", 1)
             .addEnergyHatch("Any bottom casing", 1)
             .addMaintenanceHatch("Any bottom casing", 1)
-            .toolTipFinisher(Tags.MODNAME);
+            .toolTipFinisher(GTValues.AuthorKuba);
         return tt;
     }
 
@@ -498,8 +490,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 isValid = false;
                 return;
             }
-            // noinspection unchecked
-            attackDamage = ((Multimap<String, AttributeModifier>) stack.getAttributeModifiers())
+            attackDamage = stack.getAttributeModifiers()
                 .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())
                 .stream()
                 .mapToDouble(
@@ -560,7 +551,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
             weaponCheck: {
-                MTEHatchInputBus inputbus = this.mInputBusses.size() == 0 ? null : this.mInputBusses.get(0);
+                MTEHatchInputBus inputbus = this.mInputBusses.isEmpty() ? null : this.mInputBusses.get(0);
                 if (inputbus != null && !inputbus.isValid()) inputbus = null;
                 ItemStack lootingHolder = inputbus == null ? null : inputbus.getStackInSlot(0);
                 if (lootingHolder == null) break weaponCheck;
@@ -593,7 +584,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 EECPlayer.currentWeapon = weapon;
                 Item lootingHolderItem = weapon.getItem();
                 for (int i = 0; i < times + 1; i++) {
-                    // noinspection ConstantConditions
                     if (!lootingHolderItem.hitEntity(weapon, recipe.recipe.entity, EECPlayer)) break;
                     if (weapon.stackSize == 0) {
                         weaponCache.setStackInSlot(0, null);
@@ -657,9 +647,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
         if (mCasing < 35 || mMaintenanceHatches.size() != 1
-            || mEnergyHatches.size() == 0
-            || !(mInputBusses.size() == 0 || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0)))
-            return false;
+            || mEnergyHatches.isEmpty()
+            || !(mInputBusses.isEmpty() || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0))) return false;
         if (mGlassTier < 8) for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
         if (isInRitualMode) connectToRitual();
         return true;
@@ -780,8 +769,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_EXTREME_ENTITY_CRUSHER_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EXTREME_ENTITY_CRUSHER_LOOP;
     }
 
     private static class EECFakePlayer extends FakePlayer {

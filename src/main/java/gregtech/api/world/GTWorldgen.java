@@ -9,9 +9,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.DimensionManager;
 
-import gregtech.common.WorldgenGTOreLayer;
-import gregtech.common.WorldgenGTOreSmallPieces;
-
 public abstract class GTWorldgen {
 
     public final String mWorldGenName;
@@ -85,6 +82,18 @@ public abstract class GTWorldgen {
      *         Overworld, Twilight Forest and Deep Dark)
      */
     public boolean isGenerationAllowed(World aWorld, Class... aAllowedDimensionTypes) {
+        return isGenerationAllowed(aWorld, null, aAllowedDimensionTypes);
+    }
+
+    /**
+     *
+     * @param aWorld                 The World Object
+     * @param blackListedProviders   List of blacklisted Worldgeneration classes
+     * @param aAllowedDimensionTypes The Types of allowed Worldgeneration
+     * @return if generation for this world is allowed for MoronTech (tm) OreGen (ATM (2.0.3.1Dev) only End, Nether,
+     *         Overworld, Twilight Forest and Deep Dark)
+     */
+    public boolean isGenerationAllowed(World aWorld, String[] blackListedProviders, Class... aAllowedDimensionTypes) {
         String aDimName = aWorld.provider.getDimensionName();
         if (aDimName.equalsIgnoreCase("Underdark")) {
             return false;
@@ -95,23 +104,20 @@ public abstract class GTWorldgen {
 
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
+            if (blackListedProviders != null) {
+                for (String dimClass : blackListedProviders) {
+                    if (dimClass.equals(
+                        aWorld.provider.getClass()
+                            .getName())) {
+                        return false;
+                    }
+                }
+            }
             boolean value = false;
-            for (int i = 0; i < aAllowedDimensionTypes.length; i++) {
-                if (aAllowedDimensionTypes[i].isInstance(aWorld.provider)) {
+            for (Class aAllowedDimensionType : aAllowedDimensionTypes) {
+                if (aAllowedDimensionType.isInstance(aWorld.provider)) {
                     value = true;
-                }
-            }
-
-            // ugly, but idk how to do it better without hard depping on tf provider in ore constructors
-            if (this instanceof WorldgenGTOreSmallPieces ore) {
-                if (ore.twilightForest && aWorld.provider.dimensionId == 7) {
-                    value = true;
-                }
-            }
-
-            if (this instanceof WorldgenGTOreLayer ore) {
-                if (ore.twilightForest && aWorld.provider.dimensionId == 7) {
-                    value = true;
+                    break;
                 }
             }
 

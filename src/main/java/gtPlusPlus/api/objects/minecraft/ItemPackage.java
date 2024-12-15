@@ -53,5 +53,5 @@ public abstract class ItemPackage implements RunnableWithInfo<String> {
      */
     public boolean onLoadComplete(FMLLoadCompleteEvent event) {
         return false;
-    };
+    }
 }

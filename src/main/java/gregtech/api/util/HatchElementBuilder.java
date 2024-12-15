@@ -177,7 +177,7 @@ public class HatchElementBuilder<T> {
     /**
      * Mark this hatch element as the only candidate of given structure element. (e.g. muffler hatch on top of EBF)
      * Currently, this will make the built IStructureElement to ignore gt_no_hatch directive from player
-     *
+     * <p>
      * Do note that {@link #buildAndChain(IStructureElement[])} and its overloads will force the resulting structure
      * element
      * to be non-exclusive.

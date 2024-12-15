@@ -157,33 +157,33 @@ public class TexturesGtBlock {
     // spotless:off
     public static final CustomIcon Casing_Coil_QFT = new CustomIcon("TileEntities/MACHINE_CASING_QFT_COIL");
     public static final CustomIcon NeutronPulseManipulator = mAnimated ? new CustomIcon(
-        "NeutronPulseManipulator") : new CustomIcon("NeutronPulseManipulatorStatic");
+        "qft/NeutronPulseManipulator") : new CustomIcon("qft/NeutronPulseManipulatorStatic");
     public static final CustomIcon CosmicFabricManipulator = mAnimated ? new CustomIcon(
-        "CosmicFabricManipulator") : new CustomIcon("CosmicFabricManipulatorStatic");
+        "qft/CosmicFabricManipulator") : new CustomIcon("qft/CosmicFabricManipulatorStatic");
     public static final CustomIcon InfinityInfusedManipulator = mAnimated ? new CustomIcon(
-        "InfinityInfusedManipulator") : new CustomIcon("InfinityInfusedManipulatorStatic");
+        "qft/InfinityInfusedManipulator") : new CustomIcon("qft/InfinityInfusedManipulatorStatic");
     public static final CustomIcon SpaceTimeContinuumRipper = mAnimated ? new CustomIcon(
-        "SpaceTimeContinuumRipper") : new CustomIcon("SpaceTimeContinuumRipperStatic");
-    public static final CustomIcon Manipulator_Top = new CustomIcon("Manipulator_Top");
+        "qft/SpaceTimeContinuumRipper") : new CustomIcon("qft/SpaceTimeContinuumRipperStatic");
+    public static final CustomIcon Manipulator_Top = new CustomIcon("qft/Manipulator_Top");
     public static final CustomIcon NeutronShieldingCore = mAnimated ? new CustomIcon(
-        "NeutronShieldingCore") : new CustomIcon("NeutronShieldingCoreStatic");
+        "qft/NeutronShieldingCore") : new CustomIcon("qft/NeutronShieldingCoreStatic");
     public static final CustomIcon CosmicFabricShieldingCore = mAnimated ? new CustomIcon(
-        "CosmicFabricShieldingCore") : new CustomIcon("CosmicFabricShieldingCoreStatic");
+        "qft/CosmicFabricShieldingCore") : new CustomIcon("qft/CosmicFabricShieldingCoreStatic");
     public static final CustomIcon InfinityInfusedShieldingCore = mAnimated ? new CustomIcon(
-        "InfinityInfusedShieldingCore") : new CustomIcon("InfinityInfusedShieldingCoreStatic");
+        "qft/InfinityInfusedShieldingCore") : new CustomIcon("qft/InfinityInfusedShieldingCoreStatic");
     public static final CustomIcon SpaceTimeBendingCore = mAnimated ? new CustomIcon(
-        "SpaceTimeBendingCore") : new CustomIcon("SpaceTimeBendingCoreStatic");
-    public static final CustomIcon ForceFieldGlass = new CustomIcon("ForceFieldGlass");
-    public static final CustomIcon ForceField = new CustomIcon("rendering/ForceField");
-    public static final CustomIcon Blank = new CustomIcon("Blank");
+        "qft/SpaceTimeBendingCore") : new CustomIcon("qft/SpaceTimeBendingCoreStatic");
+    public static final CustomIcon ForceFieldGlass = new CustomIcon("qft/ForceFieldGlass");
+    public static final CustomIcon ForceField = new CustomIcon("qft/ForceField");
+    public static final CustomIcon Blank = new CustomIcon("qft/blank");
     //spotless:on
 
     // MACHINE_CASING_FARM_MANAGER_STRUCTURAL
     // Farm Manager Casings
     public static final CustomIcon Casing_Machine_Farm_Manager = new CustomIcon(
         "TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
-    // Acacia_Log
-    public static final CustomIcon Casing_Machine_Acacia_Log = new CustomIcon("TileEntities/log_acacia_top");
+    // Sterile Casing
+    public static final CustomIcon Sterile_Casing = new CustomIcon("TileEntities/sterileCasing");
     // Podzol Top
     public static final CustomIcon Casing_Machine_Podzol = new CustomIcon("TileEntities/dirt_podzol_top");
 
@@ -310,10 +310,6 @@ public class TexturesGtBlock {
     public static final CustomIcon Overlay_Machine_Screen_Logo = new CustomIcon("TileEntities/adv_machine_screen_logo");
 
     // Machine Controller Overlays
-    // public static final CustomIcon Overlay_Machine_Controller_Default = new CustomIcon(
-    // "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED");
-    // public static final CustomIcon Overlay_Machine_Controller_Default_Active = new CustomIcon(
-    // "iconsets/OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ANIMATED_ACTIVE");
 
     // oMCD = Overlay_Machine_Controller_Default
     public static final CustomIcon oMCDSolarTower = new CustomIcon("iconsets/controllerFaces/solarTower");
@@ -593,4 +589,5 @@ public class TexturesGtBlock {
         TEXTURE_CASING_TIERED_LV, TEXTURE_CASING_TIERED_MV, TEXTURE_CASING_TIERED_HV, TEXTURE_CASING_TIERED_EV,
         TEXTURE_CASING_TIERED_IV, TEXTURE_CASING_TIERED_LuV, TEXTURE_CASING_TIERED_ZPM, TEXTURE_CASING_TIERED_UV,
         TEXTURE_CASING_TIERED_MAX };
+
 }

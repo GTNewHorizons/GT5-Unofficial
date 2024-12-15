@@ -2,7 +2,6 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.ArrayList;
@@ -181,18 +180,16 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Engine")
-            .addInfo("Controller block for the Chemical Engine")
+        tt.addMachineType("Chemical Engine, UCFE")
             .addInfo("BURNING BURNING BURNING")
             .addInfo("Use combustible liquid to generate power.")
             .addInfo("You need to supply Combustion Promoter to keep it running.")
             .addInfo("It will consume all the fuel and promoter in the hatch every second.")
             .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop.")
-            .addInfo("When turned on, there's 10-second period where the machine will not stop.")
+            .addInfo("When turned on, there is a 10-second period where the machine will not stop.")
             .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed.")
             .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel.")
             .addInfo("The proportion is bigger, and the efficiency will be higher.")
-            .addInfo("Start machine with power button to force structure check.")
             .addInfo("It creates sqrt(Current Output Power) pollution every second")
             .addInfo(
                 "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
@@ -201,15 +198,13 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                     + EnumChatFormatting.GRAY
                     + ".")
             .addInfo("The efficiency is up to 150%.")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
+            .addTecTechHatchInfo()
             .beginStructureBlock(5, 4, 9, false)
             .addMaintenanceHatch("Hint block with dot 1")
             .addMufflerHatch("Hint block with dot 2 (fill all slots with mufflers)")
             .addInputHatch("Hint block with dot 3 (fill all slots with input hatches)")
             .addDynamoHatch("Hint block with dot 4")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -280,8 +275,8 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Probably makes: " + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(this.getPowerFlow())
+        info[4] = "Currently generates: " + EnumChatFormatting.RED
+            + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
             + EnumChatFormatting.RESET
             + " EU/t";
         info[6] = "Problems: " + EnumChatFormatting.RED

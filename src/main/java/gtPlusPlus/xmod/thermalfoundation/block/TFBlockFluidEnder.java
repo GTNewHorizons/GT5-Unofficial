@@ -17,7 +17,7 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 public class TFBlockFluidEnder extends BlockFluidCoFHBase {
 
     public static final Material materialFluidEnder = new MaterialLiquid(MapColor.greenColor);
-    private static boolean effect = true;
+    private static final boolean effect = true;
 
     public TFBlockFluidEnder() {
         super(GTPlusPlus.ID, TFFluids.fluidEnder, materialFluidEnder, "ender");

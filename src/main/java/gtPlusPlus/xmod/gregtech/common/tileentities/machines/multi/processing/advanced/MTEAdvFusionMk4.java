@@ -21,7 +21,6 @@ import gregtech.api.util.AdvancedFusionOverclockDescriber;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAdvFusionMk4 extends MTEFusionComputer {
@@ -44,12 +43,10 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("HARNESSING THE POWER OF A BLUE GIANT")
-            .addInfo("Controller block for the Fusion Reactor Mk IV")
             .addInfo("131072EU/t and 320M EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .addInfo("Performs 4/4 overclocks")
-            .addSeparator()
             .beginStructureBlock(15, 3, 15, false)
             .addController("See diagram when placed")
             .addCasingInfoMin("Fusion Machine Casings MK III", 79, false)
@@ -59,7 +56,7 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             .addInputHatch("2-16, Specified casings", 1)
             .addOutputHatch("1-16, Specified casings", 3)
             .addStructureInfo("ALL Hatches must be UHV or better")
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 

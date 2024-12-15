@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
@@ -171,7 +172,7 @@ public class RecipesMachines {
     // Misc
     public static ItemStack INPUT_RCCokeOvenBlock;
 
-    public static final void loadRecipes() {
+    public static void loadRecipes() {
         run();
         Logger.INFO("Loading Recipes for the Various machine blocks.");
     }
@@ -272,9 +273,9 @@ public class RecipesMachines {
                 CI.getRobotArm(aTier, 1),
                 CI.getSensor(aTier, 1),
                 CI.getRobotArm(aTier, 1),
-                ItemUtils.getOrePrefixStack(OrePrefixes.toolHeadSense, CI.tieredMaterials[aTier], 1),
+                ItemUtils.getOrePrefixStack(OrePrefixes.plate, CI.tieredMaterials[aTier], 1),
                 CI.getTieredMachineHull(aTier, 1),
-                ItemUtils.getOrePrefixStack(OrePrefixes.toolHeadSense, CI.tieredMaterials[aTier], 1),
+                ItemUtils.getOrePrefixStack(OrePrefixes.plate, CI.tieredMaterials[aTier], 1),
                 CI.getTieredCircuitOreDictName(aTier),
                 aInputHatches[i].get(1),
                 CI.getTieredCircuitOreDictName(aTier),
@@ -450,10 +451,10 @@ public class RecipesMachines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(18),
                 ItemList.Casing_Turbine.get(1),
-                CI.getPlate(3, 4),
-                CI.getScrew(3, 8))
+                MaterialsAlloy.INCONEL_625.getPlate(4),
+                MaterialsAlloy.INCONEL_625.getScrew(8))
             .itemOutputs(GregtechItemList.Casing_Turbine_LP.get(1))
-            .fluidInputs(CI.tieredMaterials[2].getMolten(144 * 2))
+            .fluidInputs(Materials.Aluminium.getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -625,12 +626,12 @@ public class RecipesMachines {
             .itemInputs(
                 CI.getNumberedAdvancedCircuit(17),
                 CI.getTieredGTPPMachineCasing(2, 1),
-                CI.getPlate(3, 2),
-                CI.getGear(3, 4),
+                MaterialsAlloy.INCONEL_625.getPlate(2),
+                MaterialsAlloy.INCONEL_625.getGear(4),
                 CI.getElectricMotor(3, 2),
                 CI.getCircuit(3, 4))
             .itemOutputs(GregtechItemList.Solar_Tower_Reflector.get(1))
-            .fluidInputs(CI.getTertiaryTieredFluid(3, 144 * 4))
+            .fluidInputs(Materials.Titanium.getMolten(4 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -839,7 +840,6 @@ public class RecipesMachines {
     private static void distillus() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(19),
                 ItemList.Distillation_Tower.get(2),
                 GregtechItemList.GTPP_Casing_IV.get(16),
                 CI.getTieredComponent(OrePrefixes.circuit, 6, 8))
@@ -980,6 +980,13 @@ public class RecipesMachines {
 
         // RTG
         GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemUtils.getItemStackWithMeta(true, "IC2:blockGenerator:6", "IC2-RTG", 6, 1),
+                MaterialsAlloy.NITINOL_60.getPlate(8),
+                MaterialsAlloy.MARAGING350.getGear(4),
+                ItemList.Field_Generator_EV.get(8),
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 32),
+                ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 4))
             .itemOutputs(GregtechItemList.RTG.get(1))
             .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(144 * 16))
             .duration(10 * MINUTES)
@@ -1250,6 +1257,17 @@ public class RecipesMachines {
                 MaterialsAlloy.TANTALLOY_61.getFrameBox(1),
                 GTUtility.getIntegratedCircuit(1))
             .itemOutputs(RECIPE_IndustrialCokeOvenFrame)
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(16)
+            .addTo(assemblerRecipes);
+
+        // Sturdy Aluminium Machine Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(GregtechItemList.Casing_Machine_Custom_2.get(2))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);
@@ -1779,6 +1797,10 @@ public class RecipesMachines {
             "plateNiobiumCarbide",
             RECIPE_IndustrialMatterFabFrame);
         GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.NIOBIUM_CARBIDE.getPlate(4),
+                MaterialsAlloy.INCONEL_792.getRod(4),
+                MaterialsAlloy.INCONEL_690.getFrameBox(1))
             .itemOutputs(RECIPE_IndustrialMatterFabFrame)
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
@@ -2755,33 +2777,29 @@ public class RecipesMachines {
             GregtechItemList.Machine_Adv_ImplosionCompressor.get(1));
 
         // Supply Depot
-        plate = MaterialsAlloy.TUNGSTEN_CARBIDE.getPlateDouble(1);
-        gear = MaterialsAlloy.TRINIUM_TITANIUM.getRing(1);
+        plate = MaterialsAlloy.HASTELLOY_C276.getPlateDouble(1);
         frame = MaterialsAlloy.TUNGSTEN_CARBIDE.getFrameBox(1);
-        cell1 = CI.conveyorModule_LuV;
-        cell2 = CI.electricMotor_LuV;
+        cell1 = CI.conveyorModule_HV;
+        cell2 = CI.electricMotor_HV;
         ItemStack casingAmazon = GregtechItemList.Casing_AmazonWarehouse.get(1);
 
         RecipeUtils.addShapedRecipe(
             plate,
-            ItemUtils.getItemStackOfAmountFromOreDict("cableGt12VanadiumGallium", 1),
-            plate,
-            cell1,
-            frame,
             cell2,
             plate,
-            gear,
+            CI.craftingToolWrench,
+            frame,
+            CI.craftingToolHammer_Hard,
+            plate,
+            cell1,
             plate,
             GregtechItemList.Casing_AmazonWarehouse.get(1));
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialsAlloy.TUNGSTEN_CARBIDE.getFrameBox(1),
-                MaterialsAlloy.TUNGSTEN_CARBIDE.getPlateDouble(4),
-                MaterialsAlloy.TRINIUM_TITANIUM.getRing(1),
-                ItemList.Electric_Motor_LuV.get(1),
-                ItemList.Conveyor_Module_LuV.get(1),
-                ItemUtils.getItemStackOfAmountFromOreDict("cableGt12VanadiumGallium", 1),
-                GTUtility.getIntegratedCircuit(1))
+                MaterialsAlloy.HASTELLOY_C276.getPlateDouble(4),
+                ItemList.Electric_Motor_HV.get(1),
+                ItemList.Conveyor_Module_HV.get(1))
             .itemOutputs(GregtechItemList.Casing_AmazonWarehouse.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
@@ -2789,14 +2807,14 @@ public class RecipesMachines {
 
         RecipeUtils.addShapedRecipe(
             casingAmazon,
-            CI.getTieredCircuit(7),
+            CI.getTieredCircuit(5),
             casingAmazon,
-            CI.robotArm_LuV,
-            ItemList.Machine_LuV_Unboxinator.get(1),
-            CI.robotArm_LuV,
-            CI.conveyorModule_LuV,
-            GregtechItemList.Gregtech_Computer_Cube.get(1),
-            CI.conveyorModule_LuV,
+            CI.electricPiston_IV,
+            ItemList.Machine_IV_Boxinator.get(1),
+            CI.electricPiston_IV,
+            CI.conveyorModule_IV,
+            casingAmazon,
+            CI.conveyorModule_IV,
             GregtechItemList.Amazon_Warehouse_Controller.get(1));
 
         // Industrial Mixing Machine
@@ -2851,19 +2869,20 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
-        int aCostMultiplier = 1;
-
         // Reservoir Hatch
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hatch_Input_EV.get(1),
-                GTModHandler.getModItem(RemoteIO.ID, "tile.machine", 1),
-                ItemList.Electric_Pump_EV.get(1))
-            .itemOutputs(GregtechItemList.Hatch_Reservoir.get(1))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
+        if (RemoteIO.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hatch_Input_EV.get(1),
+                    GTModHandler.getModItem(RemoteIO.ID, "tile.machine", 1),
+                    ItemList.Electric_Pump_EV.get(1))
+                .itemOutputs(GregtechItemList.Hatch_Reservoir.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(assemblerRecipes);
+        }
         // Mystic Frame
+        int aCostMultiplier = 1;
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Multi_Use.get(1),
@@ -3287,7 +3306,7 @@ public class RecipesMachines {
 
     private static void fakeMachineCasingCovers() {
         int aMaxTier = GTValues.VOLTAGE_NAMES.length;
-        ItemStack aTier[] = new ItemStack[aMaxTier];
+        ItemStack[] aTier = new ItemStack[aMaxTier];
         for (int i = 0; i < aMaxTier; i++) {
             aTier[i] = ItemUtils.simpleMetaStack(CoverManager.Cover_Gt_Machine_Casing, i, 7);
         }

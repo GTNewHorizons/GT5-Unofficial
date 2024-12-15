@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -29,12 +28,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -124,9 +123,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         this.heatLevel = aCoilLevel;
     }
 
-    public Integer getCoilTier() {
-        return (int) this.getCoilLevel()
-            .getTier() + 1;
+    public int getCoilTier() {
+        return heatLevel == null ? 0 : (int) this.heatLevel.getTier() + 1;
     }
 
     private static final IStructureDefinition<MTEMultiAutoclave> STRUCTURE_DEFINITION = StructureDefinition
@@ -195,35 +193,30 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         return STRUCTURE_DEFINITION;
     }
 
-    private static final String TOOLTIP_BAR = GOLD
-        + "---------------------------------------------------------------------------------------";
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Autoclave")
-            .addInfo(TOOLTIP_BAR)
-            .addInfo("Controller Block for the Industrial Autoclave.")
-            .addInfo(TOOLTIP_BAR)
             .addInfo("Processes 12 items per Item Pipe Casing Tier.")
             .addInfo("Energy consumption is reduced with higher fluid pipe tiers.")
             .addInfo(BLUE + "Energy consumption = Recipe Consumption * (12 - Pipe Casing Tier) / 12.")
             .addInfo("Each coil level makes the machine 25% faster than singleblock machines of the same voltage.")
-            .addInfo(AuthorVolence)
-            .addSeparator()
             .beginStructureBlock(7, 7, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Pressure Containment Casings", 128, false)
+            .addCasingInfoExactly("Any Glass", 42, false)
             .addCasingInfoExactly("Item Pipe Casings", 7, true)
             .addCasingInfoExactly("Pipe Casings", 14, true)
             .addCasingInfoExactly("Heating Coils", 7, true)
             .addCasingInfoExactly("PTFE Frame", 42, false)
-            .addInputBus("Any of the Pressure Containment Casings", 1)
-            .addOutputBus("Any of the Pressure Containment Casings", 1)
-            .addEnergyHatch("Any of the Pressure Containment Casings", 1)
-            .addMaintenanceHatch("Any of the Pressure Containment Casings", 1)
-            .addMufflerHatch("Any of the Pressure Containment Casings", 1)
-            .toolTipFinisher("GregTech");
+            .addInputBus("Any Pressure Containment Casing", 1)
+            .addOutputBus("Any Pressure Containment Casing", 1)
+            .addInputHatch("Any Pressure Containment Casing", 1)
+            .addOutputHatch("Any Pressure Containment Casing", 1)
+            .addEnergyHatch("Any Pressure Containment Casing", 1)
+            .addMaintenanceHatch("Any Pressure Containment Casing", 1)
+            .addMufflerHatch("Any Pressure Containment Casing", 1)
+            .toolTipFinisher(AuthorVolence);
         return tt;
     }
 
@@ -241,11 +234,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        return this.mMaintenanceHatches.size() == 1 && fluidPipeTier >= 0
-            && mCasingAmount >= 128
-            && itemPipeTier >= 0
-            && mEnergyHatches.size() >= 1
-            && mMufflerHatches.size() == 1;
+        return mCasingAmount >= 128 && mMufflerHatches.size() == 1;
     }
 
     @Override
@@ -295,14 +284,13 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
-        return build;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_MULTI_AUTOCLAVE_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_MULTI_AUTOCLAVE_LOOP;
     }
 
     @Override
@@ -431,5 +419,17 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
         logic.setAvailableAmperage(1L);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
+        return true;
     }
 }

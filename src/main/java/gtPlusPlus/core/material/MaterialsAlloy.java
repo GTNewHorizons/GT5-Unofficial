@@ -303,7 +303,7 @@ public final class MaterialsAlloy {
         -1,
         true, // Uses Blast furnace?
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().IRON, 06),
+        new MaterialStack(MaterialsElements.getInstance().IRON, 6),
         new MaterialStack(MaterialsElements.getInstance().COBALT, 2),
         new MaterialStack(MaterialsElements.getInstance().MOLYBDENUM, 24),
         new MaterialStack(MaterialsElements.getInstance().CHROMIUM, 6),

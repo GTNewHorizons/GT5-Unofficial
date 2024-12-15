@@ -8,16 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.TurbineStatCalculator;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-@SuppressWarnings("deprecation")
 public class MTELargeTurbineSteam extends MTELargerTurbineBase {
 
     private float water;
@@ -44,7 +40,7 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
 
     @Override
     public int getCasingTextureIndex() {
-        return 16;
+        return 57;
     }
 
     @Override
@@ -175,7 +171,7 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Steam Turbine";
+        return "Large Steam Turbine, XLST";
     }
 
     @Override
@@ -189,12 +185,7 @@ public class MTELargeTurbineSteam extends MTELargerTurbineBase {
     }
 
     @Override
-    protected ITexture getTextureFrontFace() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced);
-    }
-
-    @Override
-    protected ITexture getTextureFrontFaceActive() {
-        return new GTRenderedTexture(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active);
+    protected boolean isDenseSteam() {
+        return isUsingDenseSteam;
     }
 }

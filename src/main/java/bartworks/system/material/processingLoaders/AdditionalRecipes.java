@@ -15,6 +15,7 @@ package bartworks.system.material.processingLoaders;
 
 import static bartworks.API.recipe.BartWorksRecipeMaps.bacterialVatRecipes;
 import static bartworks.API.recipe.BartWorksRecipeMaps.bioLabRecipes;
+import static bartworks.util.BWRecipes.computeSieverts;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.OrePrefixes.bolt;
 import static gregtech.api.enums.OrePrefixes.crushed;
@@ -48,6 +49,7 @@ import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
+import static gregtech.api.util.GTRecipeConstants.SIEVERTS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
 import java.util.Arrays;
@@ -185,7 +187,7 @@ public class AdditionalRecipes {
                     .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 1000))
                     .special(BioItemList.mBioLabParts[3])
                     .duration(25 * SECONDS)
-                    .eut(TierEU.RECIPE_LuV)
+                    .eut(TierEU.RECIPE_EV)
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);
@@ -224,6 +226,7 @@ public class AdditionalRecipes {
                         .special(BioItemList.getPetriDish(bioCulture))
                         .fluidInputs(fluidStack)
                         .fluidOutputs(new FluidStack(bioCulture.getFluid(), 10))
+                        .metadata(SIEVERTS, computeSieverts(0, 3, false, false, false))
                         .duration(50 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
                         .addTo(bacterialVatRecipes);
@@ -239,8 +242,6 @@ public class AdditionalRecipes {
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1000))
                         .duration(25 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
-                        .ignoreCollision()
-                        .fake()
                         .addTo(bioLabRecipes);
                 }
             }
@@ -274,7 +275,6 @@ public class AdditionalRecipes {
             .addTo(BartWorksRecipeMaps.acidGenFuels);
     }
 
-    @SuppressWarnings("deprecation")
     public static void run() {
         runBWRecipes();
 
@@ -485,8 +485,6 @@ public class AdditionalRecipes {
             .eut(0)
             .metadata(FUEL_VALUE, 125_000)
             .addTo(ultraHugeNaquadahReactorFuels);
-
-        LoadItemContainers.run();
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L), WerkstoffLoader.Tiberium.get(dust, 3))

@@ -19,6 +19,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -36,9 +37,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -49,6 +53,8 @@ import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 
 public class GTStructureUtility {
 
@@ -66,6 +72,42 @@ public class GTStructureUtility {
         return ofHatchAdder(aHatchAdder, aTextureIndex, StructureLibAPI.getBlockHint(), aDots - 1);
     }
 
+    public static <T> IStructureElement<T> ofAnyWater(boolean allowFlowing) {
+        return new IStructureElement<>() {
+
+            final Block distilledWater = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+
+            @Override
+            public boolean check(T t, World world, int x, int y, int z) {
+                Block block = world.getBlock(x, y, z);
+                if (block == Blocks.water || block == distilledWater) return true;
+                if (allowFlowing && block == Blocks.flowing_water) return true;
+                if (Mods.COFHCore.isModLoaded()) {
+                    return block instanceof BlockWater || block instanceof BlockTickingWater;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                world.setBlock(x, y, z, Blocks.water, 0, 2);
+                return true;
+            }
+
+            @Override
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                StructureLibAPI.hintParticle(world, x, y, z, Blocks.water, 0);
+                return true;
+            }
+
+            @Override
+            public IStructureElement.BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z,
+                ItemStack trigger, AutoPlaceEnvironment env) {
+                return IStructureElement.BlocksToPlace.create(Blocks.water, 0);
+            }
+        };
+    }
+
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
         if (aFrameMaterial == null) throw new IllegalArgumentException();
         return new IStructureElement<>() {
@@ -77,7 +119,7 @@ public class GTStructureUtility {
                 Block block = world.getBlock(x, y, z);
                 if (block instanceof BlockFrameBox frameBox) {
                     int meta = world.getBlockMetadata(x, y, z);
-                    Materials material = frameBox.getMaterial(meta);
+                    Materials material = BlockFrameBox.getMaterial(meta);
                     return aFrameMaterial == material;
                 }
                 return false;

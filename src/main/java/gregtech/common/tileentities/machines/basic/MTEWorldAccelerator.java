@@ -33,7 +33,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     // simple name is rather expensive to compute and it's not cached
     // see https://stackoverflow.com/q/17369304
-    private static final ClassValue<String> simpleNameCache = new ClassValue<String>() {
+    private static final ClassValue<String> simpleNameCache = new ClassValue<>() {
 
         @Override
         protected String computeValue(Class<?> type) {
@@ -87,7 +87,8 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Active;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Active;
-    private static int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512, 512 };
+    private static final int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512,
+        512 };
     private static final int AMPERAGE_NORMAL = 3;
     private static final int AMPERAGE_TE = 6;
 
@@ -272,7 +273,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return 8;
     }
 
-    private static String[] mModeStr = { "Blocks", "TileEntities" };
+    private static final String[] mModeStr = { "Blocks", "TileEntities" };
 
     // This uses the Wrench as second tool to cycle speeds
     @Override
@@ -297,8 +298,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 markDirty();
                 PlayerChatHelper
                     .SendInfo(pPlayer, String.format("Machine radius changed to %d Blocks", getRadiusTierOverride()));
-            } else PlayerChatHelper
-                .SendError(pPlayer, String.format("Can't change radius; Machine is in TileEntity Mode!"));
+            } else PlayerChatHelper.SendError(pPlayer, "Can't change radius; Machine is in TileEntity Mode!");
         } else {
             mMode = (byte) (mMode == 0x00 ? 0x01 : 0x00);
             markDirty();

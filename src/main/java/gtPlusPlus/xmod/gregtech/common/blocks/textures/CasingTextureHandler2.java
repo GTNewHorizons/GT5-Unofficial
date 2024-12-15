@@ -59,7 +59,7 @@ public class CasingTextureHandler2 {
                     return Textures.BlockIcons.RENDERING_ERROR.getIcon();
                 }
                 case 15 -> {
-                    return TexturesGtBlock.Casing_Machine_Acacia_Log.getIcon();
+                    return TexturesGtBlock.Sterile_Casing.getIcon();
                 }
                 default -> {
                     return TexturesGtBlock.Overlay_UU_Matter.getIcon();

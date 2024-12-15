@@ -21,7 +21,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -184,7 +183,6 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.WHITE
                     + GTUtility.formatNumbers(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Controller block for the Clarifier Purification Unit.")
             .addInfo("Must be linked to a Purification Plant using a data stick to work.")
             .addSeparator()
             .addInfo("Requires a filter made of Activated Carbon to work.")
@@ -207,9 +205,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
-            .addInfo(AuthorNotAPenguin)
             .beginStructureBlock(11, 4, 11, false)
-            .addSeparator()
             .addCasingInfoRangeColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -226,7 +222,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addCasingInfoExactlyColored(
                 "Iridium Frame Box",
                 EnumChatFormatting.GRAY,
-                21,
+                12,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -242,8 +238,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addStructureInfo("Requires water to be placed in the structure.")
-            .addStructureInfo("Use the StructureLib Hologram Projector to build the structure.")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorNotAPenguin);
         return tt;
     }
 
@@ -326,7 +321,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     }
 
     @Override
-    protected ResourceLocation getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_PURIFICATIONPLANT_LOOP.resourceLocation;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_PURIFICATIONPLANT_LOOP;
     }
 }

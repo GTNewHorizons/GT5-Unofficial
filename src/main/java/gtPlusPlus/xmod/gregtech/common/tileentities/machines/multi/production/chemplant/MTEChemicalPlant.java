@@ -80,7 +80,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     private int mPipeCasingTier = 0;
     private int mCoilTier = 0;
     private HeatingCoilLevel checkCoil;
-    private int[] checkCasing = new int[8];
+    private final int[] checkCasing = new int[8];
     private int checkMachine;
     private int checkPipe;
     private int maxTierOfHatch;
@@ -114,10 +114,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         if (!mTieredBlockRegistry.containsKey(aTier)) {
             return 10;
         }
-        int aCasingID = mTieredBlockRegistry.get(aTier)
+        return mTieredBlockRegistry.get(aTier)
             .getValue_3();
-        // Logger.INFO("Found casing texture ID "+aCasingID+" for tier "+aTier);
-        return aCasingID;
     }
 
     @Override
@@ -132,13 +130,17 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Chemical Plant")
+        return new MultiblockTooltipBuilder().addMachineType(getMachineType())
             .addInfo("Heavy Industry, now right at your doorstep!")
-            .addInfo("Please read the user manual for more information on construction and usage")
-            .addSeparator()
+            .addInfo("Plant tier is determined by casing tier")
+            .addInfo("Hatch tiers can't be higher than machine casing tier, UHV casing unlocks all tiers")
+            .addInfo("Higher tier coils increases processing speed : T1 = 50%, T2 = 100%, T3 = 150%...")
+            .addInfo("Higher tier pipe casing boosts parallel and reduces catalyst consumption :")
+            .addInfo("+2 parallel per tier, +20% chance of not damaging catalyst per tier")
+            .addInfo("Any catalyst must be placed in the catalyst housing")
+            .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
             .addController("Bottom Center")
+            .addOtherStructurePart("Catalyst Housing", "Bottom Casing")
             .addStructureHint("Catalyst Housing", 1)
             .addInputBus("Bottom Casing", 1)
             .addOutputBus("Bottom Casing", 1)
@@ -150,8 +152,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addSubChannelUsage("machine", "tier machine casing")
             .addSubChannelUsage("coil", "heating coil blocks")
             .addSubChannelUsage("pipe", "pipe casing blocks")
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
-        return tt;
+            .toolTipFinisher();
     }
 
     public void setMachineMeta(int meta) {
@@ -216,7 +217,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                             .dot(1)
                             .build(),
                         buildHatchAdder(MTEChemicalPlant.class).hatchClass(MTEHatchCatalysts.class)
-                            .shouldReject(t -> t.mCatalystBuses.size() >= 1)
+                            .shouldReject(t -> !t.mCatalystBuses.isEmpty())
                             .adder(MTEChemicalPlant::addChemicalPlantList)
                             .casingIndex(getCasingTextureID())
                             .dot(1)
@@ -553,21 +554,25 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         }
     }
 
-    private void damageCatalyst(@Nonnull ItemStack aStack, int minParallel) {
+    /**
+     * @return if the catalyst item is fully destroyed as a result of the damage applied.
+     */
+    private boolean damageCatalyst(@Nonnull ItemStack aStack, int minParallel) {
         // Awakened Draconium Coils with Tungstensteel Pipe Casings (or above) no longer consume catalysts.
-        if (!isCatalystDamageable()) return;
+        if (!isCatalystDamageable()) return false;
         for (int i = 0; i < minParallel; i++) {
             if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
                 int damage = getDamage(aStack) + 1;
                 if (damage >= getMaxCatalystDurability()) {
                     addOutput(CI.getEmptyCatalyst(1));
                     aStack.stackSize -= 1;
-                    return;
+                    return aStack.stackSize == 0;
                 } else {
                     setDamage(aStack, damage);
                 }
             }
         }
+        return false;
     }
 
     private boolean isCatalystDamageable() {
@@ -600,6 +605,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     if (catalyst == null) {
                         return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                     }
+                } else {
+                    // remove reference to the old catalyst if our new recipe doesn't use it
+                    catalyst = null;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -616,8 +624,9 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                if (catalyst != null) {
-                    damageCatalyst(catalyst, getCurrentParallels());
+                if (!GTUtility.isStackValid(catalyst) || damageCatalyst(catalyst, getCurrentParallels())) {
+                    // remove reference to the catalyst if it is invalid, or if the damage destroys it
+                    catalyst = null;
                 }
                 return super.onRecipeStart(recipe);
             }

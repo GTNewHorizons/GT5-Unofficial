@@ -202,6 +202,32 @@ tile.blockCompressedObsidian.9.name=Quadruple Compressed Glowstone (6561)
 tile.blockCompressedObsidian.10.name=Quintuple Compressed Glowstone (59049)
 tile.blockNet.name=Net
 
+# Fuel Blocks
+tile.blockCactusCharcoal.0.name=Cactus Charcoal
+tile.blockCactusCharcoal.1.name=Compressed Cactus Charcoal
+tile.blockCactusCharcoal.2.name=Double Compressed Cactus Charcoal
+tile.blockCactusCharcoal.3.name=Triple Compressed Cactus Charcoal
+tile.blockCactusCharcoal.4.name=Quadruple Compressed Cactus Charcoal
+tile.blockCactusCharcoal.5.name=Quintuple Compressed Cactus Charcoal
+tile.blockCactusCoke.0.name=Cactus Coke
+tile.blockCactusCoke.1.name=Compressed Cactus Coke
+tile.blockCactusCoke.2.name=Double Compressed Cactus Coke
+tile.blockCactusCoke.3.name=Triple Compressed Cactus Coke
+tile.blockCactusCoke.4.name=Quadruple Compressed Cactus Coke
+tile.blockCactusCoke.5.name=Quintuple Compressed Cactus Coke
+tile.blockSugarCharcoal.0.name=Sugar Charcoal
+tile.blockSugarCharcoal.1.name=Compressed Sugar Charcoal
+tile.blockSugarCharcoal.2.name=Double Compressed Sugar Charcoal
+tile.blockSugarCharcoal.3.name=Triple Compressed Sugar Charcoal
+tile.blockSugarCharcoal.4.name=Quadruple Compressed Sugar Charcoal
+tile.blockSugarCharcoal.5.name=Quintuple Compressed Sugar Charcoal
+tile.blockSugarCoke.0.name=Sugar Coke
+tile.blockSugarCoke.1.name=Compressed Sugar Coke
+tile.blockSugarCoke.2.name=Double Compressed Sugar Coke
+tile.blockSugarCoke.3.name=Triple Compressed Sugar Coke
+tile.blockSugarCoke.4.name=Quadruple Compressed Sugar Coke
+tile.blockSugarCoke.5.name=Quintuple Compressed Sugar Coke
+
 
 # GT++ Items
 
@@ -1890,16 +1916,16 @@ item.SlowBuildingRing.name=§eSlow Building Ring§7
 item.SlowBuildingRing.tooltip.0=§aWorn as a Ring within Baubles. Prevents you from sprinting.§7
 item.SlowBuildingRing.tooltip.1=§aMovement speed reduced to crouch speed.§7
 item.SlowBuildingRing.tooltip.2=§aPress shift while worn to toggle crouch on/off.§7
-item.itemBufferCore1.name=Energy Core [ULV].
-item.itemBufferCore2.name=Energy Core [LV].
-item.itemBufferCore3.name=Energy Core [MV].
-item.itemBufferCore4.name=Energy Core [HV].
-item.itemBufferCore5.name=Energy Core [EV].
-item.itemBufferCore6.name=Energy Core [IV].
-item.itemBufferCore7.name=Energy Core [LuV].
-item.itemBufferCore8.name=Energy Core [ZPM].
-item.itemBufferCore9.name=Energy Core [UV].
-item.itemBufferCore10.name=Energy Core [UHV].
+item.itemBufferCore1.name=Energy Core [ULV]
+item.itemBufferCore2.name=Energy Core [LV]
+item.itemBufferCore3.name=Energy Core [MV]
+item.itemBufferCore4.name=Energy Core [HV]
+item.itemBufferCore5.name=Energy Core [EV]
+item.itemBufferCore6.name=Energy Core [IV]
+item.itemBufferCore7.name=Energy Core [LuV]
+item.itemBufferCore8.name=Energy Core [ZPM]
+item.itemBufferCore9.name=Energy Core [UV]
+item.itemBufferCore10.name=Energy Core [UHV]
 item.itembookgt.name=§oThermal Boiler Manual
 
 # Everglade Items
@@ -2280,16 +2306,16 @@ item.itemDustLautarite.name=Lautarite Dust
 item.itemDustTinyLautarite.name=Tiny Pile of Lautarite Dust
 item.itemDustSmallLautarite.name=Small Pile of Lautarite Dust
 
-tile.OreBariteRd.name=Barite (Ra) Ore
-item.crushedBariteRd.name=Crushed Barite (Ra) Ore
-item.oreRawBariteRd.name=Raw Barite (Ra) Ore
-item.crushedCentrifugedBariteRd.name=Centrifuged Crushed Barite (Ra) Ore
-item.crushedPurifiedBariteRd.name=Purified Crushed Barite (Ra) Ore
-item.dustImpureBariteRd.name=Impure Barite (Ra) Dust
-item.dustPureBariteRd.name=Purified Barite (Ra) Dust
-item.itemDustBariteRd.name=Barite (Ra) Dust
-item.itemDustTinyBariteRd.name=Tiny Pile of Barite (Ra) Dust
-item.itemDustSmallBariteRd.name=Small Pile of Barite (Ra) Dust
+tile.OreBariteRa.name=Barite (Ra) Ore
+item.crushedBariteRa.name=Crushed Barite (Ra) Ore
+item.oreRawBariteRa.name=Raw Barite (Ra) Ore
+item.crushedCentrifugedBariteRa.name=Centrifuged Crushed Barite (Ra) Ore
+item.crushedPurifiedBariteRa.name=Purified Crushed Barite (Ra) Ore
+item.dustImpureBariteRa.name=Impure Barite (Ra) Dust
+item.dustPureBariteRa.name=Purified Barite (Ra) Dust
+item.itemDustBariteRa.name=Barite (Ra) Dust
+item.itemDustTinyBariteRa.name=Tiny Pile of Barite (Ra) Dust
+item.itemDustSmallBariteRa.name=Small Pile of Barite (Ra) Dust
 
 tile.OreHoneaite.name=Honeaite Ore
 item.crushedHoneaite.name=Crushed Honeaite Ore

@@ -139,14 +139,11 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Canner/Fluid Canner")
-            .addInfo("Controller Block for the TurboCan Pro")
+        tt.addMachineType("Canner, Fluid Canner")
             .addInfo("Use screwdriver to switch mode")
             .addInfo("100% faster than single block machines of the same voltage")
             .addInfo("Gains 8 parallels per voltage tier")
             .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
-            .addInfo(AuthorFourIsTheNumber)
-            .addSeparator()
             .beginStructureBlock(7, 5, 7, true)
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
@@ -157,7 +154,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
             .addOutputHatch("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher(AuthorFourIsTheNumber);
         return tt;
     }
 
@@ -184,10 +181,9 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
         mEnergyHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 2, 2)) return false;
-        if (mCasingAmount < 85) return false;
+        return mCasingAmount >= 85;
 
         // All checks passed!
-        return true;
     }
 
     @Override

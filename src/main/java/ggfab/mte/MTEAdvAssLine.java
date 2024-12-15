@@ -43,6 +43,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -66,7 +67,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import ggfab.ConfigurationHandler;
-import ggfab.GGConstants;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -153,10 +153,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
         .addElement(
             'e',
-            ofChain(
-                Energy.or(ExoticEnergy)
-                    .newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
-                ofBlock(GregTechAPI.sBlockCasings2, 0)))
+            buildHatchAdder(MTEAdvAssLine.class).anyOf(Energy, ExoticEnergy)
+                .dot(1)
+                .casingIndex(16)
+                .allowOnly(ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH)
+                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',
             buildHatchAdder(MTEAdvAssLine.class).atLeast(DataHatchElement.DataAccess)
@@ -200,9 +201,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     private int currentInputLength;
     private String lastStopReason = "";
     private int currentRecipeParallel = 1;
-    // Batch mode will increase parallel per slice to try to get as close as possible to this amount of ticks
-    // per slice, but will never go over this amount.
-    private static final int BATCH_MODE_DESIRED_TICKS_PER_SLICE = 128;
 
     public MTEAdvAssLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -306,27 +304,26 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembling Line")
-            .addInfo("Controller block for the Advanced Assembling Line")
-            .addInfo("Built exactly the same as standard Assembling Line")
-            .addInfo("Assembling Line with item pipelining")
+        tt.addMachineType("Assembly Line, AAL")
+            .addInfo("Built exactly the same as standard Assembly Line")
+            .addInfo("Assembly Line with item pipelining")
             .addInfo("All fluids are however consumed at start")
             .addInfo("Use voltage of worst energy hatch for overclocking")
-            .addInfo("Perform normal overclock with given voltage")
-            .addInfo("Perform laser overclock with extra amperages from multi-amp energy hatches")
+            .addInfo("Performs normal overclock with given voltage")
+            .addTecTechHatchInfo()
+            .addInfo("Performs laser overclock with extra amperage from multi-amp energy hatches")
             .addInfo("Each laser overclock reduces recipe time by 50%")
             .addInfo(
                 "and multiplies power by (4 + " + formatNumbers(LASER_OVERCLOCK_PENALTY_FACTOR)
                     + " * total laser overclock count)")
             .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick.")
             .addInfo("EU/t is (number of slices working) * (overclocked EU/t)")
-            .addSeparator()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
             .addStructureInfo(
                 "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
             .addStructureInfo(
-                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembling Line Casing, Reinforced Glass")
+                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembly Line Casing, Reinforced Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
             .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
             .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
@@ -337,7 +334,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInputHatch("Any layer 1 casing", 3)
             .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
             .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
-            .toolTipFinisher(GGConstants.GGMARK);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -463,7 +460,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (checkMachine() && (mEnergyHatches.size() > 0 || mExoticEnergyHatches.size() > 0)) {
+        if (checkMachine() && (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty())) {
             long oV = inputVoltage, oEut = inputEUt;
             inputVoltage = Integer.MAX_VALUE;
             inputEUt = 0;
@@ -585,6 +582,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             }
         }
 
+        endRecipeProcessing();
+
         boolean foundWorking = false;
         int working = 0;
         for (Slice slice : slices) {
@@ -608,10 +607,9 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 }
             }
         } else {
-            if (!super.onRunningTick(aStack)) return false;
+            return super.onRunningTick(aStack);
         }
 
-        endRecipeProcessing();
         return true;
     }
 
@@ -772,18 +770,17 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setEUt(inputVoltage);
 
             if (!mExoticEnergyHatches.isEmpty()) {
-                normalOCCalculator.setCurrentParallel((int) (1 / normalOCCalculator.calculateDurationUnderOneTick()))
+                normalOCCalculator
+                    .setCurrentParallel((int) Math.max(1 / normalOCCalculator.calculateDurationUnderOneTick(), 1))
                     .calculate();
                 int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
 
-                OverclockCalculator laserOCCalculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+                calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                     .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                     .setEutIncreasePerOCSupplier(
                         overclock -> 4 + LASER_OVERCLOCK_PENALTY_FACTOR * Math.max(overclock - normalOverclockCount, 0))
                     .setParallel(originalMaxParallel)
                     .setEUt(inputEUt / recipe.mInputs.length);
-
-                calculator = laserOCCalculator;
             } else {
                 calculator = normalOCCalculator;
             }
@@ -995,13 +992,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch mode enabled");
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Batch mode disabled");
-            }
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
     }

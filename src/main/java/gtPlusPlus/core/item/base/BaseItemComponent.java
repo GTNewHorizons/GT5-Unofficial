@@ -231,9 +231,7 @@ public class BaseItemComponent extends Item {
                 }
             }
 
-            if ((this.materialName != null) && (this.materialName != "")
-                && !this.materialName.equals("")
-                && (this.componentMaterial != null)) {
+            if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
                 if (this.componentMaterial != null) {
                     if (!this.componentMaterial.vChemicalFormula.contains("?")) {
@@ -255,10 +253,8 @@ public class BaseItemComponent extends Item {
                     }
 
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
-                        if ((this.materialName != null) && (this.materialName != "")
-                            && !this.materialName.equals("")
-                            && this.unlocalName.toLowerCase()
-                                .contains("hot")) {
+                        if (this.unlocalName.toLowerCase()
+                            .contains("hot")) {
                             list.add(
                                 EnumChatFormatting.GRAY + "Warning: "
                                     + EnumChatFormatting.RED
@@ -269,7 +265,7 @@ public class BaseItemComponent extends Item {
                     }
                 } else {
                     String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
-                    if (aChemicalFormula != null && aChemicalFormula.length() > 0) {
+                    if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
                         list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));
                     }
                 }
@@ -300,7 +296,6 @@ public class BaseItemComponent extends Item {
         super.addInformation(stack, aPlayer, list, bool);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
         final boolean p_77663_5_) {
@@ -325,10 +320,9 @@ public class BaseItemComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        return (Configuration.visual.useGregtechTextures ? true : false);
+        return Configuration.visual.useGregtechTextures;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 
@@ -402,7 +396,7 @@ public class BaseItemComponent extends Item {
         }
     }
 
-    public static enum ComponentTypes {
+    public enum ComponentTypes {
 
         DUST("Dust", "@ Dust", "dust", OrePrefixes.dust),
         DUSTSMALL("DustSmall", "Small Pile of @ Dust", "dustSmall", OrePrefixes.dustSmall),
@@ -434,7 +428,7 @@ public class BaseItemComponent extends Item {
         private final String OREDICT_NAME;
         private final OrePrefixes a_GT_EQUAL;
 
-        private ComponentTypes(final String LocalName, final String DisplayName, final String OreDictName,
+        ComponentTypes(final String LocalName, final String DisplayName, final String OreDictName,
             final OrePrefixes aPrefix) {
             this.COMPONENT_NAME = LocalName;
             this.DISPLAY_NAME = DisplayName;

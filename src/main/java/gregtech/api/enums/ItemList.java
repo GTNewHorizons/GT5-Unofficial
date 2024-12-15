@@ -1677,11 +1677,6 @@ public enum ItemList implements IItemContainer {
     Pump_LV,
     Pump_MV,
     Pump_HV,
-    Pump_EV,
-    Pump_IV,
-    Pump_LuV,
-    Pump_ZPM,
-    Pump_UV,
 
     Teleporter,
     Cover_NeedsMaintainance,
@@ -2558,8 +2553,6 @@ public enum ItemList implements IItemContainer {
     WiremillUEV,
     WiremillUIV,
     WiremillUMV,
-    PumpLuV,
-    PumpZPM,
     Automation_ChestBuffer_UEV,
     Automation_ChestBuffer_UIV,
     Automation_ChestBuffer_UMV,
@@ -2590,8 +2583,8 @@ public enum ItemList implements IItemContainer {
             Spray_Color_Used_14, Spray_Color_Used_15 },
         TRANSFORMERS = { Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV, Transformer_IV_EV,
             Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM, Transformer_MAX_UV },
-        MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV,
-            Hull_MAX },
+        MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX,
+            Hull_UEV, Hull_UIV, Hull_UMV, Hull_UXV, Hull_MAXV },
         HATCHES_DYNAMO = { Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV,
             Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_UHV },
         HATCHES_ENERGY = { Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV,
@@ -2724,7 +2717,7 @@ public enum ItemList implements IItemContainer {
         StringBuilder tCamelCasedDisplayNameBuilder = new StringBuilder();
         final String[] tDisplayNameWords = aDisplayName.split("\\W");
         for (String tWord : tDisplayNameWords) {
-            if (tWord.length() > 0) tCamelCasedDisplayNameBuilder.append(
+            if (!tWord.isEmpty()) tCamelCasedDisplayNameBuilder.append(
                 tWord.substring(0, 1)
                     .toUpperCase(Locale.US));
             if (tWord.length() > 1) tCamelCasedDisplayNameBuilder.append(

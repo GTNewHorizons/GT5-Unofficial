@@ -16,7 +16,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Server -> Client : Update cover data
  */
-public class GTPacketSendCoverData extends GTPacketNew {
+public class GTPacketSendCoverData extends GTPacket {
 
     protected int mX;
     protected short mY;
@@ -27,12 +27,12 @@ public class GTPacketSendCoverData extends GTPacketNew {
     protected ISerializableObject coverData;
 
     public GTPacketSendCoverData() {
-        super(true);
+        super();
     }
 
     public GTPacketSendCoverData(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID,
         ISerializableObject coverData) {
-        super(false);
+        super();
         this.mX = mX;
         this.mY = mY;
         this.mZ = mZ;
@@ -43,7 +43,7 @@ public class GTPacketSendCoverData extends GTPacketNew {
     }
 
     public GTPacketSendCoverData(CoverInfo info, ICoverable tile) {
-        super(false);
+        super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
@@ -55,7 +55,7 @@ public class GTPacketSendCoverData extends GTPacketNew {
 
     public GTPacketSendCoverData(ForgeDirection coverSide, int coverID, ISerializableObject coverData,
         ICoverable tile) {
-        super(false);
+        super();
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
@@ -82,7 +82,7 @@ public class GTPacketSendCoverData extends GTPacketNew {
     }
 
     @Override
-    public GTPacketNew decode(ByteArrayDataInput aData) {
+    public GTPacket decode(ByteArrayDataInput aData) {
         final int coverId;
         return new GTPacketSendCoverData(
             aData.readInt(),

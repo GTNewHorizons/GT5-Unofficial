@@ -103,6 +103,14 @@ public class Client {
         @Config.Comment("Which style to use for title tab on machine GUI? 0: text tab split-dark, 1: text tab unified, 2: item icon tab.")
         @Config.DefaultInt(0)
         public int titleTabStyle;
+
+        @Config.Comment("Which style should tooltip separator lines have? 0: empty line, 1: dashed line, 2+: continuous line.")
+        @Config.DefaultInt(2)
+        public int separatorStyle;
+
+        @Config.Comment("Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+: continuous line.")
+        @Config.DefaultInt(3)
+        public int tooltipFinisherStyle;
     }
 
     @Config.LangKey("GT5U.gui.config.client.preference")
@@ -204,10 +212,6 @@ public class Client {
             @Config.LangKey("gt.recipe.category.arc_furnace_recycling")
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting arcFurnaceRecycling = ENABLE;
-
-            @Config.LangKey("gt.recipe.category.plasma_arc_furnace_recycling")
-            @Config.DefaultEnum("ENABLE")
-            public RecipeCategorySetting plasmaArcFurnaceRecycling = ENABLE;
 
             @Config.LangKey("gt.recipe.category.macerator_recycling")
             @Config.DefaultEnum("ENABLE")
