@@ -211,10 +211,13 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
                 // Initialize void protection for the current output
                 if (protectsExcessItem()) {
+                    ItemStack[] combinedOutputs = smeltedOutputs.toArray(new ItemStack[smeltedOutputs.size() + 1]);
+                    combinedOutputs[combinedOutputs.length - 1] = smeltedOutput;
+
                     VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
                     voidProtectionHelper.setMachine(this)
                         .setMaxParallel(remainingCost)
-                        .setItemOutputs(new ItemStack[] { smeltedOutput })
+                        .setItemOutputs(combinedOutputs)
                         .build();
 
                     maxParallelForOutput = Math.min(voidProtectionHelper.getMaxParallel(), remainingCost);
