@@ -273,7 +273,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
 
     @Override
     public String getMachineType() {
-        return "Large Plasma Turbine";
+        return "Large Plasma Turbine, XLPT";
     }
 
     @Override
@@ -284,5 +284,10 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
     @Override
     protected String getCasingName() {
         return "Reinforced Plasma Turbine Casing";
+    }
+
+    @Override
+    protected boolean isDenseSteam() {
+        return false;
     }
 }

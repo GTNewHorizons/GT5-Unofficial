@@ -291,7 +291,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
-        tt.addMachineType("Crop Farm")
+        tt.addMachineType("Crop Farm, EIG")
             .addInfo("Grow your crops like a chad!")
             .addInfo("Use screwdriver to enable/change/disable setup mode")
             .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")

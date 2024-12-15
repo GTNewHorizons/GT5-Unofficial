@@ -186,7 +186,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Processor")
+        tt.addMachineType("Ore Processor, IOF")
             .addInfo("It is OP. I mean ore processor.")
             .addInfo("Do all ore processing in one step.")
             .addInfo("Can process up to 1024 ores at a time.")
@@ -334,7 +334,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
         }
 
-        int finalParallel = (int) (batchMultiplierMax * maxParallelBeforeBatchMode);
+        int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
         // for scanner
         setCurrentParallelism(finalParallel);

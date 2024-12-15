@@ -16,9 +16,7 @@ public class BeamLinePacket extends DataPacket<BeamInformation> {
 
     @Override
     protected BeamInformation contentFromNBT(NBTTagCompound nbt) {
-        /*
-         * NBTTagCompound compound = nbt.getCompoundTag("beamline");
-         */
+
         return new BeamInformation(
             nbt.getFloat("energy"),
             nbt.getInteger("rate"),
