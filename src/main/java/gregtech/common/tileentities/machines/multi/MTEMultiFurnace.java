@@ -249,6 +249,10 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
         }
 
+        if (isBatchModeEnabled()) {
+            batchMultiplierMax = Math.max(1, batchMultiplierMax * (finalParallel - remainingCost) / finalParallel);
+        }
+
         this.mOutputItems = smeltedOutputs.toArray(new ItemStack[0]);
 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
