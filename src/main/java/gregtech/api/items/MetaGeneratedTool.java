@@ -43,7 +43,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
 import forestry.api.arboriculture.IToolGrafter;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Materials;
@@ -649,6 +648,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return doDamage(aStack, aVanillaDamage * 100L);
     }
 
+    private static boolean playSound = true;
+
+    public final boolean doDamageNoSound(ItemStack aStack, long aAmount) {
+        playSound = false;
+        boolean ret = doDamage(aStack, aAmount);
+        playSound = true;
+        return ret;
+    }
+
     public final boolean doDamage(ItemStack aStack, long aAmount) {
         if (!isItemStackUsable(aStack)) return false;
         Long[] tElectric = getElectricStats(aStack);
@@ -658,7 +666,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (tNewDamage >= getToolMaxDamage(aStack)) {
                 IToolStats tStats = getToolStats(aStack);
                 if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                    if (tStats != null) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                    if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
                     if (aStack.stackSize > 0) aStack.stackSize--;
                 }
             }
@@ -672,7 +680,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 if (tNewDamage >= getToolMaxDamage(aStack)) {
                     IToolStats tStats = getToolStats(aStack);
                     if (tStats == null || GTUtility.setStack(aStack, tStats.getBrokenItem(aStack)) == null) {
-                        if (tStats != null) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
+                        if (tStats != null && playSound) GTUtility.doSoundAtClient(tStats.getBreakingSound(), 1, 1.0F);
                         if (aStack.stackSize > 0) aStack.stackSize--;
                     }
                 }
@@ -731,13 +739,12 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         aStack = GTUtility.copyAmount(1, aStack);
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return null;
-        doDamage(aStack, tStats.getToolDamagePerContainerCraft());
-        aStack = aStack.stackSize > 0 ? aStack : null;
-        if (playSound && GTMod.gregtechproxy.mTicksUntilNextCraftSound <= 0) {
-            GTMod.gregtechproxy.mTicksUntilNextCraftSound = 10;
-            String sound = (aStack == null) ? tStats.getBreakingSound() : tStats.getCraftingSound();
-            GTUtility.doSoundAtClient(sound, 1, 1.0F);
+        if (playSound) {
+            doDamage(aStack, tStats.getToolDamagePerContainerCraft());
+        } else {
+            doDamageNoSound(aStack, tStats.getToolDamagePerContainerCraft());
         }
+        aStack = aStack.stackSize > 0 ? aStack : null;
         return aStack;
     }
 
