@@ -198,7 +198,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Compressor")
+        tt.addMachineType("Compressor, HIP")
             .addInfo("HIP Unit heats up while running")
             .addInfo(
                 "When it reaches maximum heat, it becomes " + EnumChatFormatting.DARK_RED
@@ -269,7 +269,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             .addCasingInfoMin("Compressor Pipe Casing", 60, false)
             .addCasingInfoExactly("Coolant Duct", 12, false)
             .addCasingInfoExactly("Heating Duct", 12, false)
-            .addCasingInfoExactly("EV+ Glass", 22, false)
+            .addCasingInfoExactly("Any Glass", 22, false)
             .addCasingInfoExactly("Coil", 30, true)
             .addOtherStructurePart("Heat Sensor Hatch", "Any Electric Compressor Casing", 1)
             .addInputBus("Pipe Casings on Side", 2)

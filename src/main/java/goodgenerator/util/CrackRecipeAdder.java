@@ -521,6 +521,12 @@ public class CrackRecipeAdder {
                     false).getStackForm(1L));
         }
         GTValues.RA.stdBuilder()
+            .itemInputs(material.get(OrePrefixes.ingot, 1), GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(material.get(OrePrefixes.wireGt01, 2))
+            .duration(5 * SECONDS)
+            .eut(4)
+            .addTo(wiremillRecipes);
+        GTValues.RA.stdBuilder()
             .itemInputs(material.get(OrePrefixes.ingot, 1), GTUtility.getIntegratedCircuit(2))
             .itemOutputs(material.get(OrePrefixes.wireGt02, 1))
             .duration(7 * SECONDS + 10 * TICKS)
@@ -548,6 +554,12 @@ public class CrackRecipeAdder {
             .itemInputs(material.get(OrePrefixes.ingot, 8), GTUtility.getIntegratedCircuit(16))
             .itemOutputs(material.get(OrePrefixes.wireGt16, 1))
             .duration(17 * SECONDS + 10 * TICKS)
+            .eut(4)
+            .addTo(wiremillRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(material.get(OrePrefixes.stick, 1), GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(material.get(OrePrefixes.wireGt01, 1))
+            .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
