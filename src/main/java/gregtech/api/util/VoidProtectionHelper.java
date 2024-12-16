@@ -413,50 +413,7 @@ public class VoidProtectionHelper {
             busStacks = machine.getItemOutputSlots(itemOutputs);
         }
 
-        if (virtualItemOutputsInBus != null) {
-            for (ItemStack virtualStack : virtualItemOutputsInBus) {
-                if (virtualStack == null || virtualStack.stackSize <= 0) continue;
-
-                boolean merged = false;
-
-                // Attempt to merge with an existing stack in busStacks
-                for (ItemStack busStack : busStacks) {
-                    if (busStack == null) continue;
-
-                    if (!busStack.isItemEqual(virtualStack)
-                        || ItemStack.areItemStackTagsEqual(busStack, virtualStack)) {
-                        continue;
-                    }
-
-                    int spaceLeft = busStack.getMaxStackSize() - busStack.stackSize;
-
-                    int transferAmount = Math.min(spaceLeft, virtualStack.stackSize);
-                    busStack.stackSize += transferAmount;
-                    virtualStack.stackSize -= transferAmount;
-
-                    if (virtualStack.stackSize <= 0) {
-                        merged = true;
-                        break;
-                    }
-                }
-
-                if (!merged) {
-                    boolean replacedNull = false;
-
-                    for (int i = 0; i < busStacks.size(); i++) {
-                        if (busStacks.get(i) == null) {
-                            busStacks.set(i, virtualStack.copy());
-                            replacedNull = true;
-                            break;
-                        }
-                    }
-
-                    if (!replacedNull) {
-                        busStacks.add(virtualStack.copy());
-                    }
-                }
-            }
-        }
+        mergeVirtualItemOutputsInto(busStacks);
 
         // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
         // recipe outputs.
@@ -529,6 +486,64 @@ public class VoidProtectionHelper {
             return aParallelQueue.element().batch;
         }
         return 0;
+    }
+
+    private void mergeVirtualItemOutputsInto(List<ItemStack> itemStacks) {
+        if (virtualItemOutputsInBus == null) return;
+
+        for (ItemStack virtualStack : virtualItemOutputsInBus) {
+            if (virtualStack == null || virtualStack.stackSize <= 0) continue;
+
+            int maxStackSize = virtualStack.getMaxStackSize();
+            int remainingItems = virtualStack.stackSize;
+
+            while (remainingItems > 0) {
+                boolean merged = false;
+
+                for (ItemStack busStack : itemStacks) {
+                    if (busStack == null) continue;
+
+                    if (busStack.isItemEqual(virtualStack) && ItemStack.areItemStackTagsEqual(busStack, virtualStack)) {
+                        int spaceLeft = busStack.getMaxStackSize() - busStack.stackSize;
+                        if (spaceLeft > 0) {
+                            int transferAmount = Math.min(spaceLeft, remainingItems);
+                            busStack.stackSize += transferAmount;
+                            remainingItems -= transferAmount;
+
+                            if (remainingItems == 0) {
+                                merged = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!merged) {
+                    boolean replacedNull = false;
+
+                    for (int i = 0; i < itemStacks.size(); i++) {
+                        if (itemStacks.get(i) == null) {
+                            int newStackSize = Math.min(remainingItems, maxStackSize);
+                            ItemStack newStack = ItemStack.copyItemStack(virtualStack);
+                            newStack.stackSize = newStackSize;
+                            itemStacks.set(i, newStack);
+                            remainingItems -= newStackSize;
+                            replacedNull = true;
+                            break;
+                        }
+                    }
+
+                    // If no null slot was found, add a new stack to the list
+                    if (!replacedNull) {
+                        int newStackSize = Math.min(remainingItems, maxStackSize);
+                        ItemStack newStack = ItemStack.copyItemStack(virtualStack);
+                        newStack.stackSize = newStackSize;
+                        itemStacks.add(newStack);
+                        remainingItems -= newStackSize;
+                    }
+                }
+            }
+        }
     }
 
     private static class ParallelData {
