@@ -367,10 +367,6 @@ public class GTValues {
      */
     public static IGT_NetworkHandler NW;
     /**
-     * Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn
-     */
-    public static int oreveinPercentage;
-    /**
      * Control number of attempts to find a valid orevein. Generally this maximum limit isn't hit, selecting a vein is
      * cheap
      */

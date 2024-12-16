@@ -127,11 +127,7 @@ public class NEIGTConfig implements IConfigureNEI {
 
     private void hideItems() {
         for (BlockOresAbstract ore : GTOreAdapter.INSTANCE.ores) {
-            if (ore.isExtraneous()) {
-                for (int i = 0; i < 16; i++) {
-                    API.hideItem(new ItemStack(ore, i));
-                }
-            }
+            API.hideItem(new ItemStack(ore, 1, 0));
         }
     }
 

@@ -35,6 +35,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public enum StoneType implements IStoneType {
+
+    // spotless:off
     Stone(new StoneBuilder()
         .setCobble(Blocks.cobblestone, 0)
         .setMainStone(Blocks.stone, 0)
@@ -117,7 +119,9 @@ public enum StoneType implements IStoneType {
         .setStoneNoCobble(Blocks.packed_ice, 0)
         .setDust(Materials.Ice)
         .setCategory(StoneCategory.Ice)),
+
     ;
+    // spotless:on
 
     public static final ImmutableList<StoneType> STONE_TYPES = ImmutableList.copyOf(values());
     public static final ImmutableList<StoneType> VISUAL_STONE_TYPES = ImmutableList.copyOf(Arrays.stream(values()).filter(s -> s.builder.enabled && !s.isExtraneous()).toArray(StoneType[]::new));

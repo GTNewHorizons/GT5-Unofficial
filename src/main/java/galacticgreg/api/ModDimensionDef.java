@@ -6,7 +6,7 @@ import java.util.Random;
 
 import galacticgreg.api.Enums.DimensionType;
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IStoneType;
+import gregtech.common.config.Gregtech;
 import net.minecraft.block.Block;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -22,16 +22,14 @@ public class ModDimensionDef {
     /** "modname_dimname" */
     private String internalDimIdentifier;
     private final String chunkProviderName;
-    private Enums.AirReplaceRule airReplaceSetting;
     private final ArrayList<ModDBMDef> replaceableBlocks;
     private DimensionType dimensionType;
 
     private final List<ISpaceObjectGenerator> spaceObjectGenerators;
     private final List<ISpaceObjectGenerator> spaceStructureGenerators;
 
-    // Special Planets config settings
-    private int groundOreMaxY = 64;
-    private int floatingAsteroidsMinY = 128;
+    private int oreVeinChance = Gregtech.general.oreveinPercentage;
+
     // ------
 
     // Asteroid stuff
@@ -105,6 +103,19 @@ public class ModDimensionDef {
     }
 
     /**
+     * Sets the chance that an ore seed chunk will have a vein
+     * @param chance The chance out of 100.
+     */
+    public ModDimensionDef setOreVeinChance(int chance) {
+        oreVeinChance = chance;
+        return this;
+    }
+
+    public int getOreVeinChance() {
+        return oreVeinChance;
+    }
+
+    /**
      * Internal function
      *
      * @return A list of possible asteroid-mixes that shall be generated
@@ -114,24 +125,6 @@ public class ModDimensionDef {
     }
 
     // =================================================
-    /**
-     * Internal function The only purpose of this functions is to get a default config value for this dim, that can be
-     * altered by the mod author which adds the dimension definition to his mod, but also provide the
-     * modpack-author/serveradmin to change these values aswell
-     */
-    public int getPreConfiguredGroundOreMaxY() {
-        return groundOreMaxY;
-    }
-
-    /**
-     * Internal function The only purpose of this functions is to get a default config value for this dim, that can be
-     * altered by the mod author which adds the dimension definition to his mod, but also provide the
-     * modpack-author/serveradmin to change these values aswell
-     */
-    public int getPreConfiguredFloatingAsteroidMinY() {
-        return floatingAsteroidsMinY;
-    }
-
     /**
      * Register new generator for objects in space. You can register as many as you want. If you don't register
      * anything, no structures will generate and the default Asteroid-Generator will be used
@@ -183,24 +176,6 @@ public class ModDimensionDef {
         return tGen;
     }
 
-    /**
-     * Define the default values for the floating asteroids and the oregen here. As both generators run in the same
-     * dimension, and you probably don't want to have asteroids stuck in the ground, both generators are separated from
-     * each other. Basically, you can go with the default values. If you want to change them, make sure that pOregenMaxY
-     * is lower than pAsteroidMinY
-     *
-     * @param pOregenMaxY   The maximum Y-height where ores will be allowed to spawn. Default: 64
-     * @param pAsteroidMinY The minimum Y-height that has to be reached before asteroids will spawn. Default: 128
-     * @throws IllegalArgumentException if the limits are invalid
-     *
-     */
-    public void setAsteroidAndPlanetLimits(int pOregenMaxY, int pAsteroidMinY) {
-        if (pOregenMaxY >= pAsteroidMinY)
-            throw new IllegalArgumentException("pOregenMaxY must be LOWER than pAsteroidMinY!");
-
-        floatingAsteroidsMinY = pAsteroidMinY;
-        groundOreMaxY = pOregenMaxY;
-    }
     // =================================================
 
     /**
@@ -233,30 +208,6 @@ public class ModDimensionDef {
      */
     public void setDimensionType(DimensionType pType) {
         dimensionType = pType;
-    }
-
-    /**
-     * Internal function
-     *
-     * @return The configuration for AirBlocks
-     */
-    public Enums.AirReplaceRule getAirSetting() {
-        return airReplaceSetting;
-    }
-
-    /**
-     * Define how the oregen shall handle air-blocks. These settings should be pretty self-explandatory, but anyways:
-     * NeverReplaceAir: No matter what, if there is an Air-Block found, it will not replace it. AllowReplaceAir: This
-     * will generate Ores in Stones (defined by addBlockDefinition()) and air if found OnlyReplaceAir : This will not
-     * generate Ores in solid blocks, but only in air
-     * <p>
-     * Note that "OnlyReplaceAir" is a special setting if you have a dimension that is not defined as "Asteroids" but
-     * you still need/want to generate ores in midair.
-     *
-     * @param pSetting
-     */
-    public void setAirSetting(Enums.AirReplaceRule pSetting) {
-        airReplaceSetting = pSetting;
     }
 
     /**

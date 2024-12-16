@@ -88,7 +88,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
                     if (gen == null) continue;
 
-                    // if (!gen.affectsChunk(chunkX, chunkZ)) continue;
+                    if (!gen.affectsChunk(chunkX, chunkZ)) continue;
 
                     gen.generateChunk(world, chunkX, chunkZ);
 
@@ -98,7 +98,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             long post = System.nanoTime();
 
-            GalacticGreg.Logger.info("Generated %d %d in %,.3f us", chunkX, chunkZ, (post - pre) / 1e3);
+            if (profileWorldGen) GTMod.GT_FML_LOGGER.info("Generated %d %d in %,.3f us", chunkX, chunkZ, (post - pre) / 1e3);
 
             Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);
             if (tChunk != null) {
@@ -109,7 +109,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
     public static class AsteroidGenerator {
         public List<Ellipsoid> positive, negative;
-        public int cX, cY, cZ, radius;
+        public int seedChunkX, seedChunkZ, cX, cY, cZ, radius;
         public long seed;
 
         public StoneType stoneType;
@@ -189,6 +189,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             gen.positive = positive;
             gen.negative = negative;
             
+            gen.seedChunkX = seedChunkX;
+            gen.seedChunkZ = seedChunkZ;
+
             gen.cX = tX;
             gen.cY = tY;
             gen.cZ = tZ;
@@ -313,6 +316,99 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                     }
                 }
             }
+
+            if (chunkX == seedChunkX && chunkZ == seedChunkZ) {
+                generateLootChest(world, dimAsteroidConfig);
+            }
+        }
+
+        private void generateLootChest(World world, AsteroidConfig asteroidConfig) {
+            XSTR rng = getRandom(world.getSeed(), seedChunkX, seedChunkZ, world.provider.dimensionId);
+
+            if (asteroidConfig.LootChestChance == 0 || radius < 6) return;
+
+            GalacticGreg.Logger.trace("Random loot chest enabled, flipping the coin");
+
+            // Loot chest is 1 in 100 (Was: 1:1000 which actually never happened)
+            if (asteroidConfig.LootChestChance < rng.nextInt(100)) return;
+
+            GalacticGreg.Logger.debug("We got a match. Preparing to generate the loot chest");
+
+            int x = cX, y = cY, z = cZ;
+
+            // Move it one away from the chunk border to prevent cascading
+            if (x % 16 == 0) x++;
+            if (x % 16 == 15) x--;
+
+            if (y % 16 == 0) y++;
+            if (y % 16 == 15) y--;
+
+            if (z % 16 == 0) z++;
+            if (z % 16 == 15) z--;
+
+            // Make sure it's hidden
+            for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
+                if (world.isAirBlock(x + d.offsetX, y + d.offsetY, z + d.offsetZ)) {
+                    return;
+                }
+            }
+
+            GalacticGreg.Logger.trace("Now generating LootChest and contents");
+
+            // Get amount of items for the loot chests, randomize it (1-num) if enabled
+            int tNumLootItems;
+            if (asteroidConfig.RandomizeNumLootItems) {
+                tNumLootItems = rng.nextInt(asteroidConfig.NumLootItems - 1) + 1;
+            } else {
+                tNumLootItems = asteroidConfig.NumLootItems;
+            }
+
+            GalacticGreg.Logger
+                .debug(String.format("Loot chest random item count will be: %d", tNumLootItems));
+
+            // Get items for the configured loot-table
+            WeightedRandomChestContent[] tRandomLoot = ChestGenHooks
+                .getItems(DynamicDimensionConfig.getLootChestTable(asteroidConfig), rng);
+
+            // Get chest-block to spawn
+            BlockMetaComb tTargetChestType = GalacticGreg.GalacticConfig.CustomLootChest;
+
+            // Place down the chest
+            world.setBlock(
+                cX,
+                cY,
+                cZ,
+                tTargetChestType.getBlock(),
+                tTargetChestType.getMeta(),
+                2);
+
+            // Retrieve the TEs IInventory that should've been created
+            IInventory entityChestInventory = (IInventory) world.getTileEntity(cX, cY, cZ);
+
+            // If it's not null...
+            if (entityChestInventory != null) {
+                // and if we're on the server...
+                if (!world.isRemote) {
+                    // Fill the chest with stuffz!
+                    WeightedRandomChestContent.generateChestContents(
+                        rng,
+                        tRandomLoot,
+                        entityChestInventory,
+                        tNumLootItems);
+                    GalacticGreg.Logger.trace("Loot chest successfully generated");
+                }
+            } else {
+                // Something made a boo..
+                GalacticGreg.Logger.warn(
+                    "Could not create lootchest at X[%d] Y[%d] Z[%d]. getTileEntity() returned null",
+                    cX,
+                    cY,
+                    cZ);
+            }
+
+            // Do some debug logging
+            GalacticGreg.Logger
+                .debug("Generated LootChest at X[%d] Y[%d] Z[%d]", cX, cY, cZ);
         }
     }
 

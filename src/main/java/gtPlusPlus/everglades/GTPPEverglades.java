@@ -114,10 +114,6 @@ public class GTPPEverglades {
             DimensionEverglades.DIMID = DimensionManager.getNextFreeDimId();
         }
 
-        /*
-         * Set World Generation Values
-         */
-        // WorldGen_GT_Base.oreveinPercentage = 64;
         DarkWorldContentLoader.run();
     }
 

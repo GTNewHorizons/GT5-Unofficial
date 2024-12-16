@@ -10,10 +10,6 @@ import gregtech.api.interfaces.IStoneCategory;
 
 public class SmallOreBuilder {
 
-    public static final String OW = "Overworld";
-    public static final String NETHER = "Nether";
-    public static final String THE_END = "The End";
-    public static final String TWILIGHT_FOREST = "Twilight Forest";
     public String smallOreName;
     public boolean enabledByDefault = true;
     /** {full dimension name} */

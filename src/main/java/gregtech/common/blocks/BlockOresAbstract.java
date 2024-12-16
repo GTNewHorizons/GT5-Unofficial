@@ -25,6 +25,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
+import gregtech.nei.NEIGTConfig;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
@@ -110,8 +111,15 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
         return mUnlocalizedName;
     }
 
+    /**
+     * The first stack with meta = 0 is always hidden in {@link NEIGTConfig} to prevent extraneous ores from showing up in nei.
+     */
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+        // always add meta = 0, because NEI does weird stuff when your item doesn't have subblocks
+        // meta = 0 is always hidden in the nei plugin
+        list.add(new ItemStack(this, 1, 0));
+
         OreInfo<Materials> info = new OreInfo<>();
 
         for (int matId = 0; matId < 1000; matId++) {
@@ -121,16 +129,21 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
             if (!GTOreAdapter.INSTANCE.supports(info)) continue;
 
             for (StoneType stoneType : stoneTypes) {
-                // if this material only has ice ore, we only want to show the ice variants
+                if (stoneType == null) continue;
+
                 if (info.material.contains(SubTag.ICE_ORE)) {
-                    if (stoneType != null && stoneType.getCategory() == StoneCategory.Ice) {
-                        info.stoneType = stoneType;
-        
-                        list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
-                    }
-                } else {
-                    if (stoneType == null || stoneType.isExtraneous()) continue;
+                    // if this material only has ice ore, we only want to show the ice variants
+                    if (stoneType.getCategory() != StoneCategory.Ice) continue;
+                    if (stoneType.isExtraneous()) continue;
+
+                    info.stoneType = stoneType;
     
+                    list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                } else {
+                    // if this material doesn't have ice ore, we only want to show the stone variants
+                    if (stoneType.getCategory() != StoneCategory.Stone) continue;
+                    if (stoneType.isExtraneous()) continue;
+                    
                     info.stoneType = stoneType;
     
                     list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
@@ -144,16 +157,27 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
             info.material = getMaterial(matId);
             info.stoneType = null;
 
-            if (info.material != null && info.material.contains(SubTag.ICE_ORE)) continue;
-
             if (!GTOreAdapter.INSTANCE.supports(info)) continue;
 
             for (StoneType stoneType : stoneTypes) {
-                if (stoneType == null || stoneType.isExtraneous()) continue;
-                
-                info.stoneType = stoneType;
+                if (stoneType == null) continue;
 
-                list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                if (info.material.contains(SubTag.ICE_ORE)) {
+                    // if this material only has ice ore, we only want to show the ice variants
+                    if (stoneType.getCategory() != StoneCategory.Ice) continue;
+
+                    info.stoneType = stoneType;
+    
+                    list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                } else {
+                    // if this material doesn't jabe ice ore, we only want to show the stone variants
+                    if (stoneType.getCategory() != StoneCategory.Stone) continue;
+                    if (stoneType.isExtraneous()) continue;
+                    
+                    info.stoneType = stoneType;
+    
+                    list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                }
             }
         }
     }

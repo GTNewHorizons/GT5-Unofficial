@@ -2,6 +2,7 @@ package galacticgreg.api.enums;
 
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkProviderEnd;
+import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderHell;
 
 import java.util.HashMap;
@@ -14,9 +15,10 @@ import gtPlusPlus.everglades.chunk.ChunkProviderModded;
 
 public enum DimensionDef {
 
+    // spotless:off
     Overworld(new ModDimensionDef(
         DimNames.OW,
-        "",
+        ChunkProviderGenerate.class,
         DimensionType.Planet)),
     Nether(new ModDimensionDef(
         DimNames.NETHER,
@@ -32,12 +34,13 @@ public enum DimensionDef {
         Enums.DimensionType.Asteroid)),
     TwilightForest(new ModDimensionDef(
         DimNames.TWILIGHT_FOREST,
-        "",
+        "twilightforest.world.ChunkProviderTwilightForest",
         DimensionType.Planet)),
     Everglades(new ModDimensionDef(
         DimNames.EVERGLADES,
         ChunkProviderModded.class,
-        DimensionType.Planet)),
+        DimensionType.Planet)
+        .setOreVeinChance(66)),
 
 
     Moon(new ModDimensionDef(
@@ -216,6 +219,7 @@ public enum DimensionDef {
         DimNames.MEHENBELT,
         "de.katzenpapst.amunra.world.mehen.MehenChunkProvider",
         Enums.DimensionType.Asteroid));
+    // spotless:on
 
     public final ModDimensionDef modDimensionDef;
 

@@ -38,7 +38,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
         if (aMaterial.contains(SubTag.ICE_ORE)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, aStack))
-                .fluidOutputs(aMaterial.getGas(5000L))
+                .fluidOutputs(aMaterial.getGas(1000L * aMaterial.mOreMultiplier))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(RecipeMaps.fluidExtractionRecipes);

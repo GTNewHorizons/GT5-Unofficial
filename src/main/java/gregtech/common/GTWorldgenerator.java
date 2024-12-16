@@ -4,7 +4,6 @@ import static gregtech.api.enums.GTValues.debugOrevein;
 import static gregtech.api.enums.GTValues.debugWorldGen;
 import static gregtech.api.enums.GTValues.oreveinAttempts;
 import static gregtech.api.enums.GTValues.oreveinMaxPlacementAttempts;
-import static gregtech.api.enums.GTValues.oreveinPercentage;
 import static gregtech.api.enums.GTValues.profileWorldGen;
 
 import java.util.Collections;
@@ -42,7 +41,8 @@ import gregtech.common.worldgen.WorldgenQuery;
 
 public class GTWorldgenerator implements IWorldGenerator {
 
-    private static int maxVeinSize = 2; // in chunks
+    private static final int MAX_VEIN_SIZE = 2; // in chunks
+    private static final int END_ASTEROID_DISTANCE = 16; // in chunks
 
     public static List<WorldGenContainer> pendingTasks = Collections.synchronizedList(new LinkedList<>());
 
@@ -70,8 +70,6 @@ public class GTWorldgenerator implements IWorldGenerator {
             GTLog.out.println("GTWorldgenerator created");
         }
     }
-
-    private static final int END_ASTEROID_DISTANCE = 16;
 
     @Override
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator,
@@ -110,7 +108,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 + " SIZE: "
                 + pendingTasks.size());
 
-        // hack to prevent cascading worldgen
+        // hack to prevent cascading worldgen lag
         if (!this.mIsGenerating) {
             this.mIsGenerating = true;
 
@@ -364,7 +362,9 @@ public class GTWorldgenerator implements IWorldGenerator {
                 return;
             }
 
-            if (oreveinPercentageRoll < oreveinPercentage) {
+            ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(mWorld);
+
+            if (oreveinPercentageRoll < dimensionDef.getOreVeinChance()) {
                 int placementAttempts = 0;
                 boolean oreveinFound = false;
                 int i;
@@ -422,7 +422,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                             if (debugOrevein) GTLog.out.println(
                                 " Added near oreveinSeed=" + oreveinSeed
                                     + " "
-                                    + (oreLayer).mWorldGenName
+                                    + oreLayer.mWorldGenName
                                     + " tries at oremix="
                                     + i
                                     + " placementAttempts="
@@ -431,7 +431,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                                     + dimensionName);
                             validOreveins.put(oreveinSeed, oreLayer);
                             oreveinFound = true;
-                            break;
                         }
                         case WorldgenGTOreLayer.NO_ORE_IN_BOTTOM_LAYER -> placementAttempts++;
 
@@ -449,7 +448,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                                     + dimensionName);
                             validOreveins.put(oreveinSeed, oreLayer);
                             oreveinFound = true;
-                            break;
                         }
                         case WorldgenGTOreLayer.NO_OVERLAP_AIR_BLOCK -> {
                             if (debugOrevein) GTLog.out.println(
@@ -488,7 +486,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                             + dimensionName);
                     validOreveins.put(oreveinSeed, noOresInVein);
                 }
-            } else if (oreveinPercentageRoll >= oreveinPercentage) {
+            } else if (oreveinPercentageRoll >= dimensionDef.getOreVeinChance()) {
                 if (debugOrevein) GTLog.out.println(
                     " Skipped oreveinSeed=" + oreveinSeed
                         + " mX="
@@ -502,7 +500,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         + " RNG="
                         + oreveinPercentageRoll
                         + " %="
-                        + oreveinPercentage
+                        + dimensionDef.getOreVeinChance()
                         + " dimensionName="
                         + dimensionName);
                 validOreveins.put(oreveinSeed, noOresInVein);
@@ -536,10 +534,10 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             long stonegenTime = System.nanoTime();
 
-            int wXbox = this.mX - maxVeinSize;
-            int eXbox = this.mX + maxVeinSize + 1; // Need to add 1 since it is compared using a <
-            int nZbox = this.mZ - maxVeinSize;
-            int sZbox = this.mZ + maxVeinSize + 1;
+            int wXbox = this.mX - MAX_VEIN_SIZE;
+            int eXbox = this.mX + MAX_VEIN_SIZE + 1; // Need to add 1 since it is compared using a <
+            int nZbox = this.mZ - MAX_VEIN_SIZE;
+            int sZbox = this.mZ + MAX_VEIN_SIZE + 1;
 
             // Search for orevein seeds and add to the list;
             for (int x = wXbox; x < eXbox; x++) {

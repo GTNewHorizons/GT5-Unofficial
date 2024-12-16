@@ -30,10 +30,10 @@ import static galacticgreg.api.enums.DimensionDef.Titan;
 import static galacticgreg.api.enums.DimensionDef.Triton;
 import static galacticgreg.api.enums.DimensionDef.VegaB;
 import static galacticgreg.api.enums.DimensionDef.Venus;
-import static gregtech.common.SmallOreBuilder.NETHER;
-import static gregtech.common.SmallOreBuilder.OW;
-import static gregtech.common.SmallOreBuilder.THE_END;
-import static gregtech.common.SmallOreBuilder.TWILIGHT_FOREST;
+import static galacticgreg.api.enums.DimensionDef.DimNames.OW;
+import static galacticgreg.api.enums.DimensionDef.DimNames.NETHER;
+import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
+import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
 
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
