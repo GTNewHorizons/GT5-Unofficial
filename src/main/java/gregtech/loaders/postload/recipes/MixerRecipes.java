@@ -76,7 +76,7 @@ public class MixerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1),
-                GTUtility.getIntegratedCircuit(4))
+                GTUtility.getIntegratedCircuit(5))
             .itemOutputs(GTOreDictUnificator.getDust(Materials.TinAlloy, 2L * OrePrefixes.dust.mMaterialAmount))
             .duration(5 * SECONDS)
             .eut(8)

@@ -31,6 +31,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
@@ -528,11 +529,11 @@ public class MTELESU extends MTEMultiBlockBase {
     private long clientAmps;
 
     private void drawTexts(DynamicPositionedColumn screenElements) {
-        screenElements.setSpace(0)
-            .setPos(11, 8);
+        screenElements.setSpace(0);
 
         screenElements.widget(
             new TextWidget().setStringSupplier(() -> "EU: " + numberFormat.format(this.clientEU))
+                .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
                 new FakeSyncWidget.LongSyncer(
@@ -541,6 +542,7 @@ public class MTELESU extends MTEMultiBlockBase {
                     val -> clientEU = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> "MAX: " + numberFormat.format(clientMaxEU))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
                 new FakeSyncWidget.LongSyncer(
@@ -552,6 +554,7 @@ public class MTELESU extends MTEMultiBlockBase {
                     val -> clientMaxEU = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> "MAX EU/t IN: " + numberFormat.format(clientMaxIn))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
                 new FakeSyncWidget.LongSyncer(
@@ -560,6 +563,7 @@ public class MTELESU extends MTEMultiBlockBase {
                     val -> clientMaxIn = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> "EU/t OUT: " + numberFormat.format(clientMaxOut))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
                 new FakeSyncWidget.LongSyncer(
@@ -568,6 +572,7 @@ public class MTELESU extends MTEMultiBlockBase {
                     val -> clientMaxOut = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> "AMP/t IN/OUT: " + numberFormat.format(clientAmps))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(this.COLOR_TEXT_WHITE.get()))
             .widget(
                 new FakeSyncWidget.LongSyncer(
@@ -575,10 +580,12 @@ public class MTELESU extends MTEMultiBlockBase {
                         .getInputAmperage(),
                     val -> clientAmps = val))
             .widget(
-                new TextWidget(Text.localised("tooltip.LESU.0.name")).setDefaultColor(Color.YELLOW.getRGB())
+                new TextWidget(Text.localised("tooltip.LESU.0.name")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(Color.YELLOW.getRGB())
                     .setEnabled(widget -> this.maxEUStore() >= Long.MAX_VALUE - 1))
             .widget(
-                new TextWidget(Text.localised("tooltip.LESU.1.name")).setDefaultColor(Color.RED.getRGB())
+                new TextWidget(Text.localised("tooltip.LESU.1.name")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(Color.RED.getRGB())
                     .setEnabled(
                         widget -> !this.getBaseMetaTileEntity()
                             .isActive()));
