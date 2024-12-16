@@ -220,7 +220,11 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[8] = "Node Power: " + EnumChatFormatting.RED
+        info[8] = "Parallel: " + EnumChatFormatting.YELLOW
+            + Math.round(this.mParallel)
+            + EnumChatFormatting.RESET
+            + " Node Power: "
+            + EnumChatFormatting.RED
             + this.nodePower
             + EnumChatFormatting.RESET
             + " Purification Efficiency: "
