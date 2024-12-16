@@ -106,7 +106,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     private int coilTier = 0;
 
     private float heat = 0;
-    private boolean cooling = false;
+    private boolean overheated = false;
 
     public MTEHIPCompressor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -133,14 +133,14 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
     @Override
     public void onValueUpdate(byte aValue) {
-        boolean oCooling = cooling;
-        cooling = (aValue & 1) == 1;
-        if (oCooling != cooling) getBaseMetaTileEntity().issueTextureUpdate();
+        boolean oCooling = overheated;
+        overheated = (aValue & 1) == 1;
+        if (oCooling != overheated) getBaseMetaTileEntity().issueTextureUpdate();
     }
 
     @Override
     public byte getUpdateData() {
-        return (byte) (cooling ? 1 : 0);
+        return (byte) (overheated ? 1 : 0);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
-            if (cooling) {
+            if (overheated) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)),
@@ -314,18 +314,16 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setFloat("heat", heat);
-        aNBT.setBoolean("cooling", cooling);
+        aNBT.setBoolean("cooling", overheated);
         aNBT.setInteger("coilTier", coilTier);
-        aNBT.setBoolean("doingHIP", doingHIP);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         if (aNBT.hasKey("heat")) heat = aNBT.getFloat("heat");
-        if (aNBT.hasKey("cooling")) cooling = aNBT.getBoolean("cooling");
+        if (aNBT.hasKey("cooling")) overheated = aNBT.getBoolean("cooling");
         if (aNBT.hasKey("coilTier")) coilTier = aNBT.getInteger("coilTier");
-        if (aNBT.hasKey("doingHIP")) doingHIP = aNBT.getBoolean("doingHIP");
         super.loadNBTData(aNBT);
     }
 
@@ -334,7 +332,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("heat", Math.round(heat));
-        tag.setBoolean("cooling", cooling);
+        tag.setBoolean("cooling", overheated);
     }
 
     @Override
@@ -356,8 +354,6 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 + EnumChatFormatting.RESET);
     }
 
-    private boolean doingHIP = false;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -365,18 +361,21 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                doingHIP = false;
                 setSpeedBonus(1F / 3.5F);
                 setEuModifier(0.75F);
 
-                if (cooling) {
+                int recipeReq = recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0);
+
+                // Nerf when heated
+                if (overheated) {
                     setSpeedBonus(2.5F);
                     setEuModifier(1.1F);
                 }
 
-                int recipeReq = recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0);
+                // If HIP required, check for overheat and potentially crash
+                // If Black Hole required, no recipe
                 if (recipeReq == 1) {
-                    doingHIP = true;
+                    if (overheated) stopMachine(SimpleShutDownReason.ofCritical("overheated"));
                 } else if (recipeReq == 2) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }
@@ -385,14 +384,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         }.setMaxParallelSupplier(this::getMaxParallelRecipes);
     }
 
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (cooling && doingHIP) {
-            stopMachine(SimpleShutDownReason.ofCritical("overheated"));
-            doingHIP = false;
-        }
-        return super.onRunningTick(aStack);
-    }
+    private int coolingTimer = 0;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -405,14 +397,22 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
             // If the machine is running, heat by 5% x 0.90 ^ (Coil Tier)
             // Cupronickel is 0, so base will be 5% increase
+            // Also reset cooling speed
             if (this.maxProgresstime() != 0) {
                 heatMod = (float) (5 * Math.pow(0.9, coilTier));
+                coolingTimer = 0;
+            } else {
+                // If the machine isn't running, add and increment the cooling timer
+                heatMod -= coolingTimer;
+                coolingTimer += 2;
             }
 
             heat = MathUtils.clamp(heat + heatMod, 0, 100);
 
-            if ((cooling && heat <= 0) || (!cooling && heat >= 100)) {
-                cooling = !cooling;
+            // Switch overheated conditionally and reset the cooling speed
+            if ((overheated && heat <= 0) || (!overheated && heat >= 100)) {
+                overheated = !overheated;
+                coolingTimer = 0;
             }
         }
 
@@ -424,7 +424,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     }
 
     public int getMaxParallelRecipes() {
-        return cooling ? GTUtility.getTier(this.getMaxInputVoltage())
+        return overheated ? GTUtility.getTier(this.getMaxInputVoltage())
             : (4 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
