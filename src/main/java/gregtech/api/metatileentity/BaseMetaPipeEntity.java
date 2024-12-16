@@ -32,12 +32,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.graphs.Lock;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.paths.NodePath;
+import gregtech.api.interfaces.ITemporaryTE;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
+import gregtech.api.net.GTPacketCreateTE;
 import gregtech.api.net.GTPacketTileEntity;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.CoverBehaviorBase;
@@ -294,30 +296,56 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
 
     private void sendClientData() {
         if (mSendClientData) {
-            NW.sendPacketToAllPlayersInRange(
-                worldObj,
-                new GTPacketTileEntity(
+            if (mMetaTileEntity instanceof ITemporaryTE) {
+                NW.sendPacketToAllPlayersInRange(
+                    worldObj,
+                    new GTPacketCreateTE(
+                        xCoord,
+                        (short) yCoord,
+                        zCoord,
+                        mID,
+                        getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.EAST).getCoverID(),
+                        oTextureData = mConnections,
+                        oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
+                        oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
+                            | ((mSidedRedstone[2] > 0) ? 4 : 0)
+                            | ((mSidedRedstone[3] > 0) ? 8 : 0)
+                            | ((mSidedRedstone[4] > 0) ? 16 : 0)
+                            | ((mSidedRedstone[5] > 0) ? 32 : 0)),
+                        oColor = mColor),
                     xCoord,
-                    (short) yCoord,
-                    zCoord,
-                    mID,
-                    getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
-                    getCoverInfoAtSide(ForgeDirection.EAST).getCoverID(),
-                    oTextureData = mConnections,
-                    oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
-                    oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
-                        | ((mSidedRedstone[2] > 0) ? 4 : 0)
-                        | ((mSidedRedstone[3] > 0) ? 8 : 0)
-                        | ((mSidedRedstone[4] > 0) ? 16 : 0)
-                        | ((mSidedRedstone[5] > 0) ? 32 : 0)),
-                    oColor = mColor),
-                xCoord,
-                zCoord);
-            mSendClientData = false;
+                    zCoord);
+            } else {
+                NW.sendPacketToAllPlayersInRange(
+                    worldObj,
+                    new GTPacketTileEntity(
+                        xCoord,
+                        (short) yCoord,
+                        zCoord,
+                        mID,
+                        getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
+                        getCoverInfoAtSide(ForgeDirection.EAST).getCoverID(),
+                        oTextureData = mConnections,
+                        oUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0,
+                        oRedstoneData = (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
+                            | ((mSidedRedstone[2] > 0) ? 4 : 0)
+                            | ((mSidedRedstone[3] > 0) ? 8 : 0)
+                            | ((mSidedRedstone[4] > 0) ? 16 : 0)
+                            | ((mSidedRedstone[5] > 0) ? 32 : 0)),
+                        oColor = mColor),
+                    xCoord,
+                    zCoord);
+                mSendClientData = false;
+            }
         }
         sendCoverDataIfNeeded();
     }

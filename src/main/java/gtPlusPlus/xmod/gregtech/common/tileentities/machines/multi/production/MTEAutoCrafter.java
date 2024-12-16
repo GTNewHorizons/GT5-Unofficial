@@ -49,7 +49,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
 
     @Override
     public String getMachineType() {
-        return "Assembler";
+        return "Assembler, LSAA";
     }
 
     @Override

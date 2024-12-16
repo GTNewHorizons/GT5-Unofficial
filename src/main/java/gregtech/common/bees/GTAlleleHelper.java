@@ -152,13 +152,13 @@ public class GTAlleleHelper extends AlleleHelper {
     public <T extends Enum<T> & IChromosomeType> void set(IAllele[] alleles, T chromosomeType, IAllele allele) {
 
         if (allele == null) {
-            GTMod.GT_FML_LOGGER.info("Allele is null!");
+            GTMod.GT_FML_LOGGER.warn("Allele is null!");
             return;
         }
 
         if (!chromosomeType.getAlleleClass()
             .isInstance(allele)) {
-            GTMod.GT_FML_LOGGER.info("chromosomeType is not an instance of allele!" + allele.getName());
+            GTMod.GT_FML_LOGGER.warn("chromosomeType is not an instance of allele!" + allele.getName());
             return;
         }
 

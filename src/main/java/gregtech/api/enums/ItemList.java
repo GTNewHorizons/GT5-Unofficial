@@ -2566,7 +2566,7 @@ public enum ItemList implements IItemContainer {
     Thermal_Superconductor,
     Relativistic_Heat_Capacitor,
     Phononic_Seed_Crystal,
-    ResearchCompleter, // Populated in EMT
+    ResearchCompleter,
     SpaceElevatorController, // Populated in GTNH-Intergalactic
     Spray_Color_Infinite,
     // semicolon after the comment to reduce merge conflicts
@@ -2583,8 +2583,8 @@ public enum ItemList implements IItemContainer {
             Spray_Color_Used_14, Spray_Color_Used_15 },
         TRANSFORMERS = { Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV, Transformer_IV_EV,
             Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM, Transformer_MAX_UV },
-        MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV,
-            Hull_MAX },
+        MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX,
+            Hull_UEV, Hull_UIV, Hull_UMV, Hull_UXV, Hull_MAXV },
         HATCHES_DYNAMO = { Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV,
             Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_UHV },
         HATCHES_ENERGY = { Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV,
