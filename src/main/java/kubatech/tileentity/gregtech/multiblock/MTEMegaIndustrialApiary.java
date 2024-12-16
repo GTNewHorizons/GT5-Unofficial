@@ -745,9 +745,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         drawTexts(screenElements, null);
         builder.widget(
             new Scrollable().setVerticalScroll()
-                .widget(screenElements.setPos(10, 0))
-                .setPos(0, 7)
-                .setSize(190, 79)
+                .widget(screenElements)
+                .setPos(10, 7)
+                .setSize(182, 79)
                 .setEnabled(w -> !isInInventory));
 
         builder.widget(createPowerSwitchButton(builder))

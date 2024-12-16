@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -628,6 +629,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                         () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
                             + numberFormat.format(energyStorageCache)
                             + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
@@ -637,6 +639,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                         () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
                             + numberFormat.format(getEUVar())
                             + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));

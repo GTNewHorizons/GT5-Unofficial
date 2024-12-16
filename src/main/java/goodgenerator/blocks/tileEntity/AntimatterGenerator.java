@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
@@ -515,6 +516,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                             + standardFormat.format(energyProducedCache)
                             + EnumChatFormatting.WHITE
                             + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.LongSyncer(this::getEnergyProduced, val -> energyProducedCache = val))
             .widget(
@@ -525,6 +527,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                             + numberFormat.format(Math.ceil(efficiencyCache * 100))
                             + EnumChatFormatting.WHITE
                             + " %")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.FloatSyncer(this::getEfficiency, val -> efficiencyCache = val))
             .widget(
@@ -535,6 +538,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                             + numberFormat.format(Math.ceil(avgEffCache * 100))
                             + EnumChatFormatting.WHITE
                             + " % ⟩₁₀")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.FloatSyncer(this::getAvgEfficiency, val -> avgEffCache = val));
     }

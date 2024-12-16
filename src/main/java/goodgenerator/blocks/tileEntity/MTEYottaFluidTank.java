@@ -32,6 +32,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
@@ -646,12 +647,14 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .widget(
                 new TextWidget().setStringSupplier(
                     () -> StatCollector.translateToLocal("gui.YOTTank.0") + " " + numberFormat.format(mStorage) + " L")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorage, val -> mStorage = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(() -> StatCollector.translateToLocal("gui.YOTTank.1") + " " + getFluidName())
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val))
@@ -661,6 +664,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                         () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
                             + numberFormat.format(mStorageCurrent)
                             + " L")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.BigIntegerSyncer(() -> mStorageCurrent, val -> mStorageCurrent = val))
@@ -669,6 +673,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                     .setStringSupplier(
                         () -> StatCollector.translateToLocal("gui.YOTTank.3") + " " + getLockedFluidName())
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.FluidStackSyncer(() -> mLockedFluid, val -> mLockedFluid = val))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> isFluidLocked, val -> isFluidLocked = val))
