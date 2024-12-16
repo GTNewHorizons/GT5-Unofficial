@@ -233,6 +233,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Artificial Organism Creator")
             .addInfo("Used to create and maintain Artificial Organisms")
+            .addInfo("Use higher tier vat casings to get more AO culture slots")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(3, 5, 3, true)
@@ -364,6 +365,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         for (MTEHatchAOOutput hatch : bioHatches) hatch.setSpecies(currentSpecies);
     }
 
+    // TODO: consider whether this should be disabled. for now, since i've overwritten the gui, it is less confusing
     @Override
     public boolean shouldCheckMaintenance() {
         return false;
