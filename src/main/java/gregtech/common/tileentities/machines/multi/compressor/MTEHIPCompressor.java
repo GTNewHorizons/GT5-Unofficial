@@ -382,7 +382,10 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 // If HIP required, check for overheat and potentially crash
                 // If Black Hole required, no recipe
                 if (recipeReq == 1) {
-                    if (overheated) stopMachine(SimpleShutDownReason.ofCritical("overheated"));
+                    if (overheated) {
+                        stopMachine(SimpleShutDownReason.ofCritical("overheated"));
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
                 } else if (recipeReq == 2) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }
@@ -397,30 +400,29 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (aTick % 20 == 0 || aBaseMetaTileEntity.isClientSide()) {
+        if (aTick % 20 != 0 || aBaseMetaTileEntity.isClientSide()) return;
 
-            // Default to cooling by 2%
-            float heatMod = -2;
+        // Default to cooling by 2%
+        float heatMod = -2;
 
-            // If the machine is running, heat by 5% x 0.90 ^ (Coil Tier)
-            // Cupronickel is 0, so base will be 5% increase
-            // Also reset cooling speed
-            if (this.maxProgresstime() != 0) {
-                heatMod = (float) (5 * Math.pow(0.9, coilTier));
-                coolingTimer = 0;
-            } else {
-                // If the machine isn't running, add and increment the cooling timer
-                heatMod -= coolingTimer;
-                coolingTimer += 2;
-            }
+        // If the machine is running, heat by 5% x 0.90 ^ (Coil Tier)
+        // Cupronickel is 0, so base will be 5% increase
+        // Also reset cooling speed
+        if (this.maxProgresstime() != 0) {
+            heatMod = (float) (5 * Math.pow(0.9, coilTier));
+            coolingTimer = 0;
+        } else {
+            // If the machine isn't running, add and increment the cooling timer
+            heatMod -= coolingTimer;
+            coolingTimer += 2;
+        }
 
-            heat = MathUtils.clamp(heat + heatMod, 0, 100);
+        heat = MathUtils.clamp(heat + heatMod, 0, 100);
 
-            // Switch overheated conditionally and reset the cooling speed
-            if ((overheated && heat <= 0) || (!overheated && heat >= 100)) {
-                overheated = !overheated;
-                coolingTimer = 0;
-            }
+        // Switch overheated conditionally and reset the cooling speed
+        if ((overheated && heat <= 0) || (!overheated && heat >= 100)) {
+            overheated = !overheated;
+            coolingTimer = 0;
         }
 
         // Update all the sensors
