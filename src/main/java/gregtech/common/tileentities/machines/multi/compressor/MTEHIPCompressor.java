@@ -316,6 +316,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         aNBT.setFloat("heat", heat);
         aNBT.setBoolean("cooling", overheated);
         aNBT.setInteger("coilTier", coilTier);
+        aNBT.setInteger("coolingTimer", coolingTimer);
         super.saveNBTData(aNBT);
     }
 
@@ -324,6 +325,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         if (aNBT.hasKey("heat")) heat = aNBT.getFloat("heat");
         if (aNBT.hasKey("cooling")) overheated = aNBT.getBoolean("cooling");
         if (aNBT.hasKey("coilTier")) coilTier = aNBT.getInteger("coilTier");
+        if (aNBT.hasKey("coolingTimer")) coolingTimer = aNBT.getInteger("coolingTimer");
         super.loadNBTData(aNBT);
     }
 
