@@ -2501,9 +2501,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         drawTexts(screenElements, inventorySlot);
         builder.widget(
             new Scrollable().setVerticalScroll()
-                .widget(screenElements.setPos(10, 0))
-                .setPos(0, 7)
-                .setSize(190, 79));
+                .widget(screenElements)
+                .setPos(10, 7)
+                .setSize(182, 79));
 
         setMachineModeIcons();
         builder.widget(createPowerSwitchButton(builder))
@@ -2611,38 +2611,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
-            .setSpace(0)
-            .setPos(10, 7);
+            .setSpace(0);
         if (supportsMachineModeSwitch()) {
             screenElements.widget(
-                TextWidget.dynamicString(
-                    () -> EnumChatFormatting.WHITE + GTUtility.trans("400", "Running mode: ")
-                        + EnumChatFormatting.GOLD
-                        + getMachineModeName()));
+                TextWidget
+                    .dynamicString(
+                        () -> EnumChatFormatting.WHITE + GTUtility.trans("400", "Running mode: ")
+                            + EnumChatFormatting.GOLD
+                            + getMachineModeName())
+                    .setTextAlignment(Alignment.CenterLeft));
         }
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("132", "Pipe is loose.")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mWrench))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("133", "Screws are loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("133", "Screws are loose.")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mScrewdriver))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("134", "Something is stuck.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("134", "Something is stuck.")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSoftHammer))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("135", "Platings are dented.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("135", "Platings are dented.")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mHardHammer))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("136", "Circuitry burned out.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("136", "Circuitry burned out.")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSolderingTool))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
         screenElements.widget(
@@ -2651,14 +2657,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
         screenElements.widget(
-            new TextWidget("Too Uncertain.").setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget("Too Uncertain.").setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getBaseMetaTileEntity().getErrorDisplayID() & 128) != 0));
         screenElements.widget(
-            new TextWidget("Invalid Parameters.").setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget("Invalid Parameters.").setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> (getBaseMetaTileEntity().getErrorDisplayID() & 256) != 0));
 
         screenElements.widget(
@@ -2695,6 +2704,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 time.getSeconds() % 60);
         })
             .setSynced(false)
+            .setTextAlignment(Alignment.CenterLeft)
             .setEnabled(
                 widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
                     && getBaseMetaTileEntity().wasShutdown()))
@@ -2769,7 +2779,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         screenElements.widget(
-            new TextWidget(GTUtility.trans("144", "Missing Turbine Rotor")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.trans("144", "Missing Turbine Rotor")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> {
                     if (getBaseMetaTileEntity().isAllowedToWork()) return false;
                     if (getBaseMetaTileEntity().getErrorDisplayID() == 0 && this instanceof MTELargeTurbine) {

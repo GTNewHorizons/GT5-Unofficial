@@ -28,6 +28,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -813,6 +814,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             + numberFormat.format(antimatterAmountCache)
                             + EnumChatFormatting.WHITE
                             + " L")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterAmount, val -> antimatterAmountCache = val))
             .widget(
@@ -823,6 +825,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             + standardFormat.format(passiveCostCache)
                             + EnumChatFormatting.WHITE
                             + " EU/t")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.LongSyncer(this::getPassiveConsumption, val -> passiveCostCache = val))
             .widget(
@@ -833,6 +836,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             + standardFormat.format(activeCostCache)
                             + EnumChatFormatting.WHITE
                             + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.LongSyncer(this::getActiveConsumption, val -> activeCostCache = val))
             .widget(
@@ -843,6 +847,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             + numberFormat.format(antimatterChangeCache)
                             + EnumChatFormatting.WHITE
                             + " L")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get()))
             .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterChange, val -> antimatterChangeCache = val));
     }
