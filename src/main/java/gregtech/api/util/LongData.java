@@ -5,11 +5,15 @@ import java.math.BigInteger;
 public interface LongData {
 
     default double avg() {
-        return sum().doubleValue() / size();
+        int size = size();
+        if (size == 0) return 0d;
+        return sum().doubleValue() / size;
     }
 
     default long avgLong() {
-        return sum().divide(BigInteger.valueOf(size()))
+        int size = size();
+        if (size == 0) return 0;
+        return sum().divide(BigInteger.valueOf(size))
             .longValueExact();
     }
 
