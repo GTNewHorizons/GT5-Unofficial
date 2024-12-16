@@ -133,9 +133,9 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
     @Override
     public void onValueUpdate(byte aValue) {
-        boolean oCooling = overheated;
+        boolean oldOverheated = overheated;
         overheated = (aValue & 1) == 1;
-        if (oCooling != overheated) getBaseMetaTileEntity().issueTextureUpdate();
+        if (oldOverheated != overheated) getBaseMetaTileEntity().issueTextureUpdate();
     }
 
     @Override
@@ -218,10 +218,10 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + EnumChatFormatting.GRAY
                     + " HIP")
             .addInfo(
-                "If the machine " + EnumChatFormatting.DARK_RED
-                    + "overheats"
+                "If the machine is " + EnumChatFormatting.DARK_RED
+                    + "overheated"
                     + EnumChatFormatting.GRAY
-                    + " during these recipes, recipe will be voided!")
+                    + " when one of these recipes starts, it will be voided!")
             .addInfo("Read the current heat using Heat Sensor Hatches")
             .addSeparator()
             .addInfo("More advanced coils allow better heat control - the unit will take longer to overheat")
@@ -234,7 +234,12 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 "Unit cools by " + EnumChatFormatting.GREEN
                     + "2%"
                     + EnumChatFormatting.GRAY
-                    + " every second while not running")
+                    + " base every second while not running")
+            .addInfo(
+                "Cooling rate increases by an additional " + EnumChatFormatting.GREEN
+                    + "2%"
+                    + EnumChatFormatting.GRAY
+                    + " for each second since running")
             .addSeparator()
             .addInfo(
                 "250% " + EnumChatFormatting.RED
