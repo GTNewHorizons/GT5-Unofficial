@@ -1004,7 +1004,7 @@ public class GGMaterial implements Runnable {
             .addCraftingMetalWorkingItems()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes()
-            .addMixerRecipes((short) 5),
+            .addMixerRecipes((short) 4),
         OffsetID + 81,
         TextureSet.SET_METALLIC,
         new Pair<>(WerkstoffLoader.Zirconium, 34),
