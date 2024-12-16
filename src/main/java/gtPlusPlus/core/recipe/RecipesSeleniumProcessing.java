@@ -66,7 +66,7 @@ public class RecipesSeleniumProcessing {
         // Copper
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(23),
+                GTUtility.getIntegratedCircuit(23),
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1),
@@ -88,7 +88,7 @@ public class RecipesSeleniumProcessing {
         // Tetra
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(23),
+                GTUtility.getIntegratedCircuit(23),
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1),
@@ -110,7 +110,7 @@ public class RecipesSeleniumProcessing {
         // Chalco
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(23),
+                GTUtility.getIntegratedCircuit(23),
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1),
@@ -132,7 +132,7 @@ public class RecipesSeleniumProcessing {
         // Malachite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(23),
+                GTUtility.getIntegratedCircuit(23),
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1),

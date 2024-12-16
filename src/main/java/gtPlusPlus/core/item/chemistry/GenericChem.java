@@ -516,7 +516,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H6 + 6H = C6H12
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierTwoChip(), ItemUtils.getSimpleStack(mBrownCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(8), ItemUtils.getSimpleStack(mBrownCatalyst, 0))
             .fluidInputs(FluidUtils.getFluidStack(Benzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000))
             .fluidOutputs(FluidUtils.getFluidStack(Cyclohexane, 1000))
             .duration(2 * MINUTES)
@@ -530,7 +530,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H12 + 2O(Air) = C6H10O + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierTwoChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(8), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
             .fluidInputs(FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("air", 4000))
             .fluidOutputs(FluidUtils.getFluidStack(Cyclohexanone, 1000))
             .duration(2 * MINUTES)
@@ -538,7 +538,7 @@ public class GenericChem extends ItemPackage {
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierTwoChip())
+            .itemInputs(GTUtility.getIntegratedCircuit(8))
             .fluidInputs(FluidUtils.getFluidStack(Cyclohexane, 1000), FluidUtils.getFluidStack("oxygen", 2000))
             .fluidOutputs(FluidUtils.getFluidStack(Cyclohexanone, 1000))
             .duration(2 * MINUTES)
@@ -552,7 +552,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierOneChip(),
+                GTUtility.getIntegratedCircuit(4),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 2L))
@@ -566,7 +566,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L))
@@ -580,7 +580,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierTwoChip(),
+                GTUtility.getIntegratedCircuit(8),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 3L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3L))
@@ -594,7 +594,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierTwoChip(),
+                GTUtility.getIntegratedCircuit(8),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 5L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 5L))
@@ -608,7 +608,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierFourChip(),
+                GTUtility.getIntegratedCircuit(16),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 6L),
                 MaterialsElements.getInstance().RUTHENIUM.getDust(6))
@@ -622,7 +622,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierOneChip(),
+                GTUtility.getIntegratedCircuit(4),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4L))
@@ -636,7 +636,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L),
                 MaterialsElements.getInstance().RHODIUM.getDust(4))
@@ -650,7 +650,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(4),
                 ItemUtils.getSimpleStack(RocketFuels.Formaldehyde_Catalyst_Dust, 8))
             .itemOutputs(ItemUtils.getSimpleStack(mFormaldehydeCatalyst, 4))
@@ -663,7 +663,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(5),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2L))
             .itemOutputs(ItemUtils.getSimpleStack(GenericChem.mSolidAcidCatalyst, 5))
@@ -677,7 +677,7 @@ public class GenericChem extends ItemPackage {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierThreeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 CI.getEmptyCatalyst(5),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 10L))
@@ -691,7 +691,7 @@ public class GenericChem extends ItemPackage {
 
         // Basic Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierOneChip(), ItemUtils.getSimpleStack(Items.rotten_flesh, 64))
+            .itemInputs(GTUtility.getIntegratedCircuit(4), ItemUtils.getSimpleStack(Items.rotten_flesh, 64))
             .fluidInputs(FluidUtils.getHotWater(2000))
             .fluidOutputs(FluidUtils.getFluidStack(Cadaverine, 250), FluidUtils.getFluidStack(Putrescine, 250))
             .duration(2 * MINUTES)
@@ -701,7 +701,7 @@ public class GenericChem extends ItemPackage {
         // Advanced Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getTierTwoChip(),
+                GTUtility.getIntegratedCircuit(8),
                 ItemUtils.getSimpleStack(Items.rotten_flesh, 128),
                 ItemUtils.simpleMetaStack(AgriculturalChem.mAgrichemItem1, 8, 32))
             .fluidInputs(FluidUtils.getHotWater(3000))
@@ -717,7 +717,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H5NO2 + 6H = C6H7N + 2H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierThreeChip(), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(12), ItemUtils.getSimpleStack(mBlueCatalyst, 0))
             .fluidInputs(FluidUtils.getFluidStack(NitroBenzene, 1000), FluidUtils.getFluidStack("hydrogen", 6000))
             .fluidOutputs(FluidUtils.getFluidStack(Aniline, 1000))
             .duration(30 * SECONDS)
@@ -731,7 +731,7 @@ public class GenericChem extends ItemPackage {
 
         // C6H6 + HNO3 =H2SO4= C6H5NO2 +H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(getTierThreeChip())
+            .itemInputs(GTUtility.getIntegratedCircuit(12))
             .fluidInputs(
                 FluidUtils.getFluidStack(Benzene, 5000),
                 FluidUtils.getFluidStack("sulfuricacid", 1000),
@@ -835,22 +835,6 @@ public class GenericChem extends ItemPackage {
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
-    }
-
-    private static ItemStack getTierOneChip() {
-        return CI.getNumberedAdvancedCircuit(4);
-    }
-
-    private static ItemStack getTierTwoChip() {
-        return CI.getNumberedAdvancedCircuit(8);
-    }
-
-    private static ItemStack getTierThreeChip() {
-        return CI.getNumberedAdvancedCircuit(12);
-    }
-
-    private static ItemStack getTierFourChip() {
-        return CI.getNumberedAdvancedCircuit(16);
     }
 
     private static void recipeAdvancedChip() {
