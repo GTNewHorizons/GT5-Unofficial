@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -414,8 +413,49 @@ public class VoidProtectionHelper {
             busStacks = machine.getItemOutputSlots(itemOutputs);
         }
 
-        if (virtualItemOutputsInBus != null && virtualItemOutputsInBus.length > 0) {
-            Collections.addAll(busStacks, virtualItemOutputsInBus);
+        if (virtualItemOutputsInBus != null) {
+            for (ItemStack virtualStack : virtualItemOutputsInBus) {
+                if (virtualStack == null || virtualStack.stackSize <= 0) continue;
+
+                boolean merged = false;
+
+                // Attempt to merge with an existing stack in busStacks
+                for (ItemStack busStack : busStacks) {
+                    if (busStack == null) continue;
+
+                    if (!busStack.isItemEqual(virtualStack)
+                        || ItemStack.areItemStackTagsEqual(busStack, virtualStack)) {
+                        continue;
+                    }
+
+                    int spaceLeft = busStack.getMaxStackSize() - busStack.stackSize;
+
+                    int transferAmount = Math.min(spaceLeft, virtualStack.stackSize);
+                    busStack.stackSize += transferAmount;
+                    virtualStack.stackSize -= transferAmount;
+
+                    if (virtualStack.stackSize <= 0) {
+                        merged = true;
+                        break;
+                    }
+                }
+
+                if (!merged) {
+                    boolean replacedNull = false;
+
+                    for (int i = 0; i < busStacks.size(); i++) {
+                        if (busStacks.get(i) == null) {
+                            busStacks.set(i, virtualStack.copy());
+                            replacedNull = true;
+                            break;
+                        }
+                    }
+
+                    if (!replacedNull) {
+                        busStacks.add(virtualStack.copy());
+                    }
+                }
+            }
         }
 
         // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
