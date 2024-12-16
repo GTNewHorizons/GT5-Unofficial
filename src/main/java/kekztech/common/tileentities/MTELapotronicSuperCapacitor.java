@@ -408,7 +408,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Energy Storage")
+        tt.addMachineType("Energy Storage, LSC")
             .addInfo("Loses energy equal to 1% of the total capacity every 24 hours.")
             .addInfo(
                 "Capped at " + EnumChatFormatting.RED
@@ -844,8 +844,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     ItemBlockLapotronicEnergyUnit.UMV_wireless_eu_cap
                         .multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
 
-        if (transferred_eu.signum() == 1) {
-            inputLastTick += transferred_eu.longValue();
+        if (transferred_eu.signum() == -1) {
+            inputLastTick += Math.abs(transferred_eu.longValue());
         } else {
             outputLastTick += transferred_eu.longValue();
         }

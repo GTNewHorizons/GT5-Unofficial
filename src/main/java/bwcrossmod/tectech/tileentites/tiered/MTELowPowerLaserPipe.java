@@ -33,6 +33,7 @@ import gregtech.api.util.CoverBehavior;
 import gregtech.common.GTClient;
 import ic2.core.Ic2Items;
 
+@Deprecated
 public class MTELowPowerLaserPipe extends MTECable implements LowPowerLaser {
 
     public MTELowPowerLaserPipe(int aID, String aName, String aNameRegional) {
@@ -74,7 +75,8 @@ public class MTELowPowerLaserPipe extends MTECable implements LowPowerLaser {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Primitive Laser Cable intended for Low Power Applications", "Does not auto-connect",
+        return new String[] { EnumChatFormatting.RED + "DEPRECATED! This will be removed in the next major update.",
+            "Primitive Laser Cable intended for Low Power Applications", "Does not auto-connect",
             "Does not turn or bend",
             EnumChatFormatting.WHITE + "Must be "
                 + EnumChatFormatting.YELLOW

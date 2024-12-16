@@ -84,7 +84,6 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MteHatchSteamBusInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
@@ -743,8 +742,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             if (aMetaTileEntity == null) {
                 return false;
             }
-            if (aMetaTileEntity instanceof MTEHatchInput || aMetaTileEntity instanceof MTEHatchInputBus
-                || aMetaTileEntity instanceof MteHatchSteamBusInput) {
+            if (aMetaTileEntity instanceof MTEHatchInput || aMetaTileEntity instanceof MTEHatchInputBus) {
                 return resetRecipeMapForHatch((MTEHatch) aMetaTileEntity, aMap);
             } else {
                 return false;
@@ -759,8 +757,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aTileEntity == null) {
             return false;
         }
-        if (aTileEntity instanceof MTEHatchInput || aTileEntity instanceof MTEHatchInputBus
-            || aTileEntity instanceof MteHatchSteamBusInput) {
+        if (aTileEntity instanceof MTEHatchInput || aTileEntity instanceof MTEHatchInputBus) {
             if (aTileEntity instanceof MTEHatchInput) {
                 ((MTEHatchInput) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInput) aTileEntity).mRecipeMap = aMap;
@@ -772,14 +769,6 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             } else if (aTileEntity instanceof MTEHatchInputBus) {
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = aMap;
-                if (aMap != null) {
-                    log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
-                } else {
-                    log("Cleared Input Bus.");
-                }
-            } else {
-                ((MteHatchSteamBusInput) aTileEntity).mRecipeMap = null;
-                ((MteHatchSteamBusInput) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
                     log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
                 } else {

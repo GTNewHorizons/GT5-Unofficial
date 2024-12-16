@@ -49,7 +49,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -112,21 +111,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 .build();
         }
     };
-
-    static {
-        Textures.BlockIcons.setCasingTextureForId(
-            53,
-            TextureFactory.of(
-                TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_ANTIMATTER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(MACHINE_CASING_ANTIMATTER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build()));
-    }
 
     private boolean addLaserSource(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
@@ -548,30 +532,31 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
-    private static final ITexture textureOverlay = TextureFactory.of(
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION1)
-            .extFacing()
-            .build(),
-        TextureFactory.builder()
-            .addIcon(OVERLAY_FUSION1_GLOW)
-            .extFacing()
-            .glow()
-            .build());
-
-    public ITexture getTextureOverlay() {
-        return textureOverlay;
-    }
-
     @Override
-    @SuppressWarnings("ALL")
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
-            .build(), getTextureOverlay() };
-        if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(53) };
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FUSION1)
+                .extFacing()
+                .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FUSION1_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
+        if (aActive) return new ITexture[] { TextureFactory.builder()
+            .addIcon(MACHINE_CASING_ANTIMATTER)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(MACHINE_CASING_ANTIMATTER_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
         return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()

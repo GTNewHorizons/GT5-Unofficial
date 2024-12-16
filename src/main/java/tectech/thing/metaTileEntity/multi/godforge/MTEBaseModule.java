@@ -57,6 +57,7 @@ import gregtech.api.util.GTStructureUtility;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
 
 public class MTEBaseModule extends TTMultiblockBase {
 

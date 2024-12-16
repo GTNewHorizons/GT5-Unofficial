@@ -58,8 +58,6 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
                 "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
-            .addInfo("Make sure the whole structure is built in the 3x3")
-            .addInfo("chunk area of the ring center (not controller).")
             .addInfo("Performs 4/4 overclock.")
             .addInfo("Startup < 160,000,000 EU: 320x Parallel")
             .addInfo("Startup < 320,000,000 EU: 256x Parallel")
