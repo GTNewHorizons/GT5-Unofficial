@@ -40,6 +40,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
+import com.glodblock.github.common.item.ItemFluidDrop;
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -90,6 +91,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.objects.GTDualInputs;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
@@ -187,7 +189,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         public boolean isItemEmpty() {
             updateSlotItems();
-            return itemInventory.isEmpty() && sharedItemGetter.getSharedItem().length == 0;
+            return itemInventory.isEmpty();
         }
 
         public boolean isFluidEmpty() {
@@ -195,6 +197,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             return fluidInventory.isEmpty();
         }
 
+        @Override
         public boolean isEmpty() {
             return isItemEmpty() && isFluidEmpty();
         }
@@ -202,7 +205,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         @Override
         public ItemStack[] getItemInputs() {
             if (isItemEmpty()) return new ItemStack[0];
-            return ArrayUtils.addAll(itemInventory.toArray(new ItemStack[0]), sharedItemGetter.getSharedItem());
+            return itemInventory.toArray(new ItemStack[0]);
         }
 
         @Override
@@ -213,6 +216,29 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         public ICraftingPatternDetails getPatternDetails() {
             return patternDetails;
+        }
+
+        public GTDualInputs getPatternInputs() {
+            GTDualInputs dualInputs = new GTDualInputs();
+
+            ItemStack[] inputItems = this.sharedItemGetter.getSharedItem();
+            FluidStack[] inputFluids = new FluidStack[0];
+
+            for (IAEItemStack singleInput : this.getPatternDetails()
+                .getInputs()) {
+                if (singleInput == null) continue;
+                ItemStack singleInputItemStack = singleInput.getItemStack();
+                if (singleInputItemStack.getItem() instanceof ItemFluidDrop) {
+                    FluidStack fluidStack = ItemFluidDrop.getFluidStack(singleInputItemStack);
+                    if (fluidStack != null) inputFluids = ArrayUtils.addAll(inputFluids, fluidStack);
+                } else {
+                    inputItems = ArrayUtils.addAll(inputItems, singleInputItemStack);
+                }
+            }
+
+            dualInputs.inputItems = inputItems;
+            dualInputs.inputFluid = inputFluids;
+            return dualInputs;
         }
 
         public void refund(AENetworkProxy proxy, BaseActionSource src) throws GridAccessException {
@@ -321,6 +347,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private static final int MANUAL_SLOT_WINDOW = 10;
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
+    public boolean needClearRecipeMap;
 
     // holds all internal inventories
     private final PatternSlot[] internalInventory = new PatternSlot[MAX_PATTERN_COUNT];
@@ -771,6 +798,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             if (originalPattern.hasChanged(newItem, world)) {
                 try {
                     originalPattern.refund(getProxy(), getRequest());
+                    needClearRecipeMap = true;
                 } catch (GridAccessException ignored) {}
                 internalInventory[index] = null;
                 needPatternSync = true;
@@ -789,6 +817,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         needPatternSync = true;
     }
 
+    @Override
     public ItemStack[] getSharedItems() {
         ItemStack[] sharedItems = new ItemStack[SLOT_MANUAL_SIZE + 1];
         sharedItems[0] = mInventory[SLOT_CIRCUIT];
@@ -1053,5 +1082,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             list.add(outputs[0].getItemStack());
         }
         return list;
+    }
+
+    @Override
+    public boolean needClearRecipeMap() {
+        return needClearRecipeMap;
     }
 }
