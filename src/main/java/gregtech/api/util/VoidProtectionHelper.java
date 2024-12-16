@@ -1,10 +1,6 @@
 package gregtech.api.util;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
@@ -64,6 +60,10 @@ public class VoidProtectionHelper {
      * The fluid output inventory
      */
     private FluidInventoryLogic fluidOutputInventory;
+    /**
+     * The item outputs to take in account as already in output buses
+     */
+    private ItemStack[] virtualItemOutputsInBus;
     /**
      * Has this helper been built?
      */
@@ -147,6 +147,11 @@ public class VoidProtectionHelper {
 
     public VoidProtectionHelper setChangeGetter(Function<Integer, Integer> getter) {
         this.chanceGetter = getter;
+        return this;
+    }
+
+    public VoidProtectionHelper setVirtualItemOutputsInBus(ItemStack[] itemOutputs) {
+        this.virtualItemOutputsInBus = itemOutputs;
         return this;
     }
 
@@ -403,6 +408,11 @@ public class VoidProtectionHelper {
         } else {
             busStacks = machine.getItemOutputSlots(itemOutputs);
         }
+
+        if (virtualItemOutputsInBus != null && virtualItemOutputsInBus.length > 0) {
+            Collections.addAll(busStacks, virtualItemOutputsInBus);
+        }
+
         // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
         // recipe outputs.
         Map<ItemStack, Integer> tItemOutputMap = new ItemStackMap<>();
