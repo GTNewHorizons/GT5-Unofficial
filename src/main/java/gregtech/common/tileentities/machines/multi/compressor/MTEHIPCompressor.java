@@ -397,7 +397,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
-        if (aTick % 20 == 0) {
+        if (aTick % 20 == 0 || aBaseMetaTileEntity.isClientSide()) {
 
             // Default to cooling by 2%
             float heatMod = -2;
