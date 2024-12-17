@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -62,7 +61,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTStructureUtility;
@@ -94,9 +92,6 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
 
     /** Motor tier of the Space Elevator */
     protected int motorTier = 0;
-
-    /** Flag if the chunks of the machine are loaded by it */
-    private boolean isLoadedChunk;
 
     /** Flag if the extension for more modules is enabled */
     private boolean isExtensionEnabled = false;
@@ -601,33 +596,15 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             if (aTick == 1) {
                 SpaceProjectManager.checkOrCreateTeam(aBaseMetaTileEntity.getOwnerUuid());
             }
-            if (!aBaseMetaTileEntity.isAllowedToWork()) {
-                // if machine has stopped, stop chunkloading
-                GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-                isLoadedChunk = false;
-            } else if (!isLoadedChunk) {
-                // load a 3x3 area when machine is running
-                GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-                int offX = aBaseMetaTileEntity.getFrontFacing().offsetX;
-                int offZ = aBaseMetaTileEntity.getFrontFacing().offsetZ;
-                for (int i = -1; i < 2; i++) {
-                    for (int j = -1; j < 2; j++) {
-                        GTChunkManager.requestChunkLoad(
-                                (TileEntity) aBaseMetaTileEntity,
-                                new ChunkCoordIntPair(getChunkX() + offX + i, getChunkZ() + offZ + j));
-                    }
-                }
-                this.isLoadedChunk = true;
-            } else {
+
+            if (aBaseMetaTileEntity.isAllowedToWork()) {
                 if (elevatorCable != null && IGConfig.spaceElevator.isCableRenderingEnabled
                         && elevatorCable.getAnimation() == TileEntitySpaceElevatorCable.ClimberAnimation.NO_ANIMATION
                         && aTick % 2000 == 0) {
                     elevatorCable.startAnimation(TileEntitySpaceElevatorCable.ClimberAnimation.DELIVER_ANIMATION);
                 }
-            }
 
-            // Charge project modules
-            if (getBaseMetaTileEntity().isAllowedToWork()) {
+                // Charge project modules
                 if (aTick % MODULE_CHARGE_INTERVAL == 0) {
                     if (mProjectModuleHatches.size() > 0) {
                         long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
