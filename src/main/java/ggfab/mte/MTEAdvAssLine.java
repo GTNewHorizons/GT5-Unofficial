@@ -304,7 +304,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembly Line")
+        tt.addMachineType("Assembly Line, AAL")
             .addInfo("Built exactly the same as standard Assembly Line")
             .addInfo("Assembly Line with item pipelining")
             .addInfo("All fluids are however consumed at start")
@@ -522,9 +522,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
          * l -> { currentInputLength = l; for (SliceStatusWidget w : arr) { w.updateText(); } }));
          */
         screenElements.widget(
-            new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setEnabled(this::hasAbnormalStopReason));
+            new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(this::hasAbnormalStopReason));
         screenElements.widget(
             new TextWidget().setTextSupplier(() -> Text.localised(lastStopReason))
+                .setTextAlignment(Alignment.CenterLeft)
                 .attachSyncer(
                     new FakeSyncWidget.StringSyncer(() -> lastStopReason, r -> this.lastStopReason = r),
                     screenElements)
