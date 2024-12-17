@@ -1166,7 +1166,7 @@ public class RecipesMachines {
         // Flask Configurator
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(8),
+                GTUtility.getIntegratedCircuit(9),
                 CI.getTieredMachineHull(2),
                 ItemUtils.getSimpleStack(ModBlocks.blockCircuitProgrammer),
                 VolumetricFlaskHelper.getVolumetricFlask(8),
