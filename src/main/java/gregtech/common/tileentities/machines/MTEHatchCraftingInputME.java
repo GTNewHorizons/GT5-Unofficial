@@ -187,7 +187,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         public boolean isItemEmpty() {
             updateSlotItems();
-            return itemInventory.isEmpty() && sharedItemGetter.getSharedItem().length == 0;
+            return itemInventory.isEmpty();
         }
 
         public boolean isFluidEmpty() {
@@ -201,13 +201,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         @Override
         public ItemStack[] getItemInputs() {
-            if (isItemEmpty()) return new ItemStack[0];
+            if (isEmpty()) return new ItemStack[0];
             return ArrayUtils.addAll(itemInventory.toArray(new ItemStack[0]), sharedItemGetter.getSharedItem());
         }
 
         @Override
         public FluidStack[] getFluidInputs() {
-            if (isFluidEmpty()) return new FluidStack[0];
+            if (isEmpty()) return new FluidStack[0];
             return fluidInventory.toArray(new FluidStack[0]);
         }
 
