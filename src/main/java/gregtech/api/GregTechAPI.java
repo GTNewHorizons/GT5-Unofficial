@@ -213,8 +213,7 @@ public class GregTechAPI {
         sAfterGTPostload = new ArrayList<>(), sFirstWorldTick = new ArrayList<>(),
         sBeforeGTServerstart = new ArrayList<>(), sAfterGTServerstart = new ArrayList<>(),
         sBeforeGTServerstop = new ArrayList<>(), sAfterGTServerstop = new ArrayList<>(),
-        sGTBlockIconload = new ArrayList<>(), sGTItemIconload = new ArrayList<>(), sGTCompleteLoad = new ArrayList<>(),
-        sThirdPartyMultiRegistration = new ArrayList<>();
+        sGTBlockIconload = new ArrayList<>(), sGTItemIconload = new ArrayList<>(), sGTCompleteLoad = new ArrayList<>();
     /**
      * The Icon Registers from Blocks and Items. They will get set right before the corresponding Icon Load Phase as
      * executed in the Runnable List above.

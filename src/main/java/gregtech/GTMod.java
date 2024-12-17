@@ -310,12 +310,6 @@ public class GTMod implements IGTMod {
         // populate itemstack instance for NBT check in GTRecipe
         setItemStacks();
 
-        for (Runnable runnable : GregTechAPI.sThirdPartyMultiRegistration) {
-            runnable.run();
-        }
-
-        GregTechAPI.sThirdPartyMultiRegistration.clear();
-
         GTPreLoad.sortToTheEnd();
         GregTechAPI.sPreloadFinished = true;
         GTLog.out.println("GTMod: Preload-Phase finished!");
