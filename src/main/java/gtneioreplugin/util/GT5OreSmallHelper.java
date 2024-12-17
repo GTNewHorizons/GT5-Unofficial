@@ -46,7 +46,6 @@ public class GT5OreSmallHelper {
         OreInfo<IMaterial> info = OreInfo.getNewInfo();
 
         for (GTWorldgen worldGen : GregTechAPI.sWorldgenList) {
-            if (!worldGen.mWorldGenName.startsWith("ore.small.")) continue;
             if (!(worldGen instanceof WorldgenGTOreSmallPieces smallOreWorldGen)) continue;
 
             IMaterial material = smallOreWorldGen.mMaterial;

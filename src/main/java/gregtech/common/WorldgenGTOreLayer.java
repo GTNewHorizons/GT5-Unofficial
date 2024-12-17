@@ -391,7 +391,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                     }
 
                     if (rng.nextInt(7) == 0 && (rng.nextInt(placeZ) == 0 || rng.nextInt(placeX) == 0)
-                        && mSporadic != null) { // Sporadics are reduce by 1/7 to compensate
+                        && mSporadic != null) { // Sporadics are reduced by 1/7 to compensate
                         if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mSporadic, false)) {
                             placeCount[3]++;
                         }

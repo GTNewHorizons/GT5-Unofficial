@@ -28,7 +28,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
-import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -42,7 +41,6 @@ import gregtech.common.worldgen.WorldgenQuery;
 public class GTWorldgenerator implements IWorldGenerator {
 
     private static final int MAX_VEIN_SIZE = 2; // in chunks
-    private static final int END_ASTEROID_DISTANCE = 16; // in chunks
 
     public static List<WorldGenContainer> pendingTasks = Collections.synchronizedList(new LinkedList<>());
 
@@ -76,13 +74,6 @@ public class GTWorldgenerator implements IWorldGenerator {
         IChunkProvider aChunkProvider) {
 
         ModDimensionDef def = DimensionDef.getDefForWorld(aWorld);
-
-        if (def.getDimensionName()
-            .equals(DimNames.THE_END)) {
-            if (aX * aX + aZ * aZ > END_ASTEROID_DISTANCE * END_ASTEROID_DISTANCE) {
-                def = DimensionDef.EndAsteroids.modDimensionDef;
-            }
-        }
 
         if (def == null || def.getDimensionType() != DimensionType.Planet) {
             return;
@@ -337,7 +328,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 WorldgenGTOreLayer tWorldGen = validOreveins.get(oreveinSeed);
 
                 // Reset RNG to only be based on oreseed X/Z and type of vein
-                oreveinRNG.setSeed(oreveinSeed ^ tWorldGen.mPrimary.hashCode());
+                oreveinRNG.setSeed(oreveinSeed ^ tWorldGen.mPrimary.getId());
 
                 int placementResult = tWorldGen.executeWorldgenChunkified(
                     this.mWorld,
@@ -440,7 +431,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                             if (debugOrevein) GTLog.out.println(
                                 " Added far oreveinSeed=" + oreveinSeed
                                     + " "
-                                    + (oreLayer).mWorldGenName
+                                    + oreLayer.mWorldGenName
                                     + " tries at oremix="
                                     + i
                                     + " placementAttempts="
@@ -454,7 +445,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                             if (debugOrevein) GTLog.out.println(
                                 " No overlap and air block in test spot=" + oreveinSeed
                                     + " "
-                                    + (oreLayer).mWorldGenName
+                                    + oreLayer.mWorldGenName
                                     + " tries at oremix="
                                     + i
                                     + " placementAttempts="
