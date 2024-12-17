@@ -2,12 +2,13 @@ package bartworks.system.material;
 
 import java.util.List;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.OrePrefixes;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.OrePrefixes;
 
 public class BWItemMetaGeneratedOre extends ItemBlock {
 

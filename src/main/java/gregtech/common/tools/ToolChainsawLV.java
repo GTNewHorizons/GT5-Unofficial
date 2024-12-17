@@ -137,8 +137,8 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public float getMiningSpeed(Block aBlock, int aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld,
-        int aX, int aY, int aZ) {
+    public float getMiningSpeed(Block aBlock, int aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX,
+        int aY, int aZ) {
         if (aBlock.isWood(aPlayer.worldObj, aX, aY, aZ)
             && OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData))) {
             float rAmount = 1.0F;

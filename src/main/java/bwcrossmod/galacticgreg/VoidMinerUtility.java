@@ -183,9 +183,9 @@ public class VoidMinerUtility {
      * Public method giving other mods the ability to add manually a material with an ore version into the external
      * dropMap for a specified dim id
      *
-     * @param dimName     the full dim name of the dim to target
-     * @param material    the material with an ore version
-     * @param weight      the non normalised version of the given weight
+     * @param dimName  the full dim name of the dim to target
+     * @param material the material with an ore version
+     * @param weight   the non normalised version of the given weight
      */
     public static void addMaterialToDimensionList(String dimName, IMaterial material, float weight) {
         DropMap map = dropMapsByDimName.computeIfAbsent(dimName, ignored -> new DropMap());

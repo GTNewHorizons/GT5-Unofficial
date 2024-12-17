@@ -239,7 +239,8 @@ public class GTBaseCrop extends CropCard implements ICropCardInfo {
             return false;
         }
         for (int i = 1; i < this.getrootslength(aCrop); i++) {
-            Block tBlock = aCrop.getWorld().getBlock(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
+            Block tBlock = aCrop.getWorld()
+                .getBlock(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
             int tMetaID = aCrop.getWorld()
                 .getBlockMetadata(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
 

@@ -252,7 +252,8 @@ public class BaseOreComponent extends Item {
             // crushed + centrifuged, purified
         }
 
-        ComponentTypes(final String LocalName, final OrePrefixes orePrefix, final String prefix, final String DisplayName, final boolean overlay) {
+        ComponentTypes(final String LocalName, final OrePrefixes orePrefix, final String prefix,
+            final String DisplayName, final boolean overlay) {
             this.COMPONENT_NAME = LocalName;
             this.orePrefix = orePrefix.name();
             this.PREFIX = prefix;

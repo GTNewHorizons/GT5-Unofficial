@@ -6,16 +6,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import net.minecraft.world.World;
+
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.common.WorldgenGTOreLayer;
 import gregtech.common.WorldgenGTOreSmallPieces;
-import net.minecraft.world.World;
 
 public class WorldgenQuery<TLayer extends IWorldgenLayer> {
-    
+
     public List<TLayer> list;
     public int minY = -1, maxY = -1;
     public boolean checkWeight = true;

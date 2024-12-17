@@ -6,12 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.ImmutableList;
-
-import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IMaterial;
-import gregtech.api.interfaces.IStoneType;
-import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,14 +13,19 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class OreManager {
-    
-    private OreManager() { }
+import com.google.common.collect.ImmutableList;
 
-    public static final ImmutableList<IOreAdapter<?>> ORE_ADAPTERS = ImmutableList.of(
-        GTOreAdapter.INSTANCE,
-        GTPPOreAdapter.INSTANCE,
-        BWOreAdapter.INSTANCE);
+import gregtech.api.enums.StoneType;
+import gregtech.api.interfaces.IMaterial;
+import gregtech.api.interfaces.IStoneType;
+import it.unimi.dsi.fastutil.Pair;
+
+public class OreManager {
+
+    private OreManager() {}
+
+    public static final ImmutableList<IOreAdapter<?>> ORE_ADAPTERS = ImmutableList
+        .of(GTOreAdapter.INSTANCE, GTPPOreAdapter.INSTANCE, BWOreAdapter.INSTANCE);
 
     public static IStoneType getStoneType(Block block, int meta) {
         IStoneType stoneType = StoneType.findStoneType(block, meta);
@@ -69,7 +68,8 @@ public class OreManager {
         return null;
     }
 
-    public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone, IMaterial material, boolean small) {
+    public static boolean setOreForWorldGen(World world, int x, int y, int z, IStoneType defaultStone,
+        IMaterial material, boolean small) {
         if (y < 0 || y >= world.getActualHeight()) return false;
 
         IStoneType existingStone = getStoneType(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
@@ -82,18 +82,18 @@ public class OreManager {
             }
         }
 
-        try(OreInfo<IMaterial> info = OreInfo.getNewInfo();) {
+        try (OreInfo<IMaterial> info = OreInfo.getNewInfo();) {
             info.material = material;
             info.stoneType = existingStone;
             info.isSmall = small;
             info.isNatural = true;
-    
+
             for (IOreAdapter<?> oreAdapter : ORE_ADAPTERS) {
                 var block = oreAdapter.getBlock(info);
-    
+
                 if (block != null) {
                     world.setBlock(x, y, z, block.left(), block.rightInt(), 2);
-    
+
                     return true;
                 }
             }
@@ -102,21 +102,22 @@ public class OreManager {
         }
     }
 
-    public static boolean setOre(World world, int x, int y, int z, @Nullable IStoneType stoneType, IMaterial material, boolean small) {
+    public static boolean setOre(World world, int x, int y, int z, @Nullable IStoneType stoneType, IMaterial material,
+        boolean small) {
         if (y < 0 || y >= world.getActualHeight()) return false;
 
-        try(OreInfo<IMaterial> info = OreInfo.getNewInfo();) {
+        try (OreInfo<IMaterial> info = OreInfo.getNewInfo();) {
             info.material = material;
             info.stoneType = stoneType;
             info.isSmall = small;
             info.isNatural = true;
-    
+
             for (IOreAdapter<?> oreAdapter : ORE_ADAPTERS) {
                 var block = oreAdapter.getBlock(info);
-    
+
                 if (block != null) {
                     world.setBlock(x, y, z, block.left(), block.rightInt(), 2);
-    
+
                     return true;
                 }
             }
@@ -136,7 +137,7 @@ public class OreManager {
         info.stoneType = newStoneType;
 
         var block = oreAdapter.getBlock(info);
-        
+
         if (block == null) return false;
 
         world.setBlock(x, y, z, block.left(), block.rightInt(), 2);
@@ -144,7 +145,8 @@ public class OreManager {
         return true;
     }
 
-    public static List<ItemStack> mineBlock(World world, int x, int y, int z, int fortune, boolean simulate, boolean replaceWithCobblestone) {
+    public static List<ItemStack> mineBlock(World world, int x, int y, int z, int fortune, boolean simulate,
+        boolean replaceWithCobblestone) {
         Block ore = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
 
@@ -156,7 +158,8 @@ public class OreManager {
 
         if (p != null) {
             try (OreInfo<?> info = p.right()) {
-                oreBlockDrops = p.left().getOreDrops(info, false, fortune);
+                oreBlockDrops = p.left()
+                    .getOreDrops(info, false, fortune);
 
                 var cobble = info.stoneType.getCobblestone();
 
@@ -168,7 +171,7 @@ public class OreManager {
                 oreBlockDrops = new ArrayList<>(Arrays.asList(new ItemStack(ore, 1, meta)));
             } else {
                 // Regular ore
-                oreBlockDrops = ore.getDrops(world, x, y, z, meta, fortune);            
+                oreBlockDrops = ore.getDrops(world, x, y, z, meta, fortune);
             }
 
             replacement = Blocks.cobblestone;
@@ -204,7 +207,7 @@ public class OreManager {
 
             if (stack != null) return stack;
         }
-        
+
         return null;
     }
 
@@ -224,7 +227,7 @@ public class OreManager {
                 }
             }
         }
-        
+
         return null;
     }
 
@@ -234,7 +237,7 @@ public class OreManager {
                 return oreAdapter.getPotentialDrops(info);
             }
         }
-        
+
         return null;
     }
 }

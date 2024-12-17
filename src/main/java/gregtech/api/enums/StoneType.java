@@ -11,6 +11,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -25,14 +34,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 public enum StoneType implements IStoneType {
 
@@ -124,11 +125,20 @@ public enum StoneType implements IStoneType {
     // spotless:on
 
     public static final ImmutableList<StoneType> STONE_TYPES = ImmutableList.copyOf(values());
-    public static final ImmutableList<StoneType> VISUAL_STONE_TYPES = ImmutableList.copyOf(Arrays.stream(values()).filter(s -> s.builder.enabled && !s.isExtraneous()).toArray(StoneType[]::new));
+    public static final ImmutableList<StoneType> VISUAL_STONE_TYPES = ImmutableList.copyOf(
+        Arrays.stream(values())
+            .filter(s -> s.builder.enabled && !s.isExtraneous())
+            .toArray(StoneType[]::new));
 
     public static final ImmutableList<IStoneType> STONE_ONLY = ImmutableList.of(StoneType.Stone);
-    public static final ImmutableList<IStoneType> STONES = ImmutableList.copyOf(StoneType.STONE_TYPES.stream().filter(s -> s.getCategory() == StoneCategory.Stone).toArray(StoneType[]::new));
-    public static final ImmutableList<IStoneType> ICES = ImmutableList.copyOf(StoneType.STONE_TYPES.stream().filter(s -> s.getCategory() == StoneCategory.Ice).toArray(StoneType[]::new));
+    public static final ImmutableList<IStoneType> STONES = ImmutableList.copyOf(
+        StoneType.STONE_TYPES.stream()
+            .filter(s -> s.getCategory() == StoneCategory.Stone)
+            .toArray(StoneType[]::new));
+    public static final ImmutableList<IStoneType> ICES = ImmutableList.copyOf(
+        StoneType.STONE_TYPES.stream()
+            .filter(s -> s.getCategory() == StoneCategory.Ice)
+            .toArray(StoneType[]::new));
 
     private final StoneBuilder builder;
 
@@ -169,6 +179,7 @@ public enum StoneType implements IStoneType {
             case Marble -> BlockIcons.MARBLE_STONE;
             case Basalt -> BlockIcons.BASALT_STONE;
             default -> new IIconContainer() {
+
                 @Override
                 public IIcon getIcon() {
                     return StoneType.this.getIcon(side);
@@ -186,7 +197,10 @@ public enum StoneType implements IStoneType {
             };
         };
 
-        return TextureFactory.builder().addIcon(container).stdOrient().build();
+        return TextureFactory.builder()
+            .addIcon(container)
+            .stdOrient()
+            .build();
     }
 
     @Override
@@ -195,7 +209,7 @@ public enum StoneType implements IStoneType {
             return Blocks.stone.getIcon(side, 0);
         }
 
-        return switch(this) {
+        return switch (this) {
             case Stone -> Blocks.stone.getIcon(side, 0);
             case Netherrack -> Blocks.netherrack.getIcon(side, 0);
             case Endstone -> Blocks.end_stone.getIcon(side, 0);
@@ -266,6 +280,7 @@ public enum StoneType implements IStoneType {
     }
 
     private static class BlockMeta {
+
         public Block block;
         public int meta;
 
@@ -276,6 +291,7 @@ public enum StoneType implements IStoneType {
     }
 
     private static class StoneBuilder {
+
         public boolean enabled = true;
         public BlockMeta cobble, mainStone;
         public List<BlockMeta> otherStones;
@@ -380,7 +396,9 @@ public enum StoneType implements IStoneType {
         public StoneBuilder setCoremodDust(String name) {
             if (NewHorizonsCoreMod.isModLoaded()) {
                 Item dust = GameRegistry.findItem(NewHorizonsCoreMod.ID, "item." + name + "StoneDust");
-                pureDust = impureDust = new ItemStack(Objects.requireNonNull(dust, "Could not find " + "item." + name + "StoneDust"), 1);
+                pureDust = impureDust = new ItemStack(
+                    Objects.requireNonNull(dust, "Could not find " + "item." + name + "StoneDust"),
+                    1);
             }
 
             return this;

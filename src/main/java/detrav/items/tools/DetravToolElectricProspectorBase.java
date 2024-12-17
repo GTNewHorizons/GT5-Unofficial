@@ -193,8 +193,8 @@ public class DetravToolElectricProspectorBase implements IToolStats {
                 + EnumChatFormatting.WHITE);
     }
 
-    public float getMiningSpeed(Block aBlock, int aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld,
-        int aX, int aY, int aZ) {
+    public float getMiningSpeed(Block aBlock, int aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX,
+        int aY, int aZ) {
         return aDefault;
     }
 }

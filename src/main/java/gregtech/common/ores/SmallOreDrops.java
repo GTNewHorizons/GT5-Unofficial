@@ -2,14 +2,16 @@ package gregtech.common.ores;
 
 import java.util.ArrayList;
 
+import net.minecraft.item.ItemStack;
+
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
-import net.minecraft.item.ItemStack;
 
 public enum SmallOreDrops {
+
     gemExquisite(OrePrefixes.gemExquisite, OrePrefixes.gem, 1),
     gemFlawless(OrePrefixes.gemFlawless, OrePrefixes.gem, 2),
     gem(OrePrefixes.gem, null, 12),

@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
+
 import gregtech.api.enums.OreMixes;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneType;
@@ -25,7 +26,7 @@ public class GT5OreLayerHelper {
         for (OreMixes mix : OreMixes.values()) {
             mapOreLayerWrapper.put(mix.oreMixBuilder.oreMixName, new OreLayerWrapper(mix.oreMixBuilder));
         }
-        
+
         for (OreLayerWrapper layer : mapOreLayerWrapper.values()) {
             bufferedDims.put(layer, DimensionHelper.getDims(layer));
         }
@@ -99,13 +100,14 @@ public class GT5OreLayerHelper {
                 info.material = ores[veinLayer];
                 info.stoneType = stoneType;
 
-                return Objects.requireNonNull(OreManager.getStack(info, 1), "getLayerOre: " + veinLayer + ", " + stoneType + ", " + Arrays.toString(ores));
+                return Objects.requireNonNull(
+                    OreManager.getStack(info, 1),
+                    "getLayerOre: " + veinLayer + ", " + stoneType + ", " + Arrays.toString(ores));
             }
         }
 
         public boolean containsOre(IMaterial material) {
-            return ores[OreVeinLayer.VEIN_PRIMARY] == material
-                || ores[OreVeinLayer.VEIN_SECONDARY] == material
+            return ores[OreVeinLayer.VEIN_PRIMARY] == material || ores[OreVeinLayer.VEIN_SECONDARY] == material
                 || ores[OreVeinLayer.VEIN_BETWEEN] == material
                 || ores[OreVeinLayer.VEIN_SPORADIC] == material;
         }

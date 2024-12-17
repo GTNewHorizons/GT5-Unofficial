@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
+import net.minecraft.world.chunk.IChunkProvider;
+
 import galacticgreg.api.Enums.DimensionType;
 import gregtech.api.enums.StoneType;
 import gregtech.common.config.Gregtech;
-import net.minecraft.block.Block;
-import net.minecraft.world.chunk.IChunkProvider;
 
 // import galacticgreg.GalacticGreg;
 
@@ -46,11 +47,7 @@ public class ModDimensionDef {
      */
     public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
         DimensionType pDimType) {
-        this(
-            pDimensionName,
-            pChunkProvider.getName(),
-            pDimType,
-            null);
+        this(pDimensionName, pChunkProvider.getName(), pDimType, null);
     }
 
     /**
@@ -62,11 +59,7 @@ public class ModDimensionDef {
      */
     public ModDimensionDef(String pDimensionName, Class<? extends IChunkProvider> pChunkProvider,
         DimensionType pDimType, List<ModDBMDef> pBlockDefinitions) {
-        this(
-            pDimensionName,
-            pChunkProvider.getName(),
-            pDimType,
-            pBlockDefinitions);
+        this(pDimensionName, pChunkProvider.getName(), pDimType, pBlockDefinitions);
     }
 
     /**
@@ -104,6 +97,7 @@ public class ModDimensionDef {
 
     /**
      * Sets the chance that an ore seed chunk will have a vein
+     * 
      * @param chance The chance out of 100.
      */
     public ModDimensionDef setOreVeinChance(int chance) {

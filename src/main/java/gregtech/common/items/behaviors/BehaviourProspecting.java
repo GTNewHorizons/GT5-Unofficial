@@ -43,7 +43,8 @@ public class BehaviourProspecting extends BehaviourNone {
         if (association == null) return null;
         if (association.mPrefix == null) return null;
         if (association.mMaterial == null) return null;
-        if (!association.mPrefix.toString().startsWith("ore")) return null;
+        if (!association.mPrefix.toString()
+            .startsWith("ore")) return null;
 
         return association.mMaterial.mMaterial;
     }
@@ -66,8 +67,7 @@ public class BehaviourProspecting extends BehaviourNone {
         if (mat != null) {
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                GTUtility.trans("100", "This is ") + mat.getLocalizedName()
-                    + GTUtility.trans("101", " Ore."));
+                GTUtility.trans("100", "This is ") + mat.getLocalizedName() + GTUtility.trans("101", " Ore."));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
             return true;
         }
@@ -77,13 +77,13 @@ public class BehaviourProspecting extends BehaviourNone {
         if (oreMat != null) {
             GTUtility.sendChatToPlayer(
                 aPlayer,
-                GTUtility.trans("100", "This is ") + oreMat.mDefaultLocalName
-                    + GTUtility.trans("101", " Ore."));
+                GTUtility.trans("100", "This is ") + oreMat.mDefaultLocalName + GTUtility.trans("101", " Ore."));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
             return true;
         }
 
-        if (aBlock.getMaterial() == Material.rock || aBlock.getMaterial() == Material.ground || OreManager.isOre(aBlock, aMeta)) {
+        if (aBlock.getMaterial() == Material.rock || aBlock.getMaterial() == Material.ground
+            || OreManager.isOre(aBlock, aMeta)) {
             if (!GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) return false;
 
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
@@ -101,20 +101,17 @@ public class BehaviourProspecting extends BehaviourNone {
                     break;
                 }
                 if (tBlock instanceof BlockLiquid || tBlock instanceof IFluidBlock) {
-                    GTUtility
-                        .sendChatToPlayer(aPlayer, GTUtility.trans("103", "There is a Liquid behind this Rock."));
+                    GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("103", "There is a Liquid behind this Rock."));
                     break;
                 }
                 if (tBlock == Blocks.monster_egg || !GTUtility.hasBlockHitBox(aWorld, tX, tY, tZ)) {
-                    GTUtility.sendChatToPlayer(
-                        aPlayer,
-                        GTUtility.trans("104", "There is an Air Pocket behind this Rock."));
+                    GTUtility
+                        .sendChatToPlayer(aPlayer, GTUtility.trans("104", "There is an Air Pocket behind this Rock."));
                     break;
                 }
                 if (tBlock != aBlock) {
-                    if (i < 4) GTUtility.sendChatToPlayer(
-                        aPlayer,
-                        GTUtility.trans("105", "Material is changing behind this Rock."));
+                    if (i < 4) GTUtility
+                        .sendChatToPlayer(aPlayer, GTUtility.trans("105", "Material is changing behind this Rock."));
                     break;
                 }
             }
@@ -142,8 +139,7 @@ public class BehaviourProspecting extends BehaviourNone {
                 if (oreMat != null) {
                     GTUtility.sendChatToPlayer(
                         aPlayer,
-                        GTUtility.trans("106", "Found traces of ")
-                            + oreMat.mDefaultLocalName
+                        GTUtility.trans("106", "Found traces of ") + oreMat.mDefaultLocalName
                             + GTUtility.trans("101", " Ore."));
                     return true;
                 }

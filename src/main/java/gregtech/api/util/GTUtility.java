@@ -166,10 +166,8 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
-import gtPlusPlus.core.block.base.BlockBaseOre;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
@@ -4360,7 +4358,8 @@ public class GTUtility {
             return sOreTable.get(tItem);
         }
         for (int id : OreDictionary.getOreIDs(aStack)) {
-            if (OreDictionary.getOreName(id).startsWith("ore")) {
+            if (OreDictionary.getOreName(id)
+                .startsWith("ore")) {
                 sOreTable.put(tItem, true);
                 return true;
             }
@@ -4580,7 +4579,7 @@ public class GTUtility {
     public static long signum(long x) {
         return x < 0 ? -1 : x > 0 ? 1 : 0;
     }
-    
+
     /**
      * Hash an item stack for the purpose of storing hash across launches
      */

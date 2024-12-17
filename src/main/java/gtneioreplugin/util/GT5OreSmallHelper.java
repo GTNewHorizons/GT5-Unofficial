@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.item.ItemStack;
+
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
-
-import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SmallOres;
@@ -39,7 +39,9 @@ public class GT5OreSmallHelper {
             smallOreDefMap.put(ore.smallOreBuilder.smallOreName, ore.smallOreBuilder);
         }
 
-        Multimap<String, OreSmallWrapper> oreSpawning = MultimapBuilder.hashKeys().arrayListValues().build();
+        Multimap<String, OreSmallWrapper> oreSpawning = MultimapBuilder.hashKeys()
+            .arrayListValues()
+            .build();
 
         OreInfo<IMaterial> info = OreInfo.getNewInfo();
 
@@ -54,7 +56,8 @@ public class GT5OreSmallHelper {
             SMALL_ORES_BY_MAT.put(smallOreWorldGen.mMaterial, wrapper);
 
             if (ORE_MAT_TO_DROPS.containsKey(smallOreWorldGen.mMaterial)) {
-                throw new IllegalStateException("Duplicate small ore world gen for material " + smallOreWorldGen.mMaterial);
+                throw new IllegalStateException(
+                    "Duplicate small ore world gen for material " + smallOreWorldGen.mMaterial);
             }
 
             for (String abbrDimName : wrapper.enabledDims) {
@@ -87,7 +90,8 @@ public class GT5OreSmallHelper {
             SMALL_ORES_BY_DIM.get(e.getKey()).smallOres.add(e.getValue());
         }
 
-        SMALL_ORES_BY_DIM.values().forEach(SmallOreDimensionWrapper::calculateWeights);
+        SMALL_ORES_BY_DIM.values()
+            .forEach(SmallOreDimensionWrapper::calculateWeights);
     }
 
     public static class OreSmallWrapper {
@@ -113,7 +117,7 @@ public class GT5OreSmallHelper {
             this.allowedDimWithOrigNames = ore.dimsEnabled;
 
             this.enabledDims = new HashSet<>();
-    
+
             for (String dimName : ore.dimsEnabled) {
                 if (!ore.dimsEnabled.contains(dimName)) {
                     continue;
@@ -126,7 +130,7 @@ public class GT5OreSmallHelper {
         public List<ItemStack> getOreVariants() {
             List<ItemStack> oreVariants = new ArrayList<>();
 
-            try(OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
+            try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
                 info.material = material;
                 info.isSmall = true;
 
@@ -157,8 +161,7 @@ public class GT5OreSmallHelper {
                 totalWeight += oreVein.amountPerChunk;
             }
             for (OreSmallWrapper oreVein : smallOres) {
-                oreVeinProbabilities
-                    .put(oreVein, ((double) oreVein.amountPerChunk) / ((double) totalWeight));
+                oreVeinProbabilities.put(oreVein, ((double) oreVein.amountPerChunk) / ((double) totalWeight));
             }
         }
     }

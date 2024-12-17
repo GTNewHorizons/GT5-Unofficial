@@ -106,9 +106,7 @@ public class DetravScannerGUI extends GuiScreen {
                 if (objectId != -1 && amount > 0) {
                     var object = map.packet.objects.get(objectId);
 
-                    info.add(
-                        StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name")
-                            + object.left());
+                    info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name") + object.left());
                     info.add(
                         StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount")
                             + GTUtility.formatNumbers(amount)
@@ -131,8 +129,7 @@ public class DetravScannerGUI extends GuiScreen {
 
                 if (amount > 0) {
                     info.add(
-                        StatCollector.translateToLocal("gui.detrav.scanner.pollution")
-                            + ": "
+                        StatCollector.translateToLocal("gui.detrav.scanner.pollution") + ": "
                             + GTUtility.formatNumbers(amount)
                             + GTUtility.trans("203", " gibbl"));
                 }

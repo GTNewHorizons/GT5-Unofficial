@@ -7,10 +7,11 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+
+import com.google.common.collect.ImmutableList;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneCategory;
@@ -117,8 +118,8 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
     }
 
     @Override
-    public boolean executeWorldgen(World world, Random random, String biome, int dimId, int chunkX,
-        int chunkZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+    public boolean executeWorldgen(World world, Random random, String biome, int dimId, int chunkX, int chunkZ,
+        IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
         if (!this.mBiome.equals("None") && !(this.mBiome.equals(biome))) {
             return false; // Not the correct biome for ore mix
         }

@@ -104,10 +104,11 @@ public class DetravScannerCommand implements ICommand {
 
                 try (OreInfo<?> info = p.right()) {
                     if (info.isSmall) continue;
-    
+
                     String matName = info.material.getLocalizedName();
-    
-                    if (fName == null || matName.toLowerCase().contains(fName)) {
+
+                    if (fName == null || matName.toLowerCase()
+                        .contains(fName)) {
                         ores.merge(matName, 1, sum);
                     }
                 }

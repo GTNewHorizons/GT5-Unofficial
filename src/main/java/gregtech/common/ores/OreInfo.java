@@ -6,7 +6,7 @@ import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneType;
 
 public class OreInfo<TMat extends IMaterial> implements AutoCloseable {
-    
+
     public TMat material;
     public IStoneType stoneType;
     public boolean isSmall;
@@ -16,13 +16,13 @@ public class OreInfo<TMat extends IMaterial> implements AutoCloseable {
 
     @SuppressWarnings("unchecked")
     public static <T extends IMaterial> OreInfo<T> getNewInfo() {
-        synchronized(ORE_INFO_POOL) {
+        synchronized (ORE_INFO_POOL) {
             return (OreInfo<T>) ORE_INFO_POOL.getInstance();
         }
     }
 
     public static void releaseInfo(OreInfo<?> info) {
-        synchronized(ORE_INFO_POOL) {
+        synchronized (ORE_INFO_POOL) {
             ORE_INFO_POOL.releaseInstance(info.reset());
         }
     }
@@ -86,33 +86,30 @@ public class OreInfo<TMat extends IMaterial> implements AutoCloseable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         OreInfo<?> other = (OreInfo<?>) obj;
         if (material == null) {
-            if (other.material != null)
-                return false;
-        } else if (!material.equals(other.material))
-            return false;
+            if (other.material != null) return false;
+        } else if (!material.equals(other.material)) return false;
         if (stoneType == null) {
-            if (other.stoneType != null)
-                return false;
-        } else if (!stoneType.equals(other.stoneType))
-            return false;
-        if (isSmall != other.isSmall)
-            return false;
-        if (isNatural != other.isNatural)
-            return false;
+            if (other.stoneType != null) return false;
+        } else if (!stoneType.equals(other.stoneType)) return false;
+        if (isSmall != other.isSmall) return false;
+        if (isNatural != other.isNatural) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "OreInfo [material=" + material + ", stoneType=" + stoneType + ", isSmall=" + isSmall + ", isNatural="
-                + isNatural + "]";
+        return "OreInfo [material=" + material
+            + ", stoneType="
+            + stoneType
+            + ", isSmall="
+            + isSmall
+            + ", isNatural="
+            + isNatural
+            + "]";
     }
 }

@@ -1,8 +1,5 @@
 package gtPlusPlus.xmod.gregtech;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.MetaGeneratedTool;

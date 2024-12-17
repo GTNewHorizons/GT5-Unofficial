@@ -18,13 +18,13 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.collect.ImmutableList;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;

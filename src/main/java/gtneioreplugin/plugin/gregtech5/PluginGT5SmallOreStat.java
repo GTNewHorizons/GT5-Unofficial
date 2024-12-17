@@ -166,10 +166,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
             List<ItemStack> dropStackList) {
             this.oreGenName = oreGenName;
             this.positionedStackOreSmall = new PositionedStack(stackList, 2, 0);
-            this.positionedStackMaterialDust = new PositionedStack(
-                materialDustStackList,
-                43,
-                66);
+            this.positionedStackMaterialDust = new PositionedStack(materialDustStackList, 43, 66);
             List<PositionedStack> positionedDropStackList = new ArrayList<>();
             int i = 1;
             for (ItemStack stackDrop : dropStackList) {
@@ -185,7 +182,7 @@ public class PluginGT5SmallOreStat extends PluginGT5Base {
             int count = 0;
             int itemsPerLine = 9;
             int itemSize = 18;
-            
+
             OreSmallWrapper wrapper = GT5OreSmallHelper.SMALL_ORES_BY_NAME.get(this.oreGenName);
 
             for (String abbrDimName : wrapper.enabledDims) {

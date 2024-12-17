@@ -1,16 +1,16 @@
 package galacticgreg.api.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkProviderEnd;
 import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderHell;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import galacticgreg.api.Enums;
-import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.Enums.DimensionType;
+import galacticgreg.api.ModDimensionDef;
 import gtPlusPlus.everglades.chunk.ChunkProviderModded;
 
 public enum DimensionDef {
@@ -247,7 +247,7 @@ public enum DimensionDef {
         public static final String ENDASTEROIDS = "EndAsteroids";
         public static final String TWILIGHT_FOREST = "Twilight Forest";
         public static final String EVERGLADES = "dimensionDarkWorld";
-        
+
         public static final String MOON = "Moon";
         public static final String MARS = "Mars";
         public static final String ASTEROIDS = "Asteroids";

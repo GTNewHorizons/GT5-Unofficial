@@ -2,14 +2,15 @@ package galacticgreg.command;
 
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+
+import com.google.common.collect.ImmutableList;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import galacticgreg.WorldGeneratorSpace;
@@ -49,7 +50,12 @@ public class WorldgenCommand implements ICommand {
 
         switch (pArgs[0]) {
             case "spawns" -> {
-                boolean spawns = WorldGeneratorSpace.generatesAsteroid(world.getSeed(), chunkX, chunkZ, world.provider.dimensionId, asteroidConfig.Probability);
+                boolean spawns = WorldGeneratorSpace.generatesAsteroid(
+                    world.getSeed(),
+                    chunkX,
+                    chunkZ,
+                    world.provider.dimensionId,
+                    asteroidConfig.Probability);
 
                 pCommandSender.addChatMessage(new ChatComponentText("spawns: " + spawns));
             }
@@ -62,7 +68,9 @@ public class WorldgenCommand implements ICommand {
                             continue;
                         }
 
-                        pCommandSender.addChatMessage(new ChatComponentText("found asteroid seed at " + (chunkX + offsetX) + ", " + (chunkZ + offsetZ)));
+                        pCommandSender.addChatMessage(
+                            new ChatComponentText(
+                                "found asteroid seed at " + (chunkX + offsetX) + ", " + (chunkZ + offsetZ)));
 
                         gen.generateChunk(world, chunkX, chunkZ);
                     }

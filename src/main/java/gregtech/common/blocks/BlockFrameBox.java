@@ -73,11 +73,9 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
                 GTLanguageManager
                     .addStringLocalization(getUnlocalizedName() + "." + meta + DOT_TOOLTIP, material.getToolTip());
 
-                ITexture[] texture = {
-                    TextureFactory.of(
-                        material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
-                        Dyes.getModulation(-1, material.mRGBa))
-                };
+                ITexture[] texture = { TextureFactory.of(
+                    material.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
+                    Dyes.getModulation(-1, material.mRGBa)) };
 
                 textures[meta] = new ITexture[][] { texture, texture, texture, texture, texture, texture };
             }

@@ -5,6 +5,22 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -26,24 +42,9 @@ import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextures {
-    
+
     public final List<StoneType> stoneTypes;
 
     public BlockOresAbstract(int series, StoneType[] stoneTypes) {
@@ -72,11 +73,16 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
 
             if (mat == null) continue;
 
-            GTLanguageManager.addStringLocalization(mUnlocalizedName + "." + (matId) + ".name", getLocalizedNameFormat(mat));
-            GTLanguageManager.addStringLocalization(mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".name", "Small " + getLocalizedNameFormat(mat));
+            GTLanguageManager
+                .addStringLocalization(mUnlocalizedName + "." + (matId) + ".name", getLocalizedNameFormat(mat));
+            GTLanguageManager.addStringLocalization(
+                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".name",
+                "Small " + getLocalizedNameFormat(mat));
 
             GTLanguageManager.addStringLocalization(mUnlocalizedName + "." + (matId) + ".tooltip", mat.getToolTip());
-            GTLanguageManager.addStringLocalization(mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".tooltip", mat.getToolTip());
+            GTLanguageManager.addStringLocalization(
+                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".tooltip",
+                mat.getToolTip());
         }
 
         OreInfo<Materials> info = new OreInfo<>();
@@ -93,14 +99,10 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
                 info.stoneType = stoneType;
 
                 if (stoneType.getPrefix().mIsUnificatable) {
-                    GTOreDictUnificator.set(
-                        stoneType.getPrefix(),
-                        info.material,
-                        GTOreAdapter.INSTANCE.getStack(info, 1));
+                    GTOreDictUnificator
+                        .set(stoneType.getPrefix(), info.material, GTOreAdapter.INSTANCE.getStack(info, 1));
                 } else {
-                    GTOreDictUnificator.registerOre(
-                        stoneType.getPrefix(),
-                        GTOreAdapter.INSTANCE.getStack(info, 1));
+                    GTOreDictUnificator.registerOre(stoneType.getPrefix(), GTOreAdapter.INSTANCE.getStack(info, 1));
                 }
             }
         }
@@ -112,7 +114,8 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
     }
 
     /**
-     * The first stack with meta = 0 is always hidden in {@link NEIGTConfig} to prevent extraneous ores from showing up in nei.
+     * The first stack with meta = 0 is always hidden in {@link NEIGTConfig} to prevent extraneous ores from showing up
+     * in nei.
      */
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
@@ -137,15 +140,15 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
                     if (stoneType.isExtraneous()) continue;
 
                     info.stoneType = stoneType;
-    
+
                     list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
                 } else {
                     // if this material doesn't have ice ore, we only want to show the stone variants
                     if (stoneType.getCategory() != StoneCategory.Stone) continue;
                     if (stoneType.isExtraneous()) continue;
-                    
+
                     info.stoneType = stoneType;
-    
+
                     list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
                 }
             }
@@ -167,15 +170,15 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
                     if (stoneType.getCategory() != StoneCategory.Ice) continue;
 
                     info.stoneType = stoneType;
-    
+
                     list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
                 } else {
                     // if this material doesn't jabe ice ore, we only want to show the stone variants
                     if (stoneType.getCategory() != StoneCategory.Stone) continue;
                     if (stoneType.isExtraneous()) continue;
-                    
+
                     info.stoneType = stoneType;
-    
+
                     list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
                 }
             }
@@ -218,23 +221,18 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
 
         if (mat != null) {
             ITexture iTexture = TextureFactory.builder()
-                .addIcon(mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex])
+                .addIcon(
+                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex])
                 .setRGBA(mat.mRGBa)
                 .stdOrient()
                 .build();
 
-            textures = new ITexture[] {
-                stoneType.getTexture(0),
-                iTexture
-            };
+            textures = new ITexture[] { stoneType.getTexture(0), iTexture };
         } else {
-            textures = new ITexture[] {
-                stoneType.getTexture(0),
-                TextureFactory.builder()
-                    .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])
-                    .stdOrient()
-                    .build()
-            };
+            textures = new ITexture[] { stoneType.getTexture(0), TextureFactory.builder()
+                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])
+                .stdOrient()
+                .build() };
         }
 
         return new ITexture[][] { textures, textures, textures, textures, textures, textures };
@@ -306,22 +304,25 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
 
     @Override
     public int damageDropped(int meta) {
-        try(OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
+        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
             if (info == null) return 0;
 
-            return GTOreAdapter.INSTANCE.getBlock(info.setNatural(false)).rightInt();
+            return GTOreAdapter.INSTANCE.getBlock(info.setNatural(false))
+                .rightInt();
         }
     }
 
     @Override
     public int getHarvestLevel(int meta) {
-        try(OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
+        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
             if (info == null) return 0;
 
             int smallOreBonus = info.isSmall ? -1 : 0;
-    
-            int harvestLevel = GTMod.gregtechproxy.mChangeHarvestLevels ? GTMod.gregtechproxy.mHarvestLevel[info.material.mMetaItemSubID] : info.material.mToolQuality;
-    
+
+            int harvestLevel = GTMod.gregtechproxy.mChangeHarvestLevels
+                ? GTMod.gregtechproxy.mHarvestLevel[info.material.mMetaItemSubID]
+                : info.material.mToolQuality;
+
             return GTUtility.clamp(harvestLevel + smallOreBonus, 0, GTMod.gregtechproxy.mMaxHarvestLevel);
         }
     }
@@ -342,15 +343,22 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX, float subY, float subZ) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
         if (!world.isRemote && player.capabilities.isCreativeMode && player.getHeldItem() == null) {
-            try(OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
+            try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
                 info.setNatural(!info.isNatural);
 
-                world.setBlockMetadataWithNotify(x, y, z, GTOreAdapter.INSTANCE.getBlock(info).rightInt(), 3);
+                world.setBlockMetadataWithNotify(
+                    x,
+                    y,
+                    z,
+                    GTOreAdapter.INSTANCE.getBlock(info)
+                        .rightInt(),
+                    3);
                 GTUtility.sendChatToPlayer(player, "Set ore natural flag to " + info.isNatural);
             }
-            
+
             return true;
         } else {
             return false;

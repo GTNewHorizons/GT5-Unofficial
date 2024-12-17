@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import gregtech.api.interfaces.IMaterial;
-import gregtech.common.WorldgenGTOreLayer;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -16,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
+import gregtech.api.interfaces.IMaterial;
+import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
@@ -48,7 +48,7 @@ public class ItemBlockOre extends ItemBlock {
     private static void initVeinInfo() {
         for (WorldgenGTOreLayer oreLayer : WorldgenGTOreLayer.sList) {
             IMaterial[] mats = { oreLayer.mPrimary, oreLayer.mSecondary, oreLayer.mBetween, oreLayer.mSporadic };
-            
+
             for (IMaterial mat : mats) {
                 if (mat instanceof Material gtppMat) {
                     mMapOreBlockItemToDimName.put(gtppMat, oreLayer.mAllowedDimensions);

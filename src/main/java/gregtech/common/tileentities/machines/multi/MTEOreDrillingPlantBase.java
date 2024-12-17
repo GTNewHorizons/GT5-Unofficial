@@ -11,14 +11,12 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -225,7 +223,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     private boolean processOreList(boolean simulate) {
-        List<ChunkPosition> oreBlockPositions = simulate ? copyOreBlockPositions(this.oreBlockPositions) : this.oreBlockPositions;
+        List<ChunkPosition> oreBlockPositions = simulate ? copyOreBlockPositions(this.oreBlockPositions)
+            : this.oreBlockPositions;
 
         ChunkPosition oreBlockPos = null;
         Block oreBlock = null;
@@ -258,7 +257,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             int y = oreBlockPos.chunkPosY;
             int z = oreBlockPos.chunkPosZ;
 
-            List<ItemStack> oreBlockDrops = OreManager.mineBlock(world, x, y, z, mTier + 3, simulate, replaceWithCobblestone);
+            List<ItemStack> oreBlockDrops = OreManager
+                .mineBlock(world, x, y, z, mTier + 3, simulate, replaceWithCobblestone);
 
             ItemStack[] toOutput = getOutputByDrops(oreBlockDrops);
             if (simulate && !canOutputAll(toOutput)) {
@@ -570,7 +570,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         Block block = getBaseMetaTileEntity().getBlock(x, y, z);
         int blockMeta = getBaseMetaTileEntity().getMetaID(x, y, z);
         ChunkPosition blockPos = new ChunkPosition(x, y, z);
-        
+
         if (!oreBlockPositions.contains(blockPos)) {
             if (GTUtility.isMinable(block, blockMeta)) oreBlockPositions.add(blockPos);
         }

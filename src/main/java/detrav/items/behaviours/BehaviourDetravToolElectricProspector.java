@@ -39,7 +39,8 @@ import gregtech.common.pollution.Pollution;
  */
 public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolProspector {
 
-    private Map<EntityPlayer, Future<?>> PENDING_SCANS = new MapMaker().weakValues().makeMap();
+    private Map<EntityPlayer, Future<?>> PENDING_SCANS = new MapMaker().weakValues()
+        .makeMap();
 
     public BehaviourDetravToolElectricProspector(int aCosts) {
         super(aCosts);
@@ -97,61 +98,65 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                 size,
                 data);
 
-            Future<?> task = CooperativeScheduler.INSTANCE.schedule(
-                ctx -> {
-                    while (!ctx.shouldYield()) {
-                        if (chunks.isEmpty()) {
-                            ctx.stop(null);
-                            break;
-                        }
+            Future<?> task = CooperativeScheduler.INSTANCE.schedule(ctx -> {
+                while (!ctx.shouldYield()) {
+                    if (chunks.isEmpty()) {
+                        ctx.stop(null);
+                        break;
+                    }
 
-                        Chunk c = chunks.remove(chunks.size() - 1);
-    
-                        switch (data) {
-                            case MODE_BIG_ORES, MODE_ALL_ORES -> {
-                                for (int x = 0; x < 16; x++) {
-                                    for (int z = 0; z < 16; z++) {
-                                        final int height = c.getHeightValue(x, z);
-        
-                                        for (int y = 1; y < height; y++) {
-                                            Block block = c.getBlock(x, y, z);
-                                            int meta = c.getBlockMetadata(x, y, z);
-        
-                                            if (OreManager.getStoneType(block, meta) != null) continue;
-        
-                                            var p = OreManager.getOreInfo(block, meta);
-        
-                                            if (p != null) {
-                                                try (OreInfo<?> info = p.right()) {
-                                                    if (!info.isNatural) continue;
-                                                    if (data != MODE_ALL_ORES && info.isSmall) continue;
-                
-                                                    packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, block, meta);
-                                                    continue;
-                                                }
+                    Chunk c = chunks.remove(chunks.size() - 1);
+
+                    switch (data) {
+                        case MODE_BIG_ORES, MODE_ALL_ORES -> {
+                            for (int x = 0; x < 16; x++) {
+                                for (int z = 0; z < 16; z++) {
+                                    final int height = c.getHeightValue(x, z);
+
+                                    for (int y = 1; y < height; y++) {
+                                        Block block = c.getBlock(x, y, z);
+                                        int meta = c.getBlockMetadata(x, y, z);
+
+                                        if (OreManager.getStoneType(block, meta) != null) continue;
+
+                                        var p = OreManager.getOreInfo(block, meta);
+
+                                        if (p != null) {
+                                            try (OreInfo<?> info = p.right()) {
+                                                if (!info.isNatural) continue;
+                                                if (data != MODE_ALL_ORES && info.isSmall) continue;
+
+                                                packet.addBlock(
+                                                    c.xPosition * 16 + x,
+                                                    y,
+                                                    c.zPosition * 16 + z,
+                                                    block,
+                                                    meta);
+                                                continue;
                                             }
                                         }
                                     }
                                 }
                             }
-                            case MODE_FLUIDS -> {
-                                FluidStack fluid = UndergroundOil.undergroundOil(c, -1);
-        
-                                packet.addFluid(c.xPosition, c.zPosition, fluid);
-                            }
-                            case DetravMetaGeneratedTool01.MODE_POLLUTION -> {
-                                int pollution = Pollution.getPollution(c);
-        
-                                packet.addPollution(c.xPosition, c.zPosition, pollution);
-                            }
+                        }
+                        case MODE_FLUIDS -> {
+                            FluidStack fluid = UndergroundOil.undergroundOil(c, -1);
+
+                            packet.addFluid(c.xPosition, c.zPosition, fluid);
+                        }
+                        case DetravMetaGeneratedTool01.MODE_POLLUTION -> {
+                            int pollution = Pollution.getPollution(c);
+
+                            packet.addPollution(c.xPosition, c.zPosition, pollution);
                         }
                     }
-                })
+                }
+            })
                 .onFinished(x -> {
                     PENDING_SCANS.remove(aPlayer);
 
                     DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
-        
+
                     if (VisualProspecting.isModLoaded()) {
                         if (data == MODE_BIG_ORES || data == MODE_ALL_ORES) {
                             VisualProspecting_API.LogicalServer.sendProspectionResultsToClient(

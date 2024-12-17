@@ -1,8 +1,5 @@
 package gregtech.common.blocks;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -17,7 +14,8 @@ import gregtech.api.items.GTGenericBlock;
 
 public abstract class BlockOresAbstractOld extends GTGenericBlock implements ITileEntityProvider {
 
-    protected BlockOresAbstractOld(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta, Material aMaterial) {
+    protected BlockOresAbstractOld(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta,
+        Material aMaterial) {
         super(ItemOresOld.class, aUnlocalizedName, aMaterial);
         this.isBlockContainer = true;
     }

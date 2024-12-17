@@ -87,7 +87,8 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             return true;
         }
 
-        if (block.getMaterial() == Material.rock || block.getMaterial() == Material.ground || GTUtility.isMinable(block, meta)) {
+        if (block.getMaterial() == Material.rock || block.getMaterial() == Material.ground
+            || GTUtility.isMinable(block, meta)) {
             prospectChunks(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aRandom, chance);
 
             return true;
@@ -132,15 +133,15 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 if (DetravScannerMod.DEBUG_ENABLED) {
                     aPlayer.addChatMessage(
                         new ChatComponentText(
-                        EnumChatFormatting.YELLOW + "Chunk at "
-                            + aX
-                            + "|"
-                            + aZ
-                            + " to "
-                            + (aX + 16)
-                            + "|"
-                            + (aZ + 16)
-                            + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex)));
+                            EnumChatFormatting.YELLOW + "Chunk at "
+                                + aX
+                                + "|"
+                                + aZ
+                                + " to "
+                                + (aX + 16)
+                                + "|"
+                                + (aZ + 16)
+                                + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex)));
                 }
 
                 processOreProspecting(
@@ -257,8 +258,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
     }
 
     protected void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer,
-        World world, int x, int y, int z, SplittableRandom aRandom, int chance)
-    {
+        World world, int x, int y, int z, SplittableRandom aRandom, int chance) {
         Chunk chunk = world.getChunkFromBlockCoords(x, z);
 
         Block block = world.getBlock(x, y, z);
@@ -271,9 +271,9 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
             if (!aPlayer.capabilities.isCreativeMode) aItem.doDamage(aStack, this.mCosts);
             return;
         }
-        
+
         ItemData itemData = GTOreDictUnificator.getAssociation(blockStack);
-        
+
         if (itemData != null) {
             try {
                 String name = itemData.toString();
@@ -286,7 +286,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
 
             return;
         }
-        
+
         if (aRandom.nextInt(100) < chance) {
             final int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack)
                 .intValue();
@@ -295,7 +295,7 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                 for (int cz = 0; cz < 16; cz++) {
                     int ySize = chunk.getHeightValue(cx, cz);
                     for (int cy = 1; cy < ySize; cy++) {
-    
+
                         Block tBlock = chunk.getBlock(cx, cy, cz);
                         short tMetaID = (short) chunk.getBlockMetadata(cx, cy, cz);
 
@@ -305,13 +305,14 @@ public class BehaviourDetravToolProspector extends BehaviourNone {
                             try (OreInfo<?> info = p.right()) {
                                 if (!info.isNatural) continue;
                                 if (data != DetravMetaGeneratedTool01.MODE_ALL_ORES && info.isSmall) continue;
-                            
+
                                 ItemStack blockStack2 = new ItemStack(tBlock, 1, tMetaID);
                                 addOreToHashMap(blockStack2.getDisplayName(), aPlayer);
                             }
                         } else if (data == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
                             itemData = GTOreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                            if (itemData != null && itemData.mPrefix.toString().startsWith("ore")) {
+                            if (itemData != null && itemData.mPrefix.toString()
+                                .startsWith("ore")) {
                                 try {
                                     try {
                                         tMetaID = (short) itemData.mMaterial.mMaterial.mMetaItemSubID;

@@ -14,9 +14,7 @@ import codechicken.nei.recipe.HandlerInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.GTNEIOrePlugin;
@@ -65,7 +63,7 @@ public class NEIPluginConfig implements IConfigureNEI {
         // Though first two handlers are already registered in NEI jar, we need to re-register
         // because new DimensionDisplayItems made tabs a bit taller.
         Map<String, ItemStack> handlers = new HashMap<>();
-        
+
         OreInfo<Materials> info = OreInfo.getNewInfo();
 
         info.stoneType = StoneType.Stone;

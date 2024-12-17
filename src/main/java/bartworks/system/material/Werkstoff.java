@@ -31,10 +31,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.collect.ImmutableList;
 
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;

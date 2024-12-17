@@ -7,6 +7,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
@@ -23,11 +27,9 @@ import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
 import gregtech.common.blocks.BlockOresAbstract;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 
 public enum GTOreAdapter implements IOreAdapter<Materials> {
+
     INSTANCE;
 
     private final Map<StoneType, BlockOresAbstract> oreBlocksByStoneType = new EnumMap<>(StoneType.class);
@@ -37,6 +39,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
     public BlockOresAbstract[] ores;
 
     public void init() {
+        // spotless:off
         ores1 = new BlockOresAbstract(2, new StoneType[] {
             StoneType.Stone,
             StoneType.Netherrack,
@@ -103,6 +106,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
             StoneType.Marble,
             StoneType.Basalt,
         };
+        // spotless:on
 
         TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world) -> {
             int meta = tag.getInteger("m");
@@ -118,7 +122,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
                     return new BlockInfo(Blocks.air, 0);
                 } else {
                     var p = INSTANCE.getBlock(info);
-    
+
                     return new BlockInfo(p.left(), p.rightInt());
                 }
             }
@@ -139,7 +143,8 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         if (!(info.material instanceof Materials gtMat)) return false;
         if (!OrePrefixes.ore.doGenerateItem(gtMat)) return false;
 
-        IStoneType stoneType = info.stoneType == null ? gtMat.getValidStones().get(0) : info.stoneType;
+        IStoneType stoneType = info.stoneType == null ? gtMat.getValidStones()
+            .get(0) : info.stoneType;
 
         if (!(stoneType instanceof StoneType stoneType2)) return false;
         if (!oreBlocksByStoneType.containsKey(stoneType2)) return false;
@@ -157,7 +162,8 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
     public OreInfo<Materials> getOreInfo(Block block, int meta) {
         if (!(block instanceof BlockOresAbstract oreBlock)) return null;
 
-        if (meta < 0) throw new IllegalArgumentException("illegal metadata: " + meta + "; a tool may be casting an int to a byte, which is incompatible with NEID");
+        if (meta < 0) throw new IllegalArgumentException(
+            "illegal metadata: " + meta + "; a tool may be casting an int to a byte, which is incompatible with NEID");
 
         int matId = meta % 1000;
         int stoneId = ((meta % SMALL_ORE_META_OFFSET) % NATURAL_ORE_META_OFFSET) / 1000;
@@ -188,7 +194,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
 
         if (!(info.material instanceof Materials gtMat)) return null;
         if (!OrePrefixes.ore.doGenerateItem(gtMat)) return null;
-        
+
         if (!(info.stoneType instanceof StoneType stoneType)) return null;
         if (!stoneType.isEnabled()) return null;
         if (stoneType.getCategory() == StoneCategory.Ice && info.isSmall) return null;
@@ -226,13 +232,13 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
             return getSmallOreDrops(ThreadLocalRandom.current(), info, fortune);
         } else {
             OreDropSystem oreDropSystem = GTMod.gregtechproxy.oreDropSystem;
-    
+
             if (silktouch) oreDropSystem = OreDropSystem.Block;
-    
+
             return getBigOreDrops(ThreadLocalRandom.current(), oreDropSystem, info, fortune);
         }
     }
-    
+
     @Override
     public List<ItemStack> getPotentialDrops(OreInfo<?> info2) {
         if (!supports(info2)) return new ArrayList<>();
@@ -266,7 +272,10 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         if (!possibleDrops.isEmpty()) {
-            int dropCount = Math.max(1, info.material.mOreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * info.material.mOreMultiplier) : 0) / 2);
+            int dropCount = Math.max(
+                1,
+                info.material.mOreMultiplier
+                    + (fortune > 0 ? random.nextInt(1 + fortune * info.material.mOreMultiplier) : 0) / 2);
 
             for (int i = 0; i < dropCount; i++) {
                 drops.add(GTUtility.copyAmount(1, possibleDrops.get(random.nextInt(possibleDrops.size()))));
@@ -280,9 +289,10 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
         return drops;
     }
 
-    public ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Materials> info, int fortune) {
+    public ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Materials> info,
+        int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
-        
+
         // For Sake of god of balance!
 
         switch (oreDropMode) {

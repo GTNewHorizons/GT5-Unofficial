@@ -25,8 +25,8 @@ import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.Enums.DimensionType;
+import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
@@ -77,7 +77,8 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         ModDimensionDef def = DimensionDef.getDefForWorld(aWorld);
 
-        if (def.getDimensionName().equals(DimNames.THE_END)) {
+        if (def.getDimensionName()
+            .equals(DimNames.THE_END)) {
             if (aX * aX + aZ * aZ > END_ASTEROID_DISTANCE * END_ASTEROID_DISTANCE) {
                 def = DimensionDef.EndAsteroids.modDimensionDef;
             }
@@ -86,7 +87,7 @@ public class GTWorldgenerator implements IWorldGenerator {
         if (def == null || def.getDimensionType() != DimensionType.Planet) {
             return;
         }
-        
+
         pendingTasks.add(
             new WorldGenContainer(
                 new XSTR(Math.abs(aRandom.nextInt()) + 1),
@@ -128,7 +129,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         + pendingTasks.size()
                         + " i: "
                         + i);
-                
+
                 task.run();
             }
             this.mIsGenerating = false;
@@ -371,11 +372,11 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                 // Used for outputting orevein weights and bins
                 /*
-                * if( test==0 ) { test = 1; GTLog.out.println( "sWeight = " + GT_Worldgen_GT_Ore_Layer.sWeight );
-                * for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) { GTLog.out.println( (
-                * tWorldGen).mWorldGenName + " mWeight = " + ( tWorldGen).mWeight + " mSize = " + (tWorldGen).mSize
-                * ); } }
-                */
+                 * if( test==0 ) { test = 1; GTLog.out.println( "sWeight = " + GT_Worldgen_GT_Ore_Layer.sWeight );
+                 * for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) { GTLog.out.println( (
+                 * tWorldGen).mWorldGenName + " mWeight = " + ( tWorldGen).mWeight + " mSize = " + (tWorldGen).mSize
+                 * ); } }
+                 */
 
                 for (i = 0; i < oreveinAttempts && placementAttempts < oreveinMaxPlacementAttempts; i++) {
                     WorldgenGTOreLayer oreLayer = WorldgenQuery.veins()
@@ -383,7 +384,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         .find(oreveinRNG);
 
                     int placementResult = 0;
-                        
+
                     try {
                         // Adjust the seed so that this layer has a series of unique random numbers.
                         // Otherwise multiple attempts at this same oreseed will get the same offset and X/Z
@@ -569,11 +570,11 @@ public class GTWorldgenerator implements IWorldGenerator {
             if (debugWorldGen || profileWorldGen) {
                 GTMod.GT_FML_LOGGER.info(
                     " Oregen took " + (oregenTime - stonegenTime) / 1e3
-                    + "us Stonegen took "
-                    + (stonegenTime - startTime) / 1e3
-                    + "us Worldgen took "
-                    + duration / 1e3
-                    + "us");
+                        + "us Stonegen took "
+                        + (stonegenTime - startTime) / 1e3
+                        + "us Worldgen took "
+                        + duration / 1e3
+                        + "us");
             }
         }
     }

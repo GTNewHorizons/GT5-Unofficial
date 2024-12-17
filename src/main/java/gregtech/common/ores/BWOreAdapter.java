@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
@@ -22,43 +25,28 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
+
     INSTANCE;
 
     private final EnumMap<StoneType, Ores> ores = new EnumMap<>(StoneType.class);
 
     private static class Ores {
+
         public BWMetaGeneratedOres big, bigNatural, small, smallNatural;
 
         public Ores(StoneType stoneType, String bigSuffix, String smallSuffix) {
-            big = new BWMetaGeneratedOres(
-                "bw.blockores",
-                stoneType,
-                false,
-                false);
-            bigNatural = new BWMetaGeneratedOres(
-                "bw.blockores.natural",
-                stoneType,
-                false,
-                true);
-            small = new BWMetaGeneratedOres(
-                "bw.blockoresSmall",
-                stoneType,
-                true,
-                false);
-            smallNatural = new BWMetaGeneratedOres(
-                "bw.blockoresSmall.natural",
-                stoneType,
-                true,
-                true);
+            big = new BWMetaGeneratedOres("bw.blockores", stoneType, false, false);
+            bigNatural = new BWMetaGeneratedOres("bw.blockores.natural", stoneType, false, true);
+            small = new BWMetaGeneratedOres("bw.blockoresSmall", stoneType, true, false);
+            smallNatural = new BWMetaGeneratedOres("bw.blockoresSmall.natural", stoneType, true, true);
 
             GameRegistry.registerBlock(big, BWItemMetaGeneratedOre.class, "bw.blockores." + bigSuffix);
             GameRegistry.registerBlock(bigNatural, BWItemMetaGeneratedOre.class, "bw.blockores.natural." + bigSuffix);
             GameRegistry.registerBlock(small, BWItemMetaGeneratedOre.class, "bw.blockores." + smallSuffix);
-            GameRegistry.registerBlock(smallNatural, BWItemMetaGeneratedOre.class, "bw.blockores.natural." + smallSuffix);
+            GameRegistry
+                .registerBlock(smallNatural, BWItemMetaGeneratedOre.class, "bw.blockores.natural." + smallSuffix);
         }
 
         public BWMetaGeneratedOres get(boolean small, boolean natural) {
@@ -74,7 +62,7 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
                 } else {
                     return this.big;
                 }
-            }    
+            }
         }
     }
 
@@ -86,16 +74,16 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
         TileEntityReplacementManager.tileEntityTransformer("bw.blockoresTE", (tag, world) -> {
             int id = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
-            
+
             Block block = stoneOres.get(false, natural);
 
             return new BlockInfo(block, id);
         });
-    
+
         TileEntityReplacementManager.tileEntityTransformer("bw.blockoresSmallTE", (tag, world) -> {
             int id = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
-            
+
             Block block = stoneOres.get(true, natural);
 
             return new BlockInfo(block, id);
@@ -171,13 +159,13 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
             return getSmallOreDrops(ThreadLocalRandom.current(), info, fortune);
         } else {
             OreDropSystem oreDropSystem = GTMod.gregtechproxy.oreDropSystem;
-    
+
             if (silktouch) oreDropSystem = OreDropSystem.Block;
-    
+
             return getBigOreDrops(ThreadLocalRandom.current(), oreDropSystem, info, fortune);
         }
     }
-    
+
     @Override
     public List<ItemStack> getPotentialDrops(OreInfo<?> info2) {
         if (!supports(info2)) return new ArrayList<>();
@@ -213,7 +201,9 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         if (!possibleDrops.isEmpty()) {
-            int dropCount = Math.max(1, bridge.mOreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * bridge.mOreMultiplier) : 0) / 2);
+            int dropCount = Math.max(
+                1,
+                bridge.mOreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * bridge.mOreMultiplier) : 0) / 2);
 
             for (int i = 0; i < dropCount; i++) {
                 drops.add(GTUtility.copyAmount(1, possibleDrops.get(random.nextInt(possibleDrops.size()))));
@@ -227,9 +217,10 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
         return drops;
     }
 
-    public ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Werkstoff> info, int fortune) {
+    public ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo<Werkstoff> info,
+        int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
-        
+
         // For Sake of god of balance!
 
         switch (oreDropMode) {

@@ -1,7 +1,8 @@
 package galacticgreg.api;
 
-import gregtech.api.enums.StoneType;
 import net.minecraft.block.Block;
+
+import gregtech.api.enums.StoneType;
 
 /**
  * Class for a bit more advanced combinations for Asteroids, which supports Custom Blocks as base material and Values
@@ -42,7 +43,11 @@ public class AsteroidBlockComb extends BlockMetaComb {
      * @param pOreType The GregTech oreType
      */
     public AsteroidBlockComb(StoneType stoneType) {
-        super(stoneType.getStone().left(), stoneType.getStone().rightInt());
+        super(
+            stoneType.getStone()
+                .left(),
+            stoneType.getStone()
+                .rightInt());
         this.stoneType = stoneType;
     }
 

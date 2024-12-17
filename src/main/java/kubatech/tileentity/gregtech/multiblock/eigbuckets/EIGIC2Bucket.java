@@ -399,12 +399,14 @@ public class EIGIC2Bucket extends EIGBucket {
         if (p != null) {
             try (OreInfo<?> info = p.right()) {
                 info.isNatural = true;
-    
-                var oreBlock = p.left().getBlock(info);
-    
+
+                var oreBlock = p.left()
+                    .getBlock(info);
+
                 world.setBlock(x, y, z, oreBlock.left(), oreBlock.rightInt(), 3);
 
-                if (world.getBlock(x, y, z) == oreBlock.left() && world.getBlockMetadata(x, y, z) == oreBlock.rightInt()) return true;
+                if (world.getBlock(x, y, z) == oreBlock.left()
+                    && world.getBlockMetadata(x, y, z) == oreBlock.rightInt()) return true;
             }
         }
 

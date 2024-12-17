@@ -60,7 +60,9 @@ public class DetravMapTexture extends AbstractTexture {
 
                 if (!selected.equals("All")) {
                     for (var e : packet.objects.short2ObjectEntrySet()) {
-                        if (selected.equals(e.getValue().left())) {
+                        if (selected.equals(
+                            e.getValue()
+                                .left())) {
                             selectedId = e.getShortKey();
                             break;
                         }
@@ -90,7 +92,7 @@ public class DetravMapTexture extends AbstractTexture {
                 for (int cZ = 0; cZ < chunkSize; cZ++) {
                     for (int cX = 0; cX < chunkSize; cX++) {
                         int amount = packet.getAmount(cX, cZ);
-                        
+
                         var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
 
                         if (object == null) continue;
@@ -151,7 +153,7 @@ public class DetravMapTexture extends AbstractTexture {
                 if (x == playerI || y == playerJ) {
                     raster.setSample(x, y, 0, (raster.getSample(x, y, 0) + 255) / 2);
                     raster.setSample(x, y, 1, raster.getSample(x, y, 1) / 2);
-                    raster.setSample(x, y, 2, raster.getSample(x, y, 2) / 2);   
+                    raster.setSample(x, y, 2, raster.getSample(x, y, 2) / 2);
                 }
             }
         }

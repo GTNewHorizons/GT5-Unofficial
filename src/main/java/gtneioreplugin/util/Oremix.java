@@ -112,8 +112,7 @@ public class Oremix implements Comparable<Oremix> {
         values[8] = Integer.toString(size);
         values[9] = Integer.toString(weight);
         for (int i = 0; i < DimensionHelper.DimNameDisplayed.length; i++) {
-            values[sizeData + i] = Boolean
-                .toString(dimensions.contains(DimensionHelper.DimNameDisplayed[i]));
+            values[sizeData + i] = Boolean.toString(dimensions.contains(DimensionHelper.DimNameDisplayed[i]));
         }
         return String.join(",", values);
     }

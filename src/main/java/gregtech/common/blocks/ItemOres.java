@@ -33,7 +33,8 @@ public class ItemOres extends ItemBlock {
         int matId = blockOre.getMaterialIndex(metadata);
         boolean small = blockOre.isSmallOre(metadata);
 
-        return this.field_150939_a.getUnlocalizedName() + "." + (matId + (small ? BlockOresAbstract.SMALL_ORE_META_OFFSET : 0));
+        return this.field_150939_a.getUnlocalizedName() + "."
+            + (matId + (small ? BlockOresAbstract.SMALL_ORE_META_OFFSET : 0));
     }
 
     @Override

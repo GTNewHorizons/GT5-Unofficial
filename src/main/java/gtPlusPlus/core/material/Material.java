@@ -10,14 +10,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -1169,9 +1169,8 @@ public class Material implements IMaterial {
      */
     public final ItemStack getOre(final int stacksize) {
         if (ore == null) {
-            ore = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                "ore" + Utils.sanitizeString(this.getUnlocalizedName()),
-                1);
+            ore = ItemUtils
+                .getItemStackOfAmountFromOreDictNoBroken("ore" + Utils.sanitizeString(this.getUnlocalizedName()), 1);
         }
 
         return GTUtility.copyAmount(stacksize, ore);

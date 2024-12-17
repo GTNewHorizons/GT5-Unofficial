@@ -110,8 +110,12 @@ public class ProspectingPacket extends DetravPacket {
 
         for (var obj : objects.short2ObjectEntrySet()) {
             tOut.writeShort(obj.getShortKey());
-            tOut.writeUTF(obj.getValue().left());
-            tOut.writeInt(obj.getValue().rightInt());
+            tOut.writeUTF(
+                obj.getValue()
+                    .left());
+            tOut.writeInt(
+                obj.getValue()
+                    .rightInt());
         }
 
         tOut.writeInt(map.size());
@@ -149,7 +153,7 @@ public class ProspectingPacket extends DetravPacket {
 
             IMaterial mat = OreManager.getMaterial(block, meta);
 
-            short[] rgba = mat == null ? new short[] {125, 125, 125, 255} : mat.getRGBA();
+            short[] rgba = mat == null ? new short[] { 125, 125, 125, 255 } : mat.getRGBA();
 
             nameLookup.put(stackName, objectId);
             objects.put(objectId, ObjectIntPair.of(stackName, rgba(rgba)));

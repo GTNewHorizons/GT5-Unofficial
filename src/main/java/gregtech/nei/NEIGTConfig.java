@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
+import net.minecraft.item.ItemStack;
+
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
@@ -38,7 +40,6 @@ import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
-import net.minecraft.item.ItemStack;
 
 public class NEIGTConfig implements IConfigureNEI {
 

@@ -7,6 +7,10 @@ import static galacticgreg.api.enums.DimensionDef.BarnardF;
 import static galacticgreg.api.enums.DimensionDef.Callisto;
 import static galacticgreg.api.enums.DimensionDef.Ceres;
 import static galacticgreg.api.enums.DimensionDef.Deimos;
+import static galacticgreg.api.enums.DimensionDef.DimNames.NETHER;
+import static galacticgreg.api.enums.DimensionDef.DimNames.OW;
+import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
+import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
 import static galacticgreg.api.enums.DimensionDef.Enceladus;
 import static galacticgreg.api.enums.DimensionDef.EndAsteroids;
 import static galacticgreg.api.enums.DimensionDef.Ganymede;
@@ -30,10 +34,6 @@ import static galacticgreg.api.enums.DimensionDef.Titan;
 import static galacticgreg.api.enums.DimensionDef.Triton;
 import static galacticgreg.api.enums.DimensionDef.VegaB;
 import static galacticgreg.api.enums.DimensionDef.Venus;
-import static galacticgreg.api.enums.DimensionDef.DimNames.OW;
-import static galacticgreg.api.enums.DimensionDef.DimNames.NETHER;
-import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
-import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
 
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
@@ -529,8 +529,7 @@ public enum SmallOres {
         .heightRange(5, 115)
         .amount(4)
         .ore(Materials.CertusQuartzCharged)
-        .enableInDim(Horus)),
-    ;
+        .enableInDim(Horus));
     // spotless : on
 
     public final SmallOreBuilder smallOreBuilder;

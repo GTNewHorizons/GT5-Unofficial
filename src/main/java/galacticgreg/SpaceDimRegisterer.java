@@ -40,7 +40,8 @@ public class SpaceDimRegisterer {
 
         // These Blocks will randomly be generated
         DimensionDef.EndAsteroids.modDimensionDef.addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.glowstone));
-        DimensionDef.EndAsteroids.modDimensionDef.addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.lava, Enums.AllowedBlockPosition.AsteroidCore));
+        DimensionDef.EndAsteroids.modDimensionDef
+            .addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.lava, Enums.AllowedBlockPosition.AsteroidCore));
 
         ModContainers.Vanilla.modContainer.addDimensionDef(DimensionDef.EndAsteroids.modDimensionDef);
 
@@ -119,7 +120,7 @@ public class SpaceDimRegisterer {
         DimensionDef.KuiperBelt.modDimensionDef.setDimensionType(Enums.DimensionType.Asteroid);
         DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(StoneType.RedGranite);
         DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(StoneType.BlackGranite);
-        
+
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.KuiperBelt.modDimensionDef);
 
         return ModContainers.GalaxySpace.modContainer;

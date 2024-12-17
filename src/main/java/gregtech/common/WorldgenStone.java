@@ -213,31 +213,31 @@ public class WorldgenStone extends GTWorldgen {
                 if (debugStones) {
                     GTLog.out.println(
                         mWorldGenName + " tX="
-                        + tX
-                        + " tY="
-                        + tY
-                        + " tZ="
-                        + tZ
-                        + " realSize="
-                        + realSize
-                        + " xSize="
-                        + realSize / xSize
-                        + " ySize="
-                        + realSize / ySize
-                        + " zSize="
-                        + realSize / zSize
-                        + " wX="
-                        + wX
-                        + " eX="
-                        + eX
-                        + " tMinY="
-                        + tMinY
-                        + " tMaxY="
-                        + tMaxY
-                        + " sZ="
-                        + sZ
-                        + " nZ="
-                        + nZ);
+                            + tX
+                            + " tY="
+                            + tY
+                            + " tZ="
+                            + tZ
+                            + " realSize="
+                            + realSize
+                            + " xSize="
+                            + realSize / xSize
+                            + " ySize="
+                            + realSize / ySize
+                            + " zSize="
+                            + realSize / zSize
+                            + " wX="
+                            + wX
+                            + " eX="
+                            + eX
+                            + " tMinY="
+                            + tMinY
+                            + " tMaxY="
+                            + tMaxY
+                            + " sZ="
+                            + sZ
+                            + " nZ="
+                            + nZ);
                 }
 
                 double rightHandSide = realSize * realSize + 1; // Precalc the right hand side

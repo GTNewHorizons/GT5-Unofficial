@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.StatCollector;
+
 import cpw.mods.fml.client.GuiScrollingList;
 import detrav.items.DetravMetaGeneratedTool01;
 import detrav.net.ProspectingPacket;
@@ -28,7 +29,12 @@ class OresList extends GuiScrollingList {
         super(parent.mc, width, height, top, bottom, left, entryHeight);
         this.parent = parent;
         this.onSelected = onSelected;
-        keys = packet.objects.short2ObjectEntrySet().stream().map(e -> e.getValue().left()).collect(Collectors.toList());
+        keys = packet.objects.short2ObjectEntrySet()
+            .stream()
+            .map(
+                e -> e.getValue()
+                    .left())
+            .collect(Collectors.toList());
         Collections.sort(keys);
         if (packet.ptype == DetravMetaGeneratedTool01.MODE_POLLUTION) {
             keys.clear();
@@ -39,7 +45,11 @@ class OresList extends GuiScrollingList {
         selected = 0;
 
         for (var e : packet.objects.short2ObjectEntrySet()) {
-            this.colors.put(e.getValue().left(), e.getValue().rightInt());
+            this.colors.put(
+                e.getValue()
+                    .left(),
+                e.getValue()
+                    .rightInt());
         }
     }
 

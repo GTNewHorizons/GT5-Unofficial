@@ -1,6 +1,7 @@
 package gtneioreplugin.plugin.gregtech5;
 
 import net.minecraft.client.resources.I18n;
+
 import codechicken.lib.gui.GuiDraw;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IMaterial;

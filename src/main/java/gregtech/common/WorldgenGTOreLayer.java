@@ -9,10 +9,11 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+
+import com.google.common.collect.ImmutableList;
+
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneCategory;
@@ -163,7 +164,8 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     }
 
     @Override
-    public int executeWorldgenChunkified(World world, Random rng, String biome, int dimId, int chunkX, int chunkY, int seedX, int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+    public int executeWorldgenChunkified(World world, Random rng, String biome, int dimId, int chunkX, int chunkY,
+        int seedX, int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
         if (mWorldGenName.equals("NoOresInVein")) {
             if (debugOrevein) GTLog.out.println(" NoOresInVein");
             // Return a special empty orevein
@@ -235,10 +237,13 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                     + " cY="
                     + veinMinY);
         }
-        
+
         // Adjust the density down the more chunks we are away from the oreseed. The 5 chunks surrounding the seed
         // should always be max density due to truncation of Math.sqrt().
-        int localDensity = Math.max(1, this.mDensity / ((int) Math.sqrt(2 + Math.pow(chunkX / 16 - seedX / 16, 2) + Math.pow(chunkY / 16 - seedZ / 16, 2))));
+        int localDensity = Math.max(
+            1,
+            this.mDensity
+                / ((int) Math.sqrt(2 + Math.pow(chunkX / 16 - seedX / 16, 2) + Math.pow(chunkY / 16 - seedZ / 16, 2))));
 
         LayerGenerator generator = new LayerGenerator();
 
@@ -260,7 +265,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         // To allow for early exit due to no ore placed in the bottom layer (probably because we are in the sky), unroll
         // 1 pass through the loop
         // Now we do bottom-level-first oregen, and work our way upwards.
-        
+
         generator.generateLayer(true, false, false); // layer -1
 
         if ((placeCount[1] + placeCount[3]) == 0) {
@@ -279,7 +284,10 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
         // Place small ores for the vein
         if (oreveinPlacerOres) {
-            int smallOresToGenerate = (limitEastX - limitWestX) * (limitSouthZ - limitNorthZ) * this.mDensity / 10 * oreveinPlacerOresMultiplier;
+            int smallOresToGenerate = (limitEastX - limitWestX) * (limitSouthZ - limitNorthZ)
+                * this.mDensity
+                / 10
+                * oreveinPlacerOresMultiplier;
             // Small ores are placed in the whole chunk in which the vein appears.
 
             for (int i = 0; i < smallOresToGenerate; i++) {
@@ -339,6 +347,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     }
 
     private class LayerGenerator {
+
         World world;
         Random rng;
         int limitWestX, limitEastX, limitSouthZ, limitNorthZ;
@@ -351,7 +360,8 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                 int placeX = Math.max(1, Math.max(Math.abs(veinWestX - tX), Math.abs(veinEastX - tX)) / localDensity);
 
                 for (int tZ = limitNorthZ; tZ < limitSouthZ; tZ++) {
-                    int placeZ = Math.max(1, Math.max(Math.abs(veinSouthZ - tZ), Math.abs(veinNorthZ - tZ)) / localDensity);
+                    int placeZ = Math
+                        .max(1, Math.max(Math.abs(veinSouthZ - tZ), Math.abs(veinNorthZ - tZ)) / localDensity);
 
                     if (primary) {
                         if ((rng.nextInt(placeZ) == 0 || rng.nextInt(placeX) == 0) && mPrimary != null) {
@@ -379,8 +389,9 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                             continue;
                         }
                     }
-                    
-                    if (rng.nextInt(7) == 0 && (rng.nextInt(placeZ) == 0 || rng.nextInt(placeX) == 0) && mSporadic != null) { // Sporadics are reduce by 1/7 to compensate
+
+                    if (rng.nextInt(7) == 0 && (rng.nextInt(placeZ) == 0 || rng.nextInt(placeX) == 0)
+                        && mSporadic != null) { // Sporadics are reduce by 1/7 to compensate
                         if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mSporadic, false)) {
                             placeCount[3]++;
                         }

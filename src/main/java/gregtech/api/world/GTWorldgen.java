@@ -106,7 +106,9 @@ public abstract class GTWorldgen {
         if (tAllowed == null) {
             if (blackListedProviders != null) {
                 for (String dimClass : blackListedProviders) {
-                    if (dimClass.equals(aWorld.provider.getClass().getName())) {
+                    if (dimClass.equals(
+                        aWorld.provider.getClass()
+                            .getName())) {
                         return false;
                     }
                 }

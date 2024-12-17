@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
@@ -93,11 +94,9 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
     public ITexture[][] getTextures(int metadata) {
         ITexture[] layers;
 
-        ITexture aIconSet = TextureFactory.of(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], blockMaterial.getRGBA());
-        layers = new ITexture[] {
-            StoneType.Stone.getTexture(0),
-            aIconSet
-        };
+        ITexture aIconSet = TextureFactory
+            .of(blockMaterial.getTextureSet().mTextures[OrePrefixes.ore.mTextureIndex], blockMaterial.getRGBA());
+        layers = new ITexture[] { StoneType.Stone.getTexture(0), aIconSet };
 
         return new ITexture[][] { layers, layers, layers, layers, layers, layers };
     }

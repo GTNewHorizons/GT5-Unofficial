@@ -24,6 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.GTValues;
@@ -33,12 +40,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public abstract class MTEVoidMinerBase extends MTEDrillerBase {
 
@@ -229,7 +230,8 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
      * totalWeight for normalisation
      */
     private void calculateDropMap() {
-        String dimName = this.getBaseMetaTileEntity().getWorld().provider.getDimensionName();
+        String dimName = this.getBaseMetaTileEntity()
+            .getWorld().provider.getDimensionName();
         this.dropMap = VoidMinerUtility.dropMapsByDimName.getOrDefault(dimName, new VoidMinerUtility.DropMap());
         this.extraDropMap = VoidMinerUtility.extraDropsByDimName.getOrDefault(dimName, new VoidMinerUtility.DropMap());
 

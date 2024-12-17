@@ -32,6 +32,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IBlockWithTextures;
@@ -51,7 +52,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
     public BWMetaGeneratedOres(String blockName, StoneType stoneType, boolean small, boolean natural) {
         super(Material.rock);
-        
+
         this.setBlockName(blockName);
         this.setHardness(5.0F);
         this.setResistance(5.0F);
@@ -147,16 +148,16 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         ITexture[] layers;
 
         if (material != null) {
-            ITexture aIconSet = TextureFactory.of(material.getTexSet().mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex], material.getRGBA());
-            layers = new ITexture[] {
-                stoneType.getTexture(0),
-                aIconSet
-            };
+            ITexture aIconSet = TextureFactory.of(
+                material.getTexSet().mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex
+                    : OrePrefixes.ore.mTextureIndex],
+                material.getRGBA());
+            layers = new ITexture[] { stoneType.getTexture(0), aIconSet };
         } else {
-            layers = new ITexture[] {
-                stoneType.getTexture(0),
-                TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex])
-            };
+            layers = new ITexture[] { stoneType.getTexture(0),
+                TextureFactory.of(
+                    gregtech.api.enums.TextureSet.SET_NONE.mTextures[isSmall ? OrePrefixes.oreSmall.mTextureIndex
+                        : OrePrefixes.ore.mTextureIndex]) };
         }
 
         return new ITexture[][] { layers, layers, layers, layers, layers, layers };

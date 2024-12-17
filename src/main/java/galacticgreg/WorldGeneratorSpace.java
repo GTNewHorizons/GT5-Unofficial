@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.joml.Vector2i;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -25,25 +27,13 @@ import galacticgreg.api.enums.DimensionDef.DimNames;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
 import galacticgreg.dynconfig.DynamicDimensionConfig.AsteroidConfig;
 import gregtech.GTMod;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTUtility;
-import gregtech.common.WorldgenGTOreLayer;
-import gregtech.common.config.Worldgen;
 import gregtech.common.ores.OreManager;
 import gregtech.common.worldgen.IWorldgenLayer;
 import gregtech.common.worldgen.WorldgenQuery;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class WorldGeneratorSpace implements IWorldGenerator {
 
@@ -57,12 +47,12 @@ public class WorldGeneratorSpace implements IWorldGenerator {
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
         IChunkProvider chunkProvider) {
 
-        GalacticGreg.Logger
-            .trace("Triggered generate: [Dimension %s]", world.provider.getDimensionName());
+        GalacticGreg.Logger.trace("Triggered generate: [Dimension %s]", world.provider.getDimensionName());
 
         ModDimensionDef tDimDef = DimensionDef.getDefForWorld(world);
 
-        if (tDimDef.getDimensionName().equals(DimNames.THE_END)) {
+        if (tDimDef.getDimensionName()
+            .equals(DimNames.THE_END)) {
             if (chunkX * chunkX + chunkZ * chunkZ > END_ASTEROID_DISTANCE * END_ASTEROID_DISTANCE) {
                 tDimDef = DimensionDef.EndAsteroids.modDimensionDef;
             }
@@ -98,7 +88,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             long post = System.nanoTime();
 
-            if (profileWorldGen) GTMod.GT_FML_LOGGER.info("Generated %d %d in %,.3f us", chunkX, chunkZ, (post - pre) / 1e3);
+            if (profileWorldGen)
+                GTMod.GT_FML_LOGGER.info("Generated %d %d in %,.3f us", chunkX, chunkZ, (post - pre) / 1e3);
 
             Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);
             if (tChunk != null) {
@@ -108,6 +99,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
     }
 
     public static class AsteroidGenerator {
+
         public List<Ellipsoid> positive, negative;
         public int seedChunkX, seedChunkZ, cX, cY, cZ, radius;
         public long seed;
@@ -118,10 +110,15 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         public static AsteroidGenerator forChunk(World world, int seedChunkX, int seedChunkZ) {
             ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world);
             AsteroidConfig asteroidConfig = DynamicDimensionConfig.getAsteroidConfig(dimensionDef);
-            
+
             if (!asteroidConfig.Enabled) return null;
 
-            if (!generatesAsteroid(world.getSeed(), seedChunkX, seedChunkZ, world.provider.dimensionId, asteroidConfig.Probability)) return null;
+            if (!generatesAsteroid(
+                world.getSeed(),
+                seedChunkX,
+                seedChunkZ,
+                world.provider.dimensionId,
+                asteroidConfig.Probability)) return null;
 
             XSTR rng = getRandom(world.getSeed(), seedChunkX, seedChunkZ, world.provider.dimensionId);
 
@@ -134,7 +131,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             if (rng.nextInt(5) == 0) {
                 oreLayer = WorldgenQuery.small()
                     .inDimension(dimensionDef)
-                    .inStone(asteroidStone.getStone().getCategory())
+                    .inStone(
+                        asteroidStone.getStone()
+                            .getCategory())
                     .find(rng.clone());
 
                 minY = oreLayer == null ? 50 : oreLayer.getMinY();
@@ -142,19 +141,21 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             } else {
                 oreLayer = WorldgenQuery.veins()
                     .inDimension(dimensionDef)
-                    .inStone(asteroidStone.getStone().getCategory())
+                    .inStone(
+                        asteroidStone.getStone()
+                            .getCategory())
                     .find(rng.clone());
-                
+
                 minY = oreLayer == null ? 50 : oreLayer.getMinY();
                 maxY = oreLayer == null ? 200 : oreLayer.getMaxY();
             }
 
             if (oreLayer == null) return null;
-            
+
             GalacticGreg.Logger.debug(
                 "Asteroid will be built with: Stone: [%s] Ore: [%s]",
-                    asteroidStone.getStone(),
-                    oreLayer.getName());
+                asteroidStone.getStone(),
+                oreLayer.getName());
 
             int tX = seedChunkX * 16 + rng.nextInt(16);
             int tY = minY + rng.nextInt(maxY - minY);
@@ -168,27 +169,29 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             int k = rng.nextInt(2);
             for (int i = 0; i < k; i++) {
-                negative.add(new Ellipsoid(
-                    radius * (rng.nextFloat() * 2 - 1),
-                    radius * (rng.nextFloat() * 2 - 1),
-                    radius * (rng.nextFloat() * 2 - 1),
-                    radius * (rng.nextFloat() * 0.25f + 0.6f)));
+                negative.add(
+                    new Ellipsoid(
+                        radius * (rng.nextFloat() * 2 - 1),
+                        radius * (rng.nextFloat() * 2 - 1),
+                        radius * (rng.nextFloat() * 2 - 1),
+                        radius * (rng.nextFloat() * 0.25f + 0.6f)));
             }
 
             k = rng.nextInt(2);
             for (int i = 0; i < k; i++) {
-                positive.add(new Ellipsoid(
-                    radius * (rng.nextFloat() * 2 - 1),
-                    radius * (rng.nextFloat() * 2 - 1),
-                    radius * (rng.nextFloat() * 2 - 1),
-                    radius * (rng.nextFloat() * 0.25f + 0.6f)));
+                positive.add(
+                    new Ellipsoid(
+                        radius * (rng.nextFloat() * 2 - 1),
+                        radius * (rng.nextFloat() * 2 - 1),
+                        radius * (rng.nextFloat() * 2 - 1),
+                        radius * (rng.nextFloat() * 0.25f + 0.6f)));
             }
 
             AsteroidGenerator gen = new AsteroidGenerator();
 
             gen.positive = positive;
             gen.negative = negative;
-            
+
             gen.seedChunkX = seedChunkX;
             gen.seedChunkZ = seedChunkZ;
 
@@ -227,7 +230,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             ModDimensionDef def = DimensionDef.getDefForWorld(world);
             AsteroidConfig dimAsteroidConfig = DynamicDimensionConfig.getAsteroidConfig(def);
-        
+
             for (int y = minY; y < maxY; y++) {
                 for (int z = minZ; z < maxZ; z++) {
                     outer: for (int x = minX; x < maxX; x++) {
@@ -268,7 +271,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                                 placedAnything = generateOreBlock(
                                     rng2,
                                     world,
-                                    x, y, z,
+                                    x,
+                                    y,
+                                    z,
                                     stoneType,
                                     ore,
                                     false,
@@ -286,7 +291,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                                 x,
                                 y,
                                 z,
-                                dist < 1f / 3f ? TargetBlockPosition.AsteroidInnerCore : dist < 2f / 3f ? TargetBlockPosition.AsteroidCore : TargetBlockPosition.AsteroidShell);
+                                dist < 1f / 3f ? TargetBlockPosition.AsteroidInnerCore
+                                    : dist < 2f / 3f ? TargetBlockPosition.AsteroidCore
+                                        : TargetBlockPosition.AsteroidShell);
                         }
 
                         // try to place small ores
@@ -294,9 +301,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                             placedAnything = generateOreBlock(
                                 rng2,
                                 world,
-                                 x,
-                                 y,
-                                 z,
+                                x,
+                                y,
+                                z,
                                 stoneType,
                                 ore,
                                 true,
@@ -309,8 +316,10 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                                 x,
                                 y,
                                 z,
-                                stoneType.getStone().left(),
-                                stoneType.getStone().rightInt(),
+                                stoneType.getStone()
+                                    .left(),
+                                stoneType.getStone()
+                                    .rightInt(),
                                 2);
                         }
                     }
@@ -363,8 +372,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                 tNumLootItems = asteroidConfig.NumLootItems;
             }
 
-            GalacticGreg.Logger
-                .debug(String.format("Loot chest random item count will be: %d", tNumLootItems));
+            GalacticGreg.Logger.debug(String.format("Loot chest random item count will be: %d", tNumLootItems));
 
             // Get items for the configured loot-table
             WeightedRandomChestContent[] tRandomLoot = ChestGenHooks
@@ -374,13 +382,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             BlockMetaComb tTargetChestType = GalacticGreg.GalacticConfig.CustomLootChest;
 
             // Place down the chest
-            world.setBlock(
-                cX,
-                cY,
-                cZ,
-                tTargetChestType.getBlock(),
-                tTargetChestType.getMeta(),
-                2);
+            world.setBlock(cX, cY, cZ, tTargetChestType.getBlock(), tTargetChestType.getMeta(), 2);
 
             // Retrieve the TEs IInventory that should've been created
             IInventory entityChestInventory = (IInventory) world.getTileEntity(cX, cY, cZ);
@@ -390,25 +392,18 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                 // and if we're on the server...
                 if (!world.isRemote) {
                     // Fill the chest with stuffz!
-                    WeightedRandomChestContent.generateChestContents(
-                        rng,
-                        tRandomLoot,
-                        entityChestInventory,
-                        tNumLootItems);
+                    WeightedRandomChestContent
+                        .generateChestContents(rng, tRandomLoot, entityChestInventory, tNumLootItems);
                     GalacticGreg.Logger.trace("Loot chest successfully generated");
                 }
             } else {
                 // Something made a boo..
-                GalacticGreg.Logger.warn(
-                    "Could not create lootchest at X[%d] Y[%d] Z[%d]. getTileEntity() returned null",
-                    cX,
-                    cY,
-                    cZ);
+                GalacticGreg.Logger
+                    .warn("Could not create lootchest at X[%d] Y[%d] Z[%d]. getTileEntity() returned null", cX, cY, cZ);
             }
 
             // Do some debug logging
-            GalacticGreg.Logger
-                .debug("Generated LootChest at X[%d] Y[%d] Z[%d]", cX, cY, cZ);
+            GalacticGreg.Logger.debug("Generated LootChest at X[%d] Y[%d] Z[%d]", cX, cY, cZ);
         }
     }
 
@@ -423,143 +418,6 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         return getRandom(worldSeed, chunkX, chunkZ, dimId).nextInt(100) <= asteroidChance;
     }
 
-    // private void generateAsteroids(World world, int chunkX, int chunkZ, long seed) {
-    //     ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world);
-
-    //     GalacticGreg.Logger.trace("Running asteroid-gen in Dim %s", dimensionDef.getDimIdentifier());
-
-    //     DynamicDimensionConfig.AsteroidConfig dimAsteroidConfig = DynamicDimensionConfig.getAsteroidConfig(dimensionDef);
-        
-    //     if (dimAsteroidConfig == null) {
-    //         GalacticGreg.Logger.error(
-    //             "Dimension %s is set to asteroid, but no config object can be found. Skipping!",
-    //             dimensionDef.getDimIdentifier());
-    //         return;
-    //     } else {
-    //         GalacticGreg.Logger.trace("Asteroid probability: %d", dimAsteroidConfig.Probability);
-    //     }
-
-    //     XSTR random = new XSTR(seed);
-
-    //     if (dimAsteroidConfig.Probability <= 1 || random.nextInt(dimAsteroidConfig.Probability) == 0) {
-    //         GalacticGreg.Logger.trace("Generating asteroid NOW");
-
-    //         long startTime = 0;
-
-    //         if (GalacticGreg.GalacticConfig.ProfileOreGen || profileWorldGen) {
-    //             startTime = System.currentTimeMillis();
-    //         }
-
-    //         AsteroidGenerator generators = AsteroidGenerator.generate(world, chunkX, chunkZ, dimensionDef, random.nextLong());
-            
-    //         if (generators == null) {
-    //             GalacticGreg.Logger.trace("Not generating asteroid");
-    //             return;
-    //         }
-
-    //         world.getChunkProvider().loadChunk(0, 0);
-
-    //         // Check if position is free
-    //         if (world.isAirBlock(tX, tY, tZ)) {
-    //             boolean tDoLootChest = dimAsteroidConfig.LootChestChance > 0 && asteroidSize > 6;
-
-    //             if (tDoLootChest) {
-    //                 GalacticGreg.Logger.trace("Random loot chest enabled, flipping the coin");
-    //                 // Loot chest is 1 in 100 (Was: 1:1000 which actually never happened)
-    //                 int tChance = pRandom.nextInt(100);
-
-    //                 if (dimAsteroidConfig.LootChestChance >= tChance) {
-    //                     GalacticGreg.Logger.debug("We got a match. Preparing to generate the loot chest");
-
-    //                     for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-    //                         if (world.isAirBlock(tX + d.offsetX, tY + d.offsetY, tZ + d.offsetZ)) {
-    //                             tDoLootChest = false;
-    //                             break;
-    //                         }
-    //                     }
-    //                 } else {
-    //                     tDoLootChest = false;
-    //                 }
-    //             }
-
-    //             if (tDoLootChest) {
-    //                 GalacticGreg.Logger.trace("Now generating LootChest and contents");
-
-    //                 // Get amount of items for the loot chests, randomize it (1-num) if enabled
-    //                 int tNumLootItems;
-    //                 if (dimAsteroidConfig.RandomizeNumLootItems) {
-    //                     tNumLootItems = pRandom.nextInt(dimAsteroidConfig.NumLootItems - 1) + 1;
-    //                 } else {
-    //                     tNumLootItems = dimAsteroidConfig.NumLootItems;
-    //                 }
-
-    //                 GalacticGreg.Logger
-    //                     .debug(String.format("Loot chest random item count will be: %d", tNumLootItems));
-
-    //                 // Get items for the configured loot-table
-    //                 WeightedRandomChestContent[] tRandomLoot = ChestGenHooks
-    //                     .getItems(DynamicDimensionConfig.getLootChestTable(dimAsteroidConfig), pRandom);
-
-    //                 // Get chest-block to spawn
-    //                 BlockMetaComb tTargetChestType = GalacticGreg.GalacticConfig.CustomLootChest;
-
-    //                 // Place down the chest
-    //                 world.setBlock(
-    //                     tX,
-    //                     tY,
-    //                     tZ,
-    //                     tTargetChestType.getBlock(),
-    //                     tTargetChestType.getMeta(),
-    //                     2);
-
-    //                 // Retrieve the TEs IInventory that should've been created
-    //                 IInventory entityChestInventory = (IInventory) world.getTileEntity(tX, tY, tZ);
-
-    //                 // If it's not null...
-    //                 if (entityChestInventory != null) {
-    //                     // and if we're on the server...
-    //                     if (!world.isRemote) {
-    //                         // Fill the chest with stuffz!
-    //                         WeightedRandomChestContent.generateChestContents(
-    //                             pRandom,
-    //                             tRandomLoot,
-    //                             entityChestInventory,
-    //                             tNumLootItems);
-    //                         GalacticGreg.Logger.trace("Loot chest successfully generated");
-    //                     }
-    //                 } else {
-    //                     // Something made a boo..
-    //                     GalacticGreg.Logger.warn(
-    //                         "Could not create lootchest at X[%d] Y[%d] Z[%d]. getTileEntity() returned null",
-    //                         tX,
-    //                         tY,
-    //                         tZ);
-    //                 }
-
-    //                 // Do some debug logging
-    //                 GalacticGreg.Logger
-    //                     .debug("Generated LootChest at X[%d] Y[%d] Z[%d]", tX, tY, tZ);
-    //             }
-    //         }
-            
-    //         // ---------------------------
-    //         // OreGen profiler stuff
-    //         if (GalacticGreg.GalacticConfig.ProfileOreGen || profileWorldGen) {
-    //             try {
-    //                 long endTime = System.currentTimeMillis();
-    //                 long tTotalTime = endTime - startTime;
-    //                 GalacticGreg.Profiler.AddTimeToList(dimensionDef, tTotalTime);
-    //                 GalacticGreg.Logger.info(
-    //                     "Done with Asteroid-Worldgen in DimensionType %s. Generation took %d ms",
-    //                     dimensionDef.getDimensionName(),
-    //                     tTotalTime);
-    //             } catch (Exception ignored) {} // Silently ignore errors
-    //         }
-    //         // ---------------------------
-    //     }
-    //     GalacticGreg.Logger.trace("Leaving asteroid-gen for Dim %s", dimensionDef.getDimIdentifier());
-    // }
-
     /**
      * Generate Special Blocks in asteroids if enabled
      *
@@ -572,7 +430,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
      * @param z
      * @return
      */
-    private static boolean generateSpecialBlocks(ModDimensionDef dimensionDef, Random rng, World world, AsteroidConfig asteroidConfig, int x, int y, int z, TargetBlockPosition blockPosition) {
+    private static boolean generateSpecialBlocks(ModDimensionDef dimensionDef, Random rng, World world,
+        AsteroidConfig asteroidConfig, int x, int y, int z, TargetBlockPosition blockPosition) {
         // Handler to generate special BlockTypes randomly if activated
         if (asteroidConfig.SpecialBlockChance > 0) {
             if (rng.nextInt(100) < asteroidConfig.SpecialBlockChance) {
@@ -581,7 +440,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                 if (bmc != null) {
                     boolean validLocation = switch (bmc.getBlockPosition()) {
                         case AsteroidCore -> blockPosition == Enums.TargetBlockPosition.AsteroidCore;
-                        case AsteroidCoreAndShell -> blockPosition == Enums.TargetBlockPosition.AsteroidCore || blockPosition == Enums.TargetBlockPosition.AsteroidShell;
+                        case AsteroidCoreAndShell -> blockPosition == Enums.TargetBlockPosition.AsteroidCore
+                            || blockPosition == Enums.TargetBlockPosition.AsteroidShell;
                         case AsteroidShell -> blockPosition == Enums.TargetBlockPosition.AsteroidShell;
                         case AsteroidInnerCore -> blockPosition == Enums.TargetBlockPosition.AsteroidInnerCore;
                     };
@@ -597,7 +457,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         return false;
     }
 
-    private static boolean generateOreBlock(Random rng, World pWorld, int pX, int pY, int pZ, IStoneType stoneType, IWorldgenLayer oreLayer, boolean small, float control) {
+    private static boolean generateOreBlock(Random rng, World pWorld, int pX, int pY, int pZ, IStoneType stoneType,
+        IWorldgenLayer oreLayer, boolean small, float control) {
         if (rng.nextFloat() <= oreLayer.getDensity()) {
             IMaterial mat = oreLayer.getOre(control);
 
@@ -610,6 +471,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
     }
 
     private static class Ellipsoid {
+
         public float x, y, z, r;
 
         public Ellipsoid(float x, float y, float z, float size) {

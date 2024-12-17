@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+
+import com.google.common.collect.ImmutableList;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
@@ -23,6 +23,7 @@ import gtneioreplugin.util.OreVeinLayer;
 
 public class PluginGT5VeinStat extends PluginGT5Base {
 
+    // spotless:off
     public static final ImmutableList<OrePrefixes> PREFIX_WHITELIST = ImmutableList.copyOf(new OrePrefixes[] {
         OrePrefixes.dust,
         OrePrefixes.dustPure,
@@ -46,6 +47,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         OrePrefixes.gemExquisite,
         OrePrefixes.gem,
     });
+    // spotless:on
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -106,7 +108,8 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         }
 
         for (OreLayerWrapper oreVein : getAllVeins()) {
-            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.veinName)).contains(dimension)) {
+            if (Arrays.asList(getDimNameArrayFromVeinName(oreVein.veinName))
+                .contains(dimension)) {
                 addVeinWithLayers(oreVein);
             }
         }
@@ -184,8 +187,13 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
-        String[] dims = GT5OreLayerHelper.bufferedDims.get(oreLayer).toArray(new String[0]);
-        Arrays.sort(dims, Comparator.comparingInt(s -> Arrays.asList(DimensionHelper.DimNameDisplayed).indexOf(s)));
+        String[] dims = GT5OreLayerHelper.bufferedDims.get(oreLayer)
+            .toArray(new String[0]);
+        Arrays.sort(
+            dims,
+            Comparator.comparingInt(
+                s -> Arrays.asList(DimensionHelper.DimNameDisplayed)
+                    .indexOf(s)));
         return dims;
     }
 

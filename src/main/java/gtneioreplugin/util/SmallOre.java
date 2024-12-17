@@ -2,7 +2,6 @@ package gtneioreplugin.util;
 
 import static gtneioreplugin.util.DimensionHelper.DimNameDisplayed;
 
-import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("unused")

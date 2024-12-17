@@ -7,7 +7,7 @@ import gregtech.api.enums.Materials;
 import gtPlusPlus.core.material.Material;
 
 public interface IMaterial {
-    
+
     public String getLocalizedName();
 
     public int getId();
@@ -24,11 +24,12 @@ public interface IMaterial {
         Werkstoff bw = Werkstoff.werkstoffVarNameHashMap.get(name);
 
         if (bw != null) return bw;
-        
+
         IMaterial gtpp = Material.mMaterialsByName.get(name);
 
         if (gtpp != null) return gtpp;
 
-        return Materials.getMaterialsMap().get(name);
+        return Materials.getMaterialsMap()
+            .get(name);
     }
 }

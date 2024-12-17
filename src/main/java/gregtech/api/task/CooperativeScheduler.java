@@ -21,10 +21,12 @@ import gregtech.common.config.Gregtech;
 /**
  * A simple cooperative scheduler that will run expensive tasks in the background without multithreading.
  * 
- * This cooperative scheduler differs from typical schedulers in that it will try to run the oldest tasks first, without considering newer tasks.
+ * This cooperative scheduler differs from typical schedulers in that it will try to run the oldest tasks first, without
+ * considering newer tasks.
  * This is to prevent it from becoming clogged if something's generating bad tasks.
  */
 public enum CooperativeScheduler {
+
     INSTANCE;
 
     private final LinkedHashMap<String, CoopFuture<?>> tasks = new LinkedHashMap<>();
@@ -33,7 +35,9 @@ public enum CooperativeScheduler {
     private long start, end;
 
     private CooperativeScheduler() {
-        FMLCommonHandler.instance().bus().register(this);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(this);
     }
 
     @SubscribeEvent
@@ -46,11 +50,12 @@ public enum CooperativeScheduler {
         end = 0;
 
         // we intentionally don't return to the previous ran task here
-        Iterator<CoopFuture<?>> iter = tasks.values().iterator();
-        
+        Iterator<CoopFuture<?>> iter = tasks.values()
+            .iterator();
+
         while (iter.hasNext()) {
             CoopFuture<?> future = iter.next();
-            
+
             long start2 = 0;
 
             if (Gregtech.general.schedulerProfileLevel >= 2) {
@@ -71,7 +76,13 @@ public enum CooperativeScheduler {
             if (end == 0) end = System.nanoTime();
 
             if (Gregtech.general.schedulerProfileLevel >= 2) {
-                GTMod.GT_FML_LOGGER.info("Task " + future.name + " " + future.task + " took " + GTUtility.formatNumbers((end - start2) / 1e3) + " microseconds");
+                GTMod.GT_FML_LOGGER.info(
+                    "Task " + future.name
+                        + " "
+                        + future.task
+                        + " took "
+                        + GTUtility.formatNumbers((end - start2) / 1e3)
+                        + " microseconds");
             }
 
             if ((end - start) > Gregtech.general.schedulerDuration) {
@@ -80,7 +91,8 @@ public enum CooperativeScheduler {
         }
 
         if (Gregtech.general.schedulerProfileLevel >= 1) {
-            GTMod.GT_FML_LOGGER.info("Task scheduler took " + GTUtility.formatNumbers((System.nanoTime() - start) / 1e3) + " microseconds");
+            GTMod.GT_FML_LOGGER.info(
+                "Task scheduler took " + GTUtility.formatNumbers((System.nanoTime() - start) / 1e3) + " microseconds");
         }
 
         for (CoopFuture<?> future : newTasks) {
@@ -98,7 +110,8 @@ public enum CooperativeScheduler {
     public <T> CoopFuture<T> schedule(CoopTask<T> task) {
         CoopFuture<T> future = new CoopFuture<>();
 
-        future.name = UUID.randomUUID().toString();
+        future.name = UUID.randomUUID()
+            .toString();
         future.task = task;
 
         newTasks.add(future);
@@ -171,7 +184,8 @@ public enum CooperativeScheduler {
 
         @Override
         public boolean shouldYield() {
-            return (end = System.nanoTime()) - start > (Gregtech.general.schedulerDuration / Math.min(tasks.size(), Gregtech.general.maxTaskCount));
+            return (end = System.nanoTime()) - start
+                > (Gregtech.general.schedulerDuration / Math.min(tasks.size(), Gregtech.general.maxTaskCount));
         }
 
         @Override
