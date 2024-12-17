@@ -392,7 +392,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         // a unique height each pass through here.
                         placementResult = oreLayer.executeWorldgenChunkified(
                             this.mWorld,
-                            new XSTR(oreveinSeed ^ (oreLayer.mPrimary.hashCode())),
+                            new XSTR(oreveinSeed ^ (oreLayer.mPrimary.getId())),
                             this.mBiome,
                             this.mDimensionType,
                             this.mX * 16,
