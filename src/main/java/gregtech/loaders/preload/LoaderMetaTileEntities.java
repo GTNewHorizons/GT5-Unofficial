@@ -885,6 +885,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.transformer_UV_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.transformer_ZPM_LuV;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
@@ -1071,6 +1072,7 @@ import gregtech.common.tileentities.machines.multi.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEProcessingArray;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
+import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
@@ -1630,6 +1632,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.LargeFluidExtractor.set(
             new MTELargeFluidExtractor(LARGE_FLUID_EXTRACTOR.ID, "multimachine.fluidextractor", "Large Fluid Extractor")
                 .getStackForm(1));
+
+        if (Thaumcraft.isModLoaded()) {
+            ItemList.ResearchCompleter.set(
+                new MTEResearchCompleter(ResearchCompleter.ID, "Research Completer", "Research Completer")
+                    .getStackForm(1));
+        }
     }
 
     private static void registerSteamMachines() {
