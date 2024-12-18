@@ -30,7 +30,7 @@ public class RecipeLoaderIndustrialRockBreaker {
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockRockBreakerRecipes);
-        
+
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(3),
