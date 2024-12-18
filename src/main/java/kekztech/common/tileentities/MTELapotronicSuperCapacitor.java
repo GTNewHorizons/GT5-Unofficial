@@ -1102,8 +1102,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
-            .setSpace(0)
-            .setPos(10, 7);
+            .setSpace(0);
         screenElements
             .widget(
                 new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).setTextAlignment(Alignment.CenterLeft)
