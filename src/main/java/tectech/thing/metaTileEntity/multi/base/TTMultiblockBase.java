@@ -2308,8 +2308,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         builder.widget(
             new Scrollable().setVerticalScroll()
                 .widget(screenElements)
-                .setPos(0, 7)
-                .setSize(190, doesBindPlayerInventory() ? 79 : 165));
+                .setPos(10, 7)
+                .setSize(182, doesBindPlayerInventory() ? 79 : 165));
 
         Widget powerPassButton = createPowerPassButton();
         builder.widget(powerPassButton)

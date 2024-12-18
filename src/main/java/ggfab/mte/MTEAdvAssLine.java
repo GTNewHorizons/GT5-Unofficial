@@ -522,9 +522,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
          * l -> { currentInputLength = l; for (SliceStatusWidget w : arr) { w.updateText(); } }));
          */
         screenElements.widget(
-            new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setEnabled(this::hasAbnormalStopReason));
+            new TextWidget(Text.localised("ggfab.gui.advassline.shutdown")).setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(this::hasAbnormalStopReason));
         screenElements.widget(
             new TextWidget().setTextSupplier(() -> Text.localised(lastStopReason))
+                .setTextAlignment(Alignment.CenterLeft)
                 .attachSyncer(
                     new FakeSyncWidget.StringSyncer(() -> lastStopReason, r -> this.lastStopReason = r),
                     screenElements)
