@@ -2623,37 +2623,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("132", "Pipe is loose.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mWrench))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("133", "Screws are loose.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mScrewdriver))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("134", "Something is stuck.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSoftHammer))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("135", "Platings are dented.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mHardHammer))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("136", "Circuitry burned out.")).setTextAlignment(Alignment.CenterLeft)
+                new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)"))
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSolderingTool))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
-        screenElements.widget(
-            new TextWidget(GTUtility.trans("137", "That doesn't belong there.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> !mCrowbar))
+        screenElements
+            .widget(
+                new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mCrowbar))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements
             .widget(
