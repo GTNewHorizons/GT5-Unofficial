@@ -231,9 +231,10 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Artificial Organism Creator")
+        tt.addMachineType("Artificial Organism Source")
             .addInfo("Used to create and maintain Artificial Organisms")
             .addInfo("Use higher tier vat casings to get more AO culture slots")
+            .addInfo("Maximum tank capacity is 500000 * casing tier")
             .addInfo(AuthorFourIsTheNumber)
             .addSeparator()
             .beginStructureBlock(3, 5, 3, true)

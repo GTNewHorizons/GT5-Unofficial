@@ -281,9 +281,10 @@ import static gregtech.common.items.IDMetaItem01.Large_Fluid_Cell_Steel;
 import static gregtech.common.items.IDMetaItem01.Large_Fluid_Cell_Titanium;
 import static gregtech.common.items.IDMetaItem01.Large_Fluid_Cell_TungstenSteel;
 import static gregtech.common.items.IDMetaItem01.McGuffium_239;
+import static gregtech.common.items.IDMetaItem01.Muscle_Cell_Cluster;
 import static gregtech.common.items.IDMetaItem01.NC_SensorKit;
 import static gregtech.common.items.IDMetaItem01.NaquadriaSupersolid;
-import static gregtech.common.items.IDMetaItem01.Neuron_Cluster;
+import static gregtech.common.items.IDMetaItem01.Neuron_Cell_Cluster;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Empty;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Page;
 import static gregtech.common.items.IDMetaItem01.Paper_Magic_Pages;
@@ -388,6 +389,7 @@ import static gregtech.common.items.IDMetaItem01.Shape_Mold_Tool_Head_Drill;
 import static gregtech.common.items.IDMetaItem01.Shape_Mold_Turbine_Blade;
 import static gregtech.common.items.IDMetaItem01.Shape_Slicer_Flat;
 import static gregtech.common.items.IDMetaItem01.Shape_Slicer_Stripes;
+import static gregtech.common.items.IDMetaItem01.Skin_Cell_Cluster;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_0;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_1;
 import static gregtech.common.items.IDMetaItem01.Spray_Color_10;
@@ -3244,12 +3246,24 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Living flesh designed to hold biological circuit components",
                 new TCAspects.TC_AspectStack(TCAspects.VICTUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 4)));
-        ItemList.Neuron_Cluster.set(
+        ItemList.Neuron_Cell_Cluster.set(
             addItem(
-                Neuron_Cluster.ID,
-                "Neuron Cluster",
+                Neuron_Cell_Cluster.ID,
+                "Neuron Cell Cluster",
                 "A collection of living brain cells",
-                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 32)));
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 2)));
+        ItemList.Skin_Cell_Cluster.set(
+            addItem(
+                Skin_Cell_Cluster.ID,
+                "Skin Cell Cluster",
+                "Living skin tissue",
+                new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2)));
+        ItemList.Muscle_Cell_Cluster.set(
+            addItem(
+                Muscle_Cell_Cluster.ID,
+                "Muscle Cell Cluster",
+                "Living muscle tissue",
+                new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 2)));
 
         // Empty battery hulls
         ItemList.BatteryHull_EV.set(
