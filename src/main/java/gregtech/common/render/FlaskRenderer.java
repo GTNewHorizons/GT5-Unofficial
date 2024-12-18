@@ -24,6 +24,7 @@ public final class FlaskRenderer implements IItemRenderer {
         MinecraftForgeClient.registerItemRenderer(ItemList.VOLUMETRIC_FLASK.getItem(), this);
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_8k.getItem(), this);
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_32k.getItem(), this);
+        MinecraftForgeClient.registerItemRenderer(GregtechItemList.KLEIN_BOTTLE.getItem(), this);
     }
 
     @Override
