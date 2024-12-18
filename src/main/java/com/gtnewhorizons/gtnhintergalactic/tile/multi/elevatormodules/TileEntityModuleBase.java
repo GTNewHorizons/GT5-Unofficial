@@ -385,7 +385,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      */
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        screenElements.setSynced(false).setSpace(0).setPos(10, 7);
+        screenElements.setSynced(false).setSpace(0);
 
         screenElements
                 .widget(
