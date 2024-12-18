@@ -235,4 +235,9 @@ public class GTPPRecipeMaps {
         .useSpecialSlot()
         .frontend(TGSFrontend::new)
         .build();
+    public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
+        .of("gt.recipe.multiblockrockbreaker")
+        .maxIO(1, 1, 0, 0)
+        .disableRegisterNEI()
+        .build();
 }
