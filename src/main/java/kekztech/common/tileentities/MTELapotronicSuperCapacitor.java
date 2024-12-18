@@ -1102,45 +1102,58 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         screenElements.setSynced(false)
-            .setSpace(0)
-            .setPos(10, 7);
+            .setSpace(0);
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("132", "Pipe is loose. (Wrench)")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mWrench))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("133", "Screws are loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("133", "Screws are loose. (Screwdriver)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mScrewdriver))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("134", "Something is stuck.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("134", "Something is stuck. (Soft Mallet)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSoftHammer))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("135", "Platings are dented.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("135", "Platings are dented. (Hammer)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mHardHammer))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("136", "Circuitry burned out.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("136", "Circuitry burned out. (Soldering)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mSolderingTool))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
-        screenElements.widget(
-            new TextWidget(GTUtility.trans("137", "That doesn't belong there.")).setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> !mCrowbar))
+        screenElements
+            .widget(
+                new TextWidget(GTUtility.trans("137", "That doesn't belong there. (Crowbar)"))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mCrowbar))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements
             .widget(
-                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(GTUtility.trans("138", "Incomplete Structure.")).setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> !mMachine))
             .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements.widget(
-            new TextWidget(GTUtility.trans("139", "Hit with Soft Mallet")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.trans("139", "Hit with Soft Mallet")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()))
             .widget(
@@ -1152,11 +1165,13 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     () -> getBaseMetaTileEntity().isActive(),
                     val -> getBaseMetaTileEntity().setActive(val)));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("140", "to (re-)start the Machine")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.trans("140", "to (re-)start the Machine")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
         screenElements.widget(
-            new TextWidget(GTUtility.trans("141", "if it doesn't start.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+            new TextWidget(GTUtility.trans("141", "if it doesn't start.")).setTextAlignment(Alignment.CenterLeft)
+                .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(
                     widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0 && !getBaseMetaTileEntity().isActive()));
 
@@ -1168,6 +1183,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 time.toMinutes() % 60,
                 time.getSeconds() % 60);
         })
+            .setSynced(false)
+            .setTextAlignment(Alignment.CenterLeft)
             .setEnabled(
                 widget -> shouldDisplayShutDownReason() && !getBaseMetaTileEntity().isActive()
                     && getBaseMetaTileEntity().wasShutdown()))
@@ -1196,6 +1213,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         screenElements.widget(
             new TextWidget().setStringSupplier(
                 () -> "Total Capacity: " + EnumChatFormatting.BLUE + capacityCache + EnumChatFormatting.WHITE + " EU")
+                .setTextAlignment(Alignment.CenterLeft)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getCapacityCache, val -> capacityCache = val))
@@ -1203,6 +1221,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 new TextWidget()
                     .setStringSupplier(
                         () -> "Stored: " + EnumChatFormatting.RED + storedEUCache + EnumChatFormatting.WHITE + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getStoredCache, val -> storedEUCache = val))
@@ -1218,6 +1237,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                             + passiveDischargeAmountCache
                             + EnumChatFormatting.WHITE
                             + " EU/t")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(
@@ -1232,6 +1252,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                 : numberFormat.format(avgInCache))
                             + EnumChatFormatting.WHITE
                             + " last 5s")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.LongSyncer(this::getAvgIn, val -> avgInCache = val))
@@ -1243,11 +1264,13 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                 : numberFormat.format(avgOutCache))
                             + EnumChatFormatting.WHITE
                             + " last 5s")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.LongSyncer(this::getAvgOut, val -> avgOutCache = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> EnumChatFormatting.WHITE + timeToCache)
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getTimeTo, val -> timeToCache = val))
             .widget(
@@ -1257,6 +1280,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                             + wirelessStoreCache
                             + EnumChatFormatting.WHITE
                             + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
             .widget(new FakeSyncWidget.StringSyncer(this::getWirelessStoredCache, val -> wirelessStoreCache = val))
