@@ -73,6 +73,7 @@ public class SolarFactoryRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.IV), 4),
                 GTOreDictUnificator.get(OrePrefixes.plate.get(Materials.IndiumGalliumPhosphide), 8))
             .itemOutputs(ItemList.Cover_SolarPanel_HV.get(1))
+            .fluidInputs(Materials.Epoxid.getMolten(1152))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .fake()
@@ -80,7 +81,7 @@ public class SolarFactoryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getModItem(NewHorizonsCoreMod.ID, "item.IrradiantReinforcedTungstenPlate", 4),
+                getModItem(NewHorizonsCoreMod.ID, "item.IrradiantReinforcedTungstenSteelPlate", 4),
                 ItemList.Circuit_Silicon_Wafer3.get(4),
                 ItemList.Circuit_Chip_PIC.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 8),
@@ -120,7 +121,7 @@ public class SolarFactoryRecipes implements Runnable {
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 4, 0))
             .itemOutputs(ItemList.Cover_SolarPanel_LuV.get(1))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(1728))
-            .duration(1 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .fake()
             .addTo(solarFactoryRecipes);
@@ -136,7 +137,7 @@ public class SolarFactoryRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UV), 4))
             .itemOutputs(ItemList.Cover_SolarPanel_ZPM.get(1))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(2304))
-            .duration(1 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .fake()
             .addTo(solarFactoryRecipes);
@@ -154,7 +155,7 @@ public class SolarFactoryRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense.get(Materials.SiliconSG), 4))
             .itemOutputs(ItemList.Cover_SolarPanel_UV.get(1))
             .fluidInputs(new FluidStack(solderIndalloy, 1152))
-            .duration(1 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .fake()
             .addTo(solarFactoryRecipes);
@@ -195,6 +196,7 @@ public class SolarFactoryRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.IV), 4),
                 GTOreDictUnificator.get(OrePrefixes.plate.get(Materials.IndiumGalliumPhosphide), 8))
             .itemOutputs(ItemList.Cover_SolarPanel_HV.get(1))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(576))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(2, 4))
@@ -203,7 +205,7 @@ public class SolarFactoryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getModItem(NewHorizonsCoreMod.ID, "item.IrradiantReinforcedTungstenPlate", 4),
+                getModItem(NewHorizonsCoreMod.ID, "item.IrradiantReinforcedTungstenSteelPlate", 4),
                 ItemList.Circuit_Chip_PIC.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 8),
                 GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.LuV), 4),
@@ -242,7 +244,7 @@ public class SolarFactoryRecipes implements Runnable {
                 getModItem(SuperSolarPanels.ID, "solarsplitter", 4, 0))
             .itemOutputs(ItemList.Cover_SolarPanel_LuV.get(1))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(1728))
-            .duration(1 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(4, 8))
             .hidden()
@@ -258,7 +260,7 @@ public class SolarFactoryRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UV), 4))
             .itemOutputs(ItemList.Cover_SolarPanel_ZPM.get(1))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(2304))
-            .duration(1 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(5, 8))
             .hidden()
@@ -276,7 +278,7 @@ public class SolarFactoryRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense.get(Materials.SiliconSG), 4))
             .itemOutputs(ItemList.Cover_SolarPanel_UV.get(1))
             .fluidInputs(new FluidStack(solderIndalloy, 1152))
-            .duration(1 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .metadata(SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(5, 8))
             .hidden()
