@@ -78,7 +78,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Speed: +200% | EU Usage: 75%")
+            .addInfo("Speed: +0% | EU Usage: 75%")
             .addInfo("Perform perfect overclocks")
             .addInfo("Use Integrated Circuit to determine recipe")
             .addInfo("1 = cobble, 2 = stone, 3 = obsidian")
@@ -208,7 +208,6 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.enablePerfectOverclock()
-            .setSpeedBonus(1 / 3.0)
             .setEuModifier(0.75);
 
     }
