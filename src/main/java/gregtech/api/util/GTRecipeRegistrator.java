@@ -206,7 +206,7 @@ public class GTRecipeRegistrator {
      * @param isRecycling     whether to put in recycling tab.
      */
     public static void registerReverseFluidSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-        MaterialStack aByproduct, Boolean isRecycling) {
+        MaterialStack aByproduct, boolean isRecycling) {
         if (aStack == null || aMaterial == null
             || aMaterial.mSmeltInto.mStandardMoltenFluid == null
             || !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
