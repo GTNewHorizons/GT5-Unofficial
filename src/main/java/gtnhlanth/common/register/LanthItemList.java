@@ -7,7 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
 import gtnhlanth.common.block.BlockAntennaCasing;
 import gtnhlanth.common.block.BlockCasing;
@@ -162,6 +164,14 @@ public final class LanthItemList {
                 mask.getDamage(),
                 descSpectrum);
             GameRegistry.registerItem(maskItem, maskItem.getUnlocalizedName());
+
+            if (!mask.getName()
+                .contains("blank")) {
+                GTOreDictUnificator.registerOre(
+                    OrePrefixes.mask + mask.getName()
+                        .toUpperCase(),
+                    new ItemStack(maskItem));
+            }
 
             GTLanguageManager.addStringLocalization(maskItem.getUnlocalizedName() + ".name", "Mask (" + english + ")");
 
