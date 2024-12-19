@@ -187,7 +187,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     + "Tech"
                     + EnumChatFormatting.GRAY
                     + " Laser Hatches.")
-            .addPollutionAmount(20 * this.getPollutionPerTick(null))
+            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
             .addController("3rd layer center")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 279, false)
@@ -272,8 +272,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return polPtick;
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return polPtick * 20;
     }
 
     public boolean addOutputHatchToTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
