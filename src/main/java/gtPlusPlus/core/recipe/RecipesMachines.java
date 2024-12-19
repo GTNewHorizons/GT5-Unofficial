@@ -273,9 +273,9 @@ public class RecipesMachines {
                 CI.getRobotArm(aTier, 1),
                 CI.getSensor(aTier, 1),
                 CI.getRobotArm(aTier, 1),
-                ItemUtils.getOrePrefixStack(OrePrefixes.toolHeadSense, CI.tieredMaterials[aTier], 1),
+                ItemUtils.getOrePrefixStack(OrePrefixes.plate, CI.tieredMaterials[aTier], 1),
                 CI.getTieredMachineHull(aTier, 1),
-                ItemUtils.getOrePrefixStack(OrePrefixes.toolHeadSense, CI.tieredMaterials[aTier], 1),
+                ItemUtils.getOrePrefixStack(OrePrefixes.plate, CI.tieredMaterials[aTier], 1),
                 CI.getTieredCircuitOreDictName(aTier),
                 aInputHatches[i].get(1),
                 CI.getTieredCircuitOreDictName(aTier),
@@ -2869,19 +2869,20 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
-        int aCostMultiplier = 1;
-
         // Reservoir Hatch
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hatch_Input_EV.get(1),
-                GTModHandler.getModItem(RemoteIO.ID, "tile.machine", 1),
-                ItemList.Electric_Pump_EV.get(1))
-            .itemOutputs(GregtechItemList.Hatch_Reservoir.get(1))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
+        if (RemoteIO.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hatch_Input_EV.get(1),
+                    GTModHandler.getModItem(RemoteIO.ID, "tile.machine", 1),
+                    ItemList.Electric_Pump_EV.get(1))
+                .itemOutputs(GregtechItemList.Hatch_Reservoir.get(1))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(assemblerRecipes);
+        }
         // Mystic Frame
+        int aCostMultiplier = 1;
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Multi_Use.get(1),
