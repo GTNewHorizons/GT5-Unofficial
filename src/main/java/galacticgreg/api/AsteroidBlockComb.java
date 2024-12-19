@@ -2,13 +2,15 @@ package galacticgreg.api;
 
 import net.minecraft.block.Block;
 
+import gregtech.api.enums.StoneType;
+
 /**
  * Class for a bit more advanced combinations for Asteroids, which supports Custom Blocks as base material and Values
  * required to generate Gregtech ores
  */
 public class AsteroidBlockComb extends BlockMetaComb {
 
-    private final GTOreTypes _mGTOreMaterial;
+    private final StoneType stoneType;
 
     /**
      * Create an advanced definition which uses the GregTech-OreType values for ores, and your own definition of Block
@@ -17,9 +19,9 @@ public class AsteroidBlockComb extends BlockMetaComb {
      * @param pOreType The GregTech oreType
      * @param pBlock   Your block
      */
-    public AsteroidBlockComb(GTOreTypes pOreType, Block pBlock) {
+    public AsteroidBlockComb(StoneType stoneType, Block pBlock) {
         super(pBlock, 0);
-        _mGTOreMaterial = pOreType;
+        this.stoneType = stoneType;
     }
 
     /**
@@ -30,9 +32,9 @@ public class AsteroidBlockComb extends BlockMetaComb {
      * @param pBlock   Your block
      * @param pMeta    The metavalue for your block (If required)
      */
-    public AsteroidBlockComb(GTOreTypes pOreType, Block pBlock, int pMeta) {
+    public AsteroidBlockComb(StoneType stoneType, Block pBlock, int pMeta) {
         super(pBlock, pMeta);
-        _mGTOreMaterial = pOreType;
+        this.stoneType = stoneType;
     }
 
     /**
@@ -40,9 +42,13 @@ public class AsteroidBlockComb extends BlockMetaComb {
      *
      * @param pOreType The GregTech oreType
      */
-    public AsteroidBlockComb(GTOreTypes pOreType) {
-        super(pOreType.getBlock(), pOreType.getMeta());
-        _mGTOreMaterial = pOreType;
+    public AsteroidBlockComb(StoneType stoneType) {
+        super(
+            stoneType.getStone()
+                .left(),
+            stoneType.getStone()
+                .rightInt());
+        this.stoneType = stoneType;
     }
 
     /**
@@ -50,8 +56,8 @@ public class AsteroidBlockComb extends BlockMetaComb {
      *
      * @return The GT Material for the oregen
      */
-    public GTOreTypes getOreMaterial() {
-        return _mGTOreMaterial;
+    public StoneType getStone() {
+        return stoneType;
     }
 
     @Override
@@ -68,7 +74,7 @@ public class AsteroidBlockComb extends BlockMetaComb {
 
             if (!(otherObj.getMeta() == this.getMeta())) tFlag = false;
 
-            if (!(otherObj.getOreMaterial() == this.getOreMaterial())) tFlag = false;
+            if (!(otherObj.getStone() == this.getStone())) tFlag = false;
         } else tFlag = false;
 
         return tFlag;

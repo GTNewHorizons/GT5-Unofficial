@@ -117,7 +117,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -167,7 +166,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.api.util.extensions.ArrayExt;
-import gregtech.common.blocks.BlockOresAbstract;
+import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -2336,6 +2335,26 @@ public class GTUtility {
         return false;
     }
 
+    public static <A, B> int indexOf(A[] array, B value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == value) return i;
+        }
+
+        return -1;
+    }
+
+    public static <A, B> boolean contains(A[] array, B value) {
+        return indexOf(array, value) != -1;
+    }
+
+    public static <T> T getIndexSafe(T[] array, int index) {
+        return index < 0 || index >= array.length ? null : array[index];
+    }
+
+    public static <T> T getIndexSafe(List<T> list, int index) {
+        return index < 0 || index >= list.size() ? null : list.get(index);
+    }
+
     /**
      * Note: use {@link ArrayExt#withoutNulls(Object[], IntFunction)} if you want an array as a result.
      */
@@ -4327,16 +4346,10 @@ public class GTUtility {
             && GTOreDictUnificator.getAssociation(aStack).mPrefix.equals(aPrefix);
     }
 
-    public static final ImmutableSet<String> ORE_BLOCK_CLASSES = ImmutableSet.of(
-        "bartworks.system.material.BWMetaGeneratedOres",
-        "bartworks.system.material.BWMetaGeneratedSmallOres",
-        "gtPlusPlus.core.block.base.BlockBaseOre");
+    public static boolean isMinable(Block block, int meta) {
+        if (OreManager.isOre(block, meta)) return true;
 
-    public static boolean isOre(Block aBlock, int aMeta) {
-        return (aBlock instanceof BlockOresAbstract) || isOre(new ItemStack(aBlock, 1, aMeta))
-            || ORE_BLOCK_CLASSES.contains(
-                aBlock.getClass()
-                    .getName());
+        return isOre(new ItemStack(block, 1, meta));
     }
 
     public static boolean isOre(ItemStack aStack) {
@@ -4516,6 +4529,10 @@ public class GTUtility {
         return MathHelper.clamp_int(val, lo, hi);
     }
 
+    public static float clamp(float val, float lo, float hi) {
+        return val < lo ? lo : val > hi ? hi : val;
+    }
+
     public static long min(long first, long... rest) {
         for (int i = 0; i < rest.length; i++) {
             long l = rest[i];
@@ -4538,6 +4555,29 @@ public class GTUtility {
 
     public static long ceilDiv(long lhs, long rhs) {
         return (lhs + rhs - 1) / rhs;
+    }
+
+    /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
+    public static int ceilDiv2(int lhs, int rhs) {
+        int sign = signum(lhs) * signum(rhs);
+
+        if (lhs == 0) return 0;
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        lhs = Math.abs(lhs);
+        rhs = Math.abs(rhs);
+
+        int unsigned = 1 + ((lhs - 1) / rhs);
+
+        return unsigned * sign;
+    }
+
+    public static int signum(int x) {
+        return x < 0 ? -1 : x > 0 ? 1 : 0;
+    }
+
+    public static long signum(long x) {
+        return x < 0 ? -1 : x > 0 ? 1 : 0;
     }
 
     /**

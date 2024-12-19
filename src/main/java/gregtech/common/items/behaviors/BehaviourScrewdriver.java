@@ -32,7 +32,7 @@ public class BehaviourScrewdriver extends BehaviourNone {
         if (aBlock == null) {
             return false;
         }
-        byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
+        int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
         if ((aBlock == Blocks.unpowered_repeater) || (aBlock == Blocks.powered_repeater)) {
             if (GTModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aMeta / 4 * 4 + (aMeta % 4 + 1) % 4, 3);

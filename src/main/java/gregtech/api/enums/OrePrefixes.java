@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.google.common.collect.ImmutableList;
 
@@ -25,7 +26,10 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ItemId;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
+import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 
@@ -889,6 +893,22 @@ public enum OrePrefixes {
         dust.mGeneratedItems.addAll(dustRefined.mGeneratedItems);
         dustTiny.mGeneratedItems.addAll(dust.mGeneratedItems);
         dustSmall.mGeneratedItems.addAll(dust.mGeneratedItems);
+
+        ore.mGeneratedItems.add(Materials.Hydrogen);
+        ore.mGeneratedItems.add(Materials.Nitrogen);
+        ore.mGeneratedItems.add(Materials.Oxygen);
+        ore.mGeneratedItems.add(Materials.Methane);
+        ore.mGeneratedItems.add(Materials.CarbonDioxide);
+        ore.mGeneratedItems.add(Materials.SulfurDioxide);
+        ore.mGeneratedItems.add(Materials.Ammonia);
+
+        rawOre.mGeneratedItems.add(Materials.Hydrogen);
+        rawOre.mGeneratedItems.add(Materials.Nitrogen);
+        rawOre.mGeneratedItems.add(Materials.Oxygen);
+        rawOre.mGeneratedItems.add(Materials.Methane);
+        rawOre.mGeneratedItems.add(Materials.CarbonDioxide);
+        rawOre.mGeneratedItems.add(Materials.SulfurDioxide);
+        rawOre.mGeneratedItems.add(Materials.Ammonia);
         // -----
 
         toolHeadFile.mCondition = new ICondition.And<>(
@@ -1182,6 +1202,53 @@ public enum OrePrefixes {
             }
         }
         return aOre;
+    }
+
+    public static Pair<OrePrefixes, String> detectPrefix(String oredictName) {
+        for (OrePrefixes prefix : values()) {
+            if (oredictName.startsWith(prefix.name())) {
+                return Pair.of(
+                    prefix,
+                    oredictName.substring(
+                        prefix.name()
+                            .length()));
+            }
+        }
+
+        return null;
+    }
+
+    private static final ThreadLocal<Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>>> PREFIX_CACHE = ThreadLocal
+        .withInitial(Object2ObjectLinkedOpenHashMap::new);
+
+    public static ImmutableList<Pair<OrePrefixes, String>> detectPrefix(ItemStack stack) {
+        Object2ObjectLinkedOpenHashMap<ItemId, ImmutableList<Pair<OrePrefixes, String>>> cache = PREFIX_CACHE.get();
+
+        ItemId itemId = ItemId.create(stack);
+
+        var cacheResult = cache.getAndMoveToFirst(itemId);
+
+        if (cacheResult != null) return cacheResult;
+
+        ImmutableList.Builder<Pair<OrePrefixes, String>> result = ImmutableList.builder();
+
+        for (int id : OreDictionary.getOreIDs(stack)) {
+            Pair<OrePrefixes, String> p = detectPrefix(OreDictionary.getOreName(id));
+
+            if (p != null) {
+                result.add(p);
+            }
+        }
+
+        ImmutableList<Pair<OrePrefixes, String>> prefixes = result.build();
+
+        cache.putAndMoveToFirst(itemId, prefixes);
+
+        while (cache.size() > 1024) {
+            cache.removeLast();
+        }
+
+        return prefixes;
     }
 
     public static String replacePrefix(String aOre, OrePrefixes aPrefix) {

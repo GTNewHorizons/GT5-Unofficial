@@ -59,7 +59,7 @@ public class EyeOfHarmonyRecipeStorage {
 
                     GT5OreLayerHelper.NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.dimToOreWrapper
                         .getOrDefault(dimAbbreviation, null);
-                    GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.dimToSmallOreWrapper
+                    GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.SMALL_ORES_BY_DIM
                         .getOrDefault(dimAbbreviation, null);
                     if (normalOre == null && smallOre == null) {
                         // No ores are generated in this dimension. Fail silently.
