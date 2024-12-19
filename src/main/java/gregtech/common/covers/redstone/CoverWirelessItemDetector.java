@@ -143,7 +143,12 @@ public class CoverWirelessItemDetector
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             threshold = tag.getInteger("threshold");
             slot = tag.getInteger("slot");
-            physical = tag.getBoolean("physical");
+
+            if (tag.hasKey("physical")) {
+                physical = tag.getBoolean("physical");
+            } else {
+                physical = false;
+            }
         }
 
         @Nonnull

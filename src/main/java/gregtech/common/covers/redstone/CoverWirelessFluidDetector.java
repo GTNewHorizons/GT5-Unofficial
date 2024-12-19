@@ -123,7 +123,11 @@ public class CoverWirelessFluidDetector
 
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             threshold = tag.getInteger("threshold");
-            physical = tag.getBoolean("physical");
+            if (tag.hasKey("physical")) {
+                physical = tag.getBoolean("physical");
+            } else {
+                physical = false;
+            }
         }
 
         @Nonnull

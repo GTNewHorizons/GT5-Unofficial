@@ -184,7 +184,11 @@ public class CoverWirelessMaintenanceDetector
 
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             mode = MaintenanceMode.values()[tag.getInteger("mode")];
-            physical = tag.getBoolean("physical");
+            if (tag.hasKey("physical")) {
+                physical = tag.getBoolean("physical");
+            } else {
+                physical = false;
+            }
         }
 
         @Nonnull
