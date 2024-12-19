@@ -29,7 +29,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -165,7 +164,7 @@ public class RocketFuels extends ItemPackage {
 
         // NH3 + HNO3 = NH4NO3
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getNumberedAdvancedCircuit(21))
+            .itemInputs(GTUtility.getIntegratedCircuit(21))
             .fluidInputs(FluidUtils.getFluidStack("ammonia", 4000), FluidUtils.getFluidStack("nitricacid", 4000))
             .fluidOutputs(FluidUtils.getFluidStack(Hydrated_Ammonium_Nitrate_Slurry, 5184))
             .duration(60 * SECONDS)
@@ -191,7 +190,7 @@ public class RocketFuels extends ItemPackage {
         // O + CH4O = CH2O + H2O
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(21),
+                GTUtility.getIntegratedCircuit(21),
                 ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0))
             .fluidInputs(FluidUtils.getFluidStack("oxygen", 32000), FluidUtils.getFluidStack("methanol", 32000))
             .fluidOutputs(FluidUtils.getFluidStack(Formaldehyde, 32000))
@@ -218,7 +217,7 @@ public class RocketFuels extends ItemPackage {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(21),
+                GTUtility.getIntegratedCircuit(21),
                 ItemUtils.getSimpleStack(GenericChem.mFormaldehydeCatalyst, 0))
             .fluidInputs(
                 FluidUtils.getFluidStack("fluid.hydrazine", 2000),

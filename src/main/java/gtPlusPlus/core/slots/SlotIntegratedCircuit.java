@@ -6,7 +6,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.recipe.common.CI;
 
 public class SlotIntegratedCircuit extends Slot {
 
@@ -43,14 +42,6 @@ public class SlotIntegratedCircuit extends Slot {
             mCircuitItem = GTUtility.getIntegratedCircuit(0)
                 .getItem();
         }
-        if (mCircuitItem2 == null) {
-            mCircuitItem2 = CI.getNumberedBioCircuit(0)
-                .getItem();
-        }
-        if (mCircuitItem3 == null) {
-            mCircuitItem3 = CI.getNumberedAdvancedCircuit(0)
-                .getItem();
-        }
         if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
             if (itemstack != null) {
                 if (itemstack.getItem() == mCircuitItem || itemstack.getItem() == mCircuitItem2
@@ -77,14 +68,6 @@ public class SlotIntegratedCircuit extends Slot {
     public static synchronized int isRegularProgrammableCircuit(final ItemStack itemstack) {
         if (mCircuitItem == null) {
             mCircuitItem = GTUtility.getIntegratedCircuit(0)
-                .getItem();
-        }
-        if (mCircuitItem2 == null) {
-            mCircuitItem2 = CI.getNumberedBioCircuit(0)
-                .getItem();
-        }
-        if (mCircuitItem3 == null) {
-            mCircuitItem3 = CI.getNumberedAdvancedCircuit(0)
                 .getItem();
         }
         if (mCircuitItem != null && mCircuitItem2 != null && mCircuitItem3 != null) {
