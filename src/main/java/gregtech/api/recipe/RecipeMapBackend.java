@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.handleInvalidRecipeLowFluids;
 import static gregtech.api.util.GTRecipeBuilder.handleInvalidRecipeLowItems;
 import static gregtech.api.util.GTRecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GTUtility.areStacksEqualOrNull;
+import static gregtech.api.util.GTUtility.isAnyIntegratedCircuit;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -392,10 +393,23 @@ public class RecipeMapBackend {
             }
             if (properties.minItemInputs > 0) {
                 int count = 0;
-                for (ItemStack item : rawItems) if (item != null) count++;
+                for (ItemStack item : rawItems) if (!isAnyIntegratedCircuit(item)) count++;
                 if (count < properties.minItemInputs) {
                     return Stream.empty();
                 }
+            }
+            if (!properties.allowCircuitOnly && properties.minItemInputs == 0 && properties.minFluidInputs == 0) {
+                // Both items and fluids can be empty, but we still need at least one non-circuit input.
+                boolean isEmpty = true;
+                for (FluidStack fluid : fluids) if (fluid != null) {
+                    isEmpty = false;
+                    break;
+                }
+                if (isEmpty) for (ItemStack item : rawItems) if (!isAnyIntegratedCircuit(item)) {
+                    isEmpty = false;
+                    break;
+                }
+                if (isEmpty) return Stream.empty();
             }
         }
 
