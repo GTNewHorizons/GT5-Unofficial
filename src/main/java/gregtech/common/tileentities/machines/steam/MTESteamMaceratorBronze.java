@@ -1,21 +1,5 @@
 package gregtech.common.tileentities.machines.steam;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_MACERATOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_MACERATOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_MACERATOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_STEAM_MACERATOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_MACERATOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_MACERATOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_MACERATOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_STEAM_MACERATOR_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_GLOW;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.item.ItemStack;
@@ -24,6 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -55,7 +40,6 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
-
             if (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP
                 && aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0
                 && !aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP)) {
@@ -121,17 +105,19 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     @Override
     public ITexture[] getSideFacingActive(byte aColor) {
         return new ITexture[] { super.getSideFacingActive(aColor)[0],
-            TextureFactory.of(OVERLAY_SIDE_STEAM_MACERATOR_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_SIDE_STEAM_MACERATOR_ACTIVE_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_SIDE_ACTIVE")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_SIDE_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
 
     @Override
     public ITexture[] getSideFacingInactive(byte aColor) {
-        return new ITexture[] { super.getSideFacingInactive(aColor)[0], TextureFactory.of(OVERLAY_SIDE_STEAM_MACERATOR),
+        return new ITexture[] { super.getSideFacingInactive(aColor)[0],
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_SIDE")),
             TextureFactory.builder()
-                .addIcon(OVERLAY_SIDE_STEAM_MACERATOR_GLOW)
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_SIDE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -139,8 +125,9 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     @Override
     public ITexture[] getFrontFacingActive(byte aColor) {
         return new ITexture[] { super.getFrontFacingActive(aColor)[0],
-            TextureFactory.of(OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_FRONT_ACTIVE")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_FRONT_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -148,8 +135,9 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     @Override
     public ITexture[] getFrontFacingInactive(byte aColor) {
         return new ITexture[] { super.getFrontFacingInactive(aColor)[0],
-            TextureFactory.of(OVERLAY_FRONT_STEAM_MACERATOR), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_STEAM_MACERATOR_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_FRONT")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_FRONT_GLOW"))
                 .glow()
                 .build() };
     }
@@ -157,17 +145,19 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     @Override
     public ITexture[] getTopFacingActive(byte aColor) {
         return new ITexture[] { super.getTopFacingActive(aColor)[0],
-            TextureFactory.of(OVERLAY_TOP_STEAM_MACERATOR_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_TOP_STEAM_MACERATOR_ACTIVE_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_TOP_ACTIVE")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_TOP_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
 
     @Override
     public ITexture[] getTopFacingInactive(byte aColor) {
-        return new ITexture[] { super.getTopFacingInactive(aColor)[0], TextureFactory.of(OVERLAY_TOP_STEAM_MACERATOR),
+        return new ITexture[] { super.getTopFacingInactive(aColor)[0],
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_TOP")),
             TextureFactory.builder()
-                .addIcon(OVERLAY_TOP_STEAM_MACERATOR_GLOW)
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_TOP_GLOW"))
                 .glow()
                 .build() };
     }
@@ -175,8 +165,9 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     @Override
     public ITexture[] getBottomFacingActive(byte aColor) {
         return new ITexture[] { super.getBottomFacingActive(aColor)[0],
-            TextureFactory.of(OVERLAY_BOTTOM_STEAM_MACERATOR_ACTIVE), TextureFactory.builder()
-                .addIcon(OVERLAY_BOTTOM_STEAM_MACERATOR_ACTIVE_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_BOTTOM_ACTIVE")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                 .glow()
                 .build() };
     }
@@ -184,8 +175,9 @@ public class MTESteamMaceratorBronze extends MTEBasicMachineBronze {
     @Override
     public ITexture[] getBottomFacingInactive(byte aColor) {
         return new ITexture[] { super.getBottomFacingInactive(aColor)[0],
-            TextureFactory.of(OVERLAY_BOTTOM_STEAM_MACERATOR), TextureFactory.builder()
-                .addIcon(OVERLAY_BOTTOM_STEAM_MACERATOR_GLOW)
+            TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_BOTTOM")),
+            TextureFactory.builder()
+                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/macerator/OVERLAY_BOTTOM_GLOW"))
                 .glow()
                 .build() };
     }
