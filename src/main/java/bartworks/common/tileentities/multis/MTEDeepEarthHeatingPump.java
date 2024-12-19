@@ -85,7 +85,8 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     + "L/s of Superheated Steam")
             .addInfo("Coolant Heating Mode: Converts " + (long) (192 * 20) + "L/s Coolant to Hot Coolant")
             .addInfo("Each maintenance issue lowers output efficiency by 10%")
-            .addInfo("Explodes when it runs out of Distilled Water/Coolant");
+            .addInfo("Explodes when it runs out of Distilled Water/Coolant")
+            .addInfo("Base cycle time: 1 tick");
 
         tt.beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
@@ -286,8 +287,13 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
             this.mEUt = Integer.MAX_VALUE - 7;
         }
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 1;
+        this.mMaxProgresstime = calculateMaxProgressTime(0);
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
+    }
+
+    @Override
+    public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
+        return 1;
     }
 }

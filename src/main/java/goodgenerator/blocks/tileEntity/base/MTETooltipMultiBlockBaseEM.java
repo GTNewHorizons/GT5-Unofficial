@@ -3,8 +3,6 @@ package goodgenerator.blocks.tileEntity.base;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.minecraft.item.ItemStack;
-
 import org.lwjgl.input.Keyboard;
 
 import gregtech.api.interfaces.ISecondaryDescribable;
@@ -51,10 +49,5 @@ public abstract class MTETooltipMultiBlockBaseEM extends TTMultiblockBase implem
 
     public String[] getSecondaryDescription() {
         return getTooltip().getStructureInformation();
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return getPollutionPerSecond(itemStack) / 20;
     }
 }

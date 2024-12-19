@@ -593,11 +593,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack stack) {
         return 0;
     }

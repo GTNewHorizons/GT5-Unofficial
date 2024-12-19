@@ -282,11 +282,6 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack itemStack) {
         return 0;
     }

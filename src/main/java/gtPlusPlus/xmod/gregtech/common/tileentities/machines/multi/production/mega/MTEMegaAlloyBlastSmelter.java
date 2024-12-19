@@ -304,6 +304,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
                 EnumChatFormatting.ITALIC + "\"all it does is make metals hot\""
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY)
+            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
             .addMaintenanceHatch("Around the controller", 2)
             .addOtherStructurePart("Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch", "Bottom Casing", 1)
