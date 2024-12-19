@@ -263,15 +263,9 @@ public class WorldgenStone extends GTWorldgen {
                             leftHandSize = zCalc + xCalc + yCalc;
                             if (leftHandSize <= rightHandSide) {
                                 // Yay! We can actually place a block now. (this part copied from original code)
-                                Block tTargetedBlock = aWorld.getBlock(iX, iY, iZ);
-
-                                if (OreManager.setExistingOreStoneType(aWorld, iX, iY, iZ, stoneType)) {
-                                    continue;
-                                }
-
                                 if (!this.mAllowToGenerateinVoid && aWorld.isAirBlock(iX, iY, iZ)) continue;
 
-                                if (tTargetedBlock == null) continue;
+                                Block tTargetedBlock = aWorld.getBlock(iX, iY, iZ);
 
                                 // spotless:off
                                 if (    tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stone) ||
@@ -282,8 +276,13 @@ public class WorldgenStone extends GTWorldgen {
                                         tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockGranites) ||
                                         tTargetedBlock.isReplaceableOreGen(aWorld, iX, iY, iZ, GregTechAPI.sBlockStones)) {
                                     aWorld.setBlock(iX, iY, iZ, this.mBlock, this.mBlockMeta, 0);
+                                    continue;
                                 }
                                 // spotless:on
+
+                                if (OreManager.setExistingOreStoneType(aWorld, iX, iY, iZ, stoneType)) {
+                                    continue;
+                                }
                             }
                         }
                     }
