@@ -43,8 +43,7 @@ public class CoverWirelessDoesWorkDetector
 
     private static byte computeSignalBasedOnActivity(ActivityTransmitterData coverVariable, ICoverable tileEntity) {
 
-        if (tileEntity instanceof IMachineProgress) {
-            IMachineProgress mProgress = (IMachineProgress) tileEntity;
+        if (tileEntity instanceof IMachineProgress mProgress) {
             boolean inverted = coverVariable.invert;
             int signal = 0;
 
@@ -76,6 +75,8 @@ public class CoverWirelessDoesWorkDetector
         final byte signal = computeSignalBasedOnActivity(aCoverVariable, aTileEntity);
         final long hash = hashCoverCoords(aTileEntity, side);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
+
+        aTileEntity.setOutputRedstoneSignal(side, signal);
 
         return aCoverVariable;
     }

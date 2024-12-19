@@ -13,10 +13,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTUtility;
+import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -24,10 +24,10 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
 
     int mCurrentPollution;
     int mAveragePollution;
-    int mAveragePollutionArray[] = new int[10];
+    int[] mAveragePollutionArray = new int[10];
     private int mArrayPos = 0;
     private int mTickTimer = 0;
-    private int mSecondTimer = 0;
+    private final int mSecondTimer = 0;
     private long mRedstoneLevel = 0;
 
     public MTEPollutionDetector(final int aID, final String aName, final String aNameRegional, final int aTier,
@@ -296,7 +296,7 @@ public class MTEPollutionDetector extends GTPPMetaTileEntity {
     }
 
     public int getCurrentChunkPollution(IGregTechTileEntity aBaseMetaTileEntity) {
-        return PollutionUtils.getPollution(aBaseMetaTileEntity);
+        return Pollution.getPollution(aBaseMetaTileEntity);
     }
 
     @Override

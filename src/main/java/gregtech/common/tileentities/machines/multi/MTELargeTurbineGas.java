@@ -55,14 +55,10 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine")
-            .addInfo("Controller block for the Large Gas Turbine")
+        tt.addMachineType("Gas Turbine, LGT")
             .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Warning: Will be capped at 8192 EU/t in a future update")
-            .addInfo("See the Advanced Large Gas Turbine as the next, uncapped, option")
             // .addInfo("The excess fuel that gets consumed will be voided!")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front center")
             .addCasingInfoRange("Stainless Steel Turbine Casing", 8, 30, false)
@@ -71,7 +67,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
             .addMufflerHatch("Side centered", 2)
             .addInputHatch("Gas Fuel, Side centered", 2)
             .addOtherStructurePart("Air", "3x3 area in front of controller")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -130,7 +126,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
 
     @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, TurbineStatCalculator turbine) {
-        if (aFluids.size() >= 1) {
+        if (!aFluids.isEmpty()) {
             int tEU = 0;
             int actualOptimalFlow = 0;
 

@@ -26,6 +26,9 @@ import gregtech.api.objects.GTRenderedTexture;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
 
+@Deprecated
+// GT++ was adding super chests too for some reason when GT already has some
+// this is deprecated but not deleted because it is used for the MTEInfiniteItemHolder
 public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidgets {
 
     public int mItemCount = 0;
@@ -39,8 +42,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
             aNameRegional,
             aTier,
             3,
-            "This Chest stores " + (int) (Math.pow(6.0D, (double) aTier) * mStorageFactor) + " Items",
-            new ITexture[0]);
+            "This Chest stores " + (int) (Math.pow(6.0D, aTier) * mStorageFactor) + " Items");
     }
 
     public MTETieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -151,7 +153,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
 
     @Override
     public int getMaxItemCount() {
-        return (int) (Math.pow(6.0D, (double) this.mTier) * mStorageFactor - 128.0D);
+        return (int) (Math.pow(6.0D, this.mTier) * mStorageFactor - 128.0D);
     }
 
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,

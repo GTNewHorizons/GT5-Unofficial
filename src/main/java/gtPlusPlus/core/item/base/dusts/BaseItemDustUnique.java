@@ -44,7 +44,7 @@ public class BaseItemDustUnique extends Item {
         this.setCreativeTab(tabMisc);
         this.colour = colour;
         this.materialName = materialName;
-        if (mChemicalFormula == null || mChemicalFormula.equals("") || mChemicalFormula.equals("NullFormula")) {
+        if (mChemicalFormula == null || mChemicalFormula.isEmpty() || mChemicalFormula.equals("NullFormula")) {
             this.chemicalNotation = StringUtils.subscript(materialName);
         } else {
             this.chemicalNotation = StringUtils.subscript(mChemicalFormula);
@@ -84,7 +84,7 @@ public class BaseItemDustUnique extends Item {
             temp = temp.replace("itemD", "d");
             Logger.WARNING("Generating OreDict Name: " + temp);
         }
-        if ((temp != null) && !temp.equals("")) {
+        if ((temp != null) && !temp.isEmpty()) {
             GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
         }
         registerComponent();
@@ -144,7 +144,7 @@ public class BaseItemDustUnique extends Item {
         if (this.sRadiation > 0) {
             list.add(GTPPCore.GT_Tooltip_Radioactive.get());
         }
-        if (this.chemicalNotation.length() > 0 && !chemicalNotation.equals("")
+        if (!this.chemicalNotation.isEmpty() && !chemicalNotation.isEmpty()
             && !chemicalNotation.equals("NullFormula")) {
             list.add(this.chemicalNotation);
         }

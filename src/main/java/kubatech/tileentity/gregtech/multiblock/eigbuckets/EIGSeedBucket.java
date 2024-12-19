@@ -203,7 +203,7 @@ public class EIGSeedBucket extends EIGBucket {
         return false;
     }
 
-    class EIGCraftingSeedFinder extends InventoryCrafting {
+    static class EIGCraftingSeedFinder extends InventoryCrafting {
 
         public ItemStack recipeInput;
 

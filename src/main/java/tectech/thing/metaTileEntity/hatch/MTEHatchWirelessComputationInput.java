@@ -1,11 +1,8 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
@@ -29,8 +26,6 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput implemen
 
     public long requiredComputation = 10000;
 
-    private String clientLocale = "en_US";
-
     public MTEHatchWirelessComputationInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
@@ -46,12 +41,6 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput implemen
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
-            clientLocale = "en_US";
-        }
         if (!aPlayer.isUsingItem()) {
             GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         }

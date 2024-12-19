@@ -457,11 +457,13 @@ public class Material {
                         if (hashSize2 + hashSize >= 9) {
                             b = String.valueOf(aValueForGen);
                         } else {
-                            String c = b;
+                            StringBuilder c = new StringBuilder(b);
                             while (MathUtils.howManyPlaces(hashSize + c.length()) < 9) {
-                                c = c + c.hashCode();
+                                c.append(
+                                    c.toString()
+                                        .hashCode());
                             }
-                            b = c;
+                            b = c.toString();
                         }
                     }
 
@@ -471,7 +473,7 @@ public class Material {
                     } else {
                         valueR = a;
                     }
-                    short fc[] = new short[3];
+                    short[] fc = new short[3];
                     int aIndex = 0;
                     for (char gg : valueR.toCharArray()) {
                         short ui = Short.parseShort("" + gg);
@@ -570,7 +572,7 @@ public class Material {
                 this.isRadioactive = true;
                 this.vRadiationLevel = (byte) radiationLevel;
             } else {
-                if (vMaterialInput.size() > 0) {
+                if (!vMaterialInput.isEmpty()) {
                     ArrayList<Byte> aDataSet = new ArrayList<>();
                     for (MaterialStack m : this.vMaterialInput) {
                         aDataSet.add(m.getStackMaterial().vRadiationLevel);
@@ -1183,11 +1185,8 @@ public class Material {
     }
 
     public final boolean hasSolidForm() {
-        if (ItemUtils
-            .checkForInvalidItems(new ItemStack[] { getDust(1), getBlock(1), getTinyDust(1), getSmallDust(1) })) {
-            return true;
-        }
-        return false;
+        return ItemUtils
+            .checkForInvalidItems(new ItemStack[] { getDust(1), getBlock(1), getTinyDust(1), getSmallDust(1) });
     }
 
     public final ItemStack[] getMaterialComposites() {
@@ -1273,16 +1272,18 @@ public class Material {
                 final long[] smallestRatio = MathUtils.simplifyNumbersToSmallestForm(tempRatio);
 
                 if (smallestRatio.length > 0) {
-                    String tempRatioStringThing1 = "";
+                    StringBuilder tempRatioStringThing1 = new StringBuilder();
                     for (long value : tempRatio) {
-                        tempRatioStringThing1 = tempRatioStringThing1 + value + " : ";
+                        tempRatioStringThing1.append(value)
+                            .append(" : ");
                     }
                     Logger.MATERIALS("Default Ratio: " + tempRatioStringThing1);
 
-                    String tempRatioStringThing = "";
+                    StringBuilder tempRatioStringThing = new StringBuilder();
                     int tempSmallestCraftingUseSize = 0;
                     for (long l : smallestRatio) {
-                        tempRatioStringThing = tempRatioStringThing + l + " : ";
+                        tempRatioStringThing.append(l)
+                            .append(" : ");
                         tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + l);
                     }
                     // this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
@@ -1299,13 +1300,13 @@ public class Material {
             return "";
         }
         Logger.MATERIALS("===============| Calculating Atomic Formula for " + this.localizedName + " |===============");
-        if (!chemSymbol.equals("")) {
+        if (!chemSymbol.isEmpty()) {
             return chemSymbol;
         }
         final ArrayList<MaterialStack> tempInput = this.vMaterialInput;
         if (tempInput != null) {
             if (!tempInput.isEmpty()) {
-                String dummyFormula = "";
+                StringBuilder dummyFormula = new StringBuilder();
                 final long[] dummyFormulaArray = this.getSmallestRatio(tempInput);
                 if (dummyFormulaArray != null) {
                     if (dummyFormulaArray.length >= 1) {
@@ -1329,32 +1330,35 @@ public class Material {
 
                                             if (aChemFormula.length() > 3
                                                 || StringUtils.uppercaseCount(aChemFormula) > 1) {
-                                                dummyFormula = dummyFormula + "("
-                                                    + aChemFormula
-                                                    + ")"
-                                                    + dummyFormulaArray[e];
+                                                dummyFormula.append("(")
+                                                    .append(aChemFormula)
+                                                    .append(")")
+                                                    .append(dummyFormulaArray[e]);
                                             } else {
-                                                dummyFormula = dummyFormula + aChemFormula + dummyFormulaArray[e];
+                                                dummyFormula.append(aChemFormula)
+                                                    .append(dummyFormulaArray[e]);
                                             }
                                         } else if (dummyFormulaArray[e] == 1) {
                                             if (aChemFormula.length() > 3
                                                 || StringUtils.uppercaseCount(aChemFormula) > 1) {
-                                                dummyFormula = dummyFormula + "(" + aChemFormula + ")";
+                                                dummyFormula.append("(")
+                                                    .append(aChemFormula)
+                                                    .append(")");
                                             } else {
-                                                dummyFormula = dummyFormula + aChemFormula;
+                                                dummyFormula.append(aChemFormula);
                                             }
                                         } else {
-                                            dummyFormula = dummyFormula + "??";
+                                            dummyFormula.append("??");
                                         }
                                     } else {
-                                        dummyFormula = dummyFormula + "??";
+                                        dummyFormula.append("??");
                                     }
                                 } else {
-                                    dummyFormula = dummyFormula + "??";
+                                    dummyFormula.append("??");
                                 }
                             }
                         }
-                        return StringUtils.subscript(dummyFormula);
+                        return StringUtils.subscript(dummyFormula.toString());
                         // return dummyFormula;
                     }
                     Logger.MATERIALS("dummyFormulaArray <= 0");
@@ -1371,7 +1375,7 @@ public class Material {
         return isFluidQueued = true;
     }
 
-    public static final void generateQueuedFluids() {
+    public static void generateQueuedFluids() {
         for (Material m : mMaterialMap) {
             if (m.isFluidQueued) {}
         }
@@ -1520,8 +1524,7 @@ public class Material {
         if (this.mFluid == null) {
             return null;
         }
-        final FluidStack moltenFluid = new FluidStack(this.mFluid, fluidAmount);
-        return moltenFluid;
+        return new FluidStack(this.mFluid, fluidAmount);
     }
 
     public final boolean setFluid(Fluid aFluid) {

@@ -96,7 +96,7 @@ public class BehaviourDataOrb extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        if (!(getDataTitle(aStack).length() == 0)) {
+        if (!(getDataTitle(aStack).isEmpty())) {
             aList.add(getDataTitle(aStack));
             aList.add(getDataName(aStack));
         }

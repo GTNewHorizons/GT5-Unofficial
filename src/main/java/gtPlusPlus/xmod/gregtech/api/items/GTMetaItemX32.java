@@ -101,7 +101,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         // You have to check for at least these Conditions in every Case! So add a super Call like the following for
         // this before executing your Code:
         // if (!super.doesMaterialAllowGeneration(aPrefix, aMaterial)) return false;
-        return (aPrefix != null) && (aMaterial != null) && aPrefix.doGenerateItem(aMaterial);
+        return aPrefix != null && aPrefix.doGenerateItem(aMaterial);
     }
 
     /* ---------- OVERRIDEABLE FUNCTIONS ---------- */

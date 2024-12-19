@@ -49,6 +49,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean aSpecialRecipeReq = aMaterial.contains(SubTag.MORTAR_GRINDABLE);
         boolean aFuelPower = aMaterial.mFuelPower > 0;
 
+        // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
+        if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt
+            || aMaterial == Materials.Spodumene
+            || aMaterial == Materials.NetherQuartz) return;
+
         switch (aPrefix) {
             case gem -> {
                 // fuel recipes
@@ -66,7 +71,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     // need to avoid iridium exploit
                     if (aMaterial != Materials.Iridium) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 9))
+                            .itemInputs(GTUtility.copyAmount(9, aStack))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                             .duration(15 * SECONDS)
                             .eut(2)

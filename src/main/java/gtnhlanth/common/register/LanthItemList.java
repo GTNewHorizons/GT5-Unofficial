@@ -7,7 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTOreDictUnificator;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
 import gtnhlanth.common.block.BlockAntennaCasing;
 import gtnhlanth.common.block.BlockCasing;
@@ -70,7 +72,6 @@ public final class LanthItemList {
 
     public static final Block COOLANT_DELIVERY_CASING = new BlockCasing("coolant_delivery");
 
-    // public static final Block ANTENNA_CASING_T1 = new Casing("antenna_t1");
     public static final Block ANTENNA_CASING_T1 = new BlockAntennaCasing(1);
     public static final Block ANTENNA_CASING_T2 = new BlockAntennaCasing(2);
 
@@ -163,6 +164,14 @@ public final class LanthItemList {
                 mask.getDamage(),
                 descSpectrum);
             GameRegistry.registerItem(maskItem, maskItem.getUnlocalizedName());
+
+            if (!mask.getName()
+                .contains("blank")) {
+                GTOreDictUnificator.registerOre(
+                    OrePrefixes.mask + mask.getName()
+                        .toUpperCase(),
+                    new ItemStack(maskItem));
+            }
 
             GTLanguageManager.addStringLocalization(maskItem.getUnlocalizedName() + ".name", "Mask (" + english + ")");
 

@@ -338,6 +338,25 @@ public class CraftingRecipeLoader implements Runnable {
                 | GTModHandler.RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES,
             new Object[] { "R R", "RhR", 'R', OrePrefixes.ring.get(Materials.Steel) });
 
+        GTModHandler.addCraftingRecipe(
+            getModItem(IndustrialCraft2.ID, "itemArmorBronzeBoots", 1, 0),
+            bits,
+            new Object[] { "R R", "RhR", 'R', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L) });
+        GTModHandler.addCraftingRecipe(
+            getModItem(IndustrialCraft2.ID, "itemArmorBronzeChestplate", 1, 0),
+            bits,
+            new Object[] { "RhR", "RRR", "RRR", 'R',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L) });
+        GTModHandler.addCraftingRecipe(
+            getModItem(IndustrialCraft2.ID, "itemArmorBronzeLegs", 1, 0),
+            bits,
+            new Object[] { "RRR", "RhR", "R R", 'R',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L) });
+        GTModHandler.addCraftingRecipe(
+            getModItem(IndustrialCraft2.ID, "itemArmorBronzeHelmet", 1, 0),
+            bits,
+            new Object[] { "RRR", "RhR", 'R', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L) });
+
         GTLog.out.println("GTMod: Adding Wool and Color releated Recipes.");
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(Blocks.wool, 1, 1),
@@ -1819,12 +1838,6 @@ public class CraftingRecipeLoader implements Runnable {
                 OrePrefixes.dust.get(Materials.Graphite), 'S', OrePrefixes.plate.get(Materials.Beryllium) });
 
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("crophavester", 1L));
-        GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("crophavester", 1L),
-            bits_no_remove_buffered,
-            new Object[] { "ACA", "PMS", "WOW", 'M', ItemList.Hull_MV, 'C', OrePrefixes.circuit.get(Materials.MV), 'A',
-                ItemList.Robot_Arm_LV, 'P', ItemList.Electric_Piston_LV, 'S', ItemList.Sensor_LV, 'W',
-                OrePrefixes.toolHeadSense.get(Materials.Aluminium), 'O', ItemList.Conveyor_Module_LV });
 
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("RTGenerator", 1L));
         GTModHandler.addCraftingRecipe(

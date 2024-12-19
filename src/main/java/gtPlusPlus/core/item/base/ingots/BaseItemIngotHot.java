@@ -26,7 +26,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class BaseItemIngotHot extends BaseItemIngot {
 
     private final ItemStack outputIngot;
-    private int tickCounter = 0;
+    private final int tickCounter = 0;
     private final int tickCounterMax = 200;
     private final int mTier;
 
@@ -66,7 +66,7 @@ public class BaseItemIngotHot extends BaseItemIngot {
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
         final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
-            if (entityHolding != null && entityHolding instanceof EntityPlayer) {
+            if (entityHolding instanceof EntityPlayer) {
                 if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
                     EntityUtils.applyHeatDamageToEntity(1, world, entityHolding);
                 }
@@ -78,11 +78,7 @@ public class BaseItemIngotHot extends BaseItemIngot {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        if (Configuration.visual.useGregtechTextures) {
-            return true;
-        } else {
-            return false;
-        }
+        return Configuration.visual.useGregtechTextures;
     }
 
     @Override

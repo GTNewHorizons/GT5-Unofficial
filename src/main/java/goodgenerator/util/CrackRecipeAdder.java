@@ -55,7 +55,7 @@ public class CrackRecipeAdder {
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(inputFluid, cracker)
             .fluidOutputs(FluidRegistry.getFluidStack("moderatelycracked" + name, 1000))
-            .duration(Math.max((long) (Duration), 1L) * TICKS)
+            .duration(Math.max(Duration, 1L) * TICKS)
             .eut(EUt)
             .addTo(crackingRecipes);
 
@@ -586,38 +586,5 @@ public class CrackRecipeAdder {
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(material.get(OrePrefixes.stick, 16), GTUtility.getIntegratedCircuit(16))
-            .itemOutputs(material.get(OrePrefixes.wireGt16, 1))
-            .duration(15 * SECONDS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(material.get(OrePrefixes.ingot, 1), GTUtility.getIntegratedCircuit(3))
-            .itemOutputs(material.get(OrePrefixes.wireFine, 8))
-            .duration(5 * SECONDS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(material.get(OrePrefixes.stick, 1), GTUtility.getIntegratedCircuit(3))
-            .itemOutputs(material.get(OrePrefixes.wireFine, 4))
-            .duration(2 * SECONDS + 10 * TICKS)
-            .eut(4)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(material.get(OrePrefixes.wireGt01, 1), GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(material.get(OrePrefixes.wireFine, 4))
-            .duration(10 * SECONDS)
-            .eut(8)
-            .addTo(wiremillRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(material.get(OrePrefixes.ingot, 1), ItemList.Shape_Extruder_Wire.get(0))
-            .itemOutputs(material.get(OrePrefixes.wireGt01, 2))
-            .duration(
-                material.getStats()
-                    .getMass() * 8
-                    * TICKS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(extruderRecipes);
     }
 }

@@ -31,7 +31,6 @@ import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import static gregtech.api.util.GTUtility.getTier;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.IdentityHashMap;
@@ -53,7 +52,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.SetMultimap;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -63,6 +61,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeCategories;
+import gregtech.mixin.interfaces.accessors.ShapedOreRecipeAccessor;
 import ic2.api.reactor.IReactorComponent;
 
 /**
@@ -123,8 +122,6 @@ public class GTRecipeRegistrator {
         new RecipeShape(null, sMt1, null, sMt1, null, null, null, null, null),
         new RecipeShape(sMt1, sMt1, null, sMt2, null, sMt1, sMt2, null, null),
         new RecipeShape(null, sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2) };
-    public static final Field SHAPED_ORE_RECIPE_WIDTH = ReflectionHelper.findField(ShapedOreRecipe.class, "width");
-    public static final Field SHAPED_ORE_RECIPE_HEIGHT = ReflectionHelper.findField(ShapedOreRecipe.class, "height");
     private static volatile Map<RecipeShape, List<IRecipe>> indexedRecipeListCache;
     private static final String[][] sShapesA = new String[][] { null, null, null,
         { "Helmet", s_P + s_P + s_P, s_P + s_H + s_P },
@@ -182,7 +179,10 @@ public class GTRecipeRegistrator {
             || aData.mMaterial.mAmount <= 0
             || GTUtility.getFluidForFilledItem(aStack, false) != null
             || aData.mMaterial.mMaterial.mSubTags.contains(SubTag.NO_RECIPES)) return;
-        registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null);
+        // Prevents registering a quartz block -> 9x quartz dust recipe
+        if (!GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), aStack)) {
+            registerReverseMacerating(GTUtility.copyAmount(1, aStack), aData, aData.mPrefix == null, true);
+        }
         if (!GTUtility.areStacksEqual(GTModHandler.getIC2Item("iridiumOre", 1L), aStack)) {
             registerReverseSmelting(
                 GTUtility.copyAmount(1, aStack),
@@ -193,7 +193,8 @@ public class GTRecipeRegistrator {
                 GTUtility.copyAmount(1, aStack),
                 aData.mMaterial.mMaterial,
                 aData.mMaterial.mAmount,
-                aData.getByProduct(0));
+                aData.getByProduct(0),
+                true);
             registerReverseArcSmelting(GTUtility.copyAmount(1, aStack), aData);
         }
     }
@@ -202,9 +203,10 @@ public class GTRecipeRegistrator {
      * @param aStack          the stack to be recycled.
      * @param aMaterial       the Material.
      * @param aMaterialAmount the amount of it in Material Units.
+     * @param isRecycling     whether to put in recycling tab.
      */
     public static void registerReverseFluidSmelting(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-        MaterialStack aByproduct) {
+        MaterialStack aByproduct, boolean isRecycling) {
         if (aStack == null || aMaterial == null
             || aMaterial.mSmeltInto.mStandardMoltenFluid == null
             || !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
@@ -232,9 +234,9 @@ public class GTRecipeRegistrator {
         }
         builder.fluidOutputs(aMaterial.mSmeltInto.getMolten((L * aMaterialAmount) / (M * aStack.stackSize)))
             .duration((int) Math.max(1, (24 * aMaterialAmount) / M))
-            .eut(powerUsage)
-            .recipeCategory(RecipeCategories.fluidExtractorRecycling)
-            .addTo(fluidExtractionRecipes);
+            .eut(powerUsage);
+        if (isRecycling) builder.recipeCategory(RecipeCategories.fluidExtractorRecycling);
+        builder.addTo(fluidExtractionRecipes);
     }
 
     /**
@@ -355,7 +357,8 @@ public class GTRecipeRegistrator {
     }
 
     public static void registerReverseMacerating(ItemStack aStack, Materials aMaterial, long aMaterialAmount,
-        MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03, boolean aAllowHammer) {
+        MaterialStack aByProduct01, MaterialStack aByProduct02, MaterialStack aByProduct03, boolean aAllowHammer,
+        boolean isRecycling) {
         registerReverseMacerating(
             aStack,
             new ItemData(
@@ -363,10 +366,12 @@ public class GTRecipeRegistrator {
                 aByProduct01,
                 aByProduct02,
                 aByProduct03),
-            aAllowHammer);
+            aAllowHammer,
+            isRecycling);
     }
 
-    public static void registerReverseMacerating(ItemStack aStack, ItemData aData, boolean aAllowHammer) {
+    public static void registerReverseMacerating(ItemStack aStack, ItemData aData, boolean aAllowHammer,
+        boolean isRecycling) {
         if (aStack == null || aData == null) return;
         aData = new ItemData(aData);
 
@@ -401,9 +406,9 @@ public class GTRecipeRegistrator {
                     .itemOutputs(outputsArray)
                     .duration(
                         (aData.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M)) * TICKS)
-                    .eut(4)
-                    .recipeCategory(RecipeCategories.maceratorRecycling)
-                    .addTo(maceratorRecipes);
+                    .eut(4);
+                if (isRecycling) recipeBuilder.recipeCategory(RecipeCategories.maceratorRecycling);
+                recipeBuilder.addTo(maceratorRecipes);
             }
         }
 
@@ -791,19 +796,11 @@ public class GTRecipeRegistrator {
     }
 
     private static int getRecipeWidth(ShapedOreRecipe r) {
-        try {
-            return (int) SHAPED_ORE_RECIPE_WIDTH.get(r);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
-        }
+        return ((ShapedOreRecipeAccessor) r).gt5u$getWidth();
     }
 
     private static int getRecipeHeight(ShapedOreRecipe r) {
-        try {
-            return (int) SHAPED_ORE_RECIPE_HEIGHT.get(r);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
-        }
+        return ((ShapedOreRecipeAccessor) r).gt5u$getHeight();
     }
 
     private static int getRecipeHeight(ShapedRecipes r) {

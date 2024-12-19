@@ -29,6 +29,8 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        // Blacklist materials which are handled by Werkstoff loader
+        if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
 
         if (aMaterial.contains(SubTag.SMELTING_TO_GEM)
             && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L) != null) {
@@ -64,9 +66,9 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             }
         }
 
-        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
+        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, true);
         GTRecipeRegistrator
-            .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
+            .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false, true);
         if (!aMaterial.contains(SubTag.NO_SMELTING)
             && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()

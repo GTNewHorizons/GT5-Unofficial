@@ -12,14 +12,11 @@ import static org.lwjgl.opengl.GL11.glEnable;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -43,6 +40,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.GTRenderedTexture;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.util.CommonValues;
@@ -192,11 +190,8 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        try {
-            EntityPlayerMP player = (EntityPlayerMP) aPlayer;
-            clientLocale = (String) FieldUtils.readField(player, "translator", true);
-        } catch (Exception e) {
-            clientLocale = "en_US";
+        if (aPlayer instanceof EntityPlayerMPAccessor) {
+            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
         GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
@@ -204,13 +199,15 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.certain.desc.0"), // Feeling
-                                                                                                                   // certain,
-                                                                                                                   // or
-                                                                                                                   // not?
-            EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                + translateToLocal("gt.blockmachines.hatch.certain.desc.1") // Schrödinger equation in a box
-        };
+        String[] description = new String[4];
+        description[0] = CommonValues.TEC_MARK_EM;
+        description[1] = translateToLocal("gt.blockmachines.hatch.certain.desc.0"); // Feeling certain, or not?
+        description[2] = EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
+            + translateToLocal("gt.blockmachines.hatch.certain.desc.1"); // Schrödinger equation in a box
+        if (mTier < 6) {
+            description[3] = EnumChatFormatting.DARK_RED + translateToLocal("gt.blockmachines.hatch.certain.desc.2");
+        }
+        return description;
     }
 
     private boolean balanceCheck(int sideLenY, short... masses) {
@@ -348,7 +345,6 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final boolean isAdvanced = mTier > 7;
 
         builder.widget(
             new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
@@ -436,23 +432,17 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
 
                 @Override
                 public void draw(float partialTicks) {
-                    if (isAdvanced) {
-                        glEnable(GL_BLEND);
-                        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                        glColor4f(1f, 1f, 1f, (float) matrix[index] / 1000f);
+                    glEnable(GL_BLEND);
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                    glColor4f(1f, 1f, 1f, (float) matrix[index] / 1000f);
 
-                        // super.draw but without disabling blend
-                        GlStateManager.pushMatrix();
-                        getDrawable().draw(Pos2d.ZERO, getSize(), partialTicks);
-                        GlStateManager.popMatrix();
+                    // super.draw but without disabling blend
+                    GlStateManager.pushMatrix();
+                    getDrawable().draw(Pos2d.ZERO, getSize(), partialTicks);
+                    GlStateManager.popMatrix();
 
-                        glDisable(GL_BLEND);
-                        glColor4f(1f, 1f, 1f, 1f);
-                    } else {
-                        if (TecTech.RANDOM.nextInt(1000) < matrix[index]) {
-                            super.draw(partialTicks);
-                        }
-                    }
+                    glDisable(GL_BLEND);
+                    glColor4f(1f, 1f, 1f, 1f);
                 }
             }.setDrawable(TecTechUITextures.PICTURE_UNCERTAINTY_INDICATOR)
                 .setPos(47 + (i / 4) * 12, 28 + (i % 4) * 12)

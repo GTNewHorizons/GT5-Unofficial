@@ -14,7 +14,6 @@ public class NEIConfig implements IConfigureNEI {
 
     @Override
     public void loadConfig() {
-        NEIConfig.isAdded = false;
         NEIConfig.isAdded = true;
     }
 

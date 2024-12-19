@@ -347,8 +347,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             if (te instanceof MultiBlockPart part) {
                 final IMultiBlockController tController = part.getTarget(false);
                 if (tController != null) tController.onStructureChange();
-            } else if (te instanceof IMultiBlockController controller) {
-                controller.onStructureChange();
+            } else if (te instanceof IMultiBlockController blockController) {
+                blockController.onStructureChange();
             }
         }
     }
@@ -675,8 +675,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (!canOpenControllerGui()) return guiProvider;
         if (uiContext.getPlayer()
             .isSneaking()) return guiProvider;
-        GUIProvider<?> controllerGUI = controller.getGUI(uiContext);
-        return controllerGUI;
+        return controller.getGUI(uiContext);
     }
 
     @Override

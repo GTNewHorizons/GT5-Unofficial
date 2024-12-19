@@ -278,7 +278,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         this.mID = (short) mID;
         this.defaultName = defaultName;
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> { this.getLocalizedName(); });
+        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedName());
         this.stats = stats;
         this.type = type;
         this.generationFeatures = generationFeatures;
@@ -316,7 +316,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
         // this.toolTip = "The formula is to long...";
 
         // Ensure that localization key are written to the lang file
-        GregTechAPI.sAfterGTPreload.add(() -> { this.getLocalizedToolTip(); });
+        GregTechAPI.sAfterGTPreload.add(() -> this.getLocalizedToolTip());
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
@@ -427,13 +427,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public List<TCAspects.TC_AspectStack> getGTWrappedTCAspects() {
         final List<TCAspects.TC_AspectStack> ret = new ArrayList<>();
         Arrays.stream(this.getTCAspects())
-            .forEach(objectIntegerPair -> {
-                new TCAspects.TC_AspectStack(
+            .forEach(
+                objectIntegerPair -> new TCAspects.TC_AspectStack(
                     TCAspects.valueOf(
                         ((Aspect) objectIntegerPair.getKey()).getName()
                             .toUpperCase(Locale.US)),
-                    objectIntegerPair.getValue()).addToAspectList(ret);
-            });
+                    objectIntegerPair.getValue()).addToAspectList(ret));
         return ret;
     }
 
@@ -476,7 +475,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public ISubTagContainer getOreByProductRaw(int aNumber) {
-        if (this.mOreByProducts.size() == 0) return null;
+        if (this.mOreByProducts.isEmpty()) return null;
         if (aNumber < 0) aNumber = this.mOreByProducts.size() + aNumber;
         while (aNumber >= this.mOreByProducts.size()) aNumber--;
         ISubTagContainer o = this.mOreByProducts.get(aNumber);
@@ -485,7 +484,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     }
 
     public ItemStack getOreByProduct(int aNumber, OrePrefixes prefixes) {
-        if (this.mOreByProducts.size() == 0) return null;
+        if (this.mOreByProducts.isEmpty()) return null;
         if (aNumber < 0) aNumber = this.mOreByProducts.size() + aNumber;
         while (aNumber >= this.mOreByProducts.size()) aNumber--;
         Object o = this.mOreByProducts.get(aNumber);

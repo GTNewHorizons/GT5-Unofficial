@@ -480,12 +480,26 @@ public class GTModHandler {
         return true;
     }
 
+    // temporary buffer list to fix NPE if you try to access the recyclerBlacklist too early
+    private static List<RecipeInputItemStack> tempRecyclerBlackList = new ArrayList<>();
+
     /**
      * Adds an Item to the Recycler Blacklist
      */
     public static boolean addToRecyclerBlackList(ItemStack aRecycledStack) {
         if (aRecycledStack == null) return false;
-        Recipes.recyclerBlacklist.add(new RecipeInputItemStack(aRecycledStack));
+        final RecipeInputItemStack iRecipeInput = new RecipeInputItemStack(aRecycledStack);
+        if (Recipes.recyclerBlacklist == null) {
+            tempRecyclerBlackList.add(iRecipeInput);
+            return true;
+        }
+        if (tempRecyclerBlackList != null) {
+            for (RecipeInputItemStack recipe : tempRecyclerBlackList) {
+                Recipes.recyclerBlacklist.add(recipe);
+            }
+            tempRecyclerBlackList = null;
+        }
+        Recipes.recyclerBlacklist.add(iRecipeInput);
         return true;
     }
 

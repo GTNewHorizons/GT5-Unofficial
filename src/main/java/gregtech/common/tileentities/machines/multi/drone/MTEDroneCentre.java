@@ -63,7 +63,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import appeng.api.util.DimensionalCoord;
-import appeng.api.util.WorldCoord;
 import appeng.client.render.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
@@ -177,7 +176,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Drone Centre")
-            .addInfo("Drone Center Controller")
             .addInfo(EnumChatFormatting.AQUA + "Drone #10032, cleared for takeoff!")
             .addInfo("Monitors multiblock machines in range.")
             .addInfo("Replace maintenance hatch on other multi with drone downlink module.")
@@ -188,8 +186,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("There is a chance per second that the drone will crash.")
             .addInfo("Chance is determined by drone tier: T1-1/28800, T2-1/172800, T3-0")
             .addInfo("If machine is too far, remote control would not available")
-            .addInfo(AuthorSilverMoon)
-            .addSeparator()
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center")
             .addCasingInfoRange("Stable Titanium Machine Casing", CASINGS_MIN, 91, false)
@@ -198,8 +194,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addCasingInfoExactly("Any tiered glass", 6, false)
             .addInputBus("Any Titanium Casing", 1)
             .addStructureInfo("No maintenance hatch needed")
-            .addSeparator()
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher(AuthorSilverMoon);
         return tt;
     }
 
@@ -315,6 +310,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         for (DroneConnection con : connectionList) {
             if (!con.customName.equals(con.machine.getLocalName()))
                 conList.setString(con.machineCoord.toString(), con.customName);
+        }
+        for (String pos : tempNameList.keySet()) {
+            conList.setString(pos, tempNameList.get(pos));
         }
         aNBT.setTag("conList", conList);
     }
@@ -787,8 +785,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                     }
                 })
                     .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.drone_highlight"))
-                    .setBackground(
-                        new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_INVERT_REDSTONE })
+                    .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
                     .setSize(16, 16));
             // Show the reason why the machine shutdown
             row.widget(
@@ -896,10 +893,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             machineCoord.posY,
             machineCoord.posZ,
             player.dimension);
-        WorldCoord blockPos2 = new WorldCoord((int) player.posX, (int) player.posY, (int) player.posZ);
-        BlockPosHighlighter.highlightBlock(
-            blockPos,
-            System.currentTimeMillis() + 500 * WorldCoord.getTaxicabDistance(blockPos, blockPos2));
+        BlockPosHighlighter.highlightBlocks(player, Collections.singletonList(blockPos), null, null);
     }
 
     public static HashMultimap<Integer, MTEDroneCentre> getCentreMap() {

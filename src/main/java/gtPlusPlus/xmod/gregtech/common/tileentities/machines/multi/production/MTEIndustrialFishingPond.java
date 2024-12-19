@@ -28,6 +28,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -44,10 +47,9 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.ReflectionUtil;
+import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -98,7 +100,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Fishing Pond")
             .addInfo("Can process (Tier + 1) * 2 recipes")
             .addInfo("Put a numbered circuit into the input bus.")
             .addInfo("Circuit " + FISH_MODE + " for Fish")
@@ -107,7 +108,6 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             .addInfo("Need to be filled with water.")
             .addInfo("Will automatically fill water from input hatch.")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addSeparator()
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front Center")
             .addCasingInfoMin("Aquatic Casings", 64, false)
@@ -117,7 +117,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(GTPPCore.GT_Tooltip_Builder.get());
+            .toolTipFinisher();
         return tt;
     }
 
@@ -222,6 +222,10 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
         setModeFromInputStacks(tItemInputs);
 
         ItemStack[] mFishOutput = generateLoot();
+        if (mFishOutput == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
         mFishOutput = removeNulls(mFishOutput);
         GTRecipe g = new GTRecipe(
             true,
@@ -279,7 +283,7 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
-        return Configuration.pollution.pollutionPerSecondMultiIndustrialFishingPond;
+        return PollutionConfig.pollutionPerSecondMultiIndustrialFishingPond;
     }
 
     private Block getCasingBlock() {
@@ -334,6 +338,10 @@ public class MTEIndustrialFishingPond extends GTPPMultiBlockBase<MTEIndustrialFi
                     tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
                     if (tBlock == Blocks.water || tBlock == Blocks.flowing_water) {
                         ++tAmount;
+                    } else if (Mods.COFHCore.isModLoaded()) {
+                        if (tBlock instanceof BlockWater || tBlock instanceof BlockTickingWater) {
+                            ++tAmount;
+                        }
                     }
                 }
             }

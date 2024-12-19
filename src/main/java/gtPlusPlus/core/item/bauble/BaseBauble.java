@@ -29,9 +29,9 @@ public class BaseBauble extends Item implements IBauble {
     /**
      * Implementation suggestions taken from Botania.
      */
-    private BaubleType mThisBauble;
+    private final BaubleType mThisBauble;
 
-    private List<String> damageNegations = new ArrayList<>();
+    private final List<String> damageNegations = new ArrayList<>();
     Multimap<String, AttributeModifier> attributes = HashMultimap.create();
 
     public BaseBauble(BaubleType type) {

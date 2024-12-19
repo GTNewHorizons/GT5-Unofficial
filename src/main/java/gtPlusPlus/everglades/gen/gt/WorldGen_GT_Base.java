@@ -99,12 +99,10 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                 // generateEnd(world, random, chunkX * 16, chunkZ * 16);
                 break;
             default: // Any other dimension
-                if (world.provider.dimensionId != xDim) {
-                    break;
-                } else {
+                if (world.provider.dimensionId == xDim) {
                     generateEverglades(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                    break;
                 }
+                break;
         }
     }
 
@@ -197,7 +195,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
 
         // Local class to track which orevein seeds must be checked when doing
         // chunkified worldgen
-        class NearbySeeds {
+        static class NearbySeeds {
 
             public int mX;
             public int mZ;
@@ -206,7 +204,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
                 this.mX = x;
                 this.mZ = z;
             }
-        };
+        }
 
         public static ArrayList<NearbySeeds> seedList = new ArrayList<>();
 
@@ -530,7 +528,7 @@ public class WorldGen_GT_Base implements IWorldGenerator {
             }
 
             // Now process each oreseed vs this requested chunk
-            for (; seedList.size() != 0; seedList.remove(0)) {
+            for (; !seedList.isEmpty(); seedList.remove(0)) {
                 if (debugWorldGen)
                     GTLog.out.println("Processing seed x=" + seedList.get(0).mX + " z=" + seedList.get(0).mZ);
                 worldGenFindVein(seedList.get(0).mX, seedList.get(0).mZ);

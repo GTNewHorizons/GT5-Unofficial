@@ -338,13 +338,6 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1), GTUtility.getIntegratedCircuit(1))
-            .fluidOutputs(Materials.Methane.getGas(60))
-            .duration(10 * SECONDS)
-            .eut(20)
-            .addTo(centrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.sand, 1, 1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1),

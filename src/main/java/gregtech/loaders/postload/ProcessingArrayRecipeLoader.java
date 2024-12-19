@@ -3,6 +3,7 @@ package gregtech.loaders.postload;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.ProcessingArrayManager;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 public class ProcessingArrayRecipeLoader {
 
@@ -35,7 +36,7 @@ public class ProcessingArrayRecipeLoader {
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.canner", RecipeMaps.cannerRecipes);
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.canner", SoundResource.IC2_MACHINES_EXTRACTOR_OP);
         // Centrifuge
-        ProcessingArrayManager.addRecipeMapToPA("basicmachine.centrifuge", RecipeMaps.centrifugeNonCellRecipes);
+        ProcessingArrayManager.addRecipeMapToPA("basicmachine.centrifuge", GTPPRecipeMaps.centrifugeNonCellRecipes);
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.centrifuge", SoundResource.NONE);
         // Chemical Bath
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.chemicalbath", RecipeMaps.chemicalBathRecipes);
@@ -60,7 +61,7 @@ public class ProcessingArrayRecipeLoader {
         ProcessingArrayManager
             .addSoundResourceToPA("basicmachine.distillery", SoundResource.GT_MACHINES_DISTILLERY_LOOP);
         // Electrolyzer
-        ProcessingArrayManager.addRecipeMapToPA("basicmachine.electrolyzer", RecipeMaps.electrolyzerNonCellRecipes);
+        ProcessingArrayManager.addRecipeMapToPA("basicmachine.electrolyzer", GTPPRecipeMaps.electrolyzerNonCellRecipes);
         ProcessingArrayManager
             .addSoundResourceToPA("basicmachine.electrolyzer", SoundResource.IC2_MACHINES_MAGNETIZER_LOOP);
         // Extractor
@@ -115,7 +116,7 @@ public class ProcessingArrayRecipeLoader {
         ProcessingArrayManager
             .addSoundResourceToPA("basicmachine.microwave", SoundResource.IC2_MACHINES_ELECTROFURNACE_LOOP);
         // Mixer
-        ProcessingArrayManager.addRecipeMapToPA("basicmachine.mixer", RecipeMaps.mixerNonCellRecipes);
+        ProcessingArrayManager.addRecipeMapToPA("basicmachine.mixer", GTPPRecipeMaps.mixerNonCellRecipes);
         ProcessingArrayManager.addSoundResourceToPA("basicmachine.mixer", SoundResource.NONE);
         // Ore Washer
         ProcessingArrayManager.addRecipeMapToPA("basicmachine.orewasher", RecipeMaps.oreWasherRecipes);

@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -28,10 +27,13 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -40,6 +42,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -49,6 +52,7 @@ import appeng.api.AEApi;
 import bartworks.API.BorosilicateGlass;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -58,10 +62,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.ResultMissingItem;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.render.TileEntityWormhole;
@@ -76,13 +82,14 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     /**
      * Number of seconds to average the wormhole energy over.
+     * (controls the weights in a weighted average)
      */
-    public static int WH_ENERGY_AVG_WINDOW = 90;
+    public static int WH_ENERGY_AVG_WINDOW = 5;
 
     /**
      * The amount of EU received per EU sent.
      */
-    public static double TRANSFER_EFFICIENCY = (1.0 - 0.00_0004 * 64);
+    public static double TRANSFER_EFFICIENCY = 0.995;
 
     /**
      * The amount of EU to lose every second the wormhole decays.
@@ -90,9 +97,19 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public static double DECAY_RATE = 0.25;
 
     /**
-     * The amount of EU that the wormhole collapses at.
+     * The amount of EU that the wormhole collapses at (EU/s).
      */
-    public static double COLLAPSE_THRESHOLD = 32;
+    public static double COLLAPSE_THRESHOLD = 20;
+
+    /**
+     * The max number of 'overclocks' allowed when the wormhole's energy is increasing.
+     */
+    public static double MAX_OVERCLOCKS = 2.0;
+
+    /**
+     * The number of seconds to record for scan EU/t measurements. Purely visual and not saved.
+     */
+    public static int SCAN_AVG_WINDOW = 10;
 
     /**
      * The wormhole render radius percent of the max size when specified wormhole power is reached (purely aesthetical)
@@ -147,6 +164,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     private double mWormholeEnergy_UI = 0;
 
+    private boolean mAllowOverclocks = true;
     private boolean mIsUnloading = false;
 
     public MTEWormholeGenerator(int aID, String aName, String aNameRegional) {
@@ -311,29 +329,25 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        Arrays.fill(mSendHatches, null);
+        Arrays.fill(mReceiveHatches, null);
+
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0)) return false;
 
         mStructureBadGlassTier = false;
 
-        for (var energyHatch : mExoticEnergyHatches) {
+        for (MTEHatch energyHatch : mExoticEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;
             }
 
             if (energyHatch.getTierForStructure() > mGlassTier) {
                 mStructureBadGlassTier = true;
+                break;
             }
         }
 
         return !mStructureBadGlassTier;
-    }
-
-    @Override
-    public void clearHatches() {
-        super.clearHatches();
-
-        Arrays.fill(mSendHatches, null);
-        Arrays.fill(mReceiveHatches, null);
     }
 
     @Override
@@ -358,6 +372,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     // #endregion
+
     @Override
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
@@ -426,12 +441,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         world.setBlock(xTarget, yTarget, zTarget, Blocks.air);
         world.setBlock(xTarget, yTarget, zTarget, GregTechAPI.sWormholeRender);
 
-        TileEntityWormhole wormhole = (TileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
-
-        if (wormhole == null) {
-            return null;
-        }
-        return wormhole;
+        return (TileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
     }
 
     @Nullable
@@ -459,8 +469,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     public void updateRenderDim() {
-        TileEntityWormhole temp = getRenderBlock();
-
         World target = Optional.ofNullable(mLink)
             .map(link -> link.getDest(mSelfReference))
             .map(MetaTileEntity::getBaseMetaTileEntity)
@@ -508,6 +516,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        if (!aPlayer.isSneaking()) {
+            mAllowOverclocks = !mAllowOverclocks;
+
+            if (mAllowOverclocks) {
+                GTUtility
+                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §a%s§r", GTUtility.trans("088", "Enabled")));
+            } else {
+                GTUtility
+                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §c%s§r", GTUtility.trans("087", "Disabled")));
+            }
+        } else {
+            super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+        }
+    }
+
+    @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         checkFrequency();
 
@@ -545,7 +571,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 long optimal = mLink.mWormholeEnergy > Long.MAX_VALUE ? Long.MAX_VALUE : ((long) mLink.mWormholeEnergy);
                 if (getTransferable(i) > 0) {
                     if (mLink.mWormholeEnergy <= 0) {
-                        var singularityStack = singularity.copy();
+                        ItemStack singularityStack = singularity.copy();
 
                         if (!depleteInput(singularityStack)) {
                             return new ResultMissingItem(singularityStack);
@@ -571,9 +597,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         ItemStack link = null;
 
-        for (var slot : mInventory) {
-            if (slot != null && qeSingularity.getItem() == slot.getItem()
-                && qeSingularity.getItemDamage() == slot.getItemDamage()) {
+        for (ItemStack slot : mInventory) {
+            if (slot != null && qeSingularity.isItemEqual(slot)) {
                 link = slot;
                 break;
             }
@@ -598,14 +623,14 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     private long getTransferable(int index) {
-        var dest = mLink.getDest(mSelfReference);
+        MTEWormholeGenerator dest = mLink.getDest(mSelfReference);
 
         if (dest == null || mMaxProgresstime == 0 || dest.mMaxProgresstime == 0) {
             return 0;
         }
 
-        var inputHatch = mSendHatches[index];
-        var outputHatch = dest.mReceiveHatches[OPPOSITES[index]];
+        MTEHatchEnergyMulti inputHatch = mSendHatches[index];
+        MTEHatchDynamoMulti outputHatch = dest.mReceiveHatches[OPPOSITES[index]];
 
         if (inputHatch == null || outputHatch == null) {
             return 0;
@@ -618,13 +643,13 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     private void transferPower(long optimal, int index) {
-        var dest = mLink.getDest(mSelfReference);
+        MTEWormholeGenerator dest = mLink.getDest(mSelfReference);
         if (dest == null) {
             return;
         }
 
-        var inputHatch = mSendHatches[index];
-        var outputHatch = dest.mReceiveHatches[OPPOSITES[index]];
+        MTEHatchEnergyMulti inputHatch = mSendHatches[index];
+        MTEHatchDynamoMulti outputHatch = dest.mReceiveHatches[OPPOSITES[index]];
 
         if (inputHatch == null || outputHatch == null) {
             return;
@@ -634,17 +659,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         long empty = outputHatch.maxEUStore() - outputHatch.getEUVar();
         long maxSend = inputHatch.maxAmperesIn() * V[inputHatch.mTier] * 20;
         long maxReceive = outputHatch.maxAmperesOut() * V[outputHatch.mTier] * 20;
+        long maxIO = (long) (optimal * Math.pow(4.0, MAX_OVERCLOCKS));
 
         // spotless:off
-        long toSend = (long)(Math.min(Math.min(Math.min(available, empty), maxSend), maxReceive) * (1.0 - (getIdealStatus() - getRepairStatus()) * 0.1));
+        double maintenance_efficiency = (1.0 - (dest.getIdealStatus() - dest.getRepairStatus()) * 0.1);
 
-        double overclocks = Math.max(Math.log((double)toSend / (double)optimal) / Math.log(4.0), 0.0);
+        long toSend = GTUtility.min(available, empty, maxSend, maxReceive, maxIO);
+
+        double overclocks = 0;
+
+        if (mAllowOverclocks) {
+            overclocks = Math.log((double)toSend / (double)optimal) / Math.log(4.0);
+            overclocks = MathHelper.clamp_double(overclocks, 0, MAX_OVERCLOCKS);
+        }
 
         long toReceive = (long) (
             toSend *
-            (1.0 / Math.pow(4.0, overclocks)) *
-            Math.pow(2.0, overclocks) *
-            (1.0 - (dest.getIdealStatus() - dest.getRepairStatus()) * 0.1) *
+            (Math.pow(2.0, overclocks) / Math.pow(4.0, overclocks)) *
+            maintenance_efficiency *
             TRANSFER_EFFICIENCY
         );
         // spotless:on
@@ -665,6 +697,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
+        aNBT.setBoolean("mAllowOverclocks", mAllowOverclocks);
+
         try {
             if (mLink != null) {
                 mLink.tryPromote();
@@ -679,12 +713,12 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     DataOutputStream dos = new DataOutputStream(baos);
 
                     dos.writeInt(mLink.mReceiveAmounts.length);
-                    for (var x : mLink.mReceiveAmounts) {
+                    for (long x : mLink.mReceiveAmounts) {
                         dos.writeLong(x);
                     }
 
                     dos.writeInt(mLink.mSendAmounts.length);
-                    for (var x : mLink.mSendAmounts) {
+                    for (long x : mLink.mSendAmounts) {
                         dos.writeLong(x);
                     }
 
@@ -696,15 +730,18 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         } catch (Throwable t) {
             GTMod.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
         }
-
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
 
+        // check the inventory and populate mLink if the inv contains a singularity
         checkFrequency();
 
+        mAllowOverclocks = aNBT.getBoolean("mAllowOverclocks");
+
+        // if we have a singularity and the freq matches what's saved, then we need to load the saved data into mLink
         if (aNBT.hasKey("mLink") && mLink != null) {
             NBTTagCompound link = aNBT.getCompoundTag("mLink");
 
@@ -759,6 +796,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         public final long[] mSendAmounts = new long[MAX_HATCHES];
         public final long[] mReceiveAmounts = new long[MAX_HATCHES];
 
+        public final long[][] mAvgSendAmounts = new long[MAX_HATCHES][SCAN_AVG_WINDOW];
+        public final long[][] mAvgReceiveAmounts = new long[MAX_HATCHES][SCAN_AVG_WINDOW];
+
         public double mWormholeEnergy;
         private double mPendingEnergy;
 
@@ -775,9 +815,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
             if (isMaster(updater)) {
                 if (isActive() && mPendingEnergy > 0) {
-                    var delta = mPendingEnergy / WH_ENERGY_AVG_WINDOW;
-
                     if (mPendingEnergy < mWormholeEnergy) {
+                        double delta = mWormholeEnergy * (1.0 - DECAY_RATE);
+
                         // if the wormhole is shrinking and the next tick would take it below the pending energy, just
                         // use the pending energy
                         if (mWormholeEnergy - delta < mPendingEnergy) {
@@ -786,6 +826,8 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                             mWormholeEnergy -= delta;
                         }
                     } else if (mPendingEnergy > mWormholeEnergy) {
+                        double delta = mPendingEnergy / WH_ENERGY_AVG_WINDOW;
+
                         // if the wormhole is growing and the next tick would take it above the pending energy, just use
                         // the pending energy
                         if (mWormholeEnergy + delta > mPendingEnergy) {
@@ -801,9 +843,21 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                     if (mWormholeEnergy < COLLAPSE_THRESHOLD) {
                         mWormholeEnergy = 0;
-
                     }
                 }
+
+                for (int hatch = 0; hatch < MAX_HATCHES; hatch++) {
+                    for (int i = 0; i < SCAN_AVG_WINDOW; i++) {
+                        if (i < SCAN_AVG_WINDOW - 1) {
+                            mAvgReceiveAmounts[hatch][i] = mAvgReceiveAmounts[hatch][i + 1];
+                            mAvgSendAmounts[hatch][i] = mAvgSendAmounts[hatch][i + 1];
+                        } else {
+                            mAvgReceiveAmounts[hatch][i] = mReceiveAmounts[hatch];
+                            mAvgSendAmounts[hatch][i] = mSendAmounts[hatch];
+                        }
+                    }
+                }
+
                 Arrays.fill(mSendAmounts, 0);
                 Arrays.fill(mReceiveAmounts, 0);
             }
@@ -882,12 +936,12 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         private static WeakReference<MTEWormholeGenerator> tryClean(WeakReference<MTEWormholeGenerator> tileReference) {
             if (tileReference != null) {
-                var tile = tileReference.get();
+                MTEWormholeGenerator tile = tileReference.get();
 
                 if (tile == null) {
                     return null;
                 } else {
-                    var base = tile.getBaseMetaTileEntity();
+                    IGregTechTileEntity base = tile.getBaseMetaTileEntity();
 
                     if (base == null || base.isDead()) {
                         return null;
@@ -937,18 +991,16 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         // spotless:off
         tt.addMachineType("Wormhole Generator")
-            .addInfo("Controller for the Miniature Wormhole Generator.")
             .addInfo("Transfers EU between two wormhole generators.")
             .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot.")
             .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate.")
-            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.3f", TRANSFER_EFFICIENCY * 100.0) + "%.")
+            .addInfo("If the transfer rate is completely stable, the transfer efficiency is " + String.format("%.1f", TRANSFER_EFFICIENCY * 100.0) + "%.")
             .addInfo("EU will only be transferred if there is space in the laser source hatch.")
             .addInfo("Each laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side.")
             .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started.")
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
+            .addInfo("Right click the controller with a screwdriver to disable overclocking.")
+            .addTecTechHatchInfo()
             .beginStructureBlock(7, 9, 7, false)
-            .addSeparator()
             .addCasingInfoExactly("Molecular Casing", 2 * 12, false)
             .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
@@ -960,7 +1012,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
             .addStructureInfo("§rThe glass tier limits the hatch tier.")
             .addSubChannelUsage("glass", "Borosilicate Glass Tier")
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
 
         return tt;
@@ -968,19 +1020,15 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
     @Override
     public String[] getInfoData() {
-        List<String> data = new ArrayList<>();
 
-        data.addAll(Arrays.asList(super.getInfoData()));
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        data.add("-----------------------");
+        data.add(EnumChatFormatting.STRIKETHROUGH + "-----------------------");
         data.add("Wormhole Generator Info");
 
         if (mStructureBadGlassTier) {
-            data.add(String.format("§cStructure errors:§r"));
-
-            if (mStructureBadGlassTier) {
-                data.add(String.format("§cGlass tier must be greater than or equal to the energy hatch tiers.§r"));
-            }
+            data.add("§cStructure errors:§r");
+            data.add("§cGlass tier must be greater than or equal to the energy hatch tiers.§r");
         }
 
         if (mLink == null) {
@@ -1015,7 +1063,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 }
 
                 double radius = Math.sqrt(mLink.mWormholeEnergy / 20.0 / 32.0);
-                data.add(String.format("Wormhole diameter: §b%,d§r ångström", (long) (radius * 2)));
+                data.add(String.format("Wormhole diameter: §b%,d§r angstrom", (long) (radius * 2)));
 
                 data.add(String.format("Optimal transfer speed: §b%,.0f§r EU/t", mLink.mWormholeEnergy / 20));
             }
@@ -1024,29 +1072,51 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         for (int i = 0; i < MAX_HATCHES; i++) {
             if (!HATCH_MASK[i]) continue;
 
-            var inputHatch = mSendHatches[i];
-            var outputHatch = mReceiveHatches[i];
+            MTEHatchEnergyMulti inputHatch = mSendHatches[i];
+            MTEHatchDynamoMulti outputHatch = mReceiveHatches[i];
+
+            long avgSend = 0, avgReceive = 0, avgSendOpposite = 0, avgReceiveOpposite = 0;
+
+            if (mLink != null) {
+                long[] send = mLink.mAvgSendAmounts[i], recv = mLink.mAvgReceiveAmounts[i];
+                long[] sendOpposite = mLink.mAvgSendAmounts[OPPOSITES[i]];
+                long[] recvOpposite = mLink.mAvgReceiveAmounts[OPPOSITES[i]];
+
+                for (int second = 0; second < SCAN_AVG_WINDOW; second++) {
+                    avgSend += send[second];
+                    avgReceive += recv[second];
+                    avgSendOpposite += sendOpposite[second];
+                    avgReceiveOpposite += recvOpposite[second];
+                }
+
+                avgSend /= SCAN_AVG_WINDOW;
+                avgReceive /= SCAN_AVG_WINDOW;
+                avgSendOpposite /= SCAN_AVG_WINDOW;
+                avgReceiveOpposite /= SCAN_AVG_WINDOW;
+            }
 
             // spotless:off
             if(inputHatch != null) {
                 data.add(String.format(
-                    "%s hatch (%,dA/t %s) transferred §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last second",
+                    "%s hatch (%,dA/t %s) transferred §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds",
                     HATCH_NAMES[i],
                     inputHatch.Amperes,
                     VN[inputHatch.mTier],
-                    mLink != null ? mLink.mSendAmounts[i] : 0,
-                    mLink != null ? mLink.mSendAmounts[i] / 20 / V[inputHatch.mTier] : 0,
-                    mLink != null && mLink.mSendAmounts[i] > 0 ? ((double)mLink.mReceiveAmounts[OPPOSITES[i]]) / ((double)mLink.mSendAmounts[i]) * 100 : 0
+                    avgSend,
+                    avgSend / 20 / V[inputHatch.mTier],
+                    avgSend > 0 ? (avgReceiveOpposite / (double)avgSend * 100) : 0,
+                    SCAN_AVG_WINDOW
                 ));
             } else if(outputHatch != null) {
                 data.add(String.format(
-                    "%s hatch (%,dA/t %s) received §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last second",
+                    "%s hatch (%,dA/t %s) received §b%,d§f EU (equivalent to %,dA/t) with an efficiency of %.3f%% in the last %d seconds",
                     HATCH_NAMES[i],
                     outputHatch.Amperes,
                     VN[outputHatch.mTier],
-                    mLink != null ? mLink.mReceiveAmounts[i] : 0,
-                    mLink != null ? mLink.mReceiveAmounts[i] / 20 / V[outputHatch.mTier] : 0,
-                    mLink != null && mLink.mSendAmounts[OPPOSITES[i]] > 0 ? ((double)mLink.mReceiveAmounts[i]) / ((double)mLink.mSendAmounts[OPPOSITES[i]]) * 100 : 0
+                    avgReceive,
+                    avgReceive / 20 / V[outputHatch.mTier],
+                    avgSendOpposite > 0 ? (avgReceive / (double)avgSendOpposite * 100) : 0,
+                    SCAN_AVG_WINDOW
                 ));
             } else {
                 data.add(String.format("%s hatch is not present", HATCH_NAMES[i]));
@@ -1054,9 +1124,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             // spotless:on
         }
 
-        data.add("-----------------------");
+        data.add(EnumChatFormatting.STRIKETHROUGH + "-----------------------");
 
-        return data.toArray(new String[data.size()]);
+        return data.toArray(new String[0]);
     }
 
     @Override
@@ -1065,23 +1135,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
         screenElements.widgets(TextWidget.dynamicString(() -> {
             if (mLink == null) {
-                return String.format("§7Missing Entangled Singularity§f");
+                return "§7Missing Entangled Singularity§f";
             }
 
             if (!mLink.isFormed()) {
-                return String.format("§7Wormhole status: §cNo destination§f");
+                return "§7Wormhole status: §cNo destination§f";
             }
 
             if (mLink.mWormholeEnergy > 0 && !mLink.isActive()) {
-                return String.format("§7Wormhole status: §6Decaying§f");
+                return "§7Wormhole status: §6Decaying§f";
             }
 
             if (mLink.mWormholeEnergy > 0) {
-                return String.format("§7Wormhole status: §bActive§f");
+                return "§7Wormhole status: §bActive§f";
             }
 
-            return String.format("§7Wormhole status: Inactive§f");
-        }),
+            return "§7Wormhole status: Inactive§f";
+        })
+            .setTextAlignment(Alignment.CenterLeft),
 
             TextWidget.dynamicString(() -> {
                 if (mLink == null) {
@@ -1093,6 +1164,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                 return String.format("§7Wormhole diameter: §b%,d§7 Å§f", (long) (radius * 2));
             })
+                .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mWormholeEnergy_UI > 0),
 
             TextWidget.dynamicString(() -> {
@@ -1106,6 +1178,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                     return String.format("§7Max I/O per hatch: §b%,d§7 EU/t§f", (long) (mLink.mWormholeEnergy / 20));
                 }
             })
+                .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mWormholeEnergy_UI > 0),
 
             new FakeSyncWidget.DoubleSyncer(

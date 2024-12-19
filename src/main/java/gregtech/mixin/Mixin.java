@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
+import gregtech.common.pollution.PollutionConfig;
 
 public enum Mixin {
 
@@ -48,16 +49,13 @@ public enum Mixin {
             .setSide(Side.BOTH)),
     VanillaAccessors(new Builder("Adds various accessors")
         .addMixinClasses(
-            "minecraft.VanillaShapedRecipeMixin",
-            "minecraft.VanillaShapelessRecipeMixin",
-            "minecraft.ForgeShapedRecipeMixin",
-            "minecraft.ForgeShapelessRecipeMixin",
-            "minecraft.PotionMixin")
-        .addTargetedMod(VANILLA)
-        .setApplyIf(() -> true)
-        .setPhase(Phase.EARLY)
-        .setSide(Side.BOTH)),
-    BlockStemMixin(new Builder("Stem Crop Block Accessor").addMixinClasses("minecraft.BlockStemMixin")
+            "minecraft.accessors.BlockStemMixin",
+            "minecraft.accessors.VanillaShapedRecipeMixin",
+            "minecraft.accessors.VanillaShapelessRecipeMixin",
+            "minecraft.accessors.ForgeShapedRecipeMixin",
+            "minecraft.accessors.ForgeShapelessRecipeMixin",
+            "minecraft.accessors.PotionMixin",
+            "minecraft.accessors.EntityPlayerMPMixin")
         .addTargetedMod(VANILLA)
         .setApplyIf(() -> true)
         .setPhase(Phase.EARLY)
@@ -67,7 +65,79 @@ public enum Mixin {
         .addTargetedMod(TargetedMod.IC2)
         .setApplyIf(() -> true)
         .setPhase(Phase.LATE)
-        .setSide(Side.BOTH));
+        .setSide(Side.BOTH)),
+    IC2_HAZMAT(new Builder("Hazmat").setPhase(Phase.LATE)
+        .setSide(Side.BOTH)
+        .addMixinClasses("ic2.MixinIc2Hazmat")
+        .setApplyIf(() -> true)
+        .addTargetedMod(TargetedMod.IC2)
+        .addExcludedMod(TargetedMod.GT6)),
+
+    // Pollution
+    POLLUTION_RENDER_BLOCKS(new Builder("Changes colors of certain blocks based on pollution levels")
+        .addMixinClasses("minecraft.pollution.MixinRenderBlocks_PollutionWithoutOptifine")
+        .addTargetedMod(TargetedMod.VANILLA)
+        .addExcludedMod(TargetedMod.OPTIFINE)
+        .setSide(Side.CLIENT)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.pollutionBlockRecolor)
+        .setPhase(Phase.EARLY)),
+    POLLUTION_RENDER_BLOCKS_OPTIFINE(new Builder("Changes colors of certain blocks based on pollution levels")
+        .addMixinClasses("minecraft.pollution.MixinRenderBlocks_PollutionWithOptifine")
+        .addTargetedMod(TargetedMod.VANILLA)
+        .addTargetedMod(TargetedMod.OPTIFINE)
+        .addExcludedMod(TargetedMod.ANGELICA)
+        .setSide(Side.CLIENT)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.pollutionBlockRecolor)
+        .setPhase(Phase.EARLY)),
+    POLLUTION_RENDER_BLOCKS_BOP(new Builder("Changes colors of certain blocks based on pollution levels")
+        .addMixinClasses("biomesoplenty.MixinFoliageRendererPollution")
+        .addTargetedMod(TargetedMod.BOP)
+        .setSide(Side.CLIENT)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.pollutionBlockRecolor)
+        .setPhase(Phase.LATE)),
+    POLLUTION_MINECRAFT_FURNACE(new Builder("Minecraft Furnace Pollutes").setPhase(Phase.EARLY)
+        .addMixinClasses("minecraft.pollution.MixinTileEntityFurnacePollution")
+        .setSide(Side.BOTH)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
+        .addTargetedMod(TargetedMod.VANILLA)),
+    POLLUTION_MINECRAFT_EXPLOSION(new Builder("Minecraft explosions pollute").setPhase(Phase.EARLY)
+        .addMixinClasses("minecraft.pollution.MixinExplosionPollution")
+        .setSide(Side.BOTH)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.explosionPollutionAmount != 0F)
+        .addTargetedMod(TargetedMod.VANILLA)),
+
+    VANILLA_TRADING(new Builder("Change Vanilla Trades").setPhase(Phase.EARLY)
+        .addMixinClasses("minecraft.VanillaTradingMixin")
+        .addTargetedMod(VANILLA)
+        .setApplyIf(() -> true)
+        .setSide(Side.BOTH)),
+    POLLUTION_IC2_IRON_FURNACE(
+        new Builder("Ic2 Iron Furnace Pollutes").addMixinClasses("ic2.MixinIC2IronFurnacePollution")
+            .setPhase(Phase.LATE)
+            .setSide(Side.BOTH)
+            .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
+            .addTargetedMod(TargetedMod.IC2)),
+    POLLUTION_THAUMCRAFT_ALCHEMICAL_FURNACE(new Builder("Thaumcraft Alchemical Construct Pollutes")
+        .addMixinClasses("thaumcraft.MixinThaumcraftAlchemyFurnacePollution")
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.furnacesPollute)
+        .addTargetedMod(TargetedMod.THAUMCRAFT)),
+    POLLUTION_RAILCRAFT(new Builder("Make Railcraft Pollute")
+        .addMixinClasses(
+            "railcraft.MixinRailcraftBoilerPollution",
+            "railcraft.MixinRailcraftCokeOvenPollution",
+            "railcraft.MixinRailcraftTunnelBorePollution")
+        .setPhase(Phase.LATE)
+        .setSide(Side.BOTH)
+        .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.railcraftPollutes)
+        .addTargetedMod(TargetedMod.RAILCRAFT)),
+    POLLUTION_ROCKET(
+        new Builder("Make Rockets Pollute").addMixinClasses("galacticraftcore.MixinGalacticraftRocketPollution")
+            .setPhase(Phase.LATE)
+            .setSide(Side.BOTH)
+            .setApplyIf(() -> PollutionConfig.pollution && PollutionConfig.rocketsPollute)
+            .addTargetedMod(TargetedMod.GALACTICRAFT_CORE));
 
     public static final Logger LOGGER = LogManager.getLogger("GregTech-Mixin");
 

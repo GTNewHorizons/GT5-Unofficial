@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.TecTech;
 
 import java.util.EnumSet;
 import java.util.Locale;
@@ -69,7 +70,7 @@ public enum SoundResource {
     GT_MACHINES_PURIFICATION_PH_LOOP(237, GregTech.ID, "machines.PurificationPhLoop"),
     GT_MACHINES_COAGULATION_LOOP(238, GregTech.ID, "machines.PurificationCoagulationLoop"),
     GT_MACHINES_OZONATION_LOOP(239, GregTech.ID, "machines.PurificationOzonationLoop"),
-    GT_MACHINES_PURIFICATION_PLASMA_LOOP(240, "machines.PurificationPlasmaLoop"),
+    GT_MACHINES_PURIFICATION_PLASMA_LOOP(240, GregTech.ID, "machines.PurificationPlasmaLoop"),
 
     GT_MACHINES_MULTI_LATHE_LOOP(241, GregTech.ID, "machines.MultiLatheLoop"),
     GT_MACHINES_MULTI_AUTOCLAVE_LOOP(242, GregTech.ID, "machines.MultiAutoclaveLoop"),
@@ -100,6 +101,10 @@ public enum SoundResource {
     GT_MACHINES_QUANTUM_FORCE_TRANSFORMER_LOOP(264, GregTech.ID, "machines.MTEQuantumForceTransformer"),
     GT_MACHINES_ADV_EBF_LOOP(265, GregTech.ID, "machines.MTEAdvEBF"),
     GT_MACHINES_LARGE_TURBINES_LOOP(266, GregTech.ID, "machines.MTELargeTurbine"),
+    TECTECH_MACHINES_FX_LOW_FREQ(267, TecTech.ID, "fx_lo_freq"),
+    TECTECH_MACHINES_FX_HIGH_FREQ(268, TecTech.ID, "fx_hi_freq"),
+    TECTECH_MACHINES_NOISE(269, TecTech.ID, "fx_noise"),
+    TECTECH_MACHINES_FX_WHOOUM(270, TecTech.ID, "fx_whooum"),
 
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
@@ -346,7 +351,16 @@ public enum SoundResource {
 
     static {
         EnumSet.allOf(SoundResource.class)
-            .forEach(sound -> { if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound); });
+            .forEach(sound -> {
+                if (sound.id < 0) {
+                    return;
+                }
+
+                if (ID_SOUND_MAP.containsKey(sound.id)) {
+                    throw new IllegalStateException(String.format("Sound ID %s is already occupied!", sound.id));
+                }
+                ID_SOUND_MAP.put(sound.id, sound);
+            });
         EnumSet.allOf(SoundResource.class)
             .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
     }

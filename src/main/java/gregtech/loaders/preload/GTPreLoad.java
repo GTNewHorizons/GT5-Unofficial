@@ -45,8 +45,8 @@ import gregtech.common.config.Gregtech;
 import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Worldgen;
+import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineBase;
-import gregtech.common.tileentities.machines.multi.MTECleanroom;
 
 public class GTPreLoad {
 
@@ -177,18 +177,6 @@ public class GTPreLoad {
             }
             try {
                 GTLog.exp = new PrintStream(GTLog.mExplosionLog);
-            } catch (Throwable ignored) {}
-        }
-
-        if (Gregtech.general.loggingPlayerActicity) {
-            GTLog.mPlayerActivityLogFile = new File(parentFile, "logs/PlayerActivity.log");
-            if (!GTLog.mPlayerActivityLogFile.exists()) {
-                try {
-                    GTLog.mPlayerActivityLogFile.createNewFile();
-                } catch (Throwable ignored) {}
-            }
-            try {
-                GTLog.pal = new PrintStream(GTLog.mPlayerActivityLogFile);
             } catch (Throwable ignored) {}
         }
     }
@@ -339,12 +327,9 @@ public class GTPreLoad {
         try {
             Objects.requireNonNull(GTUtility.getField("ic2.core.item.ItemScrapbox$Drop", "topChance", true, true))
                 .set(null, 0);
-            ((List<?>) Objects.requireNonNull(
-                GTUtility.getFieldContent(
-                    GTUtility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
-                    "drops",
-                    true,
-                    true))).clear();
+            ((List<?>) Objects
+                .requireNonNull(GTUtility.getFieldContent(ic2.api.recipe.Recipes.scrapboxDrops, "drops", true, true)))
+                    .clear();
         } catch (Throwable e) {
             if (GTValues.D1) {
                 e.printStackTrace(GTLog.err);
@@ -449,31 +434,31 @@ public class GTPreLoad {
         loadClientConfig();
 
         // Pollution
-        GTMod.gregtechproxy.mPollution = Gregtech.pollution.pollution;
-        GTMod.gregtechproxy.mPollutionSmogLimit = Gregtech.pollution.pollutionSmogLimit;
-        GTMod.gregtechproxy.mPollutionPoisonLimit = Gregtech.pollution.pollutionPoisonLimit;
-        GTMod.gregtechproxy.mPollutionVegetationLimit = Gregtech.pollution.pollutionVegetationLimit;
-        GTMod.gregtechproxy.mPollutionSourRainLimit = Gregtech.pollution.pollutionSourRainLimit;
-        GTMod.gregtechproxy.mPollutionOnExplosion = Gregtech.pollution.pollutionOnExplosion;
-        GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond = Gregtech.pollution.pollutionPrimitveBlastFurnacePerSecond;
-        GTMod.gregtechproxy.mPollutionCharcoalPitPerSecond = Gregtech.pollution.pollutionCharcoalPitPerSecond;
-        GTMod.gregtechproxy.mPollutionEBFPerSecond = Gregtech.pollution.pollutionEBFPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond = Gregtech.pollution.pollutionLargeCombustionEnginePerSecond;
-        GTMod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond = Gregtech.pollution.pollutionExtremeCombustionEnginePerSecond;
-        GTMod.gregtechproxy.mPollutionImplosionCompressorPerSecond = Gregtech.pollution.pollutionImplosionCompressorPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeBronzeBoilerPerSecond = Gregtech.pollution.pollutionLargeBronzeBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeSteelBoilerPerSecond = Gregtech.pollution.pollutionLargeSteelBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond = Gregtech.pollution.pollutionLargeTitaniumBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond = Gregtech.pollution.pollutionLargeTungstenSteelBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionReleasedByThrottle = Gregtech.pollution.pollutionReleasedByThrottle;
-        GTMod.gregtechproxy.mPollutionLargeGasTurbinePerSecond = Gregtech.pollution.pollutionLargeGasTurbinePerSecond;
-        GTMod.gregtechproxy.mPollutionMultiSmelterPerSecond = Gregtech.pollution.pollutionMultiSmelterPerSecond;
-        GTMod.gregtechproxy.mPollutionPyrolyseOvenPerSecond = Gregtech.pollution.pollutionPyrolyseOvenPerSecond;
-        GTMod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond = Gregtech.pollution.pollutionSmallCoalBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond = Gregtech.pollution.pollutionHighPressureLavaBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond = Gregtech.pollution.pollutionHighPressureCoalBoilerPerSecond;
-        GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond = Gregtech.pollution.pollutionBaseDieselGeneratorPerSecond;
-        double[] mPollutionDieselGeneratorReleasedByTier = Gregtech.pollution.pollutionDieselGeneratorReleasedByTier;
+        GTMod.gregtechproxy.mPollution = PollutionConfig.pollution;
+        GTMod.gregtechproxy.mPollutionSmogLimit = PollutionConfig.pollutionSmogLimit;
+        GTMod.gregtechproxy.mPollutionPoisonLimit = PollutionConfig.pollutionPoisonLimit;
+        GTMod.gregtechproxy.mPollutionVegetationLimit = PollutionConfig.pollutionVegetationLimit;
+        GTMod.gregtechproxy.mPollutionSourRainLimit = PollutionConfig.pollutionSourRainLimit;
+        GTMod.gregtechproxy.mPollutionOnExplosion = PollutionConfig.pollutionOnExplosion;
+        GTMod.gregtechproxy.mPollutionPrimitveBlastFurnacePerSecond = PollutionConfig.pollutionPrimitveBlastFurnacePerSecond;
+        GTMod.gregtechproxy.mPollutionCharcoalPitPerSecond = PollutionConfig.pollutionCharcoalPitPerSecond;
+        GTMod.gregtechproxy.mPollutionEBFPerSecond = PollutionConfig.pollutionEBFPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeCombustionEnginePerSecond = PollutionConfig.pollutionLargeCombustionEnginePerSecond;
+        GTMod.gregtechproxy.mPollutionExtremeCombustionEnginePerSecond = PollutionConfig.pollutionExtremeCombustionEnginePerSecond;
+        GTMod.gregtechproxy.mPollutionImplosionCompressorPerSecond = PollutionConfig.pollutionImplosionCompressorPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeBronzeBoilerPerSecond = PollutionConfig.pollutionLargeBronzeBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeSteelBoilerPerSecond = PollutionConfig.pollutionLargeSteelBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeTitaniumBoilerPerSecond = PollutionConfig.pollutionLargeTitaniumBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionLargeTungstenSteelBoilerPerSecond = PollutionConfig.pollutionLargeTungstenSteelBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionReleasedByThrottle = PollutionConfig.pollutionReleasedByThrottle;
+        GTMod.gregtechproxy.mPollutionLargeGasTurbinePerSecond = PollutionConfig.pollutionLargeGasTurbinePerSecond;
+        GTMod.gregtechproxy.mPollutionMultiSmelterPerSecond = PollutionConfig.pollutionMultiSmelterPerSecond;
+        GTMod.gregtechproxy.mPollutionPyrolyseOvenPerSecond = PollutionConfig.pollutionPyrolyseOvenPerSecond;
+        GTMod.gregtechproxy.mPollutionSmallCoalBoilerPerSecond = PollutionConfig.pollutionSmallCoalBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionHighPressureLavaBoilerPerSecond = PollutionConfig.pollutionHighPressureLavaBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond = PollutionConfig.pollutionHighPressureCoalBoilerPerSecond;
+        GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond = PollutionConfig.pollutionBaseDieselGeneratorPerSecond;
+        double[] mPollutionDieselGeneratorReleasedByTier = PollutionConfig.pollutionDieselGeneratorReleasedByTier;
         if (mPollutionDieselGeneratorReleasedByTier.length
             == GTMod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier.length) {
             GTMod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier = mPollutionDieselGeneratorReleasedByTier;
@@ -481,17 +466,14 @@ public class GTPreLoad {
             GT_FML_LOGGER
                 .error("The Length of the Diesel Turbine Pollution Array Config must be the same as the Default");
         }
-        GTMod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = Gregtech.pollution.pollutionBaseGasTurbinePerSecond;
-        double[] mPollutionGasTurbineReleasedByTier = Gregtech.pollution.pollutionGasTurbineReleasedByTier;
+        GTMod.gregtechproxy.mPollutionBaseGasTurbinePerSecond = PollutionConfig.pollutionBaseGasTurbinePerSecond;
+        double[] mPollutionGasTurbineReleasedByTier = PollutionConfig.pollutionGasTurbineReleasedByTier;
         if (mPollutionGasTurbineReleasedByTier.length
             == GTMod.gregtechproxy.mPollutionGasTurbineReleasedByTier.length) {
             GTMod.gregtechproxy.mPollutionGasTurbineReleasedByTier = mPollutionGasTurbineReleasedByTier;
         } else {
             GT_FML_LOGGER.error("The Length of the Gas Turbine Pollution Array Config must be the same as the Default");
         }
-
-        // cleanroom file
-        if (GTMod.gregtechproxy.mEnableCleanroom) MTECleanroom.loadConfig(GTConfig.cleanroomFile);
 
         // underground fluids file
         GTMod.gregtechproxy.mUndergroundOil.getConfig(GTConfig.undergroundFluidsFile, "undergroundfluid");
@@ -539,7 +521,7 @@ public class GTPreLoad {
 
     /**
      * Clamp value between 0 and 255
-     * 
+     *
      * @param value the value to clamp
      * @return the clamped value
      */
@@ -590,6 +572,8 @@ public class GTPreLoad {
         GTMod.gregtechproxy.mTooltipVerbosity = Client.iface.tooltipVerbosity;
         GTMod.gregtechproxy.mTooltipShiftVerbosity = Client.iface.tooltipShiftVerbosity;
         GTMod.gregtechproxy.mTitleTabStyle = Client.iface.titleTabStyle;
+        GTMod.gregtechproxy.separatorStyle = Client.iface.separatorStyle;
+        GTMod.gregtechproxy.tooltipFinisherStyle = Client.iface.tooltipFinisherStyle;
 
         GTMod.gregtechproxy.mNEIRecipeSecondMode = Client.nei.NEIRecipeSecondMode;
         GTMod.gregtechproxy.mNEIRecipeOwner = Client.nei.NEIRecipeOwner;

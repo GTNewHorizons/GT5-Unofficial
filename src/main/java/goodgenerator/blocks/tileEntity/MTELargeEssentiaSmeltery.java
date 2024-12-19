@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
@@ -41,6 +40,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.api.aspects.Aspect;
@@ -80,9 +80,9 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected int nodeIncrease = 0;
 
     private IStructureDefinition<MTELargeEssentiaSmeltery> multiDefinition = null;
-    private ArrayList<MTEEssentiaOutputHatch> mEssentiaOutputHatches = new ArrayList<>();
+    private final ArrayList<MTEEssentiaOutputHatch> mEssentiaOutputHatches = new ArrayList<>();
     private int pTier = 0;
-    private XSTR xstr = new XSTR();
+    private final XSTR xstr = new XSTR();
 
     public MTELargeEssentiaSmeltery(String name) {
         super(name);
@@ -130,9 +130,9 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         if (len > MAX_STRUCTURE_LENGTH - 1 || len < DEFAULT_STRUCTURE_LENGTH) return false;
         if (!structureCheck_EM(STRUCTURE_PIECE_LAST, 2, 2, -len - 1)) return false;
         if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
-            && this.mInputBusses.size() >= 1
-            && this.mEssentiaOutputHatches.size() >= 1) {
-            this.mParallel = Math.floor(this.mParallel += 1 << this.pTier);
+            && !this.mInputBusses.isEmpty()
+            && !this.mEssentiaOutputHatches.isEmpty()) {
+            this.mParallel = (len + 1) * Math.pow(2, this.pTier);
             return true;
         }
         return false;
@@ -191,26 +191,24 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Essentia Smeltery")
-            .addInfo("Controller block for the Large Essentia Smeltery")
+        tt.addMachineType("Essentia Smeltery, LES")
             .addInfo("Necessary evil.")
             .addInfo("Advanced Essentia smelting technology.")
-            .addInfo("Max parallel dictated by structure size and Essentia Diffusion Cell tier")
+            .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
+            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length.")
             .addInfo("Energy Hatch tier: HV+")
             .addInfo("You can find more information about this machine in the Thaumonomicon.")
+            .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addInfo("The structure is too complex!")
-            .addInfo(BLUE_PRINT_INFO)
-            .addSeparator()
             .addController("Front center")
-            .addCasingInfo("Magic Casing", 24)
+            .addCasingInfoMin("Magic Casing", 24, false)
             .addMaintenanceHatch("Hint block with dot 1")
             .addInputBus("Hint block with dot 1")
             .addInputHatch("Hint block with dot 1")
             .addEnergyHatch("Hint block with dot 1")
             .addOtherStructurePart("Essentia Output Hatch", "Hint block with dot 1")
             .addMufflerHatch("Hint block with dot 2")
-            .toolTipFinisher("Good Generator");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -222,7 +220,11 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[8] = "Node Power: " + EnumChatFormatting.RED
+        info[8] = "Parallel: " + EnumChatFormatting.YELLOW
+            + Math.round(this.mParallel)
+            + EnumChatFormatting.RESET
+            + " Node Power: "
+            + EnumChatFormatting.RED
             + this.nodePower
             + EnumChatFormatting.RESET
             + " Purification Efficiency: "
@@ -261,8 +263,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     protected void onEssentiaCellFound(int tier) {
-        this.mParallel += (1 << tier) * 0.25f;
-        this.pTier = Math.max(this.pTier, tier);
+        this.pTier = tier;
     }
 
     private boolean addEnergyHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -287,7 +288,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     private boolean addEssentiaOutputHatchToMachineList(MTEEssentiaOutputHatch aTileEntity) {
         if (aTileEntity instanceof MTEEssentiaOutputHatch) {
-            return this.mEssentiaOutputHatches.add((MTEEssentiaOutputHatch) aTileEntity);
+            return this.mEssentiaOutputHatches.add(aTileEntity);
         }
         return false;
     }
@@ -363,14 +364,18 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         this.drainNodePower(WORLD, x, y, z);
         this.nodePower -= expectedPower();
 
-        calculatePerfectOverclockedNessMulti(
-            RECIPE_EUT,
-            (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)),
-            1,
-            Math.min(Integer.MAX_VALUE, getMaxInputEnergy_EM()));
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(RECIPE_EUT)
+            .setEUt(getMaxInputEu())
+            .setDuration(
+                (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)))
+            .setDurationDecreasePerOC(4)
+            .calculate();
+
+        useLongPower = true;
+        lEUt = -calculator.getConsumption();
+        mMaxProgresstime = calculator.getDuration();
 
         this.updateSlots();
-        if (this.mEUt > 0) this.mEUt = -this.mEUt;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 

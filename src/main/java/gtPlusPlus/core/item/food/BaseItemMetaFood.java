@@ -3,6 +3,7 @@ package gtPlusPlus.core.item.food;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -304,7 +305,7 @@ public class BaseItemMetaFood extends ItemFood {
     public void addInformation(ItemStack aStack, EntityPlayer p_77624_2_, List aList, boolean p_77624_4_) {
         try {
             String aTooltip = mTooltipMap.get(getMetaKey(aStack));
-            if (aTooltip != null && aTooltip.length() > 0) {
+            if (aTooltip != null && !aTooltip.isEmpty()) {
                 aList.add(aTooltip);
             }
         } catch (Throwable t) {
@@ -422,10 +423,8 @@ public class BaseItemMetaFood extends ItemFood {
 
     private static ArrayList<String> getOreDictNamesAsArrayList(String... aOreDictNames) {
         ArrayList<String> aPackage = new ArrayList<>();
-        if (aOreDictNames != null && aOreDictNames.length > 0) {
-            for (String aEffect : aOreDictNames) {
-                aPackage.add(aEffect);
-            }
+        if (aOreDictNames != null) {
+            aPackage.addAll(Arrays.asList(aOreDictNames));
         }
         return aPackage;
     }

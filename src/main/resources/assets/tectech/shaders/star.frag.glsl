@@ -24,7 +24,7 @@ void main() {
         vec3 originalYIQ = toYIQ(texture);
         vec3 yiqColor = vec3(original.x,targetYIQ.yz);
         vec3 finalrgb = toRGB(yiqColor);
-        finalrgb = pow(finalrgb,vec3(1/u_Gamma));
+        finalrgb = pow(finalrgb,vec3(1.0/u_Gamma));
         gl_FragColor = vec4(finalrgb,u_Color.a);
     }
 }

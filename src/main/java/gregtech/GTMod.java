@@ -88,6 +88,7 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
 import gregtech.common.covers.CoverFacadeAE;
+import gregtech.common.items.flinttools.FlintTools;
 import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
@@ -135,7 +136,7 @@ import ic2.api.recipe.RecipeOutput;
     version = "MC1710",
     guiFactory = "gregtech.client.GTGuiFactory",
     dependencies = " required-after:IC2;" + " required-after:structurelib;"
-        + " required-after:gtnhlib@[0.2.1,);"
+        + " required-after:gtnhlib@[0.5.22,);"
         + " required-after:modularui@[1.1.12,);"
         + " required-after:appliedenergistics2@[rv3-beta-258,);"
         + " after:dreamcraft;"
@@ -328,6 +329,11 @@ public class GTMod implements IGTMod {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
             .isServer()) AssemblyLineServer.fillMap(aEvent);
+
+        // Flint tool setup.
+        FlintTools.registerTools();
+        FlintTools.registerPosteaTransformations();
+        FlintTools.registerRecipes();
     }
 
     @Mod.EventHandler
@@ -589,8 +595,6 @@ public class GTMod implements IGTMod {
         GregTechAPI.sAfterGTLoad = null;
         GregTechAPI.sBeforeGTPostload = null;
         GregTechAPI.sAfterGTPostload = null;
-
-        GTPostLoad.createGTtoolsCreativeTab();
     }
 
     @Mod.EventHandler

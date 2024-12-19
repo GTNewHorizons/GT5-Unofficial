@@ -86,7 +86,7 @@ public class OverclockCalculator {
     /**
      * How many overclocks have been performed
      */
-    private int overclockCount;
+    private int overclockCount = 0;
     /**
      * Should we actually try to calculate overclocking
      */
@@ -444,7 +444,6 @@ public class OverclockCalculator {
                 currentDurationDecrease = durationDecreasePerOCSupplier.apply(overclockCount + 1);
             }
             calculatedConsumption = (long) Math.max(currentConsumption, 1);
-            calculatedDuration = (int) Math.max(durationInDouble, 1);
         } else { // general overclock
             double recipePowerTier = calculateRecipePowerTier(heatDiscountMultiplier);
             double machinePowerTier = calculateMachinePowerTier();
@@ -473,8 +472,8 @@ public class OverclockCalculator {
                 calculatedConsumption = Math.max(calculatedConsumption, 1);
             }
             calculatedConsumption = calculateFinalRecipeEUt(heatDiscountMultiplier);
-            calculatedDuration = (int) Math.max(durationInDouble, 1);
         }
+        calculatedDuration = (int) Math.max(durationInDouble, 1);
     }
 
     private double calculateRecipePower(double heatDiscountMultiplier) {

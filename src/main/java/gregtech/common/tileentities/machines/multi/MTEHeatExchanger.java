@@ -48,6 +48,8 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
 
 public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger> implements ISurvivalConstructable {
 
@@ -105,14 +107,12 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger")
-            .addInfo("Controller Block for the Large Heat Exchanger")
+        tt.addMachineType("Heat Exchanger, LHE")
             .addInfo("More complicated than a Fusion Reactor. Seriously")
             .addInfo("Inputs are Hot Coolant or Lava")
             .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
             .addInfo("Read the wiki article to understand how it works")
             .addInfo("Then go to the Discord to understand the wiki")
-            .addSeparator()
             .beginStructureBlock(3, 4, 3, false)
             .addController("Front bottom")
             .addCasingInfoRange("Stable Titanium Machine Casing", 20, 32, false)
@@ -122,7 +122,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             .addInputHatch("Distilled water, any casing", 1)
             .addOutputHatch("Cold fluid, top center", 3)
             .addOutputHatch("Steam/SH Steam, any casing", 1)
-            .toolTipFinisher("Gregtech");
+            .toolTipFinisher();
         return tt;
     }
 
@@ -179,9 +179,19 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     @Nonnull
     public CheckRecipeResult checkProcessing() {
-        if (mInputHotFluidHatch.getFluid() == null) return CheckRecipeResultRegistry.NO_RECIPE;
+        FluidStack hotFluid = null;
+        if (mInputHotFluidHatch instanceof MTEHatchInputME inputME) {
+            FluidStack[] fluids = inputME.getStoredFluids();
+            if (fluids.length > 0) {
+                hotFluid = fluids[0];
+            }
+        } else {
+            hotFluid = mInputHotFluidHatch.getFluid();
+        }
 
-        int fluidAmountToConsume = mInputHotFluidHatch.getFluidAmount(); // how much fluid is in hatch
+        if (hotFluid == null) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        int fluidAmountToConsume = hotFluid.amount; // how much fluid is in hatch
 
         superheated_threshold = 4000; // default: must have 4000L per second to generate superheated steam
         float efficiency = 1f; // default: operate at 100% efficiency with no integrated circuitry
@@ -202,9 +212,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
 
         efficiency -= penalty;
 
-        var coolant = LHECoolantRegistry.getCoolant(
-            mInputHotFluidHatch.getFluid()
-                .getFluid());
+        var coolant = LHECoolantRegistry.getCoolant(hotFluid.getFluid());
 
         if (coolant == null) {
             superheated_threshold = 0;
@@ -220,8 +228,9 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
 
         // Don't consume too much hot fluid per second
         fluidAmountToConsume = Math.min(fluidAmountToConsume, superheated_threshold * 2);
-
-        mInputHotFluidHatch.drain(fluidAmountToConsume, true);
+        // the 3-arg drain will work on both normal hatch and ME hatch
+        mInputHotFluidHatch
+            .drain(ForgeDirection.UNKNOWN, new FluidStack(hotFluid.getFluid(), fluidAmountToConsume), true);
         mOutputColdFluidHatch.fill(coolant.getColdFluid(fluidAmountToConsume), true);
 
         this.mMaxProgresstime = 20;
@@ -392,5 +401,21 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public void startRecipeProcessing() {
+        super.startRecipeProcessing();
+        if (mInputHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mInputHotFluidHatch.isValid()) {
+            aware.startRecipeProcessing();
+        }
+    }
+
+    @Override
+    public void endRecipeProcessing() {
+        super.endRecipeProcessing();
+        if (mInputHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mInputHotFluidHatch.isValid()) {
+            aware.endRecipeProcessing(this);
+        }
     }
 }
