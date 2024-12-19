@@ -90,7 +90,7 @@ public class ToolCrowbar extends GTTool {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         if (aBlock.getMaterial() == Material.circuits) {
             return true;
         }

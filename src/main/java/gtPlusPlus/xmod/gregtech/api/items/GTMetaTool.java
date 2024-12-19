@@ -78,7 +78,7 @@ public abstract class GTMetaTool extends MetaGeneratedTool implements IDamagable
      */
     @Override
     public void onHarvestBlockEvent(final ArrayList<ItemStack> aDrops, final ItemStack aStack,
-        final EntityPlayer aPlayer, final Block aBlock, final int aX, final int aY, final int aZ, final byte aMetaData,
+        final EntityPlayer aPlayer, final Block aBlock, final int aX, final int aY, final int aZ, final int aMetaData,
         final int aFortune, final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
         final gregtech.api.interfaces.IToolStats tStats = this.getToolStats(aStack);
         if (this.isItemStackUsable(aStack) && (this.getDigSpeed(aStack, aBlock, aMetaData) > 0.0F)) {

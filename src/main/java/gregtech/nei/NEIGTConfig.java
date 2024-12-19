@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
+import net.minecraft.item.ItemStack;
+
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
@@ -26,9 +28,11 @@ import gregtech.api.recipe.RecipeCategory;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
+import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.nei.dumper.BatchModeSupportDumper;
 import gregtech.nei.dumper.InputSeparationSupportDumper;
 import gregtech.nei.dumper.MaterialDumper;
@@ -76,6 +80,7 @@ public class NEIGTConfig implements IConfigureNEI {
         registerCatalysts();
         registerItemEntries();
         registerDumpers();
+        hideItems();
         sIsAdded = true;
     }
 
@@ -119,6 +124,12 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addOption(new InputSeparationSupportDumper());
         API.addOption(new BatchModeSupportDumper());
         API.addOption(new RecipeLockingSupportDumper());
+    }
+
+    private void hideItems() {
+        for (BlockOresAbstract ore : GTOreAdapter.INSTANCE.ores) {
+            API.hideItem(new ItemStack(ore, 1, 0));
+        }
     }
 
     @SubscribeEvent
