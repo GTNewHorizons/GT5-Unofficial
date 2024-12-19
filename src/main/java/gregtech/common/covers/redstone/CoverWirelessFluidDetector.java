@@ -91,6 +91,7 @@ public class CoverWirelessFluidDetector
         public FluidTransmitterData() {
             super();
             this.threshold = 0;
+            this.physical = true;
         }
 
         @Nonnull

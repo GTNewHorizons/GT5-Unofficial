@@ -108,7 +108,7 @@ public class CoverWirelessItemDetector
             super();
             this.threshold = 0;
             this.slot = -1;
-            this.physical = false;
+            this.physical = true;
         }
 
         @Nonnull

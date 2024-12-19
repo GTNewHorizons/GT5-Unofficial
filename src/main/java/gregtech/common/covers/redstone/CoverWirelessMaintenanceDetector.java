@@ -152,7 +152,7 @@ public class CoverWirelessMaintenanceDetector
         public MaintenanceTransmitterData() {
             super();
             this.mode = MaintenanceMode.ONE_ISSUE;
-            this.physical = false;
+            this.physical = true;
         }
 
         @Nonnull
