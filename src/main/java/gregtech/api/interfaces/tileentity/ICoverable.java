@@ -17,6 +17,10 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
 
     boolean dropCover(ForgeDirection side, ForgeDirection droppedSide, boolean aForced);
 
+    default ItemStack removeCoverAtSide(ForgeDirection side, boolean aForced) {
+        return null;
+    }
+
     @Deprecated
     void setCoverDataAtSide(ForgeDirection side, int aData);
 
