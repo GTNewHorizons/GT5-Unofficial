@@ -51,7 +51,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -78,15 +77,6 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         .<MTEMegaBlastFurnace>builder()
         .addShape("main", createShape())
         .addElement('=', StructureElementAirNoHint.getInstance())
-        .addElement(
-            't',
-            buildHatchAdder(MTEMegaBlastFurnace.class)
-                .atLeast(
-                    OutputHatch.withAdder(MTEMegaBlastFurnace::addOutputHatchToTopList)
-                        .withCount(t -> t.mPollutionOutputHatches.size()))
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
             'C',
@@ -110,8 +100,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         String[][] raw = new String[20][];
 
         raw[0] = new String[15];
-        String topCasing = "ttttttttttttttt";
-        String middleTopCasing = "tttttttmttttttt";
+        String topCasing = "bbbbbbbbbbbbbbb";
+        String middleTopCasing = "bbbbbbbmbbbbbbb";
         raw[0][0] = topCasing;
         for (int i = 1; i < 15; i++) {
             raw[0][i] = topCasing;
@@ -145,9 +135,6 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     }
 
     private HeatingCoilLevel mCoilLevel;
-    protected final ArrayList<MTEHatchOutput> mPollutionOutputHatches = new ArrayList<>();
-    protected final FluidStack[] pollutionFluidStacks = { Materials.CarbonDioxide.getGas(1000),
-        Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
     private int mHeatingCapacity;
     private byte glassTier;
     private final static int polPtick = PollutionConfig.basePollutionMBFSecond / 20
@@ -276,17 +263,6 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         return polPtick;
     }
 
-    public boolean addOutputHatchToTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return this.mPollutionOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-        }
-        return false;
-    }
-
     @Override
     protected String[] getExtendedInfoData() {
         return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
@@ -349,20 +325,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
         FluidStack tLiquid = aLiquid.copy();
-        boolean isOutputPollution = false;
-        for (FluidStack pollutionFluidStack : this.pollutionFluidStacks) {
-            if (!tLiquid.isFluidEqual(pollutionFluidStack)) continue;
-
-            isOutputPollution = true;
-            break;
-        }
         ArrayList<MTEHatchOutput> tOutputHatches;
-        if (isOutputPollution) {
-            tOutputHatches = this.mPollutionOutputHatches;
-            tLiquid.amount = tLiquid.amount * Math.min(100 - getAveragePollutionPercentage(), 100) / 100;
-        } else {
-            tOutputHatches = this.mOutputHatches;
-        }
+        tOutputHatches = this.mOutputHatches;
         return dumpFluid(tOutputHatches, tLiquid, true) || dumpFluid(tOutputHatches, tLiquid, false);
     }
 
@@ -372,8 +336,6 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         this.glassTier = 0;
 
         this.setCoilLevel(HeatingCoilLevel.None);
-
-        this.mPollutionOutputHatches.clear();
 
         if (!this.checkPiece("main", 7, 17, 0) || this.getCoilLevel() == HeatingCoilLevel.None
             || this.mMaintenanceHatches.size() != 1) return false;

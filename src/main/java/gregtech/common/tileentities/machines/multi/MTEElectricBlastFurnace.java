@@ -20,11 +20,9 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -44,14 +42,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
@@ -68,9 +64,6 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     implements ISurvivalConstructable {
 
     private int mHeatingCapacity = 0;
-    protected final ArrayList<MTEHatchOutput> mPollutionOutputHatches = new ArrayList<>();
-    protected final FluidStack[] pollutionFluidStacks = { Materials.CarbonDioxide.getGas(1000),
-        Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
 
     protected static final int CASING_INDEX = 11;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -79,17 +72,8 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
-                new String[][] { { "ttt", "tmt", "ttt" }, { "CCC", "C-C", "CCC" }, { "CCC", "C-C", "CCC" },
+                new String[][] { { "bbb", "bmb", "bbb" }, { "CCC", "C-C", "CCC" }, { "CCC", "C-C", "CCC" },
                     { "b~b", "bbb", "bbb" } }))
-        .addElement(
-            't',
-            buildHatchAdder(MTEElectricBlastFurnace.class)
-                .atLeast(
-                    OutputHatch.withAdder(MTEElectricBlastFurnace::addOutputHatchToTopList)
-                        .withCount(t -> t.mPollutionOutputHatches.size()))
-                .casingIndex(CASING_INDEX)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement('C', ofCoil(MTEElectricBlastFurnace::setCoilLevel, MTEElectricBlastFurnace::getCoilLevel))
         .addElement(
@@ -135,8 +119,6 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addInputHatch("Any bottom layer casing", 3)
             .addOutputBus("Any bottom layer casing", 3)
             .addOutputHatch("Fluid outputs, Any bottom layer casing")
-            .addOutputHatch("Pollution gases (CO2/CO/SO2), Any top layer casing", 1)
-            .addStructureInfo("Pollution gas output amount scales with Muffler Hatch tier")
             .toolTipFinisher();
         return tt;
     }
@@ -208,24 +190,11 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         };
     }
 
-    public boolean addOutputHatchToTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mPollutionOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-        }
-        return false;
-    }
-
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mHeatingCapacity = 0;
 
         setCoilLevel(HeatingCoilLevel.None);
-
-        mPollutionOutputHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0)) return false;
 
@@ -242,35 +211,13 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         if (aLiquid == null) return false;
         FluidStack tLiquid = aLiquid.copy();
         ArrayList<MTEHatchOutput> tOutputHatches;
-        if (isPollutionFluid(tLiquid)) {
-            tOutputHatches = this.mPollutionOutputHatches;
-            multiplyPollutionFluidAmount(tLiquid);
-        } else {
-            tOutputHatches = this.mOutputHatches;
-        }
+        tOutputHatches = this.mOutputHatches;
         return dumpFluid(tOutputHatches, tLiquid, true) || dumpFluid(tOutputHatches, tLiquid, false);
-    }
-
-    protected boolean isPollutionFluid(@Nullable FluidStack fluidStack) {
-        if (fluidStack == null) return false;
-        for (FluidStack pollutionFluidStack : pollutionFluidStacks) {
-            if (!fluidStack.isFluidEqual(pollutionFluidStack)) continue;
-            return true;
-        }
-        return false;
     }
 
     @Override
     public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        if (Arrays.stream(toOutput)
-            .anyMatch(this::isPollutionFluid)) {
-            return filterValidMTEs(mPollutionOutputHatches);
-        }
         return filterValidMTEs(mOutputHatches);
-    }
-
-    protected void multiplyPollutionFluidAmount(@Nonnull FluidStack fluid) {
-        fluid.amount = fluid.amount * Math.min(100 - getAveragePollutionPercentage(), 100) / 100;
     }
 
     @Override
