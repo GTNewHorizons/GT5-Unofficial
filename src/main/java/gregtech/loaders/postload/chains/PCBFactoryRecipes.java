@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.metadata.PCBFactoryUpgrade.BIO;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.AO_DATA;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_TIME;
@@ -15,6 +16,7 @@ import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.util.recipe.AORecipeData;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -523,6 +525,7 @@ public class PCBFactoryRecipes {
                 .eut((int) GTValues.VP[tier] * 3 / 4)
                 .metadata(TIER, 1)
                 .metadata(UPGRADE, BIO)
+                .metadata(AO_DATA, new AORecipeData(8, 500, 50))
                 .addTo(RecipeMaps.pcbFactoryRecipes);
         }
         for (int tier = 6; tier <= PCBFactoryManager.mTiersOfPlastics; tier++) {

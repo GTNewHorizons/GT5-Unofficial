@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
 import static gregtech.api.enums.GTValues.VN;
@@ -22,6 +23,13 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.factory.artificialorganisms.MTEHatchAOInput;
+import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.objects.ArtificialOrganism;
+import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.recipe.AORecipeData;
+import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.tileentities.machines.multi.artificialorganisms.MTEAOUnitBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,7 +102,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
 
 @SuppressWarnings("SpellCheckingInspection")
-public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory> implements ISurvivalConstructable {
+public class MTEPCBFactory extends MTEAOUnitBase<MTEPCBFactory> implements ISurvivalConstructable {
 
     private static final String tier1 = "tier1";
     private static final String tier2 = "tier2";
@@ -251,7 +259,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 .dot(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
-        .addElement('L', ofBlock(GregTechAPI.sBlockCasings4, 1))
+        .addElement('L',
+            buildHatchAdder(MTEPCBFactory.class).adder(MTEPCBFactory::addBioHatch)
+                .hatchClass(MTEHatchAOInput.class)
+                .shouldReject(t -> !(t.bioHatch == null))
+                .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                .dot(2)
+                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'M',
             buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
@@ -562,8 +576,27 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 mMaxParallel = maxParallel;
 
                 PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
-                if (requiredUpgrade == PCBFactoryUpgrade.BIO && !mBioUpgrade)
-                    return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
+                if (requiredUpgrade == PCBFactoryUpgrade.BIO) {
+                    if (!mBioUpgrade) return SimpleCheckRecipeResult.ofFailure("bio_upgrade_missing");
+
+                    AORecipeData data = recipe.getMetadata(GTRecipeConstants.AO_DATA);
+                    if (data == null) {
+                        return super.validateRecipe(recipe);
+                    }
+
+                    ArtificialOrganism currentOrganism = getAO();
+
+                    if (currentOrganism == null)
+                        return SimpleCheckRecipeResult.ofFailure("missing_ao");
+                    if (currentOrganism.getCount() <= data.requiredCount)
+                        return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
+                    if (currentOrganism.getIntelligence() <= data.requiredIntelligence)
+                        return SimpleCheckRecipeResult.ofFailure("ao_too_stupid");
+
+                    setSpeedBonus(currentOrganism.calculateSpeedBonus());
+
+                    AOsInUse = Math.round((float) currentOrganism.consumeAOs(data.requiredCount) * (100 - data.dangerLevel) / 100F);
+                }
 
                 int requiredPCBTier = recipe.getMetadataOrDefault(PCBFactoryTierKey.INSTANCE, 1);
                 if (requiredPCBTier > mTier) return CheckRecipeResultRegistry.insufficientMachineTier(requiredPCBTier);
@@ -631,6 +664,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             // Updates every 10 sec
             if (mUpdate <= -150) mUpdate = 50;
         }
+    }
+
+    @Override
+    public GUITextureSet getGUITextureSet() {
+        return GUITextureSet.DEFAULT;
     }
 
     @Override
