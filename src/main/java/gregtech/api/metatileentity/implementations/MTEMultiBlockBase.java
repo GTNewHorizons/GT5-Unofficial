@@ -2079,7 +2079,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 tag.setInteger("outputItemCount" + index, mOutputItems[index].stackSize);
                 index++;
             }
-            tag.setInteger("outputItemLength", index);
+            if (index != 0) tag.setInteger("outputItemLength", index);
         }
         if (mOutputFluids != null) {
             int index = 0;
@@ -2087,8 +2087,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (stack == null) continue;
                 tag.setString("outputFluid" + index, mOutputFluids[index].getLocalizedName());
                 tag.setInteger("outputFluidCount" + index, mOutputFluids[index].amount);
+                index++;
             }
-            tag.setInteger("outputFluidLength", index);
+            if (index != 0) tag.setInteger("outputFluidLength", index);
         }
 
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
