@@ -1336,7 +1336,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                 try {
                     GregTechAPI.METATILEENTITIES[i].onServerStart();
                 } catch (Throwable e) {
-                    GT_FML_LOGGER.error("Could not call onServerStart MTE " + GregTechAPI.METATILEENTITIES[i], e);
+                    throw new RuntimeException(
+                        "Could not call onServerStart MTE " + GregTechAPI.METATILEENTITIES[i],
+                        e);
                 }
             }
         }
@@ -1379,7 +1381,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                     try {
                         GregTechAPI.METATILEENTITIES[i].onWorldSave(tSaveDirectory);
                     } catch (Throwable e) {
-                        GT_FML_LOGGER.error("Could call onWorldSave for MTE " + GregTechAPI.METATILEENTITIES[i], e);
+                        throw new RuntimeException(
+                            "Could not call onWorldSave for MTE " + GregTechAPI.METATILEENTITIES[i],
+                            e);
                     }
                 }
             }
@@ -2130,8 +2134,9 @@ public abstract class GTProxy implements IGTMod, IFuelHandler {
                             try {
                                 GregTechAPI.METATILEENTITIES[i].onWorldLoad(tSaveDiretory);
                             } catch (Throwable e) {
-                                GT_FML_LOGGER
-                                    .error("Could call onWorldLoad for MTE " + GregTechAPI.METATILEENTITIES[i], e);
+                                throw new RuntimeException(
+                                    "Could not call onWorldLoad for MTE " + GregTechAPI.METATILEENTITIES[i],
+                                    e);
                             }
                         }
                     }
