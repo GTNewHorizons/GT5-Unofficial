@@ -3368,7 +3368,7 @@ public class AntimatterStructures {
             "       A                   A       ", "       A                   A       ",
             "       C                   C       ", "      FCG                 GCF      ",
             "      DDGDDG           GDDGDD      ", "      DDGDDGDCDGGGGGDCDGDDGDD      ",
-            "     FDDDDDDDDDDDDDDDDDDDDDDDFF    " },
+            "     FDDDDDDDDDDDDDDDDDDDDDDDF     " },
         { "                CCC                ", "             EEEEEEEEE             ",
             "             E       E             ", "             E       E             ",
             "             E       E             ", "             E       E             ",
