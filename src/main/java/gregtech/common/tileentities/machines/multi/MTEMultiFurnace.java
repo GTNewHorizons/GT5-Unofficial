@@ -48,6 +48,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.VoidProtectionHelper;
 
 public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> implements ISurvivalConstructable {
 
@@ -206,19 +207,50 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         for (ItemStack item : tInputList) {
             ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
             if (smeltedOutput != null) {
-                if (remainingCost >= item.stackSize) {
+                int maxParallelForOutput = remainingCost;
+
+                // Initialize void protection for the current output
+                if (protectsExcessItem()) {
+                    VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
+                    voidProtectionHelper.setMachine(this)
+                        .setMaxParallel(remainingCost)
+                        .setVirtualItemOutputsInBus(smeltedOutputs.toArray(new ItemStack[0]))
+                        .setItemOutputs(new ItemStack[] { smeltedOutput })
+                        .build();
+
+                    maxParallelForOutput = Math.min(voidProtectionHelper.getMaxParallel(), remainingCost);
+
+                    if (maxParallelForOutput == 0) {
+                        continue;
+                    }
+                }
+
+                if (maxParallelForOutput >= item.stackSize) {
                     remainingCost -= item.stackSize;
                     smeltedOutput.stackSize *= item.stackSize;
                     item.stackSize = 0;
                     smeltedOutputs.add(smeltedOutput);
                 } else {
-                    smeltedOutput.stackSize *= remainingCost;
-                    item.stackSize -= remainingCost;
+                    remainingCost -= maxParallelForOutput;
+                    smeltedOutput.stackSize *= maxParallelForOutput;
+                    item.stackSize -= maxParallelForOutput;
                     smeltedOutputs.add(smeltedOutput);
+                }
+
+                if (remainingCost <= 0) {
                     break;
                 }
             }
         }
+
+        if (protectsExcessItem() && smeltedOutputs.isEmpty()) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+        }
+
+        if (isBatchModeEnabled()) {
+            batchMultiplierMax = Math.max(1, batchMultiplierMax * (finalParallel - remainingCost) / finalParallel);
+        }
+
         this.mOutputItems = smeltedOutputs.toArray(new ItemStack[0]);
 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
@@ -374,6 +406,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         } else {
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
         return true;
     }
 }

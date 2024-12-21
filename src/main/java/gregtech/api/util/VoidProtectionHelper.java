@@ -65,6 +65,10 @@ public class VoidProtectionHelper {
      */
     private FluidInventoryLogic fluidOutputInventory;
     /**
+     * The item outputs to take in account as already in output buses
+     */
+    private ItemStack[] virtualItemOutputsInBus;
+    /**
      * Has this helper been built?
      */
     private boolean built;
@@ -147,6 +151,11 @@ public class VoidProtectionHelper {
 
     public VoidProtectionHelper setChangeGetter(Function<Integer, Integer> getter) {
         this.chanceGetter = getter;
+        return this;
+    }
+
+    public VoidProtectionHelper setVirtualItemOutputsInBus(ItemStack[] itemOutputs) {
+        this.virtualItemOutputsInBus = itemOutputs;
         return this;
     }
 
@@ -403,6 +412,9 @@ public class VoidProtectionHelper {
         } else {
             busStacks = machine.getItemOutputSlots(itemOutputs);
         }
+
+        mergeVirtualItemOutputsInto(busStacks);
+
         // A map to hold the items we will be 'inputting' into the output buses. These itemstacks are actually the
         // recipe outputs.
         Map<ItemStack, Integer> tItemOutputMap = new ItemStackMap<>();
@@ -474,6 +486,64 @@ public class VoidProtectionHelper {
             return aParallelQueue.element().batch;
         }
         return 0;
+    }
+
+    private void mergeVirtualItemOutputsInto(List<ItemStack> itemStacks) {
+        if (virtualItemOutputsInBus == null) return;
+
+        for (ItemStack virtualStack : virtualItemOutputsInBus) {
+            if (virtualStack == null || virtualStack.stackSize <= 0) continue;
+
+            int maxStackSize = virtualStack.getMaxStackSize();
+            int remainingItems = virtualStack.stackSize;
+
+            while (remainingItems > 0) {
+                boolean merged = false;
+
+                for (ItemStack busStack : itemStacks) {
+                    if (busStack == null) continue;
+
+                    if (busStack.isItemEqual(virtualStack) && ItemStack.areItemStackTagsEqual(busStack, virtualStack)) {
+                        int spaceLeft = busStack.getMaxStackSize() - busStack.stackSize;
+                        if (spaceLeft > 0) {
+                            int transferAmount = Math.min(spaceLeft, remainingItems);
+                            busStack.stackSize += transferAmount;
+                            remainingItems -= transferAmount;
+
+                            if (remainingItems == 0) {
+                                merged = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!merged) {
+                    boolean replacedNull = false;
+
+                    for (int i = 0; i < itemStacks.size(); i++) {
+                        if (itemStacks.get(i) == null) {
+                            int newStackSize = Math.min(remainingItems, maxStackSize);
+                            ItemStack newStack = ItemStack.copyItemStack(virtualStack);
+                            newStack.stackSize = newStackSize;
+                            itemStacks.set(i, newStack);
+                            remainingItems -= newStackSize;
+                            replacedNull = true;
+                            break;
+                        }
+                    }
+
+                    // If no null slot was found, add a new stack to the list
+                    if (!replacedNull) {
+                        int newStackSize = Math.min(remainingItems, maxStackSize);
+                        ItemStack newStack = ItemStack.copyItemStack(virtualStack);
+                        newStack.stackSize = newStackSize;
+                        itemStacks.add(newStack);
+                        remainingItems -= newStackSize;
+                    }
+                }
+            }
+        }
     }
 
     private static class ParallelData {
