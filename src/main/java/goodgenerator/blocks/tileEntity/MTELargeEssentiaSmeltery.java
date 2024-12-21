@@ -132,7 +132,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
             && !this.mInputBusses.isEmpty()
             && !this.mEssentiaOutputHatches.isEmpty()) {
-            this.mParallel = Math.floor(this.mParallel += 1 << this.pTier);
+            this.mParallel = (len + 1) * Math.pow(2, this.pTier);
             return true;
         }
         return false;
@@ -191,10 +191,11 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Essentia Smeltery")
+        tt.addMachineType("Essentia Smeltery, LES")
             .addInfo("Necessary evil.")
             .addInfo("Advanced Essentia smelting technology.")
-            .addInfo("Max parallel dictated by structure size and Essentia Diffusion Cell tier")
+            .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
+            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length.")
             .addInfo("Energy Hatch tier: HV+")
             .addInfo("You can find more information about this machine in the Thaumonomicon.")
             .addTecTechHatchInfo()
@@ -219,7 +220,11 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[8] = "Node Power: " + EnumChatFormatting.RED
+        info[8] = "Parallel: " + EnumChatFormatting.YELLOW
+            + Math.round(this.mParallel)
+            + EnumChatFormatting.RESET
+            + " Node Power: "
+            + EnumChatFormatting.RED
             + this.nodePower
             + EnumChatFormatting.RESET
             + " Purification Efficiency: "
@@ -258,8 +263,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     protected void onEssentiaCellFound(int tier) {
-        this.mParallel += (1 << tier) * 0.25f;
-        this.pTier = Math.max(this.pTier, tier);
+        this.pTier = tier;
     }
 
     private boolean addEnergyHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

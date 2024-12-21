@@ -253,7 +253,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             .addInfo("Removing a lens too early will fail the recipe.")
             .addInfo("Find the order of lenses in the recipe in NEI,")
             .addInfo("or use a portable scanner to view the currently requested lens.")
-            .addInfo("The recipe always starts at the Orundum Lens")
+            .addInfo("The recipe always starts at the Orundum Lens.")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""

@@ -110,8 +110,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemOutputs(werkstoff.get(ingot))
                 .fluidInputs(werkstoff.getMolten(144))
                 .duration(
-                    (int) werkstoff.getStats()
-                        .getMass())
+                    Math.max(
+                        1,
+                        (int) werkstoff.getStats()
+                            .getMass()))
                 .eut(
                     werkstoff.getStats()
                         .getMass() > 128 ? 64 : 30)
@@ -122,8 +124,10 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                 .itemOutputs(werkstoff.get(nugget))
                 .fluidInputs(werkstoff.getMolten(16))
                 .duration(
-                    (int) ((double) werkstoff.getStats()
-                        .getMass() / 9D))
+                    Math.max(
+                        1,
+                        (int) ((double) werkstoff.getStats()
+                            .getMass() / 9D)))
                 .eut(
                     werkstoff.getStats()
                         .getMass() > 128 ? 64 : 30)

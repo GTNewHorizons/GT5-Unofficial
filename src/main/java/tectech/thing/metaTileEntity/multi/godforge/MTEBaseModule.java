@@ -57,6 +57,7 @@ import gregtech.api.util.GTStructureUtility;
 import tectech.TecTech;
 import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsUI;
 
 public class MTEBaseModule extends TTMultiblockBase {
 
@@ -321,9 +322,9 @@ public class MTEBaseModule extends TTMultiblockBase {
                     .setSize(18, 6))
             .widget(
                 new Scrollable().setVerticalScroll()
-                    .widget(screenElements.setPos(10, 0))
-                    .setPos(0, 7)
-                    .setSize(190, 79))
+                    .widget(screenElements)
+                    .setPos(10, 7)
+                    .setSize(182, 79))
             .widget(
                 TextWidget.dynamicText(this::connectionStatus)
                     .setDefaultColor(EnumChatFormatting.BLACK)

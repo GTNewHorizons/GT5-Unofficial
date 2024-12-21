@@ -16,6 +16,8 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,6 +55,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -554,6 +557,12 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 "gt.blockmachines.multimachine.em.research.mode." + machineType.replace(" ", "_")));
     }
 
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(scannerFakeRecipes, TecTechRecipeMaps.researchStationFakeRecipes);
+    }
+
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
@@ -623,7 +632,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         } else if (!tag.getBoolean("incompleteStructure")) {
             currentTip.add(GREEN + "Running Fine" + efficiency);
         }
-        currentTip.add("Mode: " + tag.getString("machineType"));
+        currentTip.add(
+            StatCollector.translateToLocal(
+                "gt.blockmachines.multimachine.em.research.mode." + tag.getString("machineType")
+                    .replace(" ", "_")));
         currentTip.add(
             String.format(
                 "Computation: %,d / %,d",

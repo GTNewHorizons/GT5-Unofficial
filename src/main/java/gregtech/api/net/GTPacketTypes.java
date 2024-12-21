@@ -35,6 +35,8 @@ public enum GTPacketTypes {
     ORE_DICT_CACHE(25, new PacketOreDictCache()),
     SERVER_JOINED(26, new PacketServerJoined()),
     EIC(27, new PacketEIC()),
+    CREATE_TILE_ENTITY(28, new GTPacketCreateTE()),
+    NODE_INFO(29, new GTPacketNodeInfo()),
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

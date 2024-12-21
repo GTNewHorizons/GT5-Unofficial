@@ -69,7 +69,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor")
+        tt.addMachineType("Chemical Reactor, MCR")
             .addInfo("What molecule do you want to synthesize ?")
             .addInfo("Or you want to replace something in this molecule ?")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)

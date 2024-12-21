@@ -194,7 +194,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
 
     @Override
     public String getMachineType() {
-        return "Vacuum Furnace / Dehydrator";
+        return "Vacuum Furnace, Dehydrator";
     }
 
     @Override

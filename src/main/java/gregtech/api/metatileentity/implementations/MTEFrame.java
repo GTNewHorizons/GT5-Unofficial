@@ -7,6 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.ITemporaryTE;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,7 +15,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 
-public class MTEFrame extends MetaPipeEntity {
+public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
     private static final String localizedDescFormat = GTLanguageManager
         .addStringLocalization("gt.blockmachines.gt_frame.desc.format", "Just something you can put covers on.");
