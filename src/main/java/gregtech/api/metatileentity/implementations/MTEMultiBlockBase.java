@@ -2079,8 +2079,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int index = 0;
             for (ItemStack stack : mOutputItems) {
                 if (stack == null) continue;
-                tag.setString("outputItem" + index, mOutputItems[index].getDisplayName());
-                tag.setInteger("outputItemCount" + index, mOutputItems[index].stackSize);
+                tag.setString("outputItem" + index, stack.getDisplayName());
+                tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
             }
             if (index != 0) tag.setInteger("outputItemLength", index);
@@ -2089,8 +2089,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             int index = 0;
             for (FluidStack stack : mOutputFluids) {
                 if (stack == null) continue;
-                tag.setString("outputFluid" + index, mOutputFluids[index].getLocalizedName());
-                tag.setInteger("outputFluidCount" + index, mOutputFluids[index].amount);
+                tag.setString("outputFluid" + index, stack.getLocalizedName());
+                tag.setInteger("outputFluidCount" + index, stack.amount);
                 index++;
             }
             if (index != 0) tag.setInteger("outputFluidLength", index);
