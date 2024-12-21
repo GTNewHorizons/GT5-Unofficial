@@ -529,7 +529,8 @@ public class MTELESU extends MTEMultiBlockBase {
     private long clientAmps;
 
     private void drawTexts(DynamicPositionedColumn screenElements) {
-        screenElements.setSpace(0);
+        screenElements.setSpace(0)
+            .setPos(11, 8);
 
         screenElements.widget(
             new TextWidget().setStringSupplier(() -> "EU: " + numberFormat.format(this.clientEU))
