@@ -74,8 +74,8 @@ public class PosteaTransformers implements Runnable {
             return tag;
         });
     }
-    private void registerProgrammedCircuitTransformers()
-    {
+
+    private void registerProgrammedCircuitTransformers() {
         ItemStackReplacementManager.addItemReplacement("miscutils:item.BioRecipeSelector", (tag) -> {
             Item circuitItem = GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit");
             int itemId = Item.getIdFromItem(circuitItem);

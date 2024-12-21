@@ -95,22 +95,6 @@ public class BioRecipes {
     private static Fluid mButanol;
     private static Fluid mAcetone;
 
-    private static ItemStack getGreenAlgaeRecipeChip() {
-        return GTUtility.getIntegratedCircuit(4);
-    }
-
-    private static ItemStack getBrownAlgaeRecipeChip() {
-        return GTUtility.getIntegratedCircuit(8);
-    }
-
-    private static ItemStack getGoldenBrownAlgaeRecipeChip() {
-        return GTUtility.getIntegratedCircuit(12);
-    }
-
-    private static ItemStack getRedAlgaeRecipeChip() {
-        return GTUtility.getIntegratedCircuit(16);
-    }
-
     public static void init() {
         Logger.INFO("[Bio] Setting Variables");
         initRecipeVars();
@@ -260,11 +244,11 @@ public class BioRecipes {
 
         // Turn into Cellulose
         GTValues.RA.stdBuilder()
-            .itemInputs(getGreenAlgaeRecipeChip(), ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 10))
+            .itemInputs(ItemUtils.getSimpleStack(AgriculturalChem.mGreenAlgaeBiosmass, 10))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mCelluloseFiber, 5))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(16)
-            .addTo(assemblerRecipes);
+            .addTo(chemicalDehydratorRecipes);
     }
 
     private static void recipeBrownAlgae() {
@@ -286,7 +270,9 @@ public class BioRecipes {
 
         // Lithium Chloride
         GTValues.RA.stdBuilder()
-            .itemInputs(getBrownAlgaeRecipeChip(), ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 20))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(8),
+                ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 20))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mLithiumChloride, 5))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -295,7 +281,9 @@ public class BioRecipes {
 
         // Sodium Carbonate
         GTValues.RA.stdBuilder()
-            .itemInputs(getBrownAlgaeRecipeChip(), ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 40))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(8),
+                ItemUtils.getSimpleStack(AgriculturalChem.mBrownAlgaeBiosmass, 40))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mSodiumCarbonate, 20))
             .fluidInputs(FluidUtils.getDistilledWater(2000))
             .duration(30 * SECONDS)
@@ -315,7 +303,7 @@ public class BioRecipes {
         // Turn into Cellulose
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getGoldenBrownAlgaeRecipeChip(),
+                GTUtility.getIntegratedCircuit(12),
                 ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownAlgaeBiosmass, 10))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mGoldenBrownCelluloseFiber, 5))
             .duration(7 * SECONDS + 10 * TICKS)
@@ -334,7 +322,9 @@ public class BioRecipes {
 
         // Turn into Cellulose
         GTValues.RA.stdBuilder()
-            .itemInputs(getRedAlgaeRecipeChip(), ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 10))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(16),
+                ItemUtils.getSimpleStack(AgriculturalChem.mRedAlgaeBiosmass, 10))
             .itemOutputs(ItemUtils.getSimpleStack(AgriculturalChem.mRedCelluloseFiber, 5))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV / 2)
