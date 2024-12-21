@@ -330,29 +330,25 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         }
 
         // Add mixer Recipe
-        try {
-            if (oxygen == null) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(input1, input2, input3, input4)
-                    .itemOutputs(outputStacks)
-                    .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(mixerRecipes);
-            } else {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(input1, input2, input3, input4)
-                    .itemOutputs(outputStacks)
-                    .fluidInputs(oxygen)
-                    .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(mixerRecipes);
-            }
-
-            Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
-
-        } catch (Throwable t) {
-            t.printStackTrace();
+        if (oxygen == null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(input1, input2, input3, input4)
+                .itemOutputs(outputStacks)
+                .duration((int) Math.max(material.getMass() * 2L * 1, 1))
+                .eut(material.vVoltageMultiplier)
+                .addTo(mixerRecipes);
+        } else {
+            GTValues.RA.stdBuilder()
+                .itemInputs(input1, input2, input3, input4)
+                .itemOutputs(outputStacks)
+                .fluidInputs(oxygen)
+                .duration((int) Math.max(material.getMass() * 2L * 1, 1))
+                .eut(material.vVoltageMultiplier)
+                .addTo(mixerRecipes);
         }
+
+        Logger.WARNING("Dust Mixer Recipe: " + material.getLocalizedName() + " - Success");
+
         return true;
     }
 
@@ -378,32 +374,26 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
     private void addFurnaceRecipe(Material aMatInfo) {
 
         ItemStack aDust = aMatInfo.getDust(1);
-        ItemStack aOutput;
-        try {
-            if (aMatInfo.requiresBlastFurnace()) {
-                aOutput = aMatInfo.getHotIngot(1);
-                if (ItemUtils.checkForInvalidItems(aOutput)) {
-                    if (addBlastFurnaceRecipe(aMatInfo, aDust, aOutput, aMatInfo.getMeltingPointK())) {
-                        Logger
-                            .MATERIALS("Successfully added a blast furnace recipe for " + aMatInfo.getLocalizedName());
-                    } else {
-                        Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getLocalizedName());
-                    }
+        if (aMatInfo.requiresBlastFurnace()) {
+            ItemStack aOutput = aMatInfo.getHotIngot(1);
+            if (ItemUtils.checkForInvalidItems(aOutput)) {
+                if (addBlastFurnaceRecipe(aMatInfo, aDust, aOutput, aMatInfo.getMeltingPointK())) {
+                    Logger.MATERIALS("Successfully added a blast furnace recipe for " + aMatInfo.getLocalizedName());
                 } else {
                     Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getLocalizedName());
                 }
             } else {
-                aOutput = aMatInfo.getIngot(1);
-                if (ItemUtils.checkForInvalidItems(aOutput)) {
-                    if (GTModHandler.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput, false)) {
-                        Logger.MATERIALS("Successfully added a furnace recipe for " + aMatInfo.getLocalizedName());
-                    } else {
-                        Logger.MATERIALS("Failed to add a furnace recipe for " + aMatInfo.getLocalizedName());
-                    }
+                Logger.MATERIALS("Failed to add a blast furnace recipe for " + aMatInfo.getLocalizedName());
+            }
+        } else {
+            ItemStack aOutput = aMatInfo.getIngot(1);
+            if (ItemUtils.checkForInvalidItems(aOutput)) {
+                if (GTModHandler.addSmeltingAndAlloySmeltingRecipe(aDust, aOutput, false)) {
+                    Logger.MATERIALS("Successfully added a furnace recipe for " + aMatInfo.getLocalizedName());
+                } else {
+                    Logger.MATERIALS("Failed to add a furnace recipe for " + aMatInfo.getLocalizedName());
                 }
             }
-        } catch (Throwable t) {
-            t.printStackTrace();
         }
     }
 

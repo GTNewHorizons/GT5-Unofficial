@@ -258,11 +258,7 @@ public class GTMod implements IGTMod {
         }
 
         for (Runnable tRunnable : GregTechAPI.sBeforeGTPreload) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
 
         GTPreLoad.getConfiguration(aEvent.getModConfigurationDirectory());
@@ -319,11 +315,7 @@ public class GTMod implements IGTMod {
         GTUIInfos.init();
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
 
         if (FMLCommonHandler.instance()
@@ -343,11 +335,7 @@ public class GTMod implements IGTMod {
         }
 
         for (Runnable tRunnable : GregTechAPI.sBeforeGTLoad) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
 
         if (Forestry.isModLoaded())
@@ -395,11 +383,7 @@ public class GTMod implements IGTMod {
         GTLog.ore.println("GTMod: Load-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTLoad) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
     }
 
@@ -411,11 +395,7 @@ public class GTMod implements IGTMod {
 
         // Seems only used by GGFab so far
         for (Runnable tRunnable : GregTechAPI.sBeforeGTPostload) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
 
         gregtechproxy.onPostLoad();
@@ -566,11 +546,7 @@ public class GTMod implements IGTMod {
         GTLog.out.println("GTMod: PostLoad-Phase finished!");
         GTLog.ore.println("GTMod: PostLoad-Phase finished!");
         for (Runnable tRunnable : GregTechAPI.sAfterGTPostload) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
         GTPostLoad.addFakeRecipes();
 
@@ -601,11 +577,7 @@ public class GTMod implements IGTMod {
     public void onLoadComplete(FMLLoadCompleteEvent aEvent) {
         gregtechproxy.onLoadComplete();
         for (Runnable tRunnable : GregTechAPI.sGTCompleteLoad) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
@@ -625,11 +597,7 @@ public class GTMod implements IGTMod {
     public void onServerStarting(FMLServerStartingEvent aEvent) {
 
         for (Runnable tRunnable : GregTechAPI.sBeforeGTServerstart) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
 
         gregtechproxy.onServerStarting();
@@ -760,11 +728,7 @@ public class GTMod implements IGTMod {
         GTLog.ore.println("GTMod: ServerStarting-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstart) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
 
         aEvent.registerServerCommand(new GTCommand());
@@ -803,36 +767,24 @@ public class GTMod implements IGTMod {
     public void onIDChangingEvent(FMLModIdMappingEvent aEvent) {
         GTUtility.reInit();
         GTRecipe.reInit();
-        try {
-            for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
-                GTUtility.reMap(gt_itemStackMap);
-            }
-            for (SetMultimap<? extends ItemHolder, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
-                GTUtility.reMap(gt_itemStackMap);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace(GTLog.err);
+        for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
+            GTUtility.reMap(gt_itemStackMap);
+        }
+        for (SetMultimap<? extends ItemHolder, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
+            GTUtility.reMap(gt_itemStackMap);
         }
     }
 
     @Mod.EventHandler
     public void onServerStopping(FMLServerStoppingEvent aEvent) {
         for (Runnable tRunnable : GregTechAPI.sBeforeGTServerstop) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
 
         gregtechproxy.onServerStopping();
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstop) {
-            try {
-                tRunnable.run();
-            } catch (Throwable e) {
-                e.printStackTrace(GTLog.err);
-            }
+            tRunnable.run();
         }
         // Interrupt IDLE Threads to close down cleanly
         RunnableMachineUpdate.shutdownExecutorService();
