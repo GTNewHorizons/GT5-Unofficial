@@ -168,7 +168,7 @@ public class RecipesGeneral {
                 ItemUtils.getSimpleStack(Blocks.glass, 16),
                 ItemUtils.getSimpleStack(Blocks.glowstone, 16),
                 ItemList.Large_Fluid_Cell_Steel.get(1),
-                CI.getNumberedAdvancedCircuit(4))
+                GTUtility.getIntegratedCircuit(4))
             .itemOutputs(VolumetricFlaskHelper.getLargeVolumetricFlask(2))
             .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 2000))
             .duration(15 * SECONDS)
@@ -180,7 +180,7 @@ public class RecipesGeneral {
                 ItemUtils.getSimpleStack(Blocks.glass, 64),
                 ItemUtils.getSimpleStack(Blocks.glowstone, 64),
                 ItemList.Large_Fluid_Cell_TungstenSteel.get(1),
-                CI.getNumberedAdvancedCircuit(5))
+                GTUtility.getIntegratedCircuit(5))
             .itemOutputs(VolumetricFlaskHelper.getGiganticVolumetricFlask(2))
             .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 8000))
             .duration(15 * SECONDS)

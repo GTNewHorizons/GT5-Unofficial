@@ -291,7 +291,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(2),
+                GTUtility.getIntegratedCircuit(2),
                 aBasicHazmatPieces[0],
                 ItemUtils.getSimpleStack(aYellowWool, 16),
                 ItemUtils.getSimpleStack(aPlateCobalt, 4),
@@ -304,7 +304,7 @@ public class RecipeIC2 {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(2),
+                GTUtility.getIntegratedCircuit(2),
                 aBasicHazmatPieces[1],
                 ItemUtils.getSimpleStack(aYellowWool, 64),
                 ItemUtils.getSimpleStack(aCoilIC2, 32),
@@ -317,7 +317,7 @@ public class RecipeIC2 {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(2),
+                GTUtility.getIntegratedCircuit(2),
                 aBasicHazmatPieces[2],
                 ItemUtils.getSimpleStack(aYellowWool, 32),
                 ItemUtils.getSimpleStack(aCoilIC2, 16),
@@ -330,7 +330,7 @@ public class RecipeIC2 {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getNumberedAdvancedCircuit(2),
+                GTUtility.getIntegratedCircuit(2),
                 aBasicHazmatPieces[3],
                 ItemUtils.getSimpleStack(aBlackWool, 16),
                 ItemUtils.getSimpleStack(aCoilIC2, 6),
