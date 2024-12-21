@@ -173,8 +173,8 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return (int) Math.sqrt(this.getPowerFlow()) / 20;
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return (int) Math.sqrt(this.getPowerFlow());
     }
 
     @Override

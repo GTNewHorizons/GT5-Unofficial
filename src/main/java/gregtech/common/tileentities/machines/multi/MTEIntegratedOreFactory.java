@@ -194,6 +194,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Processing time is dependent on mode.")
             .addInfo("Use a screwdriver to switch mode.")
             .addInfo("Sneak click with screwdriver to void the stone dust.")
+            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
             .addStructureInfo("128 Advanced Iridium Plated Machine Casing")
