@@ -292,6 +292,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "+0.10"
                     + EnumChatFormatting.GRAY)
             .addInfo("Each stabilization can only use one of the fluids at a time")
+            .beginStructureBlock(53, 53, 47, false)
             .addCasingInfoMin("Antimatter Containment Casing", 512, false)
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
