@@ -39,13 +39,8 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
                 Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
         }
-        if (!active) return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS) };
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-            TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
-                .glow()
-                .build() };
+            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LV) };
     }
 
     @Override
@@ -85,10 +80,8 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
     }
 
     public void doWorldChecks(World world, IGregTechTileEntity aBaseMetaTileEntity) {
-        if ((world.isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F) || !world.isDaytime()
-            || !aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP)) {
-            valid = false;
-        }
+        valid = ((world.isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F) || !world.isDaytime()
+            || !aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP));
     }
 
     @Override

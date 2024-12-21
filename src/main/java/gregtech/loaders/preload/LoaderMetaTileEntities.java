@@ -12167,28 +12167,28 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerSolarPanels() {
         ItemList.Machine_LV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_LV.ID, "basicgenerator.solarpanel.01", "Lightning Rod LV", 1)
+            new MTESolarGenerator(SOLAR_PANEL_LV.ID, "basicgenerator.solarpanel.01", "Solar Panel LV", 1)
                 .getStackForm(1));
         ItemList.Machine_MV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_MV.ID, "basicgenerator.solarpanel.02", "Lightning Rod MV", 2)
+            new MTESolarGenerator(SOLAR_PANEL_MV.ID, "basicgenerator.solarpanel.02", "Solar Panel MV", 2)
                 .getStackForm(1));
         ItemList.Machine_HV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_HV.ID, "basicgenerator.solarpanel.03", "Lightning Rod HV", 3)
+            new MTESolarGenerator(SOLAR_PANEL_HV.ID, "basicgenerator.solarpanel.03", "Solar Panel HV", 3)
                 .getStackForm(1));
         ItemList.Machine_EV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_EV.ID, "basicgenerator.solarpanel.04", "Lightning Rod EV", 4)
+            new MTESolarGenerator(SOLAR_PANEL_EV.ID, "basicgenerator.solarpanel.04", "Solar Panel EV", 4)
                 .getStackForm(1));
         ItemList.Machine_IV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_IV.ID, "basicgenerator.solarpanel.05", "Lightning Rod IV", 5)
+            new MTESolarGenerator(SOLAR_PANEL_IV.ID, "basicgenerator.solarpanel.05", "Solar Panel IV", 5)
                 .getStackForm(1));
         ItemList.Machine_LuV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_LuV.ID, "basicgenerator.solarpanel.06", "Lightning Rod LuV", 6)
+            new MTESolarGenerator(SOLAR_PANEL_LuV.ID, "basicgenerator.solarpanel.06", "Solar Panel LuV", 6)
                 .getStackForm(1));
         ItemList.Machine_ZPM_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_ZPM.ID, "basicgenerator.solarpanel.07", "Lightning Rod ZPM", 7)
+            new MTESolarGenerator(SOLAR_PANEL_ZPM.ID, "basicgenerator.solarpanel.07", "Solar Panel ZPM", 7)
                 .getStackForm(1));
         ItemList.Machine_UV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_UV.ID, "basicgenerator.solarpanel.08", "Lightning Rod UV", 8)
+            new MTESolarGenerator(SOLAR_PANEL_UV.ID, "basicgenerator.solarpanel.08", "Solar Panel UV", 8)
                 .getStackForm(1));
     }
 
