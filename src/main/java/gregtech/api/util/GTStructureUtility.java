@@ -47,6 +47,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCyclotronCoils;
@@ -88,6 +89,11 @@ public class GTStructureUtility {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
+            }
+
+            @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 world.setBlock(x, y, z, Blocks.water, 0, 2);
                 return true;
@@ -122,6 +128,11 @@ public class GTStructureUtility {
                     return aFrameMaterial == material;
                 }
                 return false;
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return check(t, world, x, y, z);
             }
 
             @Override
@@ -242,6 +253,12 @@ public class GTStructureUtility {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof IGregTechTileEntity;
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, aHintBlock, aHintMeta);
                 return true;
@@ -315,6 +332,12 @@ public class GTStructureUtility {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
                 return tileEntity instanceof IGregTechTileEntity
                     && aHatchAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) aTextureIndex);
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                return tileEntity instanceof IGregTechTileEntity;
             }
 
             @Override
@@ -410,6 +433,14 @@ public class GTStructureUtility {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                TileEntity tileEntity = world.getTileEntity(x, y, z);
+                Block worldBlock = world.getBlock(x, y, z);
+                return (tileEntity instanceof IGregTechTileEntity)
+                    || (worldBlock == placeCasing && worldBlock.getDamageValue(world, x, y, z) == placeCasingMeta);
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticle(world, x, y, z, aHintBlock, hintMeta);
                 return true;
@@ -470,6 +501,15 @@ public class GTStructureUtility {
                 } else {
                     return newLevel == existingLevel;
                 }
+            }
+
+            @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                Block block = world.getBlock(x, y, z);
+                if (!(block instanceof IHeatingCoil)) return false;
+                HeatingCoilLevel blockLevel = ((IHeatingCoil) block).getCoilHeat(world.getBlockMetadata(x, y, z));
+                HeatingCoilLevel expectedLevel = getHeatFromHint(trigger);
+                return blockLevel == expectedLevel;
             }
 
             @Override
@@ -580,6 +620,17 @@ public class GTStructureUtility {
             }
 
             @Override
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                Block block = world.getBlock(x, y, z);
+                if (block != GregTechAPI.sSolenoidCoilCasings) return false;
+
+                int expectedMeta = getMetaFromHint(trigger);
+                int blockMeta = world.getBlockMetadata(x, y, z);
+
+                return expectedMeta == blockMeta;
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI
                     .hintParticle(world, x, y, z, GregTechAPI.sSolenoidCoilCasings, getMetaFromHint(trigger));
@@ -651,6 +702,11 @@ public class GTStructureUtility {
     public static Predicate<ItemStack> filterByMTETier(int aMinTier, int aMaxTier) {
         return is -> {
             IMetaTileEntity tile = ItemMachines.getMetaTileEntity(is);
+
+            if (tile instanceof MTEHatch hatch) {
+                if (hatch.getTierForStructure() <= aMaxTier && hatch.getTierForStructure() >= aMinTier) return true;
+            }
+
             return tile instanceof MTETieredMachineBlock && ((MTETieredMachineBlock) tile).mTier <= aMaxTier
                 && ((MTETieredMachineBlock) tile).mTier >= aMinTier;
         };
