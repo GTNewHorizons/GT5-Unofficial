@@ -201,11 +201,6 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
     public int getDamageToComponent(ItemStack stack) {
         return 0;
     }

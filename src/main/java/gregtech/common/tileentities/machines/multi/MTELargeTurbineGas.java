@@ -55,7 +55,7 @@ public class MTELargeTurbineGas extends MTELargeTurbine {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine")
+        tt.addMachineType("Gas Turbine, LGT")
             .addInfo("Needs a Turbine, place inside controller")
             // .addInfo("The excess fuel that gets consumed will be voided!")
             .addPollutionAmount(getPollutionPerSecond(null))

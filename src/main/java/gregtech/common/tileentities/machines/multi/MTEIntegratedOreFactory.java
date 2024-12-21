@@ -186,7 +186,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Processor")
+        tt.addMachineType("Ore Processor, IOF")
             .addInfo("It is OP. I mean ore processor.")
             .addInfo("Do all ore processing in one step.")
             .addInfo("Can process up to 1024 ores at a time.")
@@ -194,6 +194,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Processing time is dependent on mode.")
             .addInfo("Use a screwdriver to switch mode.")
             .addInfo("Sneak click with screwdriver to void the stone dust.")
+            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(6, 12, 11, false)
             .addController("The third layer")
             .addStructureInfo("128 Advanced Iridium Plated Machine Casing")

@@ -31,10 +31,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -76,7 +74,6 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -548,8 +545,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     protected static final int DIM_INJECTION_CASING = 13;
     protected static final int DIM_BRIDGE_CASING = 14;
 
-    private boolean isMultiChunkloaded = true;
-
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEPlasmaForge> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPlasmaForge>builder()
@@ -837,7 +832,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 * extraCatalystNeeded,
             Integer.MAX_VALUE);
         selectedCatalyst.amount = neededAmount;
-        startRecipeProcessing();
         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
             FluidStack checked = hatch.drain(ForgeDirection.UNKNOWN, selectedCatalyst, true);
 
@@ -848,11 +842,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             neededAmount -= checked.amount;
 
             if (neededAmount == 0) {
-                endRecipeProcessing();
                 return true;
             }
         }
-        endRecipeProcessing();
         return false;
     }
 
@@ -1074,48 +1066,6 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
-            // If machine has stopped, stop chunkloading.
-            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-            isMultiChunkloaded = false;
-        } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !isMultiChunkloaded) {
-            // Load a 3x3 area centered on controller when machine is running.
-            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-
-            int ControllerXCoordinate = ((TileEntity) aBaseMetaTileEntity).xCoord;
-            int ControllerZCoordinate = ((TileEntity) aBaseMetaTileEntity).zCoord;
-
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate, ControllerZCoordinate));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate + 16, ControllerZCoordinate));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate - 16, ControllerZCoordinate));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate, ControllerZCoordinate + 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate, ControllerZCoordinate - 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate + 16, ControllerZCoordinate + 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate + 16, ControllerZCoordinate - 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate - 16, ControllerZCoordinate + 16));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(ControllerXCoordinate - 16, ControllerZCoordinate - 16));
-
-            isMultiChunkloaded = true;
-        }
-
         super.onPostTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {

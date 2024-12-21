@@ -8,7 +8,6 @@ import static gregtech.api.enums.GTValues.AuthorVolence;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_LATHE_ACTIVE;
@@ -137,28 +136,22 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             STRUCTURE_PIECE_BODY,
             (transpose(
                 new String[][] { { "       ", "AAAAAAA", "       ", "       " },
-                    { "DBCCCCD", "DBCCCCD", "DBCCCCD", "       " }, { "DBCCCCD", "DBFFFFD", "DBCCCCD", "       " },
-                    { "DBCCCCD", "DBCCCCD", "DBCCCCD", "       " }, { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
+                    { "ABCCCCA", "ABCCCCA", "ABCCCCA", "       " }, { "ABCCCCA", "ABFFFFA", "ABCCCCA", "       " },
+                    { "ABCCCCA", "ABCCCCA", "ABCCCCA", "       " }, { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
         .addShape(
             STRUCTURE_PIECE_BODY_ALT,
             (transpose(
                 new String[][] { { "       ", "AAAAAAA", "       ", "       " },
-                    { "DCCCCBD", "DCCCCBD", "DCCCCBD", "       " }, { "DCCCCBD", "DFFFFBD", "DCCCCBD", "       " },
-                    { "DCCCCBD", "DCCCCBD", "DCCCCBD", "       " }, { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
+                    { "ACCCCBA", "ACCCCBA", "ACCCCBA", "       " }, { "ACCCCBA", "AFFFFBA", "ACCCCBA", "       " },
+                    { "ACCCCBA", "ACCCCBA", "ACCCCBA", "       " }, { "AAAAAAA", "AAAAAAA", "AAAAAAA", "AAAAAAA" } })))
         .addElement(
             'A',
-            buildHatchAdder(MTEMultiLathe.class).atLeast(Maintenance, Muffler, Energy)
+            buildHatchAdder(MTEMultiLathe.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                 .dot(1)
                 .buildAndChain(onElementPass(MTEMultiLathe::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Steel Casings
         .addElement('C', Glasses.chainAllGlasses()) // Glass
-        .addElement(
-            'D',
-            buildHatchAdder(MTEMultiLathe.class).atLeast(InputBus, OutputBus, Maintenance, Muffler, Energy)
-                .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                .dot(1)
-                .buildAndChain(onElementPass(MTEMultiLathe::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement(
             'F',
             ofBlocksTiered(
@@ -249,11 +242,11 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addController("Front Center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Grate Machine Casing", 9, false)
-            .addInputBus("Any of the 9 Solid Steel Casing at Each End", 1)
-            .addOutputBus("Any of the 9 Solid Steel Casing at Each End", 1)
+            .addCasingInfoExactly("Any Glass", 32, false)
+            .addInputBus("Any Solid Steel Casing", 1)
+            .addOutputBus("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addMufflerHatch("Any Solid Steel Casing", 1)
             .addOtherStructurePart("4 Item Pipe Casings", "Center of the glass", 4)
             .toolTipFinisher(AuthorVolence);
         return tt;
@@ -297,10 +290,7 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
             return false;
-        return this.mMaintenanceHatches.size() == 1 && pipeTier > 0
-            && !mEnergyHatches.isEmpty()
-            && mCasingAmount >= 42
-            && mMufflerHatches.size() == 1;
+        return this.mMaintenanceHatches.size() == 1 && pipeTier > 0 && !mEnergyHatches.isEmpty() && mCasingAmount >= 42;
     }
 
     public float speedBoost(float speedBoost, byte voltageTier) {

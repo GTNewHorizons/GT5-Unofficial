@@ -97,7 +97,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public String getMachineType() {
-        return "Mass Fabricator / Recycler";
+        return "Mass Fabricator, Recycler";
     }
 
     @Override
@@ -106,6 +106,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         tt.addMachineType(getMachineType())
             .addInfo("Speed: +0% | EU Usage: 80%")
             .addInfo("Parallel: Scrap = 64 | UU = 8 * Tier")
+            .addInfo("Performs perfect overclocks")
             .addInfo("Produces UU-A, UU-M & Scrap")
             .addInfo("Change mode with screwdriver")
             .addPollutionAmount(getPollutionPerSecond(null))
