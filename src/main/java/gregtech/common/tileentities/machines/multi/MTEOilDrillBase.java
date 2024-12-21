@@ -117,12 +117,17 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .getDisplayName();
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         tt.addMachineType("Pump, FDP")
             .addInfo("Works on " + getRangeInChunks() + "x" + getRangeInChunks() + " chunks")
             .addInfo("Use a Screwdriver to configure range")
             .addInfo("Use Programmed Circuits to ignore near exhausted oil field")
             .addInfo("If total circuit # is greater than output amount it will halt. If it worked right.") // doesn't
             // work
+            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+            .addInfo(
+                "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
+                    : GTUtility.formatNumbers(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -179,10 +184,16 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(0, GTUtility.getTier(getMaxInputVoltage()));
         this.mEUt = -7 << (tier << 1); // (1/4) A of current tier when at bottom (7/8) A of current tier while mining
-        this.mMaxProgresstime = Math.max(
+        this.mMaxProgresstime = calculateMaxProgressTime(tier);
+    }
+
+    @Override
+    public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
+        return (int) Math.max(
             1,
-            (workState == STATE_AT_BOTTOM ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1) : 120)
-                >> tier);
+            (workState == STATE_AT_BOTTOM || simulateWorking
+                ? (64 * (chunkRangeConfig * chunkRangeConfig)) >> (getMinTier() - 1)
+                : 120) / Math.pow(2, tier));
     }
 
     protected float computeSpeed() {
