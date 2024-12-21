@@ -1,5 +1,13 @@
 package gregtech.common.tileentities.generators;
 
+import static gregtech.api.enums.GTValues.V;
+
+import gregtech.api.metatileentity.BaseMetaTileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -7,12 +15,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import static gregtech.api.enums.GTValues.V;
 
 public class MTESolarGenerator extends MTETieredMachineBlock {
 
@@ -20,18 +22,19 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
         super(aID, aName, aNameRegional, aTier, 0, "Generates EU From Solar Power");
     }
 
-    public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+    public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String aDescription,
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-                           ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-                                 ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection != ForgeDirection.UP) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
                 Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
@@ -40,9 +43,9 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
             TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS) };
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
-            .glow()
-            .build() };
+                .addIcon(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
@@ -60,9 +63,32 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
             this.mTextures);
     }
 
+    private boolean valid = true;
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         World world = aBaseMetaTileEntity.getWorld();
+        // Check every 5 seconds for world conditions
+        if (aTick % 100 == 0) {
+            doWorldChecks(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity);
+        }
+        if (aTick % 20 == 0 && valid) {
+            aBaseMetaTileEntity.increaseStoredEnergyUnits(maxEUOutput() * 20, false);
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        doWorldChecks(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity);
+        super.onFirstTick(aBaseMetaTileEntity);
+    }
+
+    public void doWorldChecks(World world, IGregTechTileEntity aBaseMetaTileEntity) {
+        if ((world.isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F) || !world.isDaytime()
+            || !aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP)) {
+            valid = false;
+        }
     }
 
     @Override
@@ -97,12 +123,14 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 }
