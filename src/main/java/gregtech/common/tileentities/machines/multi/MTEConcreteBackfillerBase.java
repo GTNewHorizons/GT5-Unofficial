@@ -92,11 +92,16 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .getDisplayName();
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
         tt.addMachineType("Concrete Backfiller")
             .addInfo("Will fill in areas below it with light concrete. This goes through walls")
             .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
             .addInfo("Will pull back the pipes after it finishes that layer")
             .addInfo("Radius is " + getRadius() + " blocks")
+            .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
+            .addInfo(
+                "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
+                    : GTUtility.formatNumbers(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -129,8 +134,13 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
         this.mEUt = -6 * (1 << (tier << 1));
-        this.mMaxProgresstime = (workState == STATE_UPWARD ? 240 : 80) / (1 << tier);
+        this.mMaxProgresstime = calculateMaxProgressTime(tier);
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+    }
+
+    @Override
+    public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
+        return (int) Math.max(1, (workState == STATE_UPWARD || simulateWorking ? 240 : 80) / Math.pow(2, tier));
     }
 
     @Override

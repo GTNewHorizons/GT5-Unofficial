@@ -292,8 +292,8 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
-    public int getPollutionPerTick(final ItemStack aStack) {
-        return 0;
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return 4000;
     }
 
     @Override
