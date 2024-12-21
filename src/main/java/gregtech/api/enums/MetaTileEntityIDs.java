@@ -1467,7 +1467,7 @@ public enum MetaTileEntityIDs {
     AcidGeneratorLV(12793),
     HumongousInputHatch(12799),
     CreativeScanner(12800),
-    ResearchCompleter(13001), // In EMT
+    ResearchCompleter(13001),
     sofc1(13101),
     sofc2(13102),
     tfft(13104),
