@@ -24,6 +24,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -180,7 +181,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Neutron Activator")
+        tt.addMachineType("Neutron Activator, NA")
             .addInfo("Superluminal-velocity Motion.")
             .addInfo("The minimum height of the Speeding Pipe Casing is 4.")
             .addInfo("Per extra Speeding Pipe Casing will give time discount.")
@@ -465,9 +466,12 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         screenElements
             .widget(
                 new TextWidget(StatCollector.translateToLocal("gui.NeutronActivator.0"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(eV / 1_000_000d) + " MeV")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.IntegerSyncer(() -> eV, val -> eV = val));

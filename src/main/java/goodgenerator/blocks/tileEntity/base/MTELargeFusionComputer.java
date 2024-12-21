@@ -14,10 +14,8 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -29,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -49,7 +48,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
-import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.overclockdescriber.FusionOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
@@ -73,7 +71,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
     public static final String MAIN_NAME = "largeFusion";
     public static final int M = 1_000_000;
-    private boolean isLoadedChunk;
     public GTRecipe mLastRecipe;
     public int para;
     protected OverclockDescriber overclockDescriber;
@@ -235,45 +232,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && !aBaseMetaTileEntity.isAllowedToWork()) {
-            // if machine has stopped, stop chunkloading
-            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-            this.isLoadedChunk = false;
-        } else if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && !this.isLoadedChunk) {
-            // load a 3x3 area when machine is running
-            GTChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-            int offX = aBaseMetaTileEntity.getFrontFacing().offsetX;
-            int offZ = aBaseMetaTileEntity.getFrontFacing().offsetZ;
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + 1 + offX, getChunkZ() - 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() - 1 + offX, getChunkZ() - 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() + 1 + offZ));
-            GTChunkManager.requestChunkLoad(
-                (TileEntity) aBaseMetaTileEntity,
-                new ChunkCoordIntPair(getChunkX() + offX, getChunkZ() - 1 + offZ));
-            this.isLoadedChunk = true;
-        }
-
         if (aBaseMetaTileEntity.isServerSide()) {
             mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
@@ -488,12 +446,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         logic.setAvailableAmperage(getSingleHatchPower() * 32 / GTValues.V[tier()]);
     }
 
-    @Override
-    public void onRemoval() {
-        if (this.isLoadedChunk) GTChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
-        super.onRemoval();
-    }
-
     public int getChunkX() {
         return getBaseMetaTileEntity().getXCoord() >> 4;
     }
@@ -628,6 +580,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                         () -> StatCollector.translateToLocal("gui.LargeFusion.0") + " "
                             + numberFormat.format(energyStorageCache)
                             + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::maxEUStore, val -> energyStorageCache = val))
@@ -637,6 +590,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                         () -> StatCollector.translateToLocal("gui.LargeFusion.1") + " "
                             + numberFormat.format(getEUVar())
                             + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0))
             .widget(new FakeSyncWidget.LongSyncer(this::getEUVar, this::setEUVar));

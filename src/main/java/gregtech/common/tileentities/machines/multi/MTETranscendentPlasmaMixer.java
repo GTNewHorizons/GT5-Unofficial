@@ -117,7 +117,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Transcendent Mixer")
+        tt.addMachineType("Transcendent Mixer, TPM")
             .addInfo("Assisting in all your DTPF needs.")
             .addInfo("This multiblock will run in parallel according to the amount set")
             .addInfo("in the parallel menu. All inputs will scale, except time.")

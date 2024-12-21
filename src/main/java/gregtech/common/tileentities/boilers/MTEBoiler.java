@@ -361,7 +361,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return isAutomatable() && (aIndex == 0 && isItemValidFluidFilledItem(aStack))
+        return isAutomatable() && (aIndex == 0 && isValidFluidInputSlotItem(aStack))
             || (aIndex == 2 && isItemValidFuel(aStack));
     }
 
@@ -432,7 +432,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(this::isItemValidFluidFilledItem)
+            new SlotWidget(inventoryHandler, 0).setFilter(this::isValidFluidInputSlotItem)
                 .setPos(43, 25)
                 .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
             .widget(
@@ -473,8 +473,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor, 
                     .setSize(18, 18));
     }
 
-    private boolean isItemValidFluidFilledItem(@NotNull ItemStack stack) {
-        return isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
+    private boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
+        return GTUtility.fillFluidContainer(GTModHandler.getSteam(getSteamCapacity()), stack, false, true) != null
+            || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
     }
 
     protected Widget createFuelSlot() {

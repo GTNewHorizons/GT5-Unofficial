@@ -503,10 +503,11 @@ gt.blockmachines.hatch.param.tier.10.name=Parametrizer tXt
 gt.blockmachines.hatch.param.desc.0=For parametrization of Multiblocks
 gt.blockmachines.hatch.param.desc.1=E=mine*craft
 
-gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver
-gt.blockmachines.hatch.certain.tier.10.name=Uncertainty Resolver X
+gt.blockmachines.hatch.certain.tier.05.name=Uncertainty Resolver
+gt.blockmachines.hatch.certain.tier.07.name=Uncertainty Resolver X
 gt.blockmachines.hatch.certain.desc.0=Feeling certain, or not?
 gt.blockmachines.hatch.certain.desc.1=Schrödinger equation in a box
+gt.blockmachines.hatch.certain.desc.2=Deprecated! Use Uncertainty Resolver X
 
 gt.blockmachines.hatch.datain.tier.07.name=Optical Reception Connector
 gt.blockmachines.hatch.datain.desc.0=Quantum Data Input for Multiblocks
@@ -644,6 +645,7 @@ gt.blockcasingsBA0.8.desc.1=Who wouldn't want a 32k epoxy multi?
 
 #Multiblocks
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
+gt.blockmachines.multimachine.em.transformer.machinetype=Active Transformer, AT
 gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
 gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
@@ -699,6 +701,7 @@ gt.blockmachines.multimachine.em.switch.desc.0=Controller block of the Network S
 gt.blockmachines.multimachine.em.switch.desc.1=Routes and distributes computation
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
+gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
 gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced computer casing
 gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
