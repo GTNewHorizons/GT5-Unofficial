@@ -46,6 +46,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.forge.PlayerMainInvWrapper;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -887,6 +888,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                             ? getBaseMetaTileEntity().isActive() ? "Running perfectly" : "Turn on with Mallet"
                             : "")
                     .setSynced(false)
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 8))
             .widget(
@@ -906,17 +908,20 @@ public class GregtechMetaTileEntity_PowerSubStationController
             .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuAdded, val -> clientEUIn = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> "Avg In: " + numberFormat.format(clientEUIn) + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(new FakeSyncWidget.LongSyncer(this::getAverageEuConsumed, val -> clientEUOut = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> "Avg Out: " + numberFormat.format(clientEUOut) + " EU")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 30))
             .widget(new FakeSyncWidget.LongSyncer(this::computeEnergyTax, val -> clientEULoss = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(() -> "Powerloss: " + numberFormat.format(clientEULoss) + " EU per tick")
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 40))
             .widget(
@@ -932,6 +937,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                     .setSize(147, 5))
             .widget(
                 new TextWidget("Stored:").setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setTextAlignment(Alignment.CenterLeft)
                     .setPos(10, 132))
             .widget(
                 new FakeSyncWidget.LongSyncer(() -> getBaseMetaTileEntity().getStoredEU(), val -> clientEUStored = val))
@@ -940,6 +946,7 @@ public class GregtechMetaTileEntity_PowerSubStationController
                 return new Text(numberFormat.format(clientEUStored) + " EU")
                     .color(Utils.rgbtoHexValue((255 - colorScale), colorScale, 0));
             })
+                .setTextAlignment(Alignment.CenterLeft)
                 .setPos(10, 142))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(clientProgress * 100) + "%")
