@@ -17,6 +17,7 @@ public class PosteaTransformers implements Runnable {
     @Override
     public void run() {
         registerFrameboxTransformers();
+        registerProgrammedCircuitTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -70,6 +71,21 @@ public class PosteaTransformers implements Runnable {
             // Change this item into the correct frame item (make sure to keep amount)
             tag.setInteger("id", itemId);
             tag.setInteger("Damage", indexInMaterialList);
+            return tag;
+        });
+    }
+    private void registerProgrammedCircuitTransformers()
+    {
+        ItemStackReplacementManager.addItemReplacement("miscutils:item.BioRecipeSelector", (tag) -> {
+            Item circuitItem = GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit");
+            int itemId = Item.getIdFromItem(circuitItem);
+            tag.setInteger("id", itemId);
+            return tag;
+        });
+        ItemStackReplacementManager.addItemReplacement("miscutils:item.T3RecipeSelector", (tag) -> {
+            Item circuitItem = GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit");
+            int itemId = Item.getIdFromItem(circuitItem);
+            tag.setInteger("id", itemId);
             return tag;
         });
     }
