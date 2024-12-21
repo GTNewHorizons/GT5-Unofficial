@@ -2037,13 +2037,6 @@ public class LoaderGTBlockFluid implements Runnable {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.cobblestone, 1, WILDCARD))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L), new ItemStack(Items.flint, 1))
             .outputChances(10000, 1000)

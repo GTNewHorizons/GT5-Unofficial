@@ -132,7 +132,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
             && !this.mInputBusses.isEmpty()
             && !this.mEssentiaOutputHatches.isEmpty()) {
-            this.mParallel = Math.floor(this.mParallel += 1 << this.pTier);
+            this.mParallel = (len + 1) * Math.pow(2, this.pTier);
             return true;
         }
         return false;
@@ -220,7 +220,11 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[8] = "Node Power: " + EnumChatFormatting.RED
+        info[8] = "Parallel: " + EnumChatFormatting.YELLOW
+            + Math.round(this.mParallel)
+            + EnumChatFormatting.RESET
+            + " Node Power: "
+            + EnumChatFormatting.RED
             + this.nodePower
             + EnumChatFormatting.RESET
             + " Purification Efficiency: "
@@ -259,8 +263,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     protected void onEssentiaCellFound(int tier) {
-        this.mParallel += (1 << tier) * 0.25f;
-        this.pTier = Math.max(this.pTier, tier);
+        this.pTier = tier;
     }
 
     private boolean addEnergyHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
