@@ -241,6 +241,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             case 2 -> 10 * SECOND;
             case 3 -> 20 * SECOND;
             case 4 -> 17 * SECOND;
+            case 5 -> 32 * SECOND;
             default ->
                 // go to hell
                 1000000000;
@@ -396,6 +397,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 doMac(isCrushedOre, isCrushedPureOre);
                 doCentrifuge(isImpureDust, isPureDust);
             }
+            case 5 -> {
+                doMac(isOre);
+                doChemWash(isCrushedOre, isCrushedPureOre);
+                doThermal(isCrushedPureOre, isCrushedOre);
+                doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
+            }
             default -> {
                 return CheckRecipeResultRegistry.NO_RECIPE;
             }
@@ -433,7 +440,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
             return;
         }
-        sMode = (sMode + 1) % 5;
+        sMode = (sMode + 1) % 6;
         List<String> des = getDisplayMode(sMode);
         GTUtility.sendChatToPlayer(aPlayer, String.join("", des));
     }
@@ -785,6 +792,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 des.add(AQUA + CHEM_WASH + ARROW);
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CENTRIFUGE + ' ');
+            }
+            case 5 -> {
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CHEM_WASH + ARROW);
+                des.add(AQUA + THERMAL + ARROW);
+                des.add(AQUA + CRUSH + ' ');
             }
             default -> des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
         }
