@@ -149,8 +149,8 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 20;
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return 400;
     }
 
     @Override
@@ -207,6 +207,8 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Digester")
             .addInfo("Input ores and fluid, output water.")
+            .addInfo("Performs perfect overclocks")
+            .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Front bottom")
             .addInputHatch("Hint block with dot 1")
             .addInputBus("Hint block with dot 1")
