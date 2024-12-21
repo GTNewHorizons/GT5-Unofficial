@@ -269,7 +269,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
 
         survivialBuildPiece(STRUCTURE_PIECE_SHAFT, stackSize, 63, 14, 1, realBudget, env, false, true);
 
-        if (stackSize.stackSize > 0 && ringAmount < 1) {
+        if (stackSize.stackSize > 0) {
             built += survivialBuildPiece(
                 STRUCTURE_PIECE_FIRST_RING,
                 stackSize,
