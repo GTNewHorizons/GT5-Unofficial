@@ -1014,6 +1014,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Gets the pollution this Device outputs to a Muffler per tick (10000 = one Pullution Block)
+     * 
+     * @param aStack what is in controller
      */
     public int getPollutionPerTick(ItemStack aStack) {
         return getPollutionPerSecond(aStack) / 20;
@@ -1024,6 +1026,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * the code of the multiblock.
      *
      * This returns the unmodified raw pollution value, not the one after muffler discounts.
+     * 
+     * @param aStack what is in controller
      */
     public int getPollutionPerSecond(ItemStack aStack) {
         return 0;
