@@ -186,7 +186,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             .addInfo("Produces naquadah fuels.")
             .addInfo("Needs field restriction coils to control the fatal radiation.")
             .addInfo("Use higher tier coils to unlock more fuel types and perform more overclocks.")
-            .addInfo("Perform perfect overclocks.")
+            .addInfo("Performs perfect overclocks.")
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 15, 15, false)
             .addInputHatch("The casings adjacent to field restriction glass.")

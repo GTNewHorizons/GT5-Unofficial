@@ -175,7 +175,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Use 85% less energy in distillery mode")
+            .addInfo("Uses 85% less energy in distillery mode")
             .addInfo("250%/100% faster in DT/distillery mode")
             .addInfo("Right click the controller with screwdriver to change mode.")
             .addInfo("Max parallel dictated by tower tier and mode")

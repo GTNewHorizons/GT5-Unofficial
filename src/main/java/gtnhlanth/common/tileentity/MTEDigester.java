@@ -207,7 +207,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Digester")
             .addInfo("Input ores and fluid, output water.")
-            .addInfo("Perform perfect overclocks")
+            .addInfo("Performs perfect overclocks")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Front bottom")
             .addInputHatch("Hint block with dot 1")
