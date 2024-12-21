@@ -1,15 +1,11 @@
 package gtPlusPlus.xmod.gregtech;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTConfig;
 import gtPlusPlus.core.handler.CompatHandler;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
 import gtPlusPlus.recipes.CokeAndPyrolyseOven;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
@@ -27,7 +23,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 public class HandlerGT {
 
     public static GTConfig mMaterialProperties = null;
-    public static final List<WorldGen_GT> sWorldgenListEverglades = new ArrayList<>();
     public static MetaGeneratedTool sMetaGeneratedToolInstance;
 
     public static void preInit() {

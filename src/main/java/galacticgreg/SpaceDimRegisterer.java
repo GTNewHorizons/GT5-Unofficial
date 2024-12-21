@@ -2,14 +2,13 @@ package galacticgreg;
 
 import net.minecraft.init.Blocks;
 
-import galacticgreg.api.AsteroidBlockComb;
 import galacticgreg.api.Enums;
-import galacticgreg.api.GTOreTypes;
 import galacticgreg.api.ModContainer;
 import galacticgreg.api.SpecialBlockComb;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.ModContainers;
 import galacticgreg.registry.GalacticGregRegistry;
+import gregtech.api.enums.StoneType;
 
 /**
  * In this class, you'll find everything you need in order to tell GGreg what to do and where. Everything is done in
@@ -34,10 +33,10 @@ public class SpaceDimRegisterer {
         // If you happen to have an asteroid dim, just skip the blocklist, and setDimensionType() to
         // DimensionType.Asteroid
         // also don't forget to add at least one asteroid type, or nothing will generate!
-        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.Netherrack));
-        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.RedGranite));
-        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.BlackGranite));
-        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.EndStone));
+        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(StoneType.Netherrack);
+        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(StoneType.RedGranite);
+        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(StoneType.BlackGranite);
+        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(StoneType.Endstone);
 
         // These Blocks will randomly be generated
         DimensionDef.EndAsteroids.modDimensionDef.addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.glowstone));
@@ -61,13 +60,13 @@ public class SpaceDimRegisterer {
      * As GalactiCraftPlanets is an optional mod, don't hardlink it here
      */
     private static ModContainer setupGalactiCraftPlanets() {
-        // Overwrite ore blocks on mars with red granite ones. This will default to regular stone if not set
-        DimensionDef.Mars.modDimensionDef.setStoneType(GTOreTypes.RedGranite);
         ModContainers.GalacticraftMars.modContainer.addDimensionDef(DimensionDef.Mars.modDimensionDef);
 
-        DimensionDef.Asteroids.modDimensionDef.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.BlackGranite));
-        DimensionDef.Asteroids.modDimensionDef.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.RedGranite));
-        DimensionDef.Asteroids.modDimensionDef.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.Netherrack));
+        DimensionDef.Asteroids.modDimensionDef.addAsteroidMaterial(StoneType.BlackGranite);
+        DimensionDef.Asteroids.modDimensionDef.addAsteroidMaterial(StoneType.Moon);
+        DimensionDef.Asteroids.modDimensionDef.addAsteroidMaterial(StoneType.Asteroid);
+        DimensionDef.Asteroids.modDimensionDef.addAsteroidMaterial(StoneType.PackedIce);
+
         ModContainers.GalacticraftMars.modContainer.addDimensionDef(DimensionDef.Asteroids.modDimensionDef);
 
         return ModContainers.GalacticraftMars.modContainer;
@@ -117,10 +116,13 @@ public class SpaceDimRegisterer {
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.BarnardF.modDimensionDef);
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.TcetiE.modDimensionDef);
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.Miranda.modDimensionDef);
+
         DimensionDef.KuiperBelt.modDimensionDef.setDimensionType(Enums.DimensionType.Asteroid);
-        DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.RedGranite));
-        DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(new AsteroidBlockComb(GTOreTypes.BlackGranite));
+        DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(StoneType.RedGranite);
+        DimensionDef.KuiperBelt.modDimensionDef.addAsteroidMaterial(StoneType.BlackGranite);
+
         ModContainers.GalaxySpace.modContainer.addDimensionDef(DimensionDef.KuiperBelt.modDimensionDef);
+
         return ModContainers.GalaxySpace.modContainer;
     }
 
@@ -133,8 +135,12 @@ public class SpaceDimRegisterer {
         ModContainers.AmunRa.modContainer.addDimensionDef(DimensionDef.Anubis.modDimensionDef);
         ModContainers.AmunRa.modContainer.addDimensionDef(DimensionDef.Horus.modDimensionDef);
         ModContainers.AmunRa.modContainer.addDimensionDef(DimensionDef.Seth.modDimensionDef);
-        DimensionDef.MehenBelt.modDimensionDef.addAsteroidMaterial(GTOreTypes.BlackGranite);
+
+        DimensionDef.MehenBelt.modDimensionDef.addAsteroidMaterial(StoneType.BlackGranite);
+        DimensionDef.MehenBelt.modDimensionDef.addAsteroidMaterial(StoneType.Horus);
+        DimensionDef.Asteroids.modDimensionDef.addAsteroidMaterial(StoneType.Asteroid);
         ModContainers.AmunRa.modContainer.addDimensionDef(DimensionDef.MehenBelt.modDimensionDef);
+
         return ModContainers.AmunRa.modContainer;
     }
 }

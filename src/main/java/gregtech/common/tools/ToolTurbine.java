@@ -16,7 +16,7 @@ public abstract class ToolTurbine extends GTTool {
     public abstract float getBaseDamage();
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return false;
     }
 

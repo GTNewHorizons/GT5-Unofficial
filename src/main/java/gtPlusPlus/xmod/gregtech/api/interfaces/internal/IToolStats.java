@@ -156,7 +156,7 @@ public interface IToolStats extends gregtech.api.interfaces.IToolStats {
      *         check.
      */
     @Override
-    boolean isMinableBlock(Block aBlock, byte aMetaData);
+    boolean isMinableBlock(Block aBlock, int aMetaData);
 
     /**
      * This lets you modify the Drop List, when this type of Tool has been used.
@@ -165,7 +165,7 @@ public interface IToolStats extends gregtech.api.interfaces.IToolStats {
      */
     @Override
     int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY,
-        int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
+        int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
 
     /**
      * @return Returns a broken Version of the Item.

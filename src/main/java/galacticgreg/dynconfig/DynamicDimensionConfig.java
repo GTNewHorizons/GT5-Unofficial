@@ -16,6 +16,7 @@ public class DynamicDimensionConfig {
 
     public static class AsteroidConfig {
 
+        public boolean Enabled;
         public int MinSize;
         public int MaxSize;
         public int Probability;
@@ -80,6 +81,7 @@ public class DynamicDimensionConfig {
 
                     AsteroidConfig aConf = new AsteroidConfig();
 
+                    aConf.Enabled = AsteroidProperties.asteroidPropertyBuilder.enabled;
                     aConf.MinSize = AsteroidProperties.asteroidPropertyBuilder.sizeMin;
                     aConf.MaxSize = AsteroidProperties.asteroidPropertyBuilder.sizeMax;
                     aConf.Probability = AsteroidProperties.asteroidPropertyBuilder.probability;
@@ -88,7 +90,7 @@ public class DynamicDimensionConfig {
                     aConf.OreChance = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.baseOreChance;
                     aConf.OrePrimaryOffset = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.primaryToRareOreOffset;
                     aConf.SmallOreChance = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.smallOreChance;
-                    aConf.ObeyHeightLimits = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.obeyHeighLimits;
+                    aConf.ObeyHeightLimits = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.obeyHeightLimits;
                     aConf.HiddenOres = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.oresOnlyInsideAsteroids;
 
                     if (GalacticGreg.GalacticConfig.LootChestsEnabled) {
