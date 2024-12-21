@@ -104,10 +104,15 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
         }
         this.mOutputItems = new ItemStack[0];
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 10;
+        this.mMaxProgresstime = calculateMaxProgressTime(0);
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
+    }
+
+    @Override
+    public int calculateMaxProgressTime(int tier, boolean simulateWorking) {
+        return 10;
     }
 
     @Override
