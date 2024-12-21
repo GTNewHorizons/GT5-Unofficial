@@ -173,6 +173,11 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
         }
 
         @Override
+        public boolean couldBeValid(T o, World world, int x, int y, int z, ItemStack trigger) {
+            return check(o, world, x, y, z);
+        }
+
+        @Override
         public boolean spawnHint(T o, World world, int x, int y, int z, ItemStack trigger) {
             if (world.blockExists(x, y, z) && !world.isAirBlock(x, y, z))
                 // hint if this is obstructed. in case *someone* ever finish the transparent rendering
