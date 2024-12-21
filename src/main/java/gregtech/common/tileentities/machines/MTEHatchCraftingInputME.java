@@ -210,7 +210,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         @Override
         public FluidStack[] getFluidInputs() {
-            if (isFluidEmpty()) return new FluidStack[0];
+            if (isEmpty()) return new FluidStack[0];
             return fluidInventory.toArray(new FluidStack[0]);
         }
 
