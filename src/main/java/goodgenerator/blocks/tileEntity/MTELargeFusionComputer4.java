@@ -58,20 +58,12 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
                 "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
-            .addInfo("Make sure the whole structure is built in the 3x3")
-            .addInfo("chunk area of the ring center (not controller).")
             .addInfo("Performs 4/4 overclock.")
             .addInfo("Startup < 160,000,000 EU: 256x Parallel")
             .addInfo("Startup < 320,000,000 EU: 192x Parallel")
             .addInfo("Startup < 640,000,000 EU: 128x Parallel")
             .addInfo("Startup >= 640,000,000 EU: 64x Parallel")
-            .addInfo(
-                "Support" + EnumChatFormatting.BLUE
-                    + " Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.GRAY
-                    + " Energy/Laser Hatches!")
+            .addTecTechHatchInfo()
             .addCasingInfoMin("Fusion Machine Casing MK III", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil MK-II Prototype", 560, false)
             .addCasingInfoMin("Infinity Catalyst Frame Box", 128, false)

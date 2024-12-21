@@ -109,7 +109,7 @@ public class Client {
         public int separatorStyle;
 
         @Config.Comment("Which style should tooltip finisher separator lines have? 0: no line, 1: empty line, 2: dashed line, 3+: continuous line.")
-        @Config.DefaultInt(1)
+        @Config.DefaultInt(3)
         public int tooltipFinisherStyle;
     }
 
@@ -212,10 +212,6 @@ public class Client {
             @Config.LangKey("gt.recipe.category.arc_furnace_recycling")
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting arcFurnaceRecycling = ENABLE;
-
-            @Config.LangKey("gt.recipe.category.plasma_arc_furnace_recycling")
-            @Config.DefaultEnum("ENABLE")
-            public RecipeCategorySetting plasmaArcFurnaceRecycling = ENABLE;
 
             @Config.LangKey("gt.recipe.category.macerator_recycling")
             @Config.DefaultEnum("ENABLE")

@@ -603,7 +603,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.PLUTONIUM, new Materials[] { Materials.Plutonium }, Voltage.EV);
         addProcessGT(CombType.NAQUADAH, new Materials[] { Materials.Naquadah }, Voltage.IV);
         addProcessGT(CombType.NAQUADRIA, new Materials[] { Materials.Naquadria }, Voltage.LuV);
-        addProcessGT(CombType.THORIUM, new Materials[] { Materials.Thorium }, Voltage.EV);
+        addProcessGT(CombType.THORIUM, new Materials[] { Materials.Thorium }, Voltage.MV);
         addProcessGT(CombType.LUTETIUM, new Materials[] { Materials.Lutetium }, Voltage.IV);
         addProcessGT(CombType.AMERICIUM, new Materials[] { Materials.Americium }, Voltage.LuV);
         addProcessGT(CombType.NEUTRONIUM, new Materials[] { Materials.Neutronium }, Voltage.UHV);

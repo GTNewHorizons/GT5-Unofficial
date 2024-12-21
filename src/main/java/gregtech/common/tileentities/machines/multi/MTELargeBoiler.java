@@ -356,9 +356,10 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                             this.excessFuel += GTModHandler.getFuelValue(tInput) % 80;
                             this.mMaxProgresstime += this.excessFuel / 80;
                             this.excessFuel %= 80;
-                            this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(this.mMaxProgresstime));
-                            this.mEUt = adjustEUtForConfig(getEUt());
                             this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
+                            int burnTime = (int) (this.mMaxProgresstime * getLongBurntimeRatio(tInput));
+                            this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(burnTime));
+                            this.mEUt = adjustEUtForConfig(getEUt());
                             this.mOutputItems = new ItemStack[] { GTUtility.getContainerItem(tInput, true) };
                             tInput.stackSize -= 1;
                             updateSlots();
@@ -375,6 +376,11 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         this.mMaxProgresstime = 0;
         this.mEUt = 0;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+    }
+
+    private double getLongBurntimeRatio(ItemStack tInput) {
+        double logScale = Math.log((float) GTModHandler.getFuelValue(tInput) / 1600) / Math.log(9);
+        return 1 + logScale * 0.025;
     }
 
     abstract int runtimeBoost(int mTime);

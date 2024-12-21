@@ -74,9 +74,17 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
                 // Reverse recipes
                 {
-                    GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
                     GTRecipeRegistrator
-                        .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
+                        .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, false);
+                    GTRecipeRegistrator.registerReverseMacerating(
+                        aStack,
+                        aMaterial,
+                        aPrefix.mMaterialAmount,
+                        null,
+                        null,
+                        null,
+                        false,
+                        false);
                     if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),

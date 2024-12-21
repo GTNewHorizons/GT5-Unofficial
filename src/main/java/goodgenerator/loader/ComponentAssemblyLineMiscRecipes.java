@@ -32,7 +32,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.util.StackUtils;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -435,7 +434,7 @@ public class ComponentAssemblyLineMiscRecipes {
         }
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GameRegistry.findItemStack("dreamcraft", "item.PikoCircuit", 16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 16),
                 GTUtility.getIntegratedCircuit(16))
             .fluidInputs(Materials.SolderingAlloy.getMolten(72L))
             .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 12))
@@ -444,7 +443,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GameRegistry.findItemStack("dreamcraft", "item.QuantumCircuit", 16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 16),
                 GTUtility.getIntegratedCircuit(16))
             .fluidInputs(Materials.SolderingAlloy.getMolten(72L))
             .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, 13))

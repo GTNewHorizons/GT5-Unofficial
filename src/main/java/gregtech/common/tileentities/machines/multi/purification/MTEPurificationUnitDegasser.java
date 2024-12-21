@@ -66,7 +66,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         { "      AAAAA      ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "      AAAAA      " },
         { "    AAAAAAAAA    ", "      AAAAA      ", "                 ", "           C     ", "         CC      ", "        C        ", "      CC         ", "     C           ", "                 ", "                 ", "                 ", "           C     ", "         CC      ", "        C        ", "      CC         ", "     C           ", "                 ", "                 ", "                 ", "           C     ", "         CC      ", "        C        ", "      CC         ", "    CCAA~AA      ", "    AAAAAAAAA    " },
         { "  AAAAAAAAAAAAA  ", "   CAAAAAAAAA    ", "      BBBBB CC   ", "      BBBBB      ", "      BBBBB      ", "       BBB       ", "        B        ", "                 ", "    C            ", "                 ", "            C    ", "                 ", "                 ", "                 ", "                 ", "                 ", "    C            ", "                 ", "        B   C    ", "       BBB       ", "      BBBBB      ", "      BBBBB      ", "      BBBBB      ", "    AAAAAAAAA    ", "  AAAAAAAAAAAAA  " },
-        { "  AAAAAAAAAAAAA  ", "   AAAAAAAAAAAC  ", "  C BBB    BB    ", "    BB     BB    ", "     B     B     ", "     BB   BB     ", "     BBB BBB     ", "      BBBBB      ", "       BBB       ", "   C         C   ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "       BBB       ", "   C  BBBBB  C   ", "     BBB BBB     ", "     BB   BB     ", "     B     B     ", "    BB     BB    ", "    BB     BB    ", "   AAAAAAAAAAA   ", "  AAAAAAAAAAAAA  " },
+        { "  AAAAAAAAAAAAA  ", "   AAAAAAAAAAAC  ", "  C BB     BB    ", "    BB     BB    ", "     B     B     ", "     BB   BB     ", "     BBB BBB     ", "      BBBBB      ", "       BBB       ", "   C         C   ", "                 ", "                 ", "                 ", "                 ", "                 ", "                 ", "       BBB       ", "   C  BBBBB  C   ", "     BBB BBB     ", "     BB   BB     ", "     B     B     ", "    BB     BB    ", "    BB     BB    ", "   AAAAAAAAAAA   ", "  AAAAAAAAAAAAA  " },
         { " AAAAAAAAAAAAAAA ", "  AAAAAAAAAAAAA  ", "  CB         B   ", "   B         B   ", "    B       B    ", "    B       B    ", "    B       B    ", "    BB     BB    ", "     BB   BB  C  ", "      BBBBB      ", "  C    BBB       ", "                 ", "                 ", "                 ", "       BBB       ", "      BBBBB      ", "     BB   BB  C  ", "    BB     BB    ", "  C B       B    ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", "  AAAAAAAAAAAAAC ", " AAAAAAAAAAAAAAA " },
         { " AAAAAAAAAAAAAAA ", "  AAAAAAAAAAAAA  ", "   B         B   ", " C B         B   ", "   B         B   ", "   B         B   ", "   B         B   ", "    B       B  C ", "    B       B    ", "     B     B     ", "      B   B      ", " C     BBB       ", "                 ", "       BBB       ", "      B   B      ", "     B     B   C ", "    B       B    ", "    B       B    ", "   B         B   ", " C B         B   ", "   B         B   ", "   B         B   ", "   B         B   ", "  AAAAAAAAAAAAAC ", " AAAAAAAAAAAAAAA " },
         { "AAAAAAAAAAAAAAAAA", " AAAAAAAAAAAAAAA ", "  B           B  ", "  B           B  ", " CB           B  ", "   B         B   ", "   B         B C ", "   B         B   ", "    B       B    ", "    B       B    ", "     B     B     ", "      BBBBB      ", " C     BBB       ", "      BBBBB      ", "     B     B   C ", "    B       B    ", "    B       B    ", "   B         B   ", "   B         B   ", "   B         B   ", " CB           B  ", "  B           B  ", "  B           BC ", " AAAAAAAAAAAAAAA ", "AAAAAAAAAAAAAAAAA" },
@@ -411,7 +411,9 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 "If this bit is on, you must insert " + EnumChatFormatting.RED
                     + "4608L "
                     + EnumChatFormatting.WHITE
-                    + "Molten Neutronium")
+                    + "Molten Neutronium"
+                    + EnumChatFormatting.GRAY
+                    + ".")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
@@ -474,7 +476,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             .addCasingInfoExactlyColored(
                 "Bedrockium Frame Box",
                 EnumChatFormatting.GRAY,
-                126,
+                124,
                 EnumChatFormatting.GOLD,
                 false)
             .addController("Front center")
@@ -670,7 +672,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             FluidStack waterOutput = currentRecipe.mFluidOutputs[0];
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
-                (int) (waterOutput.amount * (outputMultiplier - 1.0f)));
+                (int) (this.effectiveParallel * waterOutput.amount * (outputMultiplier - 1.0f)));
             this.addOutput(bonusOutput);
         }
     }
@@ -768,7 +770,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Current control signal: " + EnumChatFormatting.YELLOW + controlSignal.toString());
+        info.add("Current control signal (binary): 0b" + EnumChatFormatting.YELLOW + controlSignal.toString());
         info.add("Current output multiplier: " + EnumChatFormatting.YELLOW + outputMultiplier);
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(

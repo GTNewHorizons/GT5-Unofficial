@@ -54,7 +54,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
         if (mExtendedFacing != newExtendedFacing) {
-            if (mMachine) stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
+            if (mMachine && isAllowedToWork()) stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
             mExtendedFacing = newExtendedFacing;
             final IGregTechTileEntity base = getBaseMetaTileEntity();
             mMachine = false;
@@ -121,6 +121,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
      * IStructureDefinition is expected to be evaluated against current instance only, and should not be used against
      * other instances, even for those of the same class.
      */
+    @Override
     public abstract IStructureDefinition<T> getStructureDefinition();
 
     protected abstract MultiblockTooltipBuilder createTooltip();

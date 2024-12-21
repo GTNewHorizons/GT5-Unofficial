@@ -53,7 +53,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -118,7 +117,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace")
+        tt.addMachineType("Blast Furnace, EBF")
             .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
             .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
             .addInfo("Each 1800K over the min. Heat allows for an overclock to be upgraded to a perfect overclock.")
@@ -270,24 +269,12 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
         return filterValidMTEs(mOutputHatches);
     }
 
-    /**
-     * @return 100 -> all released to air, 0 -> all dumped to hatch
-     */
-    public int getPollutionReduction() {
-        int reduction = 100;
-        for (MTEHatchMuffler tHatch : validMTEList(mMufflerHatches)) {
-            reduction = Math.min(tHatch.calculatePollutionReduction(100), reduction);
-        }
-        return reduction;
-    }
-
     protected void multiplyPollutionFluidAmount(@Nonnull FluidStack fluid) {
-        fluid.amount = fluid.amount * Math.min(100 - getPollutionReduction(), 100) / 100;
+        fluid.amount = fluid.amount * Math.min(100 - getAveragePollutionPercentage(), 100) / 100;
     }
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = getPollutionReduction();
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
@@ -349,7 +336,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
                 + " K",
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + mPollutionReduction
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %" };
     }

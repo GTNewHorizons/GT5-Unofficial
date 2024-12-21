@@ -3,11 +3,6 @@ package gregtech.common.items;
 public enum IDMetaTool01 {
 
     // Please pretty please, add your entries while conserving the order
-    SWORD(0),
-    PICKAXE(2),
-    SHOVEL(4),
-    AXE(6),
-    HOE(8),
     SAW(10),
     HARDHAMMER(12),
     SOFTMALLET(14),
@@ -24,10 +19,6 @@ public enum IDMetaTool01 {
     UNIVERSALSPADE(32),
     KNIFE(34),
     BUTCHERYKNIFE(36),
-    @Deprecated
-    SICKLE(38),
-    SENSE(40),
-    PLOW(42),
     PLUNGER(44),
     ROLLING_PIN(46),
     DRILL_LV(100),

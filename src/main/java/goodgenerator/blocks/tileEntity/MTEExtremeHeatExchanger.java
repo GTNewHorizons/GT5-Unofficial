@@ -203,17 +203,24 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger/Plasma Heat Exchanger")
-            .addInfo("Accept Hot fluid like lava, hot coolant or plasma.")
-            .addInfo("Output SC Steam/SH Steam/Steam.")
-            .addInfo("Check NEI for more info.")
+        tt.addMachineType("Heat Exchanger, EHE")
+            .addInfo("Outputs SH steam by cooling hot fluids with distilled water.")
+            .addInfo("Supplying more hot fluid than the threshold causes overheating,")
+            .addInfo("producing SC steam instead.")
+            .addInfo("Plasma always produces SC steam.")
+            .addInfo("Maximum input and output values per second are shown in NEI.")
+            .addInfo("Actual output is proportional to the amount of hot fluid inserted.")
+            .addInfo("Explodes if it runs out of water.")
             .addController("Front bottom")
-            .addOtherStructurePart("Input Hatch", "distilled water", 1)
-            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam/Steam", 2)
+            .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
+            .addCasingInfoExactly("EV+ Glass", 72, false)
+            .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
+            .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
+            .addOtherStructurePart("Input Hatch", "Distilled water", 1)
+            .addOtherStructurePart("Output Hatch", "SC Steam/SH Steam", 2)
             .addOtherStructurePart("Input Hatch", "Hot fluid or plasma", 3)
             .addOtherStructurePart("Output Hatch", "Cold fluid", 4)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
-            .addCasingInfoMin("Robust Tungstensteel Machine Casings", 25, false)
             .toolTipFinisher();
         return tt;
     }

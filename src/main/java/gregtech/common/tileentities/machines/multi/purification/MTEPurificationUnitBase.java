@@ -416,8 +416,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     public void addRecipeOutputs() {
-        this.addFluidOutputs(mOutputFluids);
-        this.addItemOutputs(mOutputItems);
+        if (mOutputFluids != null) this.addFluidOutputs(mOutputFluids);
+        if (mOutputItems != null) this.addItemOutputs(mOutputItems);
     }
 
     public void endCycle() {
@@ -436,6 +436,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         }
 
         // Reset recipe values for next iteration
+        checkRecipeResult = CheckRecipeResultRegistry.CYCLE_IDLE;
         this.mMaxProgresstime = 0;
         this.mProgresstime = 0;
         this.lEUt = 0;
