@@ -38,7 +38,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -199,7 +198,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
             batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
         }
-        int finalParallel = (int) (batchMultiplierMax * maxParallelBeforeBatchMode);
+        int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
 
         // Consume inputs and generate outputs
         ArrayList<ItemStack> smeltedOutputs = new ArrayList<>();
@@ -281,10 +280,6 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
     @Override
     public String[] getInfoData() {
-        int mPollutionReduction = 0;
-        for (final MTEHatchMuffler tHatch : validMTEList(mMufflerHatches))
-            mPollutionReduction = Math.max(tHatch.calculatePollutionReduction(100), mPollutionReduction);
-
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (final MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
@@ -349,7 +344,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
-                + mPollutionReduction
+                + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %" };
     }

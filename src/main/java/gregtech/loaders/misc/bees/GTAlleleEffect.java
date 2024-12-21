@@ -38,11 +38,15 @@ public abstract class GTAlleleEffect extends Allele implements IAlleleBeeEffect 
 
     @Override
     public IEffectData doEffect(IBeeGenome genome, IEffectData storedData, IBeeHousing housing) {
-        int ticksPassed = storedData.getInteger(0);
-        if (ticksPassed >= this.tickThrottle) {
-            storedData = this.doEffectTickThrottled(genome, storedData, housing);
+        if (storedData != null) {
+            int ticksPassed = storedData.getInteger(0);
+            if (ticksPassed >= this.tickThrottle) {
+                storedData = this.doEffectTickThrottled(genome, storedData, housing);
+            } else {
+                storedData.setInteger(0, ticksPassed + 1);
+            }
         } else {
-            storedData.setInteger(0, ticksPassed + 1);
+            storedData = this.doEffectTickThrottled(genome, storedData, housing);
         }
         return storedData;
     }

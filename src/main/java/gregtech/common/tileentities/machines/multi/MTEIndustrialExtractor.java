@@ -172,7 +172,7 @@ public class MTEIndustrialExtractor extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addController("Front Center")
             .addCasingInfoMin("Stainless Steel Machine Casing", 45, false)
             .addCasingInfoExactly("Item Pipe Casing", 19, true)
-            .addCasingInfoExactly("EV+ Glass", 8, false)
+            .addCasingInfoExactly("Any Glass", 8, false)
             .addInputBus("Any Stainless Steel Casing", 1)
             .addOutputBus("Any Stainless Steel Casing", 1)
             .addEnergyHatch("Any Stainless Steel Casing", 1)

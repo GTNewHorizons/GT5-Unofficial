@@ -627,11 +627,6 @@ public enum MetaTileEntityIDs {
     GT_Dehydrator_MV(911),
     GT_Dehydrator_HV(912),
     Amazon_Warehouse_Controller(942),
-    Super_Chest_LV(946),
-    Super_Chest_MV(947),
-    Super_Chest_HV(948),
-    Super_Chest_EV(949),
-    Super_Chest_IV(950),
     Pollution_Creator(951),
     Thaumcraft_Researcher(956),
     Machine_Adv_BlastFurnace(963),
@@ -1472,7 +1467,7 @@ public enum MetaTileEntityIDs {
     AcidGeneratorLV(12793),
     HumongousInputHatch(12799),
     CreativeScanner(12800),
-    ResearchCompleter(13001), // In EMT
+    ResearchCompleter(13001),
     sofc1(13101),
     sofc2(13102),
     tfft(13104),
@@ -1481,6 +1476,7 @@ public enum MetaTileEntityIDs {
     WORMHOLE_GENERATOR_CONTROLLER(13115),
     MegaChemicalReactor(13366),
     MegaOilCracker(13367),
+    DysonSwarmController(14001),
     PlanetaryGasSiphonController(14002),
     SpaceElevatorController(14003),
     SpaceElevatorModuleAssemblerT1(14004),
@@ -1944,7 +1940,11 @@ public enum MetaTileEntityIDs {
     ComponentAssemblyLine(32026),
     AntimatterForge(32027),
     WireLumiium(32737),
-    WireSignalium(32749),;
+    WireSignalium(32749),
+    NeutronAcceleratorUHV(32761),
+    NeutronAcceleratorUEV(32762),
+    NeutronAcceleratorUIV(32763),
+    NeutronAcceleratorUMV(32764),;
 
     public final int ID;
 
