@@ -3426,16 +3426,6 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidHeaterRecipes);
 
-        // PTMEG Manipulation
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
-            .itemOutputs(WerkstoffMaterialPool.PTMEGElastomer.get(OrePrefixes.plate, 1))
-            .fluidInputs(WerkstoffMaterialPool.PTMEGElastomer.getMolten(144))
-            .duration(2 * SECONDS)
-            .eut(64)
-            .addTo(fluidSolidifierRecipes);
-
         GTValues.RA.stdBuilder()
             .fluidInputs(WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1000))
             .fluidOutputs(Materials.SuperCoolant.getFluid(1000))

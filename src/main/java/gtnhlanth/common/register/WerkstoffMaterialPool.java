@@ -1034,7 +1034,8 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
             .addMolten()
-            .addMetalItems(),
+            .addMetalItems()
+            .addMetalCraftingSolidifierRecipes(),
         offsetID3 + 12,
         TextureSet.SET_DULL);
 
