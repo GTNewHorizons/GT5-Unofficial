@@ -72,8 +72,8 @@ public class BlockCasings10 extends BlockCasingsAbstract {
             case 6 -> Textures.BlockIcons.NEUTRONIUM_CASING.getIcon();
             case 7 -> Textures.BlockIcons.NEUTRONIUM_ACTIVE_CASING.getIcon();
             case 8 -> Textures.BlockIcons.NEUTRONIUM_STABLE_CASING.getIcon();
-            case 9 -> Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL.getIcon();
-            case 10 -> Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE.getIcon();
+            case 9 -> Textures.BlockIcons.COOLANT_DUCT_CASING.getIcon();
+            case 10 -> Textures.BlockIcons.HEATING_DUCT_CASING.getIcon();
             case 11 -> Textures.BlockIcons.EXTREME_DENSITY_CASING.getIcon();
             case 12 -> Textures.BlockIcons.RADIATION_ABSORBENT_CASING.getIcon();
             case 13 -> Textures.BlockIcons.MACHINE_CASING_MS160.getIcon();

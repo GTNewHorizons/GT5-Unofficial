@@ -210,7 +210,7 @@ public class MTEIndustrialElectromagneticSeparator
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Electromagnetic Separator/Polarizer")
+        tt.addMachineType("Electromagnetic Separator, Polarizer")
             .addInfo("Use screwdriver to switch mode")
             .addInfo("Insert an electromagnet into the electromagnet housing to use")
             .addInfo("Better electromagnets give further bonuses")
@@ -218,7 +218,7 @@ public class MTEIndustrialElectromagneticSeparator
             .beginStructureBlock(7, 6, 7, false)
             .addController("Front Center")
             .addCasingInfoMin("MagTech Casings", MIN_CASING, false)
-            .addOtherStructurePart("Any glass", "x12")
+            .addCasingInfoExactly("Any Glass", 12, false)
             .addOtherStructurePart("Magnetic Neodymium Frame Box", "x37")
             .addOtherStructurePart("Electromagnet Housing", "1 Block Above/Behind Controller", 2)
             .addInputBus("Any Casing", 1)
@@ -452,5 +452,17 @@ public class MTEIndustrialElectromagneticSeparator
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
+        return true;
     }
 }

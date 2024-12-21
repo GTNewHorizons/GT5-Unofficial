@@ -30,7 +30,6 @@ public class LHECoolantRegistry {
         double superheatedThreshold) {
         var coolant = new LHECoolantInfo(coldFluidName, hotFluidName, steamMultiplier, superheatedThreshold);
 
-        lheCoolants.put(coldFluidName, coolant);
         lheCoolants.put(hotFluidName, coolant);
     }
 

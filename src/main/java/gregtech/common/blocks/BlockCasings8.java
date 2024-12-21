@@ -90,7 +90,7 @@ public class BlockCasings8 extends BlockCasingsAbstract {
             case 6 -> Textures.BlockIcons.MACHINE_CASING_RHODIUM_PALLADIUM.getIcon();
             case 7 -> Textures.BlockIcons.MACHINE_CASING_IRIDIUM.getIcon();
             case 8 -> Textures.BlockIcons.MACHINE_CASING_MAGICAL.getIcon();
-            case 9 -> Textures.BlockIcons.MACHINE_CASING_ADVANCEDGAS.getIcon();
+            case 9 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_HSSS.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_RADIANT_NAQUADAH_ALLOY.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_PCB_TIER_1.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_PCB_TIER_2.getIcon();
@@ -183,6 +183,6 @@ public class BlockCasings8 extends BlockCasingsAbstract {
             }
         }
 
-        return Textures.BlockIcons.MACHINE_CASING_ADVANCEDGAS.getIcon();
+        return Textures.BlockIcons.MACHINE_CASING_TURBINE_HSSS.getIcon();
     }
 }

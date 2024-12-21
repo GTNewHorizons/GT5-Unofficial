@@ -14,7 +14,6 @@
 package bartworks.common.tileentities.multis;
 
 import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
-import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -262,14 +261,14 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Implosion Compressor")
+        tt.addMachineType("Implosion Compressor, EIC")
             .addInfo("Explosions are fun")
             .addInfo("Uses electricity instead of Explosives")
             .addInfo("Can parallel up to 4^(Tier - 1)")
             .addInfo("Tier is determined by containment block")
             .addInfo("Valid blocks: Neutronium, Infinity, Transcendent Metal, Spacetime, Universium")
             .addInfo("Minimum allowed energy hatch tier is one below recipe tier")
-            .addInfo("Supports " + TT + " energy hatches")
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
             .addController("Front 3rd layer center")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)

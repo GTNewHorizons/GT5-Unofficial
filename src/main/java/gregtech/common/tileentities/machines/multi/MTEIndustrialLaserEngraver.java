@@ -124,7 +124,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                 // Cube root the amperage to get the parallels
                 laserAmps = (int) Math.cbrt(laserSource.maxAmperesOut());
                 laserTier = (int) laserSource.getOutputTier();
-                tierName = GTValues.VN[laserTier];
+                tierName = GTValues.VN[laserTier + 1];
                 return true;
             }
         }
@@ -226,12 +226,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public void onDisableWorking() {
-        if (renderer != null) renderer.setShouldRender(false);
-        super.onDisableWorking();
-    }
-
-    @Override
     public void onBlockDestroyed() {
         if (renderer != null) renderer.setShouldRender(false);
         super.onBlockDestroyed();
@@ -240,14 +234,13 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Laser Engraver")
+        tt.addMachineType("Laser Engraver, HILE")
             .addInfo("200% faster than single block machines of the same voltage")
             .addInfo("Uses 80% of the EU normally required")
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
             .addInfo("Can perform recipes up to laser source tier + 1")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
-            .addInfo("Only accepts borosilicate glass (no, really)")
             .addInfo("UMV glass accepts all laser source hatches")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
@@ -255,8 +248,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addController("Front Center")
             .addCasingInfoMin("Laser Containment Casing", 35, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
+            .addCasingInfoExactly("Glass", 3, true)
             .addOtherStructurePart("Laser Resistant Plate", "x1")
-            .addOtherStructurePart("Borosilicate Glass", "x3")
             .addOtherStructurePart("Laser Source Hatch", "x1", 3)
             .addInputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
