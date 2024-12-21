@@ -18,5 +18,13 @@ public interface IFactoryNetwork<TSelf extends IFactoryNetwork<TSelf, TElement, 
 
     }
 
+    public default void onNetworkSubsumedPre(TSelf subsumer) {
+
+    }
+
+    public default void onNetworkSubsumedPost(TSelf subsumer) {
+
+    }
+
     public Collection<TElement> getElements();
 }
