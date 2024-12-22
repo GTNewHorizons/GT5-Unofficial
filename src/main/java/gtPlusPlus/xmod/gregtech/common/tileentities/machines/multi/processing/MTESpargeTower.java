@@ -293,11 +293,6 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     protected void addFluidOutputs(FluidStack[] outputFluids) {
         for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
             FluidStack tStack = outputFluids[i] != null ? outputFluids[i].copy() : null;
