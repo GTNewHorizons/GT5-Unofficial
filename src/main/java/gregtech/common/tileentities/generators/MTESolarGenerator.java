@@ -20,7 +20,14 @@ import gregtech.api.render.TextureFactory;
 public class MTESolarGenerator extends MTETieredMachineBlock {
 
     public MTESolarGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, new String[] { "Generates EU From Solar Power", "Immune to rain!" });
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { "Generates EU From Solar Power", "Does not generate power when raining",
+                "Cleans itself automatically", "Does not explode in rain!" });
     }
 
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String aDescription,
