@@ -5,24 +5,24 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
-import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyModuleBase;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
+import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.GTRecipe;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 
-public class CCInputConsumer implements GT_ParallelHelper.InputConsumer {
+public class CCInputConsumer implements ParallelHelper.InputConsumer {
 
-    private final VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> inputConveyors;
-    private final GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module;
+    private final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> inputConveyors;
+    private final MTENanochipAssemblyModuleBase<?> module;
 
-    public CCInputConsumer(VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> inputConveyors,
-        GT_MetaTileEntity_NanochipAssemblyModuleBase<?> module) {
+    public CCInputConsumer(VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> inputConveyors,
+        MTENanochipAssemblyModuleBase<?> module) {
         this.inputConveyors = inputConveyors;
         this.module = module;
     }
 
     @Override
-    public void consume(GT_Recipe recipe, int amountMultiplier, FluidStack[] aFluidInputs, ItemStack[] aInputs) {
+    public void consume(GTRecipe recipe, int amountMultiplier, FluidStack[] aFluidInputs, ItemStack[] aInputs) {
         // Note that the aInputs[] parameter can be ignored, since this is what the multiblock contains.
         // We don't care about this, we just want to consume whatever we can from the input conveyor hatches
         for (ItemStack input : recipe.mInputs) {
@@ -30,9 +30,9 @@ public class CCInputConsumer implements GT_ParallelHelper.InputConsumer {
             ItemStack toConsumeStack = input.copy();
             toConsumeStack.stackSize *= amountMultiplier;
 
-            for (ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> hatchList : inputConveyors.allHatches()) {
+            for (ArrayList<MTEHatchVacuumConveyorInput> hatchList : inputConveyors.allHatches()) {
                 boolean done = false;
-                for (GT_MetaTileEntity_Hatch_VacuumConveyor_Input conveyor : hatchList) {
+                for (MTEHatchVacuumConveyorInput conveyor : hatchList) {
                     int consumed = conveyor.tryConsume(toConsumeStack);
                     toConsumeStack.stackSize -= consumed;
                     if (toConsumeStack.stackSize <= 0) {
