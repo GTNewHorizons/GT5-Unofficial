@@ -16,6 +16,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.math.LongMath;
 
+import galacticgreg.api.ModDimensionDef;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
@@ -53,14 +55,19 @@ public class EyeOfHarmonyRecipeStorage {
                 BlockDimensionDisplay blockDimensionDisplay = (BlockDimensionDisplay) ModBlocks.blocks
                     .get(dimAbbreviation);
 
+                ModDimensionDef dimensionDef = DimensionDef.DEF_BY_WORLD_NAME.get(DimensionHelper.getFullName(dimAbbreviation));
+
+                if (dimensionDef != null && !dimensionDef.hasEoHRecipe) continue;
+
                 if (dimAbbreviation.equals("DD")) {
                     specialDeepDarkRecipe(this, blockDimensionDisplay);
                 } else {
 
-                    GT5OreLayerHelper.NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.dimToOreWrapper
+                    GT5OreLayerHelper.NormalOreDimensionWrapper normalOre = GT5OreLayerHelper.ORE_VEINS_BY_DIM
                         .getOrDefault(dimAbbreviation, null);
                     GT5OreSmallHelper.SmallOreDimensionWrapper smallOre = GT5OreSmallHelper.SMALL_ORES_BY_DIM
                         .getOrDefault(dimAbbreviation, null);
+
                     if (normalOre == null && smallOre == null) {
                         // No ores are generated in this dimension. Fail silently.
                         continue;

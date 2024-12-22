@@ -66,14 +66,14 @@ public class CSVMaker implements Runnable {
 
     public void runVeins() {
         try {
-            Iterator<Map.Entry<String, OreLayerWrapper>> it = GT5OreLayerHelper.mapOreLayerWrapper.entrySet()
+            Iterator<Map.Entry<String, OreLayerWrapper>> it = GT5OreLayerHelper.ORE_VEINS_BY_NAME.entrySet()
                 .iterator();
             List<Oremix> OreVeins = new ArrayList<>();
             while (it.hasNext()) {
                 Oremix oremix = new Oremix();
 
                 Map.Entry<String, OreLayerWrapper> pair = it.next();
-                Set<String> Dims = GT5OreLayerHelper.bufferedDims.get(pair.getValue());
+                Set<String> Dims = pair.getValue().abbrDimNames;
                 OreLayerWrapper oreLayer = pair.getValue();
                 oremix.setOreMixName(oreLayer.veinName);
                 oremix.setPrimary(oreLayer.ores[0].getInternalName());

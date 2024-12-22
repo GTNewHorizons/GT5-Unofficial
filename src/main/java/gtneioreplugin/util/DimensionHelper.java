@@ -277,14 +277,15 @@ public class DimensionHelper {
         return abbreviatedName;
     }
 
-    public static String getFullName(String dimName) {
+    public static String getFullName(String abbrDimName) {
 
-        return switch (dimName) {
+        return switch (abbrDimName) {
             case "Ow" -> OW; // Overworld
             case "Ne" -> NETHER; // Nether
             case "TF" -> TWILIGHT_FOREST; // Twilight
             case "ED" -> THE_END; // The End because En = Encalus
             case "EA" -> ENDASTEROIDS; // EndAsteroid
+            case "Eg" -> EVERGLADES;
             // T1
             case "Mo" -> MOON; // GalacticraftCore_Moon
             // T2
@@ -333,7 +334,7 @@ public class DimensionHelper {
             // T10
             case "DD" -> DEEPDARK; // Underdark
             default -> {
-                throw new IllegalStateException("String: " + dimName + " has no abbredged name!");
+                throw new IllegalStateException("String: " + abbrDimName + " has no abbredged name!");
             }
         };
     }

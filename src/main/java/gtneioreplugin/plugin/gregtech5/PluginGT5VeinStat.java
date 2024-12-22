@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IMaterial;
+import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
@@ -126,7 +127,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     }
 
     private Collection<OreLayerWrapper> getAllVeins() {
-        return GT5OreLayerHelper.mapOreLayerWrapper.values();
+        return GT5OreLayerHelper.ORE_VEINS_BY_NAME.values();
     }
 
     @Override
@@ -144,7 +145,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
 
     private OreLayerWrapper getOreLayer(int recipe) {
         CachedVeinStatRecipe crecipe = (CachedVeinStatRecipe) this.arecipes.get(recipe);
-        return GT5OreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
+        return GT5OreLayerHelper.ORE_VEINS_BY_NAME.get(crecipe.veinName);
     }
 
     private static void drawVeinName(OreLayerWrapper oreLayer) {
@@ -186,14 +187,12 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     }
 
     private String[] getDimNameArrayFromVeinName(String veinName) {
-        OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
-        String[] dims = GT5OreLayerHelper.bufferedDims.get(oreLayer)
-            .toArray(new String[0]);
+        OreLayerWrapper oreLayer = GT5OreLayerHelper.ORE_VEINS_BY_NAME.get(veinName);
+        String[] dims = oreLayer.abbrDimNames.toArray(new String[0]);
         Arrays.sort(
             dims,
             Comparator.comparingInt(
-                s -> Arrays.asList(DimensionHelper.DimNameDisplayed)
-                    .indexOf(s)));
+                s -> GTUtility.indexOf(DimensionHelper.DimNameDisplayed, s)));
         return dims;
     }
 
