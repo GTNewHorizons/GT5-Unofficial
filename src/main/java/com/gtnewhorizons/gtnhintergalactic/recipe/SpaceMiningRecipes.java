@@ -1033,11 +1033,11 @@ public class SpaceMiningRecipes {
             while (i < recipes.size() - 1) {
                 SpaceMiningData data = recipes.get(i).getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
                 if (data == null) throw new IllegalStateException("Illegal space miner recipe found");
-                int weight = data.recipeWeight;
-                if (r <= weight) {
+                r -= data.recipeWeight;
+                if (r <= 0) {
                     break;
                 }
-                r -= weight;
+                i++;
             }
             return recipes.get(i);
         }
