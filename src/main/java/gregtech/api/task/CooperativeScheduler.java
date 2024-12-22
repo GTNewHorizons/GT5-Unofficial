@@ -67,7 +67,12 @@ public enum CooperativeScheduler {
                 continue;
             }
 
-            future.run();
+            try {
+                future.run();
+            } catch (Throwable t) {
+                GTMod.GT_FML_LOGGER.error("Caught error while running task; it will be cancelled (" + future.name + " " + future.task + ")", t);
+                future.cancel(true);
+            }
 
             if (!future.running) {
                 iter.remove();
