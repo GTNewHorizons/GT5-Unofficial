@@ -2,6 +2,13 @@ package com.gtnewhorizons.gtnhintergalactic.recipe;
 
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,6 +26,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 
 /**
  * Available asteroids for space mining are defined here
@@ -33,10 +41,15 @@ public class SpaceMiningRecipes {
     private static final ItemStack[] MINING_DRILLS = new ItemStack[ItemMiningDrones.DroneMaterials.values().length];
     /** Rods used for recipe creation */
     private static final ItemStack[] MINING_RODS = new ItemStack[ItemMiningDrones.DroneMaterials.values().length];
+    /** Map from mining drones back to tiers */
+    private static final Map<GTUtility.ItemId, Integer> DRONE_TIERS = new HashMap<>();
 
     static {
         for (ItemMiningDrones.DroneTiers droneTier : ItemMiningDrones.DroneTiers.values()) {
-            MINING_DRONES[droneTier.ordinal()] = new ItemStack(IGItems.MiningDrones, 0, droneTier.ordinal());
+            int i = droneTier.ordinal();
+            ItemStack drone = new ItemStack(IGItems.MiningDrones, 0, i);
+            MINING_DRONES[i] = drone;
+            DRONE_TIERS.put(GTUtility.ItemId.createWithoutNBT(drone), i);
         }
         for (ItemMiningDrones.DroneMaterials mat : ItemMiningDrones.DroneMaterials.values()) {
             MINING_DRILLS[mat.ordinal()] = GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, mat.getMaterial(), 4);
@@ -51,6 +64,7 @@ public class SpaceMiningRecipes {
 
         // Coal Asteroid
         addRecipesToDrones(
+                "coalAsteroid",
                 null,
                 null,
                 new int[] { 7000, 1000, 2000 },
@@ -69,6 +83,7 @@ public class SpaceMiningRecipes {
                 200);
         // Salt Asteroid
         addRecipesToDrones(
+                "saltAsteroid",
                 null,
                 null,
                 new int[] { 4000, 2000, 4000 },
@@ -87,6 +102,7 @@ public class SpaceMiningRecipes {
                 300);
         // Iron Asteroid
         addRecipesToDrones(
+                "ironAsteroid",
                 null,
                 null,
                 new int[] { 4000, 2000, 1000, 1000, 500, 500 },
@@ -107,6 +123,7 @@ public class SpaceMiningRecipes {
 
         // Copper Asteroid
         addRecipesToDrones(
+                "copperAsteroid",
                 null,
                 null,
                 new int[] { 5000, 3000, 2000 },
@@ -126,6 +143,7 @@ public class SpaceMiningRecipes {
 
         // Tin Asteroid
         addRecipesToDrones(
+                "tinAsteroid",
                 null,
                 null,
                 new int[] { 2000, 1500, 6000, 500 },
@@ -145,6 +163,7 @@ public class SpaceMiningRecipes {
 
         // Aluminium Asteroid
         addRecipesToDrones(
+                "aluminiumAsteroid",
                 null,
                 null,
                 new int[] { 5000, 3500, 1500 },
@@ -164,6 +183,7 @@ public class SpaceMiningRecipes {
 
         // Nickel Asteroid
         addRecipesToDrones(
+                "nickelAsteroid",
                 null,
                 null,
                 new int[] { 4000, 3000, 3000 },
@@ -183,6 +203,7 @@ public class SpaceMiningRecipes {
 
         // Chrome Asteroid
         addRecipesToDrones(
+                "chromeAsteroid",
                 null,
                 null,
                 new int[] { 5000, 3000, 2000 },
@@ -202,6 +223,7 @@ public class SpaceMiningRecipes {
 
         // PlatLine Ore Asteroid
         addRecipesToDrones(
+                "platlineOreAsteroid",
                 null,
                 null,
                 new int[] { 6000, 2000, 1500, 500 },
@@ -221,6 +243,7 @@ public class SpaceMiningRecipes {
 
         // Gem Asteroid
         addRecipesToDrones(
+                "gemAsteroid",
                 null,
                 null,
                 new int[] { 1500, 1500, 1500, 1500, 750, 750, 750, 1000, 500, 500, 400, 100 },
@@ -242,6 +265,7 @@ public class SpaceMiningRecipes {
 
         // Indium Asteroid
         addRecipesToDrones(
+                "indiumAsteroid",
                 null,
                 null,
                 new int[] { 6000, 2000, 1000, 1000 },
@@ -261,6 +285,7 @@ public class SpaceMiningRecipes {
 
         // Thaumium Asteroid
         addRecipesToDrones(
+                "thaumiumAsteroid",
                 null,
                 null,
                 new int[] { 6000, 4000 },
@@ -280,6 +305,7 @@ public class SpaceMiningRecipes {
 
         // Basic Magic Asteroid
         addRecipesToDrones(
+                "basicMagicAsteroid",
                 null,
                 null,
                 new int[] { 3500, 3500, 500, 500, 500, 500, 500, 500 },
@@ -301,6 +327,7 @@ public class SpaceMiningRecipes {
 
         // Niobium Asteroid
         addRecipesToDrones(
+                "niobiumAsteroid",
                 null,
                 null,
                 new int[] { 3000, 2000, 1500, 3500 },
@@ -320,6 +347,7 @@ public class SpaceMiningRecipes {
 
         // Quartz Asteroid
         addRecipesToDrones(
+                "quartzAsteroid",
                 null,
                 null,
                 new int[] { 3000, 2250, 2250, 2500 },
@@ -340,6 +368,7 @@ public class SpaceMiningRecipes {
 
         // Lutetium Asteroid
         addRecipesToDrones(
+                "lutetiumAsteroid",
                 null,
                 null,
                 new int[] { 1500, 1000, 1500, 500, 5500 },
@@ -360,6 +389,7 @@ public class SpaceMiningRecipes {
 
         // Silicon Asteroid
         addRecipesToDrones(
+                "siliconAsteroid",
                 null,
                 null,
                 new int[] { 2000, 4500, 2500 },
@@ -379,6 +409,7 @@ public class SpaceMiningRecipes {
 
         // Phosphate Asteroid
         addRecipesToDrones(
+                "phosphateAsteroid",
                 null,
                 null,
                 new int[] { 4500, 2500, 3000 },
@@ -398,6 +429,7 @@ public class SpaceMiningRecipes {
 
         // Lead Asteroid
         addRecipesToDrones(
+                "leadAsteroid",
                 null,
                 null,
                 new int[] { 3000, 2500, 2500, 2000 },
@@ -417,6 +449,7 @@ public class SpaceMiningRecipes {
 
         // Adamantium Asteroid
         addRecipesToDrones(
+                "adamantiumAsteroid",
                 null,
                 null,
                 new int[] { 2500, 2000, 2000, 2000, 1500 },
@@ -437,6 +470,7 @@ public class SpaceMiningRecipes {
 
         // Tungsten-Titanium Asteroid
         addRecipesToDrones(
+                "tungstenTitaniumAsteroid",
                 null,
                 null,
                 new int[] { 3000, 3000, 2000, 1500, 500 },
@@ -457,6 +491,7 @@ public class SpaceMiningRecipes {
 
         // Blue Asteroid
         addRecipesToDrones(
+                "blueAsteroid",
                 null,
                 null,
                 new int[] { 6000, 2000, 1000, 1000 },
@@ -476,6 +511,7 @@ public class SpaceMiningRecipes {
 
         // Aluminium-LanthLine Asteroid
         addRecipesToDrones(
+                "aluminiumLanthlineAsteroid",
                 null,
                 null,
                 new int[] { 3500, 1500, 2500, 2500 },
@@ -496,6 +532,7 @@ public class SpaceMiningRecipes {
         if (Loader.isModLoaded("miscutils")) {
             // Everglades Asteroid
             addRecipesToDrones(
+                    "evergladesAsteroid",
                     null,
                     null,
                     new int[] { 600, 400, 1500, 1500, 1000, 400, 1000, 600, 1000, 1000, 1000 },
@@ -525,6 +562,7 @@ public class SpaceMiningRecipes {
 
         // Draconic Asteroid
         addRecipesToDrones(
+                "draconicAsteroid",
                 null,
                 null,
                 new int[] { 6500, 2500, 1000 },
@@ -542,8 +580,9 @@ public class SpaceMiningRecipes {
                 ItemMiningDrones.DroneTiers.UHV.ordinal(),
                 190);
 
-        // CHEEEEEESEEE
+        // CHEEEEEESEEE Asteroid
         addRecipesToDrones(
+                "cheeseAsteroid",
                 null,
                 null,
                 new int[] { 10000 },
@@ -563,6 +602,7 @@ public class SpaceMiningRecipes {
 
         // Ardite/Cobalt Asteroid
         addRecipesToDrones(
+                "arditeCobaltAsteroid",
                 null,
                 null,
                 new int[] { 3750, 3750, 2500 },
@@ -582,6 +622,7 @@ public class SpaceMiningRecipes {
 
         // Europium Asteroid
         addRecipesToDrones(
+                "europiumAsteroid",
                 null,
                 null,
                 new int[] { 4000, 4000, 1500, 500 },
@@ -601,6 +642,7 @@ public class SpaceMiningRecipes {
 
         // Cosmic Asteroid
         addRecipesToDrones(
+                "cosmicAsteroid",
                 null,
                 null,
                 new int[] { 2500, 2500, 2500, 2500 },
@@ -621,6 +663,7 @@ public class SpaceMiningRecipes {
 
         // Infinity Catalyst Asteroid
         addRecipesToDrones(
+                "infinityCatalystAsteroid",
                 null,
                 null,
                 new int[] { 5000, 3000, 2000 },
@@ -638,8 +681,9 @@ public class SpaceMiningRecipes {
                 ItemMiningDrones.DroneTiers.UXV.ordinal(),
                 150);
 
-        // Ichorium
+        // Ichorium Asteroid
         addRecipesToDrones(
+                "ichoriumAsteroid",
                 null,
                 null,
                 new int[] { 4500, 3000, 1500, 500, 500 },
@@ -660,6 +704,7 @@ public class SpaceMiningRecipes {
 
         // Clay asteroid
         addRecipesToDrones(
+                "clayAsteroid",
                 null,
                 null,
                 new int[] { 10000 },
@@ -679,6 +724,7 @@ public class SpaceMiningRecipes {
         if (Loader.isModLoaded("HardcoreEnderExpansion")) {
             // Mysterious Crystal Asteroid
             addRecipesToDrones(
+                    "mysteriousCrystalAsteroid",
                     null,
                     null,
                     new int[] { 7400, 2000, 500, 98, 2 },
@@ -703,6 +749,7 @@ public class SpaceMiningRecipes {
         if (Loader.isModLoaded("bartworks")) {
             // Uranium-Plutonium Asteroid
             addRecipesToDrones(
+                    "uraniumPlutoniumAsteroid",
                     null,
                     null,
                     new int[] { 3000, 2450, 2450, 2000, 100 },
@@ -723,6 +770,7 @@ public class SpaceMiningRecipes {
 
             // Holmium/Samarium Asteroid
             addRecipesToDrones(
+                    "holmiumSamariumAsteroid",
                     null,
                     null,
                     new int[] { 2000, 3000, 3000, 2000 },
@@ -743,6 +791,7 @@ public class SpaceMiningRecipes {
 
             // PlatLine Pure Asteroid
             addRecipesToDrones(
+                    "platlinePureAsteroid",
                     null,
                     null,
                     new int[] { 3800, 2000, 1500, 500, 1200, 1000 },
@@ -764,6 +813,7 @@ public class SpaceMiningRecipes {
 
             // Magnesium Asteroid
             addRecipesToDrones(
+                    "magnesiumAsteroid",
                     null,
                     null,
                     new int[] { 4000, 3000, 3000 },
@@ -786,6 +836,7 @@ public class SpaceMiningRecipes {
         if (Loader.isModLoaded("GoodGenerator")) {
             // Lanthanum Asteroid
             addRecipesToDrones(
+                    "lanthanumAsteroid",
                     null,
                     null,
                     new int[] { 1500, 2000, 3000, 3500 },
@@ -806,6 +857,7 @@ public class SpaceMiningRecipes {
 
             // Tengam Asteroid
             addRecipesToDrones(
+                    "tengamAsteroid",
                     null,
                     null,
                     new int[] { 100, 1650, 3500, 2250, 2500 },
@@ -826,6 +878,7 @@ public class SpaceMiningRecipes {
 
             // Naquadah Asteroid
             addRecipesToDrones(
+                    "naquadahAsteroid",
                     null,
                     null,
                     new int[] { 4000, 3500, 2500 },
@@ -849,6 +902,7 @@ public class SpaceMiningRecipes {
         if (Loader.isModLoaded("kubatech")) {
             // Draconic Core Ruin
             addRecipesToDrones(
+                    "draconicCoreRuin",
                     null,
                     null,
                     new int[] { 100, 100, 9800 },
@@ -869,8 +923,20 @@ public class SpaceMiningRecipes {
         }
     }
 
-    private static void addRecipesToDrones(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int[] aChances,
-            ItemStack[] aItemOutputs, int minSize, int maxSize, int minDistance, int maxDistance,
+    /**
+     * Returns the drone (not consumed) and other items used for mining operations with a given drone tier. NB: the
+     * first entry in the result is the drone, which has stack size zero
+     */
+    public static ItemStack[] getTieredInputs(int tier) {
+        return new ItemStack[] { MINING_DRONES[tier], MINING_DRILLS[tier], MINING_RODS[tier] };
+    }
+
+    public static Optional<Integer> getTierFromDrone(ItemStack drone) {
+        return Optional.ofNullable(DRONE_TIERS.getOrDefault(GTUtility.ItemId.createWithoutNBT(drone), null));
+    }
+
+    private static void addRecipesToDrones(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+            int[] aChances, ItemStack[] aItemOutputs, int minSize, int maxSize, int minDistance, int maxDistance,
             int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int startDroneTier,
             int endDroneTier, int recipeWeight) {
         ItemStack[] tItemInputs;
@@ -885,6 +951,7 @@ public class SpaceMiningRecipes {
             tItemInputs[1] = MINING_DRILLS[i];
             tItemInputs[2] = MINING_RODS[i];
             IG_RecipeAdder.addSpaceMiningRecipe(
+                    asteroidName,
                     tItemInputs,
                     aFluidInputs,
                     aChances,
@@ -901,10 +968,10 @@ public class SpaceMiningRecipes {
         }
     }
 
-    private static void addRecipesToDrones(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int[] aChances,
-            Materials[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance, int maxDistance,
-            int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int startDroneTier,
-            int endDroneTier, int recipeWeight) {
+    private static void addRecipesToDrones(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+            int[] aChances, Materials[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance,
+            int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt,
+            int startDroneTier, int endDroneTier, int recipeWeight) {
         ItemStack[] tItemInputs;
         if (aItemInputs == null) {
             tItemInputs = new ItemStack[3];
@@ -917,6 +984,7 @@ public class SpaceMiningRecipes {
             tItemInputs[1] = MINING_DRILLS[i];
             tItemInputs[2] = MINING_RODS[i];
             IG_RecipeAdder.addSpaceMiningRecipe(
+                    asteroidName,
                     tItemInputs,
                     aFluidInputs,
                     aChances,
@@ -931,6 +999,40 @@ public class SpaceMiningRecipes {
                     (int) Math.ceil(duration / Math.sqrt(i - startDroneTier + 1)),
                     (int) Math.ceil(EUt * Math.sqrt(i - startDroneTier + 1)),
                     recipeWeight);
+        }
+    }
+
+    /**
+     * A list of space mining recipes with precomputed total weight and total "time density", usually cached in the
+     * space mining module
+     * 
+     * @author hacatu
+     */
+    public static class WeightedAsteroidList {
+
+        public List<IG_SpaceMiningRecipe> recipes;
+        public int totalWeight;
+        public int totalTimedensity;
+
+        public WeightedAsteroidList(Stream<IG_SpaceMiningRecipe> inRecipes) {
+            recipes = inRecipes.collect(Collectors.toList());
+            for (IG_SpaceMiningRecipe recipe : recipes) {
+                totalWeight += recipe.recipeWeight;
+                totalTimedensity += recipe.recipeWeight * recipe.mDuration;
+            }
+        }
+
+        public IG_SpaceMiningRecipe getRandom() {
+            int i = 0;
+            double r = Math.random() * totalWeight;
+            while (i < recipes.size() - 1) {
+                int weight = recipes.get(i).recipeWeight;
+                if (r <= weight) {
+                    break;
+                }
+                r -= weight;
+            }
+            return recipes.get(i);
         }
     }
 }

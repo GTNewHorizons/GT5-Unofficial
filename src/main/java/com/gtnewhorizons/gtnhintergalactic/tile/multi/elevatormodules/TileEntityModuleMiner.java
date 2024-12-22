@@ -5,6 +5,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,13 +24,18 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
+import com.gtnewhorizons.gtnhintergalactic.item.ItemMiningDrones;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_SpaceMiningRecipe;
+import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningRecipes;
+import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningRecipes.WeightedAsteroidList;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
+import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner.AsteroidSummary;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
@@ -71,6 +77,11 @@ import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
+/**
+ * Base class for space mining modules
+ * 
+ * @author minecraft7771
+ */
 public abstract class TileEntityModuleMiner extends TileEntityModuleBase implements IOverclockDescriptionProvider {
 
     /** Base chance to get a bonus stack from space mining, will be multiplied with other factors */
@@ -165,6 +176,15 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     protected HashSet<String> configuredOres;
     /** Handler that holds the visual whitelist */
     protected ItemStackHandler whiteListHandler = new ItemStackHandler(WHITELIST_SIZE);
+    /** The distance when prevRecipes was computed */
+    protected int prevDistance = 0;
+    /** Bitmask of tiers for which a drone, drills, and rods were present when prevRecipes was computed */
+    protected int prevAvailDroneMask = 0;
+    /**
+     * The last computed list of possible recipes. Can be reused if distance etc don't change, and used to display stats
+     * to the user
+     */
+    protected WeightedAsteroidList prevRecipes = null;
 
     /**
      * Create new Space Mining module
@@ -299,16 +319,33 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         // Get all asteroid pools that this drone can pull from
         long tVoltage = getMaxInputVoltage();
         int distance = (int) distanceDisplay.get();
-        List<IG_SpaceMiningRecipe> recipes = IGRecipeMaps.spaceMiningRecipes.findRecipeQuery().items(inputs)
-                .fluids(fluidInputs).voltage(tVoltage).findAll().filter(IG_SpaceMiningRecipe.class::isInstance)
-                .map(IG_SpaceMiningRecipe.class::cast)
-                .filter(
-                        recipe -> recipe.minDistance <= distance && recipe.maxDistance >= distance
-                                && recipe.mSpecialValue <= tModuleTier)
-                .collect(Collectors.toList());
+        int availDroneMask = getAvailDroneMask(inputs);
+        WeightedAsteroidList recipes = null;
+        // Try to use the cached recipe list if the distance and available drones are the same as when it was computed
+        if (prevRecipes != null && prevDistance == distance && prevAvailDroneMask == availDroneMask) {
+            recipes = prevRecipes;
+        } else {
+            recipes = new WeightedAsteroidList(
+                    IGRecipeMaps.spaceMiningRecipes.findRecipeQuery().items(inputs).fluids(fluidInputs)
+                            .voltage(tVoltage).findAll().filter(IG_SpaceMiningRecipe.class::isInstance)
+                            .map(IG_SpaceMiningRecipe.class::cast)
+                            .filter(
+                                    recipe -> recipe.minDistance <= distance && recipe.maxDistance >= distance
+                                            && recipe.mSpecialValue <= tModuleTier)
+                            .distinct());
+            // The original implementation had each recipe added multiple times redundantly, so I implemented
+            // hashCode/equals
+            // and use .distinct() here
+            // It's possible to avoid this by arranging the recipes into a kind of interval tree, but the complexity is
+            // not worth it.
+            // Interval tree code still exists in the commit history if anyone ever wants it.
+            prevRecipes = recipes;
+            prevDistance = distance;
+            prevAvailDroneMask = availDroneMask;
+        }
 
         // Return if no recipe was found
-        if (recipes.isEmpty()) {
+        if (recipes.totalWeight == 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -320,14 +357,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             plasmaModifier -= asteroidOutpost.getPlasmaDiscount();
         }
 
-        // Get a recipe randomly with weight from the pool
-        int totalWeight = recipes.stream().mapToInt(IG_SpaceMiningRecipe::getRecipeWeight).sum();
-        int recipeIndex = 0;
-        for (double r = Math.random() * totalWeight; recipeIndex < recipes.size() - 1; ++recipeIndex) {
-            r -= recipes.get(recipeIndex).getRecipeWeight();
-            if (r <= 0.0) break;
-        }
-        IG_SpaceMiningRecipe tRecipe = recipes.get(recipeIndex);
+        IG_SpaceMiningRecipe tRecipe = recipes.getRandom();
 
         // Make sure recipe really exists and we have enough power
         if (tRecipe == null) {
@@ -403,6 +433,27 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         mMaxProgresstime = getRecipeTime(tRecipe.mDuration, availablePlasmaTier);
         mEfficiencyIncrease = 10000;
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    /** Determine what drones exist and have the required drills/rods for at least one recipe in a list of inputs */
+    protected int getAvailDroneMask(ItemStack[] inputs) {
+        Map<GTUtility.ItemId, Long> itemCounts = new HashMap<>();
+        for (ItemStack input : inputs) {
+            // XXX: all space mining recipes are nbt insensitive, but if this ever changes, we would need to compare
+            // items including nbt
+            GTUtility.ItemId key = GTUtility.ItemId.createWithoutNBT(input);
+            itemCounts.merge(key, (long) input.stackSize, Long::sum);
+        }
+        int res = 0;
+        for (int tier = ItemMiningDrones.DroneTiers.LV.ordinal(); tier
+                <= ItemMiningDrones.DroneTiers.UXV.ordinal(); ++tier) {
+            if (Arrays.stream(SpaceMiningRecipes.getTieredInputs(tier)).allMatch(
+                    input -> itemCounts.getOrDefault(GTUtility.ItemId.createWithoutNBT(input), 0l)
+                            >= Math.max(input.stackSize, 1))) {
+                res |= 1 << tier;
+            }
+        }
+        return res;
     }
 
     /**
@@ -550,6 +601,53 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     /**
+     * POD class, Data for the asteroid summary in the mui in the space miner
+     * 
+     * @author hacatu
+     */
+    protected class AsteroidSummary {
+
+        public IG_SpaceMiningRecipe recipe;
+        public float chance;
+        public float timeDensity;
+        public int maxParallels;
+
+        public AsteroidSummary(IG_SpaceMiningRecipe recipe, float chance, float timeDensity, int maxParallels) {
+            this.recipe = recipe;
+            this.chance = chance;
+            this.timeDensity = timeDensity;
+            this.maxParallels = maxParallels;
+        }
+    }
+
+    /**
+     * Get a list of summaries for some set of recipes. For each recipe, find: - chance: the probability of choosing it
+     * at each operation - timeDensity: the fraction of time that the recipe takes up in the long run - maxParallels:
+     * the number of parallels the mining module will do at its current settings, level, and computation. (assuming that
+     * power, computation, plasma, and drills/rods don't run out)
+     * 
+     * @author hacatu
+     */
+    protected List<AsteroidSummary> getAsteroidSummaries(int maxParallels, float effectiveComp) {
+        long power = GTValues.V[tTier];
+        if (prevRecipes == null) {
+            return Collections.<AsteroidSummary>emptyList();
+        }
+        float totalWeight = prevRecipes.totalWeight; // save to float, so we don't have to cast in the following loop
+        float totalTimedensity = prevRecipes.totalTimedensity;
+        return prevRecipes.recipes.stream()
+                .map(
+                        r -> new AsteroidSummary(
+                                r,
+                                r.recipeWeight / totalWeight,
+                                r.recipeWeight * r.mDuration / totalTimedensity,
+                                Math.min(
+                                        maxParallels,
+                                        Math.min((int) (effectiveComp / r.computation), (int) (power / r.mEUt)))))
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Instantiate parameters of the controller
      */
     @Override
@@ -673,19 +771,62 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
 
-        screenElements.widget(
-                TextWidget
-                        .dynamicString(
-                                () -> StatCollector
-                                        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.4")
-                                        + ": "
-                                        + (((int) modeSetting.get() == 0)
-                                                ? StatCollector.translateToLocal(
-                                                        "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.1")
-                                                : StatCollector.translateToLocal(
-                                                        "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.2")))
-                        .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine))
-                .widget(
+        screenElements.widget(TextWidget.dynamicString(() -> {
+            StringBuilder res = new StringBuilder();
+            res.append(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"));
+            res.append(": ");
+            res.append(
+                    StatCollector.translateToLocal(
+                            (int) modeSetting.get() == 0 ? "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.1"
+                                    : "gt.blockmachines.multimachine.project.ig.miner.cfgi.4.2"));
+            res.append('\n');
+            if (prevRecipes != null) {
+                res.append(
+                        StatCollector
+                                .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.activedronetiers"));
+                res.append(": ");
+                boolean found = false;
+                for (ItemMiningDrones.DroneTiers tier : ItemMiningDrones.DroneTiers.values()) {
+                    if (((1 << tier.ordinal()) & prevAvailDroneMask) != 0) {
+                        if (found) {
+                            res.append(", ");
+                        }
+                        res.append(tier.toString());
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    res.append(" None");
+                }
+                res.append('\n');
+                res.append(
+                        StatCollector.translateToLocal(
+                                "gt.blockmachines.multimachine.project.ig.miner.asteroidsummaries.0"));
+                res.append(":\n");
+                float effectiveComp = getAvailableData_EM()
+                        / (asteroidOutpost == null ? 1f : 1f - asteroidOutpost.getComputationDiscount());
+                for (AsteroidSummary summ : getAsteroidSummaries(
+                        Math.min(getMaxParallels(), (int) parallelSetting.get()),
+                        effectiveComp)) {
+                    res.append(StatCollector.translateToLocal("ig.asteroid." + summ.recipe.getAsteroidName()));
+                    res.append(
+                            String.format(
+                                    ": %.3f%% / %s, %.3f%% / %s, %s %dx",
+                                    summ.chance * 100f,
+                                    StatCollector.translateToLocal(
+                                            "gt.blockmachines.multimachine.project.ig.miner.asteroidchance"),
+                                    summ.timeDensity * 100f,
+                                    StatCollector.translateToLocal(
+                                            "gt.blockmachines.multimachine.project.ig.miner.asteroidtimedensity"),
+                                    StatCollector.translateToLocal(
+                                            "gt.blockmachines.multimachine.project.ig.miner.asteroidmaxparallels"),
+                                    summ.maxParallels));
+                    res.append('\n');
+                }
+            }
+            return res.toString();
+        }).setSynced(true).setTextAlignment(Alignment.TopLeft).setScale(0.5f).setDefaultColor(COLOR_TEXT_WHITE.get())
+                .setEnabled(widget -> mMachine)).widget(
                         new FakeSyncWidget.IntegerSyncer(
                                 () -> (int) modeSetting.get(),
                                 val -> parametrization.trySetParameters(

@@ -113,6 +113,7 @@ public class IG_RecipeAdder extends RecipeAdder {
     /**
      * Add a Space Mining recipe
      *
+     * @param asteroidName              Unlocalized name of the asteroid
      * @param aItemInputs               Equipment used for the mining operation
      * @param aFluidInputs              Additional input fluids
      * @param aChances                  Chances to get each ore type
@@ -128,9 +129,10 @@ public class IG_RecipeAdder extends RecipeAdder {
      * @param recipeWeight              Weight of this recipe (Used in determining which recipe to execute)
      * @return True if recipes could be added, else false
      */
-    public static boolean addSpaceMiningRecipe(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int[] aChances,
-            Materials[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance, int maxDistance,
-            int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int recipeWeight) {
+    public static boolean addSpaceMiningRecipe(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+            int[] aChances, Materials[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance,
+            int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt,
+            int recipeWeight) {
         if ((aItemInputs == null && aFluidInputs == null) || ores == null) {
             return false;
         }
@@ -176,6 +178,7 @@ public class IG_RecipeAdder extends RecipeAdder {
         IGRecipeMaps.spaceMiningRecipes.add(
                 new IG_SpaceMiningRecipe(
                         false,
+                        asteroidName,
                         aItemInputs,
                         outputs,
                         aFluidInputs,
@@ -192,8 +195,8 @@ public class IG_RecipeAdder extends RecipeAdder {
         return true;
     }
 
-    public static boolean addSpaceMiningRecipe(ItemStack[] aItemInputs, FluidStack[] aFluidInputs, int[] aChances,
-            ItemStack[] aItemOutputs, int minSize, int maxSize, int minDistance, int maxDistance,
+    public static boolean addSpaceMiningRecipe(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
+            int[] aChances, ItemStack[] aItemOutputs, int minSize, int maxSize, int minDistance, int maxDistance,
             int computationRequiredPerSec, int minModuleTier, int duration, int EUt, int recipeWeight) {
         if ((aItemInputs == null && aFluidInputs == null) || aItemOutputs == null) {
             return false;
@@ -232,6 +235,7 @@ public class IG_RecipeAdder extends RecipeAdder {
         IGRecipeMaps.spaceMiningRecipes.add(
                 new IG_SpaceMiningRecipe(
                         false,
+                        asteroidName,
                         aItemInputs,
                         aItemOutputs,
                         aFluidInputs,
