@@ -26,7 +26,7 @@ public abstract class PluginGT5Base extends PluginBase {
         String text = I18n.format(lineKey) + ": " + value;
 
         String text2 = text;
-        
+
         if (GuiDraw.fontRenderer.getStringWidth(text) > getGuiWidth()) {
             text2 = GuiDraw.fontRenderer.trimStringToWidth(text, getGuiWidth() - 10);
         }

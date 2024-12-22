@@ -141,7 +141,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                 oreLayer.getName());
 
             int tX = seedChunkX * 16 + rng.nextInt(16);
-            int tY = asteroidConfig.AsteroidMinY + rng.nextInt(asteroidConfig.AsteroidMaxY - asteroidConfig.AsteroidMinY);
+            int tY = asteroidConfig.AsteroidMinY
+                + rng.nextInt(asteroidConfig.AsteroidMaxY - asteroidConfig.AsteroidMinY);
             int tZ = seedChunkZ * 16 + rng.nextInt(16);
 
             List<Ellipsoid> positive = new ArrayList<>();

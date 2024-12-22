@@ -1671,7 +1671,7 @@ public class WerkstoffLoader {
                 return BWOreAdapter.INSTANCE.getStack(info, amount);
             }
         }
-        
+
         if (orePrefixes == block) {
             return new ItemStack(WerkstoffLoader.BWBlocks, amount, werkstoff.getmID());
         }
@@ -1681,7 +1681,7 @@ public class WerkstoffLoader {
         if (orePrefixes == OrePrefixes.blockCasingAdvanced) {
             return new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, amount, werkstoff.getmID());
         }
-        
+
         if (WerkstoffLoader.items.get(orePrefixes) == null) {
             return null;
         }
