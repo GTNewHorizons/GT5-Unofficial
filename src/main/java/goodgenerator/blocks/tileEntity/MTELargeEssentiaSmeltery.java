@@ -23,6 +23,11 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
@@ -78,6 +83,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected int nodePower = 0;
     protected int nodePurificationEfficiency = 0;
     protected int nodeIncrease = 0;
+    protected int nodePowerDisplay;
 
     private IStructureDefinition<MTELargeEssentiaSmeltery> multiDefinition = null;
     private final ArrayList<MTEEssentiaOutputHatch> mEssentiaOutputHatches = new ArrayList<>();
@@ -297,6 +303,30 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (!this.isFullPower()) return;
         super.runMachine(aBaseMetaTileEntity, aTick);
+    }
+
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        screenElements
+            .widget(
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> EnumChatFormatting.WHITE + "Requires "
+                            + EnumChatFormatting.YELLOW
+                            + numberFormat.format(nodePowerDisplay)
+                            + EnumChatFormatting.WHITE
+                            + " total "
+                            + EnumChatFormatting.AQUA
+                            + "Aqua"
+                            + EnumChatFormatting.WHITE
+                            + " and "
+                            + EnumChatFormatting.RED
+                            + "Ignis "
+                            + EnumChatFormatting.WHITE
+                            + "centivis to function.")
+                    .setTextAlignment((Alignment.CenterLeft)))
+            .widget(new FakeSyncWidget.IntegerSyncer(this::expectedPower, val -> nodePowerDisplay = val));
     }
 
     @Override
