@@ -727,7 +727,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             new Scrollable().setVerticalScroll()
                 .widget(controlTextArea)
                 .setPos(10, 7)
-                .setSize(182, 28));
+                .setSize(182, 24));
 
         // Draw line separator
         builder.widget(

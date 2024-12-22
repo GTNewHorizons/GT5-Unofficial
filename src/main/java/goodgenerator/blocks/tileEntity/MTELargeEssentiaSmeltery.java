@@ -398,7 +398,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             .setEUt(getMaxInputEu())
             .setDuration(
                 (int) Math.ceil(this.mOutputAspects.visSize() * RECIPE_DURATION * (1 - this.nodeIncrease * 0.005)))
-            .setDurationDecreasePerOC(4)
+            .enablePerfectOC()
             .calculate();
 
         useLongPower = true;
