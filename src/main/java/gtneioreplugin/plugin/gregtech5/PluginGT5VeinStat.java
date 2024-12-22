@@ -148,22 +148,22 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         return GT5OreLayerHelper.ORE_VEINS_BY_NAME.get(crecipe.veinName);
     }
 
-    private static void drawVeinName(OreLayerWrapper oreLayer) {
+    private void drawVeinName(OreLayerWrapper oreLayer) {
         drawVeinNameLine(oreLayer.localizedName + " ");
     }
 
-    private static void drawVeinNameLine(String veinName) {
+    private void drawVeinNameLine(String veinName) {
         drawLine("gtnop.gui.nei.veinName", veinName + I18n.format("gtnop.gui" + ".nei.vein"), 2, 20);
     }
 
-    private static void drawVeinLayerNames(OreLayerWrapper oreLayer) {
+    private void drawVeinLayerNames(OreLayerWrapper oreLayer) {
         drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_PRIMARY, 50);
         drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SECONDARY, 60);
         drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_BETWEEN, 70);
         drawVeinLayerNameLine(oreLayer, OreVeinLayer.VEIN_SPORADIC, 80);
     }
 
-    private static void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
+    private void drawVeinLayerNameLine(OreLayerWrapper oreLayer, int veinLayer, int height) {
         drawLine(
             OreVeinLayer.getOreVeinLayerName(veinLayer),
             getGTOreLocalizedName(oreLayer.ores[veinLayer], false),
@@ -171,7 +171,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             height);
     }
 
-    private static void drawVeinInfo(OreLayerWrapper oreLayer) {
+    private void drawVeinInfo(OreLayerWrapper oreLayer) {
         drawLine("gtnop.gui.nei.genHeight", oreLayer.worldGenHeightRange, 2, 90);
         drawLine("gtnop.gui.nei.weightedChance", Integer.toString(oreLayer.randomWeight), 100, 90);
     }

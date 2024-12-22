@@ -11,7 +11,7 @@ import gtneioreplugin.plugin.PluginBase;
 
 public abstract class PluginGT5Base extends PluginBase {
 
-    protected static String getGTOreLocalizedName(IMaterial ore, boolean small) {
+    protected String getGTOreLocalizedName(IMaterial ore, boolean small) {
         if (ore == Materials.DraconiumAwakened) return "Aw. Draconium Ore";
 
         try (OreInfo<IMaterial> info = OreInfo.getNewInfo()) {
@@ -22,8 +22,16 @@ public abstract class PluginGT5Base extends PluginBase {
         }
     }
 
-    static void drawLine(String lineKey, String value, int x, int y) {
-        GuiDraw.drawString(I18n.format(lineKey) + ": " + value, x, y, 0x404040, false);
+    protected void drawLine(String lineKey, String value, int x, int y) {
+        String text = I18n.format(lineKey) + ": " + value;
+
+        String text2 = text;
+        
+        if (GuiDraw.fontRenderer.getStringWidth(text) > getGuiWidth()) {
+            text2 = GuiDraw.fontRenderer.trimStringToWidth(text, getGuiWidth() - 10);
+        }
+
+        GuiDraw.drawString(text2 + (text2.length() < text.length() ? "..." : ""), x, y, 0x404040, false);
     }
 
     /**
