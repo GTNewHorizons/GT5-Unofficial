@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,18 +14,18 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyModuleBase;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
-public class Splitter extends GT_MetaTileEntity_NanochipAssemblyModuleBase<Splitter> {
+public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
     protected static final int STRUCTURE_OFFSET_X = 3;
     protected static final int STRUCTURE_OFFSET_Y = 3;
@@ -38,7 +38,7 @@ public class Splitter extends GT_MetaTileEntity_NanochipAssemblyModuleBase<Split
     public static final IStructureDefinition<Splitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<Splitter>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings4, 0))
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings4, 0))
         .build();
 
     public Splitter(int aID, String aName, String aNameRegional) {
@@ -107,26 +107,26 @@ public class Splitter extends GT_MetaTileEntity_NanochipAssemblyModuleBase<Split
         // Assign ID of all hatches based on their color, index and whether they are an input or an output hatch.
 
         int hatchID = 0;
-        for (Map.Entry<Byte, ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor_Input>> inputList : this.vacuumConveyorInputs
+        for (Map.Entry<Byte, ArrayList<MTEHatchVacuumConveyorInput>> inputList : this.vacuumConveyorInputs
             .hatchMap()
             .entrySet()) {
             byte color = inputList.getKey();
             EnumChatFormatting colorFormat = getPrefixColor(color);
-            ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> hatches = inputList.getValue();
-            for (GT_MetaTileEntity_Hatch_VacuumConveyor_Input hatch : hatches) {
+            ArrayList<MTEHatchVacuumConveyorInput> hatches = inputList.getValue();
+            for (MTEHatchVacuumConveyorInput hatch : hatches) {
                 hatch.identifier = colorFormat + "In/" + hatchID;
                 hatchID += 1;
             }
         }
 
         hatchID = 0;
-        for (Map.Entry<Byte, ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor_Output>> outputList : this.vacuumConveyorOutputs
+        for (Map.Entry<Byte, ArrayList<MTEHatchVacuumConveyorOutput>> outputList : this.vacuumConveyorOutputs
             .hatchMap()
             .entrySet()) {
             byte color = outputList.getKey();
             EnumChatFormatting colorFormat = getPrefixColor(color);
-            ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor_Output> hatches = outputList.getValue();
-            for (GT_MetaTileEntity_Hatch_VacuumConveyor_Output hatch : hatches) {
+            ArrayList<MTEHatchVacuumConveyorOutput> hatches = outputList.getValue();
+            for (MTEHatchVacuumConveyorOutput hatch : hatches) {
                 hatch.identifier = colorFormat + "Out/" + hatchID;
                 hatchID += 1;
             }
@@ -146,8 +146,8 @@ public class Splitter extends GT_MetaTileEntity_NanochipAssemblyModuleBase<Split
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        return new GT_Multiblock_Tooltip_Builder().toolTipFinisher("GregTech");
+    protected MultiblockTooltipBuilder createTooltip() {
+        return new MultiblockTooltipBuilder().toolTipFinisher("GregTech");
     }
 
     @Override

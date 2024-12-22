@@ -2,6 +2,8 @@ package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
+import gregtech.GTMod;
+import gregtech.common.GTClient;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,14 +12,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.loader.NetworkDispatcher;
-import com.github.technus.tectech.mechanics.pipe.IActivePipe;
-import com.github.technus.tectech.mechanics.pipe.PipeActivityMessage;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -25,11 +21,16 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.common.GT_Client;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
-public class GT_MetaTileEntity_VacuumConveyorPipe extends MetaPipeEntity
+import gregtech.api.objects.GTRenderedTexture;
+
+import tectech.TecTech;
+import tectech.loader.NetworkDispatcher;
+import tectech.mechanics.pipe.IActivePipe;
+import tectech.mechanics.pipe.PipeActivityMessage;
+
+public class MTEVacuumConveyorPipe extends MetaPipeEntity
     implements IConnectsToVacuumConveyor, IActivePipe {
 
     private static Textures.BlockIcons.CustomIcon EMpipe;
@@ -38,17 +39,17 @@ public class GT_MetaTileEntity_VacuumConveyorPipe extends MetaPipeEntity
 
     private boolean active;
 
-    public GT_MetaTileEntity_VacuumConveyorPipe(int aID, String aName, String aNameRegional) {
+    public MTEVacuumConveyorPipe(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
     }
 
-    public GT_MetaTileEntity_VacuumConveyorPipe(String aName) {
+    public MTEVacuumConveyorPipe(String aName) {
         super(aName, 0);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_VacuumConveyorPipe(mName);
+        return new MTEVacuumConveyorPipe(mName);
     }
 
     @Override
@@ -63,8 +64,8 @@ public class GT_MetaTileEntity_VacuumConveyorPipe extends MetaPipeEntity
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[] { new GT_RenderedTexture(EMpipe),
-            new GT_RenderedTexture(
+        return new ITexture[] { new GTRenderedTexture(EMpipe),
+            new GTRenderedTexture(
                 getActive() ? EMbarActive : EMbar,
                 Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
@@ -163,7 +164,7 @@ public class GT_MetaTileEntity_VacuumConveyorPipe extends MetaPipeEntity
                     }
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {
+        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
             aBaseMetaTileEntity.issueTextureUpdate();
         }
     }
@@ -190,7 +191,7 @@ public class GT_MetaTileEntity_VacuumConveyorPipe extends MetaPipeEntity
             } else if (next instanceof IGregTechTileEntity) {
                 IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
                 if (meta instanceof IConnectsToVacuumConveyor connecsToPipe && meta != source) {
-                    if (meta instanceof GT_MetaTileEntity_VacuumConveyorPipe pipeData
+                    if (meta instanceof MTEVacuumConveyorPipe pipeData
                         && pipeData.connectionCount == 2) {
                         pipeData.markUsed();
                         return connecsToPipe;
@@ -265,7 +266,7 @@ public class GT_MetaTileEntity_VacuumConveyorPipe extends MetaPipeEntity
 
     @Override
     public float getThickNess() {
-        if (GT_Mod.instance.isClientSide() && GT_Client.hideValue == 1) {
+        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
             return 0.0625F;
         }
         return 0.375f;

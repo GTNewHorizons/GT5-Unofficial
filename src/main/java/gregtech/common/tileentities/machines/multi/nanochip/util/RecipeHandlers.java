@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -15,14 +15,14 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 
 public class RecipeHandlers {
 
     private static void addConversionRecipe(CircuitComponent component, ItemStack stack) {
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .itemInputs(stack)
             .itemOutputs(component.getFakeStack(1))
             .duration(1)
@@ -40,7 +40,7 @@ public class RecipeHandlers {
             throw new IllegalArgumentException(
                 "Tried to add component processing recipe for a component without an associated recipemap");
         }
-        GT_Values.RA.stdBuilder()
+        GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
             .itemInputs(input.getFakeStack(info.baseParallel))
             .itemOutputs(output.getFakeStack(info.baseParallel))
@@ -57,7 +57,7 @@ public class RecipeHandlers {
         // Wires
         addConversionRecipe(
             CircuitComponent.WireNiobiumTitanium,
-            GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 1));
+            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 1));
         // SMDs
         addConversionRecipe(CircuitComponent.SMDTransistor, ItemList.Circuit_Parts_TransistorSMD.get(1));
         addConversionRecipe(CircuitComponent.SMDInductor, ItemList.Circuit_Parts_InductorSMD.get(1));
@@ -88,11 +88,11 @@ public class RecipeHandlers {
         // Superconductors
         addConversionRecipe(
             CircuitComponent.SuperconductorLuV,
-            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 1));
+            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 1));
         // Frame boxes
         addConversionRecipe(
             CircuitComponent.FrameboxAluminium,
-            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1));
+            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1));
         // Wire processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.WireNiobiumTitanium,
@@ -222,7 +222,7 @@ public class RecipeHandlers {
             TierEU.RECIPE_LV);
     }
 
-    private static GT_Recipe findRecipeUsingStack(ItemStack input, RecipeMap<?> map) {
+    private static GTRecipe findRecipeUsingStack(ItemStack input, RecipeMap<?> map) {
         return map.findRecipeQuery()
             .dontCheckStackSizes(true)
             .items(input)
@@ -230,7 +230,7 @@ public class RecipeHandlers {
     }
 
     private static ItemStack findResultingStack(ItemStack input, RecipeMap<?> map) {
-        GT_Recipe recipe = findRecipeUsingStack(input, map);
+        GTRecipe recipe = findRecipeUsingStack(input, map);
         if (recipe == null) return null;
         return recipe.mOutputs[0];
     }
@@ -242,7 +242,7 @@ public class RecipeHandlers {
         // Special case: if this item is a finished circuit item, we already know the component to use and we don't do
         // this full iteration
         CircuitComponent circuitComponent = CircuitComponent.realCircuitToComponent
-            .get(GT_Utility.ItemId.createNoCopy(input));
+            .get(GTUtility.ItemId.createNoCopy(input));
         if (circuitComponent != null) return circuitComponent.getFakeStack(input.stackSize);
         // If the recipe map is null, we have a finalized CC (probably, this could also be a bug or missing mappings)
         if (inputProcessingMap == null) return input;
@@ -274,7 +274,7 @@ public class RecipeHandlers {
 
         // Before we do anything, find the output item, so we can check if this recipe should be touched at all
         ItemStack realOutput = builder.getItemOutput(0);
-        GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(realOutput);
+        GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(realOutput);
         CircuitComponent outputComponent = CircuitComponent.realCircuitToComponent.get(id);
         if (outputComponent == null) {
             // Not a nanochip assembly recipe because it has no matching fake circuit, return empty list
