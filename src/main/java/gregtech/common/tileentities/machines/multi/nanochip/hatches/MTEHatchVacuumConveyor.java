@@ -1,14 +1,13 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
-import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_ACTIVE;
-import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_CONN;
-import static com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector.EM_D_SIDES;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,13 +18,12 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.GTRenderedTexture;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
-public abstract class GT_MetaTileEntity_Hatch_VacuumConveyor extends GT_MetaTileEntity_Hatch
+public abstract class MTEHatchVacuumConveyor extends MTEHatch
     implements IConnectsToVacuumConveyor {
 
     public static final int VACUUM_MOVE_TICK = 17;
@@ -35,32 +33,32 @@ public abstract class GT_MetaTileEntity_Hatch_VacuumConveyor extends GT_MetaTile
     // Identifier used to identify this hatch uniquely inside a multiblock.
     public String identifier = null;
 
-    protected GT_MetaTileEntity_Hatch_VacuumConveyor(int aID, String aName, String aNameRegional, int aTier,
-        String[] descr) {
+    protected MTEHatchVacuumConveyor(int aID, String aName, String aNameRegional, int aTier,
+                                     String[] descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
     }
 
-    protected GT_MetaTileEntity_Hatch_VacuumConveyor(String aName, int aTier, String[] aDescription,
-        ITexture[][][] aTextures) {
+    protected MTEHatchVacuumConveyor(String aName, int aTier, String[] aDescription,
+                                     ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 EM_D_ACTIVE,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(EM_D_CONN) };
+            new GTRenderedTexture(EM_D_CONN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            new GT_RenderedTexture(
+            new GTRenderedTexture(
                 EM_D_SIDES,
                 Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            new GT_RenderedTexture(EM_D_CONN) };
+            new GTRenderedTexture(EM_D_CONN) };
     }
 
     public void unifyPacket(CircuitComponentPacket packet) {
