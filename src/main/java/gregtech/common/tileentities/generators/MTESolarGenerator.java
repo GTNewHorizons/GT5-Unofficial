@@ -20,7 +20,7 @@ import gregtech.api.render.TextureFactory;
 public class MTESolarGenerator extends MTETieredMachineBlock {
 
     public MTESolarGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, new String[]{"Generates EU From Solar Power", "Immune to rain!"});
+        super(aID, aName, aNameRegional, aTier, 0, new String[] { "Generates EU From Solar Power", "Immune to rain!" });
     }
 
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String aDescription,
@@ -69,6 +69,12 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {}
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {}
+
+    @Override
     public boolean willExplodeInRain() {
         return false;
     }
@@ -99,25 +105,19 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
     }
 
     public void doWorldChecks(World world, IGregTechTileEntity aBaseMetaTileEntity) {
-        valid = ((world.isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F) || !world.isDaytime()
-            || !aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP));
+        valid = (!(world.isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F) && world.isDaytime()
+            && aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP));
     }
 
     @Override
     public long maxEUStore() {
-        return Math.max(getEUVar(), V[mTier] * 80L + getMinimumStoredEU());
+        return V[mTier] * 10000;
     }
 
     @Override
     public long maxEUOutput() {
         return GTValues.V[mTier];
     }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {}
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {}
 
     @Override
     public boolean isEnetOutput() {
