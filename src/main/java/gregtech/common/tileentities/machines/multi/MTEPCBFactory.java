@@ -558,7 +558,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         }
                     }
                 }
-                maxParallel = (int) Math.max(Math.ceil(Math.log(numberOfNanites) / Math.log(2) + 0.00001), 1);
+                maxParallel = (int) Math.min(Math.max(Math.floor(Math.pow(2.1, Math.log(numberOfNanites))), 1), 256);
                 mMaxParallel = maxParallel;
 
                 PCBFactoryUpgrade requiredUpgrade = recipe.getMetadata(PCBFactoryUpgradeKey.INSTANCE);
