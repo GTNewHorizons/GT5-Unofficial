@@ -10,10 +10,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,6 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -46,6 +43,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.SubTag;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
@@ -57,13 +55,18 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LRUCache;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.ores.OreManager;
 import gregtech.crossmod.visualprospecting.VisualProspectingDatabase;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongIterator;
+import it.unimi.dsi.fastutil.longs.LongList;
 
 public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements IMetricsExporter {
 
-    private final List<ChunkPosition> oreBlockPositions = new ArrayList<>();
+    private final LongList oreBlockPositions = new LongArrayList();
     protected int mTier = 1;
     private int chunkRadiusConfig = getRadiusInChunks();
     private boolean replaceWithCobblestone = true;
@@ -223,61 +226,55 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     }
 
     private boolean processOreList(boolean simulate) {
-        List<ChunkPosition> oreBlockPositions = simulate ? copyOreBlockPositions(this.oreBlockPositions)
-            : this.oreBlockPositions;
-
-        ChunkPosition oreBlockPos = null;
-        Block oreBlock = null;
-        int oreBlockMetadata = 0;
-
         World world = getBaseMetaTileEntity().getWorld();
 
-        while ((oreBlock == null || !GTUtility.isMinable(oreBlock, oreBlockMetadata)) && !oreBlockPositions.isEmpty()) {
-            oreBlockPos = oreBlockPositions.remove(0);
-            int x = oreBlockPos.chunkPosX;
-            int y = oreBlockPos.chunkPosY;
-            int z = oreBlockPos.chunkPosZ;
-            if (GTUtility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), x, y, z, true)) {
-                oreBlock = world.getBlock(x, y, z);
-                oreBlockMetadata = world.getBlockMetadata(x, y, z);
+        LongIterator iter = oreBlockPositions.iterator();
+
+        while (iter.hasNext()) {
+            long pos = iter.nextLong();
+
+            int x = CoordinatePacker.unpackX(pos);
+            int y = CoordinatePacker.unpackY(pos);
+            int z = CoordinatePacker.unpackZ(pos);
+
+            Block block = world.getBlock(x, y, z);
+            int meta = world.getBlockMetadata(x, y, z);
+
+            if (!GTUtility.isMinable(block, meta)) {
+                // always remove non-ore blocks, even if we're simulating
+                iter.remove();
+                continue;
             }
-        }
 
-        if (oreBlock == null) return false;
-        Objects.requireNonNull(oreBlockPos);
+            if (!world.canMineBlock(getFakePlayer(getBaseMetaTileEntity()), x, y, z)) {
+                // always remove protected blocks - if the fake player can't remove it now, they won't be able to remove it later
+                iter.remove();
+                continue;
+            }
 
-        if (!tryConsumeDrillingFluid(simulate)) {
-            oreBlockPositions.add(0, oreBlockPos);
-            setRuntimeFailureReason(CheckRecipeResultRegistry.NO_DRILLING_FLUID);
-            return false;
-        }
-
-        if (GTUtility.isMinable(oreBlock, oreBlockMetadata) || OreManager.isOre(oreBlock, oreBlockMetadata)) {
-            int x = oreBlockPos.chunkPosX;
-            int y = oreBlockPos.chunkPosY;
-            int z = oreBlockPos.chunkPosZ;
+            if (!tryConsumeDrillingFluid(simulate)) {
+                setRuntimeFailureReason(CheckRecipeResultRegistry.NO_DRILLING_FLUID);
+                return false;
+            }
 
             List<ItemStack> oreBlockDrops = OreManager
-                .mineBlock(world, x, y, z, mTier + 3, simulate, replaceWithCobblestone);
+                .mineBlock(world, x, y, z, true, mTier + 3, simulate, replaceWithCobblestone);
 
             ItemStack[] toOutput = getOutputByDrops(oreBlockDrops);
+
             if (simulate && !canOutputAll(toOutput)) {
                 setRuntimeFailureReason(CheckRecipeResultRegistry.ITEM_OUTPUT_FULL);
                 return false;
             }
 
+            if (!simulate) iter.remove();
+
             mOutputItems = toOutput;
+
+            return true;
         }
 
-        return true;
-    }
-
-    private static List<ChunkPosition> copyOreBlockPositions(List<ChunkPosition> oreBlockPositions) {
-        List<ChunkPosition> ret = new ArrayList<>();
-        for (ChunkPosition chunkPosition : oreBlockPositions) {
-            ret.add(new ChunkPosition(chunkPosition.chunkPosX, chunkPosition.chunkPosY, chunkPosition.chunkPosZ));
-        }
-        return ret;
+        return false;
     }
 
     @Override
@@ -491,29 +488,41 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             ((workState == STATE_DOWNWARD || workState == STATE_AT_BOTTOM) ? getBaseProgressTime() : 80) / (1 << tier));
     }
 
-    private ItemStack[] getOutputByDrops(Collection<ItemStack> oreBlockDrops) {
+    private LRUCache<ItemId, GTRecipe> maceratorRecipes = new LRUCache<>(64, this::findRecipe);
+
+    private GTRecipe findRecipe(ItemId id) {
         long voltage = getMaxInputVoltage();
-        Collection<ItemStack> outputItems = new HashSet<>();
-        oreBlockDrops.forEach(currentItem -> {
+
+        return RecipeMaps.maceratorRecipes.findRecipeQuery()
+            .items(id.getItemStack())
+            .voltage(voltage)
+            .find();
+    }
+
+    private ItemStack[] getOutputByDrops(List<ItemStack> oreBlockDrops) {
+        List<ItemStack> outputItems = new ArrayList<>();
+
+        for (ItemStack currentItem : oreBlockDrops) {
             if (!doUseMaceratorRecipe(currentItem)) {
                 outputItems.add(multiplyStackSize(currentItem));
-                return;
+                continue;
             }
-            GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
-                .items(currentItem)
-                .voltage(voltage)
-                .find();
+
+            GTRecipe tRecipe = maceratorRecipes.get(ItemId.create(currentItem));
+
             if (tRecipe == null) {
                 outputItems.add(currentItem);
-                return;
+                continue;
             }
+
             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                 ItemStack recipeOutput = tRecipe.mOutputs[i].copy();
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
                     multiplyStackSize(recipeOutput);
                 outputItems.add(recipeOutput);
             }
-        });
+        }
+
         return outputItems.toArray(new ItemStack[0]);
     }
 
@@ -526,7 +535,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             && itemData.mPrefix != OrePrefixes.gemExquisite
             && itemData.mPrefix != OrePrefixes.gemFlawed
             && itemData.mPrefix != OrePrefixes.gemFlawless
-            && itemData.mMaterial.mMaterial != Materials.Oilsands;
+            && itemData.mMaterial.mMaterial != Materials.Oilsands
+            && !itemData.mMaterial.mMaterial.contains(SubTag.ICE_ORE);
     }
 
     private ItemStack multiplyStackSize(ItemStack itemStack) {
@@ -569,10 +579,11 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     private void tryAddOreBlockToMineList(int x, int y, int z) {
         Block block = getBaseMetaTileEntity().getBlock(x, y, z);
         int blockMeta = getBaseMetaTileEntity().getMetaID(x, y, z);
-        ChunkPosition blockPos = new ChunkPosition(x, y, z);
 
-        if (!oreBlockPositions.contains(blockPos)) {
-            if (GTUtility.isMinable(block, blockMeta)) oreBlockPositions.add(blockPos);
+        long pos = CoordinatePacker.pack(x, y, z);
+
+        if (!oreBlockPositions.contains(pos)) {
+            if (GTUtility.isMinable(block, blockMeta)) oreBlockPositions.add(pos);
         }
     }
 

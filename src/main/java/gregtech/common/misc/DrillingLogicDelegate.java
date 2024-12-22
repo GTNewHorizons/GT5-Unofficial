@@ -162,7 +162,7 @@ public class DrillingLogicDelegate {
         }
 
         // see if we can store all of the outputs
-        List<ItemStack> drops = OreManager.mineBlock(te.getWorld(), x, y, z, owner.getMachineTier(), true, true);
+        List<ItemStack> drops = OreManager.mineBlock(te.getWorld(), x, y, z, false, owner.getMachineTier(), true, true);
 
         for (ItemStack drop : drops) {
             if (!owner.pushOutputs(drop, drop.stackSize, true, false)) {
@@ -175,7 +175,7 @@ public class DrillingLogicDelegate {
         }
 
         // actually mine it
-        OreManager.mineBlock(te.getWorld(), x, y, z, owner.getMachineTier(), false, true);
+        OreManager.mineBlock(te.getWorld(), x, y, z, false, owner.getMachineTier(), false, true);
     }
 
     /**
