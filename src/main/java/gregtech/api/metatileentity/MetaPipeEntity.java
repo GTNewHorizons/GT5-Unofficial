@@ -37,7 +37,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntityPipe;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -61,7 +60,7 @@ import gregtech.common.covers.CoverInfo;
  * Call the Constructor like the following example inside the Load Phase, to register it. "new
  * GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
-public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable, IMetaTileEntityPipe {
+public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     /**
      * The Inventory of the MetaTileEntity. Amount of Slots can be larger than 256. HAYO!
