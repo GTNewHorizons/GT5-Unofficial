@@ -15,8 +15,7 @@ public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor {
         super(aID, aName, aNameRegional, aTier, new String[] {});
     }
 
-    public MTEHatchVacuumConveyorOutput(String aName, int aTier, String[] aDescription,
-                                        ITexture[][][] aTextures) {
+    public MTEHatchVacuumConveyorOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 

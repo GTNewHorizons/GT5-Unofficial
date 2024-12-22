@@ -2,8 +2,6 @@ package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import gregtech.GTMod;
-import gregtech.common.GTClient;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -21,17 +20,15 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
-import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
-
 import gregtech.api.objects.GTRenderedTexture;
-
+import gregtech.common.GTClient;
+import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.pipe.IActivePipe;
 import tectech.mechanics.pipe.PipeActivityMessage;
 
-public class MTEVacuumConveyorPipe extends MetaPipeEntity
-    implements IConnectsToVacuumConveyor, IActivePipe {
+public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsToVacuumConveyor, IActivePipe {
 
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private static Textures.BlockIcons.CustomIcon EMbar, EMbarActive;
@@ -191,8 +188,7 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity
             } else if (next instanceof IGregTechTileEntity) {
                 IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
                 if (meta instanceof IConnectsToVacuumConveyor connecsToPipe && meta != source) {
-                    if (meta instanceof MTEVacuumConveyorPipe pipeData
-                        && pipeData.connectionCount == 2) {
+                    if (meta instanceof MTEVacuumConveyorPipe pipeData && pipeData.connectionCount == 2) {
                         pipeData.markUsed();
                         return connecsToPipe;
                     }
