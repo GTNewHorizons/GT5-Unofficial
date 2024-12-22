@@ -10,6 +10,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.util.GTRecipeConstants.SPARGE_MAX_BYPRODUCT;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 
@@ -22,6 +23,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -33,12 +36,18 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -156,6 +165,37 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
     protected void onCasingFound() {
         mCasing++;
+    }
+
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            private FluidStack[] randomizeByproducts(FluidStack[] currentOutput, int maximum, FluidStack spargeGas) {
+                FluidStack[] newOutput = new FluidStack[currentOutput.length];
+                int byproductAmount = 0;
+                newOutput[0] = currentOutput[0];
+
+                for (int i = 2; i < currentOutput.length; i++) {
+                    if (currentOutput[i] == null) break;
+                    int gasAmount = MathUtils.randInt(0, maximum);
+                    newOutput[i] = new FluidStack(currentOutput[i].copy(), gasAmount);
+                    byproductAmount += gasAmount;
+                }
+                newOutput[1] = new FluidStack(spargeGas, (spargeGas.amount - byproductAmount));
+                return newOutput;
+            }
+
+            @Override
+            protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
+                @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
+                super.applyRecipe(recipe, helper, calculator, result);
+                int maximumByproducts = recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0);
+                FluidStack spargeGas = recipe.mFluidInputs[0];
+                if ((maximumByproducts == 0) || (spargeGas == null)) return result;
+                outputFluids = randomizeByproducts(outputFluids, maximumByproducts, spargeGas);
+                return result;
+            }
+        };
     }
 
     protected void onTopLayerFound(boolean aIsCasing) {

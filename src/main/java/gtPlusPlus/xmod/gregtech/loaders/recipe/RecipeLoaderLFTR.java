@@ -105,7 +105,8 @@ public class RecipeLoaderLFTR {
             .metadata(LFTR_OUTPUT_POWER, 8192)
             .addTo(liquidFluorineThoriumReactorRecipes);
 
-        // Sparging NEI Recipes
+        // Sparging Recipes
+        // For no randomization, set metadata to 0 with key SPARGE_MAX_BYPRODUCT.
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.Helium.getGas(1000), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
             .fluidOutputs(
