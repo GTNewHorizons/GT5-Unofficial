@@ -189,8 +189,8 @@ public class GTPPRecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> spargeTowerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.lftr.sparging")
+        .frontend(SpargeTowerFrontend::new)
         .disableOptimize()
-        .disableRegisterNEI()
         .maxIO(0, 0, 9, 9)
         .build();
     public static final RecipeMap<RecipeMapBackend> advancedFreezerRecipes = RecipeMapBuilder

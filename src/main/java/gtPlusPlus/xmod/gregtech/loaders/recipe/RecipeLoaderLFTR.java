@@ -111,12 +111,12 @@ public class RecipeLoaderLFTR {
             .fluidInputs(Materials.Helium.getGas(1000), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
             .fluidOutputs(
                 MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(50),
-                Materials.Helium.getGas(10),
-                new FluidStack(mNobleGases.get(1), 10),
-                new FluidStack(mNobleGases.get(2), 10),
-                new FluidStack(mNobleGases.get(3), 10),
-                new FluidStack(mNobleGases.get(4), 10),
-                new FluidStack(mNobleGases.get(5), 10))
+                Materials.Helium.getGas(0),
+                new FluidStack(mNobleGases.get(1), 0),
+                new FluidStack(mNobleGases.get(2), 0),
+                new FluidStack(mNobleGases.get(3), 0),
+                new FluidStack(mNobleGases.get(4), 0),
+                new FluidStack(mNobleGases.get(5), 0))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(SPARGE_MAX_BYPRODUCT, 200)
@@ -126,12 +126,12 @@ public class RecipeLoaderLFTR {
             .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFThF4.getFluidStack(50))
             .fluidOutputs(
                 MaterialsNuclides.Sparged_LiFThF4.getFluidStack(50),
-                Materials.Fluorine.getGas(5),
-                new FluidStack(mFluorideGases.get(1), 5),
-                new FluidStack(mFluorideGases.get(2), 5),
-                new FluidStack(mFluorideGases.get(3), 5),
-                new FluidStack(mFluorideGases.get(4), 5),
-                new FluidStack(mFluorideGases.get(5), 5))
+                Materials.Fluorine.getGas(0),
+                new FluidStack(mFluorideGases.get(1), 0),
+                new FluidStack(mFluorideGases.get(2), 0),
+                new FluidStack(mFluorideGases.get(3), 0),
+                new FluidStack(mFluorideGases.get(4), 0),
+                new FluidStack(mFluorideGases.get(5), 0))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(SPARGE_MAX_BYPRODUCT, 10)
@@ -141,12 +141,12 @@ public class RecipeLoaderLFTR {
             .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFBeF2ThF4.getFluidStack(50))
             .fluidOutputs(
                 MaterialsNuclides.Sparged_LiFBeF2ThF4.getFluidStack(50),
-                Materials.Fluorine.getGas(10),
-                new FluidStack(mFluorideGases.get(1), 10),
-                new FluidStack(mFluorideGases.get(2), 10),
-                new FluidStack(mFluorideGases.get(3), 10),
-                new FluidStack(mFluorideGases.get(4), 10),
-                new FluidStack(mFluorideGases.get(5), 10))
+                Materials.Fluorine.getGas(0),
+                new FluidStack(mFluorideGases.get(1), 0),
+                new FluidStack(mFluorideGases.get(2), 0),
+                new FluidStack(mFluorideGases.get(3), 0),
+                new FluidStack(mFluorideGases.get(4), 0),
+                new FluidStack(mFluorideGases.get(5), 0))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(SPARGE_MAX_BYPRODUCT, 20)
