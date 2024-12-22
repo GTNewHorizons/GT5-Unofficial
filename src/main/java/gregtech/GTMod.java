@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
-import gregtech.common.tileentities.machines.multi.nanochip.util.RecipeHandlers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -92,6 +91,9 @@ import gregtech.common.misc.GTCommand;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.multi.nanochip.util.RecipeHandlers;
+import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;

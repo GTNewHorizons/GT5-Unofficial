@@ -11,15 +11,13 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
-public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor
-    implements IConnectsToVacuumConveyor {
+public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implements IConnectsToVacuumConveyor {
 
     public MTEHatchVacuumConveyorInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] {});
     }
 
-    public MTEHatchVacuumConveyorInput(String aName, int aTier, String[] aDescription,
-                                       ITexture[][][] aTextures) {
+    public MTEHatchVacuumConveyorInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 

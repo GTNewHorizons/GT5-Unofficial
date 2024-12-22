@@ -20,12 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.util.*;
-import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
-import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,10 +39,16 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.*;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
@@ -58,8 +58,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponen
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
-public class MTENanochipAssemblyComplex
-    extends MTEExtendedPowerMultiBlockBase<MTENanochipAssemblyComplex>
+public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<MTENanochipAssemblyComplex>
     implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
@@ -217,7 +216,7 @@ public class MTENanochipAssemblyComplex
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?> module) {
+        if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?>module) {
             return modules.add(module);
         }
         return false;
@@ -322,8 +321,8 @@ public class MTENanochipAssemblyComplex
     // Route circuit components to a set of hatches. Returns true if the components were routed successfully and the
     // stack
     // should be consumed
-    private boolean routeToHatches(List<MTEHatchVacuumConveyor> hatches, byte color,
-                                   CircuitComponent component, int amount) {
+    private boolean routeToHatches(List<MTEHatchVacuumConveyor> hatches, byte color, CircuitComponent component,
+        int amount) {
         // If no hatches were passed, we can't route
         if (hatches == null) return false;
         // Find the first hatch that can be used for routing
@@ -364,8 +363,7 @@ public class MTENanochipAssemblyComplex
             // getStoredInputsWithBus
             byte busColor = stack.bus.getBaseMetaTileEntity()
                 .getColorization();
-            ArrayList<MTEHatchVacuumConveyor> destinationHatches = vacuumConveyors
-                .findColoredHatches(busColor);
+            ArrayList<MTEHatchVacuumConveyor> destinationHatches = vacuumConveyors.findColoredHatches(busColor);
             // Try to route to the set of destination hatches
             boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize);
             // If successful, consume the input
@@ -484,16 +482,14 @@ public class MTENanochipAssemblyComplex
     // Hatch adder for modules
     public enum AssemblyHatchElement implements IHatchElement<MTENanochipAssemblyComplex> {
 
-        AssemblyModule(MTENanochipAssemblyComplex::addModuleToMachineList,
-            MTENanochipAssemblyComplex.class) {
+        AssemblyModule(MTENanochipAssemblyComplex::addModuleToMachineList, MTENanochipAssemblyComplex.class) {
 
             @Override
             public long count(MTENanochipAssemblyComplex tileEntity) {
                 return tileEntity.modules.size();
             }
         },
-        VacuumConveyorHatch(MTENanochipAssemblyComplex::addConveyorToMachineList,
-            MTENanochipAssemblyComplex.class) {
+        VacuumConveyorHatch(MTENanochipAssemblyComplex::addConveyorToMachineList, MTENanochipAssemblyComplex.class) {
 
             @Override
             public long count(MTENanochipAssemblyComplex tileEntity) {
@@ -502,8 +498,7 @@ public class MTENanochipAssemblyComplex
         },
         // Hatches are allowed in the module base slots, but the assembly complex ignores these for its base operation,
         // so we need a custom adder to not add them to our hatch lists
-        IgnoredHatch(MTENanochipAssemblyComplex::ignoreAndAcceptHatch,
-            MTENanochipAssemblyComplex.class) {
+        IgnoredHatch(MTENanochipAssemblyComplex::ignoreAndAcceptHatch, MTENanochipAssemblyComplex.class) {
 
             @Override
             public long count(MTENanochipAssemblyComplex tileEntity) {

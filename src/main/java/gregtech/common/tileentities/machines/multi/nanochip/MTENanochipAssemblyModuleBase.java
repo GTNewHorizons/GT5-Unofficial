@@ -16,9 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.util.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,15 +25,18 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.*;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
@@ -212,8 +212,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         this.inputFakeItems.clear();
         // Refresh fake stacks represented by items in the conveyor hatches.
         // Note that we only take the first hatch with items and process it
-        for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs
-            .allHatches()) {
+        for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
             for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
                 // Get the contents of this hatch as fake items.
                 if (conveyor.contents == null) continue;
@@ -322,8 +321,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         // Now that we know the recipe, we can figure out the color the output hatch should have
         outputColor = findOutputColor(recipe, inputInfo.colors);
         // Try to find a valid output hatch to see if we have output space available, and error if we don't.
-        MTEHatchVacuumConveyorOutput outputHatch = this.vacuumConveyorOutputs
-            .findAnyColoredHatch(this.outputColor);
+        MTEHatchVacuumConveyorOutput outputHatch = this.vacuumConveyorOutputs.findAnyColoredHatch(this.outputColor);
         if (outputHatch == null) {
             // TODO: Maybe add a custom result for this
             return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
