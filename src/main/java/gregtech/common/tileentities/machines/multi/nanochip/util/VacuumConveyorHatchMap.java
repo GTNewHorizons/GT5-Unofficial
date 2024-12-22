@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
-import static gregtech.api.util.GT_Utility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,10 +8,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 
 // To keep track of colors of the conveyor hatches for faster routing
-public class VacuumConveyorHatchMap<T extends GT_MetaTileEntity_Hatch_VacuumConveyor> {
+public class VacuumConveyorHatchMap<T extends MTEHatchVacuumConveyor> {
 
     // Note that each color can result in multiple conveyor hatches. It's up to the user to determine how to interpret
     // this:

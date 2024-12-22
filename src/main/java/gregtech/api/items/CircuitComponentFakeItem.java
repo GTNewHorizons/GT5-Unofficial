@@ -4,11 +4,11 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 
-public class GT_CircuitComponent_FakeItem extends GT_Generic_Item {
+public class CircuitComponentFakeItem extends GTGenericItem {
 
-    public static GT_CircuitComponent_FakeItem INSTANCE = null;
+    public static CircuitComponentFakeItem INSTANCE = null;
 
-    public GT_CircuitComponent_FakeItem() {
+    public CircuitComponentFakeItem() {
         super("gt.fakecircuitcomponent", "Fake Circuit Component Item", null);
         setMaxDamage(0);
         setHasSubtypes(true);

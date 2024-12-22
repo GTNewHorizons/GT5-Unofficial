@@ -8,10 +8,10 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.items.GT_CircuitComponent_FakeItem;
+import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GTUtility;
 
 public enum CircuitComponent {
 
@@ -101,7 +101,7 @@ public enum CircuitComponent {
 
     // No need to use a full recipe map for conversions to real circuits, this also makes things a little easier
     // since we won't need to match outputs of recipes
-    public static final Map<GT_Utility.ItemId, CircuitComponent> realCircuitToComponent = new HashMap<>();
+    public static final Map<GTUtility.ItemId, CircuitComponent> realCircuitToComponent = new HashMap<>();
 
     CircuitComponent(String unlocalizedName, RecipeMap<?> processingMap) {
         this(unlocalizedName, processingMap, null, null);
@@ -134,7 +134,7 @@ public enum CircuitComponent {
 
     // ItemStack of a fake item, only for display and recipe checking purposes
     public ItemStack getFakeStack(int amount) {
-        return new ItemStack(GT_CircuitComponent_FakeItem.INSTANCE, amount, this.ordinal());
+        return new ItemStack(CircuitComponentFakeItem.INSTANCE, amount, this.ordinal());
     }
 
     public static CircuitComponent getFromFakeStack(ItemStack stack) {
@@ -146,7 +146,7 @@ public enum CircuitComponent {
         // Populate real circuit conversion hashmap
         for (CircuitComponent component : CircuitComponent.values()) {
             if (component.realCircuit != null) {
-                GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(component.realCircuit);
+                GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(component.realCircuit);
                 realCircuitToComponent.put(id, component);
             }
         }
