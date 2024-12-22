@@ -406,7 +406,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public final int getMetaID(int x, int y, int z) {
         if (ignoreUnloadedChunks && crossedChunkBorder(x, z) && !worldObj.blockExists(x, y, z)) return 0;
-        return (byte) worldObj.getBlockMetadata(x, y, z);
+        return worldObj.getBlockMetadata(x, y, z);
     }
 
     @Override
