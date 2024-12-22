@@ -1,12 +1,8 @@
 package gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_FRONT;
-import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_FRONT_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,15 +12,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 
 public class MTESolarGenerator extends MTETieredMachineBlock {
 
     public MTESolarGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Generates EU From Solar Power");
+        super(aID, aName, aNameRegional, aTier, 0, new String[]{"Generates EU From Solar Power", "Immune to rain!"});
     }
 
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String aDescription,
@@ -38,7 +34,8 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
         return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
     }
 
@@ -50,9 +47,10 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
                 TextureFactory.of(Textures.BlockIcons.OVERLAY_SOLAR_PANEL) };
         }
         if (sideDirection == facingDirection) {
-            return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1], OVERLAYS_ENERGY_OUT[mTier]};
+            return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
+                OVERLAYS_ENERGY_OUT[mTier] };
         }
-        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]};
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
     }
 
     @Override
@@ -68,6 +66,11 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
             this.mInventory.length,
             this.mDescriptionArray,
             this.mTextures);
+    }
+
+    @Override
+    public boolean willExplodeInRain() {
+        return false;
     }
 
     @Override

@@ -929,7 +929,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.common.tileentities.generators.MTESolarGenerator;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.GregTechAPI;
@@ -992,6 +991,7 @@ import gregtech.common.tileentities.generators.MTEMagicEnergyConverter;
 import gregtech.common.tileentities.generators.MTEMagicalEnergyAbsorber;
 import gregtech.common.tileentities.generators.MTENaquadahReactor;
 import gregtech.common.tileentities.generators.MTEPlasmaGenerator;
+import gregtech.common.tileentities.generators.MTESolarGenerator;
 import gregtech.common.tileentities.generators.MTESteamTurbine;
 import gregtech.common.tileentities.machines.MTEBasicHullBronze;
 import gregtech.common.tileentities.machines.MTEBasicHullBronzeBricks;
