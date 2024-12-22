@@ -1,8 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
@@ -164,28 +163,28 @@ public class RecipesGeneral {
             ItemUtils.simpleMetaStack(ModItems.itemBasicTurbine, 2, 1));
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(Blocks.glass, 16),
-                ItemUtils.getSimpleStack(Blocks.glowstone, 16),
-                ItemList.Large_Fluid_Cell_Steel.get(1),
-                CI.getNumberedAdvancedCircuit(4))
+            .itemInputs(ItemList.Large_Fluid_Cell_Aluminium.get(1))
             .itemOutputs(VolumetricFlaskHelper.getLargeVolumetricFlask(2))
-            .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 2000))
+            .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 4000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
+            .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemUtils.getSimpleStack(Blocks.glass, 64),
-                ItemUtils.getSimpleStack(Blocks.glowstone, 64),
-                ItemList.Large_Fluid_Cell_TungstenSteel.get(1),
-                CI.getNumberedAdvancedCircuit(5))
+            .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1))
             .itemOutputs(VolumetricFlaskHelper.getGiganticVolumetricFlask(2))
-            .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 8000))
+            .fluidInputs(FluidUtils.getFluidStack("molten.borosilicateglass", 16000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
+            .addTo(fluidSolidifierRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Tesseract.get(1))
+            .itemOutputs(VolumetricFlaskHelper.getKleinBottle(1))
+            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(fluidSolidifierRecipes);
 
         // Mining Explosive
         Logger.RECIPE("[Inspection] Explosives");
