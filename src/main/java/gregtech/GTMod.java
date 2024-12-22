@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
+import gregtech.common.tileentities.machines.multi.nanochip.util.RecipeHandlers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

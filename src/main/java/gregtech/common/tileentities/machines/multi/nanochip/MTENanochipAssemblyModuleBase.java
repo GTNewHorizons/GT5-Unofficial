@@ -1,13 +1,13 @@
 package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GT_HatchElement.InputBus;
-import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
-import static gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.GregTechAPI;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.util.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,34 +28,26 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_HatchElementBuilder;
-import gregtech.api.util.GT_OverclockCalculator;
-import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.IGT_HatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Input;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.GT_MetaTileEntity_Hatch_VacuumConveyor_Output;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
-public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
-    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable {
+public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMultiBlockBase<T>>
+    extends MTEExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable {
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String[][] base_structure = new String[][] { { " VV~VV ", "       ", " VVVVV " },
@@ -77,38 +72,38 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
     protected static long EU_BUFFER_BASE_SIZE = 160008000L * 1024;
     protected final long euBufferSize = EU_BUFFER_BASE_SIZE;
 
-    protected final VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
-    protected final VacuumConveyorHatchMap<GT_MetaTileEntity_Hatch_VacuumConveyor_Output> vacuumConveyorOutputs = new VacuumConveyorHatchMap<>();
+    protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
+    protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorOutput> vacuumConveyorOutputs = new VacuumConveyorHatchMap<>();
 
-    public static <B extends GT_MetaTileEntity_NanochipAssemblyModuleBase<B>> StructureDefinition.Builder<B> addBaseStructure(
+    public static <B extends MTENanochipAssemblyModuleBase<B>> StructureDefinition.Builder<B> addBaseStructure(
         StructureDefinition.Builder<B> structure) {
         return structure.addShape(STRUCTURE_PIECE_BASE, base_structure)
             .addElement(
                 'V',
-                GT_HatchElementBuilder.<B>builder()
+                HatchElementBuilder.<B>builder()
                     .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch)
                     .casingIndex(CASING_INDEX_WHITE)
                     .dot(2)
-                    .buildAndChain(ofBlock(GregTech_API.sBlockCasings8, 5)))
-            .addElement('Z', ofBlock(GregTech_API.sBlockCasings8, 10));
+                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
+            .addElement('Z', ofBlock(GregTechAPI.sBlockCasings8, 10));
     }
 
-    public enum ModuleHatchElement implements IHatchElement<GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> {
+    public enum ModuleHatchElement implements IHatchElement<MTENanochipAssemblyModuleBase<?>> {
 
-        VacuumConveyorHatch(GT_MetaTileEntity_NanochipAssemblyModuleBase::addConveyorToMachineList,
-            GT_MetaTileEntity_NanochipAssemblyModuleBase.class) {
+        VacuumConveyorHatch(MTENanochipAssemblyModuleBase::addConveyorToMachineList,
+            MTENanochipAssemblyModuleBase.class) {
 
             @Override
-            public long count(GT_MetaTileEntity_NanochipAssemblyModuleBase<?> tileEntity) {
+            public long count(MTENanochipAssemblyModuleBase<?> tileEntity) {
                 return tileEntity.vacuumConveyorInputs.size() + tileEntity.vacuumConveyorOutputs.size();
             }
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGT_HatchAdder<GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> adder;
+        private final IGTHatchAdder<MTENanochipAssemblyModuleBase<?>> adder;
 
         @SafeVarargs
-        ModuleHatchElement(IGT_HatchAdder<GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> adder,
+        ModuleHatchElement(IGTHatchAdder<MTENanochipAssemblyModuleBase<?>> adder,
             Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
@@ -119,7 +114,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
             return mteClasses;
         }
 
-        public IGT_HatchAdder<? super GT_MetaTileEntity_NanochipAssemblyModuleBase<?>> adder() {
+        public IGTHatchAdder<? super MTENanochipAssemblyModuleBase<?>> adder() {
             return adder;
         }
     }
@@ -131,11 +126,11 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
      * @param aName         Name of this module
      * @param aNameRegional Localized name of this module
      */
-    protected GT_MetaTileEntity_NanochipAssemblyModuleBase(int aID, String aName, String aNameRegional) {
+    protected MTENanochipAssemblyModuleBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected GT_MetaTileEntity_NanochipAssemblyModuleBase(String aName) {
+    protected MTENanochipAssemblyModuleBase(String aName) {
         super(aName);
     }
 
@@ -160,11 +155,11 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_VacuumConveyor_Input hatch) {
+        if (aMetaTileEntity instanceof MTEHatchVacuumConveyorInput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             return vacuumConveyorInputs.addHatch(hatch);
         }
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_VacuumConveyor_Output hatch) {
+        if (aMetaTileEntity instanceof MTEHatchVacuumConveyorOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             return vacuumConveyorOutputs.addHatch(hatch);
         }
@@ -192,10 +187,10 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
          * A map containing one entry per unique item, with in each entry the color of the last hatch it was seen in.
          * This can be used to determine the output color
          */
-        public final Map<GT_Utility.ItemId, Byte> colors;
-        public final Map<GT_Utility.ItemId, ItemStack> inputs;
+        public final Map<GTUtility.ItemId, Byte> colors;
+        public final Map<GTUtility.ItemId, ItemStack> inputs;
 
-        public ItemInputInformation(Map<GT_Utility.ItemId, Byte> colors, Map<GT_Utility.ItemId, ItemStack> inputs) {
+        public ItemInputInformation(Map<GTUtility.ItemId, Byte> colors, Map<GTUtility.ItemId, ItemStack> inputs) {
             this.colors = colors;
             this.inputs = inputs;
         }
@@ -211,22 +206,22 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
      *         calculation easier
      */
     private ItemInputInformation refreshInputItems() {
-        Map<GT_Utility.ItemId, Byte> itemColorMap = new HashMap<>();
-        Map<GT_Utility.ItemId, ItemStack> inputs = new HashMap<>();
+        Map<GTUtility.ItemId, Byte> itemColorMap = new HashMap<>();
+        Map<GTUtility.ItemId, ItemStack> inputs = new HashMap<>();
         // Clear input items before processing
         this.inputFakeItems.clear();
         // Refresh fake stacks represented by items in the conveyor hatches.
         // Note that we only take the first hatch with items and process it
-        for (ArrayList<GT_MetaTileEntity_Hatch_VacuumConveyor_Input> conveyorList : this.vacuumConveyorInputs
+        for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs
             .allHatches()) {
-            for (GT_MetaTileEntity_Hatch_VacuumConveyor_Input conveyor : conveyorList) {
+            for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
                 // Get the contents of this hatch as fake items.
                 if (conveyor.contents == null) continue;
                 List<ItemStack> itemsInHatch = conveyor.contents.getItemRepresentations();
                 // Store the color of this hatch for each ItemStack
                 byte conveyorColor = conveyor.getColorization();
                 for (ItemStack stack : itemsInHatch) {
-                    GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(stack);
+                    GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(stack);
                     // Merge stack into the input map, so we have a list of entries that are all unique.
                     inputs.merge(
                         id,
@@ -250,9 +245,9 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
      * @return The color that the output needs to end up in. If no hatch with this color exists, the module will report
      *         that no output space is available.
      */
-    protected byte findOutputColor(GT_Recipe recipe, Map<GT_Utility.ItemId, Byte> itemColors) {
+    protected byte findOutputColor(GTRecipe recipe, Map<GTUtility.ItemId, Byte> itemColors) {
         ItemStack firstInput = recipe.mInputs[0];
-        GT_Utility.ItemId id = GT_Utility.ItemId.createNoCopy(firstInput);
+        GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(firstInput);
         // If this recipe was valid and found, this should never not exist, or we have a bug
         return itemColors.get(id);
     }
@@ -262,7 +257,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
      *
      * @return A recipe if one was found, null otherwise
      */
-    protected GT_Recipe findRecipe(ArrayList<ItemStack> inputs) {
+    protected GTRecipe findRecipe(ArrayList<ItemStack> inputs) {
         RecipeMap<?> recipeMap = this.getRecipeMap();
         this.fluidInputs = getStoredFluids().toArray(new FluidStack[] {});
         return recipeMap.findRecipeQuery()
@@ -274,8 +269,8 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
     /**
      * Return a parallel helper, but this should not yet be built, since we will append the item consumer to it first
      */
-    protected GT_ParallelHelper createParallelHelper(GT_Recipe recipe, ItemInputInformation info) {
-        return new GT_ParallelHelper().setItemInputs(this.inputFakeItems.toArray(new ItemStack[] {}))
+    protected ParallelHelper createParallelHelper(GTRecipe recipe, ItemInputInformation info) {
+        return new ParallelHelper().setItemInputs(this.inputFakeItems.toArray(new ItemStack[] {}))
             .setFluidInputs(fluidInputs)
             .setAvailableEUt(this.availableEUt)
             .enableBatchMode(0)
@@ -283,19 +278,19 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
             .setMachine(this, false, false)
             .setMaxParallel(Integer.MAX_VALUE)
             .setOutputCalculation(true)
-            .setCalculator(GT_OverclockCalculator.ofNoOverclock(recipe));
+            .setCalculator(OverclockCalculator.ofNoOverclock(recipe));
     }
 
     /**
      * Validate if a recipe can be run by this module. By default, always succeeds.
      * Override this logic if you want to do recipe validation such as tiering of the module.
      * This is called before finding output hatch space or checking parallels.
-     * 
+     *
      * @param recipe The recipe the module is trying to run
      * @return A successful CheckRecipeResult if the recipe should be accepted.
      */
     @NotNull
-    public CheckRecipeResult validateRecipe(@NotNull GT_Recipe recipe) {
+    public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -317,7 +312,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         ItemInputInformation inputInfo = refreshInputItems();
 
         // Now find a recipe with the fake inputs
-        GT_Recipe recipe = findRecipe(this.inputFakeItems);
+        GTRecipe recipe = findRecipe(this.inputFakeItems);
         if (recipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
         // Validate it with custom logic, by default does nothing but can be overridden
         // by the module
@@ -327,7 +322,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         // Now that we know the recipe, we can figure out the color the output hatch should have
         outputColor = findOutputColor(recipe, inputInfo.colors);
         // Try to find a valid output hatch to see if we have output space available, and error if we don't.
-        GT_MetaTileEntity_Hatch_VacuumConveyor_Output outputHatch = this.vacuumConveyorOutputs
+        MTEHatchVacuumConveyorOutput outputHatch = this.vacuumConveyorOutputs
             .findAnyColoredHatch(this.outputColor);
         if (outputHatch == null) {
             // TODO: Maybe add a custom result for this
@@ -335,7 +330,7 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         }
 
         // Create parallel helper to calculate parallel and consume inputs
-        GT_ParallelHelper parallelHelper = createParallelHelper(recipe, inputInfo);
+        ParallelHelper parallelHelper = createParallelHelper(recipe, inputInfo);
         // Add item consumer to parallel helper and make it consume the input items while it builds
         parallelHelper.setConsumption(true)
             .setInputConsumer(new CCInputConsumer(this.vacuumConveyorInputs, this))
@@ -401,15 +396,15 @@ public abstract class GT_MetaTileEntity_NanochipAssemblyModuleBase<T extends GT_
         return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
     }
 
-    protected GT_MetaTileEntity_Hatch_VacuumConveyor_Output findOutputHatch(byte color) {
+    protected MTEHatchVacuumConveyorOutput findOutputHatch(byte color) {
         return vacuumConveyorOutputs.findAnyColoredHatch(color);
     }
 
     @Override
     public boolean addOutput(ItemStack aStack) {
         // We need to override this because outputs are produced in vacuum conveyor outputs, not as real items
-        if (GT_Utility.isStackInvalid(aStack)) return false;
-        GT_MetaTileEntity_Hatch_VacuumConveyor_Output hatch = findOutputHatch(this.outputColor);
+        if (GTUtility.isStackInvalid(aStack)) return false;
+        MTEHatchVacuumConveyorOutput hatch = findOutputHatch(this.outputColor);
         if (hatch == null) {
             stopMachine(SimpleShutDownReason.ofCritical("Colored output hatch disappeared mid-recipe."));
             return false;
