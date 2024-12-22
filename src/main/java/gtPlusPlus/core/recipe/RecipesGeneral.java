@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
@@ -182,7 +181,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(VolumetricFlaskHelper.getKleinBottle(1))
-            .fluidInputs(CHRONOMATIC_GLASS.getFluidStack(2304))
+            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -416,7 +415,7 @@ public class RecipesGeneral {
         generateWireRecipes(MaterialsAlloy.LEAGRISIUM);
         generateWireRecipes(MaterialsAlloy.TRINIUM_TITANIUM);
         generateWireRecipes(MaterialsElements.STANDALONE.HYPOGEN);
-        generateWireRecipes(CHRONOMATIC_GLASS);
+        generateWireRecipes(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
 
         Material[] gtpp = new Material[] { MaterialsAlloy.STABALLOY, MaterialsAlloy.TANTALLOY_60,
             MaterialsAlloy.TANTALLOY_61, MaterialsAlloy.POTIN, MaterialsAlloy.MARAGING300, MaterialsAlloy.MARAGING350,
