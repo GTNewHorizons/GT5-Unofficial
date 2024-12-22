@@ -32,6 +32,7 @@ public enum Asteroids {
         .specialBlockChance(5)
         .oreDensityMultiplier(0.75f)
         .smallOreChance(10)
+        .asteroidYBounds(50, 200)
         .loot(
             new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
                 .lootChestItemCount(10)

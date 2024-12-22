@@ -135,16 +135,13 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             if (oreLayer == null) return null;
 
-            int minY = oreLayer.getMinY();
-            int maxY = oreLayer.getMaxY();
-
             GalacticGreg.Logger.debug(
                 "Asteroid will be built with: Stone: [%s] Ore: [%s]",
                 asteroidStone.getStone(),
                 oreLayer.getName());
 
             int tX = seedChunkX * 16 + rng.nextInt(16);
-            int tY = minY + rng.nextInt(maxY - minY);
+            int tY = asteroidConfig.AsteroidMinY + rng.nextInt(asteroidConfig.AsteroidMaxY - asteroidConfig.AsteroidMinY);
             int tZ = seedChunkZ * 16 + rng.nextInt(16);
 
             List<Ellipsoid> positive = new ArrayList<>();

@@ -10,6 +10,7 @@ public class AsteroidPropertyBuilder {
     public int smallOreChance = 10;
     public LootPropertyBuilder loot;
     public int positiveEllipsoids = 2, negativeEllipsoids = 2;
+    public int asteroidMinY = 50, asteroidMaxY = 100;
 
     public static class LootPropertyBuilder {
 
@@ -82,6 +83,12 @@ public class AsteroidPropertyBuilder {
 
     public AsteroidPropertyBuilder negativeEllipsoids(int negativeEllipsoids) {
         this.negativeEllipsoids = negativeEllipsoids;
+        return this;
+    }
+
+    public AsteroidPropertyBuilder asteroidYBounds(int minY, int maxY) {
+        this.asteroidMinY = minY;
+        this.asteroidMaxY = maxY;
         return this;
     }
 

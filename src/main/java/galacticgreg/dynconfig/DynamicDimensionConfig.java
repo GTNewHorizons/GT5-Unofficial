@@ -22,6 +22,8 @@ public class DynamicDimensionConfig {
         public int Probability;
         public int PositiveEllipsoids;
         public int NegativeEllipsoids;
+        public int AsteroidMinY;
+        public int AsteroidMaxY;
         public float OreDensityMultiplier;
         public int OreChance;
         public int SmallOreChance;
@@ -87,6 +89,8 @@ public class DynamicDimensionConfig {
                     aConf.Probability = AsteroidProperties.asteroidPropertyBuilder.probability;
                     aConf.PositiveEllipsoids = AsteroidProperties.asteroidPropertyBuilder.positiveEllipsoids;
                     aConf.NegativeEllipsoids = AsteroidProperties.asteroidPropertyBuilder.negativeEllipsoids;
+                    aConf.AsteroidMinY = AsteroidProperties.asteroidPropertyBuilder.asteroidMinY;
+                    aConf.AsteroidMaxY = AsteroidProperties.asteroidPropertyBuilder.asteroidMaxY;
                     aConf.OreDensityMultiplier = AsteroidProperties.asteroidPropertyBuilder.oreDensityMultiplier;
                     aConf.SmallOreChance = AsteroidProperties.asteroidPropertyBuilder.smallOreChance;
                     aConf.SpecialBlockChance = AsteroidProperties.asteroidPropertyBuilder.specialBlockChance;

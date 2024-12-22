@@ -247,6 +247,8 @@ public enum DimensionDef {
     public static ModDimensionDef getDefForWorld(World world, int chunkX, int chunkZ) {
         ModDimensionDef def = DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
 
+        if (def == null) return null;
+
         if (def.getDimensionName()
             .equals(DimNames.THE_END)) {
             if (chunkX * chunkX + chunkZ * chunkZ > 16 * 16) {
@@ -295,7 +297,7 @@ public enum DimensionDef {
         public static final String BARNARDF = "BarnardF";
         public static final String TCETIE = "TcetiE";
         public static final String MIRANDA = "Miranda";
-        public static final String KUIPERBELT = "Kuiperbelt";
+        public static final String KUIPERBELT = "Kuiper Belt";
         public static final String NEPER = "Neper";
         public static final String MAAHES = "Maahes";
         public static final String ANUBIS = "Anubis";

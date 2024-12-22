@@ -167,7 +167,7 @@ public class DimensionHelper {
                         case "Io", "Mercury", "Venus" -> "T4: " + s;
                         case "Enceladus", "Miranda", "Oberon", "Titan", "Ross128ba" -> "T5: " + s;
                         case "Proteus", "Triton" -> "T6: " + s;
-                        case "Haumea", "Kuiperbelt", "MakeMake", "Pluto" -> "T7: " + s;
+                        case "Haumea", "Kuiper Belt", "MakeMake", "Pluto" -> "T7: " + s;
                         case "BarnardC", "BarnardE", "BarnardF", "CentauriA", "TcetiE", "VegaB" -> "T8: " + s;
                         case "Anubis", "Horus", "Maahes", "MehenBelt", "Neper", "Seth" -> "T9: " + s;
                         case "Underdark" -> "T10: " + s;
