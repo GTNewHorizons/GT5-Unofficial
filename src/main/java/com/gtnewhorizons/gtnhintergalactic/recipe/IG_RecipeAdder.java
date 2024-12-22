@@ -21,8 +21,6 @@ import gregtech.common.RecipeAdder;
 public class IG_RecipeAdder extends RecipeAdder {
 
     public static IG_RecipeAdder instance = new IG_RecipeAdder();
-    public static final ItemStack[] nullItem = new ItemStack[0];
-    public static final FluidStack[] nullFluid = new FluidStack[0];
 
     public static void init() {
 
@@ -133,41 +131,7 @@ public class IG_RecipeAdder extends RecipeAdder {
             int[] aChances, Materials[] ores, OrePrefixes orePrefixes, int minSize, int maxSize, int minDistance,
             int maxDistance, int computationRequiredPerSec, int minModuleTier, int duration, int EUt,
             int recipeWeight) {
-        if ((aItemInputs == null && aFluidInputs == null) || ores == null) {
-            return false;
-        }
-        if (minDistance > maxDistance || minSize > maxSize) {
-            return false;
-        }
-        if (recipeWeight <= 0) {
-            GTLog.err.println("Weight of mining recipe for main material " + ores[0].toString() + " is 0");
-        }
-        if (aChances != null) {
-            if (aChances.length < ores.length) {
-                return false;
-            } else if (aChances.length > ores.length) {
-                GTLog.err.println(
-                        "Chances and outputs of mining recipe for main material " + ores[0].toString()
-                                + " have different length!");
-            }
-            if (Arrays.stream(aChances).sum() != 10000) {
-                GTLog.err.println(
-                        "Sum of chances in mining recipe for main material " + ores[0].toString()
-                                + " is not 100%! This will lead to no issue but might be unintentional");
-            }
-        } else {
-            aChances = new int[ores.length];
-            Arrays.fill(aChances, 10000);
-        }
-        if (aItemInputs == null) {
-            aItemInputs = nullItem;
-        }
-        if (aFluidInputs == null) {
-            aFluidInputs = nullFluid;
-        }
-        if (orePrefixes == null) {
-            return false;
-        }
+        if (ores == null) return false;
 
         // Map ores to actual items with stack minSize 64
         ItemStack[] outputs = new ItemStack[ores.length];
@@ -175,24 +139,21 @@ public class IG_RecipeAdder extends RecipeAdder {
             outputs[i] = GTOreDictUnificator.get(orePrefixes, ores[i], 64);
         }
 
-        IGRecipeMaps.spaceMiningRecipes.add(
-                new IG_SpaceMiningRecipe(
-                        false,
-                        asteroidName,
-                        aItemInputs,
-                        outputs,
-                        aFluidInputs,
-                        aChances,
-                        duration,
-                        EUt,
-                        computationRequiredPerSec,
-                        minModuleTier,
-                        minDistance,
-                        maxDistance,
-                        minSize,
-                        maxSize,
-                        recipeWeight));
-        return true;
+        return addSpaceMiningRecipe(
+                asteroidName,
+                aItemInputs,
+                aFluidInputs,
+                aChances,
+                outputs,
+                minSize,
+                maxSize,
+                minDistance,
+                maxDistance,
+                computationRequiredPerSec,
+                minModuleTier,
+                duration,
+                EUt,
+                recipeWeight);
     }
 
     public static boolean addSpaceMiningRecipe(String asteroidName, ItemStack[] aItemInputs, FluidStack[] aFluidInputs,
@@ -225,30 +186,29 @@ public class IG_RecipeAdder extends RecipeAdder {
             aChances = new int[aItemOutputs.length];
             Arrays.fill(aChances, 10000);
         }
-        if (aItemInputs == null) {
-            aItemInputs = nullItem;
+
+        // Create space mining data storage
+        SpaceMiningData miningData = new SpaceMiningData(
+                asteroidName,
+                minDistance,
+                maxDistance,
+                minSize,
+                maxSize,
+                computationRequiredPerSec,
+                recipeWeight);
+
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder();
+
+        if (aItemInputs != null) {
+            builder.itemInputs(aItemInputs);
         }
-        if (aFluidInputs == null) {
-            aFluidInputs = nullFluid;
+        if (aFluidInputs != null) {
+            builder.fluidInputs(aFluidInputs);
         }
 
-        IGRecipeMaps.spaceMiningRecipes.add(
-                new IG_SpaceMiningRecipe(
-                        false,
-                        asteroidName,
-                        aItemInputs,
-                        aItemOutputs,
-                        aFluidInputs,
-                        aChances,
-                        duration,
-                        EUt,
-                        computationRequiredPerSec,
-                        minModuleTier,
-                        minDistance,
-                        maxDistance,
-                        minSize,
-                        maxSize,
-                        recipeWeight));
+        builder.itemOutputs(aItemOutputs).outputChances(aChances).specialValue(minModuleTier)
+                .metadata(IGRecipeMaps.SPACE_MINING_DATA, miningData).duration(duration).eut(EUt)
+                .addTo(IGRecipeMaps.spaceMiningRecipes);
 
         return true;
     }

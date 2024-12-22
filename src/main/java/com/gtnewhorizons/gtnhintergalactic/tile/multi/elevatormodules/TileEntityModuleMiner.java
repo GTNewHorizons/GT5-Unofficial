@@ -26,12 +26,11 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.item.ItemMiningDrones;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_SpaceMiningRecipe;
+import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningData;
 import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningRecipes;
 import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningRecipes.WeightedAsteroidList;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner.AsteroidSummary;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -61,6 +60,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
@@ -79,7 +79,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 
 /**
  * Base class for space mining modules
- * 
+ *
  * @author minecraft7771
  */
 public abstract class TileEntityModuleMiner extends TileEntityModuleBase implements IOverclockDescriptionProvider {
@@ -327,12 +327,15 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         } else {
             recipes = new WeightedAsteroidList(
                     IGRecipeMaps.spaceMiningRecipes.findRecipeQuery().items(inputs).fluids(fluidInputs)
-                            .voltage(tVoltage).findAll().filter(IG_SpaceMiningRecipe.class::isInstance)
-                            .map(IG_SpaceMiningRecipe.class::cast)
-                            .filter(
-                                    recipe -> recipe.minDistance <= distance && recipe.maxDistance >= distance
-                                            && recipe.mSpecialValue <= tModuleTier)
-                            .distinct());
+                            .voltage(tVoltage).findAll().filter(r -> {
+                                // Check module tier
+                                if (r.mSpecialValue > tModuleTier) return false;
+
+                                // Check mining recipe distance
+                                SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+                                if (data == null) return false;
+                                return data.minDistance <= distance && data.maxDistance >= distance;
+                            }).distinct());
             // The original implementation had each recipe added multiple times redundantly, so I implemented
             // hashCode/equals
             // and use .distinct() here
@@ -357,7 +360,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             plasmaModifier -= asteroidOutpost.getPlasmaDiscount();
         }
 
-        IG_SpaceMiningRecipe tRecipe = recipes.getRandom();
+        GTRecipe tRecipe = recipes.getRandom();
 
         // Make sure recipe really exists and we have enough power
         if (tRecipe == null) {
@@ -367,8 +370,13 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             return CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
         }
 
+        SpaceMiningData data = tRecipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+        if (data == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
         // Limit parallels by available computation, return if not enough computation is available
-        maxParallels = (int) Math.min(maxParallels, getAvailableData_EM() / (tRecipe.computation * compModifier));
+        maxParallels = (int) Math.min(maxParallels, getAvailableData_EM() / (data.computation * compModifier));
         if (maxParallels <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
@@ -386,12 +394,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
         int totalChance = Arrays.stream(tRecipe.mChances).sum();
         try {
-            for (int i = 0; i < tRecipe.maxSize * parallels; i++) {
+            for (int i = 0; i < data.maxSize * parallels; i++) {
                 int bonusStackChance = 0;
-                if (i >= tRecipe.minSize * parallels) {
+                if (i >= data.minSize * parallels) {
                     bonusStackChance = getBonusStackChance(availablePlasmaTier);
                 }
-                if (i < tRecipe.minSize * parallels || bonusStackChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
+                if (i < data.minSize * parallels || bonusStackChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
                     int random = XSTR.XSTR_INSTANCE.nextInt(totalChance);
                     int currentChance = 0;
                     for (int j = 0; j < tRecipe.mChances.length; j++) {
@@ -429,7 +437,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         eAmpereFlow = 1;
         // TODO: Implement way to get computation from master controller. Or maybe keep it this way so
         // people can route computation to their liking?
-        eRequiredData = (int) Math.ceil(tRecipe.computation * parallels * compModifier);
+        eRequiredData = (int) Math.ceil(data.computation * parallels * compModifier);
         mMaxProgresstime = getRecipeTime(tRecipe.mDuration, availablePlasmaTier);
         mEfficiencyIncrease = 10000;
         return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -602,18 +610,18 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
     /**
      * POD class, Data for the asteroid summary in the mui in the space miner
-     * 
+     *
      * @author hacatu
      */
-    protected class AsteroidSummary {
+    protected static class AsteroidSummary {
 
-        public IG_SpaceMiningRecipe recipe;
+        public String name;
         public float chance;
         public float timeDensity;
         public int maxParallels;
 
-        public AsteroidSummary(IG_SpaceMiningRecipe recipe, float chance, float timeDensity, int maxParallels) {
-            this.recipe = recipe;
+        public AsteroidSummary(String name, float chance, float timeDensity, int maxParallels) {
+            this.name = name;
             this.chance = chance;
             this.timeDensity = timeDensity;
             this.maxParallels = maxParallels;
@@ -625,7 +633,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      * at each operation - timeDensity: the fraction of time that the recipe takes up in the long run - maxParallels:
      * the number of parallels the mining module will do at its current settings, level, and computation. (assuming that
      * power, computation, plasma, and drills/rods don't run out)
-     * 
+     *
      * @author hacatu
      */
     protected List<AsteroidSummary> getAsteroidSummaries(int maxParallels, float effectiveComp) {
@@ -635,16 +643,15 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         }
         float totalWeight = prevRecipes.totalWeight; // save to float, so we don't have to cast in the following loop
         float totalTimedensity = prevRecipes.totalTimedensity;
-        return prevRecipes.recipes.stream()
-                .map(
-                        r -> new AsteroidSummary(
-                                r,
-                                r.recipeWeight / totalWeight,
-                                r.recipeWeight * r.mDuration / totalTimedensity,
-                                Math.min(
-                                        maxParallels,
-                                        Math.min((int) (effectiveComp / r.computation), (int) (power / r.mEUt)))))
-                .collect(Collectors.toList());
+        return prevRecipes.recipes.stream().map(r -> {
+            SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+            if (data == null) throw new IllegalStateException("Illegal space miner recipe found");
+            return new AsteroidSummary(
+                    data.asteroidName,
+                    data.recipeWeight / totalWeight,
+                    data.recipeWeight * r.mDuration / totalTimedensity,
+                    Math.min(maxParallels, Math.min((int) (effectiveComp / data.computation), (int) (power / r.mEUt))));
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -808,7 +815,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 for (AsteroidSummary summ : getAsteroidSummaries(
                         Math.min(getMaxParallels(), (int) parallelSetting.get()),
                         effectiveComp)) {
-                    res.append(StatCollector.translateToLocal("ig.asteroid." + summ.recipe.getAsteroidName()));
+                    res.append(StatCollector.translateToLocal("ig.asteroid." + summ.name));
                     res.append(
                             String.format(
                                     ": %.3f%% / %s, %.3f%% / %s, %s %dx",

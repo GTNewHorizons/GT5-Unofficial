@@ -20,6 +20,8 @@ public class IGRecipeMaps {
             .create(String.class, "space_project");
     public static final RecipeMetadataKey<String> SPACE_LOCATION = SimpleRecipeMetadataKey
             .create(String.class, "space_project_location");
+    public static final RecipeMetadataKey<SpaceMiningData> SPACE_MINING_DATA = SimpleRecipeMetadataKey
+            .create(SpaceMiningData.class, "space_mining_data");
 
     /** Recipe map for recipes in the Space Research Module */
     public static final RecipeMap<RecipeMapBackend> spaceResearchRecipes = RecipeMapBuilder

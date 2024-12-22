@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_SpaceMiningRecipe;
+import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
+import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceMiningData;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -54,22 +55,20 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
         public List<String> format(RecipeDisplayInfo recipeInfo) {
             List<String> result = new ArrayList<>();
             result.add(GCCoreUtil.translateWithFormat("ig.nei.module", recipeInfo.recipe.mSpecialValue));
-            if (recipeInfo.recipe instanceof IG_SpaceMiningRecipe miningRecipe) {
+
+            SpaceMiningData data = recipeInfo.recipe.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+            if (data != null) {
                 result.add(
                         GCCoreUtil.translate("ig.nei.spacemining.distance") + " "
-                                + miningRecipe.minDistance
+                                + data.minDistance
                                 + "-"
-                                + miningRecipe.maxDistance);
-                result.add(
-                        GCCoreUtil.translate("ig.nei.spacemining.size") + " "
-                                + miningRecipe.minSize
-                                + "-"
-                                + miningRecipe.maxSize);
+                                + data.maxDistance);
+                result.add(GCCoreUtil.translate("ig.nei.spacemining.size") + " " + data.minSize + "-" + data.maxSize);
                 result.add(
                         GCCoreUtil.translateWithFormat(
                                 "tt.nei.research.min_computation",
-                                GTUtility.formatNumbers(miningRecipe.computation)));
-                result.add(GCCoreUtil.translate("ig.nei.spacemining.weight") + " " + miningRecipe.recipeWeight);
+                                GTUtility.formatNumbers(data.computation)));
+                result.add(GCCoreUtil.translate("ig.nei.spacemining.weight") + " " + data.recipeWeight);
             }
             return result;
         }

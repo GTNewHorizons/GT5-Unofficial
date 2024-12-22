@@ -2,11 +2,11 @@ package com.gtnewhorizons.gtnhintergalactic.recipe;
 
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.minecraft.init.Blocks;
@@ -26,6 +26,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
 /**
@@ -1005,28 +1006,34 @@ public class SpaceMiningRecipes {
     /**
      * A list of space mining recipes with precomputed total weight and total "time density", usually cached in the
      * space mining module
-     * 
+     *
      * @author hacatu
      */
     public static class WeightedAsteroidList {
 
-        public List<IG_SpaceMiningRecipe> recipes;
+        public List<GTRecipe> recipes;
         public int totalWeight;
         public int totalTimedensity;
 
-        public WeightedAsteroidList(Stream<IG_SpaceMiningRecipe> inRecipes) {
-            recipes = inRecipes.collect(Collectors.toList());
-            for (IG_SpaceMiningRecipe recipe : recipes) {
-                totalWeight += recipe.recipeWeight;
-                totalTimedensity += recipe.recipeWeight * recipe.mDuration;
-            }
+        public WeightedAsteroidList(Stream<GTRecipe> inRecipes) {
+            recipes = new ArrayList<>();
+            inRecipes.forEach(r -> {
+                SpaceMiningData data = r.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+                if (data != null) {
+                    recipes.add(r);
+                    totalWeight += data.recipeWeight;
+                    totalTimedensity += data.recipeWeight * r.mDuration;
+                }
+            });
         }
 
-        public IG_SpaceMiningRecipe getRandom() {
+        public GTRecipe getRandom() {
             int i = 0;
             double r = Math.random() * totalWeight;
             while (i < recipes.size() - 1) {
-                int weight = recipes.get(i).recipeWeight;
+                SpaceMiningData data = recipes.get(i).getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+                if (data == null) throw new IllegalStateException("Illegal space miner recipe found");
+                int weight = data.recipeWeight;
                 if (r <= weight) {
                     break;
                 }
