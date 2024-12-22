@@ -98,7 +98,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
-    public void doWorldChecks(World world, IGregTechTileEntity aBaseMetaTileEntity) {
+    private void doWorldChecks(World world, IGregTechTileEntity aBaseMetaTileEntity) {
         valid = (!(world.isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F) && world.isDaytime()
             && aBaseMetaTileEntity.getSkyAtSide(ForgeDirection.UP));
     }
