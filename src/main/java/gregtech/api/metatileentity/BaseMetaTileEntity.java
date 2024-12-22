@@ -33,6 +33,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -1532,6 +1533,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                     zCoord);
                                 cableUpdateDelay = 10;
                             }
+
+                        if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         return true;
                     }
 
@@ -1557,6 +1560,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 xCoord,
                                 yCoord,
                                 zCoord);
+                            if (tCurrentItem.stackSize == 0)
+                                ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
                         return true;
                     }
@@ -1580,6 +1585,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 xCoord,
                                 yCoord,
                                 zCoord);
+                            if (tCurrentItem.stackSize == 0)
+                                ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
                         return true;
                     }
@@ -1604,6 +1611,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 xCoord,
                                 yCoord,
                                 zCoord);
+                            if (tCurrentItem.stackSize == 0)
+                                ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
                         return true;
                     }
@@ -1638,6 +1647,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 zCoord);
                             issueBlockUpdate();
                         }
+                        if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         doEnetUpdate();
                         cableUpdateDelay = 10;
                         return true;
@@ -1655,6 +1665,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                 xCoord,
                                 yCoord,
                                 zCoord);
+                            if (tCurrentItem.stackSize == 0)
+                                ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         }
                         doEnetUpdate();
                         cableUpdateDelay = 10;
@@ -1698,6 +1710,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                     yCoord,
                                     zCoord);
                                 dropCover(coverSide, side, false);
+                                if (tCurrentItem.stackSize == 0)
+                                    ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                             }
                             return true;
                         } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sJackhammerList)) {
@@ -1722,6 +1736,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity
                                             aPlayer,
                                             StatCollector.translateToLocal("gt.cover.info.chat.tick_rate_not_allowed"));
                                     }
+                                    if (tCurrentItem.stackSize == 0)
+                                        ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                                     return true;
                                 }
                             }
