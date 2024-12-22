@@ -171,16 +171,19 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
 
             private FluidStack[] randomizeByproducts(FluidStack[] currentOutput, int maximum, FluidStack spargeGas) {
                 FluidStack[] newOutput = new FluidStack[currentOutput.length];
-                int byproductAmount = 0;
-                newOutput[0] = currentOutput[0];
+                newOutput[0] = currentOutput[0]; // not part of the randomization
+
+                int byproductTotal = 0;
 
                 for (int i = 2; i < currentOutput.length; i++) {
-                    if (currentOutput[i] == null) break;
-                    int gasAmount = MathUtils.randInt(0, maximum);
-                    newOutput[i] = new FluidStack(currentOutput[i].copy(), gasAmount);
-                    byproductAmount += gasAmount;
+                    // At least 1L so all output hatches are guaranteed to be used, and a maximum that shifts so there
+                    // can always be at least 1L of overflow for the same reason.
+                    int gasAmount = MathUtils.randInt(1, Math.min(maximum, spargeGas.amount - byproductTotal - 1));
+                    newOutput[i] = new FluidStack(currentOutput[i], gasAmount);
+                    byproductTotal += gasAmount;
                 }
-                newOutput[1] = new FluidStack(spargeGas, (spargeGas.amount - byproductAmount));
+
+                newOutput[1] = new FluidStack(spargeGas, spargeGas.amount - byproductTotal);
                 return newOutput;
             }
 
