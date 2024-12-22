@@ -266,17 +266,7 @@ public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextu
     }
 
     public String getLocalizedNameFormat(Materials material) {
-        String base;
-
-        if (material.contains(SubTag.ICE_ORE)) {
-            base = "%material Ice";
-        } else {
-            base = switch (material.mName) {
-                case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
-                case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
-                default -> "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
-            };
-        }
+        String base = OrePrefixes.ore.getDefaultLocalNameForItem(material);
 
         if (GTLanguageManager.i18nPlaceholder) {
             return base;

@@ -1479,6 +1479,19 @@ public enum OrePrefixes {
                 }
             }
         }
+
+        if (aMaterial.contains(SubTag.ICE_ORE) && (this == rawOre || this == ore)) {
+            return mLocalizedMaterialPre + "%material" + " Ice";
+        }
+
+        if (this == ore) {
+            return switch (aMaterial.mName) {
+                case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
+                case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
+                default -> mLocalizedMaterialPre + "%material" + mLocalizedMaterialPost;
+            };
+        }
+
         // Use Standard Localization
         return mLocalizedMaterialPre + "%material" + mLocalizedMaterialPost;
     }
