@@ -63,5 +63,4 @@ public class SpargeTowerFrontend extends FluidOnlyFrontend {
         return currentTip;
     }
 
-
 }
