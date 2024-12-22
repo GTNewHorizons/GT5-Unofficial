@@ -86,6 +86,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Grind ores.")
+            .addInfo("Performs perfect overclocks")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 7, false)
             .addController("Front Center")

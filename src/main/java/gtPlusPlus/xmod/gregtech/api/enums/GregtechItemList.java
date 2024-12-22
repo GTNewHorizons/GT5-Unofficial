@@ -134,6 +134,7 @@ public enum GregtechItemList implements IGregtechItemContainer {
     // Larger Volumetric Flasks
     VOLUMETRIC_FLASK_8k,
     VOLUMETRIC_FLASK_32k,
+    KLEIN_BOTTLE,
 
     // RTG Fuels
     Pellet_RTG_PU238,

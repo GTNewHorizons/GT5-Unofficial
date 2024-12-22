@@ -592,11 +592,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     }
 
     @Override
-    public int getPollutionPerTick(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
     }

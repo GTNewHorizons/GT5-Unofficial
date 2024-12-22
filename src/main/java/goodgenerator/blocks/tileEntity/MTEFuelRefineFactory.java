@@ -185,7 +185,8 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
             .addInfo("But at what cost?")
             .addInfo("Produces naquadah fuels.")
             .addInfo("Needs field restriction coils to control the fatal radiation.")
-            .addInfo("Use higher tier coils to unlock more fuel types and reduce the processing times.")
+            .addInfo("Use higher tier coils to unlock more fuel types and perform more overclocks.")
+            .addInfo("Performs perfect overclocks.")
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 15, 15, false)
             .addInputHatch("The casings adjacent to field restriction glass.")
@@ -257,7 +258,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                 int overclockAmount = Tier - recipe.mSpecialValue;
                 return super.createOverclockCalculator(recipe).limitOverclockCount(overclockAmount);
             }
-        }.setOverclock(4.0, 4.0); // Set Overclock to be 4/4
+        }.enablePerfectOverclock();
     }
 
     @Override
@@ -302,11 +303,6 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     @Override
     public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
-    }
-
-    @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
     }
 
     @Override
