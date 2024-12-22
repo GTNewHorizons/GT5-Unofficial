@@ -40,10 +40,9 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -186,14 +185,12 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             }
 
             @Override
-            protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
-                @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
-                super.applyRecipe(recipe, helper, calculator, result);
+            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 int maximumByproducts = recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0);
                 FluidStack spargeGas = recipe.mFluidInputs[0];
-                if ((maximumByproducts == 0) || (spargeGas == null)) return result;
-                outputFluids = randomizeByproducts(recipe.mFluidOutputs, maximumByproducts, spargeGas);
-                return result;
+                if ((maximumByproducts == 0) || (spargeGas == null)) return CheckRecipeResultRegistry.NO_RECIPE;
+                recipe.mFluidOutputs = randomizeByproducts(recipe.mFluidOutputs, maximumByproducts, spargeGas);
+                return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         };
     }
