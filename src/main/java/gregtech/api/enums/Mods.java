@@ -110,7 +110,12 @@ public enum Mods {
     MalisisDoors(Names.MALISIS_DOORS),
     Mantle(Names.MANTLE),
     MineAndBladeBattleGear2(Names.MINE_AND_BLADE_BATTLE_GEAR2),
-    Minecraft(Names.MINECRAFT),
+    Minecraft(Names.MINECRAFT) {
+        @Override
+        public boolean isModLoaded() {
+            return true;
+        }
+    },
     MineTweaker(Names.MINE_TWEAKER),
     MobsInfo(Names.MOBS_INFO),
     NEICustomDiagrams(Names.N_E_I_CUSTOM_DIAGRAMS),

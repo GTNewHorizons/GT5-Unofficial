@@ -73,7 +73,7 @@ public class GTWorldgenerator implements IWorldGenerator {
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator,
         IChunkProvider aChunkProvider) {
 
-        ModDimensionDef def = DimensionDef.getDefForWorld(aWorld);
+        ModDimensionDef def = DimensionDef.getDefForWorld(aWorld, aX >> 4, aZ >> 4);
 
         if (def == null || def.getDimensionType() != DimensionType.Planet) {
             return;
@@ -354,7 +354,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 return;
             }
 
-            ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(mWorld);
+            ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(mWorld, oreseedX, oreseedZ);
 
             if (oreveinPercentageRoll < dimensionDef.getOreVeinChance()) {
                 int placementAttempts = 0;

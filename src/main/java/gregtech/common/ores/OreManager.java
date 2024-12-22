@@ -74,6 +74,8 @@ public class OreManager {
 
         IStoneType existingStone = getStoneType(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
 
+        if (existingStone != null && !existingStone.canGenerateInWorld(world)) return false;
+
         if (existingStone == null) {
             if (defaultStone != null) {
                 existingStone = defaultStone;
@@ -92,7 +94,7 @@ public class OreManager {
                 var block = oreAdapter.getBlock(info);
 
                 if (block != null) {
-                    world.setBlock(x, y, z, block.left(), block.rightInt(), 2);
+                    world.setBlock(x, y, z, block.left(), block.rightInt(), 3);
 
                     return true;
                 }
@@ -145,7 +147,7 @@ public class OreManager {
         return true;
     }
 
-    public static List<ItemStack> mineBlock(World world, int x, int y, int z, int fortune, boolean simulate,
+    public static List<ItemStack> mineBlock(World world, int x, int y, int z, boolean silktouch, int fortune, boolean simulate,
         boolean replaceWithCobblestone) {
         Block ore = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
@@ -159,7 +161,7 @@ public class OreManager {
         if (p != null) {
             try (OreInfo<?> info = p.right()) {
                 oreBlockDrops = p.left()
-                    .getOreDrops(info, false, fortune);
+                    .getOreDrops(info, silktouch, fortune);
 
                 var cobble = info.stoneType.getCobblestone();
 
@@ -167,7 +169,7 @@ public class OreManager {
                 replacementMeta = cobble.rightInt();
             }
         } else {
-            if (ore.canSilkHarvest(world, null, x, y, z, meta)) {
+            if (silktouch && ore.canSilkHarvest(world, null, x, y, z, meta)) {
                 oreBlockDrops = new ArrayList<>(Arrays.asList(new ItemStack(ore, 1, meta)));
             } else {
                 // Regular ore

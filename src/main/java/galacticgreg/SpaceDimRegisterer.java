@@ -1,13 +1,14 @@
 package galacticgreg;
 
 import net.minecraft.init.Blocks;
-
+import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.api.Enums;
 import galacticgreg.api.ModContainer;
 import galacticgreg.api.SpecialBlockComb;
 import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.ModContainers;
 import galacticgreg.registry.GalacticGregRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.StoneType;
 
 /**
@@ -33,15 +34,15 @@ public class SpaceDimRegisterer {
         // If you happen to have an asteroid dim, just skip the blocklist, and setDimensionType() to
         // DimensionType.Asteroid
         // also don't forget to add at least one asteroid type, or nothing will generate!
-        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(StoneType.Netherrack);
-        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(StoneType.RedGranite);
-        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(StoneType.BlackGranite);
         DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(StoneType.Endstone);
+        DimensionDef.EndAsteroids.modDimensionDef.addAsteroidMaterial(StoneType.Marble);
 
         // These Blocks will randomly be generated
         DimensionDef.EndAsteroids.modDimensionDef.addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.glowstone));
-        DimensionDef.EndAsteroids.modDimensionDef
-            .addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.lava, Enums.AllowedBlockPosition.AsteroidCore));
+        if (Mods.HardcoreEnderExpansion.isModLoaded()) {
+            DimensionDef.EndAsteroids.modDimensionDef
+                .addSpecialAsteroidBlock(new SpecialBlockComb(GameRegistry.findBlock(Mods.HardcoreEnderExpansion.ID, "ender_goo"), Enums.AllowedBlockPosition.AsteroidCore));
+        }
 
         ModContainers.Vanilla.modContainer.addDimensionDef(DimensionDef.EndAsteroids.modDimensionDef);
 

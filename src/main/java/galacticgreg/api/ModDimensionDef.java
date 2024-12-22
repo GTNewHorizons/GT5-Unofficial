@@ -39,6 +39,8 @@ public class ModDimensionDef {
 
     private final Random random = new Random(System.currentTimeMillis());
 
+    public boolean hasEoHRecipe = true;
+
     /**
      * Define a new dimension
      *
@@ -375,5 +377,11 @@ public class ModDimensionDef {
         for (ModDBMDef rpb : replaceableBlocks) {
             rpb.updateBlockName(pParentModName);
         }
+    }
+
+    public ModDimensionDef disableEoHRecipe() {
+        hasEoHRecipe = false;
+
+        return this;
     }
 }

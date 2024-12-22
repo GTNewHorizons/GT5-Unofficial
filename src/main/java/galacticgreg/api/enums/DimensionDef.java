@@ -40,7 +40,8 @@ public enum DimensionDef {
         DimNames.EVERGLADES,
         ChunkProviderModded.class,
         DimensionType.Planet)
-        .setOreVeinChance(66)),
+        .setOreVeinChance(66)
+        .disableEoHRecipe()),
 
 
     Moon(new ModDimensionDef(
@@ -60,11 +61,13 @@ public enum DimensionDef {
     Ross128b(new ModDimensionDef(
         DimNames.ROSS128B,
         "bwcrossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b",
-        Enums.DimensionType.Planet)),
+        Enums.DimensionType.Planet)
+        .disableEoHRecipe()),
     Ross128ba(new ModDimensionDef(
         DimNames.ROSS128BA,
         "bwcrossmod.galacticraft.planets.ross128ba.ChunkProviderRoss128ba",
-        Enums.DimensionType.Planet)),
+        Enums.DimensionType.Planet)
+        .disableEoHRecipe()),
     Pluto(new ModDimensionDef(
         DimNames.PLUTO,
         "galaxyspace.SolarSystem.planets.pluto.dimension.ChunkProviderPluto",
@@ -218,7 +221,13 @@ public enum DimensionDef {
     MehenBelt(new ModDimensionDef(
         DimNames.MEHENBELT,
         "de.katzenpapst.amunra.world.mehen.MehenChunkProvider",
-        Enums.DimensionType.Asteroid));
+        Enums.DimensionType.Asteroid)),
+
+    DeepDark(new ModDimensionDef(
+        DimNames.DEEPDARK,
+        "",
+        Enums.DimensionType.Planet)),
+    ;
     // spotless:on
 
     public final ModDimensionDef modDimensionDef;
@@ -227,7 +236,7 @@ public enum DimensionDef {
         this.modDimensionDef = modDimDef;
     }
 
-    private static final Map<String, ModDimensionDef> DEF_BY_WORLD_NAME = new HashMap<>();
+    public static final Map<String, ModDimensionDef> DEF_BY_WORLD_NAME = new HashMap<>();
 
     static {
         for (DimensionDef def : values()) {
@@ -235,8 +244,17 @@ public enum DimensionDef {
         }
     }
 
-    public static ModDimensionDef getDefForWorld(World world) {
-        return DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
+    public static ModDimensionDef getDefForWorld(World world, int chunkX, int chunkZ) {
+        ModDimensionDef def = DEF_BY_WORLD_NAME.get(world.provider.getDimensionName());
+
+        if (def.getDimensionName()
+            .equals(DimNames.THE_END)) {
+            if (chunkX * chunkX + chunkZ * chunkZ > 16 * 16) {
+                def = DimensionDef.EndAsteroids.modDimensionDef;
+            }
+        }
+
+        return def;
     }
 
     public static class DimNames {

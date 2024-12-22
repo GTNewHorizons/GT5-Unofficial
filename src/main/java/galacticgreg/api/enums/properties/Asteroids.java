@@ -5,44 +5,13 @@ import galacticgreg.api.enums.ModContainers;
 
 public enum Asteroids {
 
-    // spotless : off
+    // spotless: off
     EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder().probability(10)
         .sizeRange(5, 15)
         .specialBlockChance(5)
-        .oreSpawn(
-            new AsteroidPropertyBuilder.OreSpawnPropertyBuilder().baseOreChance(5)
-                .doesObeyingHeightLimits(false)
-                .AreOresOnlyInsideAsteroids(false)
-                .primaryToRareOreOffset(5)
-                .smallOreChance(10))
-        .loot(
-            new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
-                .lootChestItemCount(10)
-                .lootChestTable(3)
-                .isLootItemCountRandomized(true))),
-    KuiperBelt(ModContainers.GalaxySpace, DimensionDef.KuiperBelt, new AsteroidPropertyBuilder().probability(10)
-        .sizeRange(5, 15)
-        .specialBlockChance(5)
-        .oreSpawn(
-            new AsteroidPropertyBuilder.OreSpawnPropertyBuilder().baseOreChance(5)
-                .doesObeyingHeightLimits(false)
-                .AreOresOnlyInsideAsteroids(false)
-                .primaryToRareOreOffset(5)
-                .smallOreChance(10))
-        .loot(
-            new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
-                .lootChestItemCount(10)
-                .lootChestTable(3)
-                .isLootItemCountRandomized(true))),
-    MehenBelt(ModContainers.AmunRa, DimensionDef.MehenBelt, new AsteroidPropertyBuilder().probability(10)
-        .sizeRange(5, 15)
-        .specialBlockChance(5)
-        .oreSpawn(
-            new AsteroidPropertyBuilder.OreSpawnPropertyBuilder().baseOreChance(5)
-                .doesObeyingHeightLimits(false)
-                .AreOresOnlyInsideAsteroids(false)
-                .primaryToRareOreOffset(5)
-                .smallOreChance(10))
+        .oreDensityMultiplier(0.5f)
+        .smallOreChance(10)
+        .negativeEllipsoids(0)
         .loot(
             new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
                 .lootChestItemCount(10)
@@ -51,19 +20,35 @@ public enum Asteroids {
     Asteroids(ModContainers.GalacticraftMars, DimensionDef.Asteroids, new AsteroidPropertyBuilder().probability(10)
         .sizeRange(5, 15)
         .specialBlockChance(5)
-        .oreSpawn(
-            new AsteroidPropertyBuilder.OreSpawnPropertyBuilder().baseOreChance(5)
-                .doesObeyingHeightLimits(false)
-                .AreOresOnlyInsideAsteroids(false)
-                .primaryToRareOreOffset(5)
-                .smallOreChance(10))
+        .oreDensityMultiplier(0.5f)
+        .smallOreChance(10)
         .loot(
             new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
                 .lootChestItemCount(10)
                 .lootChestTable(3)
-                .isLootItemCountRandomized(true))),;
-
-    // spotless : on
+                .isLootItemCountRandomized(true))),
+    KuiperBelt(ModContainers.GalaxySpace, DimensionDef.KuiperBelt, new AsteroidPropertyBuilder().probability(10)
+        .sizeRange(5, 15)
+        .specialBlockChance(5)
+        .oreDensityMultiplier(0.75f)
+        .smallOreChance(10)
+        .loot(
+            new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
+                .lootChestItemCount(10)
+                .lootChestTable(3)
+                .isLootItemCountRandomized(true))),
+    MehenBelt(ModContainers.AmunRa, DimensionDef.MehenBelt, new AsteroidPropertyBuilder().probability(10)
+        .sizeRange(5, 15)
+        .specialBlockChance(5)
+        .oreDensityMultiplier(1f)
+        .smallOreChance(10)
+        .loot(
+            new AsteroidPropertyBuilder.LootPropertyBuilder().lootChestChance(1)
+                .lootChestItemCount(10)
+                .lootChestTable(3)
+                .isLootItemCountRandomized(true))),
+    ;
+    // spotless: on
 
     public ModContainers modContainers;
     public DimensionDef dimensionDef;

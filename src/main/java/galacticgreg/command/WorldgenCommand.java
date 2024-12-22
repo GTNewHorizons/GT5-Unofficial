@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -45,7 +46,7 @@ public class WorldgenCommand implements ICommand {
         int chunkX = pCommandSender.getPlayerCoordinates().posX >> 4;
         int chunkZ = pCommandSender.getPlayerCoordinates().posZ >> 4;
 
-        ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world);
+        ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world, chunkX, chunkZ);
         AsteroidConfig asteroidConfig = DynamicDimensionConfig.getAsteroidConfig(dimensionDef);
 
         switch (pArgs[0]) {
@@ -102,9 +103,8 @@ public class WorldgenCommand implements ICommand {
         return 0;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public List addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
+    public List<String> addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
         return null;
     }
 

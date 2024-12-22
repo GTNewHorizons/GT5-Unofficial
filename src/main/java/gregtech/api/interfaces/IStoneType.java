@@ -3,7 +3,7 @@ package gregtech.api.interfaces;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
+import net.minecraft.world.World;
 import gregtech.api.enums.OrePrefixes;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
@@ -33,4 +33,6 @@ public interface IStoneType {
     public boolean isExtraneous();
 
     public boolean isEnabled();
+
+    public boolean canGenerateInWorld(World world);
 }

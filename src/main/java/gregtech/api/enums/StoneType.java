@@ -8,8 +8,10 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -23,6 +25,7 @@ import net.minecraft.world.World;
 import com.google.common.collect.ImmutableList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -33,42 +36,43 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.Lazy;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
 public enum StoneType implements IStoneType {
 
     // spotless:off
     Stone(new StoneBuilder()
-        .setCobble(Blocks.cobblestone, 0)
-        .setMainStone(Blocks.stone, 0)
+        .setCobble(() -> Blocks.cobblestone, 0)
+        .setMainStone(() -> Blocks.stone, 0)
         .setDust(Materials.Stone)),
     Netherrack(new StoneBuilder()
         .setPrefix(OrePrefixes.oreNetherrack)
-        .setStoneNoCobble(Blocks.netherrack, 0)
+        .setStoneNoCobble(() -> Blocks.netherrack, 0)
         .setDust(Materials.Netherrack)),
     Endstone(new StoneBuilder()
         .setPrefix(OrePrefixes.oreEndstone)
-        .setStoneNoCobble(Blocks.end_stone, 0)
+        .setStoneNoCobble(() -> Blocks.end_stone, 0)
         .setDust(Materials.Endstone)),
     BlackGranite(new StoneBuilder()
         .setPrefix(OrePrefixes.oreBlackgranite)
-        .setCobble(GregTechAPI.sBlockGranites, 1)
-        .setMainStone(GregTechAPI.sBlockGranites, 0)
+        .setCobble(() -> GregTechAPI.sBlockGranites, 1)
+        .setMainStone(() -> GregTechAPI.sBlockGranites, 0)
         .setDust(Materials.GraniteBlack)),
     RedGranite(new StoneBuilder()
         .setPrefix(OrePrefixes.oreRedgranite)
-        .setCobble(GregTechAPI.sBlockGranites, 9)
-        .setMainStone(GregTechAPI.sBlockGranites, 8)
+        .setCobble(() -> GregTechAPI.sBlockGranites, 9)
+        .setMainStone(() -> GregTechAPI.sBlockGranites, 8)
         .setDust(Materials.GraniteRed)),
     Marble(new StoneBuilder()
         .setPrefix(OrePrefixes.oreMarble)
-        .setCobble(GregTechAPI.sBlockGranites, 1)
-        .setMainStone(GregTechAPI.sBlockGranites, 0)
+        .setCobble(() -> GregTechAPI.sBlockStones, 1)
+        .setMainStone(() -> GregTechAPI.sBlockStones, 0)
         .setDust(Materials.Marble)),
     Basalt(new StoneBuilder()
         .setPrefix(OrePrefixes.oreBasalt)
-        .setCobble(GregTechAPI.sBlockGranites, 9)
-        .setMainStone(GregTechAPI.sBlockGranites, 8)
+        .setCobble(() -> GregTechAPI.sBlockStones, 9)
+        .setMainStone(() -> GregTechAPI.sBlockStones, 8)
         .setDust(Materials.Basalt)),
     Moon(new StoneBuilder()
         .setStoneNoCobble(GalacticraftCore, "tile.moonBlock", 4)
@@ -85,7 +89,7 @@ public enum StoneType implements IStoneType {
     Deimos(StoneBuilder.galaxySpace("Deimos", 1)),
     Ceres(StoneBuilder.galaxySpace("Ceres", 1)),
     Io(StoneBuilder.galaxySpace("Io", 2)),
-    Europa(StoneBuilder.galaxySpace("Europa", 1)),
+    Europa(StoneBuilder.galaxySpace("Europa", "grunt", 1)),
     Ganymede(StoneBuilder.galaxySpace("Ganymede", 1)),
     Callisto(StoneBuilder.galaxySpace("Callisto", 1)),
     Enceladus(StoneBuilder.galaxySpace("Enceladus", 1, 3)),
@@ -109,15 +113,16 @@ public enum StoneType implements IStoneType {
         .setStoneNoCobble(GalaxySpace, "barnardaFsubgrunt", 0)
         .setCoremodDust("BarnardaF")),
     Horus(new StoneBuilder()
-        .setStoneNoCobble(Blocks.obsidian, 0)
+        .setStoneNoCobble(() -> Blocks.obsidian, 0)
         .addOtherStone(GalacticraftAmunRa, "tile.baseFalling", 0)
+        .addAllowedDimensions(DimNames.HORUS)
         .setDust(Materials.Obsidian)),
     Anubis(new StoneBuilder()
         .setCobble(GalacticraftAmunRa, "tile.baseBlockRock", 0)
         .setMainStone(GalacticraftAmunRa, "tile.baseBlockRock", 1)
         .setDust(Materials.Basalt)),
     PackedIce(new StoneBuilder()
-        .setStoneNoCobble(Blocks.packed_ice, 0)
+        .setStoneNoCobble(() -> Blocks.packed_ice, 0)
         .setDust(Materials.Ice)
         .setCategory(StoneCategory.Ice)),
 
@@ -146,9 +151,25 @@ public enum StoneType implements IStoneType {
         this.builder = builder;
     }
 
+    public static void init() {
+        for (StoneType stoneType : STONE_TYPES) {
+            StoneBuilder builder = stoneType.builder;
+
+            builder.cobble.get();
+            builder.mainStone.get();
+
+            if (builder.otherStones != null) builder.otherStones.forEach(Lazy::get);
+
+            ItemStack pure = builder.pureDust.get();
+            if (builder.impureDust.get() == null) {
+                builder.impureDust.set(pure.copy());
+            }
+        }
+    }
+
     @Override
     public ItemStack getDust(boolean pure, int amount) {
-        return GTUtility.copyAmount(amount, pure ? builder.pureDust : builder.impureDust);
+        return GTUtility.copyAmount(amount, pure ? builder.pureDust.get() : builder.impureDust.get());
     }
 
     @Override
@@ -163,12 +184,12 @@ public enum StoneType implements IStoneType {
 
     @Override
     public ObjectIntPair<Block> getCobblestone() {
-        return ObjectIntPair.of(builder.cobble.block, builder.cobble.meta);
+        return builder.cobble.get().toPair();
     }
 
     @Override
     public ObjectIntPair<Block> getStone() {
-        return ObjectIntPair.of(builder.mainStone.block, builder.mainStone.meta);
+        return builder.mainStone.get().toPair();
     }
 
     @Override
@@ -217,7 +238,11 @@ public enum StoneType implements IStoneType {
             case RedGranite -> BlockIcons.GRANITE_RED_STONE.getIcon();
             case Marble -> BlockIcons.MARBLE_STONE.getIcon();
             case Basalt -> BlockIcons.BASALT_STONE.getIcon();
-            default -> builder.mainStone.block.getIcon(side, builder.mainStone.meta);
+            default -> {
+                BlockMeta main = builder.mainStone.get();
+
+                yield main.block.getIcon(side, main.meta);
+            }
         };
     }
 
@@ -254,15 +279,24 @@ public enum StoneType implements IStoneType {
 
     @Override
     public boolean contains(Block block, int meta) {
-        if (block == builder.mainStone.block && meta == builder.mainStone.meta) return true;
+        BlockMeta main = builder.mainStone.get();
+
+        if (block == main.block && meta == main.meta) return true;
 
         if (builder.otherStones != null) {
-            for (BlockMeta other : builder.otherStones) {
-                if (block == other.block && meta == other.meta) return true;
+            for (Lazy<BlockMeta> other : builder.otherStones) {
+                BlockMeta other2 = other.get();
+
+                if (block == other2.block && meta == other2.meta) return true;
             }
         }
 
         return false;
+    }
+
+    @Override
+    public boolean canGenerateInWorld(World world) {
+        return builder.allowedDimensions == null || builder.allowedDimensions.contains(world.provider.getDimensionName());
     }
 
     public static StoneType findStoneType(World world, int x, int y, int z) {
@@ -284,21 +318,34 @@ public enum StoneType implements IStoneType {
         public Block block;
         public int meta;
 
+        public BlockMeta(Mods mod, String blockName, int meta) {
+            this.block = GameRegistry.findBlock(mod.ID, blockName);
+            this.meta = meta;
+
+            Objects.requireNonNull(block, "Could not find block " + mod.ID + ":" + blockName);
+        }
+
         public BlockMeta(Block block, int meta) {
             this.block = block;
             this.meta = meta;
+        }
+
+        public ObjectIntPair<Block> toPair() {
+            return ObjectIntPair.of(block, meta);
         }
     }
 
     private static class StoneBuilder {
 
         public boolean enabled = true;
-        public BlockMeta cobble, mainStone;
-        public List<BlockMeta> otherStones;
+        public Lazy<BlockMeta> cobble = new Lazy<>(() -> new BlockMeta(Blocks.air, 0));
+        public Lazy<BlockMeta> mainStone = new Lazy<>(() -> new BlockMeta(Blocks.air, 0));
+        public List<Lazy<BlockMeta>> otherStones;
         public OrePrefixes oreBlockPrefix = OrePrefixes.ore;
-        public ItemStack pureDust = GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1);
-        public ItemStack impureDust = GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1);
+        public Lazy<ItemStack> pureDust = new Lazy<>(() -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1));
+        public Lazy<ItemStack> impureDust = new Lazy<>(() -> GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1));
         public StoneCategory category = StoneCategory.Stone;
+        public HashSet<String> allowedDimensions = null;
 
         public static StoneBuilder galaxySpace(String name, int mainStone, int... extraStones) {
             return galaxySpace(name, "blocks", mainStone, extraStones);
@@ -310,16 +357,16 @@ public enum StoneType implements IStoneType {
                 .setCoremodDust(name);
 
             for (int extra : extraStones) {
-                builder.addOtherStone(GalaxySpace, name.toLowerCase() + "blocks", extra);
+                builder.addOtherStone(GalaxySpace, name.toLowerCase() + suffix, extra);
             }
 
             return builder;
         }
 
-        public StoneBuilder setCobble(Block block, int meta) {
+        public StoneBuilder setCobble(Supplier<Block> block, int meta) {
             Objects.requireNonNull(block);
 
-            cobble = new BlockMeta(block, meta);
+            cobble = new Lazy<>(() -> new BlockMeta(block.get(), meta));
 
             return this;
         }
@@ -327,12 +374,8 @@ public enum StoneType implements IStoneType {
         public StoneBuilder setCobble(Mods owner, String blockName, int meta) {
             enabled &= owner.isModLoaded();
 
-            Block block = GameRegistry.findBlock(owner.ID, blockName);
-
-            if (block != null) {
-                cobble = new BlockMeta(block, meta);
-            } else {
-                cobble = null;
+            if (enabled) {
+                cobble = new Lazy<>(() -> new BlockMeta(owner, blockName, meta));
             }
 
             return this;
@@ -341,21 +384,15 @@ public enum StoneType implements IStoneType {
         public StoneBuilder setStoneNoCobble(Mods owner, String blockName, int meta) {
             enabled &= owner.isModLoaded();
 
-            Block block = GameRegistry.findBlock(owner.ID, blockName);
-
-            if (block != null) {
-                cobble = mainStone = new BlockMeta(block, meta);
-            } else {
-                cobble = mainStone = null;
+            if (enabled) {
+                cobble = mainStone = new Lazy<>(() -> new BlockMeta(owner, blockName, meta));
             }
 
             return this;
         }
 
-        public StoneBuilder setStoneNoCobble(Block block, int meta) {
-            Objects.requireNonNull(block);
-
-            cobble = mainStone = new BlockMeta(block, meta);
+        public StoneBuilder setStoneNoCobble(Supplier<Block> block, int meta) {
+            cobble = mainStone = new Lazy<>(() -> new BlockMeta(block.get(), meta));
 
             return this;
         }
@@ -363,31 +400,23 @@ public enum StoneType implements IStoneType {
         public StoneBuilder setMainStone(Mods owner, String blockName, int meta) {
             enabled &= owner.isModLoaded();
 
-            Block block = GameRegistry.findBlock(owner.ID, blockName);
-
-            if (block != null) {
-                mainStone = new BlockMeta(block, meta);
-            } else {
-                mainStone = null;
+            if (enabled) {
+                mainStone = new Lazy<>(() -> new BlockMeta(owner, blockName, meta));
             }
 
             return this;
         }
 
-        public StoneBuilder setMainStone(Block block, int meta) {
-            Objects.requireNonNull(block);
-
-            mainStone = new BlockMeta(block, meta);
+        public StoneBuilder setMainStone(Supplier<Block> block, int meta) {
+            mainStone = new Lazy<>(() -> new BlockMeta(block.get(), meta));
 
             return this;
         }
 
         public StoneBuilder addOtherStone(Mods owner, String blockName, int meta) {
-            Block block = GameRegistry.findBlock(owner.ID, blockName);
-
-            if (block != null) {
+            if (owner.isModLoaded()) {
                 if (otherStones == null) otherStones = new ArrayList<>();
-                otherStones.add(new BlockMeta(block, meta));
+                otherStones.add(new Lazy<>(() -> new BlockMeta(owner, blockName, meta)));
             }
 
             return this;
@@ -395,20 +424,19 @@ public enum StoneType implements IStoneType {
 
         public StoneBuilder setCoremodDust(String name) {
             if (NewHorizonsCoreMod.isModLoaded()) {
-                Item dust = GameRegistry.findItem(NewHorizonsCoreMod.ID, "item." + name + "StoneDust");
-                pureDust = impureDust = new ItemStack(
-                    Objects.requireNonNull(dust, "Could not find " + "item." + name + "StoneDust"),
-                    1);
+                pureDust = impureDust = new Lazy<>(() -> {
+                    Item dust = GameRegistry.findItem(NewHorizonsCoreMod.ID, "item." + name + "StoneDust");
+                    Objects.requireNonNull(dust, "Could not find " + "item." + name + "StoneDust");
+                    return new ItemStack(dust, 1);
+                });
             }
 
             return this;
         }
 
         public StoneBuilder setDust(Materials mat) {
-            pureDust = mat.getDust(1);
-            impureDust = GTOreDictUnificator.get(OrePrefixes.dustImpure, mat, 1);
-
-            if (impureDust == null) impureDust = pureDust;
+            pureDust = new Lazy<>(() -> mat.getDust(1));
+            impureDust = new Lazy<>(() -> GTOreDictUnificator.get(OrePrefixes.dustImpure, mat, 1));
 
             return this;
         }
@@ -421,6 +449,14 @@ public enum StoneType implements IStoneType {
 
         public StoneBuilder setCategory(StoneCategory cat) {
             this.category = cat;
+
+            return this;
+        }
+
+        public StoneBuilder addAllowedDimensions(String... dimNames) {
+            if (allowedDimensions == null) allowedDimensions = new HashSet<>();
+
+            allowedDimensions.addAll(Arrays.asList(dimNames));
 
             return this;
         }

@@ -316,28 +316,32 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
                 }
             }
             case UnifiedBlock -> {
-                OreInfo<Materials> info2 = info.clone();
-
-                for (int i = 0; i < (info.stoneType.isRich() ? 2 : 1); i++) {
-                    info.stoneType = StoneType.Stone;
-                    drops.add(getStack(info, 1));
+                try (OreInfo<Materials> info2 = info.clone()) {
+                    info2.isNatural = false;
+    
+                    for (int i = 0; i < (info2.stoneType.isRich() ? 2 : 1); i++) {
+                        info2.stoneType = StoneType.Stone;
+                        drops.add(getStack(info2, 1));
+                    }
                 }
-
-                info2.release();
             }
             case PerDimBlock -> {
-                OreInfo<Materials> info2 = info.clone();
-
-                if (!info.stoneType.isDimensionSpecific()) {
-                    info2.stoneType = StoneType.Stone;
+                try (OreInfo<Materials> info2 = info.clone()) {
+                    info2.isNatural = false;
+    
+                    if (!info2.stoneType.isDimensionSpecific()) {
+                        info2.stoneType = StoneType.Stone;
+                    }
+    
+                    drops.add(getStack(info2, 1));
                 }
-
-                drops.add(getStack(info, 1));
-
-                info2.release();
             }
             case Block -> {
-                drops.add(getStack(info, 1));
+                try (OreInfo<Materials> info2 = info.clone()) {
+                    info2.isNatural = false;
+    
+                    drops.add(getStack(info2, 1));
+                }
             }
         }
 

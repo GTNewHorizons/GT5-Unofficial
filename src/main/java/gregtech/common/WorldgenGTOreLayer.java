@@ -19,7 +19,6 @@ import gregtech.api.interfaces.IMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
 import gregtech.common.worldgen.IWorldgenLayer;
@@ -96,7 +95,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
     @Override
     public float getDensity() {
-        return GTUtility.clamp(mDensity / 64.0f, 0f, 1f);
+        return 1f / (float) mDensity;
     }
 
     @Override
@@ -357,14 +356,14 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
         private void generateLayer(boolean secondary, boolean between, boolean primary) {
             for (int tX = limitWestX; tX < limitEastX; tX++) {
-                int placeX = Math.max(1, Math.max(Math.abs(veinWestX - tX), Math.abs(veinEastX - tX)) / localDensity);
+                int chanceX = Math.max(1, Math.max(Math.abs(veinWestX - tX), Math.abs(veinEastX - tX)) / localDensity);
 
                 for (int tZ = limitNorthZ; tZ < limitSouthZ; tZ++) {
-                    int placeZ = Math
+                    int chanceZ = Math
                         .max(1, Math.max(Math.abs(veinSouthZ - tZ), Math.abs(veinNorthZ - tZ)) / localDensity);
 
                     if (primary) {
-                        if ((rng.nextInt(placeZ) == 0 || rng.nextInt(placeX) == 0) && mPrimary != null) {
+                        if ((rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0) && mPrimary != null) {
                             if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mPrimary, false)) {
                                 placeCount[0]++;
                             }
@@ -373,7 +372,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                     }
 
                     if (between) {
-                        if ((rng.nextInt(placeZ) == 0 || rng.nextInt(placeX) == 0) && mBetween != null) {
+                        if ((rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0) && mBetween != null) {
                             if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mBetween, false)) {
                                 placeCount[2]++;
                             }
@@ -382,7 +381,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                     }
 
                     if (secondary) {
-                        if ((rng.nextInt(placeZ) == 0 || rng.nextInt(placeX) == 0) && mSecondary != null) {
+                        if ((rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0) && mSecondary != null) {
                             if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mSecondary, false)) {
                                 placeCount[1]++;
                             }
@@ -390,7 +389,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                         }
                     }
 
-                    if (rng.nextInt(7) == 0 && (rng.nextInt(placeZ) == 0 || rng.nextInt(placeX) == 0)
+                    if (rng.nextInt(7) == 0 && (rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0)
                         && mSporadic != null) { // Sporadics are reduced by 1/7 to compensate
                         if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mSporadic, false)) {
                             placeCount[3]++;

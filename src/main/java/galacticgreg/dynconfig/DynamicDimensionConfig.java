@@ -20,12 +20,12 @@ public class DynamicDimensionConfig {
         public int MinSize;
         public int MaxSize;
         public int Probability;
+        public int PositiveEllipsoids;
+        public int NegativeEllipsoids;
+        public float OreDensityMultiplier;
         public int OreChance;
-        public int OrePrimaryOffset;
-        public int SpecialBlockChance;
         public int SmallOreChance;
-        public boolean ObeyHeightLimits;
-        public boolean HiddenOres;
+        public int SpecialBlockChance;
         public int LootChestChance;
         public int LootChestTable;
         public int NumLootItems;
@@ -85,13 +85,11 @@ public class DynamicDimensionConfig {
                     aConf.MinSize = AsteroidProperties.asteroidPropertyBuilder.sizeMin;
                     aConf.MaxSize = AsteroidProperties.asteroidPropertyBuilder.sizeMax;
                     aConf.Probability = AsteroidProperties.asteroidPropertyBuilder.probability;
+                    aConf.PositiveEllipsoids = AsteroidProperties.asteroidPropertyBuilder.positiveEllipsoids;
+                    aConf.NegativeEllipsoids = AsteroidProperties.asteroidPropertyBuilder.negativeEllipsoids;
+                    aConf.OreDensityMultiplier = AsteroidProperties.asteroidPropertyBuilder.oreDensityMultiplier;
+                    aConf.SmallOreChance = AsteroidProperties.asteroidPropertyBuilder.smallOreChance;
                     aConf.SpecialBlockChance = AsteroidProperties.asteroidPropertyBuilder.specialBlockChance;
-
-                    aConf.OreChance = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.baseOreChance;
-                    aConf.OrePrimaryOffset = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.primaryToRareOreOffset;
-                    aConf.SmallOreChance = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.smallOreChance;
-                    aConf.ObeyHeightLimits = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.obeyHeightLimits;
-                    aConf.HiddenOres = AsteroidProperties.asteroidPropertyBuilder.oreSpawn.oresOnlyInsideAsteroids;
 
                     if (GalacticGreg.GalacticConfig.LootChestsEnabled) {
                         aConf.LootChestChance = AsteroidProperties.asteroidPropertyBuilder.loot.lootChestChance;

@@ -23,7 +23,6 @@ import galacticgreg.api.Enums.TargetBlockPosition;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.SpecialBlockComb;
 import galacticgreg.api.enums.DimensionDef;
-import galacticgreg.api.enums.DimensionDef.DimNames;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
 import galacticgreg.dynconfig.DynamicDimensionConfig.AsteroidConfig;
 import gregtech.GTMod;
@@ -41,22 +40,13 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         GameRegistry.registerWorldGenerator(this, Integer.MAX_VALUE);
     }
 
-    private static final int END_ASTEROID_DISTANCE = 16;
-
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
         IChunkProvider chunkProvider) {
 
         GalacticGreg.Logger.trace("Triggered generate: [Dimension %s]", world.provider.getDimensionName());
 
-        ModDimensionDef tDimDef = DimensionDef.getDefForWorld(world);
-
-        if (tDimDef.getDimensionName()
-            .equals(DimNames.THE_END)) {
-            if (chunkX * chunkX + chunkZ * chunkZ > END_ASTEROID_DISTANCE * END_ASTEROID_DISTANCE) {
-                tDimDef = DimensionDef.EndAsteroids.modDimensionDef;
-            }
-        }
+        ModDimensionDef tDimDef = DimensionDef.getDefForWorld(world, chunkX, chunkZ);
 
         if (tDimDef == null) {
             GalacticGreg.Logger.trace(
@@ -89,7 +79,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             long post = System.nanoTime();
 
             if (profileWorldGen)
-                GTMod.GT_FML_LOGGER.info("Generated %d %d in %,.3f us", chunkX, chunkZ, (post - pre) / 1e3);
+                GTMod.GT_FML_LOGGER.info(String.format("Generated %d %d in %,.3f us", chunkX, chunkZ, (post - pre) / 1e3));
 
             Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);
             if (tChunk != null) {
@@ -101,17 +91,17 @@ public class WorldGeneratorSpace implements IWorldGenerator {
     public static class AsteroidGenerator {
 
         public List<Ellipsoid> positive, negative;
-        public int seedChunkX, seedChunkZ, cX, cY, cZ, radius;
+        public int seedChunkX, seedChunkZ, cX, cY, cZ, radius, size;
         public long seed;
 
         public StoneType stoneType;
         public transient IWorldgenLayer ore;
 
         public static AsteroidGenerator forChunk(World world, int seedChunkX, int seedChunkZ) {
-            ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world);
+            ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world, seedChunkX, seedChunkZ);
             AsteroidConfig asteroidConfig = DynamicDimensionConfig.getAsteroidConfig(dimensionDef);
 
-            if (!asteroidConfig.Enabled) return null;
+            if (asteroidConfig == null || !asteroidConfig.Enabled) return null;
 
             if (!generatesAsteroid(
                 world.getSeed(),
@@ -122,10 +112,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             XSTR rng = getRandom(world.getSeed(), seedChunkX, seedChunkZ, world.provider.dimensionId);
 
-            AsteroidBlockComb asteroidStone = dimensionDef.getRandomAsteroidMaterial(rng);
+            AsteroidBlockComb asteroidStone = dimensionDef.getRandomAsteroidMaterial(rng.clone());
             if (asteroidStone == null) return null;
 
-            int minY, maxY;
             IWorldgenLayer oreLayer;
 
             if (rng.nextInt(5) == 0) {
@@ -135,9 +124,6 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         asteroidStone.getStone()
                             .getCategory())
                     .find(rng.clone());
-
-                minY = oreLayer == null ? 50 : oreLayer.getMinY();
-                maxY = oreLayer == null ? 200 : oreLayer.getMaxY();
             } else {
                 oreLayer = WorldgenQuery.veins()
                     .inDimension(dimensionDef)
@@ -145,12 +131,12 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         asteroidStone.getStone()
                             .getCategory())
                     .find(rng.clone());
-
-                minY = oreLayer == null ? 50 : oreLayer.getMinY();
-                maxY = oreLayer == null ? 200 : oreLayer.getMaxY();
             }
 
             if (oreLayer == null) return null;
+
+            int minY = oreLayer.getMinY();
+            int maxY = oreLayer.getMaxY();
 
             GalacticGreg.Logger.debug(
                 "Asteroid will be built with: Stone: [%s] Ore: [%s]",
@@ -164,27 +150,31 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             List<Ellipsoid> positive = new ArrayList<>();
             List<Ellipsoid> negative = new ArrayList<>();
 
-            int radius = (asteroidConfig.MinSize + rng.nextInt(asteroidConfig.MinSize - asteroidConfig.MaxSize + 1));
+            int radius = asteroidConfig.MinSize + rng.nextInt(asteroidConfig.MinSize - asteroidConfig.MaxSize + 1);
             positive.add(new Ellipsoid(0, 0, 0, radius));
 
-            int k = rng.nextInt(2);
-            for (int i = 0; i < k; i++) {
-                negative.add(
-                    new Ellipsoid(
-                        radius * (rng.nextFloat() * 2 - 1),
-                        radius * (rng.nextFloat() * 2 - 1),
-                        radius * (rng.nextFloat() * 2 - 1),
-                        radius * (rng.nextFloat() * 0.25f + 0.6f)));
+            if (asteroidConfig.PositiveEllipsoids > 0) {
+                int k = rng.nextInt(2);
+                for (int i = 0; i < k; i++) {
+                    negative.add(
+                        new Ellipsoid(
+                            radius * (rng.nextFloat() * 2 - 1),
+                            radius * (rng.nextFloat() * 2 - 1),
+                            radius * (rng.nextFloat() * 2 - 1),
+                            radius * (rng.nextFloat() * 0.25f + 0.6f)));
+                }
             }
 
-            k = rng.nextInt(2);
-            for (int i = 0; i < k; i++) {
-                positive.add(
-                    new Ellipsoid(
-                        radius * (rng.nextFloat() * 2 - 1),
-                        radius * (rng.nextFloat() * 2 - 1),
-                        radius * (rng.nextFloat() * 2 - 1),
-                        radius * (rng.nextFloat() * 0.25f + 0.6f)));
+            if (asteroidConfig.NegativeEllipsoids > 0 && rng.nextInt(4) == 0) {
+                int k = rng.nextInt(asteroidConfig.NegativeEllipsoids);
+                for (int i = 0; i < k; i++) {
+                    positive.add(
+                        new Ellipsoid(
+                            radius * (rng.nextFloat() * 2 - 1),
+                            radius * (rng.nextFloat() * 2 - 1),
+                            radius * (rng.nextFloat() * 2 - 1),
+                            radius * (rng.nextFloat() * 0.25f + 0.6f)));
+                }
             }
 
             AsteroidGenerator gen = new AsteroidGenerator();
@@ -198,7 +188,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             gen.cX = tX;
             gen.cY = tY;
             gen.cZ = tZ;
-            gen.radius = radius * 2;
+            gen.radius = radius;
+            gen.size = radius * 2;
 
             gen.seed = rng.nextLong();
 
@@ -209,26 +200,26 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         }
 
         public boolean affectsChunk(int chunkX, int chunkZ) {
-            int minX = (cX - radius) >> 4;
-            int maxX = (cX + radius + 1) >> 4;
+            int minX = (cX - size) >> 4;
+            int maxX = (cX + size + 1) >> 4;
 
-            int minZ = (cZ - radius) >> 4;
-            int maxZ = (cZ + radius + 1) >> 4;
+            int minZ = (cZ - size) >> 4;
+            int maxZ = (cZ + size + 1) >> 4;
 
             return minX <= chunkX && chunkX <= maxX || minZ <= chunkZ && chunkZ <= maxZ;
         }
 
         public void generateChunk(World world, int chunkX, int chunkZ) {
-            int minX = Math.max(chunkX * 16, cX - radius - 1);
-            int maxX = Math.min((chunkX + 1) * 16, cX + radius + 1);
+            int minX = Math.max(chunkX * 16, cX - size - 1);
+            int maxX = Math.min((chunkX + 1) * 16, cX + size + 1);
 
-            int minY = Math.max(0, cY - radius - 1);
-            int maxY = Math.min(255, cY + radius + 1);
+            int minY = Math.max(0, cY - size - 1);
+            int maxY = Math.min(255, cY + size + 1);
 
-            int minZ = Math.max(chunkZ * 16, cZ - radius - 1);
-            int maxZ = Math.min((chunkZ + 1) * 16, cZ + radius + 1);
+            int minZ = Math.max(chunkZ * 16, cZ - size - 1);
+            int maxZ = Math.min((chunkZ + 1) * 16, cZ + size + 1);
 
-            ModDimensionDef def = DimensionDef.getDefForWorld(world);
+            ModDimensionDef def = DimensionDef.getDefForWorld(world, seedChunkX, seedChunkZ);
             AsteroidConfig dimAsteroidConfig = DynamicDimensionConfig.getAsteroidConfig(def);
 
             for (int y = minY; y < maxY; y++) {
@@ -269,6 +260,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                         if (ore.generatesBigOre()) {
                             if (!placedAnything) {
                                 placedAnything = generateOreBlock(
+                                    dimAsteroidConfig,
                                     rng2,
                                     world,
                                     x,
@@ -276,8 +268,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                                     z,
                                     stoneType,
                                     ore,
-                                    false,
-                                    radius / 4 < 15 ? rng2.nextFloat() : dist);
+                                    radius < 5 ? rng2.nextFloat() : dist,
+                                    dist);
                             }
                         }
 
@@ -298,7 +290,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
                         // try to place small ores
                         if (!placedAnything) {
-                            placedAnything = generateOreBlock(
+                            placedAnything = generateSmallOreBlock(
+                                dimAsteroidConfig,
                                 rng2,
                                 world,
                                 x,
@@ -306,7 +299,6 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                                 z,
                                 stoneType,
                                 ore,
-                                true,
                                 rng2.nextFloat());
                         }
 
@@ -329,12 +321,18 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             if (chunkX == seedChunkX && chunkZ == seedChunkZ) {
                 generateLootChest(world, dimAsteroidConfig);
             }
+
+            for (int z = minZ; z < maxZ; z++) {
+                for (int x = minX; x < maxX; x++) {
+                    world.markBlocksDirtyVertical(x, z, minY, maxY);
+                }
+            }
         }
 
         private void generateLootChest(World world, AsteroidConfig asteroidConfig) {
             XSTR rng = getRandom(world.getSeed(), seedChunkX, seedChunkZ, world.provider.dimensionId);
 
-            if (asteroidConfig.LootChestChance == 0 || radius < 6) return;
+            if (asteroidConfig.LootChestChance == 0 || size < 6) return;
 
             GalacticGreg.Logger.trace("Random loot chest enabled, flipping the coin");
 
@@ -447,7 +445,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                     };
 
                     if (validLocation) {
-                        world.setBlock(x, y, z, bmc.getBlock(), bmc.getMeta(), 2);
+                        world.setBlock(x, y, z, bmc.getBlock(), bmc.getMeta(), 3);
                         return true;
                     }
                 }
@@ -457,13 +455,26 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         return false;
     }
 
-    private static boolean generateOreBlock(Random rng, World pWorld, int pX, int pY, int pZ, IStoneType stoneType,
-        IWorldgenLayer oreLayer, boolean small, float control) {
-        if (rng.nextFloat() <= oreLayer.getDensity()) {
+    private static boolean generateOreBlock(AsteroidConfig asteroidConfig, Random rng, World pWorld, int pX, int pY, int pZ, IStoneType stoneType,
+        IWorldgenLayer oreLayer, float control, float dist) {
+        if (rng.nextFloat() <= oreLayer.getDensity() * asteroidConfig.OreDensityMultiplier) {
             IMaterial mat = oreLayer.getOre(control);
 
             if (mat != null) {
-                return OreManager.setOreForWorldGen(pWorld, pX, pY, pZ, stoneType, mat, small);
+                return OreManager.setOreForWorldGen(pWorld, pX, pY, pZ, stoneType, mat, false);
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean generateSmallOreBlock(AsteroidConfig asteroidConfig, Random rng, World pWorld, int pX, int pY, int pZ, IStoneType stoneType,
+        IWorldgenLayer oreLayer, float control) {
+        if (rng.nextInt(100) < asteroidConfig.SmallOreChance) {
+            IMaterial mat = oreLayer.getOre(control);
+
+            if (mat != null) {
+                return OreManager.setOreForWorldGen(pWorld, pX, pY, pZ, stoneType, mat, true);
             }
         }
 
