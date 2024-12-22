@@ -2060,11 +2060,9 @@ public class WerkstoffLoader {
     private static void runAdditionalOreDict() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             if (werkstoff.hasItemType(ore)) {
-                GTOreDictUnificator.registerOre(ore + werkstoff.getVarName(), werkstoff.get(ore));
-                GTOreDictUnificator.registerOre(oreSmall + werkstoff.getVarName(), werkstoff.get(oreSmall));
-                werkstoff.getADDITIONAL_OREDICT()
+                werkstoff.getAdditionalOredict()
                     .forEach(e -> OreDictionary.registerOre(ore + e, werkstoff.get(ore)));
-                werkstoff.getADDITIONAL_OREDICT()
+                werkstoff.getAdditionalOredict()
                     .forEach(e -> OreDictionary.registerOre(oreSmall + e, werkstoff.get(oreSmall)));
             }
 
@@ -2074,11 +2072,11 @@ public class WerkstoffLoader {
 
             if (werkstoff.hasItemType(gem) || werkstoff.hasItemType(ingot)) {
                 GTOreDictUnificator.registerOre(block + werkstoff.getVarName(), werkstoff.get(block));
-                werkstoff.getADDITIONAL_OREDICT()
+                werkstoff.getAdditionalOredict()
                     .forEach(e -> OreDictionary.registerOre(block + e, werkstoff.get(block)));
             }
 
-            werkstoff.getADDITIONAL_OREDICT()
+            werkstoff.getAdditionalOredict()
                 .forEach(
                     s -> ENABLED_ORE_PREFIXES.stream()
                         .filter(o -> Objects.nonNull(werkstoff.get(o)))
@@ -2086,5 +2084,6 @@ public class WerkstoffLoader {
         }
 
         GTOreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite));
+        BWOreAdapter.INSTANCE.registerOredict();
     }
 }

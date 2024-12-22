@@ -32,7 +32,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IBlockWithTextures;
@@ -40,6 +39,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
@@ -68,18 +68,26 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
                 OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
         }
 
-        Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
-
         this.stoneType = stoneType;
         this.isSmall = small;
         this.isNatural = natural;
     }
 
+    public void registerOredict() {
+        Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
+    }
+
     protected void doRegistrationStuff(Werkstoff w) {
-        if (w != null) {
-            if (!w.hasItemType(OrePrefixes.ore) || (w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
-            GTModHandler.addValuableOre(this, w.getmID(), 1);
-        }
+        if (w == null) return;
+        if (!w.hasItemType(OrePrefixes.ore)) return;
+        if ((w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
+
+        GTModHandler.addValuableOre(this, w.getmID(), 1);
+
+        ItemStack self = new ItemStack(this, 1, w.getmID());
+        OrePrefixes prefix = isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
+
+        GTOreDictUnificator.registerOre(prefix + w.getVarName(), self);
     }
 
     @Override

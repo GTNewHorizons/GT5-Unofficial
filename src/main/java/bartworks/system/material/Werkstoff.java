@@ -89,7 +89,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         .disable();
     public static Werkstoff default_null_Werkstoff;
 
-    private final HashSet<String> ADDITIONAL_OREDICT = new HashSet<>();
+    private final HashSet<String> additionalOredict = new HashSet<>();
     private final List<ISubTagContainer> mOreByProducts = new ArrayList<>();
     private final LinkedHashSet<Pair<ISubTagContainer, Integer>> CONTENTS = new LinkedHashSet<>();
     private final HashSet<SubTag> SUBTAGS = new HashSet<>();
@@ -398,12 +398,12 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     }
 
     public Werkstoff addAdditionalOreDict(String s) {
-        this.ADDITIONAL_OREDICT.add(s);
+        this.additionalOredict.add(s);
         return this;
     }
 
-    public HashSet<String> getADDITIONAL_OREDICT() {
-        return this.ADDITIONAL_OREDICT;
+    public HashSet<String> getAdditionalOredict() {
+        return this.additionalOredict;
     }
 
     public void setTCAspects(Pair<Object, Integer>... pAspectsArr) {
