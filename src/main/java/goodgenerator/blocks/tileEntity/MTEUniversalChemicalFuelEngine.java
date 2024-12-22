@@ -173,14 +173,14 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return (int) Math.sqrt(this.getPowerFlow()) / 20;
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return (int) Math.sqrt(this.getPowerFlow());
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Engine")
+        tt.addMachineType("Chemical Engine, UCFE")
             .addInfo("BURNING BURNING BURNING")
             .addInfo("Use combustible liquid to generate power.")
             .addInfo("You need to supply Combustion Promoter to keep it running.")

@@ -334,12 +334,12 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_130.1", "Fluids ");
         addStringLocalization("Interaction_DESCRIPTION_Index_131", "Items");
         addStringLocalization("Interaction_DESCRIPTION_Index_131.1", "Items ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_132", "Pipe is loose.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_133", "Screws are loose.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_134", "Something is stuck.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_135", "Platings are dented.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_136", "Circuitry burned out.");
-        addStringLocalization("Interaction_DESCRIPTION_Index_137", "That doesn't belong there.");
+        addStringLocalization("Interaction_DESCRIPTION_Index_132", "Pipe is loose. (Wrench)");
+        addStringLocalization("Interaction_DESCRIPTION_Index_133", "Screws are loose. (Screwdriver)");
+        addStringLocalization("Interaction_DESCRIPTION_Index_134", "Something is stuck. (Soft Mallet)");
+        addStringLocalization("Interaction_DESCRIPTION_Index_135", "Platings are dented. (Hammer)");
+        addStringLocalization("Interaction_DESCRIPTION_Index_136", "Circuitry burned out. (Soldering)");
+        addStringLocalization("Interaction_DESCRIPTION_Index_137", "That doesn't belong there. (Crowbar)");
         addStringLocalization("Interaction_DESCRIPTION_Index_138", "Incomplete Structure.");
         addStringLocalization("Interaction_DESCRIPTION_Index_139", "Hit with Soft Mallet");
         addStringLocalization("Interaction_DESCRIPTION_Index_140", "to (re-)start the Machine");

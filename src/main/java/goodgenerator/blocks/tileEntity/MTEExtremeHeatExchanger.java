@@ -203,7 +203,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Heat Exchanger/Plasma Heat Exchanger")
+        tt.addMachineType("Heat Exchanger, EHE")
             .addInfo("Outputs SH steam by cooling hot fluids with distilled water.")
             .addInfo("Supplying more hot fluid than the threshold causes overheating,")
             .addInfo("producing SC steam instead.")

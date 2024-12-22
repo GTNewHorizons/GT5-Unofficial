@@ -169,7 +169,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Furnace")
+        tt.addMachineType("Blast Furnace, MEBF")
             .addParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
             .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
@@ -187,7 +187,7 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
                     + "Tech"
                     + EnumChatFormatting.GRAY
                     + " Laser Hatches.")
-            .addPollutionAmount(20 * this.getPollutionPerTick(null))
+            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
             .addController("3rd layer center")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 279, false)
@@ -272,8 +272,8 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return polPtick;
+    public int getPollutionPerSecond(ItemStack aStack) {
+        return polPtick * 20;
     }
 
     public boolean addOutputHatchToTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
