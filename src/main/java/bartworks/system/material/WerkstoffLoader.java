@@ -133,6 +133,7 @@ import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
+import gregtech.common.ores.OreInfo;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
@@ -1634,8 +1635,6 @@ public class WerkstoffLoader {
     public static HashMap<OrePrefixes, BWMetaGeneratedItems> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
     public static HashBiMap<Werkstoff, Fluid> molten = HashBiMap.create();
-    public static Block BWOres, BWOresNatural;
-    public static Block BWSmallOres, BWSmallOresNatural;
     public static Block BWBlocks;
     public static Block BWBlockCasings;
     public static Block BWBlockCasingsAdvanced;
@@ -1663,14 +1662,30 @@ public class WerkstoffLoader {
             ret = OreDictHandler.getItemStack(werkstoff.getVarName(), orePrefixes, amount);
             if (ret != null) return ret;
         }
-        if (orePrefixes == ore) return new ItemStack(WerkstoffLoader.BWOres, amount, werkstoff.getmID());
-        if (orePrefixes == oreSmall) return new ItemStack(WerkstoffLoader.BWSmallOres, amount, werkstoff.getmID());
-        else if (orePrefixes == block) return new ItemStack(WerkstoffLoader.BWBlocks, amount, werkstoff.getmID());
-        else if (orePrefixes == OrePrefixes.blockCasing)
+
+        if (orePrefixes == ore || orePrefixes == oreSmall) {
+            try (OreInfo<Werkstoff> info = OreInfo.getNewInfo()) {
+                info.material = werkstoff;
+                info.isSmall = orePrefixes == oreSmall;
+
+                return BWOreAdapter.INSTANCE.getStack(info, amount);
+            }
+        }
+        
+        if (orePrefixes == block) {
+            return new ItemStack(WerkstoffLoader.BWBlocks, amount, werkstoff.getmID());
+        }
+        if (orePrefixes == OrePrefixes.blockCasing) {
             return new ItemStack(WerkstoffLoader.BWBlockCasings, amount, werkstoff.getmID());
-        else if (orePrefixes == OrePrefixes.blockCasingAdvanced)
+        }
+        if (orePrefixes == OrePrefixes.blockCasingAdvanced) {
             return new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, amount, werkstoff.getmID());
-        else if (WerkstoffLoader.items.get(orePrefixes) == null) return null;
+        }
+        
+        if (WerkstoffLoader.items.get(orePrefixes) == null) {
+            return null;
+        }
+
         return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
     }
 

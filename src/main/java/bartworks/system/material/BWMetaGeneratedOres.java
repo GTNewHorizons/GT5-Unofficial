@@ -47,6 +47,7 @@ import gregtech.common.render.GTRendererBlock;
 
 public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
+    public final String blockName;
     public final String blockTypeLocalizedName;
     public final StoneType stoneType;
     public final boolean isSmall, isNatural;
@@ -61,14 +62,15 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
         if (small) {
             this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-                "bw.blocktype." + OrePrefixes.oreSmall,
+                blockName,
                 OrePrefixes.oreSmall.mLocalizedMaterialPre + "%material" + OrePrefixes.oreSmall.mLocalizedMaterialPost);
         } else {
             this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-                "bw.blocktype." + OrePrefixes.ore,
+                blockName,
                 OrePrefixes.ore.mLocalizedMaterialPre + "%material" + OrePrefixes.ore.mLocalizedMaterialPost);
         }
 
+        this.blockName = blockName;
         this.stoneType = stoneType;
         this.isSmall = small;
         this.isNatural = natural;
@@ -113,11 +115,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
     @Override
     public String getUnlocalizedName() {
-        if (isSmall) {
-            return "bw.blockores.02";
-        } else {
-            return "bw.blockores.01";
-        }
+        return blockName;
     }
 
     @Override
