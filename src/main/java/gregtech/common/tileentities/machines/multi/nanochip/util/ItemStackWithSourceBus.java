@@ -1,10 +1,10 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 
 public class ItemStackWithSourceBus {
 

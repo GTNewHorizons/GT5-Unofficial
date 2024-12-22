@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,13 +17,13 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.GTRenderedTexture;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
-public abstract class MTEHatchVacuumConveyor extends MTEHatch
-    implements IConnectsToVacuumConveyor {
+public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnectsToVacuumConveyor {
 
     public static final int VACUUM_MOVE_TICK = 17;
 
@@ -33,13 +32,11 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch
     // Identifier used to identify this hatch uniquely inside a multiblock.
     public String identifier = null;
 
-    protected MTEHatchVacuumConveyor(int aID, String aName, String aNameRegional, int aTier,
-                                     String[] descr) {
+    protected MTEHatchVacuumConveyor(int aID, String aName, String aNameRegional, int aTier, String[] descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
     }
 
-    protected MTEHatchVacuumConveyor(String aName, int aTier, String[] aDescription,
-                                     ITexture[][][] aTextures) {
+    protected MTEHatchVacuumConveyor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
