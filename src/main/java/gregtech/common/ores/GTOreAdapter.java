@@ -9,8 +9,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
@@ -126,6 +128,12 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
                     return new BlockInfo(p.left(), p.rightInt());
                 }
             }
+        });
+
+        ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockores", (tag) -> {
+            int itemId = Item.getIdFromItem(Item.getItemFromBlock(ores1));
+            tag.setInteger("id", itemId);
+            return tag;
         });
     }
 
