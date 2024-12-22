@@ -7,17 +7,17 @@ import net.minecraft.item.ItemStack;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.common.tileentities.machines.multi.nanochip.GT_MetaTileEntity_NanochipAssemblyModuleBase;
+import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
-public class WireTracer extends GT_MetaTileEntity_NanochipAssemblyModuleBase<WireTracer> {
+public class WireTracer extends MTENanochipAssemblyModuleBase<WireTracer> {
 
     protected static final int STRUCTURE_OFFSET_X = 3;
     protected static final int STRUCTURE_OFFSET_Y = 3;
@@ -30,7 +30,7 @@ public class WireTracer extends GT_MetaTileEntity_NanochipAssemblyModuleBase<Wir
     public static final IStructureDefinition<WireTracer> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<WireTracer>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofBlock(GregTech_API.sBlockCasings4, 0))
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings4, 0))
         .build();
 
     public WireTracer(int aID, String aName, String aNameRegional) {
@@ -82,8 +82,8 @@ public class WireTracer extends GT_MetaTileEntity_NanochipAssemblyModuleBase<Wir
     }
 
     @Override
-    protected GT_Multiblock_Tooltip_Builder createTooltip() {
-        return new GT_Multiblock_Tooltip_Builder().toolTipFinisher("GregTech");
+    protected MultiblockTooltipBuilder createTooltip() {
+        return new MultiblockTooltipBuilder().toolTipFinisher("GregTech");
     }
 
     @Override

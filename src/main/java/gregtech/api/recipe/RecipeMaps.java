@@ -30,6 +30,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import gregtech.api.util.*;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -85,11 +89,6 @@ import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
@@ -1004,7 +1003,7 @@ public final class RecipeMaps {
                 .build();
             if (!t.isPresent()) return Collections.emptyList();
             ItemStack input = b.getItemInputBasic(0);
-            GTRecipeTemplate coll = asTemplate(t.get());
+            GTRecipeMapUtil.GTRecipeTemplate coll = asTemplate(t.get());
             int tExplosives = Math.min(b.getMetadataOrDefault(ADDITIVE_AMOUNT, 0), 64);
             int tGunpowder = tExplosives << 1; // Worst
             int tDynamite = Math.max(1, tExplosives >> 1); // good
@@ -1670,7 +1669,7 @@ public final class RecipeMaps {
             // Register fallback localized name based on input item
             ItemStack input = recipe.mInputs[0];
             CircuitComponent output = CircuitComponent.getFromFakeStack(recipe.mOutputs[0]);
-            GT_MetaTileEntity_NanochipAssemblyComplex.registerLocalName(input, output);
+            MTENanochipAssemblyComplex.registerLocalName(input, output);
             return recipe;
         })
         .build();

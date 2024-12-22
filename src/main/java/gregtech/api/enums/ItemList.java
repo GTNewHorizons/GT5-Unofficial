@@ -1538,8 +1538,10 @@ public enum ItemList implements IItemContainer {
     Casing_Laser,
 
     Machine_Multi_IndustrialExtractor,
-
     Machine_Multi_Lathe,
+    Machine_Multi_Autoclave,
+    Casing_Autoclave,
+
     Machine_Multi_NanochipAssemblyComplex,
     Hatch_VacuumConveyor_Input,
     Hatch_VacuumConveyor_Output,
@@ -1551,10 +1553,6 @@ public enum ItemList implements IItemContainer {
     NanoChipModule_CuttingChamber,
     NanoChipModule_WireTracer,
     NanoChipModule_Splitter,
-    Machine_Multi_Autoclave,
-    Casing_Autoclave,
-    NanoChipModule_AssemblyMatrix,
-    NanoChipModule_SMDProcessor,
 
     Machine_LV_Miner,
     Machine_MV_Miner,

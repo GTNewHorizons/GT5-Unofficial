@@ -11,21 +11,21 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
-public class GT_MetaTileEntity_Hatch_VacuumConveyor_Input extends GT_MetaTileEntity_Hatch_VacuumConveyor
+public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor
     implements IConnectsToVacuumConveyor {
 
-    public GT_MetaTileEntity_Hatch_VacuumConveyor_Input(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchVacuumConveyorInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] {});
     }
 
-    public GT_MetaTileEntity_Hatch_VacuumConveyor_Input(String aName, int aTier, String[] aDescription,
-        ITexture[][][] aTextures) {
+    public MTEHatchVacuumConveyorInput(String aName, int aTier, String[] aDescription,
+                                       ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_VacuumConveyor_Input(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchVacuumConveyorInput(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
