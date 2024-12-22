@@ -152,11 +152,6 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         eV = aNBT.getInteger("mKeV");
         mCeil = aNBT.getInteger("mCeil");
