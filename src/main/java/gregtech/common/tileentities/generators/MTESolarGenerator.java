@@ -1,8 +1,13 @@
 package gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_FRONT;
+import static gregtech.api.enums.Textures.BlockIcons.DIESEL_GENERATOR_FRONT_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -33,14 +38,21 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
     }
 
     @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+        return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection != ForgeDirection.UP) {
+        if (sideDirection == ForgeDirection.UP) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_SOLAR_PANEL) };
         }
-        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-            TextureFactory.of(Textures.BlockIcons.SOLARPANEL_LV) };
+        if (sideDirection == facingDirection) {
+            return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1], OVERLAYS_ENERGY_OUT[mTier]};
+        }
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]};
     }
 
     @Override
@@ -49,7 +61,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESolarGenerator(
             this.mName,
             this.mTier,
@@ -58,11 +70,15 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
             this.mTextures);
     }
 
+    @Override
+    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+        return true;
+    }
+
     private boolean valid = true;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        World world = aBaseMetaTileEntity.getWorld();
         // Check every 5 seconds for world conditions
         if (aTick % 100 == 0) {
             doWorldChecks(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity);
@@ -106,13 +122,13 @@ public class MTESolarGenerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return facing == ForgeDirection.UP;
+    public boolean isFacingValid(ForgeDirection side) {
+        return side != ForgeDirection.UP;
     }
 
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
-        return true;
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
