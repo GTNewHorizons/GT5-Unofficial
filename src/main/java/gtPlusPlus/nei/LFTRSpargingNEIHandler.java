@@ -1,5 +1,9 @@
 package gtPlusPlus.nei;
 
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.util.GTRecipeConstants.SPARGE_MAX_BYPRODUCT;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.spargeTowerRecipes;
+
 import java.awt.Rectangle;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
@@ -10,6 +14,7 @@ import java.util.stream.Collectors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
@@ -26,15 +31,14 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.GasSpargingRecipe;
-import gregtech.api.util.GasSpargingRecipeMap;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
 
-    public static final String mNEIName = GasSpargingRecipeMap.mNEIDisplayName;
+    public static final String mNEIName = StatCollector.translateToLocal("gtpp.recipe.lftr.sparging");
     private SoftReference<List<GasSpargingRecipeNEI>> mCachedRecipes = null;
 
     public LFTRSpargingNEIHandler() {
@@ -58,12 +62,12 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
 
     @Override
     public String getGuiTexture() {
-        return GasSpargingRecipeMap.mNEIGUIPath;
+        return GregTech.getResourcePath("textures", "gui/basicmachines/FissionFuel.png");
     }
 
     @Override
     public String getOverlayIdentifier() {
-        return gregtech.api.util.GasSpargingRecipeMap.mUnlocalizedName;
+        return "gtpp.recipe.lftr.sparging";
     }
 
     @Override
@@ -86,8 +90,9 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
     public List<GasSpargingRecipeNEI> getCache() {
         List<GasSpargingRecipeNEI> cache;
         if (mCachedRecipes == null || (cache = mCachedRecipes.get()) == null) {
-            cache = GasSpargingRecipeMap.mRecipes.stream() // do not use parallel stream. This is already parallelized
-                                                           // by NEI
+            cache = spargeTowerRecipes.getAllRecipes()
+                .stream() // do not use parallel stream. This is already parallelized
+                // by NEI
                 .sorted()
                 .map(temp -> createCachedRecipe(temp))
                 .collect(Collectors.toList());
@@ -98,7 +103,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
         return cache;
     }
 
-    public GasSpargingRecipeNEI createCachedRecipe(GasSpargingRecipe aRecipe) {
+    public GasSpargingRecipeNEI createCachedRecipe(GTRecipe aRecipe) {
         return new GasSpargingRecipeNEI(aRecipe);
     }
 
@@ -190,8 +195,8 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
             final int aRecipeIndex) {
         final TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
         if ((tObject instanceof final GasSpargingRecipeNEI tRecipe)) {
-            ItemStack aSpargeInput = tRecipe.mOutputs.get(0).item;
-            ItemStack aSpentFuel = tRecipe.mOutputs.get(1).item;
+            ItemStack aSpargeInput = tRecipe.mOutputs.get(1).item;
+            ItemStack aSpentFuel = tRecipe.mOutputs.get(0).item;
             for (final PositionedStack tStack : tRecipe.mOutputs) {
                 if (aStack == tStack.item) {
                     if (ItemList.Display_Fluid.isStackEqual(tStack.item, true, true)) {
@@ -202,11 +207,7 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
                             currenttip.add("The amount returned is the remainder after all other outputs.");
                         }
                         currenttip.add(
-                                "Maximum Output: " + (((FixedPositionedStack) tStack).mChance / 100)
-                                        + "."
-                                        + ((((FixedPositionedStack) tStack).mChance % 100) < 10
-                                                ? "0" + (((FixedPositionedStack) tStack).mChance % 100)
-                                                : Integer.valueOf(((FixedPositionedStack) tStack).mChance % 100))
+                                "Maximum Output: " + (((FixedPositionedStack) tStack).mChance)
                                         + "L");
                         break;
                     }
@@ -280,160 +281,34 @@ public class LFTRSpargingNEIHandler extends TemplateRecipeHandler {
 
     public class GasSpargingRecipeNEI extends CachedRecipe implements Comparable<CachedRecipe> {
 
-        public final GasSpargingRecipe mRecipe;
+        public final GTRecipe mRecipe;
         public final List<PositionedStack> mOutputs = new ArrayList<>();
         public final List<PositionedStack> mInputs = new ArrayList<>();
 
-        public GasSpargingRecipeNEI(GasSpargingRecipe tRecipe) {
+        public GasSpargingRecipeNEI(GTRecipe tRecipe) {
             super();
             this.mRecipe = tRecipe;
-            int tStartIndex = 0;
             if (tRecipe.mFluidInputs.length > 0) {
-                if ((tRecipe.mFluidInputs[0] != null) && (tRecipe.mFluidInputs[0].getFluid() != null)) {
-                    this.mInputs.add(
-                        new FixedPositionedStack(GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[0], true), 30, 5));
-                }
-                if ((tRecipe.mFluidInputs.length > 1) && (tRecipe.mFluidInputs[1] != null)
-                    && (tRecipe.mFluidInputs[1].getFluid() != null)) {
-                    this.mInputs.add(
-                        new FixedPositionedStack(GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[1], true), 12, 5));
-                }
-                if ((tRecipe.mFluidInputs.length > 2) && (tRecipe.mFluidInputs[2] != null)
-                    && (tRecipe.mFluidInputs[2].getFluid() != null)) {
-                    this.mInputs.add(
-                        new FixedPositionedStack(GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[2], true), 48, 5));
-                }
-                if ((tRecipe.mFluidInputs.length > 3) && (tRecipe.mFluidInputs[3] != null)
-                    && (tRecipe.mFluidInputs[3].getFluid() != null)) {
+                for (int i = 0; i < tRecipe.mFluidInputs.length; i++) {
+                    if (tRecipe.mFluidInputs[i] == null) break;
                     this.mInputs.add(
                         new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[3], true),
-                            12,
-                            23));
-                }
-                if ((tRecipe.mFluidInputs.length > 4) && (tRecipe.mFluidInputs[4] != null)
-                    && (tRecipe.mFluidInputs[4].getFluid() != null)) {
-                    this.mInputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[4], true),
-                            30,
-                            23));
-                }
-                if ((tRecipe.mFluidInputs.length > 5) && (tRecipe.mFluidInputs[5] != null)
-                    && (tRecipe.mFluidInputs[5].getFluid() != null)) {
-                    this.mInputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[5], true),
-                            48,
-                            23));
-                }
-                if ((tRecipe.mFluidInputs.length > 6) && (tRecipe.mFluidInputs[6] != null)
-                    && (tRecipe.mFluidInputs[6].getFluid() != null)) {
-                    this.mInputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[6], true),
-                            12,
-                            41));
-                }
-                if ((tRecipe.mFluidInputs.length > 7) && (tRecipe.mFluidInputs[7] != null)
-                    && (tRecipe.mFluidInputs[7].getFluid() != null)) {
-                    this.mInputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[7], true),
-                            30,
-                            41));
-                }
-                if ((tRecipe.mFluidInputs.length > 8) && (tRecipe.mFluidInputs[8] != null)
-                    && (tRecipe.mFluidInputs[8].getFluid() != null)) {
-                    this.mInputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[8], true),
-                            48,
-                            41));
+                            GTUtility.getFluidDisplayStack(tRecipe.mFluidInputs[i], true),
+                            12 + ((i % 3) * 18),
+                            5 + ((i / 3) * 18)));
                 }
             }
 
-            tStartIndex = 0;
             if (tRecipe.mFluidOutputs.length > 0) {
-                if ((tRecipe.mFluidOutputs[0] != null) && (tRecipe.mFluidOutputs[0].getFluid() != null)) {
+                for (int i = 0; i < tRecipe.mFluidOutputs.length; i++) {
+                    if (tRecipe.mFluidOutputs[i] == null) break;
                     this.mOutputs.add(
                         new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[0], false),
-                            120,
-                            5,
-                            tRecipe.getMaxOutput(tStartIndex++)));
-                }
-                if ((tRecipe.mFluidOutputs.length > 1) && (tRecipe.mFluidOutputs[1] != null)
-                    && (tRecipe.mFluidOutputs[1].getFluid() != null)) {
-                    this.mOutputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[1], true),
-                            102,
-                            5,
-                            tRecipe.getMaxOutput(tStartIndex++)));
-                }
-                if ((tRecipe.mFluidOutputs.length > 2) && (tRecipe.mFluidOutputs[2] != null)
-                    && (tRecipe.mFluidOutputs[2].getFluid() != null)) {
-                    this.mOutputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[2], false),
-                            138,
-                            5,
-                            tRecipe.getMaxOutput(tStartIndex++)));
-                }
-                if ((tRecipe.mFluidOutputs.length > 3) && (tRecipe.mFluidOutputs[3] != null)
-                    && (tRecipe.mFluidOutputs[3].getFluid() != null)) {
-                    this.mOutputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[3], false),
-                            102,
-                            23,
-                            tRecipe.getMaxOutput(tStartIndex++)));
-                }
-                if ((tRecipe.mFluidOutputs.length > 4) && (tRecipe.mFluidOutputs[4] != null)
-                    && (tRecipe.mFluidOutputs[4].getFluid() != null)) {
-                    this.mOutputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[4], false),
-                            120,
-                            23,
-                            tRecipe.getMaxOutput(tStartIndex++)));
-                }
-                if ((tRecipe.mFluidOutputs.length > 5) && (tRecipe.mFluidOutputs[5] != null)
-                    && (tRecipe.mFluidOutputs[5].getFluid() != null)) {
-                    this.mOutputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[5], false),
-                            138,
-                            23,
-                            tRecipe.getMaxOutput(tStartIndex++)));
-                }
-                if ((tRecipe.mFluidOutputs.length > 6) && (tRecipe.mFluidOutputs[6] != null)
-                    && (tRecipe.mFluidOutputs[6].getFluid() != null)) {
-                    this.mOutputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[6], false),
-                            102,
-                            41,
-                            tRecipe.getMaxOutput(tStartIndex++)));
-                }
-                if ((tRecipe.mFluidOutputs.length > 7) && (tRecipe.mFluidOutputs[7] != null)
-                    && (tRecipe.mFluidOutputs[7].getFluid() != null)) {
-                    this.mOutputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[7], false),
-                            120,
-                            41,
-                            tRecipe.getMaxOutput(tStartIndex++)));
-                }
-                if ((tRecipe.mFluidOutputs.length > 8) && (tRecipe.mFluidOutputs[8] != null)
-                    && (tRecipe.mFluidOutputs[8].getFluid() != null)) {
-                    this.mOutputs.add(
-                        new FixedPositionedStack(
-                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[8], false),
-                            138,
-                            41,
-                            tRecipe.getMaxOutput(tStartIndex++)));
+                            GTUtility.getFluidDisplayStack(tRecipe.mFluidOutputs[i], i == 0),
+                            102 + ((i % 3) * 18),
+                            5 + ((i / 3) * 18),
+                            i == 1 ? tRecipe.mFluidInputs[0].amount : tRecipe.getMetadata(SPARGE_MAX_BYPRODUCT)));
+
                 }
             }
         }
