@@ -107,8 +107,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         // Assign ID of all hatches based on their color, index and whether they are an input or an output hatch.
 
         int hatchID = 0;
-        for (Map.Entry<Byte, ArrayList<MTEHatchVacuumConveyorInput>> inputList : this.vacuumConveyorInputs
-            .hatchMap()
+        for (Map.Entry<Byte, ArrayList<MTEHatchVacuumConveyorInput>> inputList : this.vacuumConveyorInputs.hatchMap()
             .entrySet()) {
             byte color = inputList.getKey();
             EnumChatFormatting colorFormat = getPrefixColor(color);
@@ -120,8 +119,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         }
 
         hatchID = 0;
-        for (Map.Entry<Byte, ArrayList<MTEHatchVacuumConveyorOutput>> outputList : this.vacuumConveyorOutputs
-            .hatchMap()
+        for (Map.Entry<Byte, ArrayList<MTEHatchVacuumConveyorOutput>> outputList : this.vacuumConveyorOutputs.hatchMap()
             .entrySet()) {
             byte color = outputList.getKey();
             EnumChatFormatting colorFormat = getPrefixColor(color);
