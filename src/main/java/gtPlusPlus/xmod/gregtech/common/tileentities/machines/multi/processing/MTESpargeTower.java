@@ -192,7 +192,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
                 int maximumByproducts = recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0);
                 FluidStack spargeGas = recipe.mFluidInputs[0];
                 if ((maximumByproducts == 0) || (spargeGas == null)) return result;
-                outputFluids = randomizeByproducts(outputFluids, maximumByproducts, spargeGas);
+                outputFluids = randomizeByproducts(recipe.mFluidOutputs, maximumByproducts, spargeGas);
                 return result;
             }
         };
