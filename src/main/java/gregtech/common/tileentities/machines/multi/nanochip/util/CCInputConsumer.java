@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.ParallelHelper;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 
