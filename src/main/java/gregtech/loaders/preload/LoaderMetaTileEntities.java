@@ -45,8 +45,6 @@ import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -210,6 +208,8 @@ import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;

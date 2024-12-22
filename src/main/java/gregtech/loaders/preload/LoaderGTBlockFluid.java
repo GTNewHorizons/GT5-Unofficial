@@ -19,9 +19,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
-import forestry.core.circuits.Circuit;
-import gregtech.api.enums.*;
-import gregtech.api.items.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -47,6 +44,7 @@ import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
 import gregtech.api.fluid.GTFluidFactory;
+import gregtech.api.items.*;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GTLog;

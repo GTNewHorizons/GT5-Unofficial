@@ -15,7 +15,6 @@ import java.util.function.IntFunction;
 
 import javax.annotation.Nonnull;
 
-import gregtech.common.blocks.BlockCasingsAbstract;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -47,6 +46,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.covers.CoverPosition;
+import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatibility, like with the IC2-API You may just
