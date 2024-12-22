@@ -51,7 +51,6 @@ import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntityPipe;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
@@ -70,7 +69,7 @@ import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverInfo;
 
-public class MTEFluid extends MetaPipeEntity implements IMetaTileEntityPipe {
+public class MTEFluid extends MetaPipeEntity {
 
     protected static final EnumMap<ForgeDirection, EnumMap<Border, ForgeDirection>> FACE_BORDER_MAP = new EnumMap<>(
         ForgeDirection.class);
