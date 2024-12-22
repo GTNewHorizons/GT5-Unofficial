@@ -19,9 +19,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
-import forestry.core.circuits.Circuit;
-import gregtech.api.enums.*;
-import gregtech.api.items.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
