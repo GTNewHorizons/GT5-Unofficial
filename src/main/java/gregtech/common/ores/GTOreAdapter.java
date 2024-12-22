@@ -318,7 +318,7 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
             case UnifiedBlock -> {
                 try (OreInfo<Materials> info2 = info.clone()) {
                     info2.isNatural = false;
-    
+
                     for (int i = 0; i < (info2.stoneType.isRich() ? 2 : 1); i++) {
                         info2.stoneType = StoneType.Stone;
                         drops.add(getStack(info2, 1));
@@ -328,18 +328,18 @@ public enum GTOreAdapter implements IOreAdapter<Materials> {
             case PerDimBlock -> {
                 try (OreInfo<Materials> info2 = info.clone()) {
                     info2.isNatural = false;
-    
+
                     if (!info2.stoneType.isDimensionSpecific()) {
                         info2.stoneType = StoneType.Stone;
                     }
-    
+
                     drops.add(getStack(info2, 1));
                 }
             }
             case Block -> {
                 try (OreInfo<Materials> info2 = info.clone()) {
                     info2.isNatural = false;
-    
+
                     drops.add(getStack(info2, 1));
                 }
             }

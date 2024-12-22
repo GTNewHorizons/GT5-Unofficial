@@ -189,10 +189,7 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreLayerWrapper oreLayer = GT5OreLayerHelper.ORE_VEINS_BY_NAME.get(veinName);
         String[] dims = oreLayer.abbrDimNames.toArray(new String[0]);
-        Arrays.sort(
-            dims,
-            Comparator.comparingInt(
-                s -> GTUtility.indexOf(DimensionHelper.DimNameDisplayed, s)));
+        Arrays.sort(dims, Comparator.comparingInt(s -> GTUtility.indexOf(DimensionHelper.DimNameDisplayed, s)));
         return dims;
     }
 

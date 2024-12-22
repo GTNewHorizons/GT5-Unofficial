@@ -111,6 +111,7 @@ public enum Mods {
     Mantle(Names.MANTLE),
     MineAndBladeBattleGear2(Names.MINE_AND_BLADE_BATTLE_GEAR2),
     Minecraft(Names.MINECRAFT) {
+
         @Override
         public boolean isModLoaded() {
             return true;

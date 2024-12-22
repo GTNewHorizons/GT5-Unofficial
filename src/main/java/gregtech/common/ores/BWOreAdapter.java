@@ -98,7 +98,8 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
     }
 
     public void registerOredict() {
-        ores.values().forEach(Ores::registerOredict);
+        ores.values()
+            .forEach(Ores::registerOredict);
     }
 
     @Override
@@ -257,7 +258,7 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
             case UnifiedBlock -> {
                 try (OreInfo<Werkstoff> info2 = info.clone()) {
                     info2.isNatural = false;
-    
+
                     for (int i = 0; i < (info2.stoneType.isRich() ? 2 : 1); i++) {
                         info2.stoneType = StoneType.Stone;
                         drops.add(getStack(info2, 1));
@@ -267,18 +268,18 @@ public enum BWOreAdapter implements IOreAdapter<Werkstoff> {
             case PerDimBlock -> {
                 try (OreInfo<Werkstoff> info2 = info.clone()) {
                     info2.isNatural = false;
-    
+
                     if (!info2.stoneType.isDimensionSpecific()) {
                         info2.stoneType = StoneType.Stone;
                     }
-    
+
                     drops.add(getStack(info2, 1));
                 }
             }
             case Block -> {
                 try (OreInfo<Werkstoff> info2 = info.clone()) {
                     info2.isNatural = false;
-    
+
                     drops.add(getStack(info2, 1));
                 }
             }

@@ -5,7 +5,7 @@ import galacticgreg.api.enums.ModContainers;
 
 public enum Asteroids {
 
-    // spotless: off
+    // spotless:off
     EndAsteroids(ModContainers.Vanilla, DimensionDef.EndAsteroids, new AsteroidPropertyBuilder().probability(10)
         .sizeRange(5, 15)
         .specialBlockChance(5)
@@ -48,7 +48,7 @@ public enum Asteroids {
                 .lootChestTable(3)
                 .isLootItemCountRandomized(true))),
     ;
-    // spotless: on
+    // spotless:on
 
     public ModContainers modContainers;
     public DimensionDef dimensionDef;

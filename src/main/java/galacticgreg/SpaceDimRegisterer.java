@@ -1,6 +1,7 @@
 package galacticgreg;
 
 import net.minecraft.init.Blocks;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.api.Enums;
 import galacticgreg.api.ModContainer;
@@ -40,8 +41,10 @@ public class SpaceDimRegisterer {
         // These Blocks will randomly be generated
         DimensionDef.EndAsteroids.modDimensionDef.addSpecialAsteroidBlock(new SpecialBlockComb(Blocks.glowstone));
         if (Mods.HardcoreEnderExpansion.isModLoaded()) {
-            DimensionDef.EndAsteroids.modDimensionDef
-                .addSpecialAsteroidBlock(new SpecialBlockComb(GameRegistry.findBlock(Mods.HardcoreEnderExpansion.ID, "ender_goo"), Enums.AllowedBlockPosition.AsteroidCore));
+            DimensionDef.EndAsteroids.modDimensionDef.addSpecialAsteroidBlock(
+                new SpecialBlockComb(
+                    GameRegistry.findBlock(Mods.HardcoreEnderExpansion.ID, "ender_goo"),
+                    Enums.AllowedBlockPosition.AsteroidCore));
         }
 
         ModContainers.Vanilla.modContainer.addDimensionDef(DimensionDef.EndAsteroids.modDimensionDef);

@@ -184,12 +184,14 @@ public enum StoneType implements IStoneType {
 
     @Override
     public ObjectIntPair<Block> getCobblestone() {
-        return builder.cobble.get().toPair();
+        return builder.cobble.get()
+            .toPair();
     }
 
     @Override
     public ObjectIntPair<Block> getStone() {
-        return builder.mainStone.get().toPair();
+        return builder.mainStone.get()
+            .toPair();
     }
 
     @Override
@@ -296,7 +298,8 @@ public enum StoneType implements IStoneType {
 
     @Override
     public boolean canGenerateInWorld(World world) {
-        return builder.allowedDimensions == null || builder.allowedDimensions.contains(world.provider.getDimensionName());
+        return builder.allowedDimensions == null
+            || builder.allowedDimensions.contains(world.provider.getDimensionName());
     }
 
     public static StoneType findStoneType(World world, int x, int y, int z) {
@@ -342,8 +345,10 @@ public enum StoneType implements IStoneType {
         public Lazy<BlockMeta> mainStone = new Lazy<>(() -> new BlockMeta(Blocks.air, 0));
         public List<Lazy<BlockMeta>> otherStones;
         public OrePrefixes oreBlockPrefix = OrePrefixes.ore;
-        public Lazy<ItemStack> pureDust = new Lazy<>(() -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1));
-        public Lazy<ItemStack> impureDust = new Lazy<>(() -> GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1));
+        public Lazy<ItemStack> pureDust = new Lazy<>(
+            () -> GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1));
+        public Lazy<ItemStack> impureDust = new Lazy<>(
+            () -> GTOreDictUnificator.get(OrePrefixes.dustImpure, Materials.Stone, 1));
         public StoneCategory category = StoneCategory.Stone;
         public HashSet<String> allowedDimensions = null;
 

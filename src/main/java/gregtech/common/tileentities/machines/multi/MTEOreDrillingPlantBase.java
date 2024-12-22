@@ -55,9 +55,9 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.LRUCache;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.ores.OreManager;
 import gregtech.crossmod.visualprospecting.VisualProspectingDatabase;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -247,7 +247,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             }
 
             if (!world.canMineBlock(getFakePlayer(getBaseMetaTileEntity()), x, y, z)) {
-                // always remove protected blocks - if the fake player can't remove it now, they won't be able to remove it later
+                // always remove protected blocks - if the fake player can't remove it now, they won't be able to remove
+                // it later
                 iter.remove();
                 continue;
             }

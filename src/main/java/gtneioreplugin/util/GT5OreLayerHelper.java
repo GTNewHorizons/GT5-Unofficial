@@ -30,14 +30,16 @@ public class GT5OreLayerHelper {
             ORE_VEINS_BY_NAME.put(mix.oreMixBuilder.oreMixName, wrapper);
 
             for (String dim : wrapper.abbrDimNames) {
-                NormalOreDimensionWrapper dimensionOres = ORE_VEINS_BY_DIM.getOrDefault(dim, new NormalOreDimensionWrapper());
+                NormalOreDimensionWrapper dimensionOres = ORE_VEINS_BY_DIM
+                    .getOrDefault(dim, new NormalOreDimensionWrapper());
                 dimensionOres.oreVeins.add(wrapper);
                 ORE_VEINS_BY_DIM.put(dim, dimensionOres);
             }
         }
 
         // Calculate probabilities for each dim.
-        ORE_VEINS_BY_DIM.values().forEach(NormalOreDimensionWrapper::calculateWeights);
+        ORE_VEINS_BY_DIM.values()
+            .forEach(NormalOreDimensionWrapper::calculateWeights);
     }
 
     public static class OreLayerWrapper {
@@ -74,7 +76,9 @@ public class GT5OreLayerHelper {
             this.randomWeight = (short) mix.weight;
 
             this.allowedDimWithOrigNames = mix.dimsEnabled;
-            this.abbrDimNames = mix.dimsEnabled.stream().map(DimensionHelper::getDimAbbreviatedName).collect(Collectors.toSet());
+            this.abbrDimNames = mix.dimsEnabled.stream()
+                .map(DimensionHelper::getDimAbbreviatedName)
+                .collect(Collectors.toSet());
         }
 
         public List<ItemStack> getVeinLayerOre(int veinLayer) {

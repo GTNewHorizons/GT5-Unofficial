@@ -147,8 +147,8 @@ public class OreManager {
         return true;
     }
 
-    public static List<ItemStack> mineBlock(World world, int x, int y, int z, boolean silktouch, int fortune, boolean simulate,
-        boolean replaceWithCobblestone) {
+    public static List<ItemStack> mineBlock(World world, int x, int y, int z, boolean silktouch, int fortune,
+        boolean simulate, boolean replaceWithCobblestone) {
         Block ore = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
 

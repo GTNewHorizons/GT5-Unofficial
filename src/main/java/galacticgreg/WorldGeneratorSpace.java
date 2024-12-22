@@ -78,8 +78,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             long post = System.nanoTime();
 
-            if (profileWorldGen)
-                GTMod.GT_FML_LOGGER.info(String.format("Generated %d %d in %,.3f us", chunkX, chunkZ, (post - pre) / 1e3));
+            if (profileWorldGen) GTMod.GT_FML_LOGGER
+                .info(String.format("Generated %d %d in %,.3f us", chunkX, chunkZ, (post - pre) / 1e3));
 
             Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);
             if (tChunk != null) {
@@ -455,8 +455,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         return false;
     }
 
-    private static boolean generateOreBlock(AsteroidConfig asteroidConfig, Random rng, World pWorld, int pX, int pY, int pZ, IStoneType stoneType,
-        IWorldgenLayer oreLayer, float control, float dist) {
+    private static boolean generateOreBlock(AsteroidConfig asteroidConfig, Random rng, World pWorld, int pX, int pY,
+        int pZ, IStoneType stoneType, IWorldgenLayer oreLayer, float control, float dist) {
         if (rng.nextFloat() <= oreLayer.getDensity() * asteroidConfig.OreDensityMultiplier) {
             IMaterial mat = oreLayer.getOre(control);
 
@@ -468,8 +468,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         return false;
     }
 
-    private static boolean generateSmallOreBlock(AsteroidConfig asteroidConfig, Random rng, World pWorld, int pX, int pY, int pZ, IStoneType stoneType,
-        IWorldgenLayer oreLayer, float control) {
+    private static boolean generateSmallOreBlock(AsteroidConfig asteroidConfig, Random rng, World pWorld, int pX,
+        int pY, int pZ, IStoneType stoneType, IWorldgenLayer oreLayer, float control) {
         if (rng.nextInt(100) < asteroidConfig.SmallOreChance) {
             IMaterial mat = oreLayer.getOre(control);
 

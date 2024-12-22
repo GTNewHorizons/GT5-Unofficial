@@ -55,7 +55,8 @@ public class EyeOfHarmonyRecipeStorage {
                 BlockDimensionDisplay blockDimensionDisplay = (BlockDimensionDisplay) ModBlocks.blocks
                     .get(dimAbbreviation);
 
-                ModDimensionDef dimensionDef = DimensionDef.DEF_BY_WORLD_NAME.get(DimensionHelper.getFullName(dimAbbreviation));
+                ModDimensionDef dimensionDef = DimensionDef.DEF_BY_WORLD_NAME
+                    .get(DimensionHelper.getFullName(dimAbbreviation));
 
                 if (dimensionDef != null && !dimensionDef.hasEoHRecipe) continue;
 
