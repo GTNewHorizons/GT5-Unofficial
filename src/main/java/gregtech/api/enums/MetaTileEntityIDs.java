@@ -1438,7 +1438,6 @@ public enum MetaTileEntityIDs {
     HumongousInputHatch(12799),
     CreativeScanner(12800),
     ResearchCompleter(13001),
-    NANOCHIP_MODULE_ASSEMBLY_MATRIX(9501),
     sofc1(13101),
     sofc2(13102),
     tfft(13104),
