@@ -165,7 +165,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         mCasing++;
     }
 
-    public FluidStack[] randomizeByproducts(FluidStack[] outputFluids, int maximum, FluidStack spargeGas) {
+    private static FluidStack[] randomizeByproducts(FluidStack[] outputFluids, int maximum, FluidStack spargeGas) {
         int byproductTotal = 0;
 
         for (int i = 2; i < outputFluids.length; i++) {
@@ -189,11 +189,12 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             }
 
             private GTRecipe modifyRecipe(GTRecipe recipe) {
-                recipe.mFluidOutputs = randomizeByproducts(
+                GTRecipe newRecipe = recipe.copy();
+                newRecipe.mFluidOutputs = randomizeByproducts(
                     recipe.mFluidOutputs,
                     recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0),
                     recipe.mFluidInputs[0]);
-                return recipe;
+                return newRecipe;
             }
         };
     }
