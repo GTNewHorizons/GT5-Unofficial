@@ -41,6 +41,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
@@ -76,6 +78,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -543,12 +547,12 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean checkRecipe(ItemStack stack) {
+    public @NotNull CheckRecipeResult checkProcessing() {
         this.mProgresstime = 1;
         this.mMaxProgresstime = 1;
         this.mEUt = 0;
         this.mEfficiencyIncrease = 10000;
-        return true;
+        return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
@@ -1146,7 +1150,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.LongSyncer(() -> energyInputValues.avgLong(), val -> avgInCache = val))
+            .widget(new FakeSyncWidget.LongSyncer(energyInputValues::avgLong, val -> avgInCache = val))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -1158,7 +1162,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> isActiveCache))
-            .widget(new FakeSyncWidget.LongSyncer(() -> energyOutputValues.avgLong(), val -> avgOutCache = val))
+            .widget(new FakeSyncWidget.LongSyncer(energyOutputValues::avgLong, val -> avgOutCache = val))
             .widget(
                 new TextWidget().setStringSupplier(() -> EnumChatFormatting.WHITE + timeToCache)
                     .setTextAlignment(Alignment.CenterLeft)
@@ -1218,11 +1222,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         counter = nbt.getInteger("wireless_mode_cooldown");
 
         super.loadNBTData(nbt);
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
     }
 
     @Override
