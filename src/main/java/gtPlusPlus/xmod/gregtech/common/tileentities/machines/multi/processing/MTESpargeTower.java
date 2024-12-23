@@ -39,10 +39,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.ParallelHelper;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -166,34 +165,35 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         mCasing++;
     }
 
+    public FluidStack[] randomizeByproducts(FluidStack[] outputFluids, int maximum, FluidStack spargeGas) {
+        int byproductTotal = 0;
+
+        for (int i = 2; i < outputFluids.length; i++) {
+            // At least 1L so all output hatches are guaranteed to be used, and a maximum that shifts so there
+            // can always be at least 1L of overflow for the same reason.
+            int gasAmount = MathUtils.randInt(1, Math.min(maximum, spargeGas.amount - byproductTotal - 1));
+            outputFluids[i] = new FluidStack(outputFluids[i], gasAmount);
+            byproductTotal += gasAmount;
+        }
+
+        outputFluids[1] = new FluidStack(spargeGas, spargeGas.amount - byproductTotal);
+        return outputFluids;
+    }
+
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
-            private FluidStack[] randomizeByproducts(FluidStack[] currentOutput, int maximum, FluidStack spargeGas) {
-                FluidStack[] newOutput = new FluidStack[currentOutput.length];
-                newOutput[0] = currentOutput[0]; // not part of the randomization
-
-                int byproductTotal = 0;
-
-                for (int i = 2; i < currentOutput.length; i++) {
-                    // At least 1L so all output hatches are guaranteed to be used, and a maximum that shifts so there
-                    // can always be at least 1L of overflow for the same reason.
-                    int gasAmount = MathUtils.randInt(1, Math.min(maximum, spargeGas.amount - byproductTotal - 1));
-                    newOutput[i] = new FluidStack(currentOutput[i], gasAmount);
-                    byproductTotal += gasAmount;
-                }
-
-                newOutput[1] = new FluidStack(spargeGas, spargeGas.amount - byproductTotal);
-                return newOutput;
+            @Override
+            protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
+                return super.createParallelHelper(modifyRecipe(recipe));
             }
 
-            @Override
-            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                int maximumByproducts = recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0);
-                FluidStack spargeGas = recipe.mFluidInputs[0];
-                if ((maximumByproducts == 0) || (spargeGas == null)) return CheckRecipeResultRegistry.NO_RECIPE;
-                recipe.mFluidOutputs = randomizeByproducts(recipe.mFluidOutputs, maximumByproducts, spargeGas);
-                return CheckRecipeResultRegistry.SUCCESSFUL;
+            private GTRecipe modifyRecipe(GTRecipe recipe) {
+                recipe.mFluidOutputs = randomizeByproducts(
+                    recipe.mFluidOutputs,
+                    recipe.getMetadataOrDefault(SPARGE_MAX_BYPRODUCT, 0),
+                    recipe.mFluidInputs[0]);
+                return recipe;
             }
         };
     }
