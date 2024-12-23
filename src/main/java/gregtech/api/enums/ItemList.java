@@ -2022,6 +2022,15 @@ public enum ItemList implements IItemContainer {
     Machine_HV_LightningRod,
     Machine_EV_LightningRod,
 
+    Machine_LV_SolarPanel,
+    Machine_MV_SolarPanel,
+    Machine_HV_SolarPanel,
+    Machine_EV_SolarPanel,
+    Machine_IV_SolarPanel,
+    Machine_LuV_SolarPanel,
+    Machine_ZPM_SolarPanel,
+    Machine_UV_SolarPanel,
+
     ULV_Coil,
     LV_Coil,
     MV_Coil,
