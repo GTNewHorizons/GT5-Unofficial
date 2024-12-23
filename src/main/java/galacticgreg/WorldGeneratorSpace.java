@@ -58,9 +58,9 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         }
 
         if (tDimDef.getDimensionType() == Enums.DimensionType.Asteroid) {
-            boolean modified = false;
+            long pre = profileWorldGen ? System.nanoTime() : 0;
 
-            long pre = System.nanoTime();
+            int seeds = 0;
 
             for (int offsetZ = -2; offsetZ <= 2; offsetZ++) {
                 for (int offsetX = -2; offsetX <= 2; offsetX++) {
@@ -72,18 +72,25 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
                     gen.generateChunk(world, chunkX, chunkZ);
 
-                    modified = true;
+                    seeds++;
                 }
             }
 
-            long post = System.nanoTime();
+            long post = profileWorldGen ? System.nanoTime() : 0;
 
-            if (profileWorldGen) GTMod.GT_FML_LOGGER
-                .info(String.format("Generated %d %d in %,.3f us", chunkX, chunkZ, (post - pre) / 1e3));
+            if (profileWorldGen) {
+                GTMod.GT_FML_LOGGER.info(
+                    String.format(
+                        "Generated %d %d in %,d us (%d seeds)",
+                        chunkX,
+                        chunkZ,
+                        (int) ((post - pre) / 1e3),
+                        seeds));
+            }
 
             Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);
             if (tChunk != null) {
-                tChunk.isModified = modified;
+                tChunk.isModified = seeds > 0;
             }
         }
     }
