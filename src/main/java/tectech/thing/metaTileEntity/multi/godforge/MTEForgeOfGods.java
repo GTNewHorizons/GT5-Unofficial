@@ -213,12 +213,12 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     private static final long POWER_MILESTONE_CONSTANT = LongMath.pow(10, 15);
     private static final long RECIPE_MILESTONE_CONSTANT = LongMath.pow(10, 7);
     private static final long FUEL_MILESTONE_CONSTANT = 10_000;
-    private static final long RECIPE_MILESTONE_T7_CONSTANT = RECIPE_MILESTONE_CONSTANT * LongMath.pow(6, 6);
+    private static final long RECIPE_MILESTONE_T7_CONSTANT = RECIPE_MILESTONE_CONSTANT * LongMath.pow(4, 6);
     private static final long FUEL_MILESTONE_T7_CONSTANT = FUEL_MILESTONE_CONSTANT * LongMath.pow(3, 6);
     private static final BigInteger POWER_MILESTONE_T7_CONSTANT = BigInteger.valueOf(POWER_MILESTONE_CONSTANT)
         .multiply(BigInteger.valueOf(LongMath.pow(9, 6)));
     private static final double POWER_LOG_CONSTANT = Math.log(9);
-    private static final double RECIPE_LOG_CONSTANT = Math.log(6);
+    private static final double RECIPE_LOG_CONSTANT = Math.log(4);
     private static final double FUEL_LOG_CONSTANT = Math.log(3);
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final String STRUCTURE_PIECE_SHAFT = "beam_shaft";
@@ -3058,7 +3058,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (inversion) {
                     max = RECIPE_MILESTONE_T7_CONSTANT * (milestoneProgress[1] - 5);
                 } else {
-                    max = LongMath.pow(6, milestoneProgress[1]) * LongMath.pow(10, 7);
+                    max = LongMath.pow(4, milestoneProgress[1]) * LongMath.pow(10, 7);
                 }
             }
             case 2 -> {
