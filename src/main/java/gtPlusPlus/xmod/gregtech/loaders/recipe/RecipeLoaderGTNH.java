@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -46,8 +47,8 @@ public class RecipeLoaderGTNH {
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Cobalt.getMolten(144), Materials.Argon.getGas(500))
-            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().RHODIUM.getPlasma(), 144))
+            .fluidInputs(Materials.Manganese.getMolten(144), WerkstoffLoader.Neon.getFluidOrGas(500))
+            .fluidOutputs(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 144))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(196608)
             .metadata(FUSION_THRESHOLD, 1_000_000_000)
