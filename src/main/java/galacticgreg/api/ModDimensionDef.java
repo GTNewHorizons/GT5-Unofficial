@@ -40,6 +40,7 @@ public class ModDimensionDef {
     private final Random random = new Random(System.currentTimeMillis());
 
     public boolean hasEoHRecipe = true;
+    public boolean canBeVoidMined = true;
 
     /**
      * Define a new dimension
@@ -381,6 +382,12 @@ public class ModDimensionDef {
 
     public ModDimensionDef disableEoHRecipe() {
         hasEoHRecipe = false;
+
+        return this;
+    }
+
+    public ModDimensionDef disableVoidMining() {
+        canBeVoidMined = false;
 
         return this;
     }

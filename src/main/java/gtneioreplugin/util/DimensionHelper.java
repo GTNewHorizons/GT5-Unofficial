@@ -11,7 +11,7 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.CERES;
 import static galacticgreg.api.enums.DimensionDef.DimNames.DEEPDARK;
 import static galacticgreg.api.enums.DimensionDef.DimNames.DEIMOS;
 import static galacticgreg.api.enums.DimensionDef.DimNames.ENCELADUS;
-import static galacticgreg.api.enums.DimensionDef.DimNames.ENDASTEROIDS;
+import static galacticgreg.api.enums.DimensionDef.DimNames.ENDASTEROID;
 import static galacticgreg.api.enums.DimensionDef.DimNames.EUROPA;
 import static galacticgreg.api.enums.DimensionDef.DimNames.EVERGLADES;
 import static galacticgreg.api.enums.DimensionDef.DimNames.GANYMEDE;
@@ -221,7 +221,7 @@ public class DimensionHelper {
             case NETHER -> abbreviatedName = "Ne"; // Nether
             case TWILIGHT_FOREST -> abbreviatedName = "TF"; // Twilight
             case THE_END -> abbreviatedName = "ED"; // The End because En = Encalus
-            case ENDASTEROIDS -> abbreviatedName = "EA"; // EndAsteroid
+            case ENDASTEROID -> abbreviatedName = "EA"; // EndAsteroid
             case EVERGLADES -> abbreviatedName = "Eg";
             // T1
             case MOON -> abbreviatedName = "Mo"; // GalacticraftCore_Moon
@@ -284,7 +284,7 @@ public class DimensionHelper {
             case "Ne" -> NETHER; // Nether
             case "TF" -> TWILIGHT_FOREST; // Twilight
             case "ED" -> THE_END; // The End because En = Encalus
-            case "EA" -> ENDASTEROIDS; // EndAsteroid
+            case "EA" -> ENDASTEROID; // EndAsteroid
             case "Eg" -> EVERGLADES;
             // T1
             case "Mo" -> MOON; // GalacticraftCore_Moon

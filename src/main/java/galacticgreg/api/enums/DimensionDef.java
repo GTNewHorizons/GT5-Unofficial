@@ -29,7 +29,7 @@ public enum DimensionDef {
         ChunkProviderEnd.class,
         DimensionType.Planet)),
     EndAsteroids(new ModDimensionDef(
-        DimNames.ENDASTEROIDS,
+        DimNames.ENDASTEROID,
         ChunkProviderEnd.class,
         Enums.DimensionType.Asteroid)),
     TwilightForest(new ModDimensionDef(
@@ -57,7 +57,8 @@ public enum DimensionDef {
     Asteroids(new ModDimensionDef(
         DimNames.ASTEROIDS,
         "micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids",
-        Enums.DimensionType.Asteroid)),
+        Enums.DimensionType.Asteroid)
+        .disableVoidMining()),
     Ross128b(new ModDimensionDef(
         DimNames.ROSS128B,
         "bwcrossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b",
@@ -191,7 +192,8 @@ public enum DimensionDef {
     KuiperBelt(new ModDimensionDef(
         DimNames.KUIPERBELT,
         "galaxyspace.SolarSystem.planets.kuiperbelt.dimension.ChunkProviderKuiper",
-        Enums.DimensionType.Asteroid)),
+        Enums.DimensionType.Asteroid)
+        .disableVoidMining()),
 
     Neper(new ModDimensionDef(
         DimNames.NEPER,
@@ -221,7 +223,8 @@ public enum DimensionDef {
     MehenBelt(new ModDimensionDef(
         DimNames.MEHENBELT,
         "de.katzenpapst.amunra.world.mehen.MehenChunkProvider",
-        Enums.DimensionType.Asteroid)),
+        Enums.DimensionType.Asteroid)
+        .disableVoidMining()),
 
     DeepDark(new ModDimensionDef(
         DimNames.DEEPDARK,
@@ -264,7 +267,7 @@ public enum DimensionDef {
         public static final String OW = "Overworld";
         public static final String NETHER = "Nether";
         public static final String THE_END = "The End";
-        public static final String ENDASTEROIDS = "EndAsteroids";
+        public static final String ENDASTEROID = "EndAsteroid";
         public static final String TWILIGHT_FOREST = "Twilight Forest";
         public static final String EVERGLADES = "dimensionDarkWorld";
 

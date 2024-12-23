@@ -16,6 +16,8 @@ import net.minecraftforge.fluids.FluidStack;
 import bartworks.common.configs.Configuration;
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import galacticgreg.api.ModDimensionDef;
+import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
@@ -133,17 +135,13 @@ public class VoidMinerUtility {
      * Computes the ores of the dims
      */
     public static void generateDropMaps() {
-        outer: for (WorldgenGTOreLayer layer : WorldgenGTOreLayer.sList) {
+        for (WorldgenGTOreLayer layer : WorldgenGTOreLayer.sList) {
             if (!layer.mEnabled) continue;
 
             for (String dim : layer.mAllowedDimensions) {
-                if (dim.equals(DimNames.ENDASTEROIDS)) {
-                    if (layer.mAllowedDimensions.contains(DimNames.THE_END)) {
-                        continue outer;
-                    } else {
-                        dim = DimNames.THE_END;
-                    }
-                }
+                ModDimensionDef dimensionDef = DimensionDef.DEF_BY_WORLD_NAME.get(dim);
+
+                if (dimensionDef != null && !dimensionDef.canBeVoidMined) continue;
 
                 DropMap map = dropMapsByDimName.computeIfAbsent(dim, ignored -> new DropMap());
 
@@ -154,17 +152,13 @@ public class VoidMinerUtility {
             }
         }
 
-        outer: for (WorldgenGTOreSmallPieces layer : WorldgenGTOreSmallPieces.sList) {
+        for (WorldgenGTOreSmallPieces layer : WorldgenGTOreSmallPieces.sList) {
             if (!layer.mEnabled) continue;
 
             for (String dim : layer.mAllowedDimensions) {
-                if (dim.equals(DimNames.ENDASTEROIDS)) {
-                    if (layer.mAllowedDimensions.contains(DimNames.THE_END)) {
-                        continue outer;
-                    } else {
-                        dim = DimNames.THE_END;
-                    }
-                }
+                ModDimensionDef dimensionDef = DimensionDef.DEF_BY_WORLD_NAME.get(dim);
+
+                if (dimensionDef != null && !dimensionDef.canBeVoidMined) continue;
 
                 DropMap map = dropMapsByDimName.computeIfAbsent(dim, ignored -> new DropMap());
 
