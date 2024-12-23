@@ -50,6 +50,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import tectech.thing.CustomItemList;
 
 public class AssemblerRecipes implements Runnable {
 
@@ -541,6 +542,20 @@ public class AssemblerRecipes implements Runnable {
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
+
+            for (int i = 0; i < ItemList.WIRELESS_ENERGY_COVERS.length; i++) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 4L),
+                        CustomItemList.Machine_Multi_Transformer.get(1),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 2L),
+                        ItemList.WIRELESS_ENERGY_HATCHES[i + 1].get(1))
+                    .itemOutputs(ItemList.WIRELESS_ENERGY_COVERS[i].get(1L))
+                    .fluidInputs(MaterialsUEVplus.ExcitedDTEC.getFluid(32_000L))
+                    .duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_UMV)
+                    .addTo(assemblerRecipes);
+            }
         }
 
         // If Cleanroom is enabled, add an assembler recipe
