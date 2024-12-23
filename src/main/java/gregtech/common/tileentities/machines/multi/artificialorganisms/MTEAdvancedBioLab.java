@@ -17,6 +17,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import gregtech.api.util.ParallelHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,6 +46,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
+
+import javax.annotation.Nonnull;
 
 public class MTEAdvancedBioLab extends MTEAOUnitBase<MTEAdvancedBioLab> implements ISurvivalConstructable {
 
@@ -197,25 +200,29 @@ public class MTEAdvancedBioLab extends MTEAOUnitBase<MTEAdvancedBioLab> implemen
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            ArtificialOrganism currentOrganism;
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 // Bio lab recipes do not have AO data, so these recipes have a base count and no intelligence
                 // requirement. TODO: adapt this into a formula based on the recipe stats
 
-                ArtificialOrganism currentOrganism = getAO();
+                currentOrganism = getAO();
 
                 if (currentOrganism == null) return SimpleCheckRecipeResult.ofFailure("missing_ao");
                 else if (currentOrganism.getCount() <= 500) return SimpleCheckRecipeResult.ofFailure("insufficient_ao");
 
                 setSpeedBonus(currentOrganism.calculateSpeedBonus());
 
-                for (int i = 0; i < recipe.mChances.length; i++) {
-                    recipe.mChances[i] = 10000;
-                }
-
                 AOsInUse = currentOrganism.consumeAOs(500);
                 return super.validateRecipe(recipe);
+            }
+
+            @Nonnull
+            @Override
+            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+                return super.createParallelHelper(recipe).setChanceMultiplier(3);
             }
         };
     }
