@@ -3934,6 +3934,14 @@ public class GTUtility {
         return null;
     }
 
+    public static int hashCode(int... values) {
+        return Arrays.hashCode(values);
+    }
+
+    public static long hashCode(long... values) {
+        return Arrays.hashCode(values);
+    }
+
     public static boolean eraseBlockByFakePlayer(FakePlayer aPlayer, int aX, int aY, int aZ, boolean isSimulate) {
         if (aPlayer == null) return false;
         World aWorld = aPlayer.worldObj;
