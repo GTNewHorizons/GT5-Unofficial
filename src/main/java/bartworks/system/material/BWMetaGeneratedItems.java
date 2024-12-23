@@ -92,7 +92,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
                     int tY = MathHelper.floor_double(aItemEntity.posY);
                     int tZ = MathHelper.floor_double(aItemEntity.posZ);
                     Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
-                    byte tMetaData = (byte) aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
+                    int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if (tBlock == Blocks.cauldron && tMetaData > 0) {
                         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
                             aItemEntity.setEntityItemStack(
