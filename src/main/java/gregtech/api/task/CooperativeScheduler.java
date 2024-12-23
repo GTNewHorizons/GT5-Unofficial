@@ -80,6 +80,7 @@ public enum CooperativeScheduler {
                 iter.remove();
             }
 
+            // poll the time if the task hasn't
             if (end == 0) end = System.nanoTime();
 
             if (Gregtech.general.schedulerProfileLevel >= 2) {

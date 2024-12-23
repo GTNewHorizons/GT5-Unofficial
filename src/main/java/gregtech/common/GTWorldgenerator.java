@@ -218,35 +218,6 @@ public class GTWorldgenerator implements IWorldGenerator {
         // Used for outputting orevein weights and bins
         // static int test=0;
 
-        // Local class to track which orevein seeds must be checked when doing chunkified worldgen
-        static class NearbySeeds {
-
-            public int mX;
-            public int mZ;
-
-            NearbySeeds(int x, int z) {
-                this.mX = x;
-                this.mZ = z;
-            }
-
-            @Override
-            public boolean equals(Object o) {
-                if (this == o) return true;
-                if (!(o instanceof NearbySeeds that)) return false;
-                if (this.mX != that.mX) return false;
-                return this.mZ == that.mZ;
-            }
-
-            @Override
-            public int hashCode() {
-                int result = this.mX;
-                result = 31 * result + this.mZ;
-                return result;
-            }
-        }
-
-        public static List<GTWorldgenerator.WorldGenContainer.NearbySeeds> seedList = new LinkedList<>();
-
         // aX and aZ are now the by-chunk X and Z for the chunk of interest
         public WorldGenContainer(Random aRandom, int aX, int aZ, int aDimensionType, World aWorld,
             IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider, String aBiome) {
@@ -359,7 +330,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             if (oreveinPercentageRoll < dimensionDef.getOreVeinChance()) {
                 int placementAttempts = 0;
                 boolean oreveinFound = false;
-                int i;
+                int i = 0;
 
                 // Used for outputting orevein weights and bins
                 /*
@@ -369,7 +340,8 @@ public class GTWorldgenerator implements IWorldGenerator {
                  * ); } }
                  */
 
-                for (i = 0; i < oreveinAttempts && placementAttempts < oreveinMaxPlacementAttempts; i++) {
+                for (i = 0; i < oreveinAttempts && placementAttempts < oreveinMaxPlacementAttempts
+                    && !oreveinFound; i++) {
                     WorldgenGTOreLayer oreLayer = WorldgenQuery.veins()
                         .inDimension(dimensionName)
                         .find(oreveinRNG);
@@ -526,27 +498,20 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             long stonegenTime = System.nanoTime();
 
-            int wXbox = this.mX - MAX_VEIN_SIZE;
-            int eXbox = this.mX + MAX_VEIN_SIZE + 1; // Need to add 1 since it is compared using a <
-            int nZbox = this.mZ - MAX_VEIN_SIZE;
-            int sZbox = this.mZ + MAX_VEIN_SIZE + 1;
+            int chunkMinX = this.mX - MAX_VEIN_SIZE;
+            int chunkMaxX = this.mX + MAX_VEIN_SIZE + 1; // Need to add 1 since it is compared using a <
+            int chunkMinZ = this.mZ - MAX_VEIN_SIZE;
+            int chunkMaxZ = this.mZ + MAX_VEIN_SIZE + 1;
 
             // Search for orevein seeds and add to the list;
-            for (int x = wXbox; x < eXbox; x++) {
-                for (int z = nZbox; z < sZbox; z++) {
+            for (int x = chunkMinX; x < chunkMaxX; x++) {
+                for (int z = chunkMinZ; z < chunkMaxZ; z++) {
                     // Determine if this X/Z is an orevein seed
                     if (isOreChunk(x, z)) {
-                        if (debugWorldGen) GTLog.out.println("Adding seed x=" + x + " z=" + z);
-                        seedList.add(new NearbySeeds(x, z));
+                        if (debugWorldGen) GTLog.out.println("Processing seed x=" + x + " z=" + z);
+                        generateVein(x, z);
                     }
                 }
-            }
-
-            // Now process each oreseed vs this requested chunk
-            for (; !seedList.isEmpty(); seedList.remove(0)) {
-                if (debugWorldGen)
-                    GTLog.out.println("Processing seed x=" + seedList.get(0).mX + " z=" + seedList.get(0).mZ);
-                generateVein(seedList.get(0).mX, seedList.get(0).mZ);
             }
 
             long oregenTime = System.nanoTime();
@@ -556,7 +521,6 @@ public class GTWorldgenerator implements IWorldGenerator {
             }
 
             long endTime = System.nanoTime();
-            long duration = (endTime - startTime);
 
             if (debugWorldGen || profileWorldGen) {
                 GTMod.GT_FML_LOGGER.info(
@@ -564,7 +528,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         + "us Stonegen took "
                         + (stonegenTime - startTime) / 1e3
                         + "us Worldgen took "
-                        + duration / 1e3
+                        + (endTime - startTime) / 1e3
                         + "us");
             }
         }
