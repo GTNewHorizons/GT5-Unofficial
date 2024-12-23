@@ -57,9 +57,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
 
-// TODO: fix bugs if i find them
-// TODO: move controller recipe in AssemblyLineRecipes into coremod
-
 public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
     implements IConstructable, ISurvivalConstructable {
 
@@ -263,10 +260,9 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 SolarFactoryRecipeData data = recipe
                     .getMetadataOrDefault(GTRecipeConstants.SOLAR_FACTORY_WAFER_DATA, new SolarFactoryRecipeData(0, 0));
-                if (data == null) return CheckRecipeResultRegistry.NO_RECIPE;
                 minimumTierForRecipe = data.minimumWaferTier;
                 waferAmountInRecipe = data.minimumWaferCount;
-                if (minimumTierForRecipe == 0) return CheckRecipeResultRegistry.SUCCESSFUL;
+                if (minimumTierForRecipe == 0 || waferAmountInRecipe == 0) return CheckRecipeResultRegistry.SUCCESSFUL;
                 findWaferStack();
                 if (foundWaferStack == null) {
                     clearVars();
