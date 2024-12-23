@@ -160,6 +160,7 @@ import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_LuV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_MV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_UV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_ZPM;
+import static gregtech.common.items.IDMetaItem01.Cover_Wireless_Energy_LV;
 import static gregtech.common.items.IDMetaItem01.Crate_Empty;
 import static gregtech.common.items.IDMetaItem01.Duct_Tape;
 import static gregtech.common.items.IDMetaItem01.Electric_Motor_EV;
@@ -460,6 +461,7 @@ import static gregtech.common.items.IDMetaItem01.ZPM4;
 import static gregtech.common.items.IDMetaItem01.ZPM5;
 import static gregtech.common.items.IDMetaItem01.ZPM6;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -508,6 +510,7 @@ import gregtech.common.covers.CoverCrafting;
 import gregtech.common.covers.CoverDoesWork;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverEUMeter;
+import gregtech.common.covers.CoverEnergyWireless;
 import gregtech.common.covers.CoverFluidLimiter;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverFluidStorageMonitor;
@@ -564,6 +567,22 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         Spray_Color_Used_6.ID, Spray_Color_Used_7.ID, Spray_Color_Used_8.ID, Spray_Color_Used_9.ID,
         Spray_Color_Used_10.ID, Spray_Color_Used_11.ID, Spray_Color_Used_12.ID, Spray_Color_Used_13.ID,
         Spray_Color_Used_14.ID, Spray_Color_Used_15.ID };
+
+    private static final List<ItemList> wirelessCovers = Arrays.asList(
+        ItemList.Cover_Wireless_Energy_LV,
+        ItemList.Cover_Wireless_Energy_MV,
+        ItemList.Cover_Wireless_Energy_HV,
+        ItemList.Cover_Wireless_Energy_EV,
+        ItemList.Cover_Wireless_Energy_IV,
+        ItemList.Cover_Wireless_Energy_LuV,
+        ItemList.Cover_Wireless_Energy_ZPM,
+        ItemList.Cover_Wireless_Energy_UV,
+        ItemList.Cover_Wireless_Energy_UHV,
+        ItemList.Cover_Wireless_Energy_UEV,
+        ItemList.Cover_Wireless_Energy_UIV,
+        ItemList.Cover_Wireless_Energy_UMV,
+        ItemList.Cover_Wireless_Energy_UXV,
+        ItemList.Cover_Wireless_Energy_MAX);
 
     public MetaGeneratedItem01() {
         super(
@@ -2948,6 +2967,26 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Holds 15 item for use within machine GUI (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
 
+        for (int i = 1; i < 15; i++) {
+            wirelessCovers.get(i - 1)
+                .set(
+                    addItem(
+                        Cover_Wireless_Energy_LV.ID + i - 1,
+                        GTValues.VN[i] + " Wireless Energy Cover",
+                        String.join(
+                            "/n ",
+                            "Stores energy globally in a network, up to 2^(2^31) EU.",
+                            "Does not connect to wires. This cover withdraws EU from the network.",
+                            "Amperage: " + EnumChatFormatting.YELLOW + "2" + EnumChatFormatting.GRAY,
+                            "Voltage IN: " + EnumChatFormatting.GREEN
+                                + GTUtility.formatNumbers(GTValues.V[i])
+                                + " ("
+                                + GTUtility.getColoredTierNameFromTier((byte) (i))
+                                + EnumChatFormatting.GREEN
+                                + ")"),
+                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
+        }
+
         ItemList.Cover_Screen.set(
             addItem(
                 Cover_Screen.ID,
@@ -3953,6 +3992,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Cover_NeedsMaintainance.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)),
             new CoverNeedMaintainance(TextureFactory.of(OVERLAY_MAINTENANCE_DETECTOR)));
+
+        for (int i = 0; i < 14; i++) {
+            GregTechAPI.registerCover(
+                wirelessCovers.get(i)
+                    .get(1),
+                TextureFactory
+                    .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
+                new CoverEnergyWireless((int) GTValues.V[i + 1]));
+        }
 
     }
 
