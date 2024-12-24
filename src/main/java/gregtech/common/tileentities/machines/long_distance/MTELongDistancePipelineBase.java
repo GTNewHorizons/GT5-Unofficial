@@ -215,7 +215,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
         Block aBlock = gtTile.getBlockAtSide(gtTile.getBackFacing());
 
         if (aBlock instanceof BlockLongDistancePipe) {
-            byte aMetaData = gtTile.getMetaIDAtSide(gtTile.getBackFacing());
+            int aMetaData = gtTile.getMetaIDAtSide(gtTile.getBackFacing());
             if (aMetaData != getPipeMeta()) return;
 
             HashSet<ChunkCoordinates> tVisited = new HashSet<>(Collections.singletonList(getCoords())),

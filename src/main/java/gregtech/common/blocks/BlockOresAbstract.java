@@ -1,30 +1,25 @@
 package gregtech.common.blocks;
 
-import static gregtech.api.enums.Mods.NotEnoughItems;
-
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,227 +27,228 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneCategory;
+import gregtech.api.enums.StoneType;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.GTGenericBlock;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ores.GTOreAdapter;
+import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
+import gregtech.nei.NEIGTConfig;
 
-public abstract class BlockOresAbstract extends GTGenericBlock implements ITileEntityProvider {
+public class BlockOresAbstract extends GTGenericBlock implements IBlockWithTextures {
 
-    private static final String DOT_NAME = ".name";
-    private static final String DOT_TOOLTIP = ".tooltip";
-    public static ThreadLocal<TileEntityOres> mTemporaryTileEntity = new ThreadLocal<>();
-    public static boolean FUCKING_LOCK = false;
-    public static boolean tHideOres;
-    public static Set<Materials> aBlockedOres = new HashSet<>();
+    public final List<StoneType> stoneTypes;
 
-    protected BlockOresAbstract(String aUnlocalizedName, int aOreMetaCount, boolean aHideFirstMeta,
-        Material aMaterial) {
-        super(ItemOres.class, aUnlocalizedName, aMaterial);
-        this.isBlockContainer = true;
+    public BlockOresAbstract(int series, StoneType[] stoneTypes) {
+        super(ItemOres.class, "gt.blockores" + series, Material.rock);
         setStepSound(soundTypeStone);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_ORES);
-        tHideOres = NotEnoughItems.isModLoaded() && GTMod.gregtechproxy.mHideUnusedOres;
-        if (aOreMetaCount > 8 || aOreMetaCount < 0) aOreMetaCount = 8;
 
-        for (int i = 0; i < 16; i++) {
-            GTModHandler.addValuableOre(this, i, 1);
+        if (stoneTypes.length > 8) throw new IllegalArgumentException("stoneTypes.length must be <= 8");
+
+        for (int i = 0; i < stoneTypes.length; i++) {
+            if (!stoneTypes[i].isEnabled()) {
+                stoneTypes[i] = null;
+            }
         }
-        for (int i = 1; i < GregTechAPI.sGeneratedMaterials.length; i++) {
-            if (GregTechAPI.sGeneratedMaterials[i] != null) {
-                for (int j = 0; j < aOreMetaCount; j++) {
-                    if (!this.getEnabledMetas()[j]) continue;
-                    GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_NAME,
-                        GTLanguageManager.i18nPlaceholder ? getLocalizedNameFormat(GregTechAPI.sGeneratedMaterials[i])
-                            : getLocalizedName(GregTechAPI.sGeneratedMaterials[i]));
-                    GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + (i + (j * 1000)) + DOT_TOOLTIP,
-                        GregTechAPI.sGeneratedMaterials[i].getToolTip());
-                    GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_NAME,
-                        "Small " + (GTLanguageManager.i18nPlaceholder
-                            ? getLocalizedNameFormat(GregTechAPI.sGeneratedMaterials[i])
-                            : getLocalizedName(GregTechAPI.sGeneratedMaterials[i])));
-                    GTLanguageManager.addStringLocalization(
-                        getUnlocalizedName() + "." + ((i + 16000) + (j * 1000)) + DOT_TOOLTIP,
-                        GregTechAPI.sGeneratedMaterials[i].getToolTip());
-                    if ((GregTechAPI.sGeneratedMaterials[i].mTypes & 0x8) != 0
-                        && !aBlockedOres.contains(GregTechAPI.sGeneratedMaterials[i])) {
-                        if (this.getProcessingPrefix()[j] != null && this.getProcessingPrefix()[j].mIsUnificatable) {
-                            GTOreDictUnificator.set(
-                                this.getProcessingPrefix()[j],
-                                GregTechAPI.sGeneratedMaterials[i],
-                                new ItemStack(this, 1, i + (j * 1000)));
-                        } else {
-                            GTOreDictUnificator.registerOre(
-                                this.getProcessingPrefix()[j] != null
-                                    ? this.getProcessingPrefix()[j].get(GregTechAPI.sGeneratedMaterials[i])
-                                    : "",
-                                new ItemStack(this, 1, i + (j * 1000)));
-                        }
-                        if (tHideOres) {
-                            if (!(j == 0 && !aHideFirstMeta)) {
-                                codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i + (j * 1000)));
-                            }
-                            codechicken.nei.api.API.hideItem(new ItemStack(this, 1, (i + 16000) + (j * 1000)));
-                        }
-                    }
+
+        this.stoneTypes = Collections.unmodifiableList(new ArrayList<>(Arrays.asList(stoneTypes)));
+
+        for (StoneType stoneType : stoneTypes) {
+            if (stoneType != null) {
+                GTOreAdapter.INSTANCE.registerOre(stoneType, this);
+            }
+        }
+
+        for (int matId = 0; matId < 1000; matId++) {
+            Materials mat = getMaterial(matId);
+
+            if (mat == null) continue;
+
+            GTLanguageManager
+                .addStringLocalization(mUnlocalizedName + "." + (matId) + ".name", getLocalizedNameFormat(mat));
+            GTLanguageManager.addStringLocalization(
+                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".name",
+                "Small " + getLocalizedNameFormat(mat));
+
+            GTLanguageManager.addStringLocalization(mUnlocalizedName + "." + (matId) + ".tooltip", mat.getToolTip());
+            GTLanguageManager.addStringLocalization(
+                mUnlocalizedName + "." + (matId + GTOreAdapter.SMALL_ORE_META_OFFSET) + ".tooltip",
+                mat.getToolTip());
+        }
+
+        OreInfo<Materials> info = new OreInfo<>();
+
+        for (int matId = 0; matId < 1000; matId++) {
+            info.material = getMaterial(matId);
+            info.stoneType = null;
+
+            if (!GTOreAdapter.INSTANCE.supports(info)) continue;
+
+            for (StoneType stoneType : stoneTypes) {
+                if (stoneType == null) continue;
+
+                info.stoneType = stoneType;
+
+                if (stoneType.getPrefix().mIsUnificatable) {
+                    GTOreDictUnificator
+                        .set(stoneType.getPrefix(), info.material, GTOreAdapter.INSTANCE.getStack(info, 1));
+                } else {
+                    GTOreDictUnificator.registerOre(stoneType.getPrefix(), GTOreAdapter.INSTANCE.getStack(info, 1));
                 }
             }
         }
     }
 
-    public int getBaseBlockHarvestLevel(int aMeta) {
-        return 0;
+    @Override
+    public String getUnlocalizedName() {
+        return mUnlocalizedName;
     }
 
+    /**
+     * The first stack with meta = 0 is always hidden in {@link NEIGTConfig} to prevent extraneous ores from showing up
+     * in nei.
+     */
     @Override
-    public void onNeighborChange(IBlockAccess aWorld, int aX, int aY, int aZ, int aTileX, int aTileY, int aTileZ) {
-        if (!FUCKING_LOCK) {
-            FUCKING_LOCK = true;
-            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if ((tTileEntity instanceof TileEntityOres)) {
-                ((TileEntityOres) tTileEntity).onUpdated();
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+        // always add meta = 0, because NEI does weird stuff when your item doesn't have subblocks
+        // meta = 0 is always hidden in the nei plugin
+        list.add(new ItemStack(this, 1, 0));
+
+        OreInfo<Materials> info = new OreInfo<>();
+
+        for (int matId = 0; matId < 1000; matId++) {
+            info.material = getMaterial(matId);
+            info.stoneType = null;
+
+            if (!GTOreAdapter.INSTANCE.supports(info)) continue;
+
+            for (StoneType stoneType : stoneTypes) {
+                if (stoneType == null) continue;
+
+                if (info.material.contains(SubTag.ICE_ORE)) {
+                    // if this material only has ice ore, we only want to show the ice variants
+                    if (stoneType.getCategory() != StoneCategory.Ice) continue;
+                    if (stoneType.isExtraneous()) continue;
+
+                    info.stoneType = stoneType;
+
+                    list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                } else {
+                    // if this material doesn't have ice ore, we only want to show the stone variants
+                    if (stoneType.getCategory() != StoneCategory.Stone) continue;
+                    if (stoneType.isExtraneous()) continue;
+
+                    info.stoneType = stoneType;
+
+                    list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                }
             }
         }
-        FUCKING_LOCK = false;
-    }
 
-    @Override
-    public void onNeighborBlockChange(World aWorld, int aX, int aY, int aZ, Block aBlock) {
-        if (!FUCKING_LOCK) {
-            FUCKING_LOCK = true;
-            TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-            if ((tTileEntity instanceof TileEntityOres)) {
-                ((TileEntityOres) tTileEntity).onUpdated();
+        info.isSmall = true;
+
+        for (int matId = 0; matId < 1000; matId++) {
+            info.material = getMaterial(matId);
+            info.stoneType = null;
+
+            if (!GTOreAdapter.INSTANCE.supports(info)) continue;
+
+            for (StoneType stoneType : stoneTypes) {
+                if (stoneType == null) continue;
+
+                if (info.material.contains(SubTag.ICE_ORE)) {
+                    // if this material only has ice ore, we only want to show the ice variants
+                    if (stoneType.getCategory() != StoneCategory.Ice) continue;
+
+                    info.stoneType = stoneType;
+
+                    list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                } else {
+                    // if this material doesn't jabe ice ore, we only want to show the stone variants
+                    if (stoneType.getCategory() != StoneCategory.Stone) continue;
+                    if (stoneType.isExtraneous()) continue;
+
+                    info.stoneType = stoneType;
+
+                    list.add(GTOreAdapter.INSTANCE.getStack(info, 1));
+                }
             }
         }
-        FUCKING_LOCK = false;
     }
 
-    public String getLocalizedNameFormat(Materials aMaterial) {
-        return switch (aMaterial.mName) {
-            case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
-            case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
-            default -> "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
-        };
-    }
+    public boolean isExtraneous() {
+        for (StoneType stoneType : stoneTypes) {
+            if (stoneType == null || stoneType.isExtraneous()) continue;
 
-    public String getLocalizedName(Materials aMaterial) {
-        return aMaterial.getDefaultLocalizedNameForItem(getLocalizedNameFormat(aMaterial));
-    }
-
-    @Override
-    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int ordinalSide,
-        float aOffsetX, float aOffsetY, float aOffsetZ) {
-        if (!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode) {
             return false;
         }
 
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof TileEntityOres)) {
-            return false;
-        }
-
-        boolean tNatural = (((TileEntityOres) tTileEntity).mNatural = !((TileEntityOres) tTileEntity).mNatural);
-        GTUtility.sendChatToPlayer(aPlayer, "Ore \"mNatural\" flag set to: " + tNatural);
         return true;
     }
 
     @Override
-    public boolean onBlockEventReceived(World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_,
-        int p_149696_5_, int p_149696_6_) {
-        super.onBlockEventReceived(p_149696_1_, p_149696_2_, p_149696_3_, p_149696_4_, p_149696_5_, p_149696_6_);
-        TileEntity tileentity = p_149696_1_.getTileEntity(p_149696_2_, p_149696_3_, p_149696_4_);
-        return tileentity != null && tileentity.receiveClientEvent(p_149696_5_, p_149696_6_);
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        EntityPlayer harvester = this.harvesters.get();
+
+        boolean doFortune = !(harvester instanceof FakePlayer);
+        boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
+
+        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
+            if (info == null) return new ArrayList<>();
+
+            return (ArrayList<ItemStack>) GTOreAdapter.INSTANCE.getOreDrops(info, doSilktouch, doFortune ? fortune : 0);
+        }
     }
 
     @Override
-    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
-        return (!(entity instanceof EntityDragon)) && (super.canEntityDestroy(world, x, y, z, entity));
+    public ITexture[][] getTextures(int metadata) {
+        StoneType stoneType = getStoneType(metadata);
+        Materials mat = getMaterial(metadata);
+        boolean small = isSmallOre(metadata);
+
+        ITexture[] textures;
+
+        if (stoneType == null) stoneType = StoneType.Stone;
+
+        if (mat != null) {
+            ITexture iTexture = TextureFactory.builder()
+                .addIcon(
+                    mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.mTextureIndex : OrePrefixes.ore.mTextureIndex])
+                .setRGBA(mat.mRGBa)
+                .stdOrient()
+                .build();
+
+            textures = new ITexture[] { stoneType.getTexture(0), iTexture };
+        } else {
+            textures = new ITexture[] { stoneType.getTexture(0), TextureFactory.builder()
+                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.mTextureIndex])
+                .stdOrient()
+                .build() };
+        }
+
+        return new ITexture[][] { textures, textures, textures, textures, textures, textures };
     }
 
     @Override
-    public String getHarvestTool(int aMeta) {
-        return aMeta < 8 ? "pickaxe" : "shovel";
-    }
+    public IIcon getIcon(int side, int meta) {
+        StoneType stoneType = getStoneType(meta);
 
-    @Override
-    public int getHarvestLevel(int aMeta) {
-        return aMeta == 5 || aMeta == 6 ? 2 : aMeta % 8;
-    }
-
-    @Override
-    public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
-        return 1.0F + getHarvestLevel(aWorld.getBlockMetadata(aX, aY, aZ)) * 1.0F;
-    }
-
-    @Override
-    public float getExplosionResistance(Entity entity, World aWorld, int aX, int aY, int aZ, double explosionX,
-        double explosionY, double explosionZ) {
-        return 1.0F + getHarvestLevel(aWorld.getBlockMetadata(aX, aY, aZ)) * 1.0F;
-    }
-
-    @Override
-    protected boolean canSilkHarvest() {
-        return false;
-    }
-
-    @Override
-    public abstract String getUnlocalizedName();
-
-    @Override
-    public String getLocalizedName() {
-        return StatCollector.translateToLocal(getUnlocalizedName() + DOT_NAME);
+        return stoneType == null ? StoneType.Stone.getIcon(side) : stoneType.getIcon(side);
     }
 
     @Override
     public int getRenderType() {
-        if (GTRendererBlock.INSTANCE == null) {
-            return super.getRenderType();
-        }
         return GTRendererBlock.mRenderID;
     }
-
-    @Override
-    public boolean canBeReplacedByLeaves(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return false;
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return true;
-    }
-
-    @Override
-    public boolean hasTileEntity(int aMeta) {
-        return true;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World aWorld, int aMeta) {
-        return createTileEntity(aWorld, aMeta);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
-        return Blocks.stone.getIcon(0, 0);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int ordinalSide, int aMeta) {
-        return Blocks.stone.getIcon(0, 0);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister aIconRegister) {}
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -269,63 +265,136 @@ public abstract class BlockOresAbstract extends GTGenericBlock implements ITileE
         return true;
     }
 
-    @Override
-    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (((tTileEntity instanceof TileEntityOres))) {
-            return ((TileEntityOres) tTileEntity).getMetaData();
+    public String getLocalizedNameFormat(Materials material) {
+        String base = OrePrefixes.ore.getDefaultLocalNameForItem(material);
+
+        if (GTLanguageManager.i18nPlaceholder) {
+            return base;
+        } else {
+            return material.getDefaultLocalizedNameForItem(base);
         }
-        return 0;
     }
 
     @Override
-    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof TileEntityOres)) {
-            mTemporaryTileEntity.set((TileEntityOres) tTileEntity);
+    public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
+        if (entity instanceof EntityDragon) return false;
+
+        return super.canEntityDestroy(world, x, y, z, entity);
+    }
+
+    @Override
+    public boolean isToolEffective(String type, int metadata) {
+        return "pickaxe".equals(type);
+    }
+
+    @Override
+    public String getHarvestTool(int aMeta) {
+        return "pickaxe";
+    }
+
+    @Override
+    public int damageDropped(int meta) {
+        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
+            if (info == null) return 0;
+
+            return GTOreAdapter.INSTANCE.getBlock(info.setNatural(false))
+                .rightInt();
         }
-        super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetadata);
-        aWorld.removeTileEntity(aX, aY, aZ);
     }
 
-    public abstract OrePrefixes[] getProcessingPrefix(); // Must have 8 entries; an entry can be null to disable
-                                                         // automatic recipes.
-
-    public abstract boolean[] getEnabledMetas(); // Must have 8 entries.
-
-    public abstract Block getDroppedBlock();
-
-    public abstract Materials[] getDroppedDusts(); // Must have 8 entries; can be null.
-
     @Override
-    public ArrayList<ItemStack> getDrops(World aWorld, int aX, int aY, int aZ, int aMeta, int aFortune) {
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof TileEntityOres)) {
-            return ((TileEntityOres) tTileEntity).getDrops(getDroppedBlock(), aFortune);
+    public int getHarvestLevel(int meta) {
+        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, meta)) {
+            if (info == null) return 0;
+
+            int smallOreBonus = info.isSmall ? -1 : 0;
+
+            int harvestLevel = GTMod.gregtechproxy.mChangeHarvestLevels
+                ? GTMod.gregtechproxy.mHarvestLevel[info.material.mMetaItemSubID]
+                : info.material.mToolQuality;
+
+            return GTUtility.clamp(harvestLevel + smallOreBonus, 0, GTMod.gregtechproxy.mMaxHarvestLevel);
         }
-        return mTemporaryTileEntity.get() == null ? new ArrayList<>()
-            : mTemporaryTileEntity.get()
-                .getDrops(getDroppedBlock(), aFortune);
     }
 
     @Override
-    public TileEntity createTileEntity(World aWorld, int aMeta) {
-        return new TileEntityOres();
+    public float getBlockHardness(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+
+        return 1.0F + getHarvestLevel(meta);
     }
 
-    public abstract ITexture[] getTextureSet(); // Must have 16 entries.
+    @Override
+    public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX,
+        double explosionY, double explosionZ) {
+        int meta = world.getBlockMetadata(x, y, z);
+
+        return 1.0F + getHarvestLevel(meta);
+    }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
-        for (int i = 0; i < GregTechAPI.sGeneratedMaterials.length; i++) {
-            Materials tMaterial = GregTechAPI.sGeneratedMaterials[i];
-            if ((tMaterial != null) && ((tMaterial.mTypes & 0x8) != 0) && !aBlockedOres.contains(tMaterial)) {
-                for (int meta = i; meta < 23000 + i; meta += 1000) {
-                    if (!(new ItemStack(aItem, 1, meta).getDisplayName()
-                        .contains(DOT_NAME))) aList.add(new ItemStack(aItem, 1, meta));
-                }
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float subX,
+        float subY, float subZ) {
+        if (!world.isRemote && player.capabilities.isCreativeMode && player.getHeldItem() == null) {
+            try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
+                info.setNatural(!info.isNatural);
+
+                world.setBlockMetadataWithNotify(
+                    x,
+                    y,
+                    z,
+                    GTOreAdapter.INSTANCE.getBlock(info)
+                        .rightInt(),
+                    3);
+                GTUtility.sendChatToPlayer(player, "Set ore natural flag to " + info.isNatural);
             }
+
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    @Override
+    protected boolean canSilkHarvest() {
+        return false;
+    }
+
+    @Override
+    public boolean isFireSource(World world, int x, int y, int z, ForgeDirection side) {
+        return side == ForgeDirection.UP && getStoneType(getDamageValue(world, x, y, z)) == StoneType.Netherrack;
+    }
+
+    public static final int SMALL_ORE_META_OFFSET = 16000, NATURAL_ORE_META_OFFSET = 8000;
+
+    public int getMaterialIndex(int meta) {
+        return meta % 1000;
+    }
+
+    public int getStoneIndex(int meta) {
+        meta %= SMALL_ORE_META_OFFSET;
+        meta %= NATURAL_ORE_META_OFFSET;
+
+        return meta / 1000;
+    }
+
+    public boolean isSmallOre(int meta) {
+        return meta >= SMALL_ORE_META_OFFSET;
+    }
+
+    public boolean isNatural(int meta) {
+        return (meta % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET;
+    }
+
+    public Materials getMaterial(int meta) {
+        return GregTechAPI.sGeneratedMaterials[getMaterialIndex(meta)];
+    }
+
+    public StoneType getStoneType(int meta) {
+        int stoneType = getStoneIndex(meta);
+
+        if (stoneType < 0 || stoneType >= stoneTypes.size()) return null;
+
+        return stoneTypes.get(stoneType);
     }
 }

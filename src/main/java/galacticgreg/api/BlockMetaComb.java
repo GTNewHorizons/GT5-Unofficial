@@ -1,5 +1,7 @@
 package galacticgreg.api;
 
+import java.util.Objects;
+
 import net.minecraft.block.Block;
 
 /**
@@ -27,7 +29,7 @@ public class BlockMetaComb {
      */
     public BlockMetaComb(Block pBlock, int pMeta) {
         mMeta = pMeta;
-        mBlock = pBlock;
+        mBlock = Objects.requireNonNull(pBlock);
     }
 
     /**

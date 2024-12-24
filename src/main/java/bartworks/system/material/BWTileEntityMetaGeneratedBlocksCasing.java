@@ -27,7 +27,7 @@ import gregtech.api.render.TextureFactory;
 public class BWTileEntityMetaGeneratedBlocksCasing extends TileEntityMetaGeneratedBlock {
 
     @Override
-    protected Block GetProperBlock() {
+    protected Block getProperBlock() {
         return WerkstoffLoader.BWBlockCasings;
     }
 

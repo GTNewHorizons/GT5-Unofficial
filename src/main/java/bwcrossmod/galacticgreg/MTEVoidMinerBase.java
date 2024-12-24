@@ -24,19 +24,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import galacticgreg.api.ModDimensionDef;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -45,22 +51,17 @@ import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 
 public abstract class MTEVoidMinerBase extends MTEDrillerBase {
 
+    private ModDimensionDef dimensionDef;
+    private boolean canVoidMine = true;
     private VoidMinerUtility.DropMap dropMap = null;
     private VoidMinerUtility.DropMap extraDropMap = null;
     private float totalWeight;
+
     private int multiplier = 1;
 
     protected final byte TIER_MULTIPLIER;
 
     private boolean mBlacklist = false;
-
-    /**
-     * @Deprecated Use {@link VoidMinerUtility#addBlockToDimensionList}
-     */
-    @Deprecated
-    public static void addBlockToDimensionList(int dimId, Block block, int meta, float weight) {
-        VoidMinerUtility.addBlockToDimensionList(dimId, block, meta, weight);
-    }
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -116,10 +117,21 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
     }
 
     @Override
+    protected int tryLowerPipeState(boolean isSimulating) {
+        if (!canVoidMine) {
+            return 3;
+        }
+
+        return super.tryLowerPipeState(isSimulating);
+    }
+
+    @Override
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
-        // if the dropMap has never been initialised or if the dropMap is empty
-        if (this.dropMap == null || this.totalWeight == 0) this.calculateDropMap();
+        if (!canVoidMine) {
+            workState = 3;
+            return false;
+        }
 
         if (this.totalWeight != 0.f) {
             this.handleFluidConsumption();
@@ -166,6 +178,18 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
             .addOutputBus("Any base casing")
             .toolTipFinisher();
         return tt;
+    }
+
+    @Override
+    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+        super.drawTexts(screenElements, inventorySlot);
+
+        if (!canVoidMine) {
+            String dimensionName = dimensionDef == null ? "unknown"
+                : I18n.format("gtnop.world." + dimensionDef.getDimensionName());
+            String text = I18n.format("GT5U.gui.text.no_void_mining", dimensionName);
+            screenElements.addChild(new TextWidget(text).setTextAlignment(Alignment.TopLeft));
+        }
     }
 
     @Override
@@ -240,35 +264,10 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
         if (storedNobleGas == null || !this.consumeNobleGas(storedNobleGas)) this.multiplier = this.TIER_MULTIPLIER;
     }
 
-    /**
-     * Handles the ores added manually with {@link VoidMinerUtility#addMaterialToDimensionList}
-     *
-     * @param id the specified dim id
-     */
-    private void handleExtraDrops(int id) {
-        if (VoidMinerUtility.extraDropsDimMap.containsKey(id)) {
-            extraDropMap = VoidMinerUtility.extraDropsDimMap.get(id);
-        }
-    }
-
-    /**
-     * Gets the DropMap of the dim for the specified dim id
-     *
-     * @param id the dim number
-     */
-    private void handleModDimDef(int id) {
-        if (VoidMinerUtility.dropMapsByDimId.containsKey(id)) {
-            this.dropMap = VoidMinerUtility.dropMapsByDimId.get(id);
-        } else {
-            String chunkProviderName = ((ChunkProviderServer) this.getBaseMetaTileEntity()
-                .getWorld()
-                .getChunkProvider()).currentChunkProvider.getClass()
-                    .getName();
-
-            if (VoidMinerUtility.dropMapsByChunkProviderName.containsKey(chunkProviderName)) {
-                this.dropMap = VoidMinerUtility.dropMapsByChunkProviderName.get(chunkProviderName);
-            }
-        }
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        calculateDropMap();
     }
 
     /**
@@ -276,12 +275,25 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
      * totalWeight for normalisation
      */
     private void calculateDropMap() {
-        this.dropMap = new VoidMinerUtility.DropMap();
-        this.extraDropMap = new VoidMinerUtility.DropMap();
-        int id = this.getBaseMetaTileEntity()
-            .getWorld().provider.dimensionId;
-        this.handleModDimDef(id);
-        this.handleExtraDrops(id);
+        this.dropMap = null;
+        this.extraDropMap = null;
+        this.totalWeight = 0;
+        this.canVoidMine = false;
+
+        dimensionDef = DimensionDef.getDefForWorld(
+            getBaseMetaTileEntity().getWorld(),
+            getBaseMetaTileEntity().getXCoord() >> 4,
+            getBaseMetaTileEntity().getZCoord() >> 4);
+
+        if (dimensionDef == null || !dimensionDef.canBeVoidMined) return;
+
+        this.canVoidMine = true;
+
+        this.dropMap = VoidMinerUtility.dropMapsByDimName
+            .getOrDefault(dimensionDef.getDimensionName(), new VoidMinerUtility.DropMap());
+        this.extraDropMap = VoidMinerUtility.extraDropsByDimName
+            .getOrDefault(dimensionDef.getDimensionName(), new VoidMinerUtility.DropMap());
+
         this.totalWeight = dropMap.getTotalWeight() + extraDropMap.getTotalWeight();
     }
 
@@ -293,14 +305,27 @@ public abstract class MTEVoidMinerBase extends MTEDrillerBase {
             .stream()
             .filter(GTUtility::isOre)
             .collect(Collectors.toList());
-        final ItemStack output = this.nextOre();
-        output.stackSize = multiplier;
-        if (inputOres.isEmpty() || this.mBlacklist && inputOres.stream()
-            .noneMatch(is -> GTUtility.areStacksEqual(is, output))
-            || !this.mBlacklist && inputOres.stream()
-                .anyMatch(is -> GTUtility.areStacksEqual(is, output)))
-            this.addOutput(output);
+
+        if (canVoidMine) {
+            final ItemStack output = this.nextOre();
+            output.stackSize = multiplier;
+
+            boolean matchesFilter = contains(inputOres, output);
+
+            if (inputOres.isEmpty() || (this.mBlacklist ? !matchesFilter : matchesFilter)) {
+                this.addOutput(output);
+            }
+        }
+
         this.updateSlots();
+    }
+
+    private static boolean contains(List<ItemStack> list, ItemStack stack) {
+        for (ItemStack cursor : list) {
+            if (GTUtility.areStacksEqual(cursor, stack)) return true;
+        }
+
+        return false;
     }
 
     @Override

@@ -106,7 +106,7 @@ public class ToolChainsawLV extends ToolSaw {
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rAmount = 0;
         if ((aBlock.getMaterial() == Material.leaves) && ((aBlock instanceof IShearable))) {
             aPlayer.worldObj.setBlock(aX, aY, aZ, aBlock, aMetaData, 0);
@@ -137,8 +137,8 @@ public class ToolChainsawLV extends ToolSaw {
     }
 
     @Override
-    public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld,
-        int aX, int aY, int aZ) {
+    public float getMiningSpeed(Block aBlock, int aMetaData, float aDefault, EntityPlayer aPlayer, World aWorld, int aX,
+        int aY, int aZ) {
         if (aBlock.isWood(aPlayer.worldObj, aX, aY, aZ)
             && OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData))) {
             float rAmount = 1.0F;
