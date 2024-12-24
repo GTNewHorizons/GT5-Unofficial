@@ -35,7 +35,7 @@ public class BehaviourSoftHammer extends BehaviourNone {
         if (aBlock == null) {
             return false;
         }
-        byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);
+        int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
         if (aBlock == Blocks.lit_redstone_lamp) {
             if ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.isRemote = true;

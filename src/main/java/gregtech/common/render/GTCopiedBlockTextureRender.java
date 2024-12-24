@@ -12,14 +12,15 @@ import gregtech.api.util.LightingHelper;
 public class GTCopiedBlockTextureRender extends GTTextureBase implements ITexture, IBlockContainer {
 
     private final Block mBlock;
-    private final byte mSide, mMeta;
+    private final byte mSide;
+    private final int mMeta;
 
     protected GTCopiedBlockTextureRender(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa, boolean allowAlpha) {
         if (aRGBa.length != 4)
             throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTCopiedBlockTextureRender");
         mBlock = aBlock;
         mSide = (byte) ordinalSide;
-        mMeta = (byte) aMeta;
+        mMeta = aMeta;
     }
 
     @Override
@@ -107,7 +108,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
     }
 
     @Override
-    public byte getMeta() {
+    public int getMeta() {
         return mMeta;
     }
 }

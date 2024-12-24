@@ -63,7 +63,7 @@ public class ToolJackHammer extends ToolDrillLV {
     }
 
     @Override
-    public boolean isMinableBlock(Block aBlock, byte aMetaData) {
+    public boolean isMinableBlock(Block aBlock, int aMetaData) {
         return GTToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "pickaxe") //
             || GTToolHarvestHelper.isAppropriateMaterial(
                 aBlock, //
@@ -76,7 +76,7 @@ public class ToolJackHammer extends ToolDrillLV {
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-        int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
         GTRecipe tRecipe = RecipeMaps.hammerRecipes.findRecipeQuery()
             .items(new ItemStack(aBlock, 1, aMetaData))

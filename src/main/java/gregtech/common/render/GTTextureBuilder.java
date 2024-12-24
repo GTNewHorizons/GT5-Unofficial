@@ -134,10 +134,10 @@ public class GTTextureBuilder implements ITextureBuilder {
     }
 
     private boolean isCTMBlock(Block fromBlock, int fromMeta) {
-        return GTMod.gregtechproxy.mCTMBlockCache.computeIfAbsent(fromBlock, (byte) fromMeta, GTTextureBuilder::apply);
+        return GTMod.gregtechproxy.mCTMBlockCache.computeIfAbsent(fromBlock, fromMeta, GTTextureBuilder::apply);
     }
 
-    private static Boolean apply(Block b, Byte m) {
+    private static Boolean apply(Block b, int m) {
         Class<?> clazz = b.getClass();
         while (clazz != Block.class) {
             final String className = clazz.getName();
