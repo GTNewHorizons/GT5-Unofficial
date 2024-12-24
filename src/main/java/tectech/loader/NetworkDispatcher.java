@@ -2,6 +2,8 @@ package tectech.loader;
 
 import static tectech.Reference.MODID;
 
+import tectech.mechanics.pipe.BatchedPipeActivityMessage;
+import tectech.mechanics.pipe.PipeActivity;
 import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.mechanics.spark.RendererMessage;
 
@@ -21,5 +23,8 @@ public class NetworkDispatcher extends eu.usrv.yamcore.network.PacketDispatcher 
         registerMessage(PipeActivityMessage.ClientHandler.class, PipeActivityMessage.PipeActivityData.class);
 
         registerMessage(RendererMessage.ClientHandler.class, RendererMessage.RendererData.class);
+
+        PipeActivity.init();
+        registerMessage(PipeActivity.Handler.class, BatchedPipeActivityMessage.class);
     }
 }
