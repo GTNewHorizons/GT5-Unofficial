@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity;
 
 public enum SidedTextureNames {
+
     Base("base"),
     Left("left"),
     Right("right"),

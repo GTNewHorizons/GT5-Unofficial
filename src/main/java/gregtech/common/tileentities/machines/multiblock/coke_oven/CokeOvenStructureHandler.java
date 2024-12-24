@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multiblock.coke_oven;
 
+import net.minecraft.item.ItemStack;
+
 import com.badlogic.ashley.core.Entity;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -8,16 +10,13 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.multitileentity.StructureHandler;
-import net.minecraft.item.ItemStack;
 
 public class CokeOvenStructureHandler extends StructureHandler {
 
     public static final IStructureDefinition<Entity> STRUCTURE = StructureDefinition.<Entity>builder()
-            .addShape(
-                    "main",
-                    new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } })
-            .addElement('A', StructureUtility.ofBlock(GregTechAPI.sBlockCasings8, 1))
-            .build();
+        .addShape("main", new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } })
+        .addElement('A', StructureUtility.ofBlock(GregTechAPI.sBlockCasings8, 1))
+        .build();
 
     public CokeOvenStructureHandler(Entity entity) {
         super(entity);

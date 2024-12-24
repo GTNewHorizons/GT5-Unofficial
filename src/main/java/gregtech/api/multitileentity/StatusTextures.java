@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity;
 
 public enum StatusTextures {
+
     Active("active", false),
     ActiveWithGlow("active_glow", true),
     Inactive("inactive", false),

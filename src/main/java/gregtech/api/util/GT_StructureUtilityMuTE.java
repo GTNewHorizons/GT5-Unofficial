@@ -1,19 +1,19 @@
 package gregtech.api.util;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
 import static gregtech.loaders.preload.LoaderMultiTileEntities.*;
 
 import java.util.Arrays;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
@@ -216,8 +216,7 @@ public class GT_StructureUtilityMuTE {
         public int getRegistryId() {
             // TODO: MuTE registry seems to somehow shift, probably due to NBT shenanigans. Lazy init circumvents this
             // but it should be properly fixed in the future
-            if (registryId == GTValues.W) {
-            }
+            if (registryId == GTValues.W) {}
             return registryId;
         }
     }

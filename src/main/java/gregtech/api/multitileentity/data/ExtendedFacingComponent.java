@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 public class ExtendedFacingComponent implements Component {
+
     private ExtendedFacing facing;
 
     public ExtendedFacingComponent(ExtendedFacing facing) {

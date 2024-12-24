@@ -3,7 +3,7 @@ package gregtech.loaders.preload;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
 import net.minecraft.block.material.Material;
-import com.cleanroommc.modularui.screen.ModularPanel;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.IMultiblockInfoContainer;
 import com.gtnewhorizons.mutecore.SystemRegistrator;
 import com.gtnewhorizons.mutecore.api.block.MultiTileEntityBlock;
@@ -16,7 +16,6 @@ import com.gtnewhorizons.mutecore.api.registry.MultiTileEntityRegistry;
 import com.gtnewhorizons.mutecore.api.tile.MultiTileEntity;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.MachineType;
 import gregtech.api.multitileentity.GTBaseMuTERender;
 import gregtech.api.multitileentity.MachineGUI;
 import gregtech.api.multitileentity.data.Structure;

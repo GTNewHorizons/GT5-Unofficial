@@ -3,13 +3,14 @@ package gregtech.common.tileentities.machines.multiblock.coke_oven;
 import static net.minecraftforge.oredict.OreDictionary.getOreID;
 import static net.minecraftforge.oredict.OreDictionary.getOreIDs;
 
+import net.minecraft.init.Items;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.badlogic.ashley.core.Entity;
 import com.cleanroommc.modularui.utils.item.IItemStackLong;
 import com.cleanroommc.modularui.utils.item.ItemStackLong;
-import com.gtnewhorizons.mutecore.api.data.FluidOutputInventory;
 import com.gtnewhorizons.mutecore.api.data.ItemInputInventory;
 import com.gtnewhorizons.mutecore.api.data.ItemOutputInventory;
 
@@ -18,8 +19,6 @@ import gregtech.api.logic.MuTEProcessingLogic;
 import gregtech.api.multitileentity.data.ProcessingData;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class CokeOvenProcessingLogic extends MuTEProcessingLogic<CokeOvenProcessingLogic> {
 

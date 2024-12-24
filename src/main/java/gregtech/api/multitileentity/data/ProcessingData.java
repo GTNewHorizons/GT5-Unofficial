@@ -1,9 +1,9 @@
 package gregtech.api.multitileentity.data;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.badlogic.ashley.core.Component;
 import com.gtnewhorizons.mutecore.api.data.WorldStateValidator;
-
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ProcessingData implements Component, WorldStateValidator {
 

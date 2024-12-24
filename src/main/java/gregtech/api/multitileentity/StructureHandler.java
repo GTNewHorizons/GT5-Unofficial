@@ -32,7 +32,8 @@ public abstract class StructureHandler implements IAlignment, ISurvivalConstruct
             piece,
             entity.getComponent(WorldContainer.class)
                 .getWorld(),
-            entity.getComponent(ExtendedFacingComponent.class).getExtendedFacing(),
+            entity.getComponent(ExtendedFacingComponent.class)
+                .getExtendedFacing(),
             coords.getX(),
             coords.getY(),
             coords.getZ(),
@@ -51,7 +52,8 @@ public abstract class StructureHandler implements IAlignment, ISurvivalConstruct
             piece,
             entity.getComponent(WorldContainer.class)
                 .getWorld(),
-            entity.getComponent(ExtendedFacingComponent.class).getExtendedFacing(),
+            entity.getComponent(ExtendedFacingComponent.class)
+                .getExtendedFacing(),
             coords.getX(),
             coords.getY(),
             coords.getZ(),
@@ -72,7 +74,8 @@ public abstract class StructureHandler implements IAlignment, ISurvivalConstruct
 
     @Override
     public final ExtendedFacing getExtendedFacing() {
-        return entity.getComponent(ExtendedFacingComponent.class).getExtendedFacing();
+        return entity.getComponent(ExtendedFacingComponent.class)
+            .getExtendedFacing();
     }
 
     @Override

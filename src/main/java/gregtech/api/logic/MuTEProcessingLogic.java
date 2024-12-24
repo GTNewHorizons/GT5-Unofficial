@@ -17,7 +17,9 @@ public abstract class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> exte
 
     @Override
     public final void update(float deltaTime) {
-        ImmutableArray<Entity> results = MuTECore.ENGINE.getEntitiesFor(Family.one(getProcessingDataClass()).get());
+        ImmutableArray<Entity> results = MuTECore.ENGINE.getEntitiesFor(
+            Family.one(getProcessingDataClass())
+                .get());
         for (Entity entity : results) {
             if (!validateEntityComponents(entity)) continue;
             process(entity);

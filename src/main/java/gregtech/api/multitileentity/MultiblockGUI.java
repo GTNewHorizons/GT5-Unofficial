@@ -25,23 +25,34 @@ public class MultiblockGUI extends MachineGUI {
         ModularPanel gui = new ModularPanel("multiblock_gui");
         gui.size(210, 180);
         Row tabRow = new Row();
-        gui.child(tabRow.size(196, 32).align(Alignment.TopLeft).pos(7, -28));
+        gui.child(
+            tabRow.size(196, 32)
+                .align(Alignment.TopLeft)
+                .pos(7, -28));
         PagedWidget<?> pages = new PagedWidget<>();
         pages.size(210, 180);
         pages.controller(tabController);
         gui.child(pages);
         pages.addPage(new Column().child(new TextWidget("Some random text")));
-        tabRow.child(new PageButton(0, tabController).overlay(new ItemDrawable()).tab(GuiTextures.TAB_TOP, 0));
+        tabRow.child(
+            new PageButton(0, tabController).overlay(new ItemDrawable())
+                .tab(GuiTextures.TAB_TOP, 0));
 
         ItemInventory inv = entity.getComponent(ItemInputInventory.class);
         pages.addPage(createItemInventory(inv));
-        tabRow.child(new PageButton(1, tabController).overlay(new ItemDrawable()).tab(GuiTextures.TAB_TOP, 0));
+        tabRow.child(
+            new PageButton(1, tabController).overlay(new ItemDrawable())
+                .tab(GuiTextures.TAB_TOP, 0));
         ItemInventory intout = entity.getComponent(ItemOutputInventory.class);
         pages.addPage(createItemInventory(intout));
-        tabRow.child(new PageButton(2, tabController).overlay(new ItemDrawable()).tab(GuiTextures.TAB_TOP, 0));
+        tabRow.child(
+            new PageButton(2, tabController).overlay(new ItemDrawable())
+                .tab(GuiTextures.TAB_TOP, 0));
         FluidInventory fout = entity.getComponent(FluidOutputInventory.class);
         pages.addPage(createFluidInventory(fout));
-        tabRow.child(new PageButton(3, tabController).overlay(new ItemDrawable()).tab(GuiTextures.TAB_TOP, 0));
+        tabRow.child(
+            new PageButton(3, tabController).overlay(new ItemDrawable())
+                .tab(GuiTextures.TAB_TOP, 0));
         gui.bindPlayerInventory();
         return gui;
     }

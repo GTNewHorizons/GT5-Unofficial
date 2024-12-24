@@ -2,19 +2,6 @@ package gregtech.api.multitileentity;
 
 import java.io.IOException;
 
-import org.lwjgl.opengl.GL11;
-
-import com.badlogic.ashley.core.Entity;
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizons.mutecore.api.block.MultiTileEntityBlock;
-import com.gtnewhorizons.mutecore.api.registry.TextureRegistry;
-import com.gtnewhorizons.mutecore.api.render.MuTERender;
-
-import gregtech.api.enums.Mods;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.multitileentity.data.ExtendedFacingComponent;
-import gregtech.api.render.TextureFactory;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -22,6 +9,17 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.badlogic.ashley.core.Entity;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizons.mutecore.api.block.MultiTileEntityBlock;
+import com.gtnewhorizons.mutecore.api.render.MuTERender;
+
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.multitileentity.data.ExtendedFacingComponent;
+import gregtech.api.render.TextureFactory;
 
 public class GTBaseMuTERender implements MuTERender {
 
@@ -44,14 +42,13 @@ public class GTBaseMuTERender implements MuTERender {
             ITexture texture;
             try {
                 Minecraft.getMinecraft()
-                        .getResourceManager()
-                        .getResource(
-                                new ResourceLocation(
-                                        Mods.GregTech.ID,
-                                        "textures/blocks/multitileentity/" + folder + "/" + textureName.getName()
-                                                + ".png"));
-                texture = TextureFactory.of(
-                        new GTMuTEIcon(Mods.GregTech.ID, "multitileentity/" + folder + "/" + textureName.getName()));
+                    .getResourceManager()
+                    .getResource(
+                        new ResourceLocation(
+                            Mods.GregTech.ID,
+                            "textures/blocks/multitileentity/" + folder + "/" + textureName.getName() + ".png"));
+                texture = TextureFactory
+                    .of(new GTMuTEIcon(Mods.GregTech.ID, "multitileentity/" + folder + "/" + textureName.getName()));
                 switch (textureName) {
                     case Top -> topOverlayTexture = texture;
                     case Bottom -> bottomOverlayTexture = texture;
@@ -90,60 +87,54 @@ public class GTBaseMuTERender implements MuTERender {
     }
 
     private static void renderYNegative(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
-            ITexture texture, ForgeDirection side) {
+        ITexture texture, ForgeDirection side) {
         if (world != null) {
-            if (!block.shouldSideBeRendered(world, x, y - 1, z, side.ordinal()))
-                return;
+            if (!block.shouldSideBeRendered(world, x, y - 1, z, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y - 1, z));
         }
         texture.renderYNeg(renderer, block, x, y, z);
     }
 
     private static void renderZNegative(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
-            ITexture texture, ForgeDirection side) {
+        ITexture texture, ForgeDirection side) {
         if (world != null) {
-            if (!block.shouldSideBeRendered(world, x, y, z - 1, side.ordinal()))
-                return;
+            if (!block.shouldSideBeRendered(world, x, y, z - 1, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z - 1));
         }
         texture.renderZNeg(renderer, block, x, y, z);
     }
 
     private static void renderXNegative(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
-            ITexture texture, ForgeDirection side) {
+        ITexture texture, ForgeDirection side) {
         if (world != null) {
-            if (!block.shouldSideBeRendered(world, x - 1, y, z, side.ordinal()))
-                return;
+            if (!block.shouldSideBeRendered(world, x - 1, y, z, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x - 1, y, z));
         }
         texture.renderXNeg(renderer, block, x, y, z);
     }
 
     private static void renderYPositive(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
-            ITexture texture, ForgeDirection side) {
+        ITexture texture, ForgeDirection side) {
         if (world != null) {
-            if (!block.shouldSideBeRendered(world, x, y + 1, z, side.ordinal()))
-                return;
+            if (!block.shouldSideBeRendered(world, x, y + 1, z, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y + 1, z));
         }
         texture.renderYPos(renderer, block, x, y, z);
     }
 
     private static void renderXPositive(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
-            ITexture texture, ForgeDirection side) {
+        ITexture texture, ForgeDirection side) {
         if (world != null) {
-            if (!block.shouldSideBeRendered(world, x + 1, y, z, side.ordinal()))
-                return;
+            if (!block.shouldSideBeRendered(world, x + 1, y, z, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x + 1, y, z));
         }
         texture.renderXPos(renderer, block, x, y, z);
     }
 
     private static void renderZPositive(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
-            ITexture texture, ForgeDirection side) {
+        ITexture texture, ForgeDirection side) {
         if (world != null) {
-            if (!block.shouldSideBeRendered(world, x, y, z + 1, side.ordinal()))
-                return;
+            if (!block.shouldSideBeRendered(world, x, y, z + 1, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z + 1));
         }
         texture.renderZPos(renderer, block, x, y, z);
