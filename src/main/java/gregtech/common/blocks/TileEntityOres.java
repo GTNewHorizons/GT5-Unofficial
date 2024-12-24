@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 public class TileEntityOres extends TileEntity {
 
@@ -24,6 +25,15 @@ public class TileEntityOres extends TileEntity {
 
     @Override
     public boolean canUpdate() {
+        return false;
+    }
+
+    /** Temporary stub method to reduce compilation errors */
+    public static boolean setOreBlock(World world, int x, int y, int z, int meta, boolean small) {
+        return false;
+    }
+
+    public static boolean setOreBlock(World world, int x, int y, int z, short meta, boolean small, boolean checkAir) {
         return false;
     }
 }
