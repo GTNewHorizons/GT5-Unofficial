@@ -3977,8 +3977,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
 
         for (int i = 0; i < 14; i++) {
             GregTechAPI.registerCover(
-                ItemList.WIRELESS_ENERGY_COVERS[i]
-                    .get(1),
+                ItemList.WIRELESS_ENERGY_COVERS[i].get(1),
                 TextureFactory
                     .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
                 new CoverEnergyWireless((int) GTValues.V[i + 1]));
