@@ -17,12 +17,14 @@ import com.gtnewhorizons.mutecore.api.tile.MultiTileEntity;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.MachineType;
+import gregtech.api.multitileentity.GTBaseMuTERender;
 import gregtech.api.multitileentity.MachineGUI;
 import gregtech.api.multitileentity.data.Structure;
 import gregtech.api.multitileentity.data.TooltipComponent;
 import gregtech.api.multitileentity.enums.GT_MultiTileMachine;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.MultiTileEntityInfo;
+import gregtech.common.tileentities.machines.multiblock.coke_oven.CokeOvenData;
 import gregtech.common.tileentities.machines.multiblock.coke_oven.CokeOvenStructureHandler;
 
 public class LoaderMultiTileEntities implements Runnable {
@@ -65,6 +67,7 @@ public class LoaderMultiTileEntities implements Runnable {
                                 .addCasingInfoExactly("Coke Oven Bricks", 25, false)
                                 .addPollutionAmount(10)
                                 .toolTipFinisher("")))
+                    .component(() -> new CokeOvenData())
                     .build())
             .gui(new MachineGUI())
             .tooltipClass(TooltipComponent.class)
@@ -80,7 +83,7 @@ public class LoaderMultiTileEntities implements Runnable {
      * Registered on the client side
      */
     public static void registerRenders() {
-        MACHINE_REGISTRY.registerRender(GT_MultiTileMachine.CokeOven.getId(), (e, rb, x, y, z, w) -> {});
+        MACHINE_REGISTRY.registerRender(GT_MultiTileMachine.CokeOven.getId(), new GTBaseMuTERender("cokeOven"));
     }
 
     public static void registerSystems() {
