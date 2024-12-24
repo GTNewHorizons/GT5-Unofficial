@@ -448,8 +448,12 @@ public class TexturesGtBlock {
 
     public static final CustomIcon oMCAMegaAlloyBlastSmelter = new CustomIcon(
         "iconsets/controllerFaces/megaAlloyBlastSmelter");
+    public static final CustomIcon oMCAMegaAlloyBlastSmelterGlow = new CustomIcon(
+        "iconsets/controllerFaces/megaAlloyBlastSmelterGlow");
     public static final CustomIcon oMCAMegaAlloyBlastSmelterActive = new CustomIcon(
         "iconsets/controllerFaces/megaAlloyBlastSmelterActive");
+    public static final CustomIcon oMCAMegaAlloyBlastSmelterActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/megaAlloyBlastSmelterActiveGlow");
 
     public static final CustomIcon oMCATreeFarm = new CustomIcon("iconsets/controllerFaces/treeFarm");
     public static final CustomIcon oMCATreeFarmActive = new CustomIcon("iconsets/controllerFaces/treeFarmActive");
@@ -567,8 +571,11 @@ public class TexturesGtBlock {
         "iconsets/controllerFaces/thermalBoilerActiveGlow");
 
     public static final CustomIcon oMCAQFT = new CustomIcon("iconsets/controllerFaces/quantumForceTransformer");
+    public static final CustomIcon oMCAQFTGlow = new CustomIcon("iconsets/controllerFaces/quantumForceTransformerGlow");
     public static final CustomIcon oMCAQFTActive = new CustomIcon(
         "iconsets/controllerFaces/quantumForceTransformerActive");
+    public static final CustomIcon oMCAQFTActiveGlow = new CustomIcon(
+        "iconsets/controllerFaces/quantumForceTransformerActiveGlow");
 
     public static final CustomIcon oMCAIndustrialMultiMachine = new CustomIcon(
         "iconsets/controllerFaces/industrialMultiMachine");
