@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTechAPI.sBlockCasings4;
 import static gregtech.api.enums.HatchElement.*;
@@ -12,8 +11,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.copyAmount;
 import static gregtech.api.util.GTUtility.copyAmountUnsafe;
-import static net.minecraft.util.EnumChatFormatting.BLUE;
-import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
+import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import javax.annotation.Nonnull;
 
@@ -316,19 +314,19 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("The recipes shown in NEI display the minimum wafer tier required")
             .addInfo("Parallels are based on Precise Casing Tier")
             .addInfo("MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
-            .addInfo("Supports " + TT + " energy hatches")
+            .addTecTechHatchInfo()
             .beginStructureBlock(7, 10, 9, true)
-            .addStructureInfo(BLUE + "Imprecise Unit Casings cannot be used")
-            .addStructureInfo(BLUE + "26 " + DARK_AQUA + "Precise Electronic Unit Casing")
-            .addStructureInfo(BLUE + "120+ " + DARK_AQUA + "Solid Steel Machine Casings")
-            .addStructureInfo(BLUE + "24 " + DARK_AQUA + "Niobium-Titanium Frame Boxes")
-            .addStructureInfo(BLUE + "67 " + DARK_AQUA + "HV+ Glass")
-            .addStructureInfo(BLUE + "4 " + DARK_AQUA + "Assembling Line Casing")
-            .addStructureInfo(BLUE + "1+ " + DARK_AQUA + "Input Hatch")
-            .addStructureInfo(BLUE + "1+ " + DARK_AQUA + "Input Bus")
-            .addStructureInfo(BLUE + "1+ " + DARK_AQUA + "Output Bus")
-            .addStructureInfo(BLUE + "1+ " + DARK_AQUA + "Energy Hatch")
-            .addStructureInfo(BLUE + "1 " + DARK_AQUA + "Maintenance Hatch")
+            .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
+            .addCasingInfoRange("Tungstensteel Machine Casing", 120, 142, false)
+            .addCasingInfoExactly("Any Glass", 67, false)
+            .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
+            .addCasingInfoExactly("Tungsten Frame Box", 24, false)
+            .addCasingInfoExactly("Assembling Line Casing", 4, false)
+            .addInputHatch("Any Tungstensteel Machine Casing")
+            .addInputBus("Any Tungstensteel Machine Casing")
+            .addOutputBus("Any Tungstensteel Machine Casing")
+            .addEnergyHatch("Any Tungstensteel Machine Casing")
+            .addMaintenanceHatch("Any Tungstensteel Machine Casing")
             .toolTipFinisher(GTValues.AuthorPureBluez);
         return tt;
     }
