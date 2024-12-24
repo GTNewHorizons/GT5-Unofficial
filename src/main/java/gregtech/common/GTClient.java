@@ -63,6 +63,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
@@ -74,7 +75,6 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.recipe.RecipeCategory;
@@ -102,7 +102,6 @@ import gregtech.common.render.GTCapeRenderer;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
-import gregtech.common.render.MultiTileRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
@@ -111,6 +110,7 @@ import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
+import gregtech.loaders.preload.LoaderMultiTileEntities;
 import gregtech.nei.NEIGTConfig;
 import ic2.api.tile.IWrenchable;
 import paulscode.sound.SoundSystemConfig;
@@ -632,7 +632,6 @@ public class GTClient extends GTProxy implements Runnable {
     public void onLoad() {
         super.onLoad();
         GTRendererBlock.register();
-        new MultiTileRenderer();
         new DroneRender();
         new LaserRenderer();
         new WormholeRenderer();
@@ -652,6 +651,9 @@ public class GTClient extends GTProxy implements Runnable {
         new InfiniteSprayCanRenderer();
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
+        if (Mods.MuTECore.isModLoaded()) {
+            LoaderMultiTileEntities.registerRenders();
+        }
     }
 
     @Override
@@ -828,8 +830,8 @@ public class GTClient extends GTProxy implements Runnable {
 
         if (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sWireCutterList)
             || GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSolderingToolList)
-            || (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSoftHammerList)
-                && aTileEntity instanceof MultiBlockPart) && aEvent.player.isSneaking()) {
+            || (GTUtility.isStackInList(aEvent.currentItem, GregTechAPI.sSoftHammerList))
+                && aEvent.player.isSneaking()) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             return;

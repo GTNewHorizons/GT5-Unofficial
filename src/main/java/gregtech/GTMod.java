@@ -37,6 +37,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import appeng.api.AEApi;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -120,12 +121,12 @@ import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
 import gregtech.loaders.preload.GTPreLoad;
-import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
 import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
 import gregtech.loaders.preload.LoaderGTItemData;
 import gregtech.loaders.preload.LoaderGTOreDictionary;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
+import gregtech.loaders.preload.LoaderMultiTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
@@ -173,7 +174,8 @@ import ic2.api.recipe.RecipeOutput;
         + " after:UndergroundBiomes;"
         + " after:TConstruct;"
         + " after:Translocator;"
-        + " after:gendustry;")
+        + " after:gendustry;"
+        + " after:mutecore;")
 public class GTMod implements IGTMod {
 
     static {
@@ -293,14 +295,13 @@ public class GTMod implements IGTMod {
             .register(MTEHatchCraftingInputME.class);
 
         GTPreLoad.runMineTweakerCompat();
-
         new LoaderOreProcessing().run();
         new LoaderGTOreDictionary().run();
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
         new LoaderMetaTileEntities().run();
-        if (GTValues.enableMultiTileEntities) {
-            new GT_Loader_MultiTileEntities().run();
+        if (GTValues.enableMultiTileEntities && Loader.isModLoaded("mutecore")) {
+            new LoaderMultiTileEntities().run();
         }
 
         new LoaderCircuitBehaviors().run();

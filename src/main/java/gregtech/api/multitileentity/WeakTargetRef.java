@@ -6,9 +6,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import com.badlogic.ashley.core.Entity;
+import com.gtnewhorizons.mutecore.api.data.Coordinates;
+import com.gtnewhorizons.mutecore.api.data.WorldContainer;
+import com.gtnewhorizons.mutecore.api.tile.MultiTileEntity;
 
-public class WeakTargetRef<T extends IMultiTileEntity> {
+public class WeakTargetRef<T extends Entity> {
 
     protected final ChunkCoordinates position = new ChunkCoordinates(0, -1, 0);
     protected final Class<?> targetClass;
@@ -27,11 +30,14 @@ public class WeakTargetRef<T extends IMultiTileEntity> {
     }
 
     public void setTarget(T newTarget) {
+        // Needs to be reworked in another way likely as it will be always true rn
         if (!targetClass.isInstance(newTarget)) {
             throw new IllegalArgumentException("Target is not of the correct type");
         }
-        position.set(newTarget.getXCoord(), newTarget.getYCoord(), newTarget.getZCoord());
-        world = newTarget.getWorld();
+        Coordinates coords = newTarget.getComponent(Coordinates.class);
+        position.set(coords.getX(), coords.getY(), coords.getZ());
+        world = newTarget.getComponent(WorldContainer.class)
+            .getWorld();
     }
 
     public void setWorld(World world) {
@@ -55,7 +61,7 @@ public class WeakTargetRef<T extends IMultiTileEntity> {
             return resolveTarget();
         }
         T result = target.get();
-        if (result == null || result.isDead()) {
+        if (result == null) {
             result = resolveTarget();
             if (result != null) {
                 target = new WeakReference<>(result);
@@ -70,7 +76,8 @@ public class WeakTargetRef<T extends IMultiTileEntity> {
     protected T resolveTarget() {
         if (world != null && position.posX >= 0 && world.blockExists(position.posX, position.posY, position.posZ)) {
             final TileEntity te = world.getTileEntity(position.posX, position.posY, position.posZ);
-            return this.targetClass.isInstance(te) ? (T) te : null;
+            if (!(te instanceof MultiTileEntity mute)) return null;
+            return (T) mute.getEntity();
         }
         return null;
     }

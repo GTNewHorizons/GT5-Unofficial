@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 
 @SideOnly(Side.CLIENT)
 public class GTSoundLoop extends MovingSound {
@@ -23,19 +22,6 @@ public class GTSoundLoop extends MovingSound {
     public GTSoundLoop(ResourceLocation p_i45104_1_, IGregTechTileEntity base, boolean stopWhenActive,
         boolean stopWhenInactive) {
         super(p_i45104_1_);
-        this.whileActive = stopWhenActive;
-        this.whileInactive = stopWhenInactive;
-        xPosF = base.getXCoord();
-        yPosF = base.getYCoord();
-        zPosF = base.getZCoord();
-        worldID = base.getWorld().provider.dimensionId;
-        repeat = true;
-        volume = VOLUME_RAMP;
-    }
-
-    public GTSoundLoop(ResourceLocation sound, MultiTileBasicMachine base, boolean stopWhenActive,
-        boolean stopWhenInactive) {
-        super(sound);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
         xPosF = base.getXCoord();
@@ -67,11 +53,6 @@ public class GTSoundLoop extends MovingSound {
         TileEntity tile = world.getTileEntity((int) xPosF, (int) yPosF, (int) zPosF);
         if ((tile instanceof IGregTechTileEntity)) {
             fadeMe |= ((IGregTechTileEntity) tile).isActive() ? whileActive : whileInactive;
-            return;
-        }
-
-        if ((tile instanceof MultiTileBasicMachine)) {
-            fadeMe |= ((MultiTileBasicMachine) tile).isActive() ? whileActive : whileInactive;
             return;
         }
 
