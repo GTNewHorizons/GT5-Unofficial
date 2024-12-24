@@ -263,6 +263,12 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                 } else return false;
             }
 
+            @Override
+            public boolean couldBeValid(MTEChemicalPlant mteChemicalPlant, World world, int x, int y, int z,
+                ItemStack trigger) {
+                return check(aIndex, world, x, y, z);
+            }
+
             private boolean check(int aIndex, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
                 int meta = world.getBlockMetadata(x, y, z);
