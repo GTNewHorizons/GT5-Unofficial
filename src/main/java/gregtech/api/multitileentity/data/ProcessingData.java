@@ -1,8 +1,11 @@
 package gregtech.api.multitileentity.data;
 
 import com.badlogic.ashley.core.Component;
+import com.gtnewhorizons.mutecore.api.data.WorldStateValidator;
 
-public class ProcessingData implements Component {
+import net.minecraft.nbt.NBTTagCompound;
+
+public class ProcessingData implements Component, WorldStateValidator {
 
     protected long energyUsage = 0;
     protected long duration = 0;
@@ -30,5 +33,17 @@ public class ProcessingData implements Component {
 
     public void setProgress(long progress) {
         this.progress = progress;
+    }
+
+    @Override
+    public void save(NBTTagCompound nbt) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void load(NBTTagCompound nbt) {
+        // TODO Auto-generated method stub
+
     }
 }
