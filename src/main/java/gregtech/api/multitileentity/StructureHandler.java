@@ -12,7 +12,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizons.mutecore.api.data.Coordinates;
 import com.gtnewhorizons.mutecore.api.data.WorldContainer;
 
-import gregtech.api.multitileentity.data.ExtendedFacingContainer;
+import gregtech.api.multitileentity.data.ExtendedFacingComponent;
 import gregtech.api.multitileentity.data.TooltipComponent;
 
 public abstract class StructureHandler implements IAlignment, ISurvivalConstructable {
@@ -32,7 +32,7 @@ public abstract class StructureHandler implements IAlignment, ISurvivalConstruct
             piece,
             entity.getComponent(WorldContainer.class)
                 .getWorld(),
-            entity.getComponent(ExtendedFacingContainer.class).getExtendedFacing(),
+            entity.getComponent(ExtendedFacingComponent.class).getExtendedFacing(),
             coords.getX(),
             coords.getY(),
             coords.getZ(),
@@ -51,7 +51,7 @@ public abstract class StructureHandler implements IAlignment, ISurvivalConstruct
             piece,
             entity.getComponent(WorldContainer.class)
                 .getWorld(),
-            entity.getComponent(ExtendedFacingContainer.class).getExtendedFacing(),
+            entity.getComponent(ExtendedFacingComponent.class).getExtendedFacing(),
             coords.getX(),
             coords.getY(),
             coords.getZ(),
@@ -72,14 +72,14 @@ public abstract class StructureHandler implements IAlignment, ISurvivalConstruct
 
     @Override
     public final ExtendedFacing getExtendedFacing() {
-        return entity.getComponent(ExtendedFacingContainer.class).getExtendedFacing();
+        return entity.getComponent(ExtendedFacingComponent.class).getExtendedFacing();
     }
 
     @Override
     public final void setExtendedFacing(ExtendedFacing alignment) {
         if (!getAlignmentLimits().isNewExtendedFacingValid(alignment)) return;
-        entity.remove(ExtendedFacingContainer.class);
-        entity.add(new ExtendedFacingContainer(alignment));
+        entity.remove(ExtendedFacingComponent.class);
+        entity.add(new ExtendedFacingComponent(alignment));
     }
 
     @Override

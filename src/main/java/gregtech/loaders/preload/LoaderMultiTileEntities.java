@@ -16,7 +16,8 @@ import com.gtnewhorizons.mutecore.api.registry.MultiTileEntityRegistry;
 import com.gtnewhorizons.mutecore.api.tile.MultiTileEntity;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.MachineType;
+import gregtech.api.multitileentity.MachineGUI;
 import gregtech.api.multitileentity.data.Structure;
 import gregtech.api.multitileentity.data.TooltipComponent;
 import gregtech.api.multitileentity.enums.GT_MultiTileMachine;
@@ -24,7 +25,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multiblock.MultiTileEntityInfo;
 import gregtech.common.tileentities.machines.multiblock.coke_oven.CokeOvenStructureHandler;
 
-public class GT_Loader_MultiTileEntities implements Runnable {
+public class LoaderMultiTileEntities implements Runnable {
 
     // MuTE Registry Names
     public static final String COMPONENT_CASING_REGISTRY_NAME = "gt.multitileentity.component.casings";
@@ -63,30 +64,11 @@ public class GT_Loader_MultiTileEntities implements Runnable {
                                 .beginStructureBlock(3, 3, 3, true)
                                 .addCasingInfoExactly("Coke Oven Bricks", 25, false)
                                 .addPollutionAmount(10)
-                                .toolTipFinisher(GTValues.AuthorBlueWeabo)))
+                                .toolTipFinisher("")))
                     .build())
-            .gui((e, sm) -> { return new ModularPanel("cokeOven"); })
+            .gui(new MachineGUI())
             .tooltipClass(TooltipComponent.class)
             .unlocalizedName("coke.oven.gt5u")
-            .register();
-        MACHINE_REGISTRY.create(1, MultiTileEntity.class)
-            .componentsCreator(
-                new ComponentsCreator().component(() -> new ItemInputInventory(3, 64))
-                    .component(() -> new ItemOutputInventory(3, 64))
-                    .component(() -> new FluidOutputInventory(1, 24000))
-                    .component(() -> new Structure(CokeOvenStructureHandler.class))
-                    .component(
-                        () -> new TooltipComponent(
-                            new MultiblockTooltipBuilder().addMachineType("Coke Oven")
-                                .addInfo("Used for charcoal")
-                                .beginStructureBlock(3, 3, 3, true)
-                                .addCasingInfoExactly("Coke Oven Bricks", 25, false)
-                                .addPollutionAmount(10)
-                                .toolTipFinisher(GTValues.AuthorBlueWeabo)))
-                    .build())
-            .gui((e, sm) -> { return new ModularPanel("cokeOven"); })
-            .tooltipClass(TooltipComponent.class)
-            .unlocalizedName("macerator.gt5u")
             .register();
     }
 
@@ -94,9 +76,11 @@ public class GT_Loader_MultiTileEntities implements Runnable {
 
     private static void registerComponentCasings() {}
 
+    /**
+     * Registered on the client side
+     */
     public static void registerRenders() {
         MACHINE_REGISTRY.registerRender(GT_MultiTileMachine.CokeOven.getId(), (e, rb, x, y, z, w) -> {});
-        MACHINE_REGISTRY.registerRender(1, (e, rb, x, y, z, w) -> {});
     }
 
     public static void registerSystems() {

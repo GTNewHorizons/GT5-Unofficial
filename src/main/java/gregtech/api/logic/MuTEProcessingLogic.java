@@ -2,12 +2,13 @@ package gregtech.api.logic;
 
 import javax.annotation.Nonnull;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.gtnewhorizons.mutecore.MuTECore;
+
+import gregtech.api.multitileentity.data.ProcessingData;
 
 /**
  * Processing logic class, dedicated for MultiTileEntities.
@@ -23,13 +24,13 @@ public abstract class MuTEProcessingLogic<P extends MuTEProcessingLogic<P>> exte
         }
     }
 
-    protected abstract Class<? extends Component> getProcessingDataClass();
+    protected abstract Class<? extends ProcessingData> getProcessingDataClass();
 
     protected boolean validateEntityComponents(@Nonnull Entity entity) {
         return true;
     }
 
-    public void process(@Nonnull Entity entity) {}
+    protected abstract void process(@Nonnull Entity entity);
 
     // #endregion
 }

@@ -5,6 +5,7 @@ import gregtech.api.enums.GTValues;
 public enum GT_MultiTileMachine {
 
     CokeOven(0),
+    Macerator(1),
     NONE(GTValues.W);
 
     private final int meta;

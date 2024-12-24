@@ -110,7 +110,7 @@ import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
-import gregtech.loaders.preload.GT_Loader_MultiTileEntities;
+import gregtech.loaders.preload.LoaderMultiTileEntities;
 import gregtech.nei.NEIGTConfig;
 import ic2.api.tile.IWrenchable;
 import paulscode.sound.SoundSystemConfig;
@@ -652,7 +652,7 @@ public class GTClient extends GTProxy implements Runnable {
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
         if (Mods.MuTECore.isModLoaded()) {
-            GT_Loader_MultiTileEntities.registerRenders();
+            LoaderMultiTileEntities.registerRenders();
         }
     }
 

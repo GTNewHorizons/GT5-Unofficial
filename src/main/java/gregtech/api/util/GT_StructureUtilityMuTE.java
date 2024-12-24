@@ -3,7 +3,7 @@ package gregtech.api.util;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.api.multitileentity.enums.GT_MultiTileUpgradeCasing.*;
-import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.*;
+import static gregtech.loaders.preload.LoaderMultiTileEntities.*;
 
 import java.util.Arrays;
 
