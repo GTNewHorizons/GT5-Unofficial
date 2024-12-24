@@ -2,12 +2,12 @@ package gregtech.common.tileentities.machines.multi;
 
 import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.GregTechAPI.sBlockCasings4;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.copyAmount;
@@ -38,6 +38,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -61,7 +62,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     implements IConstructable, ISurvivalConstructable {
 
     protected IStructureDefinition<MTESolarFactory> multiDefinition = null;
-    private static final int CASING_INDEX = 16;
+    private static final int CASING_INDEX = 48;
     int casingAmount;
     int casingTier;
 
@@ -141,10 +142,10 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                 .casingIndex(CASING_INDEX)
                 .dot(1)
-                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
+                .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 5))
         .addElement('B', Glasses.chainAllGlasses())
-        .addElement('E', ofFrame(Materials.NiobiumTitanium))
+        .addElement('E', ofFrame(Materials.Tungsten))
         .build();
 
     public int getCasingTier() {
@@ -336,16 +337,17 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE)
                 .extFacing()
                 .build(),
@@ -355,7 +357,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[0][16] };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
     @Override
